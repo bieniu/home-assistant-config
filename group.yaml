@@ -1,0 +1,147 @@
+default_view:
+  view: yes
+  icon: mdi:home
+  entities:
+    - group.family
+    - group.weather
+    - group.heating
+    - group.media_players
+
+network:
+  name: Sieć
+  view: yes
+  entities:
+    - group.wire_devices
+    - group.wireless_devices
+    - group.internet
+    - group.raspberry
+
+misc:
+  name: Różne
+  view: yes
+  entities:
+    - group.batteries
+    - group.heating_settings
+    - group.scripts
+
+weather:
+  name: Pogoda
+  entities:
+    - sensor.dark_sky_summary
+    - sensor.dark_sky_temperature
+    - sensor.dark_sky_humidity
+    - sensor.dark_sky_pressure_hpa
+    - sensor.dark_sky_wind_speed
+    - sun.sun
+    - sensor.sunrise
+    - sensor.sunset
+
+heating:
+  name: Ogrzewanie
+  control: hidden
+  entities:
+    - climate.antresola_thermostat_heating_1_2_1
+    - climate.sypialnia_thermostat_heating_1_4_1
+    - climate.antek_thermostat_heating_1_3_1
+    - script.fast_warm_up
+
+family:
+  name: Rodzina
+  entities:
+    - sensor.edyta_presence
+    - sensor.maciek_presence
+    - device_tracker.grazyna
+    - device_tracker.jerzy
+    - device_tracker.agnieszka
+    - device_tracker.emil
+
+peoples:
+  name: Ludzie
+  entities:
+    - device_tracker.agnieszka
+    - device_tracker.emil
+    - device_tracker.grazyna
+    - sensor.maciek_presence
+    - sensor.edyta_presence
+    - device_tracker.jerzy
+    - sensor.denon_presence
+
+wire devices:
+  name: Urządzenia przewodowe
+  control: hidden
+  entities:
+    - sensor.modem_status
+    - sensor.router_status
+    - sensor.switch_status
+    - sensor.synology_status
+    - sensor.raspberry_status
+    - sensor.denon_status
+    - sensor.dune_status
+    - sensor.xbox_status
+    - switch.wake_on_lan_stacjonarny
+
+wireless devices:
+  name: Urządzenia bezprzewodowe
+  entities:
+    - sensor.androidtv_status
+    - sensor.laptop_status
+    - sensor.laptopedyta_status
+    - sensor.oneplus_status
+    - sensor.iphone_status
+    - sensor.lumia_status
+    - sensor.ipad_status
+    - sensor.ipadedyta_status
+    - sensor.kindle_status
+
+media players:
+  name: Odtwarzacze mediów
+  entities:
+    - media_player.denon
+    - media_player.androidtv
+    - media_player.dune
+
+internet:
+  name: Internet
+  entities:
+    - sensor.speedtest_download
+    - sensor.speedtest_upload
+    - sensor.speedtest_ping
+
+heating_settings:
+  name: Ustawienia ogrzewania
+  control: hidden
+  entities:
+    - input_boolean.heating_season
+    - input_select.heating_temp_bedroom_day
+    - input_select.heating_temp_bedroom_night
+    - input_select.heating_temp_bathroom_day
+    - input_select.heating_temp_bathroom_night
+    - input_select.heating_temp_day
+    - input_select.heating_temp_night
+    - input_select.heating_temp_eco
+    - input_select.heating_night_start
+    - input_select.heating_night_end
+    - input_select.heating_night_start_weekend
+    - input_select.heating_night_end_weekend
+
+scripts:
+  name: Skrypty
+  control: hidden
+  entities:
+    - script.hass_restart
+    - script.pi_reboot
+
+batteries:
+  name: Baterie
+  entities:
+    - sensor.battery_thermostat_antresola
+    - sensor.battery_thermostat_sypialnia
+    - sensor.battery_thermostat_antek
+
+raspberry:
+  name: Raspberry Pi
+  entities:
+    - sensor.cpu_use
+    - sensor.ram_free
+    - sensor.disk_free_
+    - sensor.last_boot

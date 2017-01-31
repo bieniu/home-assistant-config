@@ -1,0 +1,156 @@
+#### RASPBERRY PI ####
+sensor.cpu_use:
+  friendly_name: 'Użycie procesora'
+sensor.ram_free:
+  friendly_name: 'Wolny RAM'
+  icon: mdi:chip
+sensor.disk_free_:
+  friendly_name: 'Wolne miejsce'
+sensor.last_boot:
+  friendly_name: 'Ostatni restart'
+
+#### PEOPLES ####
+sensor.edyta_presence:
+  entity_picture: /local/edyta.jpg
+sensor.maciek_presence:
+  entity_picture: /local/maciek.jpg
+
+#### ZONES ####
+zone.home:
+  icon: mdi:home-outline
+
+#### GROUPS ####
+group.family:
+  order: 4
+group.weather:
+  order: 5
+group.heating:
+  order: 6
+group.media_player:
+  order: 7
+group.wire_devices:
+  order: 8
+group.wireless_devices:
+  order: 9
+group.internet:
+  order: 10
+group.raspberry:
+  order: 11
+
+#### WEATHER ####
+sensor.dark_sky_summary:
+  friendly_name: Warunki pogodowe
+  icon: mdi:tag-text-outline
+sensor.dark_sky_temperature:
+  friendly_name: Temperatura
+sensor.dark_sky_wind_speed:
+  friendly_name: Prędkość wiatru
+sensor.dark_sky_humidity:
+  friendly_name: Wilgotność
+sensor.dark_sky_pressure_hpa:
+  icon: mdi:gauge
+sensor.sunrise:
+  friendly_name: Wschód słońca
+  icon: mdi:weather-sunset-up
+sensor.sunset:
+  friendly_name: Zachód słońca
+  icon: mdi:weather-sunset-down
+sun.sun:
+  friendly_name: Słońce
+
+#### SPEEDTEST ####
+sensor.speedtest_download:
+  friendly_name: Prędkość pobierania
+  icon: mdi:download
+sensor.speedtest_upload:
+  friendly_name: Prędkość wysyłania
+  icon: mdi:upload
+sensor.speedtest_ping:
+  friendly_name: Ping
+  icon: mdi:timer
+
+#### NETWORK DEVICES ####
+sensor.router_status:
+  icon: mdi:router-wireless
+sensor.synology_status:
+  icon: mdi:server-network
+sensor.dune_status:
+  icon: mdi:filmstrip
+sensor.raspberry_status:
+  icon: mdi:raspberrypi
+switch.wake_on_lan_stacjonarny:
+  friendly_name: Komputer stacjonarny
+  icon: mdi:desktop-tower
+sensor.switch_status:
+  icon: mdi:switch
+sensor.xbox_status:
+  icon: mdi:xbox
+sensor.iphone_status:
+  icon: mdi:cellphone-iphone
+sensor.oneplus_status:
+  icon: mdi:cellphone-android
+sensor.denon_status:
+  icon: mdi:amplifier
+sensor.androidtv_status:
+  icon: mdi:cast
+sensor.laptopedyta_status:
+  icon: mdi:laptop
+sensor.laptop_status:
+  icon: mdi:laptop
+sensor.lumia_status:
+  icon: mdi:cellphone
+sensor.ipad_status:
+  icon: mdi:tablet-ipad
+sensor.ipadedyta_status:
+  icon: mdi:tablet-ipad
+sensor.kindle_status:
+  icon: mdi:cellphone
+sensor.modem_status:
+  icon: mdi:router-wireless
+
+#### MEDIA PLAYERS ####
+media_player.androidtv:
+  friendly_name: Android TV
+media_player.dunehd:
+  friendly_name: Dune
+
+#### SCRIPTS ####
+script.hass_restart:
+  icon: mdi:refresh
+script.pi_reboot:
+  icon: mdi:refresh
+script.fast_warm_up:
+  icon: mdi:clock-fast
+
+#### PEOPLES ####
+sensor.guest:
+  icon: mdi:account
+
+ #### CLIMATE ####
+climate.antresola_thermostat_heating_1_2_1:
+  friendly_name: Antresola
+  icon: mdi:radiator
+  max_temp: 28
+  min_temp: 4
+
+climate.antek_thermostat_heating_1_3_1:
+  friendly_name: Pokój Antka
+  icon: mdi:radiator
+  max_temp: 28
+  min_temp: 4
+
+climate.sypialnia_thermostat_heating_1_4_1:
+  friendly_name: Sypialnia
+  icon: mdi:radiator
+  max_temp: 28
+  min_temp: 4
+
+#### BATTERIES ####
+sensor.battery_thermostat_antresola:
+  icon: mdi:battery-50
+
+sensor.battery_thermostat_sypialnia:
+  icon: mdi:battery-50
+
+sensor.battery_thermostat_antek:
+  icon: mdi:battery-50

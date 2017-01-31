@@ -1,0 +1,171 @@
+homeassistant:
+  name: home
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  elevation: 97
+  unit_system: metric
+  time_zone: Europe/Warsaw
+  customize: !include customize.yaml
+
+zone:
+  name: work
+  icon: mdi:domain
+  latitude: 52.1344
+  longitude: 21.0586
+
+zone 2:
+  name: work
+  icon: mdi:domain
+  latitude: 52.2316
+  longitude: 21.0013
+
+zone 3:
+  name: work
+  icon: mdi:domain
+  latitude: 51.7539
+  longitude: 19.4559
+
+zone 4:
+  name: work
+  radius: 250
+  icon: mdi:domain
+  latitude: 51.1131
+  longitude: 16.9750
+
+sensor: !include sensors.yaml
+group: !include group.yaml
+automation: !include automation.yaml
+script: !include script.yaml
+
+frontend:
+
+http:
+  api_password: !secret api_password
+  ip_ban_enabled: True
+  login_attempts_threshold: 5
+  base_url: !secret http_base_url
+  ssl_certificate: /etc/cert/cert.pem
+  ssl_key: /etc/cert/cert.key
+
+updater:
+
+discovery:
+
+zeroconf:
+
+recorder:
+  purge_days: 7
+#  db_url: postgres://@/hass
+
+restore_states:
+
+logger:
+#  default: info
+  default: warning
+  logs:
+    homeassistant.components.notify: info
+    homeassistant.components.automation: info
+    homeassistant.components.mqtt: info
+
+history:
+  include:
+    domains:
+      - sensor
+      - climate
+      - sun
+      - input_boolean
+    entities:
+      - group.peoples
+  exclude:
+    entities:
+      - sensor.dark_sky_pressure
+      - sensor.denon_presence
+
+logbook:
+  include:
+    domains:
+      - sensor
+      - media_player
+      - sun
+      - updater
+    entities:
+      - group.peoples
+  exclude:
+    entities:
+      - sensor.denon_presence
+
+sun:
+
+device_tracker:
+  - platform: asuswrt
+    host: !secret router_ip
+    username: !secret router_username
+    password: !secret router_password
+    protocol: ssh
+    interval_seconds: 60
+    consider_home: 600
+    track_new_devices: true
+  - platform: nmap_tracker
+    hosts: 
+      - !secret router_ip
+      - !secret switch_ip
+      - !secret lumia_ip
+      - !secret synology_ip
+    home_interval: 10
+    interval_seconds: 60
+    consider_home: 600
+    track_new_devices: true
+    scan_options: " --privileged -sP "
+  - platform: gpslogger
+  - platform: owntracks
+    max_gps_accuracy: 1000
+  - platform: bluetooth_tracker
+  - platform: ping
+    hosts:
+      modem: !secret modem_ip
+
+media_player:
+  - platform: denonavr
+    host: !secret denon_ip
+    name: Denon
+  - platform: cast
+    host: !secret androidtv_ip
+#  - platform: dunehd
+#    host: !secret dune_ip
+#    name: Dune
+
+notify:
+  - name: html5
+    platform: html5
+    gcm_api_key: !secret gcm_api_key
+    gcm_sender_id: !secret gcm_sender_id
+
+mqtt:
+  broker: !secret mqtt_broker_ip
+  port: !secret mqtt_broker_port
+  client_id: home-assistant-1
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+
+switch:
+  - platform: wake_on_lan
+    name: wake_on_lan_stacjonarny
+    host: !secret desktop_ip
+    mac_address: !secret desktop_mac_address
+    turn_off:
+      service:      
+        shell_command.stacjonarny_off
+        
+shell_command:
+  stacjonarny_off: "curl http://stacjonarny:88/event.html?Suspend"
+  reboot_pi: "sudo reboot"
+
+zwave:
+  usb_path: /dev/ttyACM0
+
+input_boolean:
+  heating_season:
+    name: Sezon grzewczy
+    icon: mdi:weather-snowy-rainy
+
+input_select:  !include input_select.yaml

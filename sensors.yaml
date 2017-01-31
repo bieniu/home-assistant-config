@@ -1,0 +1,252 @@
+- platform: systemmonitor
+  resources:
+    - type: disk_free
+      arg: /
+    - type: memory_free
+    - type: processor_use
+    - type: last_boot
+
+- platform: snmp
+  name: synology_storage_free
+  host: 192.168.1.100
+  community: home
+  baseoid: 1.3.6.1.4.1.24681.1.2.17.1.5.1
+
+- platform: snmp
+  name: synology_storage_mem_free
+  host: 192.168.1.100
+  community: home
+  baseoid: .1.3.6.1.4.1.2021.4.6.0
+
+- platform: darksky
+  api_key: 07cbbc5a9a0f3bdc5a650ba8c2487dda
+  monitored_conditions:
+    - summary
+    - temperature
+    - wind_speed
+    - humidity
+    - pressure
+
+- platform: speedtest
+  hour:
+    - 0
+    - 6
+    - 12
+    - 18 
+  monitored_conditions:
+    - ping
+    - download
+    - upload
+
+- platform: template
+  sensors:
+    battery_thermostat_antresola:
+      friendly_name: Termostat - antresola
+      unit_of_measurement: '%'
+      entity_id: climate.antresola_thermostat_heating_1_2_1
+      value_template: >-
+         {% if states.climate.antresola_thermostat_heating_1_2_1 %}
+            {{ states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level }}
+         {% else %}
+            unknown
+         {% endif %}
+
+- platform: template
+  sensors:
+    battery_thermostat_sypialnia:
+      friendly_name: Termostat - sypialnia
+      unit_of_measurement: '%'
+      entity_id: climate.sypialnia_thermostat_heating_1_4_1
+      value_template: >-
+         {% if states.climate.sypialnia_thermostat_heating_1_4_1 %}
+            {{ states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level }}
+         {% else %}
+            unknown
+         {% endif %}
+
+- platform: template
+  sensors:
+    battery_thermostat_antek:
+      friendly_name: Termostat - pokój Antka
+      unit_of_measurement: '%'
+      entity_id: climate.antek_thermostat_heating_1_3_1
+      value_template: >-
+         {% if states.climate.antek_thermostat_heating_1_3_1 %}
+            {{ states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level }}
+         {% else %}
+            unknown
+         {% endif %}
+
+    sunrise:
+      entity_id: sun.sun
+      value_template: >-
+         {% if states.sun.sun %} 
+            {{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom("%H:%M") }}
+         {% else %}
+            unknown
+         {% endif %}
+
+    sunset:
+      entity_id: sun.sun
+      value_template: >-
+         {% if states.sun.sun %}
+            {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom("%H:%M") }}
+         {% else %}
+            unknown
+         {% endif %}
+
+    dark_sky_pressure_hpa:
+      value_template: '{{ states.sensor.dark_sky_pressure.state }}'
+      friendly_name: Ciśnienie
+      unit_of_measurement: 'hPa'
+      entity_id: sensor.dark_sky_pressure
+
+    edyta_presence:
+      entity_id: device_tracker.pi_iphone,device_tracker.edyta,device_tracker.edyta_bt
+      friendly_name: Edyta
+      value_template: >-
+         {% if is_state('device_tracker.pi_iphone', 'work') %}
+            work
+         {% elif is_state('device_tracker.pi_iphone', 'home') %}
+            home
+         {% elif is_state('device_tracker.edyta', 'home') %}
+            home
+         {% elif is_state('device_tracker.edyta_bt', 'home') %}
+            home
+         {% else %}
+            not_home
+         {% endif %}
+
+    maciek_presence:
+      entity_id: device_tracker.maciek,device_tracker.maciek_bt,device_tracker.maciek_gps
+      friendly_name: Maciek
+      value_template: >-
+         {% if is_state('device_tracker.maciek_gps', 'work') %}
+            work
+         {% elif is_state('device_tracker.maciek_gps', 'home') %}
+            home
+         {% elif is_state('device_tracker.maciek', 'home') %}
+            home
+         {% elif is_state('device_tracker.maciek_bt', 'home') %}
+            home
+         {% else %}
+            not_home
+         {% endif %}
+
+    denon_presence:
+      value_template: "{% if is_state('media_player.denon', 'off') %}not_home{% else %}home{% endif %}"
+      entity_id: media_player.denon
+
+    router_status:
+      value_template: "{% if is_state('device_tracker.router', 'home') %}online{% else %}offline{% endif %}"
+      friendly_name: ASUS RT-AC66U
+      entity_id: device_tracker.router
+
+    synology_status:
+      value_template: "{% if is_state('device_tracker.synology', 'home') %}online{% else %}offline{% endif %}"
+      friendly_name: Synology DS110j
+      entity_id: device_tracker.synology
+
+    dune_status:
+      friendly_name: Dune BD Prime 3.0
+      value_template: "{% if is_state('device_tracker.dune', 'home') %}online{% else %}offline{% endif %}"
+      entity_id: device_tracker.dune
+
+    raspberry_status:
+      value_template: "{% if is_state('device_tracker.raspberry', 'home') %}online{% else %}offline{% endif %}"
+      friendly_name: Raspberry Pi 3
+      entity_id: device_tracker.raspberry
+
+    switch_status:
+      value_template: "{% if is_state('device_tracker.switch', 'home') %}online{% else %}offline{% endif %}"
+      friendly_name: TP-Link TL-WDR4300
+      entity_id: device_tracker.switch
+
+    xbox_status:
+      value_template: "{% if is_state('device_tracker.xbox', 'home') %}online{% else %}offline{% endif %}"
+      friendly_name: Xbox360
+      entity_id: device_tracker.xbox
+
+    oneplus_status:
+      value_template: "{% if is_state('device_tracker.maciek', 'home') %}online{% else %}offline{% endif %}"
+      friendly_name: OnePlus One
+      entity_id: device_tracker.maciek
+
+    iphone_status:
+      value_template: "{% if is_state('device_tracker.edyta', 'home') %}online{% else %}offline{% endif %}"
+      friendly_name: iPhone 6S
+      entity_id: device_tracker.edyta
+
+    ipad_status:
+      value_template: "{% if is_state('device_tracker.ipad', 'home') %}online{% else %}offline{% endif %}"
+      friendly_name: iPad Air
+      entity_id: device_tracker.ipad
+
+    ipadedyta_status:
+      value_template: "{% if is_state('device_tracker.ipadedyta', 'home') %}online{% else %}offline{% endif %}"
+      friendly_name: iPad Air LTE
+      entity_id: device_tracker.ipadedyta
+
+    kindle_status:
+      value_template: "{% if is_state('device_tracker.kindle', 'home') %}online{% else %}offline{% endif %}"
+      friendly_name: Kindle Keyboard 3G
+      entity_id: device_tracker.kindle
+
+    lumia_status:
+      value_template: "{% if is_state('device_tracker.lumia', 'home') %}online{% else %}offline{% endif %}"
+      friendly_name: Lumia 640
+      entity_id: device_tracker.lumia
+
+    modem_status:
+      value_template: "{% if is_state('device_tracker.modem', 'home') %}online{% else %}offline{% endif %}"
+      friendly_name: ZTE GPON F660
+      entity_id: device_tracker.modem
+
+    androidtv_status:
+      friendly_name: Xiaomi Mi Box
+      entity_id:
+        - device_tracker.androidtv
+        - media_player.androidtv
+      value_template: >-
+         {% if is_state('media_player.androidtv', 'playing')  %}
+            playing
+         {% elif is_state('media_player.androidtv', 'paused') %}
+            paused
+         {% elif is_state('device_tracker.androidtv', 'home') %}
+            online
+         {% else %}
+            offline
+         {% endif %}
+
+    laptopedyta_status:
+      value_template: "{% if is_state('device_tracker.laptopedyta', 'home') %}online{% else %}offline{% endif %}"
+      friendly_name: HP EliteBook 820 G3
+      entity_id: device_tracker.laptopedyta
+
+    denon_status:
+      friendly_name: Denon AVR-X2100W
+      entity_id:
+        - device_tracker.denon
+        - media_player.denon 
+      value_template: >-
+         {% if is_state('media_player.denon', 'playing') %}
+            playing
+         {% elif is_state('media_player.denon', 'paused') %}
+            paused
+         {% elif is_state('device_tracker.denon', 'home') and is_state('media_player.denon', 'off') %} 
+            standby
+         {% elif is_state('device_tracker.denon', 'home') %}
+            online
+         {% else %}
+            offline
+         {% endif %}
+
+    laptop_status:
+      friendly_name: Lenovo IdeaPad Z510
+      entity_id: device_tracker.laptop
+      value_template: >-
+         {% if is_state('device_tracker.laptop', 'home') %}
+            online
+         {% else %}
+            offline
+         {% endif %}

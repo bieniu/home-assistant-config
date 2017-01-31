@@ -1,0 +1,268 @@
+#### NOTIFICATIONS ####  
+# powiadomienie o dostępnej aktualizacji
+- alias: Update Available Notification
+  trigger:
+    - platform: state
+      entity_id: updater.updater
+  action:
+    service: notify.html5
+    data_template: 
+      title: 'Nowa wersja Home Assistante'
+      message: "Dostępna jest aktualizacja do wersji  {{ states.updater.updater.state }} dla Home Assistant."
+    data:
+      data:
+        tag: 'notification-hass-update'
+        url: "https://bieniu.eu/home"
+
+# powiadomienie o wykryciu nowego urządzenia
+- alias: New Device Notification
+  trigger:
+    - platform: event
+      event_type: device_tracker_new_device
+  action:
+    service: notify.html5
+    data_template:
+      title: 'Nowe urządzenie'
+      message: "Wykryto nowe urządzenie sieciowe lub Bluetooth."
+    data:
+      data:
+        tag: 'notification-new-device'
+        url: "https://bieniu.eu/home"
+
+# niski poziom baterii
+- alias: 'Low Battery Alert'
+  trigger:
+    - platform: time
+      after: '18:00:00'
+  condition:
+    - condition: template
+      value_template: >-
+        {% for entity_id in states.group.batteries.attributes.entity_id if states(entity_id) | int < 15 %}
+        {%- if loop.first -%}
+        {{ true }}
+        {%- endif -%}
+        {% endfor %}
+  action:
+    service: notify.html5
+    data_template:
+      title: 'Niski poziom naładowania baterii'
+      message: "Wykryto niski poziom naładowania baterii w przynajmniej jednym urządzeniu."
+    data:
+      data:
+        tag: 'notification-low-battery'
+        url: "https://bieniu.eu/home"
+
+#### HEATING ####
+# zwiększenie temperatury rano w tygodniu jeśli ktoś jest w domu i trwa sezon grzewczy
+- alias: Heating Day
+  trigger:
+    platform: time
+    minutes: '/1'
+    seconds: 0
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: '{{ (now().strftime("%s") | int | timestamp_custom("%H:%M")) == states.input_select.heating_night_end.state }}'
+      - condition: time
+        weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: 'on'
+      - condition: state
+        entity_id: group.peoples
+        state: 'home'
+  action:
+    - service: climate.set_temperature
+      entity_id: climate.antresola_thermostat_heating_1_2_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_day.state }}'
+    - service: climate.set_temperature
+      entity_id: climate.antek_thermostat_heating_1_3_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_bedroom_day.state }}'
+    - service: climate.set_temperature
+      entity_id: climate.sypialnia_thermostat_heating_1_4_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_bedroom_day.state }}'
+
+# zmniejszenie temperatury na noc w tygodniu jeśli trwa sezon grzewczy
+- alias: Heating Night
+  trigger:
+    platform: time
+    minutes: '/1'
+    seconds: 0
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: '{{ (now().strftime("%s") | int | timestamp_custom("%H:%M")) == states.input_select.heating_night_start.state }}'
+      - condition: time
+        weekday:
+          - sun
+          - mon
+          - tue
+          - wed
+          - thu
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: 'on'
+  action:
+    - service: climate.set_temperature
+      entity_id: climate.antresola_thermostat_heating_1_2_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_night.state }}'
+    - service: climate.set_temperature
+      entity_id: climate.antek_thermostat_heating_1_3_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_bedroom_night.state }}'
+    - service: climate.set_temperature
+      entity_id: climate.sypialnia_thermostat_heating_1_4_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_bedroom_night.state }}'
+
+# zwiększenie temperatury rano w weekendy jeśli ktoś jest w domu i trwa sezon grzewczy
+- alias: Heating Day Weekend
+  trigger:
+    platform: time
+    minutes: '/1'
+    seconds: 0
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: '{{ (now().strftime("%s") | int | timestamp_custom("%H:%M")) == states.input_select.heating_night_end_weekend.state }}'
+      - condition: time
+        weekday:
+          - sat
+          - sun
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: 'on'
+      - condition: state
+        entity_id: group.peoples
+        state: 'home'
+  action:
+    - service: automation.trigger
+      entity_id: automation.heating_day
+
+# zmniejszenie temperatury na noc w weekendy jeśli trwa sezon grzewczy
+- alias: Heating Night Weekend
+  trigger:
+    platform: time
+    minutes: '/1'
+    seconds: 0
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: '{{ (now().strftime("%s") | int | timestamp_custom("%H:%M")) == states.input_select.heating_night_start_weekend.state }}'
+      - condition: time
+        weekday:
+          - fri
+          - sat
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: 'on'
+  action:
+    - service: automation.trigger
+      entity_id: automation.heating_night
+
+# zmniejszenie temperatury gdy domownicy wychodzą i jest sezon grzewczy
+- alias: Heating Peoples Away
+  trigger:
+    platform: state
+    entity_id: group.peoples
+    from: 'home'
+    to: 'not_home'
+    for:
+      minutes: 20
+  condition:
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: 'on'
+  action:
+    - service: climate.set_temperature
+      entity_id: climate.antresola_thermostat_heating_1_2_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_eco.state }}'
+    - service: climate.set_temperature
+      entity_id: climate.antek_thermostat_heating_1_3_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_eco.state  }}'
+    - service: climate.set_temperature
+      entity_id: climate.sypialnia_thermostat_heating_1_4_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_eco.state  }}'
+
+# zwiększenie temperatury gdy domownicy wracają i jest sezon grzewczy
+- alias: Heating Peoples Back
+  trigger:
+    platform: state
+    entity_id: group.peoples
+    to: 'home'
+  condition:
+    condition: and
+    conditions:
+      - condition: time
+        after: '05:30:00'
+        before: '23:00:00'
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: 'on'
+  action:
+    - service: automation.trigger
+      entity_id: automation.heating_day
+
+# początek sezonu grzewczego
+- alias: Heating Season Begin
+  trigger:
+    platform: state
+    entity_id: input_boolean.heating_season
+    from: 'off'
+    to: 'on'
+  action:
+    - service: automation.trigger
+      entity_id: automation.heating_day
+    - service: homeassistant.turn_on
+      entity_id:
+        - automation.heating_day_weekend
+        - automation.heating_day_working_day
+        - automation.heating_night_weekend
+        - automation.heating_night_working_day
+        - automation.heating_peoples_away
+        - automation.heating_peoples_back
+
+# koniec sezonu grzewczego
+- alias: Heating Season End
+  trigger:
+    platform: state
+    entity_id: input_boolean.heating_season
+    from: 'on'
+    to: 'off'
+  action:
+    - service: climate.set_temperature
+      entity_id: climate.antresola_thermostat_heating_1_2_1
+      data:
+        temperature: 4
+    - service: climate.set_temperature
+      entity_id: climate.antek_thermostat_heating_1_3_1
+      data_template:
+        temperature: 4
+    - service: climate.set_temperature
+      entity_id: climate.sypialnia_thermostat_heating_1_4_1
+      data_template:
+        temperature: 4
+    - service: homeassistant.turn_off
+      entity_id:
+        - automation.heating_day_weekend
+        - automation.heating_day_working_day
+        - automation.heating_night_weekend
+        - automation.heating_night_working_day
+        - automation.heating_peoples_away
+        - automation.heating_peoples_back
