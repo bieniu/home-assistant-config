@@ -18,19 +18,14 @@ zone 2:
   icon: mdi:domain
   latitude: 52.2316
   longitude: 21.0013
+  radius: 200
 
 zone 3:
   name: work
   icon: mdi:domain
   latitude: 51.7539
   longitude: 19.4559
-
-zone 4:
-  name: work
   radius: 250
-  icon: mdi:domain
-  latitude: 51.1131
-  longitude: 16.9750
 
 sensor: !include sensors.yaml
 group: !include group.yaml
@@ -55,7 +50,7 @@ zeroconf:
 
 recorder:
   purge_days: 7
-#  db_url: postgres://@/hass
+  db_url: !secret mysql_db_url
 
 restore_states:
 
@@ -63,23 +58,40 @@ logger:
 #  default: info
   default: warning
   logs:
-    homeassistant.components.notify: info
+#    homeassistant.components.notify: info
     homeassistant.components.automation: info
-    homeassistant.components.mqtt: info
+#    homeassistant.components.mqtt: info
+    homeassistant.components.zwave: info
 
 history:
   include:
     domains:
-      - sensor
       - climate
       - sun
-      - input_boolean
+      - sensor
     entities:
       - group.peoples
   exclude:
     entities:
       - sensor.dark_sky_pressure
       - sensor.denon_presence
+      - sensor.edyta_to_home
+      - sensor.maciek_to_home
+      - sensor.cpu_use
+      - sensor.disk_free_
+      - sensor.last_boot
+      - sensor.ram_use
+      - sensor.raspberry_disk_free
+      - sensor.sunrise
+      - sensor.sunset
+      - sensor.raspberry_cpu_temp
+      - sensor.router_update
+      - sensor.battery_thermostat_antek
+      - sensor.battery_thermostat_sypialnia
+      - sensor.battery_thermostat_antresola
+      - sensor.battery_thermostat_salon
+      - sensor.battery_thermostat_kuchnia
+      - sensor.synology_disk_used
 
 logbook:
   include:
@@ -92,7 +104,24 @@ logbook:
       - group.peoples
   exclude:
     entities:
+      - sensor.dark_sky_pressure
       - sensor.denon_presence
+      - sensor.edyta_to_home
+      - sensor.maciek_to_home
+      - sensor.cpu_use
+      - sensor.disk_free_
+      - sensor.last_boot
+      - sensor.ram_use
+      - sensor.raspberry_disk_free
+      - sensor.sunrise
+      - sensor.sunset
+      - sensor.router_update
+      - sensor.battery_thermostat_antek
+      - sensor.battery_thermostat_sypialnia
+      - sensor.battery_thermostat_antresola
+      - sensor.battery_thermostat_salon
+      - sensor.battery_thermostat_kuchnia
+      - sensor.synology_disk_used
 
 sun:
 
@@ -118,7 +147,7 @@ device_tracker:
     scan_options: " --privileged -sP "
   - platform: gpslogger
   - platform: owntracks
-    max_gps_accuracy: 1000
+    max_gps_accuracy: 1300
   - platform: bluetooth_tracker
   - platform: ping
     hosts:
@@ -135,10 +164,10 @@ media_player:
 #    name: Dune
 
 notify:
-  - name: html5
-    platform: html5
-    gcm_api_key: !secret gcm_api_key
-    gcm_sender_id: !secret gcm_sender_id
+  name: html5
+  platform: html5
+  gcm_api_key: !secret gcm_api_key
+  gcm_sender_id: !secret gcm_sender_id
 
 mqtt:
   broker: !secret mqtt_broker_ip
@@ -148,17 +177,20 @@ mqtt:
   password: !secret mqtt_password
 
 switch:
-  - platform: wake_on_lan
-    name: wake_on_lan_stacjonarny
-    host: !secret desktop_ip
-    mac_address: !secret desktop_mac_address
-    turn_off:
-      service:      
-        shell_command.stacjonarny_off
+  platform: wake_on_lan
+  name: wake_on_lan_stacjonarny
+  host: !secret desktop_ip
+  mac_address: !secret desktop_mac_address
+  turn_off:
+    service:      
+      shell_command.stacjonarny_off
         
 shell_command:
   stacjonarny_off: "curl http://stacjonarny:88/event.html?Suspend"
   reboot_pi: "sudo reboot"
+  shutdown_pi: "sudo shutdown -h now"
+  restart_hass: "sudo systemctl restart home-assistant.service"
+  restart_router: "echo 'reboot' | ssh maciek@router"
 
 zwave:
   usb_path: /dev/ttyACM0
@@ -167,5 +199,8 @@ input_boolean:
   heating_season:
     name: Sezon grzewczy
     icon: mdi:weather-snowy-rainy
+  edyta_far_from_home:
+  maciek_far_from_home:
+  heating_away_mode:
 
 input_select:  !include input_select.yaml

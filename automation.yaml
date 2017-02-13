@@ -2,23 +2,54 @@
 # powiadomienie o dostępnej aktualizacji
 - alias: Update Available Notification
   trigger:
-    - platform: state
-      entity_id: updater.updater
+    platform: state
+    entity_id: updater.updater
   action:
     service: notify.html5
     data_template: 
       title: 'Nowa wersja Home Assistante'
-      message: "Dostępna jest aktualizacja do wersji  {{ states.updater.updater.state }} dla Home Assistant."
+      message: "Dostępna jest aktualizacja do wersji {{ states.updater.updater.state }} dla Home Assistant."
     data:
       data:
         tag: 'notification-hass-update'
-        url: "https://bieniu.eu/home"
+        url: "https://home-assistant.io"
+
+# powiadomienie o dostępnej aktualizacji dla routera
+- alias: Router Update Available Notification
+  trigger:
+    platform: state
+    entity_id: sensor.router_update
+  action:
+    service: notify.html5
+    data_template: 
+      title: 'Nowa wersja oprogramowania routera'
+      message: "Dostępna jest aktualizacja oprogramowania routera do wersji {{ states.sensor.router_update.state }}."
+    data:
+      data:
+        tag: 'notification-router-update'
+        url: "https://asuswrt.lostrealm.ca/changelog"
+
+# powiadomienia o małej ilości miejsca na Synology
+- alias: Low Disk Space On Synology Notification
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.synology_disk_used
+    above: 70
+  action:
+    service: notify.html5
+    data_template: 
+      title: 'Mało miejsca na sysku Synology'
+      message: "Dysk Synology jest zajęty w {{ states.sensor.synology_disk_used.state }}%."
+    data:
+      data:
+        tag: 'notification-synology-low-disk'
+        url: "https://bieniu.eu/"
 
 # powiadomienie o wykryciu nowego urządzenia
 - alias: New Device Notification
   trigger:
-    - platform: event
-      event_type: device_tracker_new_device
+    platform: event
+    event_type: device_tracker_new_device
   action:
     service: notify.html5
     data_template:
@@ -32,16 +63,16 @@
 # niski poziom baterii
 - alias: 'Low Battery Alert'
   trigger:
-    - platform: time
-      after: '18:00:00'
+    platform: time
+    after: '18:00:00'
   condition:
-    - condition: template
-      value_template: >-
-        {% for entity_id in states.group.batteries.attributes.entity_id if states(entity_id) | int < 15 %}
-        {%- if loop.first -%}
-        {{ true }}
-        {%- endif -%}
-        {% endfor %}
+    condition: template
+    value_template: >-
+       {% for entity_id in states.group.batteries.attributes.entity_id if states(entity_id) | int < 15 %}
+       {%- if loop.first -%}
+       {{ true }}
+       {%- endif -%}
+       {% endfor %}
   action:
     service: notify.html5
     data_template:
@@ -51,6 +82,63 @@
       data:
         tag: 'notification-low-battery'
         url: "https://bieniu.eu/home"
+
+#### PRESENCE ####
+# Edyta 40 minut od domu
+- alias: 'Edyta Far From Home'
+  trigger:
+    platform: template
+    value_template: "{{ (states.sensor.edyta_to_home.state != 'unknown') and (states.sensor.edyta_to_home.state | int > 40) }}"
+  condition:
+    condition: state
+    entity_id: input_boolean.edyta_far_from_home
+    state: 'off'
+  action:
+    service: input_boolean.turn_on
+    entity_id: input_boolean.edyta_far_from_home
+
+# Maciek 40 minut od domu
+- alias: 'Maciek Far From Home'
+  trigger:
+    platform: template
+    value_template: "{{ (states.sensor.maciek_to_home.state != 'unknown') and (states.sensor.maciek_to_home.state | int > 40) }}"
+  condition:
+    condition: state
+    entity_id: input_boolean.maciek_far_from_home
+    state: 'off'
+  action:
+    service: input_boolean.turn_on
+    entity_id: input_boolean.maciek_far_from_home
+
+# Maciek wrócił do domu
+- alias: 'Maciek Come Back Home'
+  trigger:
+    platform: state
+    entity_id: sensor.maciek_presence
+    from: 'not_home'
+    to: 'home'
+  condition:
+    condition: state
+    entity_id: input_boolean.maciek_far_from_home
+    state: 'on'
+  action:
+    service: input_boolean.turn_off
+    entity_id: input_boolean.maciek_far_from_home
+
+# Edyta wróciła do domu
+- alias: 'Edyta Come Back Home'
+  trigger:
+    platform: state
+    entity_id: sensor.edyta_presence
+    from: 'not_home'
+    to: 'home'
+  condition:
+    condition: state
+    entity_id: input_boolean.edyta_far_from_home
+    state: 'on'
+  action:
+    service: input_boolean.turn_off
+    entity_id: input_boolean.edyta_far_from_home
 
 #### HEATING ####
 # zwiększenie temperatury rano w tygodniu jeśli ktoś jest w domu i trwa sezon grzewczy
@@ -80,6 +168,10 @@
   action:
     - service: climate.set_temperature
       entity_id: climate.antresola_thermostat_heating_1_2_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_day.state }}'
+    - service: climate.set_temperature
+      entity_id: climate.salon_thermostat_heating_1_6_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_day.state }}'
     - service: climate.set_temperature
@@ -118,6 +210,10 @@
       data_template:
         temperature: '{{ states.input_select.heating_temp_night.state }}'
     - service: climate.set_temperature
+      entity_id: climate.salon_thermostat_heating_1_6_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_night.state }}'
+    - service: climate.set_temperature
       entity_id: climate.antek_thermostat_heating_1_3_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_bedroom_night.state }}'
@@ -148,8 +244,8 @@
         entity_id: group.peoples
         state: 'home'
   action:
-    - service: automation.trigger
-      entity_id: automation.heating_day
+    service: automation.trigger
+    entity_id: automation.heating_day
 
 # zmniejszenie temperatury na noc w weekendy jeśli trwa sezon grzewczy
 - alias: Heating Night Weekend
@@ -170,8 +266,8 @@
         entity_id: input_boolean.heating_season
         state: 'on'
   action:
-    - service: automation.trigger
-      entity_id: automation.heating_night
+    service: automation.trigger
+    entity_id: automation.heating_night
 
 # zmniejszenie temperatury gdy domownicy wychodzą i jest sezon grzewczy
 - alias: Heating Peoples Away
@@ -183,22 +279,28 @@
     for:
       minutes: 20
   condition:
-    - condition: state
-      entity_id: input_boolean.heating_season
-      state: 'on'
+    condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
   action:
     - service: climate.set_temperature
       entity_id: climate.antresola_thermostat_heating_1_2_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_eco.state }}'
     - service: climate.set_temperature
+      entity_id: climate.salon_thermostat_heating_1_6_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_eco.state }}'
+    - service: climate.set_temperature
       entity_id: climate.antek_thermostat_heating_1_3_1
       data_template:
-        temperature: '{{ states.input_select.heating_temp_eco.state  }}'
+        temperature: '{{ states.input_select.heating_temp_eco.state }}'
     - service: climate.set_temperature
       entity_id: climate.sypialnia_thermostat_heating_1_4_1
       data_template:
-        temperature: '{{ states.input_select.heating_temp_eco.state  }}'
+        temperature: '{{ states.input_select.heating_temp_eco.state }}'
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.heating_away_mode
 
 # zwiększenie temperatury gdy domownicy wracają i jest sezon grzewczy
 - alias: Heating Peoples Back
@@ -215,9 +317,50 @@
       - condition: state
         entity_id: input_boolean.heating_season
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.heating_away_mode
+        state: 'on'
   action:
     - service: automation.trigger
       entity_id: automation.heating_day
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.heating_away_mode
+
+# włączenie ogrzewania 30 minut przed powrotem do domu w dzień gdy jest sezon grzewczy
+- alias: Turn On Heating Before Return To Home
+  trigger:
+    platform: template
+    value_template: "{{ ((states.sensor.maciek_to_home.state != 'unknown') and (states.sensor.edyta_to_home.state != 'unknown')) and ((states.sensor.maciek_to_home.state | int < 30) or (states.sensor.edyta_to_home.state | int < 30)) }}"
+  condition:
+    condition: and
+    conditions:
+      - condition: time
+        after: '05:30:00'
+        before: '23:00:00'
+      - condition: state
+        entity_id: group.peoples
+        state: 'not_home'
+      - condition: state
+        entity_id: input_boolean.edyta_far_from_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.maciek_far_from_home
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.heating_away_mode
+        state: 'on'
+  action:
+    - service: automation.trigger
+      entity_id: automation.heating_day
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.edyta_far_from_home
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.maciek_far_from_home
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.heating_away_mode
 
 # początek sezonu grzewczego
 - alias: Heating Season Begin
@@ -227,8 +370,6 @@
     from: 'off'
     to: 'on'
   action:
-    - service: automation.trigger
-      entity_id: automation.heating_day
     - service: homeassistant.turn_on
       entity_id:
         - automation.heating_day_weekend
@@ -237,6 +378,11 @@
         - automation.heating_night_working_day
         - automation.heating_peoples_away
         - automation.heating_peoples_back
+        - automation.turn_on_heating_before_return_to_home
+        - automation.salon_thermostat_setpoint_change
+        - automation.kuchnia_thermostat_setpoint_change
+    - service: automation.trigger
+      entity_id: automation.heating_day
 
 # koniec sezonu grzewczego
 - alias: Heating Season End
@@ -251,12 +397,20 @@
       data:
         temperature: 4
     - service: climate.set_temperature
+      entity_id: climate.salon_thermostat_heating_1_6_1
+      data:
+        temperature: 4
+    - service: climate.set_temperature
+      entity_id: climate.kuchnia_thermostat_heating_1_5_1
+      data:
+        temperature: 4
+    - service: climate.set_temperature
       entity_id: climate.antek_thermostat_heating_1_3_1
-      data_template:
+      data:
         temperature: 4
     - service: climate.set_temperature
       entity_id: climate.sypialnia_thermostat_heating_1_4_1
-      data_template:
+      data:
         temperature: 4
     - service: homeassistant.turn_off
       entity_id:
@@ -266,3 +420,54 @@
         - automation.heating_night_working_day
         - automation.heating_peoples_away
         - automation.heating_peoples_back
+        - automation.turn_on_heating_before_return_to_home
+        - automation.salon_thermostat_setpoint_change
+        - automation.kuchnia_thermostat_setpoint_change
+
+# ustawia w kuchni temperaturę z salonu
+- alias: "Salon Thermostat SetPoint Change"
+  trigger:
+    platform: state
+    entity_id: climate.salon_thermostat_heating_1_6_1
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: >-
+           {% if (trigger.to_state and trigger.from_state) %}
+              {{ trigger.to_state.attributes.temperature != trigger.from_state.attributes.temperature }}
+           {% endif %}
+      - condition: template
+        value_template: >-
+           {% if (trigger.to_state and states.climate.kuchnia_thermostat_heating_1_5_1) %}
+              {{ trigger.to_state.attributes.temperature != states.climate.kuchnia_thermostat_heating_1_5_1.attributes.temperature }}
+           {% endif %}
+  action:
+    service: climate.set_temperature
+    entity_id: climate.kuchnia_thermostat_heating_1_5_1
+    data_template:
+      temperature: '{{ trigger.to_state.attributes.temperature }}'
+
+# ustawia w salonie temperaturę z kuchni
+- alias: "Kuchnia Thermostat SetPoint Change"
+  trigger:
+    platform: state
+    entity_id: climate.kuchnia_thermostat_heating_1_5_1
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: >-
+           {% if (trigger.to_state and trigger.from_state) %}
+              {{ trigger.to_state.attributes.temperature != trigger.from_state.attributes.temperature }}
+           {% endif %}
+      - condition: template
+        value_template: >-
+           {% if (trigger.to_state and states.climate.salon_thermostat_heating_1_6_1) %}
+              {{ trigger.to_state.attributes.temperature != states.climate.salon_thermostat_heating_1_6_1.attributes.temperature }}
+           {% endif %}
+  action:
+    service: climate.set_temperature
+    entity_id: climate.salon_thermostat_heating_1_6_1
+    data_template:
+      temperature: '{{ trigger.to_state.attributes.temperature }}'

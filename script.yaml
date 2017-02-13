@@ -1,12 +1,22 @@
-hass_restart:
+restart_hass:
   alias: Restart Home Assistant'a
   sequence:
-    - service: homeassistant.restart
+    service: shell_command.restart_hass
 
-pi_reboot:
+reboot_pi:
   alias: Restart Raspberry Pi
   sequence:
-    - service: shell_command.reboot_pi
+    service: shell_command.reboot_pi
+
+shutdown_pi:
+  alias: Wyłącz Raspberry Pi
+  sequence:
+    service: shell_command.shutdown_pi
+
+reboot_router:
+  alias: Restart routera
+  sequence:
+    service: shell_command.reboot_router
 
 fast_warm_up:
   alias: Szybkie dogrzanie
@@ -23,6 +33,10 @@ fast_warm_up:
       entity_id: climate.sypialnia_thermostat_heating_1_4_1
       data:
         temperature: 24
-    - delay: '00:20:00'
+    - service: climate.set_temperature
+      entity_id: climate.salon_thermostat_heating_1_6_1
+      data:
+        temperature: 24
+    - delay: '00:25:00'
     - service: automation.trigger
       entity_id: automation.heating_day
