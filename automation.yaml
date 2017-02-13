@@ -12,7 +12,7 @@
     data:
       data:
         tag: 'notification-hass-update'
-        url: "https://home-assistant.io"
+        url: "{{ states.updater.updater.attributes.release_notes }}"
 
 # powiadomienie o dostępnej aktualizacji dla routera
 - alias: Router Update Available Notification
@@ -43,7 +43,7 @@
     data:
       data:
         tag: 'notification-synology-low-disk'
-        url: "https://bieniu.eu/"
+        url: !secret synology_http
 
 # powiadomienie o wykryciu nowego urządzenia
 - alias: New Device Notification
@@ -58,7 +58,6 @@
     data:
       data:
         tag: 'notification-new-device'
-        url: "https://bieniu.eu/home"
 
 # niski poziom baterii
 - alias: 'Low Battery Alert'
@@ -81,7 +80,6 @@
     data:
       data:
         tag: 'notification-low-battery'
-        url: "https://bieniu.eu/home"
 
 #### PRESENCE ####
 # Edyta 40 minut od domu
