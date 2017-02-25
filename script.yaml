@@ -34,9 +34,22 @@ fast_warm_up:
       data:
         temperature: 24
     - service: climate.set_temperature
-      entity_id: climate.salon_thermostat_heating_1_6_1
+      entity_id: climate.salon_thermostat_heating_1_7_1
       data:
         temperature: 24
     - delay: '00:25:00'
     - service: automation.trigger
       entity_id: automation.heating_day
+
+#### LIGHTS ####
+# włączenie lampki na antresoli na 5 minut
+light_antresola_on:
+  sequence:
+    - service: light.turn_on
+      entity_id: light.gateway_light_f0b429cc6f0b
+      data:
+        brightness: 60
+        rgb_color: [190,0,190]
+    - delay: 0:05
+    - service: light.turn_off
+      entity_id: light.gateway_light_f0b429cc6f0b

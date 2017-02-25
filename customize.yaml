@@ -1,3 +1,7 @@
+#### LIGHTS ####
+- entity_id: light.gateway_light_f0b429cc6f0b
+  friendly_name: Lampka antresola
+
 #### RASPBERRY PI ####
 - entity_id: sensor.cpu_use
   friendly_name: 'Obciążenie CPU'
@@ -27,18 +31,20 @@
   order: 4
 - entity_id: group.weather
   order: 5
-- entity_id: group.heating
+- entity_id: group.lights
   order: 6
-- entity_id: group.media_player
+- entity_id: group.heating
   order: 7
-- entity_id: group.wire_devices
+- entity_id: group.media_player
   order: 8
-- entity_id: group.wireless_devices
+- entity_id: group.wire_devices
   order: 9
-- entity_id: group.internet
+- entity_id: group.wireless_devices
   order: 10
-- entity_id: group.raspberry
+- entity_id: group.internet
   order: 11
+- entity_id: group.raspberry
+  order: 12
 
 #### WEATHER ####
 - entity_id: sensor.dark_sky_summary
@@ -110,6 +116,8 @@
   icon: mdi:cellphone
 - entity_id: sensor.modem_status
   icon: mdi:router-wireless
+- entity_id: sensor.migateway_status
+  icon: mdi:router-wireless
 
 #### MEDIA PLAYERS ####
 - entity_id: media_player.androidtv
@@ -148,7 +156,7 @@
   max_temp: 28
   min_temp: 4
 
-- entity_id: climate.salon_thermostat_heating_1_6_1
+- entity_id: climate.salon_thermostat_heating_1_7_1
   friendly_name: Salon
   icon: mdi:radiator
   max_temp: 28

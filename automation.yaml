@@ -1,4 +1,4 @@
-#### NOTIFICATIONS ####  
+#### NOTIFICATIONS ####
 # powiadomienie o dostępnej aktualizacji
 - alias: Update Available Notification
   trigger:
@@ -169,7 +169,7 @@
       data_template:
         temperature: '{{ states.input_select.heating_temp_day.state }}'
     - service: climate.set_temperature
-      entity_id: climate.salon_thermostat_heating_1_6_1
+      entity_id: climate.salon_thermostat_heating_1_7_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_day.state }}'
     - service: climate.set_temperature
@@ -202,13 +202,16 @@
       - condition: state
         entity_id: input_boolean.heating_season
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.party_mode
+        state: 'off'
   action:
     - service: climate.set_temperature
       entity_id: climate.antresola_thermostat_heating_1_2_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_night.state }}'
     - service: climate.set_temperature
-      entity_id: climate.salon_thermostat_heating_1_6_1
+      entity_id: climate.salon_thermostat_heating_1_7_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_night.state }}'
     - service: climate.set_temperature
@@ -263,9 +266,32 @@
       - condition: state
         entity_id: input_boolean.heating_season
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.party_mode
+        state: 'off'
   action:
     service: automation.trigger
     entity_id: automation.heating_night
+
+# zmniejszenie temperatury na noc po imprezie
+- alias: Heating Night After Party
+  trigger:
+    platform: state
+    entity_id: media_player.denon
+    state: 'off'
+  condition:
+    condition: state
+    entity_id: input_boolean.party_mode
+    state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.party_mode
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: 'on'
+    - delay: 0:15
+    - service: automation.trigger
+      entity_id: automation.heating_night
 
 # zmniejszenie temperatury gdy domownicy wychodzą i jest sezon grzewczy
 - alias: Heating Peoples Away
@@ -286,7 +312,7 @@
       data_template:
         temperature: '{{ states.input_select.heating_temp_eco.state }}'
     - service: climate.set_temperature
-      entity_id: climate.salon_thermostat_heating_1_6_1
+      entity_id: climate.salon_thermostat_heating_1_7_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_eco.state }}'
     - service: climate.set_temperature
@@ -311,7 +337,7 @@
     conditions:
       - condition: time
         after: '05:30:00'
-        before: '23:00:00'
+        before: '22:00:00'
       - condition: state
         entity_id: input_boolean.heating_season
         state: 'on'
@@ -321,6 +347,29 @@
   action:
     - service: automation.trigger
       entity_id: automation.heating_day
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.heating_away_mode
+
+- alias: Heating Peoples Back Night
+  trigger:
+    platform: state
+    entity_id: group.peoples
+    to: 'home'
+  condition:
+    condition: and
+    conditions:
+      - condition: time
+        after: '22:00:00'
+        before: '05:30:00'
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.heating_away_mode
+        state: 'on'
+  action:
+    - service: automation.trigger
+      entity_id: automation.heating_night
     - service: input_boolean.turn_off
       entity_id: input_boolean.heating_away_mode
 
@@ -376,6 +425,7 @@
         - automation.heating_night_working_day
         - automation.heating_peoples_away
         - automation.heating_peoples_back
+        - automation.heating_peoples_back_night
         - automation.turn_on_heating_before_return_to_home
         - automation.salon_thermostat_setpoint_change
         - automation.kuchnia_thermostat_setpoint_change
@@ -395,7 +445,7 @@
       data:
         temperature: 4
     - service: climate.set_temperature
-      entity_id: climate.salon_thermostat_heating_1_6_1
+      entity_id: climate.salon_thermostat_heating_1_7_1
       data:
         temperature: 4
     - service: climate.set_temperature
@@ -418,6 +468,7 @@
         - automation.heating_night_working_day
         - automation.heating_peoples_away
         - automation.heating_peoples_back
+        - automation.heating_peoples_back_night
         - automation.turn_on_heating_before_return_to_home
         - automation.salon_thermostat_setpoint_change
         - automation.kuchnia_thermostat_setpoint_change
@@ -426,7 +477,7 @@
 - alias: "Salon Thermostat SetPoint Change"
   trigger:
     platform: state
-    entity_id: climate.salon_thermostat_heating_1_6_1
+    entity_id: climate.salon_thermostat_heating_1_7_1
   condition:
     condition: and
     conditions:
@@ -461,11 +512,11 @@
            {% endif %}
       - condition: template
         value_template: >-
-           {% if (trigger.to_state and states.climate.salon_thermostat_heating_1_6_1) %}
-              {{ trigger.to_state.attributes.temperature != states.climate.salon_thermostat_heating_1_6_1.attributes.temperature }}
+           {% if (trigger.to_state and states.climate.salon_thermostat_heating_1_7_1) %}
+              {{ trigger.to_state.attributes.temperature != states.climate.salon_thermostat_heating_1_7_1.attributes.temperature }}
            {% endif %}
   action:
     service: climate.set_temperature
-    entity_id: climate.salon_thermostat_heating_1_6_1
+    entity_id: climate.salon_thermostat_heating_1_7_1
     data_template:
       temperature: '{{ trigger.to_state.attributes.temperature }}'

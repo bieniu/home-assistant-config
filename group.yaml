@@ -5,6 +5,7 @@ default_view:
   entities:
     - group.family
     - group.weather
+    - group.lights
     - group.heating
     - group.media_players
 
@@ -41,12 +42,13 @@ heating:
   name: Ogrzewanie
   control: hidden
   entities:
-    - climate.salon_thermostat_heating_1_6_1
+    - climate.salon_thermostat_heating_1_7_1
     - climate.kuchnia_thermostat_heating_1_5_1
     - climate.antresola_thermostat_heating_1_2_1
     - climate.sypialnia_thermostat_heating_1_4_1
     - climate.antek_thermostat_heating_1_3_1
     - script.fast_warm_up
+    - input_boolean.party_mode
 
 family:
   name: Rodzina
@@ -87,6 +89,7 @@ wireless devices:
   name: Urządzenia bezprzewodowe
   entities:
     - sensor.androidtv_status
+    - sensor.migateway_status
     - sensor.laptop_status
     - sensor.laptopedyta_status
     - sensor.oneplus_status
@@ -109,6 +112,10 @@ internet:
     - sensor.speedtest_download
     - sensor.speedtest_upload
     - sensor.speedtest_ping
+
+lights:
+  name: Oświetlenie
+  entities: light.gateway_light_f0b429cc6f0b
 
 heating_settings:
   name: Ustawienia ogrzewania

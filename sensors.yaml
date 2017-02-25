@@ -54,62 +54,62 @@
          {% if states.sensor.disk_free_ %}
             {{ states.sensor.disk_free_.state }}
          {% else %}
-            unknown
+            {{ states.sensor.raspberry_disk_free.state }}
          {% endif %}
 
     battery_thermostat_antresola:
-      friendly_name: Termostat antresola
+      friendly_name: termostat antresola
       unit_of_measurement: '%'
       entity_id: climate.antresola_thermostat_heating_1_2_1
       value_template: >-
          {% if states.climate.antresola_thermostat_heating_1_2_1 %}
             {{ states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level }}
          {% else %}
-            unknown
+            {{ states.sensor.battery_thermostat_antresola.state }}
          {% endif %}
 
     battery_thermostat_salon:
-      friendly_name: Termostat salon
+      friendly_name: termostat salon
       unit_of_measurement: '%'
-      entity_id: climate.salon_thermostat_heating_1_6_1
+      entity_id: climate.salon_thermostat_heating_1_7_1
       value_template: >-
-         {% if states.climate.salon_thermostat_heating_1_6_1 %}
-            {{ states.climate.salon_thermostat_heating_1_6_1.attributes.battery_level }}
+         {% if states.climate.salon_thermostat_heating_1_7_1 %}
+            {{ states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level }}
          {% else %}
-            unknown
+            {{ states.sensor.battery_thermostat_salon.state }}
          {% endif %}
 
     battery_thermostat_kuchnia:
-      friendly_name: Termostat kuchnia
+      friendly_name: termostat kuchnia
       unit_of_measurement: '%'
       entity_id: climate.kuchnia_thermostat_heating_1_5_1
       value_template: >-
          {% if states.climate.kuchnia_thermostat_heating_1_5_1 %}
             {{ states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level }}
          {% else %}
-            unknown
+            {{ states.sensor.battery_thermostat_kuchnia.state }}
          {% endif %}
 
     battery_thermostat_sypialnia:
-      friendly_name: Termostat sypialnia
+      friendly_name: termostat sypialnia
       unit_of_measurement: '%'
       entity_id: climate.sypialnia_thermostat_heating_1_4_1
       value_template: >-
          {% if states.climate.sypialnia_thermostat_heating_1_4_1 %}
             {{ states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level }}
          {% else %}
-            unknown
+            {{ states.sensor.battery_thermostat_sypialnia.state }}
          {% endif %}
 
     battery_thermostat_antek:
-      friendly_name: Termostat pokój Antka
+      friendly_name: termostat pokój Antka
       unit_of_measurement: '%'
       entity_id: climate.antek_thermostat_heating_1_3_1
       value_template: >-
          {% if states.climate.antek_thermostat_heating_1_3_1 %}
             {{ states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level }}
          {% else %}
-            unknown
+            {{ states.sensor.battery_thermostat_antek.state }}
          {% endif %}
 
     sunrise:
@@ -118,7 +118,7 @@
          {% if states.sun.sun %} 
             {{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom("%H:%M") }}
          {% else %}
-            unknown
+            {{ states.sensor.sunrise.state }}
          {% endif %}
 
     sunset:
@@ -127,7 +127,7 @@
          {% if states.sun.sun %}
             {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom("%H:%M") }}
          {% else %}
-            unknown
+            {{ states.sensor.sunset.state }}
          {% endif %}
 
     dark_sky_pressure_hpa:
@@ -286,3 +286,12 @@
             offline
          {% endif %}
 
+    migateway_status:
+      friendly_name: Xiaomi Mi Smart Home Gateway 2
+      entity_id: device_tracker.migateway
+      value_template: >-
+         {% if is_state('device_tracker.migateway', 'home') %}
+            online
+         {% else %}
+            offline
+         {% endif %}
