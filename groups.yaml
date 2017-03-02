@@ -29,7 +29,7 @@ misc:
 weather:
   name: Pogoda
   entities:
-    - sensor.dark_sky_summary
+    - sensor.dark_sky_summary_mdi
     - sensor.dark_sky_temperature
     - sensor.dark_sky_humidity
     - sensor.dark_sky_pressure_hpa
@@ -115,7 +115,10 @@ internet:
 
 lights:
   name: Oświetlenie
-  entities: light.gateway_light_f0b429cc6f0b
+  control: hidden
+  entities:
+    - light.gateway_light_f0b429cc6f0b
+    - input_boolean.disco_mode
 
 heating_settings:
   name: Ustawienia ogrzewania

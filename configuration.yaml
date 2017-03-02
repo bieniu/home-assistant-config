@@ -28,9 +28,9 @@ zone 3:
   radius: 250
 
 sensor: !include sensors.yaml
-group: !include group.yaml
+group: !include groups.yaml
 automation: !include automation.yaml
-script: !include script.yaml
+script: !include scripts.yaml
 
 frontend:
 
@@ -52,8 +52,6 @@ recorder:
   purge_days: 7
   db_url: !secret mysql_db_url
 
-restore_states:
-
 logger:
 #  default: info
   default: warning
@@ -63,6 +61,7 @@ logger:
 #    homeassistant.components.device_tracker: debug
 #    homeassistant.components.mqtt: debug
     homeassistant.components.zwave: info
+    homeassistant.components.media_player: fatal
 
 history:
   include:
@@ -75,6 +74,7 @@ history:
   exclude:
     entities:
       - sensor.dark_sky_pressure
+      - sensor.dark_sky_summary
       - sensor.denon_presence
       - sensor.edyta_to_home
       - sensor.maciek_to_home
@@ -106,6 +106,7 @@ logbook:
   exclude:
     entities:
       - sensor.dark_sky_pressure
+      - sensor.dark_sky_summary
       - sensor.denon_presence
       - sensor.edyta_to_home
       - sensor.maciek_to_home
@@ -126,9 +127,12 @@ logbook:
 
 sun:
 
+config:
+
 zwave:
   usb_path: /dev/ttyACM0
   config_path: /srv/homeassistant/homeassistant_venv/lib/python3.4/site-packages/libopenzwave-0.3.2-py3.4-linux-armv7l.egg/config
+  device_config: !include zwave_device_config.yaml
 
 mqtt:
   broker: !secret mqtt_broker_ip
@@ -136,6 +140,9 @@ mqtt:
   client_id: home-assistant-1
   username: !secret mqtt_username
   password: !secret mqtt_password
+
+climate:
+  platform: zwave
 
 xiaomi:
   gateways:
@@ -206,6 +213,9 @@ input_boolean:
   party_mode:
     name: Impreza
     icon: mdi:emoticon-cool
+  disco_mode:
+    name: Tryb disco
+    icon: mdi:music-note
   edyta_far_from_home:
   maciek_far_from_home:
   heating_away_mode:

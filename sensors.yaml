@@ -68,6 +68,37 @@
             {{ states.sensor.battery_thermostat_antresola.state }}
          {% endif %}
 
+      icon_template: >-
+         {% if states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level %}
+            {% if states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 10 %}
+               mdi:battery-outline
+            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 10) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 20) %}
+               mdi:battery-10
+            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 20) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 30) %}
+               mdi:battery-20
+            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 30) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 40) %}
+               mdi:battery-30
+            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 40) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 50) %}
+               mdi:battery-40
+            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 50) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 60) %}
+               mdi:battery-50
+            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 60) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 70) %}
+               mdi:battery-60
+            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 70) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 80) %}
+               mdi:battery-70
+            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 80) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 90) %}
+               mdi:battery-80
+            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 90) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 100) %}
+               mdi:battery-90
+            {% elif states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int == 100 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-unknown
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
     battery_thermostat_salon:
       friendly_name: termostat salon
       unit_of_measurement: '%'
@@ -77,6 +108,37 @@
             {{ states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level }}
          {% else %}
             {{ states.sensor.battery_thermostat_salon.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level %}
+            {% if states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 10 %}
+               mdi:battery-outline
+            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 10) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 20) %}
+               mdi:battery-10
+            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 20) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 30) %}
+               mdi:battery-20
+            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 30) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 40) %}
+               mdi:battery-30
+            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 40) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 50) %}
+               mdi:battery-40
+            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 50) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 60) %}
+               mdi:battery-50
+            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 60) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 70) %}
+               mdi:battery-60
+            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 70) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 80) %}
+               mdi:battery-70
+            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 80) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 90) %}
+               mdi:battery-80
+            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 90) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 100) %}
+               mdi:battery-90
+            {% elif states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int == 100 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-unknown
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
          {% endif %}
 
     battery_thermostat_kuchnia:
@@ -90,6 +152,37 @@
             {{ states.sensor.battery_thermostat_kuchnia.state }}
          {% endif %}
 
+      icon_template: >-
+         {% if states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level %}
+            {% if states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 10 %}
+               mdi:battery-outline
+            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 10) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 20) %}
+               mdi:battery-10
+            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 20) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 30) %}
+               mdi:battery-20
+            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 30) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 40) %}
+               mdi:battery-30
+            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 40) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 50) %}
+               mdi:battery-40
+            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 50) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 60) %}
+               mdi:battery-50
+            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 60) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 70) %}
+               mdi:battery-60
+            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 70) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 80) %}
+               mdi:battery-70
+            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 80) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 90) %}
+               mdi:battery-80
+            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 90) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 100) %}
+               mdi:battery-90
+            {% elif states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int == 100 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-unknown
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
     battery_thermostat_sypialnia:
       friendly_name: termostat sypialnia
       unit_of_measurement: '%'
@@ -101,6 +194,37 @@
             {{ states.sensor.battery_thermostat_sypialnia.state }}
          {% endif %}
 
+      icon_template: >-
+         {% if states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level %}
+            {% if states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 10 %}
+               mdi:battery-outline
+            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 10) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 20) %}
+               mdi:battery-10
+            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 20) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 30) %}
+               mdi:battery-20
+            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 30) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 40) %}
+               mdi:battery-30
+            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 40) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 50) %}
+               mdi:battery-40
+            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 50) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 60) %}
+               mdi:battery-50
+            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 60) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 70) %}
+               mdi:battery-60
+            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 70) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 80) %}
+               mdi:battery-70
+            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 80) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 90) %}
+               mdi:battery-80
+            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 90) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 100) %}
+               mdi:battery-90
+            {% elif states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int == 100 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-unknown
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
     battery_thermostat_antek:
       friendly_name: termostat pokój Antka
       unit_of_measurement: '%'
@@ -110,6 +234,37 @@
             {{ states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level }}
          {% else %}
             {{ states.sensor.battery_thermostat_antek.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level %}
+            {% if states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 10 %}
+               mdi:battery-outline
+            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 10) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 20) %}
+               mdi:battery-10
+            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 20) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 30) %}
+               mdi:battery-20
+            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 30) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 40) %}
+               mdi:battery-30
+            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 40) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 50) %}
+               mdi:battery-40
+            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 50) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 60) %}
+               mdi:battery-50
+            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 60) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 70) %}
+               mdi:battery-60
+            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 70) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 80) %}
+               mdi:battery-70
+            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 80) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 90) %}
+               mdi:battery-80
+            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 90) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 100) %}
+               mdi:battery-90
+            {% elif states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int == 100 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-unknown
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
          {% endif %}
 
     sunrise:
@@ -131,10 +286,81 @@
          {% endif %}
 
     dark_sky_pressure_hpa:
-      value_template: '{{ states.sensor.dark_sky_pressure.state }}'
+      value_template: >-
+         {% if states.sensor.dark_sky_pressure.state %}
+            {{ states.sensor.dark_sky_pressure.state }}
+         {% else %}
+            {{ states.sensor.dark_sky_pressure_hpa.state }}
+         {% endif %}
+
       friendly_name: Ciśnienie
       unit_of_measurement: 'hPa'
       entity_id: sensor.dark_sky_pressure
+
+    dark_sky_summary_mdi:
+      friendly_name: Warunki pogodowe
+      entity_id: sensor.dark_sky_summary
+      value_template: >-
+         {% if states.sensor.dark_sky_summary %}
+            {% if states.sensor.dark_sky_summary.state == 'Overcast' %}
+               pochmurno
+            {% elif states.sensor.dark_sky_summary.state == 'Drizzle' %}
+               mżawka
+            {% elif states.sensor.dark_sky_summary.state == 'Light Snow' %}
+               lekkie opady śniegu
+            {% elif states.sensor.dark_sky_summary.state == 'Flurries' %}
+               obfity deszcz
+            {% elif states.sensor.dark_sky_summary.state == 'Mostly Cloudy' %}
+               przewaga chmur
+            {% elif states.sensor.dark_sky_summary.state == 'Partly Cloudy' %}
+               częściowe zachmurzenie
+            {% elif states.sensor.dark_sky_summary.state == 'Clear' %}
+               bezchmurnie
+            {% elif states.sensor.dark_sky_summary.state == 'Breezy and Mostly Cloudy' %}
+               wietrznie i przewaga chmur
+            {% elif states.sensor.dark_sky_summary.state == 'Drizzle and Breezy' %}
+               wietrznie i mżawka
+            {% elif states.sensor.dark_sky_summary.state == 'Light Rain' %}
+               lekkie opady deszczu
+            {% elif states.sensor.dark_sky_summary.state == 'Snow' %}
+               opady śniegu
+            {% elif states.sensor.dark_sky_summary.state == 'Rain' %}
+               opady deszczu
+            {% else %}
+               {{ states.sensor.dark_sky_summary.state }}
+            {% endif %}
+         {% else %}
+            {{ states.sensor.dark_sky_summary_mdi.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.sensor.dark_sky_summary.attributes.entity_picture %}
+            {% if states.sensor.dark_sky_summary.attributes.entity_picture == '/static/images/darksky/weather-sunny.svg' %}
+               mdi:weather-sunny
+            {% elif states.sensor.dark_sky_summary.attributes.entity_picture == '/static/images/darksky/weather-night.svg' %}
+               mdi:weather-night
+            {% elif states.sensor.dark_sky_summary.attributes.entity_picture == '/static/images/darksky/weather-pouring.svg' %}
+               mdi:weather-pouring
+            {% elif states.sensor.dark_sky_summary.attributes.entity_picture == '/static/images/darksky/weather-snowy.svg' %}
+               mdi:weather-snowy
+            {% elif states.sensor.dark_sky_summary.attributes.entity_picture == '/static/images/darksky/weather-hail.svg' %}
+               mdi:weather-hail
+            {% elif states.sensor.dark_sky_summary.attributes.entity_picture == '/static/images/darksky/weather-windy.svg' %}
+               mdi:weather-windy
+            {% elif states.sensor.dark_sky_summary.attributes.entity_picture == 'static/images/darksky/weather-fog.svg' %}
+               mdi:weather-fog
+            {% elif states.sensor.dark_sky_summary.attributes.entity_picture == '/static/images/darksky/weather-cloudy.svg' %}
+               mdi:weather-cloudy
+            {% elif states.sensor.dark_sky_summary.attributes.entity_picture == '/static/images/darksky/weather-partlycloudy.svg' %}
+               mdi:weather-partlycloudy
+            {% elif states.sensor.dark_sky_summary.attributes.entity_picture == '/static/images/darksky/weather-cloudy.svg' %}
+               mdi:weather-cloudy
+            {% else %}
+               mdi:tag-text-outline
+            {% endif %}
+         {% else %}
+            mdi:tag-text-outline
+         {% endif %}
 
     edyta_presence:
       entity_id: device_tracker.pi_iphone,device_tracker.edyta,device_tracker.edyta_bt

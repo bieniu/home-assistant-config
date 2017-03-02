@@ -520,3 +520,30 @@
     entity_id: climate.salon_thermostat_heating_1_7_1
     data_template:
       temperature: '{{ trigger.to_state.attributes.temperature }}'
+
+#### LIGHT ####
+# włączenie trybu imprezoweg oświetlenia
+- alias: "Lights Disco Mode Begin"
+  trigger: 
+    platform: time
+    seconds: '/5'
+  condition: 
+    condition: state
+    entity_id: input_boolean.disco_mode
+    state: 'on'
+  action:
+    service: light.turn_on
+    entity_id: light.gateway_light_f0b429cc6f0b
+    data_template:
+      brightness: 60
+      rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
+
+- alias: "Lights Disco Mode End"
+  trigger: 
+    platform: state
+    entity_id: input_boolean.disco_mode
+    from: 'on'
+    to: 'off'
+  action:
+    service: light.turn_off
+    entity_id: light.gateway_light_f0b429cc6f0b

@@ -1,174 +1,166 @@
 #### LIGHTS ####
-- entity_id: light.gateway_light_f0b429cc6f0b
+light.gateway_light_f0b429cc6f0b:
   friendly_name: Lampka antresola
 
 #### RASPBERRY PI ####
-- entity_id: sensor.cpu_use
+sensor.cpu_use:
   friendly_name: 'Obciążenie CPU'
-- entity_id: sensor.ram_use
+sensor.ram_use:
   friendly_name: 'Zajęty RAM'
   icon: mdi:chip
-- entity_id: sensor.raspberry_disk_free
+sensor.raspberry_disk_free:
   icon: mdi:harddisk
-- entity_id: sensor.last_boot
+sensor.last_boot:
   friendly_name: 'Ostatni restart'
-- entity_id: sensor.raspberry_cpu_temp
+sensor.raspberry_cpu_temp:
   friendly_name: 'Temperatura CPU'
   icon: mdi:thermometer
 
 #### PEOPLES ####
-- entity_id: sensor.edyta_presence
+sensor.edyta_presence:
   entity_picture: /local/edyta.jpg
-- entity_id: sensor.maciek_presence
+sensor.maciek_presence:
   entity_picture: /local/maciek.jpg
 
 #### ZONES ####
-- entity_id: zone.home
+zone.home:
   icon: mdi:home-outline
 
 #### GROUPS ####
-- entity_id: group.family
+group.family:
   order: 4
-- entity_id: group.weather
+group.weather:
   order: 5
-- entity_id: group.lights
+group.lights:
   order: 6
-- entity_id: group.heating
+group.heating:
   order: 7
-- entity_id: group.media_player
+group.media_player:
   order: 8
-- entity_id: group.wire_devices
+group.wire_devices:
   order: 9
-- entity_id: group.wireless_devices
+group.wireless_devices:
   order: 10
-- entity_id: group.internet
+group.internet:
   order: 11
-- entity_id: group.raspberry
+group.raspberry:
   order: 12
 
 #### WEATHER ####
-- entity_id: sensor.dark_sky_summary
-  friendly_name: Warunki pogodowe
-  icon: mdi:tag-text-outline
-- entity_id: sensor.dark_sky_temperature
+sensor.dark_sky_temperature:
   friendly_name: Temperatura
-- entity_id: sensor.dark_sky_wind_speed
+sensor.dark_sky_wind_speed:
   friendly_name: Prędkość wiatru
-- entity_id: sensor.dark_sky_humidity
+sensor.dark_sky_humidity:
   friendly_name: Wilgotność
-- entity_id: sensor.dark_sky_pressure_hpa
+sensor.dark_sky_pressure_hpa:
   icon: mdi:gauge
-- entity_id: sensor.sunrise
+sensor.sunrise:
   friendly_name: Wschód słońca
   icon: mdi:weather-sunset-up
-- entity_id: sensor.sunset
+sensor.sunset:
   friendly_name: Zachód słońca
   icon: mdi:weather-sunset-down
-- entity_id: sun.sun
+sun.sun:
   friendly_name: Słońce
 
 #### SPEEDTEST ####
-- entity_id: sensor.speedtest_download
+sensor.speedtest_download:
   friendly_name: Prędkość pobierania
   icon: mdi:download
-- entity_id: sensor.speedtest_upload
+sensor.speedtest_upload:
   friendly_name: Prędkość wysyłania
   icon: mdi:upload
-- entity_id: sensor.speedtest_ping
+sensor.speedtest_ping:
   friendly_name: Ping
   icon: mdi:timer
 
 #### NETWORK DEVICES ####
-- entity_id: sensor.router_status
+sensor.router_status:
   icon: mdi:router-wireless
-- entity_id: sensor.synology_status
+sensor.synology_status:
   icon: mdi:server-network
-- entity_id: sensor.dune_status
+sensor.dune_status:
   icon: mdi:filmstrip
-- entity_id: sensor.raspberry_status
+sensor.raspberry_status:
   icon: mdi:raspberrypi
-- entity_id: switch.wake_on_lan_stacjonarny
+switch.wake_on_lan_stacjonarny:
   friendly_name: Komputer stacjonarny
   icon: mdi:desktop-tower
-- entity_id: sensor.switch_status
+sensor.switch_status:
   icon: mdi:switch
-- entity_id: sensor.xbox_status
+sensor.xbox_status:
   icon: mdi:xbox
-- entity_id: sensor.iphone_status
+sensor.iphone_status:
   icon: mdi:cellphone-iphone
-- entity_id: sensor.oneplus_status
+sensor.oneplus_status:
   icon: mdi:cellphone-android
-- entity_id: sensor.denon_status
+sensor.denon_status:
   icon: mdi:amplifier
-- entity_id: sensor.androidtv_status
+sensor.androidtv_status:
   icon: mdi:cast
-- entity_id: sensor.laptopedyta_status
+sensor.laptopedyta_status:
   icon: mdi:laptop
-- entity_id: sensor.laptop_status
+sensor.laptop_status:
   icon: mdi:laptop
-- entity_id: sensor.lumia_status
+sensor.lumia_status:
   icon: mdi:cellphone
-- entity_id: sensor.ipad_status
+sensor.ipad_status:
   icon: mdi:tablet-ipad
-- entity_id: sensor.ipadedyta_status
+sensor.ipadedyta_status:
   icon: mdi:tablet-ipad
-- entity_id: sensor.kindle_status
+sensor.kindle_status:
   icon: mdi:cellphone
-- entity_id: sensor.modem_status
+sensor.modem_status:
   icon: mdi:router-wireless
-- entity_id: sensor.migateway_status
+sensor.migateway_status:
   icon: mdi:router-wireless
 
 #### MEDIA PLAYERS ####
-- entity_id: media_player.androidtv
+media_player.androidtv:
   friendly_name: Android TV
-- entity_id: media_player.dunehd
+media_player.dunehd:
   friendly_name: Dune
 
 #### SCRIPTS ####
-- entity_id: script.restart_hass
+script.restart_hass:
   icon: mdi:refresh
-- entity_id: script.reboot_pi
+script.reboot_pi:
   icon: mdi:refresh
-- entity_id: script.fast_warm_up
+script.fast_warm_up:
   icon: mdi:clock-fast
-- entity_id: script.reboot_router
+script.reboot_router:
   icon: mdi:refresh
-- entity_id: script.shutdown_pi
+script.shutdown_pi:
   icon: mdi:power
 
  #### CLIMATE ####
-- entity_id: climate.antresola_thermostat_heating_1_2_1
+climate.antresola_thermostat_heating_1_2_1:
   friendly_name: Antresola
   icon: mdi:radiator
   max_temp: 28
   min_temp: 4
 
-- entity_id: climate.antek_thermostat_heating_1_3_1
+climate.antek_thermostat_heating_1_3_1:
   friendly_name: Pokój Antka
   icon: mdi:radiator
   max_temp: 28
   min_temp: 4
 
-- entity_id: climate.sypialnia_thermostat_heating_1_4_1
+climate.sypialnia_thermostat_heating_1_4_1:
   friendly_name: Sypialnia
   icon: mdi:radiator
   max_temp: 28
   min_temp: 4
 
-- entity_id: climate.salon_thermostat_heating_1_7_1
+climate.salon_thermostat_heating_1_7_1:
   friendly_name: Salon
   icon: mdi:radiator
   max_temp: 28
   min_temp: 4
 
-- entity_id: climate.kuchnia_thermostat_heating_1_5_1
+climate.kuchnia_thermostat_heating_1_5_1:
   friendly_name: Kuchnia
   icon: mdi:radiator
   max_temp: 28
   min_temp: 4
-
-#### BATTERIES ####
-- entity_id: sensor.battery_thermostat_*
-  icon: mdi:battery-50
-
