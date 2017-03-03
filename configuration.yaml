@@ -49,8 +49,26 @@ discovery:
 zeroconf:
 
 recorder:
-  purge_days: 7
+  purge_days: 5
   db_url: !secret mysql_db_url
+  exclude:
+    domains:
+      - automation
+      - updater
+    entities:
+      - sensor.dark_sky_pressure
+      - sensor.dark_sky_summary
+      - sensor.denon_presence
+      - sensor.edyta_to_home
+      - sensor.maciek_to_home
+      - sensor.cpu_use
+      - sensor.disk_free_
+      - sensor.last_boot
+      - sensor.ram_use
+      - sensor.raspberry_cpu_temp
+      - sensor.router_update
+      - sensor.synology_disk_used
+      - sun.sun
 
 logger:
 #  default: info
@@ -67,7 +85,6 @@ history:
   include:
     domains:
       - climate
-      - sun
       - sensor
     entities:
       - group.peoples
@@ -93,6 +110,7 @@ history:
       - sensor.battery_thermostat_salon
       - sensor.battery_thermostat_kuchnia
       - sensor.synology_disk_used
+      - sun.sun
 
 logbook:
   include:
