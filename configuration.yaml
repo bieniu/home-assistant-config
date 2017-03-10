@@ -45,6 +45,8 @@ http:
 updater:
 
 discovery:
+  ignore:
+    philips_hue
 
 zeroconf:
 
@@ -55,43 +57,46 @@ recorder:
     domains:
       - automation
       - updater
+      - sun
     entities:
       - sensor.dark_sky_pressure
       - sensor.dark_sky_summary
+      - sensor.dark_sky_precip_probability
+      - sensor.dark_sky_icon
       - sensor.denon_presence
       - sensor.edyta_to_home
       - sensor.maciek_to_home
-      - sensor.cpu_use
       - sensor.disk_free_
       - sensor.last_boot
-      - sensor.ram_use
-      - sensor.raspberry_cpu_temp
       - sensor.router_update
       - sensor.synology_disk_used
-      - sun.sun
 
 logger:
 #  default: info
   default: warning
   logs:
 #    homeassistant.components.notify: info
-    homeassistant.components.automation: info
+#    homeassistant.components.automation: info
 #    homeassistant.components.device_tracker: debug
 #    homeassistant.components.mqtt: debug
-    homeassistant.components.zwave: info
+#    homeassistant.components.zwave: info
     homeassistant.components.media_player: fatal
+#    homeassistant.custom_components.xiaomi: debug
 
 history:
   include:
     domains:
       - climate
       - sensor
+      - sun
     entities:
-      - group.peoples
+      group.peoples
   exclude:
     entities:
       - sensor.dark_sky_pressure
       - sensor.dark_sky_summary
+      - sensor.dark_sky_precip_probability
+      - sensor.dark_sky_icon
       - sensor.denon_presence
       - sensor.edyta_to_home
       - sensor.maciek_to_home
@@ -110,21 +115,20 @@ history:
       - sensor.battery_thermostat_salon
       - sensor.battery_thermostat_kuchnia
       - sensor.synology_disk_used
-      - sun.sun
 
 logbook:
   include:
     domains:
       - sensor
       - media_player
-      - sun
-      - updater
     entities:
-      - group.peoples
+      group.peoples
   exclude:
     entities:
       - sensor.dark_sky_pressure
       - sensor.dark_sky_summary
+      - sensor.dark_sky_precip_probability
+      - sensor.dark_sky_icon
       - sensor.denon_presence
       - sensor.edyta_to_home
       - sensor.maciek_to_home
@@ -234,6 +238,9 @@ input_boolean:
   disco_mode:
     name: Tryb disco
     icon: mdi:music-note
+  heating_airing:
+    name: Przewietrzanie
+    icon: mdi:weather-windy
   edyta_far_from_home:
   maciek_far_from_home:
   heating_away_mode:

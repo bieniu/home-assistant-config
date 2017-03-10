@@ -15,6 +15,9 @@ sensor.last_boot:
 sensor.raspberry_cpu_temp:
   friendly_name: 'Temperatura CPU'
   icon: mdi:thermometer
+#sensor.ha_database_size:
+#  friendly_name: 'Wielkość bazy danych HA'
+#  icon: mdi:database
 
 #### PEOPLES ####
 sensor.edyta_presence:
@@ -55,6 +58,9 @@ sensor.dark_sky_humidity:
   friendly_name: Wilgotność
 sensor.dark_sky_pressure_hpa:
   icon: mdi:gauge
+sensor.dark_sky_precip_probability:
+  icon: mdi:weather-pouring
+  friendly_name: Prawdopodobieństwo opadów
 sensor.sunrise:
   friendly_name: Wschód słońca
   icon: mdi:weather-sunset-up

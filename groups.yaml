@@ -34,6 +34,7 @@ weather:
     - sensor.dark_sky_humidity
     - sensor.dark_sky_pressure_hpa
     - sensor.dark_sky_wind_speed
+    - sensor.dark_sky_precip_probability
     - sun.sun
     - sensor.sunrise
     - sensor.sunset
@@ -48,6 +49,7 @@ heating:
     - climate.sypialnia_thermostat_heating_1_4_1
     - climate.antek_thermostat_heating_1_3_1
     - script.fast_warm_up
+    - input_boolean.heating_airing
     - input_boolean.party_mode
 
 family:
@@ -163,3 +165,4 @@ raspberry:
     - sensor.ram_use
     - sensor.raspberry_disk_free
     - sensor.last_boot
+#    - sensor.ha_database_size
