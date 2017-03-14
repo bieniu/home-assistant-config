@@ -69,37 +69,37 @@
     battery_thermostat_antresola:
       friendly_name: termostat antresola
       unit_of_measurement: '%'
-      entity_id: climate.antresola_thermostat_heating_1_2_1
+      entity_id: sensor.antresola_thermostat_battery_level_2_0
       value_template: >-
-         {% if states.climate.antresola_thermostat_heating_1_2_1 %}
-            {{ states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level }}
+         {% if states.sensor.antresola_thermostat_battery_level_2_0 %}
+            {{ states.sensor.antresola_thermostat_battery_level_2_0.state }}
          {% else %}
             {{ states.sensor.battery_thermostat_antresola.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level %}
-            {% if states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 10 %}
+         {% if states.sensor.antresola_thermostat_battery_level_2_0 %}
+            {% if states.sensor.antresola_thermostat_battery_level_2_0.state | int < 10 %}
                mdi:battery-outline
-            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 10) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 20) %}
+            {% elif (states.sensor.antresola_thermostat_battery_level_2_0.state | int >= 10) and (states.sensor.antresola_thermostat_battery_level_2_0.state | int < 20) %}
                mdi:battery-10
-            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 20) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 30) %}
+            {% elif (states.sensor.antresola_thermostat_battery_level_2_0.state | int >= 20) and (states.sensor.antresola_thermostat_battery_level_2_0.state | int < 30) %}
                mdi:battery-20
-            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 30) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 40) %}
+            {% elif (states.sensor.antresola_thermostat_battery_level_2_0.state | int >= 30) and (states.sensor.antresola_thermostat_battery_level_2_0.state | int < 40) %}
                mdi:battery-30
-            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 40) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 50) %}
+            {% elif (states.sensor.antresola_thermostat_battery_level_2_0.state | int >= 40) and (states.sensor.antresola_thermostat_battery_level_2_0.state | int < 50) %}
                mdi:battery-40
-            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 50) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 60) %}
+            {% elif (states.sensor.antresola_thermostat_battery_level_2_0.state | int >= 50) and (states.sensor.antresola_thermostat_battery_level_2_0.state | int < 60) %}
                mdi:battery-50
-            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 60) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 70) %}
+            {% elif (states.sensor.antresola_thermostat_battery_level_2_0.state | int >= 60) and (states.sensor.antresola_thermostat_battery_level_2_0.state | int < 70) %}
                mdi:battery-60
-            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 70) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 80) %}
+            {% elif (states.sensor.antresola_thermostat_battery_level_2_0.state | int >= 70) and (states.sensor.antresola_thermostat_battery_level_2_0.state | int < 80) %}
                mdi:battery-70
-            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 80) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 90) %}
+            {% elif (states.sensor.antresola_thermostat_battery_level_2_0.state | int >= 80) and (states.sensor.antresola_thermostat_battery_level_2_0.state | int < 90) %}
                mdi:battery-80
-            {% elif (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int >= 90) and (states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int < 100) %}
+            {% elif (states.sensor.antresola_thermostat_battery_level_2_0.state | int >= 90) and (states.sensor.antresola_thermostat_battery_level_2_0.state | int < 100) %}
                mdi:battery-90
-            {% elif states.climate.antresola_thermostat_heating_1_2_1.attributes.battery_level | int == 100 %}
+            {% elif states.sensor.antresola_thermostat_battery_level_2_0.state | int == 100 %}
                mdi:battery
             {% else %}
                mdi:battery-unknown
@@ -111,37 +111,37 @@
     battery_thermostat_salon:
       friendly_name: termostat salon
       unit_of_measurement: '%'
-      entity_id: climate.salon_thermostat_heating_1_7_1
+      entity_id: sensor.salon_thermostat_battery_level_7_0
       value_template: >-
-         {% if states.climate.salon_thermostat_heating_1_7_1 %}
-            {{ states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level }}
+         {% if states.sensor.salon_thermostat_battery_level_7_0 %}
+            {{ states.sensor.salon_thermostat_battery_level_7_0.state }}
          {% else %}
             {{ states.sensor.battery_thermostat_salon.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level %}
-            {% if states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 10 %}
+         {% if states.sensor.salon_thermostat_battery_level_7_0.state %}
+            {% if states.sensor.salon_thermostat_battery_level_7_0.state | int < 10 %}
                mdi:battery-outline
-            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 10) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 20) %}
+            {% elif (states.sensor.salon_thermostat_battery_level_7_0.state | int >= 10) and (states.sensor.salon_thermostat_battery_level_7_0.state | int < 20) %}
                mdi:battery-10
-            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 20) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 30) %}
+            {% elif (states.sensor.salon_thermostat_battery_level_7_0.state | int >= 20) and (states.sensor.salon_thermostat_battery_level_7_0.state | int < 30) %}
                mdi:battery-20
-            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 30) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 40) %}
+            {% elif (states.sensor.salon_thermostat_battery_level_7_0.state | int >= 30) and (states.sensor.salon_thermostat_battery_level_7_0.state | int < 40) %}
                mdi:battery-30
-            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 40) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 50) %}
+            {% elif (states.sensor.salon_thermostat_battery_level_7_0.state | int >= 40) and (states.sensor.salon_thermostat_battery_level_7_0.state | int < 50) %}
                mdi:battery-40
-            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 50) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 60) %}
+            {% elif (states.sensor.salon_thermostat_battery_level_7_0.state | int >= 50) and (states.sensor.salon_thermostat_battery_level_7_0.state | int < 60) %}
                mdi:battery-50
-            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 60) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 70) %}
+            {% elif (states.sensor.salon_thermostat_battery_level_7_0.state | int >= 60) and (states.sensor.salon_thermostat_battery_level_7_0.state | int < 70) %}
                mdi:battery-60
-            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 70) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 80) %}
+            {% elif (states.sensor.salon_thermostat_battery_level_7_0.state | int >= 70) and (states.sensor.salon_thermostat_battery_level_7_0.state | int < 80) %}
                mdi:battery-70
-            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 80) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 90) %}
+            {% elif (states.sensor.salon_thermostat_battery_level_7_0.state | int >= 80) and (states.sensor.salon_thermostat_battery_level_7_0.state | int < 90) %}
                mdi:battery-80
-            {% elif (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int >= 90) and (states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int < 100) %}
+            {% elif (states.sensor.salon_thermostat_battery_level_7_0.state | int >= 90) and (states.sensor.salon_thermostat_battery_level_7_0.state | int < 100) %}
                mdi:battery-90
-            {% elif states.climate.salon_thermostat_heating_1_7_1.attributes.battery_level | int == 100 %}
+            {% elif states.sensor.salon_thermostat_battery_level_7_0.state | int == 100 %}
                mdi:battery
             {% else %}
                mdi:battery-unknown
@@ -153,37 +153,37 @@
     battery_thermostat_kuchnia:
       friendly_name: termostat kuchnia
       unit_of_measurement: '%'
-      entity_id: climate.kuchnia_thermostat_heating_1_5_1
+      entity_id: sensor.kuchnia_thermostat_battery_level_5_0
       value_template: >-
-         {% if states.climate.kuchnia_thermostat_heating_1_5_1 %}
-            {{ states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level }}
+         {% if states.sensor.kuchnia_thermostat_battery_level_5_0 %}
+            {{ states.sensor.kuchnia_thermostat_battery_level_5_0.state }}
          {% else %}
             {{ states.sensor.battery_thermostat_kuchnia.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level %}
-            {% if states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 10 %}
+         {% if states.sensor.kuchnia_thermostat_battery_level_5_0 %}
+            {% if states.sensor.kuchnia_thermostat_battery_level_5_0.state | int < 10 %}
                mdi:battery-outline
-            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 10) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 20) %}
+            {% elif (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int >= 10) and (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int < 20) %}
                mdi:battery-10
-            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 20) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 30) %}
+            {% elif (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int >= 20) and (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int < 30) %}
                mdi:battery-20
-            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 30) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 40) %}
+            {% elif (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int >= 30) and (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int < 40) %}
                mdi:battery-30
-            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 40) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 50) %}
+            {% elif (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int >= 40) and (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int < 50) %}
                mdi:battery-40
-            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 50) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 60) %}
+            {% elif (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int >= 50) and (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int < 60) %}
                mdi:battery-50
-            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 60) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 70) %}
+            {% elif (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int >= 60) and (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int < 70) %}
                mdi:battery-60
-            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 70) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 80) %}
+            {% elif (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int >= 70) and (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int < 80) %}
                mdi:battery-70
-            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 80) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 90) %}
+            {% elif (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int >= 80) and (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int < 90) %}
                mdi:battery-80
-            {% elif (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int >= 90) and (states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int < 100) %}
+            {% elif (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int >= 90) and (states.sensor.kuchnia_thermostat_battery_level_5_0.state | int < 100) %}
                mdi:battery-90
-            {% elif states.climate.kuchnia_thermostat_heating_1_5_1.attributes.battery_level | int == 100 %}
+            {% elif states.sensor.kuchnia_thermostat_battery_level_5_0.state | int == 100 %}
                mdi:battery
             {% else %}
                mdi:battery-unknown
@@ -195,37 +195,37 @@
     battery_thermostat_sypialnia:
       friendly_name: termostat sypialnia
       unit_of_measurement: '%'
-      entity_id: climate.sypialnia_thermostat_heating_1_4_1
+      entity_id: sensor.sypialnia_thermostat_battery_level_4_0
       value_template: >-
-         {% if states.climate.sypialnia_thermostat_heating_1_4_1 %}
-            {{ states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level }}
+         {% if states.sensor.sypialnia_thermostat_battery_level_4_0 %}
+            {{ states.sensor.sypialnia_thermostat_battery_level_4_0.state }}
          {% else %}
             {{ states.sensor.battery_thermostat_sypialnia.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level %}
-            {% if states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 10 %}
+         {% if states.sensor.sypialnia_thermostat_battery_level_4_0 %}
+            {% if states.sensor.sypialnia_thermostat_battery_level_4_0.state | int < 10 %}
                mdi:battery-outline
-            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 10) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 20) %}
+            {% elif (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int >= 10) and (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int < 20) %}
                mdi:battery-10
-            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 20) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 30) %}
+            {% elif (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int >= 20) and (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int < 30) %}
                mdi:battery-20
-            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 30) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 40) %}
+            {% elif (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int >= 30) and (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int < 40) %}
                mdi:battery-30
-            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 40) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 50) %}
+            {% elif (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int >= 40) and (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int < 50) %}
                mdi:battery-40
-            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 50) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 60) %}
+            {% elif (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int >= 50) and (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int < 60) %}
                mdi:battery-50
-            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 60) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 70) %}
+            {% elif (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int >= 60) and (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int < 70) %}
                mdi:battery-60
-            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 70) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 80) %}
+            {% elif (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int >= 70) and (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int < 80) %}
                mdi:battery-70
-            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 80) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 90) %}
+            {% elif (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int >= 80) and (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int < 90) %}
                mdi:battery-80
-            {% elif (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int >= 90) and (states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int < 100) %}
+            {% elif (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int >= 90) and (states.sensor.sypialnia_thermostat_battery_level_4_0.state | int < 100) %}
                mdi:battery-90
-            {% elif states.climate.sypialnia_thermostat_heating_1_4_1.attributes.battery_level | int == 100 %}
+            {% elif states.sensor.sypialnia_thermostat_battery_level_4_0.state | int == 100 %}
                mdi:battery
             {% else %}
                mdi:battery-unknown
@@ -237,37 +237,37 @@
     battery_thermostat_antek:
       friendly_name: termostat pokój Antka
       unit_of_measurement: '%'
-      entity_id: climate.antek_thermostat_heating_1_3_1
+      entity_id: sensor.antek_thermostat_battery_level_3_0
       value_template: >-
-         {% if states.climate.antek_thermostat_heating_1_3_1 %}
-            {{ states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level }}
+         {% if states.sensor.antek_thermostat_battery_level_3_0 %}
+            {{ states.sensor.antek_thermostat_battery_level_3_0.state }}
          {% else %}
             {{ states.sensor.battery_thermostat_antek.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level %}
-            {% if states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 10 %}
+         {% if states.sensor.antek_thermostat_battery_level_3_0 %}
+            {% if states.sensor.antek_thermostat_battery_level_3_0.state | int < 10 %}
                mdi:battery-outline
-            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 10) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 20) %}
+            {% elif (states.sensor.antek_thermostat_battery_level_3_0.state | int >= 10) and (states.sensor.antek_thermostat_battery_level_3_0.state | int < 20) %}
                mdi:battery-10
-            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 20) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 30) %}
+            {% elif (states.sensor.antek_thermostat_battery_level_3_0.state | int >= 20) and (states.sensor.antek_thermostat_battery_level_3_0.state | int < 30) %}
                mdi:battery-20
-            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 30) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 40) %}
+            {% elif (states.sensor.antek_thermostat_battery_level_3_0.state | int >= 30) and (states.sensor.antek_thermostat_battery_level_3_0.state | int < 40) %}
                mdi:battery-30
-            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 40) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 50) %}
+            {% elif (states.sensor.antek_thermostat_battery_level_3_0.state | int >= 40) and (states.sensor.antek_thermostat_battery_level_3_0.state | int < 50) %}
                mdi:battery-40
-            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 50) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 60) %}
+            {% elif (states.sensor.antek_thermostat_battery_level_3_0.state | int >= 50) and (states.sensor.antek_thermostat_battery_level_3_0.state | int < 60) %}
                mdi:battery-50
-            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 60) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 70) %}
+            {% elif (states.sensor.antek_thermostat_battery_level_3_0.state | int >= 60) and (states.sensor.antek_thermostat_battery_level_3_0.state | int < 70) %}
                mdi:battery-60
-            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 70) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 80) %}
+            {% elif (states.sensor.antek_thermostat_battery_level_3_0.state | int >= 70) and (states.sensor.antek_thermostat_battery_level_3_0.state | int < 80) %}
                mdi:battery-70
-            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 80) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 90) %}
+            {% elif (states.sensor.antek_thermostat_battery_level_3_0.state | int >= 80) and (states.sensor.antek_thermostat_battery_level_3_0.state | int < 90) %}
                mdi:battery-80
-            {% elif (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int >= 90) and (states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int < 100) %}
+            {% elif (states.sensor.antek_thermostat_battery_level_3_0.state | int >= 90) and (states.sensor.antek_thermostat_battery_level_3_0.state | int < 100) %}
                mdi:battery-90
-            {% elif states.climate.antek_thermostat_heating_1_3_1.attributes.battery_level | int == 100 %}
+            {% elif states.sensor.antek_thermostat_battery_level_3_0.state | int == 100 %}
                mdi:battery
             {% else %}
                mdi:battery-unknown

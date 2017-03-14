@@ -70,13 +70,18 @@ recorder:
       - sensor.last_boot
       - sensor.router_update
       - sensor.synology_disk_used
+      - sensor.antresola_thermostat_battery_level_2_0
+      - sensor.kuchnia_thermostat_battery_level_5_0
+      - sensor.salon_thermostat_battery_level_7_0
+      - sensor.sypialnia_thermostat_battery_level_4_0
+      - sensor.antek_thermostat_battery_level_3_0
 
 logger:
 #  default: info
   default: warning
   logs:
 #    homeassistant.components.notify: info
-#    homeassistant.components.automation: info
+    homeassistant.components.automation: info
 #    homeassistant.components.device_tracker: debug
 #    homeassistant.components.mqtt: debug
 #    homeassistant.components.zwave: info
@@ -115,6 +120,11 @@ history:
       - sensor.battery_thermostat_salon
       - sensor.battery_thermostat_kuchnia
       - sensor.synology_disk_used
+      - sensor.antresola_thermostat_battery_level_2_0
+      - sensor.kuchnia_thermostat_battery_level_5_0
+      - sensor.salon_thermostat_battery_level_7_0
+      - sensor.sypialnia_thermostat_battery_level_4_0
+      - sensor.antek_thermostat_battery_level_3_0
 
 logbook:
   include:
@@ -146,6 +156,11 @@ logbook:
       - sensor.battery_thermostat_salon
       - sensor.battery_thermostat_kuchnia
       - sensor.synology_disk_used
+      - sensor.antresola_thermostat_battery_level_2_0
+      - sensor.kuchnia_thermostat_battery_level_5_0
+      - sensor.salon_thermostat_battery_level_7_0
+      - sensor.sypialnia_thermostat_battery_level_4_0
+      - sensor.antek_thermostat_battery_level_3_0
 
 sun:
 
