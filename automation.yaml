@@ -605,12 +605,25 @@
     entity_id: input_boolean.disco_mode
     state: 'on'
   action:
-    service: light.turn_on
-    entity_id: light.gateway_light_f0b429cc6f0b
-    data_template:
-      brightness: 60
-      rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
-
+    - service: light.turn_on
+      entity_id: light.gateway_light_f0b429cc6f0b
+      data_template:
+        brightness: 60
+        rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
+    - condition: state
+      entity_id: group.bulbs_salon
+      state: 'on'
+    - service: light.turn_on
+      entity_id: light.yeelight_color_bulb_salon_1
+      data_template:
+        brightness: 60
+        rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
+    - service: light.turn_on
+      entity_id: light.yeelight_color_bulb_salon_2
+      data_template:
+        brightness: 60
+        rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
+      
 - alias: "Lights Disco Mode End"
   trigger: 
     platform: state
@@ -618,5 +631,28 @@
     from: 'on'
     to: 'off'
   action:
-    service: light.turn_off
-    entity_id: light.gateway_light_f0b429cc6f0b
+    - service: light.turn_off
+      entity_id: light.gateway_light_f0b429cc6f0b
+    - condition: state
+      entity_id: group.bulbs_salon
+      state: 'on'
+    - service: light.turn_on
+      entity_id: group.bulbs_salon
+      data:
+        brightness: 210
+        rgb_color: [255,68,0]
+        color_temp: 329
+
+- alias: "Lights Set Parameters to Salon Bulbs"
+  trigger: 
+    platform: state
+    entity_id: group.bulbs_salon
+    from: 'unknown'
+    to: 'on'
+  action:
+    - service: light.turn_on
+      entity_id: group.bulbs_salon
+      data:
+        brightness: 210
+        rgb_color: [255,68,0]
+        color_temp: 329

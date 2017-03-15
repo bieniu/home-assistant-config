@@ -55,6 +55,42 @@
 
 - platform: template
   sensors:
+    temperature_salon:
+      entity_id: sensor.temperature_158d00010fb340
+      friendly_name: Temperatura salon
+      unit_of_measurement: '°C'
+      value_template: '{{ states.sensor.temperature_158d00010fb340.state | round(1) }}'
+
+    humidity_salon:
+      entity_id: sensor.humidity_158d00010fb340
+      friendly_name: Wilgotność salon
+      unit_of_measurement: '%'
+      value_template: '{{ states.sensor.humidity_158d00010fb340.state | round(0) }}'
+
+    temperature_sypialnia:
+      entity_id: sensor.temperature_158d0001100416
+      friendly_name: Temperatura sypialnia
+      unit_of_measurement: '°C'
+      value_template: '{{ states.sensor.temperature_158d0001100416.state | round(1) }}'
+
+    humidity_sypialnia:
+      entity_id: sensor.humidity_158d0001100416
+      friendly_name: Wilgotność sypialnia
+      unit_of_measurement: '%'
+      value_template: '{{ states.sensor.humidity_158d0001100416.state | round(0) }}'
+
+    temperature_pokoj_antek:
+      entity_id: sensor.temperature_158d00010fb2cd
+      friendly_name: Temperatura pokój Antka
+      unit_of_measurement: '°C'
+      value_template: '{{ states.sensor.temperature_158d00010fb2cd.state | round(1) }}'
+
+    humidity_pokoj_antek:
+      entity_id: sensor.humidity_158d00010fb2cd
+      friendly_name: Wilgotność pokój Antka
+      unit_of_measurement: '%'
+      value_template: '{{ states.sensor.humidity_158d00010fb2cd.state | round(0) }}'
+
     raspberry_disk_free:
       friendly_name: Wolne miejsce
       unit_of_measurement: 'GB'
@@ -478,7 +514,7 @@
 
     androidtv_status:
       friendly_name: Xiaomi Mi Box
-      entity_id:
+      entity_id: 
         - device_tracker.androidtv
         - media_player.androidtv
       value_template: >-

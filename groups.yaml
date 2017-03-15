@@ -5,6 +5,7 @@ default_view:
   entities:
     - group.family
     - group.weather
+    - group.temp_and_humidity
     - group.lights
     - group.heating
     - group.media_players
@@ -38,6 +39,25 @@ weather:
     - sun.sun
     - sensor.sunrise
     - sensor.sunset
+
+temp and humidity:
+  name: Temperatura i wilgotność
+  control: hidden
+  entities:
+    - sensor.temperature_salon
+    - sensor.humidity_salon
+    - sensor.temperature_sypialnia
+    - sensor.humidity_sypialnia
+    - sensor.temperature_pokoj_antek
+    - sensor.humidity_pokoj_antek
+
+lights:
+  name: Oświetlenie
+  control: hidden
+  entities:
+    - group.bulbs_salon
+    - light.gateway_light_f0b429cc6f0b
+    - input_boolean.disco_mode
 
 heating:
   name: Ogrzewanie
@@ -115,14 +135,7 @@ internet:
     - sensor.speedtest_upload
     - sensor.speedtest_ping
 
-lights:
-  name: Oświetlenie
-  control: hidden
-  entities:
-    - light.gateway_light_f0b429cc6f0b
-    - input_boolean.disco_mode
-
-heating_settings:
+heating settings:
   name: Ustawienia ogrzewania
   control: hidden
   entities:
@@ -166,3 +179,11 @@ raspberry:
     - sensor.raspberry_disk_free
     - sensor.last_boot
 #    - sensor.ha_database_size
+
+bulbs salon:
+  name: Żarówki salon
+  icon: mdi:lightbulb
+  control: hidden
+  entities:
+    - light.yeelight_color_bulb_salon_1
+    - light.yeelight_color_bulb_salon_2

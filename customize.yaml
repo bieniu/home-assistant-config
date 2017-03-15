@@ -1,6 +1,24 @@
+#### TEMP & HUMIDITY SENSORS ####
+sansor.temperature_salon:
+  icon: mdi:thermometer
+sensor.humidity_salon:
+  icon: mdi:water-percent
+sansor.temperature_sypialnia:
+  icon: mdi:thermometer
+sensor.humidity_sypialnia:
+  icon: mdi:water-percent
+sansor.temperature_pokoj_antek:
+  icon: mdi:thermometer
+sensor.humidity_pokoj_antek:
+  icon: mdi:water-percent
+
 #### LIGHTS ####
 light.gateway_light_f0b429cc6f0b:
   friendly_name: Lampka antresola
+light.yeelight_color_bulb_salon_1:
+  friendly_name: Żarówka salon 1
+light.yeelight_color_bulb_salon_2:
+  friendly_name: Żarówka salon 2
 
 #### RASPBERRY PI ####
 sensor.cpu_use:
@@ -34,20 +52,28 @@ group.family:
   order: 4
 group.weather:
   order: 5
-group.lights:
+group.temp_and_humidity:
   order: 6
 group.heating:
   order: 7
-group.media_player:
+group.lights:
   order: 8
-group.wire_devices:
+group.media_players:
   order: 9
-group.wireless_devices:
+group.wire_devices:
   order: 10
-group.internet:
+group.wireless_devices:
   order: 11
-group.raspberry:
+group.internet:
   order: 12
+group.raspberry:
+  order: 13
+group.heating_settings:
+  order: 14
+group.scripts:
+  order: 15
+group.batteries:
+  order: 16
 
 #### WEATHER ####
 sensor.dark_sky_temperature:
@@ -140,7 +166,7 @@ script.reboot_router:
 script.shutdown_pi:
   icon: mdi:power
 
- #### CLIMATE ####
+#### CLIMATE ####
 climate.antresola_thermostat_heating_1_2_1:
   friendly_name: Antresola
   icon: mdi:radiator
@@ -170,3 +196,22 @@ climate.kuchnia_thermostat_heating_1_5_1:
   icon: mdi:radiator
   max_temp: 28
   min_temp: 4
+
+#### XIAOMI SENSORS ####
+sensor.temperature_158d00010fb340:
+  friendly_name: Temperatura salon
+
+sensor.temperature_158d0001100416:
+  friendly_name: Temperatura sypialnia
+
+sensor.temperature_158d00010fb2cd:
+  friendly_name: Temperatura pokój Antka
+
+sensor.humidity_158d00010fb340:
+  friendly_name: Wilgotność salon
+
+sensor.humidity_158d0001100416:
+  friendly_name: Wilgotność sypialnia
+
+sensor.humidity_158d00010fb2cd:
+  friendly_name: Wilgotność pokój Antka
