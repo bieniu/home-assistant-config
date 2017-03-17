@@ -1,0 +1,39 @@
+- name: standard
+  entities:
+    group.bulbs_salon:
+      state: on
+      transition: 5
+      brightness: 255
+      color_temp: 280
+
+- name: evening
+  entities:
+    group.bulbs_salon:
+      state: on
+      transition: 5
+      brightness: 90
+      color_temp: 340
+
+- name: cinema
+  entities:
+    group.bulbs_salon:
+      state: on
+      transition: 5
+      brightness: 255
+      rgb_color: [0,0,255]
+
+- name: romantic
+  entities:
+    group.bulbs_salon:
+      state: on
+      transition: 5
+      brightness: 255
+      rgb_color: [200,0,40]
+
+- name: violet
+  entities:
+    group.bulbs_salon:
+      state: on
+      transition: 5
+      brightness: 255
+      rgb_color: [255,0,255]

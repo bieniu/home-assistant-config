@@ -31,6 +31,7 @@ sensor: !include sensors.yaml
 group: !include groups.yaml
 automation: !include automation.yaml
 script: !include scripts.yaml
+scene: !include scenes.yaml
 
 frontend:
 
@@ -51,7 +52,7 @@ discovery:
 zeroconf:
 
 recorder:
-  purge_days: 3
+  purge_days: 2
   db_url: !secret mysql_db_url
   exclude:
     domains:
@@ -77,7 +78,7 @@ recorder:
       - sensor.antek_thermostat_battery_level_3_0
 
 logger:
-#  default: info
+#  default: debug
   default: warning
   logs:
 #    homeassistant.components.notify: info
@@ -87,6 +88,7 @@ logger:
 #    homeassistant.components.zwave: info
     DenonAVR: fatal
     pychromecast: fatal
+#    yeelight: debug
 
 history:
   include:
@@ -282,13 +284,13 @@ input_select:  !include input_select.yaml
 light:
   platform: yeelight
   devices:
-    192.168.1.10:
+    192.168.1.240:
       name: yeelight color bulb salon 1
       transition: 1000
-      use_music_mode: True
-      save_on_change: False
-    192.168.1.11:
+      use_music_mode: False
+      save_on_change: True
+    192.168.1.250:
       name: yeelight color bulb salon 2
       transition: 1000
-      use_music_mode: True
-      save_on_change: False
+      use_music_mode: False
+      save_on_change: True

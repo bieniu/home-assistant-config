@@ -123,3 +123,14 @@ heating_temp_eco:
     - '19'
     - '20'
   icon: mdi:temperature-celsius
+
+light_scenes_salon:
+  name: Tryb oświetlenia salon
+  options:
+    - ''
+    - 'standard'
+    - 'wieczór'
+    - 'kino'
+    - 'romantic'
+    - 'fiolet'
+  icon: mdi:palette

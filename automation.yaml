@@ -469,6 +469,7 @@
   trigger:
     platform: sun
     event: sunset
+    offset: "-00:60:00"
   condition:
     condition: and
     conditions:
@@ -605,6 +606,10 @@
     entity_id: input_boolean.disco_mode
     state: 'on'
   action:
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.light_scenes_salon
+        option: ''
     - service: light.turn_on
       entity_id: light.gateway_light_f0b429cc6f0b
       data_template:
@@ -616,11 +621,13 @@
     - service: light.turn_on
       entity_id: light.yeelight_color_bulb_salon_1
       data_template:
+        transition: 4
         brightness: 60
         rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
     - service: light.turn_on
       entity_id: light.yeelight_color_bulb_salon_2
       data_template:
+        transition: 4
         brightness: 60
         rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
       
@@ -636,23 +643,52 @@
     - condition: state
       entity_id: group.bulbs_salon
       state: 'on'
-    - service: light.turn_on
-      entity_id: group.bulbs_salon
+    - service: input_select.select_option
       data:
-        brightness: 210
-        rgb_color: [255,68,0]
-        color_temp: 329
+        entity_id: input_select.light_scenes_salon
+        option: 'standard'
 
-- alias: "Lights Set Parameters to Salon Bulbs"
-  trigger: 
+- alias: "Light Scene Standard"
+  trigger:
     platform: state
-    entity_id: group.bulbs_salon
-    from: 'unknown'
-    to: 'on'
+    entity_id: input_select.light_scenes_salon
+    to: 'standard'
   action:
-    - service: light.turn_on
-      entity_id: group.bulbs_salon
-      data:
-        brightness: 210
-        rgb_color: [255,68,0]
-        color_temp: 329
+    service: script.turn_on
+    entity_id: script.light_scene_salon_standard
+
+- alias: "Light Scene Evening"
+  trigger:
+    platform: state
+    entity_id: input_select.light_scenes_salon
+    to: 'wieczór'
+  action:
+    service: script.turn_on
+    entity_id: script.light_scene_salon_evening
+
+- alias: "Light Scene Cinema"
+  trigger:
+    platform: state
+    entity_id: input_select.light_scenes_salon
+    to: 'kino'
+  action:
+    service: script.turn_on
+    entity_id: script.light_scene_salon_cinema
+
+- alias: "Light Scene Romantic"
+  trigger:
+    platform: state
+    entity_id: input_select.light_scenes_salon
+    to: 'romantic'
+  action:
+    service: script.turn_on
+    entity_id: script.light_scene_salon_romantic
+
+- alias: "Light Scene Violet"
+  trigger:
+    platform: state
+    entity_id: input_select.light_scenes_salon
+    to: 'fiolet'
+  action:
+    service: script.turn_on
+    entity_id: script.light_scene_salon_violet

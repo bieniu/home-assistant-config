@@ -56,6 +56,7 @@ lights:
   control: hidden
   entities:
     - group.bulbs_salon
+    - input_select.light_scenes_salon
     - light.gateway_light_f0b429cc6f0b
     - input_boolean.disco_mode
 
@@ -110,8 +111,8 @@ wire devices:
 wireless devices:
   name: Urządzenia bezprzewodowe
   entities:
-    - sensor.androidtv_status
     - sensor.migateway_status
+    - sensor.androidtv_status
     - sensor.laptop_status
     - sensor.laptopedyta_status
     - sensor.oneplus_status
