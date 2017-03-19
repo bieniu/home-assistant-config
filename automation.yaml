@@ -692,3 +692,15 @@
   action:
     service: script.turn_on
     entity_id: script.light_scene_salon_violet
+
+- alias: "Set Standard Scene At Turning On Salon Bulbs"
+  trigger:
+    platform: state
+    entity_id: group.bulbs_salon
+    from: 'off'
+    to: 'on'
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.light_scenes_salon
+      option: 'standard'
