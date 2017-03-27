@@ -1,6 +1,6 @@
 #### NOTIFICATIONS ####
 # powiadomienie o dostępnej aktualizacji
-- alias: Update Available Notification
+- alias: Notification Update Available
   trigger:
     platform: state
     entity_id: updater.updater
@@ -15,7 +15,7 @@
         url: "{{ states.updater.updater.attributes.release_notes }}"
 
 # powiadomienie o dostępnej aktualizacji dla routera
-- alias: Router Update Available Notification
+- alias: Notification Router Update Available
   trigger:
     platform: state
     entity_id: sensor.router_update
@@ -30,7 +30,7 @@
         url: "https://asuswrt.lostrealm.ca/changelog"
 
 # powiadomienia o małej ilości miejsca na Synology
-- alias: Low Disk Space On Synology Notification
+- alias: Notification Low Disk Space On Synology
   trigger:
     platform: numeric_state
     entity_id: sensor.synology_disk_used
@@ -46,7 +46,7 @@
         url: !secret synology_http
 
 # powiadomienie o wykryciu nowego urządzenia
-- alias: New Device Notification
+- alias: Notification New Device
   trigger:
     platform: event
     event_type: device_tracker_new_device
@@ -60,7 +60,7 @@
         tag: 'notification-new-device'
 
 # niski poziom baterii
-- alias: 'Low Battery Alert'
+- alias: Notification Low Battery
   trigger:
     platform: time
     after: '18:00:00'
@@ -376,7 +376,7 @@
       entity_id: input_boolean.heating_away_mode
 
 # włączenie ogrzewania 30 minut przed powrotem do domu w dzień gdy jest sezon grzewczy
-- alias: Turn On Heating Before Return To Home
+- alias: Heating Turn On Before Return To Home
   trigger:
     platform: template
     value_template: "{{ ((states.sensor.maciek_to_home.state != 'unknown') and (states.sensor.edyta_to_home.state != 'unknown')) and ((states.sensor.maciek_to_home.state | int < 30) or (states.sensor.edyta_to_home.state | int < 30)) }}"
@@ -432,10 +432,6 @@
       data:
         temperature: 8
     - service: climate.set_temperature
-      entity_id: climate.kuchnia_thermostat_heating_1_5_1
-      data:
-        temperature: 8
-    - service: climate.set_temperature
       entity_id: climate.antek_thermostat_heating_1_3_1
       data:
         temperature: 8
@@ -469,7 +465,6 @@
   trigger:
     platform: sun
     event: sunset
-    offset: "-00:60:00"
   condition:
     condition: and
     conditions:
@@ -481,7 +476,7 @@
         state: 'on'
   action:
     service: input_boolean.turn_off
-    entity_id: input_boolean.airing
+    entity_id: input_boolean.heating_airing
 
 # początek sezonu grzewczego
 - alias: Heating Season Begin
@@ -548,7 +543,7 @@
         - automation.kuchnia_thermostat_setpoint_change
 
 # ustawia w kuchni temperaturę z salonu
-- alias: "Salon Thermostat SetPoint Change"
+- alias: "Heating Salon Thermostat SetPoint Change"
   trigger:
     platform: state
     entity_id: climate.salon_thermostat_heating_1_7_1
@@ -572,7 +567,7 @@
       temperature: '{{ trigger.to_state.attributes.temperature }}'
 
 # ustawia w salonie temperaturę z kuchni
-- alias: "Kuchnia Thermostat SetPoint Change"
+- alias: "Heating Kuchnia Thermostat SetPoint Change"
   trigger:
     platform: state
     entity_id: climate.kuchnia_thermostat_heating_1_5_1
@@ -597,7 +592,7 @@
 
 #### LIGHT ####
 # włączenie trybu imprezoweg oświetlenia
-- alias: "Lights Disco Mode Begin"
+- alias: "Light Disco Mode Begin"
   trigger: 
     platform: time
     seconds: '/5'
@@ -631,7 +626,7 @@
         brightness: 60
         rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
       
-- alias: "Lights Disco Mode End"
+- alias: "Light Disco Mode End"
   trigger: 
     platform: state
     entity_id: input_boolean.disco_mode
@@ -679,7 +674,7 @@
   trigger:
     platform: state
     entity_id: input_select.light_scenes_salon
-    to: 'romantic'
+    to: 'romantyczny'
   action:
     service: script.turn_on
     entity_id: script.light_scene_salon_romantic
@@ -693,14 +688,29 @@
     service: script.turn_on
     entity_id: script.light_scene_salon_violet
 
-- alias: "Set Standard Scene At Turning On Salon Bulbs"
+- alias: "Light Set Standard Scene At Turning On Salon Bulbs"
   trigger:
     platform: state
     entity_id: group.bulbs_salon
-    from: 'off'
-    to: 'on'
+    state: 'on'
   action:
-    service: input_select.select_option
-    data:
-      entity_id: input_select.light_scenes_salon
-      option: 'standard'
+    - service: input_select.select_option
+      data:
+        entity_id: input_select.light_scenes_salon
+        option: 'standard'
+    - service: homeassistant.turn_on
+      entity_id: group.bulbs_salon
+      data_template:
+        transition: 5
+        brightness: 255
+        color_temp: 280
+
+#### OTHERS ####
+- alias: Log Level
+  trigger:
+    platform: state
+    entity_id: input_select.log_level
+  action:
+    service: logger.set_level
+    data_template:
+      homeassistant.components: "{{ trigger.to_state.state }}"

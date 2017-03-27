@@ -30,13 +30,13 @@ misc:
 weather:
   name: Pogoda
   entities:
-    - sensor.dark_sky_summary_mdi
+    - sensor.dark_sky_summary_custom
     - sensor.dark_sky_temperature
-    - sensor.dark_sky_humidity
-    - sensor.dark_sky_pressure_hpa
+    - sensor.dark_sky_humidity_custom
+    - sensor.dark_sky_pressure_custom
     - sensor.dark_sky_wind_speed
-    - sensor.dark_sky_precip_probability
-    - sun.sun
+    - sensor.dark_sky_precip_probability_custom
+    - sensor.sun_custom
     - sensor.sunrise
     - sensor.sunset
 
@@ -154,13 +154,14 @@ heating settings:
     - input_select.heating_night_end_weekend
 
 scripts:
-  name: Skrypty
+  name: Skrypty i ustawienia
   control: hidden
   entities:
     - script.restart_hass
     - script.reboot_pi
     - script.shutdown_pi
     - script.reboot_router
+    - input_select.log_level
 
 batteries:
   name: Baterie
@@ -179,7 +180,7 @@ raspberry:
     - sensor.ram_use
     - sensor.raspberry_disk_free
     - sensor.last_boot
-#    - sensor.ha_database_size
+    - sensor.ha_database_size
 
 bulbs salon:
   name: Żarówki salon

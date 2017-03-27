@@ -11,15 +11,15 @@
     group.bulbs_salon:
       state: on
       transition: 5
-      brightness: 90
-      color_temp: 340
+      brightness: 150
+      color_temp: 430
 
 - name: cinema
   entities:
     group.bulbs_salon:
       state: on
       transition: 5
-      brightness: 255
+      brightness: 60
       rgb_color: [0,0,255]
 
 - name: romantic
@@ -27,13 +27,13 @@
     group.bulbs_salon:
       state: on
       transition: 5
-      brightness: 255
-      rgb_color: [200,0,40]
+      brightness: 20
+      rgb_color: [255,0,0]
 
 - name: violet
   entities:
     group.bulbs_salon:
       state: on
       transition: 5
-      brightness: 255
+      brightness: 200
       rgb_color: [255,0,255]

@@ -126,11 +126,24 @@ heating_temp_eco:
 
 light_scenes_salon:
   name: Tryb oświetlenia salon
+  icon: mdi:palette
   options:
     - ''
     - 'standard'
     - 'wieczór'
     - 'kino'
-    - 'romantic'
+    - 'romantyczny'
     - 'fiolet'
-  icon: mdi:palette
+
+log_level:
+  name: HA poziom informacji loga
+  icon: mdi:format-list-bulleted
+  options:
+    - critical
+    - fatal
+    - error
+    - warning
+    - warn
+    - info
+    - debug
+  initial: warning
