@@ -50,7 +50,7 @@ updater:
 zeroconf:
 
 recorder:
-  purge_days: 4
+  purge_days: 3
   exclude:
     domains:
       - automation
@@ -69,14 +69,12 @@ recorder:
       - sensor.last_boot
       - sensor.router_update
       - sensor.synology_disk_used
-      - sensor.battery_thermostat_salon
-      - sensor.battery_thermostat_kuchnia
-      - sensor.battery_thermostat_antresola
-      - sensor.battery_thermostat_sypialnia
-      - sensor.battery_thermostat_antek
-      - sensor.battery_temp_humi_sensor_salon
-      - sensor.battery_temp_humi_sensor_sypialnia
-      - sensor.battery_temp_humi_sensor_antek
+      - sensor.temperature_158d00010fb2cd
+      - sensor.temperature_158d00010fb340
+      - sensor.temperature_158d0001100416
+      - sensor.humidity_158d00010fb2cd
+      - sensor.humidity_158d00010fb340
+      - sensor.humidity_158d0001100416
 
 logger:
   default: warning
