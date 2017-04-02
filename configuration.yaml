@@ -45,7 +45,7 @@ http:
 
 updater:
 
-discovery:
+#discovery:
 
 zeroconf:
 
@@ -69,11 +69,14 @@ recorder:
       - sensor.last_boot
       - sensor.router_update
       - sensor.synology_disk_used
-      - sensor.antresola_thermostat_battery_level_2_0
-      - sensor.kuchnia_thermostat_battery_level_5_0
-      - sensor.salon_thermostat_battery_level_7_0
-      - sensor.sypialnia_thermostat_battery_level_4_0
-      - sensor.antek_thermostat_battery_level_3_0
+      - sensor.battery_thermostat_salon
+      - sensor.battery_thermostat_kuchnia
+      - sensor.battery_thermostat_antresola
+      - sensor.battery_thermostat_sypialnia
+      - sensor.battery_thermostat_antek
+      - sensor.battery_temp_humi_sensor_salon
+      - sensor.battery_temp_humi_sensor_sypialnia
+      - sensor.battery_temp_humi_sensor_antek
 
 logger:
   default: warning
@@ -210,7 +213,7 @@ shell_command:
   reboot_pi: "sudo reboot"
   shutdown_pi: "sudo shutdown -h now"
   restart_hass: "sudo systemctl restart home-assistant.service"
-  restart_router: "echo 'reboot' | ssh maciek@router"
+  reeboot_router: "echo 'reboot' | ssh maciek@router"
 
 input_boolean:
   heating_season:
@@ -236,11 +239,9 @@ light:
   devices:
     192.168.1.240:
       name: yeelight color bulb salon 1
-      transition: 1000
-      use_music_mode: False
+      transition: 500
       save_on_change: False
     192.168.1.250:
       name: yeelight color bulb salon 2
-      transition: 1000
-      use_music_mode: False
+      transition: 500
       save_on_change: False

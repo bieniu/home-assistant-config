@@ -68,12 +68,14 @@ group.internet:
   order: 12
 group.raspberry:
   order: 13
-group.heating_settings:
+group.heating_temps:
   order: 14
-group.scripts:
+group.heatings_hours:
   order: 15
-group.batteries:
+group.scripts:
   order: 16
+group.batteries:
+  order: 17
 
 #### WEATHER ####
 sensor.dark_sky_temperature:
@@ -160,6 +162,8 @@ script.reboot_router:
   icon: mdi:refresh
 script.shutdown_pi:
   icon: mdi:power
+script.zwave_add_node:
+  icon: mdi:plus-network
 
 #### CLIMATE ####
 climate.antresola_thermostat_heating_1_2_1:

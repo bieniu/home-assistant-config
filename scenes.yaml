@@ -4,15 +4,15 @@
       state: on
       transition: 5
       brightness: 255
-      color_temp: 280
+      color_temp: 251
 
 - name: evening
   entities:
     group.bulbs_salon:
       state: on
       transition: 5
-      brightness: 150
-      color_temp: 430
+      brightness: 160
+      color_temp: 390
 
 - name: cinema
   entities:

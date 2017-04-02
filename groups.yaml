@@ -24,7 +24,8 @@ misc:
   view: yes
   entities:
     - group.batteries
-    - group.heating_settings
+    - group.heating_temps
+    - group.heating_hours
     - group.scripts
 
 weather:
@@ -94,6 +95,13 @@ peoples:
     - device_tracker.jerzy
     - sensor.denon_presence
 
+guests:
+  name: Goście
+  entities:
+    - device_tracker.agnieszka
+    - device_tracker.emil
+    - device_tracker.grazyna
+
 wire devices:
   name: Urządzenia przewodowe
   control: hidden
@@ -136,8 +144,8 @@ internet:
     - sensor.speedtest_upload
     - sensor.speedtest_ping
 
-heating settings:
-  name: Ustawienia ogrzewania
+heating temps:
+  name: Temperatury ogrzewania
   control: hidden
   entities:
     - input_boolean.heating_season
@@ -148,6 +156,11 @@ heating settings:
     - input_select.heating_temp_day
     - input_select.heating_temp_night
     - input_select.heating_temp_eco
+
+heating hours:
+  name: Godziny ogrzewania
+  control: hidden
+  entities:
     - input_select.heating_night_start
     - input_select.heating_night_end
     - input_select.heating_night_start_weekend
@@ -161,6 +174,7 @@ scripts:
     - script.reboot_pi
     - script.shutdown_pi
     - script.reboot_router
+    - script.zwave_add_node
     - input_select.log_level
 
 batteries:
@@ -171,6 +185,9 @@ batteries:
     - sensor.battery_thermostat_antresola
     - sensor.battery_thermostat_sypialnia
     - sensor.battery_thermostat_antek
+    - sensor.battery_temp_humi_sensor_salon
+    - sensor.battery_temp_humi_sensor_sypialnia
+    - sensor.battery_temp_humi_sensor_antek
 
 raspberry:
   name: Raspberry Pi 3

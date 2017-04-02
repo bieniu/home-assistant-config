@@ -18,6 +18,11 @@ reboot_router:
   sequence:
     service: shell_command.reboot_router
 
+zwave_add_node:
+  alias: Dodaj urządzenie Z-Wave
+  sequence:
+    service: zwave.add_node
+
 fast_warm_up:
   alias: Szybkie dogrzanie
   sequence:
@@ -53,28 +58,3 @@ light_antresola_on:
     - delay: 0:05
     - service: light.turn_off
       entity_id: light.gateway_light_f0b429cc6f0b
-
-light_scene_salon_standard:
-  sequence:
-    service: scene.turn_on
-    entity_id: scene.standard
-
-light_scene_salon_evening:
-  sequence:
-    service: scene.turn_on
-    entity_id: scene.evening
-
-light_scene_salon_cinema:
-  sequence:
-    service: scene.turn_on
-    entity_id: scene.cinema
-
-light_scene_salon_romantic:
-  sequence:
-    service: scene.turn_on
-    entity_id: scene.romantic
-
-light_scene_salon_violet:
-  sequence:
-    service: scene.turn_on
-    entity_id: scene.violet

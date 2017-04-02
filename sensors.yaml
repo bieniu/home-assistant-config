@@ -154,7 +154,7 @@
             {% elif states.zwave.antresola_thermostat_2.attributes.battery_level | int >= 95 %}
                mdi:battery
             {% else %}
-               mdi:battery-{{ ((states.zwave.antresola_thermostat_2.attributes.battery_level | float) / 10) | round * 10 }}
+               mdi:battery-{{ ((states.zwave.antresola_thermostat_2.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
             {% endif %}
          {% else %}
             mdi:battery-unknown
@@ -180,7 +180,7 @@
             {% elif states.zwave.salon_thermostat_7.attributes.battery_level | int >= 95 %}
                mdi:battery
             {% else %}
-               mdi:battery-{{ ((states.zwave.salon_thermostat_7.attributes.battery_level | float) / 10) | round * 10 }}
+               mdi:battery-{{ ((states.zwave.salon_thermostat_7.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
             {% endif %}
          {% else %}
             mdi:battery-unknown
@@ -206,7 +206,7 @@
             {% elif states.zwave.kuchnia_thermostat_5.attributes.battery_level | int >= 95 %}
                mdi:battery
             {% else %}
-               mdi:battery-{{ ((states.zwave.kuchnia_thermostat_5.attributes.battery_level | float) / 10) | round * 10 }}
+               mdi:battery-{{ ((states.zwave.kuchnia_thermostat_5.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
             {% endif %}
          {% else %}
             mdi:battery-unknown
@@ -232,7 +232,7 @@
             {% elif states.zwave.sypialnia_thermostat_4.attributes.battery_level | int >= 95 %}
                mdi:battery
             {% else %}
-               mdi:battery-{{ ((states.zwave.sypialnia_thermostat_4.attributes.battery_level | float) / 10) | round * 10 }}
+               mdi:battery-{{ ((states.zwave.sypialnia_thermostat_4.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
             {% endif %}
          {% else %}
             mdi:battery-unknown
@@ -258,7 +258,85 @@
             {% elif states.zwave.antek_thermostat_3.attributes.battery_level | int >= 95 %}
                mdi:battery
             {% else %}
-               mdi:battery-{{ ((states.zwave.antek_thermostat_3.attributes.battery_level | float) / 10) | round * 10 }}
+               mdi:battery-{{ ((states.zwave.antek_thermostat_3.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
+    battery_temp_humi_sensor_antek:
+      friendly_name: czujnik temperatury/wilgotności pokój Antka
+      unit_of_measurement: '%'
+      entity_id: sensor.temperature_158d00010fb2cd
+      value_template: >-
+         {% if states.sensor.temperature_158d00010fb2cd %}
+            {{ states.sensor.temperature_158d00010fb2cd.attributes.battery_level }}
+         {% else %}
+            {{ states.sensor.battery_temp_humi_sensor_antek.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.sensor.temperature_158d00010fb2cd.attributes.battery_level %}
+            {% if states.sensor.temperature_158d00010fb2cd.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.sensor.temperature_158d00010fb2cd.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.sensor.temperature_158d00010fb2cd.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.sensor.temperature_158d00010fb2cd.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
+    battery_temp_humi_sensor_salon:
+      friendly_name: czujnik temperatury/wilgotności salon
+      unit_of_measurement: '%'
+      entity_id: sensor.temperature_158d00010fb340
+      value_template: >-
+         {% if states.sensor.temperature_158d00010fb340 %}
+            {{ states.sensor.temperature_158d00010fb340.attributes.battery_level }}
+         {% else %}
+            {{ states.sensor.battery_temp_humi_sensor_salon.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.sensor.temperature_158d00010fb340.attributes.battery_level %}
+            {% if states.sensor.temperature_158d00010fb340.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.sensor.temperature_158d00010fb340.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.sensor.temperature_158d00010fb340.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.sensor.temperature_158d00010fb340.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
+    battery_temp_humi_sensor_sypialnia:
+      friendly_name: czujnik temperatury/wilgotności sypialnia
+      unit_of_measurement: '%'
+      entity_id: sensor.temperature_158d0001100416
+      value_template: >-
+         {% if states.sensor.temperature_158d0001100416 %}
+            {{ states.sensor.temperature_158d0001100416.attributes.battery_level }}
+         {% else %}
+            {{ states.sensor.battery_temp_humi_sensor_salon.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.sensor.temperature_158d0001100416.attributes.battery_level %}
+            {% if states.sensor.temperature_158d0001100416.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.sensor.temperature_158d0001100416.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.sensor.temperature_158d0001100416.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.sensor.temperature_158d0001100416.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
             {% endif %}
          {% else %}
             mdi:battery-unknown
