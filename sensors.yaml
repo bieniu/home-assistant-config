@@ -265,7 +265,7 @@
          {% endif %}
 
     battery_temp_humi_sensor_antek:
-      friendly_name: czujnik temperatury/wilgotności pokój Antka
+      friendly_name: sensor temperatury/wilgotności pokój Antka
       unit_of_measurement: '%'
       entity_id: sensor.temperature_158d00010fb2cd
       value_template: >-
@@ -291,7 +291,7 @@
          {% endif %}
 
     battery_temp_humi_sensor_salon:
-      friendly_name: czujnik temperatury/wilgotności salon
+      friendly_name: sensor temperatury/wilgotności salon
       unit_of_measurement: '%'
       entity_id: sensor.temperature_158d00010fb340
       value_template: >-
@@ -317,7 +317,7 @@
          {% endif %}
 
     battery_temp_humi_sensor_sypialnia:
-      friendly_name: czujnik temperatury/wilgotności sypialnia
+      friendly_name: sensor temperatury/wilgotności sypialnia
       unit_of_measurement: '%'
       entity_id: sensor.temperature_158d0001100416
       value_template: >-

@@ -228,7 +228,7 @@ input_boolean:
     icon: mdi:weather-windy
   edyta_far_from_home:
   maciek_far_from_home:
-  heating_away_mode:
+  away_mode:
 
 input_select:  !include input_select.yaml
 

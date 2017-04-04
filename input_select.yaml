@@ -128,22 +128,23 @@ light_scenes_salon:
   name: Tryb oświetlenia salon
   icon: mdi:palette
   options:
-    - ''
     - 'standard'
-    - 'wieczór'
     - 'kino'
     - 'romantyczny'
     - 'fiolet'
+    - 'nocny'
+    - ''
+  initial: ''
 
 log_level:
   name: HA poziom informacji loga
   icon: mdi:format-list-bulleted
   options:
-    - critical
-    - fatal
-    - error
-    - warning
-    - warn
-    - info
-    - debug
-  initial: warning
+    - 'critical'
+    - 'fatal'
+    - 'error'
+    - 'warning'
+    - 'warn'
+    - 'info'
+    - 'debug'
+  initial: 'warning'

@@ -26,6 +26,9 @@ zwave_add_node:
 fast_warm_up:
   alias: Szybkie dogrzanie
   sequence:
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: 'on'
     - service: climate.set_temperature
       entity_id: climate.antresola_thermostat_heating_1_2_1
       data:

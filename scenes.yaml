@@ -1,39 +1,47 @@
-- name: standard
+- name: nocny
   entities:
     group.bulbs_salon:
       state: on
       transition: 5
-      brightness: 255
-      color_temp: 251
+      brightness: 3
+      rgb_color: [255,153,0]
 
-- name: evening
+- name: kino
   entities:
     group.bulbs_salon:
       state: on
       transition: 5
-      brightness: 160
-      color_temp: 390
+      brightness: 128
+      rgb_color: [20,20,50]
 
-- name: cinema
+- name: romantyczny
   entities:
     group.bulbs_salon:
       state: on
       transition: 5
-      brightness: 60
-      rgb_color: [0,0,255]
+      brightness: 128
+      rgb_color: [255,102,0]
 
-- name: romantic
-  entities:
-    group.bulbs_salon:
-      state: on
-      transition: 5
-      brightness: 20
-      rgb_color: [255,0,0]
-
-- name: violet
+- name: fiolet
   entities:
     group.bulbs_salon:
       state: on
       transition: 5
       brightness: 200
       rgb_color: [255,0,255]
+
+- name: standard_przed_zachodem
+  entities:
+    group.bulbs_salon:
+      state: on
+      transition: 20
+      brightness: 255
+      color_temp: 220
+
+- name: standard_po_zachodzie
+  entities:
+    group.bulbs_salon:
+      state: on
+      transition: 20
+      brightness: 255
+      color_temp: 260
