@@ -34,14 +34,14 @@
   entities:
     group.bulbs_salon:
       state: on
-      transition: 20
+      transition: 5
       brightness: 255
-      color_temp: 220
+      color_temp: 240
 
 - name: standard_po_zachodzie
   entities:
     group.bulbs_salon:
       state: on
-      transition: 20
+      transition: 5
       brightness: 255
-      color_temp: 260
+      color_temp: 280

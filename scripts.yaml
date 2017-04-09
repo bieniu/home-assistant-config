@@ -42,7 +42,7 @@ fast_warm_up:
       data:
         temperature: 24
     - service: climate.set_temperature
-      entity_id: climate.salon_thermostat_heating_1_7_1
+      entity_id: climate.kuchnia_thermostat_heating_1_5_1
       data:
         temperature: 24
     - delay: '00:25:00'

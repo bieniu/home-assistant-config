@@ -163,24 +163,24 @@
     battery_thermostat_salon:
       friendly_name: termostat salon
       unit_of_measurement: '%'
-      entity_id: zwave.salon_thermostat_7
+      entity_id: zwave.salon_thermostat_11
       value_template: >-
-         {% if states.zwave.salon_thermostat_7 %}
-            {{ states.zwave.salon_thermostat_7.attributes.battery_level }}
+         {% if states.zwave.salon_thermostat_11 %}
+            {{ states.zwave.salon_thermostat_11.attributes.battery_level }}
          {% else %}
             {{ states.sensor.battery_thermostat_salon.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.zwave.salon_thermostat_7.attributes.battery_level %}
-            {% if states.zwave.salon_thermostat_7.attributes.battery_level == 'unknown' %}
+         {% if states.zwave.salon_thermostat_11.attributes.battery_level %}
+            {% if states.zwave.salon_thermostat_11.attributes.battery_level == 'unknown' %}
                mdi:battery-unknown
-            {% elif states.zwave.salon_thermostat_7.attributes.battery_level | int <= 5 %}
+            {% elif states.zwave.salon_thermostat_11.attributes.battery_level | int <= 5 %}
                mdi:battery-outline
-            {% elif states.zwave.salon_thermostat_7.attributes.battery_level | int >= 95 %}
+            {% elif states.zwave.salon_thermostat_11.attributes.battery_level | int >= 95 %}
                mdi:battery
             {% else %}
-               mdi:battery-{{ ((states.zwave.salon_thermostat_7.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+               mdi:battery-{{ ((states.zwave.salon_thermostat_11.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
             {% endif %}
          {% else %}
             mdi:battery-unknown
@@ -265,7 +265,7 @@
          {% endif %}
 
     battery_temp_humi_sensor_antek:
-      friendly_name: sensor temperatury/wilgotności pokój Antka
+      friendly_name: sensor temperatury pokój Antka
       unit_of_measurement: '%'
       entity_id: sensor.temperature_158d00010fb2cd
       value_template: >-
@@ -291,7 +291,7 @@
          {% endif %}
 
     battery_temp_humi_sensor_salon:
-      friendly_name: sensor temperatury/wilgotności salon
+      friendly_name: sensor temperatury salon
       unit_of_measurement: '%'
       entity_id: sensor.temperature_158d00010fb340
       value_template: >-
@@ -317,7 +317,7 @@
          {% endif %}
 
     battery_temp_humi_sensor_sypialnia:
-      friendly_name: sensor temperatury/wilgotności sypialnia
+      friendly_name: sensor temperatury sypialnia
       unit_of_measurement: '%'
       entity_id: sensor.temperature_158d0001100416
       value_template: >-
@@ -576,11 +576,6 @@
       friendly_name: iPad Air
       entity_id: device_tracker.ipad
 
-    ipadedyta_status:
-      value_template: "{% if is_state('device_tracker.ipadedyta', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: iPad Air LTE
-      entity_id: device_tracker.ipadedyta
-
     kindle_status:
       value_template: "{% if is_state('device_tracker.kindle', 'home') %}online{% else %}offline{% endif %}"
       friendly_name: Kindle Keyboard 3G
@@ -654,3 +649,36 @@
          {% else %}
             offline
          {% endif %}
+
+    temperature_salon_delta:
+        friendly_name: "Temperature Salon Delta"
+        value_template: "{{ (states.sensor.temperature_salon_statistics_mean.attributes.max_value | float) - (states.sensor.temperature_salon_statistics_mean.attributes.min_value | float) }}"
+        entity_id: sensor.temperature_salon_statistics_mean
+        unit_of_measurement: "°C"
+
+    temperature_sypialnia_delta:
+        friendly_name: "Temperature Sypialnia Delta"
+        value_template: "{{ (states.sensor.temperature_sypialnia_statistics_mean.attributes.max_value | float) - (states.sensor.temperature_sypialnia_statistics_mean.attributes.min_value | float) }}"
+        entity_id: sensor.temperature_sypialnia_statistics_mean
+        unit_of_measurement: "°C"
+
+    temperature_pokoj_antek_delta:
+        friendly_name: "Temperature Pokój Antek Delta"
+        value_template: "{{ (states.sensor.temperature_pokoj_antek_statistics_mean.attributes.max_value | float) - (states.sensor.temperature_pokoj_antek_statistics_mean.attributes.min_value | float) }}"
+        entity_id: sensor.temperature_pokoj_antek_statistics_mean
+        unit_of_measurement: "°C"
+
+- platform: statistics
+  name: Temperature Salon Statistics
+  entity_id: sensor.temperature_158d00010fb340
+  sampling_size: 4
+
+- platform: statistics
+  name: Temperature Sypialnia Statistics
+  entity_id: sensor.temperature_158d0001100416
+  sampling_size: 4
+
+- platform: statistics
+  name: Temperature Pokój Antek Statistics
+  entity_id: sensor.temperature_158d00010fb2cd
+  sampling_size: 4

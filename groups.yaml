@@ -65,7 +65,7 @@ heating:
   name: Ogrzewanie
   control: hidden
   entities:
-    - climate.salon_thermostat_heating_1_7_1
+    - climate.salon_thermostat_heating_1_11_1
     - climate.kuchnia_thermostat_heating_1_5_1
     - climate.antresola_thermostat_heating_1_2_1
     - climate.sypialnia_thermostat_heating_1_4_1
@@ -127,7 +127,6 @@ wireless devices:
     - sensor.iphone_status
     - sensor.lumia_status
     - sensor.ipad_status
-    - sensor.ipadedyta_status
     - sensor.kindle_status
 
 media players:
@@ -206,3 +205,4 @@ bulbs salon:
   entities:
     - light.yeelight_color_bulb_salon_1
     - light.yeelight_color_bulb_salon_2
+

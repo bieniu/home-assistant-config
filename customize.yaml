@@ -136,8 +136,6 @@ sensor.lumia_status:
   icon: mdi:cellphone
 sensor.ipad_status:
   icon: mdi:tablet-ipad
-sensor.ipadedyta_status:
-  icon: mdi:tablet-ipad
 sensor.kindle_status:
   icon: mdi:cellphone
 sensor.modem_status:
@@ -184,7 +182,7 @@ climate.sypialnia_thermostat_heating_1_4_1:
   max_temp: 28
   min_temp: 4
 
-climate.salon_thermostat_heating_1_7_1:
+climate.salon_thermostat_heating_1_11_1:
   friendly_name: Salon
   icon: mdi:radiator
   max_temp: 28
