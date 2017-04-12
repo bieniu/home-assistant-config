@@ -1,0 +1,11 @@
+#### TEMP & HUMIDITY SENSORS ####
+'sansor.temperature_*':
+  icon: mdi:thermometer
+'sensor.humidity_*':
+  icon: mdi:water-percent
+
+#### CLIMATE ####
+'climate.*_thermostat_*':
+  icon: mdi:radiator
+  max_temp: 28
+  min_temp: 4

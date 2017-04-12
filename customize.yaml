@@ -1,17 +1,3 @@
-#### TEMP & HUMIDITY SENSORS ####
-sansor.temperature_salon:
-  icon: mdi:thermometer
-sensor.humidity_salon:
-  icon: mdi:water-percent
-sansor.temperature_sypialnia:
-  icon: mdi:thermometer
-sensor.humidity_sypialnia:
-  icon: mdi:water-percent
-sansor.temperature_pokoj_antek:
-  icon: mdi:thermometer
-sensor.humidity_pokoj_antek:
-  icon: mdi:water-percent
-
 #### LIGHTS ####
 light.gateway_light_f0b429cc6f0b:
   friendly_name: Lampka antresola
@@ -49,17 +35,17 @@ zone.home:
 
 #### GROUPS ####
 group.family:
-  order: 4
-group.weather:
   order: 5
-group.temp_and_humidity:
+group.weather:
   order: 6
-group.heating:
+group.temp_and_humidity:
   order: 7
-group.lights:
+group.heating:
   order: 8
-group.media_players:
+group.lights:
   order: 9
+#group.media_players:
+#  order: 9
 group.wire_devices:
   order: 10
 group.wireless_devices:
@@ -166,33 +152,18 @@ script.zwave_add_node:
 #### CLIMATE ####
 climate.antresola_thermostat_heating_1_2_1:
   friendly_name: Antresola
-  icon: mdi:radiator
-  max_temp: 28
-  min_temp: 4
 
 climate.antek_thermostat_heating_1_3_1:
   friendly_name: Pokój Antka
-  icon: mdi:radiator
-  max_temp: 28
-  min_temp: 4
 
 climate.sypialnia_thermostat_heating_1_4_1:
   friendly_name: Sypialnia
-  icon: mdi:radiator
-  max_temp: 28
-  min_temp: 4
 
 climate.salon_thermostat_heating_1_11_1:
   friendly_name: Salon
-  icon: mdi:radiator
-  max_temp: 28
-  min_temp: 4
 
 climate.kuchnia_thermostat_heating_1_5_1:
   friendly_name: Kuchnia
-  icon: mdi:radiator
-  max_temp: 28
-  min_temp: 4
 
 #### XIAOMI SENSORS ####
 sensor.temperature_158d00010fb340:
@@ -212,3 +183,7 @@ sensor.humidity_158d0001100416:
 
 sensor.humidity_158d00010fb2cd:
   friendly_name: Wilgotność pokój Antka
+
+sensor.illumination_f0b429cc6f0b:
+  friendly_name: Oświetlenie antresola
+  icon: mdi:lightbulb-on-outline

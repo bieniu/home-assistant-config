@@ -6,6 +6,7 @@ homeassistant:
   unit_system: metric
   time_zone: Europe/Warsaw
   customize: !include customize.yaml
+  customize_glob: !include customize_glob.yaml
 
 zone:
   name: work
@@ -168,9 +169,10 @@ media_player:
   - platform: denonavr
     host: !secret denon_ip
     name: Denon
-#  - platform: spotify
-#    client_id: !secret spotify_client_id
-#    client_secret: !secret spotify_client_secret
+  - platform: spotify
+    client_id: !secret spotify_client_id
+    client_secret: !secret spotify_client_secret
+    cache_path: /home/homeassistant/.homeassistant/.spotify-token-cache
 #  - platform: cast
 #    host: !secret androidtv_ip
 #  - platform: dunehd

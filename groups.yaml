@@ -8,11 +8,19 @@ default_view:
     - group.temp_and_humidity
     - group.lights
     - group.heating
-    - group.media_players
+    - media_player.denon
+
+spotify:
+  name: Spotify
+  view: yes
+  icon: mdi:spotify
+  entities:
+    - media_player.spotify
 
 network:
   name: Sieć
   view: yes
+  icon: mdi:ethernet
   entities:
     - group.wire_devices
     - group.wireless_devices
@@ -22,6 +30,7 @@ network:
 misc:
   name: Różne
   view: yes
+  icon: mdi:settings
   entities:
     - group.batteries
     - group.heating_temps
@@ -59,6 +68,7 @@ lights:
     - group.bulbs_salon
     - input_select.light_scenes_salon
     - light.gateway_light_f0b429cc6f0b
+    - sensor.illumination_f0b429cc6f0b
     - input_boolean.disco_mode
 
 heating:
@@ -128,13 +138,6 @@ wireless devices:
     - sensor.lumia_status
     - sensor.ipad_status
     - sensor.kindle_status
-
-media players:
-  name: Odtwarzacze mediów
-  entities:
-    - media_player.denon
-    - media_player.androidtv
-    - media_player.dune
 
 internet:
   name: Internet

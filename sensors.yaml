@@ -410,7 +410,7 @@
          {% endif %}
 
     dark_sky_precip_probability_custom:
-      friendly_name: Prawdopodobieństwo opadów
+      friendly_name: Szansa na opady
       unit_of_measurement: '%'
       entity_id: sensor.dark_sky_precip_probability
       value_template: >-
