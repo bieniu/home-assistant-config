@@ -32,6 +32,11 @@ sensor.maciek_presence:
 #### ZONES ####
 zone.home:
   icon: mdi:home-outline
+  track_ios: true
+zone.work_2:
+  track_ios: true
+zone.work_3:
+  track_ios: true
 
 #### GROUPS ####
 group.family:

@@ -159,8 +159,8 @@ device_tracker:
     home_interval: 10
     scan_options: " --privileged -sP "
   - platform: gpslogger
-  - platform: owntracks
-    max_gps_accuracy: 1500
+#  - platform: owntracks
+#    max_gps_accuracy: 1500
   - platform: ping
     hosts:
       modem: !secret modem_ip
@@ -190,12 +190,13 @@ switch:
   name: wake_on_lan_stacjonarny
   host: !secret desktop_ip
   mac_address: !secret desktop_mac_address
+  broadcast_address: 255.255.255.255
   turn_off:
     service:
       shell_command.stacjonarny_off
 
 shell_command:
-  stacjonarny_off: "curl http://stacjonarny:88/event.html?Suspend"
+  stacjonarny_off: "curl http://stacjonarny:88/event.html?PowerOff"
   reboot_pi: "sudo reboot"
   shutdown_pi: "sudo shutdown -h now"
   restart_hass: "sudo systemctl restart home-assistant.service"
@@ -205,9 +206,8 @@ input_boolean:
   heating_season:
     name: Sezon grzewczy
     icon: mdi:weather-snowy-rainy
-  party_mode:
-    name: Impreza
-    icon: mdi:emoticon-cool
+  heating_salon_kuchnia_night:
+  heating_night:
   disco_mode:
     name: Dyskoteka
     icon: mdi:music
@@ -242,3 +242,5 @@ binary_sensor:
       temperature_pokoj_antek_down:
         entity_id: sensor.temperature_158d00010fb2cd
         invert: Yes
+
+ios:

@@ -82,7 +82,6 @@ heating:
     - climate.antek_thermostat_heating_1_3_1
     - script.fast_warm_up
     - input_boolean.heating_airing
-    - input_boolean.party_mode
 
 family:
   name: Rodzina

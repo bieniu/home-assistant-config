@@ -222,6 +222,10 @@
       entity_id: climate.sypialnia_thermostat_heating_1_4_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_bedroom_day.state }}'
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.heating_night
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.heating_salon_kuchnia_night
 
 # zmniejszenie temperatury na noc w tygodniu jeśli trwa sezon grzewczy
 - alias: 'Heating Night'
@@ -244,10 +248,9 @@
       - condition: state
         entity_id: input_boolean.heating_season
         state: 'on'
-      - condition: state
-        entity_id: input_boolean.party_mode
-        state: 'off'
   action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.heating_night
     - service: climate.set_temperature
       entity_id: climate.antresola_thermostat_heating_1_2_1
       data_template:
@@ -260,13 +263,14 @@
       entity_id: climate.sypialnia_thermostat_heating_1_4_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_bedroom_night.state }}'
-    - condition: state
-      entity_id: group.guests
-      state: 'not_home'
+    - condition: template
+      value_template: "{{ (states.group.guests.state == 'not_home') and (states.media_player.denon.state == 'off') }}"
     - service: climate.set_temperature
       entity_id: climate.kuchnia_thermostat_heating_1_5_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_night.state }}'
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.heating_salon_kuchnia_night
 
 # zwiększenie temperatury rano w weekendy jeśli ktoś jest w domu i trwa sezon grzewczy
 - alias: 'Heating Day Weekend'
@@ -311,32 +315,37 @@
       - condition: state
         entity_id: input_boolean.heating_season
         state: 'on'
-      - condition: state
-        entity_id: input_boolean.party_mode
-        state: 'off'
   action:
     service: automation.trigger
     entity_id: automation.heating_night
 
-# zmniejszenie temperatury na noc po imprezie
-- alias: 'Heating Night After Party'
+# zmniejszenie temperatury na noc w salonie i kuchni po wyłączeniu TV
+- alias: 'Heating Night Salon and Kuchnia'
   trigger:
     platform: state
     entity_id: media_player.denon
     state: 'off'
-  condition:
-    condition: state
-    entity_id: input_boolean.party_mode
-    state: 'on'
+  condition: 
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: 'on'
+      - condition: state
+        entity_id: group.guests
+        state: 'not_home'
+      - condition: state
+        entity_id: input_boolean.heating_night
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.heating_salon_kuchnia_night
+        state: 'off'
   action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.party_mode
-    - condition: state
-      entity_id: input_boolean.heating_season
-      state: 'on'
     - delay: 0:15
-    - service: automation.trigger
-      entity_id: automation.heating_night
+    - service: climate.set_temperature
+      entity_id: climate.kuchnia_thermostat_heating_1_5_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_night.state }}'
 
 # zmniejszenie temperatury gdy domownicy wychodzą i jest sezon grzewczy
 - alias: 'Heating Eco Mode'
@@ -368,6 +377,19 @@
       entity_id: climate.sypialnia_thermostat_heating_1_4_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_eco.state }}'
+    - condition: state
+      entity_id: input_boolean.heating_airing
+      state: 'on'
+    - service: notify.ios_edyta_iphone
+      data:
+        title: 'Koniec przewietrzania'
+        message: 'Domownicy opóścili mieszkanie. Wyłączono tryb przewietrzania.'
+    - service: notify.html5_oneplus
+      data: 
+        title: 'Koniec przewietrzania'
+        message: 'Domownicy opóścili mieszkanie. Wyłączono tryb przewietrzania.'
+        data:
+            tag: 'notification-airing-end'
     - service: input_boolean.turn_off
       entity_id: input_boolean.heating_airing
 
@@ -508,8 +530,18 @@
         entity_id: input_boolean.heating_airing
         state: 'on'
   action:
-    service: input_boolean.turn_off
-    entity_id: input_boolean.heating_airing
+    - service: notify.ios_edyta_iphone
+      data:
+        title: 'Koniec przewietrzania'
+        message: 'O zachodzie słońca wyłączono tryb przewietrzania. Proszę zamknąć okna!'
+    - service: notify.html5_oneplus
+      data: 
+        title: 'Koniec przewietrzania'
+        message: 'O zachodzie słońca wyłączono tryb przewietrzania. Proszę zamknąć okna!'
+        data:
+            tag: 'notification-airing-sunset-end'
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.heating_airing
 
 # początek sezonu grzewczego
 - alias: 'Heating Season Begin'
@@ -608,6 +640,13 @@
   condition:
     condition: and
     conditions:
+      - condition: sun
+        after: sunrise
+      - condition: sun
+        before: sunset
+      - condition: state
+        entity_id: input_boolean.heating_night
+        state: 'off'
       - condition: state
         entity_id: binary_sensor.temperature_salon_down
         state: 'on'
@@ -621,8 +660,18 @@
         entity_id: input_boolean.away_mode
         state: 'off'
   action:
-    service: input_boolean.turn_on
-    entity_id: input_boolean.heating_airing
+    - service: notify.ios_edyta_iphone
+      data:
+        title: 'Otwarcie okien w salonie lub kuchni'
+        message: 'Wykryto otwarcie okien w salonie lub kuchni przy włączonym ogrzewaniu. Przełączono ogrzewanie w tryb przewietrzania. Pamiętaj, że musisz ręcznie wyłączyć tryb przewietrzania po zamknięciu okien!'
+    - service: notify.html5_oneplus
+      data: 
+        title: 'Otwarcie okien w salonie lub kuchni'
+        message: 'Wykryto otwarcie okien w salonie lub kuchni przy włączonym ogrzewaniu. Przełączono ogrzewanie w tryb przewietrzania. Pamiętaj, że musisz ręcznie wyłączyć tryb przewietrzania po zamknięciu okien!'
+        data:
+            tag: 'notification-window-salon'
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.heating_airing
 
 # otwarcie okna w sypialni
 - alias: 'Heating Windows Opened Sypialnia'
@@ -633,6 +682,13 @@
   condition:
     condition: and
     conditions:
+      - condition: sun
+        after: sunrise
+      - condition: sun
+        before: sunset
+      - condition: state
+        entity_id: input_boolean.heating_night
+        state: 'off'
       - condition: state
         entity_id: binary_sensor.temperature_sypialnia_down
         state: 'on'
@@ -646,8 +702,18 @@
         entity_id: input_boolean.away_mode
         state: 'off'
   action:
-    service: input_boolean.turn_on
-    entity_id: input_boolean.heating_airing
+    - service: notify.ios_edyta_iphone
+      data:
+        title: 'Otwarcie okien w sypialni'
+        message: 'Wykryto otwarcie okien w sypialni przy włączonym ogrzewaniu. Przełączono ogrzewanie w tryb przewietrzania. Pamiętaj, że musisz ręcznie wyłączyć tryb przewietrzania po zamknięciu okien!'
+    - service: notify.html5_oneplus
+      data: 
+        title: 'Otwarcie okien w sypialni'
+        message: 'Wykryto otwarcie okien w sypialni przy włączonym ogrzewaniu. Przełączono ogrzewanie w tryb przewietrzania. Pamiętaj, że musisz ręcznie wyłączyć tryb przewietrzania po zamknięciu okien!'
+        data:
+            tag: 'notification-window-sypialnia'
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.heating_airing
 
 # otwarcie okna w pokoju Antka
 - alias: 'Heating Windows Opened Pokój Antek'
@@ -658,6 +724,13 @@
   condition:
     condition: and
     conditions:
+      - condition: sun
+        after: sunrise
+      - condition: sun
+        before: sunset
+      - condition: state
+        entity_id: input_boolean.heating_night
+        state: 'off'
       - condition: state
         entity_id: binary_sensor.temperature_pokoj_antek_down
         state: 'on'
@@ -671,8 +744,18 @@
         entity_id: input_boolean.away_mode
         state: 'off'
   action:
-    service: input_boolean.turn_on
-    entity_id: input_boolean.heating_airing
+    - service: notify.ios_edyta_iphone
+      data:
+        title: 'Otwarcie okna w pokoju Antka'
+        message: 'Wykryto otwarcie okna w pokoju Antka przy włączonym ogrzewaniu. Przełączono ogrzewanie w tryb przewietrzania. Pamiętaj, że musisz ręcznie wyłączyć tryb przewietrzania po zamknięciu okna!'
+    - service: notify.html5_oneplus
+      data: 
+        title: 'Otwarcie okien w pokoju Antka'
+        message: 'Wykryto otwarcie okna w pokoju Antka przy włączonym ogrzewaniu. Przełączono ogrzewanie w tryb przewietrzania. Pamiętaj, że musisz ręcznie wyłączyć tryb przewietrzania po zamknięciu okna!'
+        data:
+            tag: 'notification-window-sypialnia'
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.heating_airing
 
 #### LIGHT ####
 # włączenie trybu disco oświetlenia
@@ -832,9 +915,19 @@
     from: 'on'
     to: 'off'
   condition:
-    condition: sun
-    after: sunset
-    after_offset: '02:00:00'
+    condition: and
+    conditions:
+      - condition: numeric_state
+        entity_id: sensor.illumination_f0b429cc6f0b
+        below: 500
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+            after_offset: '+02:00:00' 
+          - condition: sun
+            before: sunrise
+            before_offset: '-02:00:00'
   action:
     service: script.turn_on
     entity_id: script.light_antresola_on
