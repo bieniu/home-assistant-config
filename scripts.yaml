@@ -1,3 +1,15 @@
+send_notifications:
+  sequence:
+    - service: notify.html5
+      data_template:
+        title: "{{ title }}"
+        message: "{{ message }}"
+        target: ["oneplus", "stacjonarny-windows"]
+      data:
+        data_template:
+          tag: "{{ tag }}"
+          url: "{{ url }}"
+
 restart_hass:
   alias: Restart Home Assistant'a
   sequence:

@@ -19,14 +19,14 @@ zone 2:
   icon: mdi:domain
   latitude: 52.2316
   longitude: 21.0013
-  radius: 200
+#  radius: 200
 
 zone 3:
   name: work
   icon: mdi:domain
   latitude: 51.7539
   longitude: 19.4559
-  radius: 250
+#  radius: 200
 
 sensor: !include sensors.yaml
 group: !include groups.yaml
@@ -58,6 +58,8 @@ recorder:
       - automation
       - updater
       - sun
+    entities:
+      - binary_sensor.stacjonarny_windows
 
 logger:
   default: warning
@@ -159,8 +161,6 @@ device_tracker:
     home_interval: 10
     scan_options: " --privileged -sP "
   - platform: gpslogger
-#  - platform: owntracks
-#    max_gps_accuracy: 1500
   - platform: ping
     hosts:
       modem: !secret modem_ip
@@ -242,5 +242,11 @@ binary_sensor:
       temperature_pokoj_antek_down:
         entity_id: sensor.temperature_158d00010fb2cd
         invert: Yes
+  - platform: command_line
+    name: stacjonarny_windows
+    command: curl --connect-timeout 0,1 http://stacjonarny:88/event.html > /dev/null 2>&1 && echo success || echo fail
+    device_class: connectivity
+    payload_on: "success"
+    payload_off: "fail"
 
 ios:
