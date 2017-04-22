@@ -19,14 +19,12 @@ zone 2:
   icon: mdi:domain
   latitude: 52.2316
   longitude: 21.0013
-#  radius: 200
 
 zone 3:
   name: work
   icon: mdi:domain
   latitude: 51.7539
   longitude: 19.4559
-#  radius: 200
 
 sensor: !include sensors.yaml
 group: !include groups.yaml
@@ -58,8 +56,6 @@ recorder:
       - automation
       - updater
       - sun
-    entities:
-      - binary_sensor.stacjonarny_windows
 
 logger:
   default: warning
@@ -73,6 +69,7 @@ logger:
 #    homeassistant.components.media_player: debug
 #    homeassistant.components.mqtt: debug
 #    homeassistant.components.zwave: info
+    homeassistant.components.updater: debug
 
 history:
   include:
@@ -97,12 +94,17 @@ history:
       - sensor.humidity_pokoj_antek
       - sensor.humidity_salon
       - sensor.humidity_sypialnia
+      - sensor.humidity_lazienka
+      - sensor.humidity_antresola
       - sensor.speedtest_download
       - sensor.speedtest_ping
       - sensor.speedtest_upload
       - sensor.temperature_pokoj_antek
       - sensor.temperature_salon
       - sensor.temperature_sypialnia
+      - sensor.temperature_lazienka
+      - sensor.temperature_antresola
+      - sensor.illumination_f0b429cc6f0b
 
 logbook:
   include:
@@ -242,11 +244,5 @@ binary_sensor:
       temperature_pokoj_antek_down:
         entity_id: sensor.temperature_158d00010fb2cd
         invert: Yes
-  - platform: command_line
-    name: stacjonarny_windows
-    command: curl --connect-timeout 0,1 http://stacjonarny:88/event.html > /dev/null 2>&1 && echo success || echo fail
-    device_class: connectivity
-    payload_on: "success"
-    payload_off: "fail"
 
 ios:

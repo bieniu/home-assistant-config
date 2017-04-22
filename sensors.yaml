@@ -10,6 +10,10 @@
   unit_of_measurement: "MB"
   value_template: '{{ (value | float / 1024 / 1024 ) | round(1) }}'
 
+- platform: command_line
+  command: python3 -c "import requests; print(requests.get('https://pypi.python.org/pypi/homeassistant/json').json()['info']['version'])"
+  name: Current HA Version
+
 - platform: google_travel_time
   name: Edyta To Home
   api_key: !secret distance_api_key
@@ -123,15 +127,48 @@
             {{ states.sensor.humidity_pokoj_antek.state }}
          {% endif %}
 
-    raspberry_disk_free:
-      friendly_name: Wolne miejsce
-      unit_of_measurement: 'GB'
-      entity_id: sensor.disk_free_
+    temperature_lazienka:
+      entity_id: sensor.temperature_158d000129a158
+      friendly_name: Temperatura łazienka
+      unit_of_measurement: '°C'
       value_template: >-
-         {% if states.sensor.disk_free_ %}
-            {{ states.sensor.disk_free_.state }}
+         {% if states.sensor.temperature_158d000129a158 %}
+            {{ (states.sensor.temperature_158d000129a158.state | float - 0.5) | round(1) }}
          {% else %}
-            {{ states.sensor.raspberry_disk_free.state }}
+            {{ states.sensor.temperature_lazienka.state }}
+         {% endif %}
+
+    humidity_lazienka:
+      entity_id: sensor.humidity_158d000129a158
+      friendly_name: Wilgotność łazienka
+      unit_of_measurement: '%'
+      value_template: >-
+         {% if states.sensor.humidity_158d000129a158 %}
+            {{ states.sensor.humidity_158d000129a158.state | round(0) }}
+         {% else %}
+            {{ states.sensor.humidity_lazienka.state }}
+         {% endif %}
+
+    temperature_antresola:
+      entity_id: sensor.temperature_158d000149cc8c
+      friendly_name: Temperatura antesola
+      unit_of_measurement: '°C'
+      value_template: >-
+         {% if states.sensor.temperature_158d000149cc8c %}
+            {{ (states.sensor.temperature_158d000149cc8c.state | float - 0.5) | round(1) }}
+         {% else %}
+            {{ states.sensor.temperature_antresola.state }}
+         {% endif %}
+
+    humidity_antresola:
+      entity_id: sensor.humidity_158d000149cc8c
+      friendly_name: Wilgotność antresola
+      unit_of_measurement: '%'
+      value_template: >-
+         {% if states.sensor.humidity_158d000149cc8c %}
+            {{ states.sensor.humidity_158d000149cc8c.state | round(0) }}
+         {% else %}
+            {{ states.sensor.humidity_antresola.state }}
          {% endif %}
 
     battery_thermostat_antresola:
@@ -340,6 +377,131 @@
             {% endif %}
          {% else %}
             mdi:battery-unknown
+         {% endif %}
+
+    battery_temp_humi_sensor_lazienka:
+      friendly_name: sensor temperatury łazienka
+      unit_of_measurement: '%'
+      entity_id: sensor.temperature_158d000129a158
+      value_template: >-
+         {% if states.sensor.temperature_158d000129a158 %}
+            {{ states.sensor.temperature_158d000129a158.attributes.battery_level }}
+         {% else %}
+            {{ states.sensor.battery_temp_humi_sensor_lazienka.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.sensor.temperature_158d000129a158.attributes.battery_level %}
+            {% if states.sensor.temperature_158d000129a158.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.sensor.temperature_158d000129a158.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.sensor.temperature_158d000129a158.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.sensor.temperature_158d000129a158.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
+    battery_temp_humi_sensor_antresola:
+      friendly_name: sensor temperatury antresola
+      unit_of_measurement: '%'
+      entity_id: sensor.temperature_158d000149cc8c
+      value_template: >-
+         {% if states.sensor.temperature_158d000149cc8c %}
+            {{ states.sensor.temperature_158d000149cc8c.attributes.battery_level }}
+         {% else %}
+            {{ states.sensor.battery_temp_humi_sensor_antresola.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.sensor.temperature_158d000149cc8c.attributes.battery_level %}
+            {% if states.sensor.temperature_158d000149cc8c.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.sensor.temperature_158d000149cc8c.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.sensor.temperature_158d000149cc8c.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.sensor.temperature_158d000149cc8c.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
+    battery_body_sensor_antresola:
+      friendly_name: sensor ruchu antresola
+      unit_of_measurement: '%'
+      entity_id: binary_sensor.motion_sensor_158d00014d0a27
+      value_template: >-
+         {% if states.binary_sensor.motion_sensor_158d00014d0a27 %}
+            {{ states.binary_sensor.motion_sensor_158d00014d0a27.attributes.battery_level }}
+         {% else %}
+            {{ states.sensor.battery_body_sensor_atresola.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.binary_sensor.motion_sensor_158d00014d0a27.attributes.battery_level %}
+            {% if states.binary_sensor.motion_sensor_158d00014d0a27.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.binary_sensor.motion_sensor_158d00014d0a27.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.binary_sensor.motion_sensor_158d00014d0a27.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.binary_sensor.motion_sensor_158d00014d0a27.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
+    battery_switch_lamp_salon:
+      friendly_name: włącznik lampy salon
+      unit_of_measurement: '%'
+      entity_id: binary_sensor.switch_158d000154964c
+      value_template: >-
+         {% if states.binary_sensor.switch_158d000154964c %}
+            {{ states.binary_sensor.switch_158d000154964c.attributes.battery_level }}
+         {% else %}
+            {{ states.sensor.battery_switch_lamp_salon.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.binary_sensor.switch_158d000154964c.attributes.battery_level %}
+            {% if states.binary_sensor.switch_158d000154964c.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.binary_sensor.switch_158d000154964c.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.binary_sensor.switch_158d000154964c.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.binary_sensor.switch_158d000154964c.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
+    motion_antresola:
+      friendly_name: Antresola
+      entity_id: binary_sensor.motion_sensor_158d00014d0a27
+      value_template: >-
+         {% if states.binary_sensor.motion_sensor_158d00014d0a27.state == 'on' %}
+            ruch
+         {% else %}
+            brak ruchu
+         {% endif %}
+
+    raspberry_disk_free:
+      friendly_name: Wolne miejsce
+      unit_of_measurement: 'GB'
+      entity_id: sensor.disk_free_
+      value_template: >-
+         {% if states.sensor.disk_free_ %}
+            {{ states.sensor.disk_free_.state }}
+         {% else %}
+            {{ states.sensor.raspberry_disk_free.state }}
          {% endif %}
 
     sun_custom:

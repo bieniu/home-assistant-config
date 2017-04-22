@@ -5,7 +5,7 @@ default_view:
   entities:
     - group.family
     - group.weather
-    - group.temp_and_humidity
+    - group.sensors
     - group.lights
     - group.heating
     - media_player.denon
@@ -50,16 +50,21 @@ weather:
     - sensor.sunrise
     - sensor.sunset
 
-temp and humidity:
-  name: Temperatura i wilgotność
+sensors:
+  name: Czujniki
   control: hidden
   entities:
     - sensor.temperature_salon
     - sensor.humidity_salon
+    - sensor.temperature_antresola
+    - sensor.humidity_antresola
     - sensor.temperature_sypialnia
     - sensor.humidity_sypialnia
     - sensor.temperature_pokoj_antek
     - sensor.humidity_pokoj_antek
+    - sensor.temperature_lazienka
+    - sensor.humidity_lazienka
+    - sensor.motion_antresola
 
 lights:
   name: Oświetlenie
@@ -187,8 +192,12 @@ batteries:
     - sensor.battery_thermostat_sypialnia
     - sensor.battery_thermostat_antek
     - sensor.battery_temp_humi_sensor_salon
+    - sensor.battery_temp_humi_sensor_antresola
     - sensor.battery_temp_humi_sensor_sypialnia
     - sensor.battery_temp_humi_sensor_antek
+    - sensor.battery_temp_humi_sensor_lazienka
+    - sensor.battery_body_sensor_antresola
+    - sensor.battery_switch_lamp_salon
 
 raspberry:
   name: Raspberry Pi 3

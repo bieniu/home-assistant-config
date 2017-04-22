@@ -1,3 +1,7 @@
+#### MOTION ####
+sensor.motion_antresola:
+  icon: mdi:run
+
 #### LIGHTS ####
 light.gateway_light_f0b429cc6f0b:
   friendly_name: Lampka antresola
@@ -32,25 +36,23 @@ sensor.maciek_presence:
 #### ZONES ####
 zone.home:
   icon: mdi:home-outline
-  track_ios: true
-zone.work_2:
-  track_ios: true
-zone.work_3:
-  track_ios: true
+#  track_ios: true
+#zone.work_2:
+#  track_ios: true
+#zone.work_3:
+#  track_ios: true
 
 #### GROUPS ####
 group.family:
   order: 5
 group.weather:
   order: 6
-group.temp_and_humidity:
+group.sensors:
   order: 7
 group.heating:
   order: 8
 group.lights:
   order: 9
-#group.media_players:
-#  order: 9
 group.wire_devices:
   order: 10
 group.wireless_devices:
@@ -67,6 +69,8 @@ group.scripts:
   order: 16
 group.batteries:
   order: 17
+group.guests:
+  order: 25
 
 #### WEATHER ####
 sensor.dark_sky_temperature:
@@ -180,6 +184,12 @@ sensor.temperature_158d0001100416:
 sensor.temperature_158d00010fb2cd:
   friendly_name: Temperatura pokój Antka
 
+sensor.temperature_158d000129a158:
+  friendly_name: Temperatura łazienka
+
+sensor.temperature_158d000149cc8c:
+  friendly_name: Temperatura antresola
+
 sensor.humidity_158d00010fb340:
   friendly_name: Wilgotność salon
 
@@ -189,6 +199,20 @@ sensor.humidity_158d0001100416:
 sensor.humidity_158d00010fb2cd:
   friendly_name: Wilgotność pokój Antka
 
+sensor.humidity_158d000129a158:
+  friendly_name: Wilgotność łazienka
+
+sensor.humidity_158d000149cc8c:
+  friendly_name: Wilgotność antresola
+
 sensor.illumination_f0b429cc6f0b:
   friendly_name: Oświetlenie antresola
   icon: mdi:lightbulb-on-outline
+
+binary_sensor.switch_158d000154964c:
+  friendly_name: Lampa salon
+  icon: mdi:lamp
+
+binary_sensor.motion_sensor_158d00014d0a27:
+  friendly_name: Antresola
+  icon: mdi:run

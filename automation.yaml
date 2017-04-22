@@ -1,5 +1,20 @@
 #### NOTIFICATIONS ####
-# powiadomienie o dostępnej aktualizacji
+# powiadomienie o błędzie inicjalizacji Z-Wave
+- alias: 'Notification Z-Wave Error'
+  trigger:
+    platform: state
+    entity_id: zwave.__1
+    state: 'Dead (Probe)'
+  action:
+    service: notify.html5
+    data_template:
+      title: 'Błąd inicjalizacji Z-Wave'
+      message: "Prawdopodobnie wystąpił błąd inicjalizacji Z-Wave. Wymagany restart Home Assistant."
+    data:
+      data:
+        tag: 'notification-zwave-error'
+
+# powiadomienie o dostępnej aktualizacji HA
 - alias: 'Notification Update Available'
   trigger:
     platform: state
@@ -9,6 +24,21 @@
     data_template:
       title: 'Nowa wersja Home Assistante'
       message: "Dostępna jest aktualizacja do wersji {{ states.updater.updater.state }} dla Home Assistant."
+    data:
+      data:
+        tag: 'notification-hass-update'
+        url: "https://home-assistant.io/blog/"
+
+# powiadomienie o dostępnej aktualizacji HA z CMD
+- alias: 'Notification Update Available CMD'
+  trigger:
+    platform: state
+    entity_id: sensor.current_ha_version
+  action:
+    service: notify.html5_oneplus
+    data_template:
+      title: 'Nowa wersja Home Assistante'
+      message: "Dostępna jest aktualizacja do wersji {{ states.sensor.current_ha_version.state }} dla Home Assistant."
     data:
       data:
         tag: 'notification-hass-update'
@@ -341,7 +371,6 @@
         entity_id: input_boolean.heating_salon_kuchnia_night
         state: 'off'
   action:
-    - delay: 0:15
     - service: climate.set_temperature
       entity_id: climate.kuchnia_thermostat_heating_1_5_1
       data_template:
@@ -913,29 +942,75 @@
       entity_id: scene.{{ trigger.to_state.state }}
 
 # włączenie lampki na antresoli po wyłączeniu światła w salonie wieczorem
-- alias: 'Light Turn On Antresola Lamp After Turn Off Salon Bulbs'
+#- alias: 'Light Turn On Antresola Lamp After Turn Off Salon Bulbs'
+#  trigger:
+#    platform: state
+#    entity_id: group.bulbs_salon
+#    from: 'on'
+#    to: 'off'
+#  condition:
+#    condition: and
+#    conditions:
+#      - condition: numeric_state
+#        entity_id: sensor.illumination_f0b429cc6f0b
+#        below: 500
+#      - condition: or
+#        conditions:
+#          - condition: sun
+#            after: sunset
+#            after_offset: '+02:00:00' 
+#          - condition: sun
+#            before: sunrise
+#            before_offset: '-02:00:00'
+#  action:
+#    service: script.turn_on
+#    entity_id: script.light_antresola_on
+
+- alias: 'Light Turn On Antresola Lamp'
   trigger:
-    platform: state
-    entity_id: group.bulbs_salon
-    from: 'on'
-    to: 'off'
+    - platform: event
+      event_type: click
+      event_data:
+        entity_id: binary_sensor.switch_158d000154964c
+        click_type: single
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_158d00014d0a27
+      from: 'off'
+      to: 'on'
   condition:
     condition: and
-    conditions:
+    conditions:   
+      - condition: state
+        entity_id: light.gateway_light_f0b429cc6f0b
+        state: 'off'
       - condition: numeric_state
         entity_id: sensor.illumination_f0b429cc6f0b
-        below: 500
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-            after_offset: '+02:00:00' 
-          - condition: sun
-            before: sunrise
-            before_offset: '-02:00:00'
+        below: 300
   action:
-    service: script.turn_on
-    entity_id: script.light_antresola_on
+    service: light.turn_on
+    entity_id: light.gateway_light_f0b429cc6f0b
+    data:
+      brightness: 60
+      rgb_color: [190,0,190]
+
+- alias: 'Light Turn Off Antresola Lamp'
+  trigger:
+    - platform: event
+      event_type: click
+      event_data:
+        entity_id: binary_sensor.switch_158d000154964c
+        click_type: single
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_158d00014d0a27
+      from: 'on'
+      to: 'off'
+  condition:
+    condition: state
+    entity_id: light.gateway_light_f0b429cc6f0b
+    state: 'on'
+  action:
+    service: light.turn_off
+    entity_id: light.gateway_light_f0b429cc6f0b
 
 # automatyczna zmiana temperatury koloru żarówek gdy wybrana scena standard
 - alias: 'Light Salon Bulbs Auto Color Temp'
@@ -961,7 +1036,7 @@
         entity_id: input_select.light_scenes_salon
         state: 'standard'
       - condition: template
-        value_template: '{{ (states.light.yeelight_color_bulb_salon_1.attributes.color_temp | int <= 340) }}'
+        value_template: '{{ (states.light.yeelight_color_bulb_salon_1.attributes.color_temp | int <= 320) }}'
   action:
     service: homeassistant.turn_on
     entity_id: group.bulbs_salon

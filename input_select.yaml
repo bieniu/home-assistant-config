@@ -1,11 +1,11 @@
 heating_night_start:
   name: Początek nocnego obniżenia temperatury
   options:
+    - '21:30'
     - '22:00'
     - '22:30'
     - '23:00'
     - '23:30'
-    - '23:55'
   icon: mdi:clock-start
 
 heating_night_end:
@@ -23,11 +23,11 @@ heating_night_end:
 heating_night_start_weekend:
   name: Początek nocnego obniżenia temperatury w weekendy
   options:
+    - '21:30'
     - '22:00'
     - '22:30'
     - '23:00'
     - '23:30'
-    - '23:55'
   icon: mdi:clock-start
 
 heating_night_end_weekend:
