@@ -45,31 +45,52 @@ http:
 
 updater:
 
-#discovery:
+discovery:
 
 zeroconf:
 
 recorder:
   purge_days: 3
+  db_url: postgres://@/homeassistant
   exclude:
     domains:
       - automation
       - updater
       - sun
+      - scenes
+      - script
+    entities:
+      - sensor.printer_toner_status
+      - sensor.sunset
+      - sensor.sunrise
+      - sensor.sun_custom
+      - sensor.printer_pages_to_replace_drum
+      - sensor.printer_printed_pages
+      - sensor.last_boot
+      - sensor.raspberry_disk_free
 
 logger:
   default: warning
   logs:
+    homeassistant.core: fatal
     homeassistant.components.automation: info
     homeassistant.components.sensor.template: error
+    homeassistant.components.sensor.snmp: fatal
+    homeassistant.components.sensor.statistics: error
+    homeassistant.components.zwave: info
     DenonAVR: fatal
     pychromecast: fatal
-    homeassistant.components.sensor.statistics: error
+    DuneHD: fatal
+    Spotify: fatal
 #    homeassistant.components.device_tracker: debug
 #    homeassistant.components.media_player: debug
 #    homeassistant.components.mqtt: debug
-#    homeassistant.components.zwave: info
-    homeassistant.components.updater: debug
+#    homeassistant.components.updater: debug
+#    custom_components.xiaomi: debug
+#    custom_components.sensor.xiaomi: debug
+#    custom_components.switch.xiaomi: debug
+#    custom_components.binary_sensor: debug
+#    custom_components.light.xiaomi: debug
 
 history:
   include:
@@ -83,7 +104,6 @@ history:
       - light.gateway_light_f0b429cc6f0b
       - sensor.edyta_presence
       - sensor.maciek_presence
-      - sensor.sun_custom
       - sensor.dark_sky_humidity_custom
       - sensor.dark_sky_precip_probability_custom
       - sensor.dark_sky_pressure_custom
@@ -105,6 +125,7 @@ history:
       - sensor.temperature_lazienka
       - sensor.temperature_antresola
       - sensor.illumination_f0b429cc6f0b
+      - sensor.motion_antresola
 
 logbook:
   include:
@@ -118,14 +139,13 @@ logbook:
       - light.gateway_light_f0b429cc6f0b
       - sensor.edyta_presence
       - sensor.maciek_presence
-      - sensor.sun_custom
 
 sun:
 
 config:
 
 zwave:
-  usb_path: /dev/ttyACM0
+  usb_path: /dev/zwave
   config_path: /srv/homeassistant/homeassistant_venv/lib/python3.4/site-packages/libopenzwave-0.3.3-py3.4-linux-armv7l.egg/config
   device_config: !include zwave_device_config.yaml
 
@@ -175,11 +195,11 @@ media_player:
     client_id: !secret spotify_client_id
     client_secret: !secret spotify_client_secret
     cache_path: /home/homeassistant/.homeassistant/.spotify-token-cache
-#  - platform: cast
-#    host: !secret androidtv_ip
-#  - platform: dunehd
-#    host: !secret dune_ip
-#    name: Dune
+  - platform: cast
+    host: !secret androidtv_ip
+  - platform: dunehd
+    host: !secret dune_ip
+    name: Dune
 
 notify:
   name: html5
@@ -243,6 +263,9 @@ binary_sensor:
         invert: Yes
       temperature_pokoj_antek_down:
         entity_id: sensor.temperature_158d00010fb2cd
+        invert: Yes
+      temperature_antresola_down:
+        entity_id: sensor.temperature_158d000149cc8c
         invert: Yes
 
 ios:

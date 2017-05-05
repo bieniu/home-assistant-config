@@ -1,10 +1,10 @@
-- name: nocny
+- name: wieczorny
   entities:
     group.bulbs_salon:
       state: on
       transition: 5
-      brightness: 3
-      rgb_color: [255,153,0]
+      brightness: 110
+      color_temp: 350
 
 - name: kino
   entities:

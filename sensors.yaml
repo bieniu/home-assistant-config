@@ -3,16 +3,14 @@
   command: "cat /sys/class/thermal/thermal_zone0/temp"
   unit_of_measurement: "°C"
   value_template: '{{ (value | multiply(0.001)) | round(1) }}'
+  scan_interval: 300
 
-- platform: command_line
-  name: HA Database Size
-  command: "ls -l /home/homeassistant/.homeassistant/home-assistant_v2.db | awk '{print $5}'"
-  unit_of_measurement: "MB"
-  value_template: '{{ (value | float / 1024 / 1024 ) | round(1) }}'
-
-- platform: command_line
-  command: python3 -c "import requests; print(requests.get('https://pypi.python.org/pypi/homeassistant/json').json()['info']['version'])"
-  name: Current HA Version
+#- platform: command_line
+#  name: HA Database Size
+#  command: "ls -l /home/homeassistant/.homeassistant/home-assistant_v2.db | awk '{print $5}'"
+#  unit_of_measurement: "MB"
+#  value_template: '{{ (value | float / 1024 / 1024 ) | round(1) }}'
+#  scan_interval: 600
 
 - platform: google_travel_time
   name: Edyta To Home
@@ -63,18 +61,22 @@
   sensors:
     temperature_salon:
       entity_id: sensor.temperature_158d00010fb340
-      friendly_name: Temperatura salon
+      friendly_name: Temperatura salon/kuchnia
       unit_of_measurement: '°C'
       value_template: >- 
          {% if states.sensor.temperature_158d00010fb340 %}
-            {{ (states.sensor.temperature_158d00010fb340.state | float - 0.5) | round(1) }}
+            {% if states.sensor.temperature_158d00010fb340.state | int < 60 %}
+               {{ (states.sensor.temperature_158d00010fb340.state | float - 0.5) | round(1) }}
+            {% else %}
+               unknown
+            {% endif %}
          {% else %}
             {{ states.sensor.temperature_salon.state }}
          {% endif %}
 
     humidity_salon:
       entity_id: sensor.humidity_158d00010fb340
-      friendly_name: Wilgotność salon
+      friendly_name: Wilgotność salon/kuchnia
       unit_of_measurement: '%'
       value_template: >-
          {% if states.sensor.humidity_158d00010fb340 %}
@@ -89,7 +91,11 @@
       unit_of_measurement: '°C'
       value_template: >-
          {% if states.sensor.temperature_158d0001100416 %}
-            {{ (states.sensor.temperature_158d0001100416.state | float - 0.5) | round(1) }}
+            {% if states.sensor.temperature_158d0001100416.state | int < 60 %} 
+               {{ (states.sensor.temperature_158d0001100416.state | float - 0.5) | round(1) }}
+            {% else %}
+               unknown
+            {% endif %}
          {% else %}
             {{ states.sensor.temperature_sypialnia.state }}
          {% endif %}
@@ -111,7 +117,11 @@
       unit_of_measurement: '°C'
       value_template: >-
          {% if states.sensor.temperature_158d00010fb2cd %}
-            {{ (states.sensor.temperature_158d00010fb2cd.state | float - 0.5) | round(1) }}
+            {% if states.sensor.temperature_158d00010fb2cd.state | int < 60 %}
+               {{ (states.sensor.temperature_158d00010fb2cd.state | float - 0.5) | round(1) }}
+            {% else %}
+               unknown
+            {% endif %}
          {% else %}
             {{ states.sensor.temperature_pokoj_antek.state }}
          {% endif %}
@@ -133,7 +143,11 @@
       unit_of_measurement: '°C'
       value_template: >-
          {% if states.sensor.temperature_158d000129a158 %}
-            {{ (states.sensor.temperature_158d000129a158.state | float - 0.5) | round(1) }}
+            {% if states.sensor.temperature_158d000129a158.state | int < 60 %}
+               {{ (states.sensor.temperature_158d000129a158.state | float - 0.5) | round(1) }}
+            {% else %}
+               unknown
+            {% endif %}
          {% else %}
             {{ states.sensor.temperature_lazienka.state }}
          {% endif %}
@@ -155,7 +169,11 @@
       unit_of_measurement: '°C'
       value_template: >-
          {% if states.sensor.temperature_158d000149cc8c %}
-            {{ (states.sensor.temperature_158d000149cc8c.state | float - 0.5) | round(1) }}
+            {% if states.sensor.temperature_158d000149cc8c.state | int < 60 %}
+               {{ (states.sensor.temperature_158d000149cc8c.state | float - 0.5) | round(1) }}
+            {% else %}
+               unknown
+            {% endif %}
          {% else %}
             {{ states.sensor.temperature_antresola.state }}
          {% endif %}
@@ -174,24 +192,24 @@
     battery_thermostat_antresola:
       friendly_name: termostat antresola
       unit_of_measurement: '%'
-      entity_id: zwave.antresola_thermostat_2
+      entity_id: zwave.antresola_thermostat_12
       value_template: >-
-         {% if states.zwave.antresola_thermostat_2 %}
-            {{ states.zwave.antresola_thermostat_2.attributes.battery_level }}
+         {% if states.zwave.antresola_thermostat_12 %}
+            {{ states.zwave.antresola_thermostat_12.attributes.battery_level }}
          {% else %}
             {{ states.sensor.battery_thermostat_antresola.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.zwave.antresola_thermostat_2.attributes.battery_level %}
-            {% if states.zwave.antresola_thermostat_2.attributes.battery_level == 'unknown' %}
+         {% if states.zwave.antresola_thermostat_12.attributes.battery_level %}
+            {% if states.zwave.antresola_thermostat_12.attributes.battery_level == 'unknown' %}
                mdi:battery-unknown
-            {% elif states.zwave.antresola_thermostat_2.attributes.battery_level | int <= 5 %}
+            {% elif states.zwave.antresola_thermostat_12.attributes.battery_level | int <= 5 %}
                mdi:battery-outline
-            {% elif states.zwave.antresola_thermostat_2.attributes.battery_level | int >= 95 %}
+            {% elif states.zwave.antresola_thermostat_12.attributes.battery_level | int >= 95 %}
                mdi:battery
             {% else %}
-               mdi:battery-{{ ((states.zwave.antresola_thermostat_2.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+               mdi:battery-{{ ((states.zwave.antresola_thermostat_12.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
             {% endif %}
          {% else %}
             mdi:battery-unknown
@@ -200,24 +218,24 @@
     battery_thermostat_salon:
       friendly_name: termostat salon
       unit_of_measurement: '%'
-      entity_id: zwave.salon_thermostat_11
+      entity_id: zwave.salon_thermostat_2
       value_template: >-
-         {% if states.zwave.salon_thermostat_11 %}
-            {{ states.zwave.salon_thermostat_11.attributes.battery_level }}
+         {% if states.zwave.salon_thermostat_2 %}
+            {{ states.zwave.salon_thermostat_2.attributes.battery_level }}
          {% else %}
             {{ states.sensor.battery_thermostat_salon.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.zwave.salon_thermostat_11.attributes.battery_level %}
-            {% if states.zwave.salon_thermostat_11.attributes.battery_level == 'unknown' %}
+         {% if states.zwave.salon_thermostat_2.attributes.battery_level %}
+            {% if states.zwave.salon_thermostat_2.attributes.battery_level == 'unknown' %}
                mdi:battery-unknown
-            {% elif states.zwave.salon_thermostat_11.attributes.battery_level | int <= 5 %}
+            {% elif states.zwave.salon_thermostat_2.attributes.battery_level | int <= 5 %}
                mdi:battery-outline
-            {% elif states.zwave.salon_thermostat_11.attributes.battery_level | int >= 95 %}
+            {% elif states.zwave.salon_thermostat_2.attributes.battery_level | int >= 95 %}
                mdi:battery
             {% else %}
-               mdi:battery-{{ ((states.zwave.salon_thermostat_11.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+               mdi:battery-{{ ((states.zwave.salon_thermostat_2.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
             {% endif %}
          {% else %}
             mdi:battery-unknown
@@ -484,7 +502,7 @@
          {% endif %}
 
     motion_antresola:
-      friendly_name: Antresola
+      friendly_name: Ruch antresola
       entity_id: binary_sensor.motion_sensor_158d00014d0a27
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d00014d0a27.state == 'on' %}
@@ -808,23 +826,64 @@
             offline
          {% endif %}
 
+    brother_status:
+      friendly_name: Brother HL-L2340DW
+      entity_id: device_tracker.brother,sensor.printer_status
+      value_template: >-
+         {% if is_state('sensor.printer_status', 'DRUKOWANIE') %}
+            drukowanie
+         {% elif is_state('device_tracker.brother', 'home') %}
+            online
+         {% else %}
+            offline
+         {% endif %}
+
     temperature_salon_delta:
-        friendly_name: "Temperature Salon Delta"
-        value_template: "{{ (states.sensor.temperature_salon_statistics_mean.attributes.max_value | float) - (states.sensor.temperature_salon_statistics_mean.attributes.min_value | float) }}"
-        entity_id: sensor.temperature_salon_statistics_mean
-        unit_of_measurement: "°C"
+      friendly_name: "Temperature Salon Delta"
+      value_template: "{{ (states.sensor.temperature_salon_statistics_mean.attributes.max_value | float) - (states.sensor.temperature_salon_statistics_mean.attributes.min_value | float) }}"
+      entity_id: sensor.temperature_salon_statistics_mean
+      unit_of_measurement: "°C"
 
     temperature_sypialnia_delta:
-        friendly_name: "Temperature Sypialnia Delta"
-        value_template: "{{ (states.sensor.temperature_sypialnia_statistics_mean.attributes.max_value | float) - (states.sensor.temperature_sypialnia_statistics_mean.attributes.min_value | float) }}"
-        entity_id: sensor.temperature_sypialnia_statistics_mean
-        unit_of_measurement: "°C"
+      friendly_name: "Temperature Sypialnia Delta"
+      value_template: "{{ (states.sensor.temperature_sypialnia_statistics_mean.attributes.max_value | float) - (states.sensor.temperature_sypialnia_statistics_mean.attributes.min_value | float) }}"
+      entity_id: sensor.temperature_sypialnia_statistics_mean
+      unit_of_measurement: "°C"
 
     temperature_pokoj_antek_delta:
-        friendly_name: "Temperature Pokój Antek Delta"
-        value_template: "{{ (states.sensor.temperature_pokoj_antek_statistics_mean.attributes.max_value | float) - (states.sensor.temperature_pokoj_antek_statistics_mean.attributes.min_value | float) }}"
-        entity_id: sensor.temperature_pokoj_antek_statistics_mean
-        unit_of_measurement: "°C"
+      friendly_name: "Temperature Pokój Antek Delta"
+      value_template: "{{ (states.sensor.temperature_pokoj_antek_statistics_mean.attributes.max_value | float) - (states.sensor.temperature_pokoj_antek_statistics_mean.attributes.min_value | float) }}"
+      entity_id: sensor.temperature_pokoj_antek_statistics_mean
+      unit_of_measurement: "°C"
+
+    temperature_antresola_delta:
+      friendly_name: "Temperature Antresola Delta"
+      value_template: "{{ (states.sensor.temperature_antresola_statistics_mean.attributes.max_value | float) - (states.sensor.temperature_antresola_statistics_mean.attributes.min_value | float) }}"
+      entity_id: sensor.temperature_antresola_statistics_mean
+      unit_of_measurement: "°C"
+    
+    printer_toner:
+      friendly_name: "Kartidż z tonerem"
+      entity_id: sensor.printer_toner_status
+      value_template: >-
+         {% if states.sensor.printer_toner_status.state == '-3' %}
+            pełny
+         {% elif states.sensor.printer_toner_status.state == '-2' %}
+            prawie pusty
+         {% elif states.sensor.printer_toner_status.state == '-1' %}
+            pusty
+         {% elif states.sensor.printer_toner_status.state == '0' %}
+            brak
+         {% else %}
+            brak danych
+         {% endif %}
+
+      icon_template: >-
+         {% if states.sensor.printer_toner_status.state == '-3' %}
+            mdi:flask-empty
+         {% else %}
+            mdi:flask-empty-outline
+         {% endif %}
 
 - platform: statistics
   name: Temperature Salon Statistics
@@ -840,3 +899,32 @@
   name: Temperature Pokój Antek Statistics
   entity_id: sensor.temperature_158d00010fb2cd
   sampling_size: 4
+
+- platform: statistics
+  name: Temperature Antresola Statistics
+  entity_id: sensor.temperature_158d000149cc8c
+  sampling_size: 4
+
+- platform: snmp
+  name: printer_status
+  host: !secret brother_ip
+  community: public
+  baseoid: iso.3.6.1.2.1.43.18.1.1.8.1.1
+
+- platform: snmp
+  name: printer_printed_pages
+  host: !secret brother_ip
+  community: public
+  baseoid: iso.3.6.1.2.1.43.10.2.1.4.1.1
+
+- platform: snmp
+  name: printer_toner_status
+  host: !secret brother_ip
+  community: public
+  baseoid: iso.3.6.1.2.1.43.11.1.1.9.1.1
+
+- platform: snmp
+  name: printer_pages_to_replace_drum
+  host: !secret brother_ip
+  community: public
+  baseoid: iso.3.6.1.2.1.43.11.1.1.9.1.2

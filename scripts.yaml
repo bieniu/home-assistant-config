@@ -18,11 +18,6 @@ reboot_router:
   sequence:
     service: shell_command.reboot_router
 
-zwave_add_node:
-  alias: Dodaj urządzenie Z-Wave
-  sequence:
-    service: zwave.add_node
-
 fast_warm_up:
   alias: Szybkie dogrzanie
   sequence:
@@ -30,7 +25,7 @@ fast_warm_up:
       entity_id: input_boolean.heating_season
       state: 'on'
     - service: climate.set_temperature
-      entity_id: climate.antresola_thermostat_heating_1_2_1
+      entity_id: climate.antresola_thermostat_heating_1_12_1
       data:
         temperature: 24
     - service: climate.set_temperature
@@ -61,3 +56,47 @@ light_antresola_on:
     - delay: 0:05
     - service: light.turn_off
       entity_id: light.gateway_light_f0b429cc6f0b
+
+#### DENON ####
+denon_play_maciek_playlist:
+  sequence:
+    - service: media_player.turn_on
+      entity_id: media_player.denon
+    - service: media_player.select_source
+      data:
+        entity_id: media_player.denon
+        source: Spotify
+    - delay: 10
+    - service: media_player.select_source
+      data:
+        entity_id: media_player.spotify
+        source: Denon AVR-X2100W
+    - service: media_player.play_media
+      data:
+        entity_id: media_player.spotify
+        media_content_id: 'spotify:user:1166820816:playlist:56y1N3Ba9smMZAJBjUk1qn'
+        media_content_type: 'playlist'
+
+denon_play_internet_radio:
+  sequence:
+    - service: media_player.turn_on
+      entity_id: media_player.denon
+    - service: media_player.select_source
+      data:
+        entity_id: media_player.denon
+        source: Internet Radio
+
+#### XIAOMI GATEWAY ALARM ####
+xiaomi_alarm:
+  sequence:
+    - service: xiaomi.play_ringtone
+      data:
+        ringtone_id: 2
+        gw_sid: !secret xiaomi_gateway_sid
+        ringtone_vol: 10
+
+xiaomi_alarm_stop:
+  sequence:
+    service: xiaomi.stop_ringtone
+    data:
+      gw_sid: !secret xiaomi_gateway_sid

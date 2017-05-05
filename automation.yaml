@@ -29,21 +29,6 @@
         tag: 'notification-hass-update'
         url: "https://home-assistant.io/blog/"
 
-# powiadomienie o dostępnej aktualizacji HA z CMD
-- alias: 'Notification Update Available CMD'
-  trigger:
-    platform: state
-    entity_id: sensor.current_ha_version
-  action:
-    service: notify.html5_oneplus
-    data_template:
-      title: 'Nowa wersja Home Assistante'
-      message: "Dostępna jest aktualizacja do wersji {{ states.sensor.current_ha_version.state }} dla Home Assistant."
-    data:
-      data:
-        tag: 'notification-hass-update'
-        url: "https://home-assistant.io/blog/"
-
 # powiadomienie o dostępnej aktualizacji dla routera
 - alias: 'Notification Router Update Available'
   trigger:
@@ -237,7 +222,7 @@
         state: 'home'
   action:
     - service: climate.set_temperature
-      entity_id: climate.antresola_thermostat_heating_1_2_1
+      entity_id: climate.antresola_thermostat_heating_1_12_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_day.state }}'
     - service: climate.set_temperature
@@ -282,7 +267,7 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.heating_night
     - service: climate.set_temperature
-      entity_id: climate.antresola_thermostat_heating_1_2_1
+      entity_id: climate.antresola_thermostat_heating_1_12_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_night.state }}'
     - service: climate.set_temperature
@@ -391,7 +376,7 @@
     state: 'on'
   action:
     - service: climate.set_temperature
-      entity_id: climate.antresola_thermostat_heating_1_2_1
+      entity_id: climate.antresola_thermostat_heating_1_12_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_eco.state }}'
     - service: climate.set_temperature
@@ -509,7 +494,7 @@
     state: 'on'
   action:
     - service: climate.set_temperature
-      entity_id: climate.antresola_thermostat_heating_1_2_1
+      entity_id: climate.antresola_thermostat_heating_1_12_1
       data:
         temperature: 8
     - service: climate.set_temperature
@@ -594,7 +579,7 @@
     to: 'off'
   action:
     - service: climate.set_temperature
-      entity_id: climate.antresola_thermostat_heating_1_2_1
+      entity_id: climate.antresola_thermostat_heating_1_12_1
       data:
         temperature: 4
     - service: climate.set_temperature
@@ -615,10 +600,10 @@
         temperature: 4
 
 # ustawia w kuchni temperaturę z salonu
-- alias: 'Heating Salon Thermostat SetPoint Change'
+- alias: 'Heating Sync Temp Salon Kuchnia'
   trigger:
     platform: state
-    entity_id: climate.salon_thermostat_heating_1_11_1
+    entity_id: climate.salon_thermostat_heating_1_2_1
   condition:
     condition: and
     conditions:
@@ -639,7 +624,7 @@
       temperature: '{{ trigger.to_state.attributes.temperature }}'
 
 # ustawia w salonie temperaturę z kuchni
-- alias: 'Heating Kuchnia Thermostat SetPoint Change'
+- alias: 'Heating Sync Temp Kuchnia Salon'
   trigger:
     platform: state
     entity_id: climate.kuchnia_thermostat_heating_1_5_1
@@ -653,12 +638,12 @@
            {% endif %}
       - condition: template
         value_template: >-
-           {% if (trigger.to_state and states.climate.salon_thermostat_heating_1_11_1) %}
-              {{ trigger.to_state.attributes.temperature != states.climate.salon_thermostat_heating_1_11_1.attributes.temperature }}
+           {% if (trigger.to_state and states.climate.salon_thermostat_heating_1_2_1) %}
+              {{ trigger.to_state.attributes.temperature != states.climate.salon_thermostat_heating_1_2_1.attributes.temperature }}
            {% endif %}
   action:
     service: climate.set_temperature
-    entity_id: climate.salon_thermostat_heating_1_11_1
+    entity_id: climate.salon_thermostat_heating_1_2_1
     data_template:
       temperature: '{{ trigger.to_state.attributes.temperature }}'
 
@@ -787,10 +772,53 @@
         message: 'Wykryto otwarcie okna w pokoju Antka przy włączonym ogrzewaniu. Przełączono ogrzewanie w tryb przewietrzania. Pamiętaj, że musisz ręcznie wyłączyć tryb przewietrzania po zamknięciu okna!'
       data:
         data:
-          tag: 'notification-window-sypialnia'
+          tag: 'notification-window-pokoj-antka'
     - service: input_boolean.turn_on
       entity_id: input_boolean.heating_airing
 
+# otwarcie okna na antresoli
+- alias: 'Heating Windows Opened Antresola'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.temperature_antresola_delta
+    above: 0.3
+  condition:
+    condition: and
+    conditions:
+      - condition: sun
+        after: sunrise
+      - condition: sun
+        before: sunset
+      - condition: state
+        entity_id: input_boolean.heating_night
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.temperature_antresola_down
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.heating_airing
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.away_mode
+        state: 'off'
+  action:
+    - service: notify.ios_edyta_iphone
+      data:
+        title: 'Otwarcie okien na antresoli'
+        message: 'Wykryto otwarcie okien na antresoli przy włączonym ogrzewaniu. Przełączono ogrzewanie w tryb przewietrzania. Pamiętaj, że musisz ręcznie wyłączyć tryb przewietrzania po zamknięciu okien!'
+    - service: notify.html5_oneplus
+      data_template: 
+        title: 'Otwarcie okien na antresoli'
+        message: 'Wykryto otwarcie okien na antresoli przy włączonym ogrzewaniu. Przełączono ogrzewanie w tryb przewietrzania. Pamiętaj, że musisz ręcznie wyłączyć tryb przewietrzania po zamknięciu okien!'
+      data:
+        data:
+          tag: 'notification-window-antresola'
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.heating_airing
+      
 #### LIGHT ####
 # włączenie trybu disco oświetlenia
 - alias: 'Light Disco Mode'
@@ -935,37 +963,13 @@
         state: 'on'
       - condition: state
         entity_id: input_boolean.disco_mode
-        state: 'off'        
+        state: 'off'
   action:
     service: scene.turn_on
     data_template:
       entity_id: scene.{{ trigger.to_state.state }}
 
-# włączenie lampki na antresoli po wyłączeniu światła w salonie wieczorem
-#- alias: 'Light Turn On Antresola Lamp After Turn Off Salon Bulbs'
-#  trigger:
-#    platform: state
-#    entity_id: group.bulbs_salon
-#    from: 'on'
-#    to: 'off'
-#  condition:
-#    condition: and
-#    conditions:
-#      - condition: numeric_state
-#        entity_id: sensor.illumination_f0b429cc6f0b
-#        below: 500
-#      - condition: or
-#        conditions:
-#          - condition: sun
-#            after: sunset
-#            after_offset: '+02:00:00' 
-#          - condition: sun
-#            before: sunrise
-#            before_offset: '-02:00:00'
-#  action:
-#    service: script.turn_on
-#    entity_id: script.light_antresola_on
-
+# włączanie lampki na antresoli jak jest ciemno i jest ruch
 - alias: 'Light Turn On Antresola Lamp'
   trigger:
     - platform: event
@@ -985,13 +989,14 @@
         state: 'off'
       - condition: numeric_state
         entity_id: sensor.illumination_f0b429cc6f0b
-        below: 300
+        below: 350
   action:
     service: light.turn_on
     entity_id: light.gateway_light_f0b429cc6f0b
-    data:
+    data_template:
       brightness: 60
-      rgb_color: [190,0,190]
+      rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
+#      rgb_color: [255,0,255]
 
 - alias: 'Light Turn Off Antresola Lamp'
   trigger:
@@ -1054,3 +1059,4 @@
     service: logger.set_level
     data_template:
       homeassistant.components: "{{ trigger.to_state.state }}"
+

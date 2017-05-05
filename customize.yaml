@@ -36,11 +36,6 @@ sensor.maciek_presence:
 #### ZONES ####
 zone.home:
   icon: mdi:home-outline
-#  track_ios: true
-#zone.work_2:
-#  track_ios: true
-#zone.work_3:
-#  track_ios: true
 
 #### GROUPS ####
 group.family:
@@ -53,24 +48,32 @@ group.heating:
   order: 8
 group.lights:
   order: 9
-group.wire_devices:
+group.denon:
   order: 10
-group.wireless_devices:
+group.dune:
   order: 11
-group.internet:
+group.androidtv:
   order: 12
-group.raspberry:
+group.spotify:
   order: 13
-group.heating_temps:
+group.internet:
   order: 14
-group.heatings_hours:
+group.wire_devices:
   order: 15
-group.scripts:
+group.wireless_devices:
   order: 16
-group.batteries:
+group.printer:
   order: 17
-group.guests:
-  order: 25
+group.raspberry:
+  order: 18
+group.heating_temps:
+  order: 19
+group.heating_hours:
+  order: 20
+group.scripts:
+  order: 21
+group.batteries:
+  order: 22
 
 #### WEATHER ####
 sensor.dark_sky_temperature:
@@ -137,6 +140,8 @@ sensor.modem_status:
   icon: mdi:router-wireless
 sensor.migateway_status:
   icon: mdi:router-wireless
+sensor.brother_status:
+  icon: mdi:printer
 
 #### MEDIA PLAYERS ####
 media_player.androidtv:
@@ -155,12 +160,10 @@ script.reboot_router:
   icon: mdi:refresh
 script.shutdown_pi:
   icon: mdi:power
-script.zwave_add_node:
-  icon: mdi:plus-network
 
 #### CLIMATE ####
-climate.antresola_thermostat_heating_1_2_1:
-  friendly_name: Antresola
+climate.salon_thermostat_heating_1_2_1:
+  friendly_name: Salon
 
 climate.antek_thermostat_heating_1_3_1:
   friendly_name: Pokój Antka
@@ -168,8 +171,8 @@ climate.antek_thermostat_heating_1_3_1:
 climate.sypialnia_thermostat_heating_1_4_1:
   friendly_name: Sypialnia
 
-climate.salon_thermostat_heating_1_11_1:
-  friendly_name: Salon
+climate.antresola_thermostat_heating_1_12_1:
+  friendly_name: Antresola
 
 climate.kuchnia_thermostat_heating_1_5_1:
   friendly_name: Kuchnia
@@ -206,7 +209,7 @@ sensor.humidity_158d000149cc8c:
   friendly_name: Wilgotność antresola
 
 sensor.illumination_f0b429cc6f0b:
-  friendly_name: Oświetlenie antresola
+  friendly_name: Natężenie światła antresola
   icon: mdi:lightbulb-on-outline
 
 binary_sensor.switch_158d000154964c:
@@ -214,5 +217,18 @@ binary_sensor.switch_158d000154964c:
   icon: mdi:lamp
 
 binary_sensor.motion_sensor_158d00014d0a27:
-  friendly_name: Antresola
+  friendly_name: Ruch antresola
   icon: mdi:run
+
+#### PRINTER ####
+sensor.printer_status:
+  friendly_name: Status drukarki
+  icon: mdi:printer
+
+sensor.printer_printed_pages:
+  friendly_name: Wydrukowanych stron
+  icon: mdi:file-document
+
+sensor.printer_pages_to_replace_drum:
+  friendly_name: Stron do wymiany bębna
+  icon: mdi:file-document

@@ -132,7 +132,7 @@ light_scenes_salon:
     - 'kino'
     - 'romantyczny'
     - 'fiolet'
-    - 'nocny'
+    - 'wieczorny'
 
 log_level:
   name: HA poziom informacji loga
