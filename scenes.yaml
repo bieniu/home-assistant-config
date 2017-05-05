@@ -5,7 +5,9 @@
       transition: 5
       brightness: 110
       color_temp: 350
-
+    switch.sonoff_lamp:
+      state: off
+      
 - name: kino
   entities:
     group.bulbs_salon:
@@ -13,6 +15,8 @@
       transition: 5
       brightness: 128
       rgb_color: [20,20,50]
+    switch.sonoff_lamp:
+      state: off
 
 - name: romantyczny
   entities:
@@ -21,6 +25,8 @@
       transition: 5
       brightness: 128
       rgb_color: [255,102,0]
+    switch.sonoff_lamp:
+      state: off
 
 - name: fiolet
   entities:
@@ -29,6 +35,8 @@
       transition: 5
       brightness: 200
       rgb_color: [255,0,255]
+    switch.sonoff_lamp:
+      state: off
 
 - name: standard_przed_zachodem
   entities:
@@ -37,6 +45,8 @@
       transition: 5
       brightness: 255
       color_temp: 240
+    switch.sonoff_lamp:
+      state: off
 
 - name: standard_po_zachodzie
   entities:
@@ -45,3 +55,15 @@
       transition: 5
       brightness: 255
       color_temp: 280
+    switch.sonoff_lamp:
+      state: off
+
+- name: czytanie
+  entities:
+    group.bulbs_salon:
+      state: on
+      transition: 5
+      brightness: 220
+      color_temp: 300
+    switch.sonoff_lamp:
+      state: on

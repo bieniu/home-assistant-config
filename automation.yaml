@@ -969,21 +969,48 @@
     data_template:
       entity_id: scene.{{ trigger.to_state.state }}
 
+# włączenie lampy w salonie
+- alias: 'Light Turn On Salon Lamp'
+  trigger:
+    platform: event
+    event_type: click
+    event_data:
+      entity_id: binary_sensor.switch_158d000154964c
+      click_type: single
+  condition:
+    condition: state
+    entity_id: switch.sonoff_lamp
+    state: 'off'
+  action:
+    service: switch.turn_on
+    entity_id: switch.sonoff_lamp
+
+# wyłączenie lampy w salonie
+- alias: 'Light Turn Off Salon Lamp'
+  trigger:
+    platform: event
+    event_type: click
+    event_data:
+      entity_id: binary_sensor.switch_158d000154964c
+      click_type: single
+  condition:
+    condition: state
+    entity_id: switch.sonoff_lamp
+    state: 'on'
+  action:
+    service: switch.turn_off
+    entity_id: switch.sonoff_lamp
+
 # włączanie lampki na antresoli jak jest ciemno i jest ruch
 - alias: 'Light Turn On Antresola Lamp'
   trigger:
-    - platform: event
-      event_type: click
-      event_data:
-        entity_id: binary_sensor.switch_158d000154964c
-        click_type: single
-    - platform: state
-      entity_id: binary_sensor.motion_sensor_158d00014d0a27
-      from: 'off'
-      to: 'on'
+    platform: state
+    entity_id: binary_sensor.motion_sensor_158d00014d0a27
+    from: 'off'
+    to: 'on'
   condition:
     condition: and
-    conditions:   
+    conditions:
       - condition: state
         entity_id: light.gateway_light_f0b429cc6f0b
         state: 'off'
@@ -996,23 +1023,25 @@
     data_template:
       brightness: 60
       rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
-#      rgb_color: [255,0,255]
 
 - alias: 'Light Turn Off Antresola Lamp'
   trigger:
-    - platform: event
-      event_type: click
-      event_data:
-        entity_id: binary_sensor.switch_158d000154964c
-        click_type: single
-    - platform: state
-      entity_id: binary_sensor.motion_sensor_158d00014d0a27
-      from: 'on'
-      to: 'off'
+    platform: state
+    entity_id: binary_sensor.motion_sensor_158d00014d0a27
+    from: 'on'
+    to: 'off'
   condition:
-    condition: state
-    entity_id: light.gateway_light_f0b429cc6f0b
-    state: 'on'
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: light.gateway_light_f0b429cc6f0b
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.disco_mode
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.illumination_f0b429cc6f0b
+        below: 350
   action:
     service: light.turn_off
     entity_id: light.gateway_light_f0b429cc6f0b

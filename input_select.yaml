@@ -132,6 +132,7 @@ light_scenes_salon:
     - 'kino'
     - 'romantyczny'
     - 'fiolet'
+    - 'czytanie'
     - 'wieczorny'
 
 log_level:

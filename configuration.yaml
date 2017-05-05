@@ -68,6 +68,7 @@ recorder:
       - sensor.printer_printed_pages
       - sensor.last_boot
       - sensor.raspberry_disk_free
+      - switch.sonoff_lamp
 
 logger:
   default: warning
@@ -78,9 +79,9 @@ logger:
     homeassistant.components.sensor.snmp: fatal
     homeassistant.components.sensor.statistics: error
     homeassistant.components.zwave: info
+    homeassistant.components.media_player.spotify: fatal
     DenonAVR: fatal
     pychromecast: fatal
-    DuneHD: fatal
     Spotify: fatal
 #    homeassistant.components.device_tracker: debug
 #    homeassistant.components.media_player: debug
@@ -197,9 +198,9 @@ media_player:
     cache_path: /home/homeassistant/.homeassistant/.spotify-token-cache
   - platform: cast
     host: !secret androidtv_ip
-  - platform: dunehd
-    host: !secret dune_ip
-    name: Dune
+#  - platform: dunehd
+#    host: !secret dune_ip
+#    name: Dune
 
 notify:
   name: html5
@@ -208,14 +209,22 @@ notify:
   gcm_sender_id: !secret gcm_sender_id
 
 switch:
-  platform: wake_on_lan
-  name: wake_on_lan_stacjonarny
-  host: !secret desktop_ip
-  mac_address: !secret desktop_mac_address
-  broadcast_address: 255.255.255.255
-  turn_off:
-    service:
-      shell_command.stacjonarny_off
+  - platform: wake_on_lan
+    name: wake_on_lan_stacjonarny
+    host: !secret desktop_ip
+    mac_address: !secret desktop_mac_address
+    broadcast_address: 255.255.255.255
+    turn_off:
+      service:
+        shell_command.stacjonarny_off
+  - platform: mqtt
+    name: "Sonoff Lamp"
+    command_topic: "cmnd/sonoff-lamp/power"
+    state_topic: "stat/sonoff-lamp/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: true
 
 shell_command:
   stacjonarny_off: "curl http://stacjonarny:88/event.html?PowerOff"

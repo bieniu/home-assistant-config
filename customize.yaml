@@ -50,30 +50,28 @@ group.lights:
   order: 9
 group.denon:
   order: 10
-group.dune:
-  order: 11
 group.androidtv:
-  order: 12
+  order: 11
 group.spotify:
-  order: 13
+  order: 12
 group.internet:
-  order: 14
+  order: 13
 group.wire_devices:
-  order: 15
+  order: 14
 group.wireless_devices:
-  order: 16
+  order: 15
 group.printer:
-  order: 17
+  order: 16
 group.raspberry:
-  order: 18
+  order: 17
 group.heating_temps:
-  order: 19
+  order: 18
 group.heating_hours:
-  order: 20
+  order: 19
 group.scripts:
-  order: 21
+  order: 20
 group.batteries:
-  order: 22
+  order: 21
 
 #### WEATHER ####
 sensor.dark_sky_temperature:
@@ -232,3 +230,8 @@ sensor.printer_printed_pages:
 sensor.printer_pages_to_replace_drum:
   friendly_name: Stron do wymiany bębna
   icon: mdi:file-document
+
+#### SONOFF ####
+switch.sonoff_lamp:
+  icon: mdi:lamp
+  friendly_name: Lampa salon

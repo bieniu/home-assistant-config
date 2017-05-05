@@ -16,7 +16,6 @@ media players:
   entities:
     - group.denon
     - group.androidtv
-    - group.dune
     - group.spotify
 
 spotify:
@@ -27,9 +26,6 @@ denon:
 
 androidtv:
   entities: media_player.androidtv
-
-dune:
-  entities: media_player.dune
 
 network:
   name: Sieć
@@ -87,6 +83,7 @@ lights:
   control: hidden
   entities:
     - group.bulbs_salon
+    - switch.sonoff_lamp
     - input_select.light_scenes_salon
     - light.gateway_light_f0b429cc6f0b
     - input_boolean.disco_mode
