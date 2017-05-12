@@ -16,10 +16,6 @@ media players:
   entities:
     - group.denon
     - group.androidtv
-    - group.spotify
-
-spotify:
-  entities: media_player.spotify
 
 denon:
   entities: media_player.denon
@@ -34,6 +30,7 @@ network:
   entities:
     - group.wire_devices
     - group.wireless_devices
+    - group.iot_devices
     - group.internet
     - group.raspberry
     - group.printer
@@ -156,6 +153,13 @@ wireless devices:
     - sensor.ipad_status
     - sensor.kindle_status
 
+iot devices:
+  name: Urządzenia IoT
+  entities:
+    - sensor.sonoff_lamp_status
+    - sensor.yeelight1_status
+    - sensor.yeelight2_status
+
 internet:
   name: Internet
   entities:
@@ -219,7 +223,7 @@ raspberry:
     - sensor.ram_use
     - sensor.raspberry_disk_free
     - sensor.last_boot
-#    - sensor.ha_database_size
+    - sensor.ha_database_size
 
 printer:
   name: Drukarka

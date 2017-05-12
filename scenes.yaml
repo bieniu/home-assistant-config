@@ -43,10 +43,8 @@
     group.bulbs_salon:
       state: on
       transition: 5
-      brightness: 255
+      brightness: 220
       color_temp: 240
-    switch.sonoff_lamp:
-      state: off
 
 - name: standard_po_zachodzie
   entities:
@@ -55,8 +53,6 @@
       transition: 5
       brightness: 255
       color_temp: 280
-    switch.sonoff_lamp:
-      state: off
 
 - name: czytanie
   entities:

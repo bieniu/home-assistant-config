@@ -5,6 +5,7 @@ sensor.motion_antresola:
 #### LIGHTS ####
 light.gateway_light_f0b429cc6f0b:
   friendly_name: Lampka antresola
+  icon: mdi:spotlight
 light.yeelight_color_bulb_salon_1:
   friendly_name: Żarówka salon 1
 light.yeelight_color_bulb_salon_2:
@@ -24,7 +25,7 @@ sensor.raspberry_cpu_temp:
   friendly_name: 'Temperatura CPU'
   icon: mdi:thermometer
 sensor.ha_database_size:
-  friendly_name: 'Wielkość bazy danych HA'
+  friendly_name: 'Wielkość bazy danych'
   icon: mdi:database
 
 #### PEOPLES ####
@@ -52,13 +53,13 @@ group.denon:
   order: 10
 group.androidtv:
   order: 11
-group.spotify:
-  order: 12
-group.internet:
-  order: 13
 group.wire_devices:
-  order: 14
+  order: 12
 group.wireless_devices:
+  order: 13
+group.iot_devices:
+  order: 14
+group.internet:
   order: 15
 group.printer:
   order: 16
@@ -140,6 +141,12 @@ sensor.migateway_status:
   icon: mdi:router-wireless
 sensor.brother_status:
   icon: mdi:printer
+sensor.sonoff_lamp_status:
+  icon: mdi:toggle-switch-off
+sensor.yeelight1_status:
+  icon: mdi:lightbulb-outline
+sensor.yeelight2_status:
+  icon: mdi:lightbulb-outline
 
 #### MEDIA PLAYERS ####
 media_player.androidtv:

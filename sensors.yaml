@@ -1,3 +1,6 @@
+- platform: cert_expiry
+  host: bieniu.eu
+
 - platform: command_line
   name: Raspberry CPU Temp
   command: "cat /sys/class/thermal/thermal_zone0/temp"
@@ -5,12 +8,12 @@
   value_template: '{{ (value | multiply(0.001)) | round(1) }}'
   scan_interval: 300
 
-#- platform: command_line
-#  name: HA Database Size
-#  command: "ls -l /home/homeassistant/.homeassistant/home-assistant_v2.db | awk '{print $5}'"
-#  unit_of_measurement: "MB"
-#  value_template: '{{ (value | float / 1024 / 1024 ) | round(1) }}'
-#  scan_interval: 600
+- platform: command_line
+  name: HA Database Size
+  command: "ls -l /home/homeassistant/.homeassistant/home-assistant_v2.db | awk '{print $5}'"
+  unit_of_measurement: "MB"
+  value_template: '{{ (value | float / 1024 / 1024 ) | round(1) }}'
+  scan_interval: 900
 
 - platform: google_travel_time
   name: Edyta To Home
@@ -837,6 +840,21 @@
          {% else %}
             offline
          {% endif %}
+
+    sonoff_lamp_status:
+      friendly_name: Sonoff Basic
+      value_template: "{% if is_state('device_tracker.sonoff_lamp', 'home') %}online{% else %}offline{% endif %}"
+      entity_id: device_tracker.sonoff_lamp
+
+    yeelight1_status:
+      friendly_name: Xiaomi Yeelight YLDP02YL [1]
+      value_template: "{% if is_state('device_tracker.yeelight_color_1', 'home') %}online{% else %}offline{% endif %}"
+      entity_id: device_tracker.yeelight_color_1
+
+    yeelight2_status:
+      friendly_name: Xiaomi Yeelight YLDP02YL [2]
+      value_template: "{% if is_state('device_tracker.yeelight_color_2', 'home') %}online{% else %}offline{% endif %}"
+      entity_id: device_tracker.yeelight_color_2
 
     temperature_salon_delta:
       friendly_name: "Temperature Salon Delta"

@@ -51,7 +51,7 @@ zeroconf:
 
 recorder:
   purge_days: 3
-  db_url: postgres://@/homeassistant
+#  db_url: postgres://@/homeassistant
   exclude:
     domains:
       - automation
@@ -68,21 +68,20 @@ recorder:
       - sensor.printer_printed_pages
       - sensor.last_boot
       - sensor.raspberry_disk_free
-      - switch.sonoff_lamp
+      - sensor.ssl_certificate_expiry
+      - binary_sensor.switch_158d000154964c
 
 logger:
   default: warning
   logs:
-    homeassistant.core: fatal
     homeassistant.components.automation: info
     homeassistant.components.sensor.template: error
     homeassistant.components.sensor.snmp: fatal
     homeassistant.components.sensor.statistics: error
     homeassistant.components.zwave: info
-    homeassistant.components.media_player.spotify: fatal
     DenonAVR: fatal
     pychromecast: fatal
-    Spotify: fatal
+#    homeassistant.core: fatal
 #    homeassistant.components.device_tracker: debug
 #    homeassistant.components.media_player: debug
 #    homeassistant.components.mqtt: debug
@@ -127,6 +126,7 @@ history:
       - sensor.temperature_antresola
       - sensor.illumination_f0b429cc6f0b
       - sensor.motion_antresola
+      - switch.sonoff_lamp
 
 logbook:
   include:
@@ -135,9 +135,7 @@ logbook:
       - device_tracker.emil
       - device_tracker.grazyna
       - device_tracker.jerzy
-      - group.bulbs_salon
       - group.peoples
-      - light.gateway_light_f0b429cc6f0b
       - sensor.edyta_presence
       - sensor.maciek_presence
 
@@ -164,6 +162,7 @@ xiaomi:
   gateways:
     sid: !secret xiaomi_gateway_sid
     key: !secret xiaomi_gateway_key
+    poll_motion: false
 
 device_tracker:
   - platform: bluetooth_tracker
@@ -181,6 +180,7 @@ device_tracker:
       - !secret switch_ip
       - !secret lumia_ip
       - !secret synology_ip
+      - !secret sonoff_lamp_ip
     home_interval: 10
     scan_options: " --privileged -sP "
   - platform: gpslogger
@@ -192,10 +192,10 @@ media_player:
   - platform: denonavr
     host: !secret denon_ip
     name: Denon
-  - platform: spotify
-    client_id: !secret spotify_client_id
-    client_secret: !secret spotify_client_secret
-    cache_path: /home/homeassistant/.homeassistant/.spotify-token-cache
+#  - platform: spotify
+#    client_id: !secret spotify_client_id
+#    client_secret: !secret spotify_client_secret
+#    cache_path: /home/homeassistant/.homeassistant/.spotify-token-cache
   - platform: cast
     host: !secret androidtv_ip
 #  - platform: dunehd
@@ -248,6 +248,7 @@ input_boolean:
   edyta_far_from_home:
   maciek_far_from_home:
   away_mode:
+  antresola_lamp_motion_on:
 
 light:
   platform: yeelight
