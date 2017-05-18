@@ -16,12 +16,16 @@ media players:
   entities:
     - group.denon
     - group.androidtv
+#    - group.spotify
 
 denon:
   entities: media_player.denon
 
 androidtv:
   entities: media_player.androidtv
+
+#spotify:
+#  entities: media_player.spotify
 
 network:
   name: Sieć
@@ -43,6 +47,7 @@ misc:
     - group.batteries
     - group.heating_temps
     - group.heating_hours
+    - group.energy_consumption
     - group.scripts
 
 weather:
@@ -79,8 +84,10 @@ lights:
   name: Oświetlenie
   control: hidden
   entities:
-    - group.bulbs_salon
+    - switch.switch_salon_switch_13_0_2
+    - switch.switch_salon_switch_13_0
     - switch.sonoff_lamp
+    - group.bulbs_salon
     - input_select.light_scenes_salon
     - light.gateway_light_f0b429cc6f0b
     - input_boolean.disco_mode
@@ -234,9 +241,15 @@ printer:
     - sensor.printer_toner
 
 bulbs salon:
-  name: Żarówki salon
+  name: Kolor żarówek salon
   icon: mdi:lightbulb
   control: hidden
   entities:
     - light.yeelight_color_bulb_salon_1
     - light.yeelight_color_bulb_salon_2
+
+energy consumption:
+  name: Zużycie energii
+  entities:
+    - sensor.switch_salon_energy_13_0_2
+    - sensor.switch_salon_energy_13_0

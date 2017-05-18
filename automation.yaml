@@ -13,6 +13,27 @@
       data:
         tag: 'notification-ssl-cert'
 
+# powiadomienie o graniu przez Antka w Minecrafta ponad godzinę
+- alias: 'Notification Minecraft More Than Hour'
+  trigger:
+    platform: state
+    entity_id: sensor.androidtv_activity
+    state: 'Minecraft PE'
+    for:
+      minutes: 60
+  action:
+    - service: notify.ios_edyta_iphone
+      data:
+        title: 'Antoni gra ponad godzinę'
+        message: 'Antoni ponad godzinę gra w Minecrafta.'
+    - service: notify.html5_oneplus
+      data_template: 
+        title: 'Antoni gra ponad godzinę'
+        message: 'Antoni ponad godzinę gra w Minecrafta.'
+      data:
+        data:
+          tag: 'notification-airing-end'
+
 # powiadomienie o błędzie inicjalizacji Z-Wave
 - alias: 'Notification Z-Wave Error'
   trigger:
@@ -683,14 +704,17 @@
     entity_id: input_boolean.disco_mode
     state: 'on'
   action:
+    - service: switch.turn_off
+      entity_id:
+       - switch.switch_salon_switch_13_0
+       - switch.sonoff_lamp
+    - service: switch.turn_on
+      entity_id: switch.switch_salon_switch_13_0_2
     - service: light.turn_on
       entity_id: light.gateway_light_f0b429cc6f0b
       data_template:
         brightness: 60
         rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
-    - condition: state
-      entity_id: group.bulbs_salon
-      state: 'on'
     - service: light.turn_on
       entity_id: light.yeelight_color_bulb_salon_1
       data_template:
@@ -716,11 +740,11 @@
     entity_id: light.gateway_light_f0b429cc6f0b
 
 # standardowa scena oświetlenia w salonie przed zachodem słońca
-- alias: 'Light Scene Standard Before Sunset'
+- alias: 'Light Scene Salon Standard Before Sunset'
   trigger:
     - platform: state
       entity_id: input_select.light_scenes_salon
-      to: 'standard'
+      state: 'standard'
     - platform: state
       entity_id: input_boolean.disco_mode
       from: 'on'
@@ -737,6 +761,9 @@
       - condition: state
         entity_id: group.bulbs_salon
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.salon_light_scene_turn_on
+        state: 'off'
   action:
     - service: scene.turn_on
       entity_id: scene.standard_przed_zachodem
@@ -748,11 +775,11 @@
         option: 'standard'
         
 # standardowa scena oświetlenia w salonie po zachodzie słońca
-- alias: 'Light Scene Standard After Sunset'
+- alias: 'Light Scene Salon Standard After Sunset'
   trigger:
     - platform: state
       entity_id: input_select.light_scenes_salon
-      to: 'standard'
+      state: 'standard'
     - platform: state
       entity_id: input_boolean.disco_mode
       from: 'on'
@@ -769,6 +796,9 @@
       - condition: state
         entity_id: group.bulbs_salon
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.salon_light_scene_turn_on
+        state: 'off'
   action:
     - service: scene.turn_on
       entity_id: scene.standard_po_zachodzie
@@ -801,7 +831,7 @@
     service: scene.turn_on
     entity_id: scene.standard_po_zachodzie
 
-# wybór sceny oświetlenia w salonie
+# wybór sceny oświetlenia w salonie gdy zarówki włączone
 - alias: 'Light Scene Salon'
   trigger:
     platform: state
@@ -822,6 +852,48 @@
     data_template:
       entity_id: scene.{{ trigger.to_state.state }}
 
+# wybór sceny oświetlenia w salonie gdy zarówki wyłączone
+- alias: 'Light Scene Salon When Bulbs Off'
+  trigger:
+    platform: state
+    entity_id: input_select.light_scenes_salon
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: "{{ trigger.to_state.state != 'standard' }}"
+      - condition: template
+        value_template: "{{ (states.group.bulbs_salon.state == 'off') or (states.group.bulbs_salon.state == 'unknown') }}"
+      - condition: state
+        entity_id: input_boolean.disco_mode
+        state: 'off'
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.salon_light_scene_turn_on
+    - service: switch.turn_on
+      entity_id: switch.switch_salon_switch_13_0_2
+#    - delay: '00:00:15'
+#    - service: scene.turn_on
+#      data_template:
+#        entity_id: scene.{{ trigger.to_state.state }}
+
+# scena gdy żarówki połączą się z siecią
+- alias: 'Light Scene Salon When Bulbs Are Turning On'
+  trigger:
+    platform: state
+    entity_id: group.bulbs_salon
+    state: 'on'
+  condition:
+    condition: state
+    entity_id: input_boolean.salon_light_scene_turn_on
+    state: 'on'
+  action:
+    - service: scene.turn_on
+      data_template:
+        entity_id: scene.{{ states.input_select.light_scenes_salon.state }}
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.salon_light_scene_turn_on
+
 # włączenie/wyłączenie lampy w salonie
 - alias: 'Light Toggle Power Salon Lamp'
   trigger:
@@ -833,6 +905,30 @@
   action:
     service: switch.toggle
     entity_id: switch.sonoff_lamp
+
+# włączenie/wyłączenie żarówek w salonie
+- alias: 'Light Toggle Power Salon Bulbs'
+  trigger:
+    platform: event
+    event_type: click
+    event_data:
+      entity_id: binary_sensor.switch_158d000154964c
+      click_type: double
+  action:
+    service: switch.toggle
+    entity_id: switch.switch_salon_switch_13_0_2
+
+# włączenie/wyłączenie LEDów w salonie
+- alias: 'Light Toggle Power Salon LEDs'
+  trigger:
+    platform: event
+    event_type: click
+    event_data:
+      entity_id: binary_sensor.switch_158d000154964c
+      click_type: hold
+  action:
+    service: switch.toggle
+    entity_id: switch.switch_salon_switch_13_0
 
 # włączanie lampki na antresoli jak jest ciemno i jest ruch
 - alias: 'Light Turn On Antresola Lamp'
@@ -912,15 +1008,17 @@
       - condition: template
         value_template: '{{ (states.light.yeelight_color_bulb_salon_1.attributes.color_temp | int <= 320) }}'
   action:
-    service: homeassistant.turn_on
-    entity_id: group.bulbs_salon
+    service: light.turn_on
+    entity_id:
+      - light.yeelight_color_bulb_salon_1
+      - light.yeelight_color_bulb_salon_2
     data_template:
       transition: 10
       brightness: '{{ states.light.yeelight_color_bulb_salon_1.attributes.brightness | int - 1 }}'
       color_temp: '{{ states.light.yeelight_color_bulb_salon_1.attributes.color_temp | int + 4 }}'
 
-# wyłączenie lampy w salonie po wyjściu z domu
-- alias: 'Light Turn Off Salon Lamp When Away Mode'
+# wyłączenie oświetlenia w salonie po wyjściu z domu
+- alias: 'Light Turn Off When Away Mode'
   trigger: 
     platform: state
     entity_id: input_boolean.away_mode
@@ -929,12 +1027,80 @@
     for:
       minutes: 10
   condition:
-    condition: state
-    entity_id: switch.sonoff_lamp
-    state: 'on'
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: switch.sonoff_lamp
+        state: 'on'
+      - condition: state
+        entity_id: switch.switch_salon_switch_13_0
+        state: 'on'
+      - condition: state
+        entity_id: switch.switch_salon_switch_13_0_2
+        state: 'on'
   action:
     service: switch.turn_off
-    entity_id: switch.sonoff_lamp
+    entity_id:
+      - switch.sonoff_lamp
+      - switch.switch_salon_switch_13_0
+      - switch.switch_salon_switch_13_0_2
+
+# Scena oświetlenia salonu film po włączeniu Netflix/Showmax/Youtube/Dune
+- alias: 'Light Scene Film'
+  trigger:
+    - platform: state
+      entity_id: sensor.androidtv_activity
+      state: 'Netflix'
+    - platform: state
+      entity_id: sensor.androidtv_activity
+      state: 'ShowMax'
+    - platform: state
+      entity_id: sensor.androidtv_activity
+      state: 'YouTube'
+    - platform: state
+      entity_id: sensor.dune_status
+      state: 'online'
+  condition:
+    condition: sun
+    after: sunset
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.light_scenes_salon
+      option: 'film'
+
+# Scena oświetlenia salonu standard po wyłączeniu filmu
+- alias: 'Light Scene Standard After Film'
+  trigger:
+    - platform: state
+      entity_id: sensor.androidtv_activity
+      from: 'Netflix'
+      to: 'Ekran główny'
+    - platform: state
+      entity_id: sensor.androidtv_activity
+      from: 'ShowMax'
+      to: 'Ekran główny'
+    - platform: state
+      entity_id: sensor.androidtv_activity
+      from: 'YouTube'
+      to: 'Ekran główny'
+    - platform: state
+      entity_id: sensor.dune_status
+      from: 'online'
+      to: 'offline'
+  condition:
+    condition: and
+    conditions:
+      - condition: sun
+        after: sunset
+      - condition: state
+        entity_id: group.bulbs_salon
+        state: 'on'
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.light_scenes_salon
+      option: 'standard'
 
 #### OTHERS ####
 - alias: 'Log Level'

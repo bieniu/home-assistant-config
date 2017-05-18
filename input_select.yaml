@@ -129,11 +129,11 @@ light_scenes_salon:
   icon: mdi:palette
   options:
     - 'standard'
-    - 'kino'
+    - 'film'
+    - 'czytanie'
     - 'romantyczny'
     - 'fiolet'
-    - 'czytanie'
-    - 'wieczorny'
+    - 'niebieski'
 
 log_level:
   name: HA poziom informacji loga

@@ -1,46 +1,79 @@
-- name: wieczorny
+- name: film
   entities:
-    group.bulbs_salon:
+    light.yeelight_color_bulb_salon_1:
       state: on
       transition: 5
       brightness: 110
       color_temp: 350
+    light.yeelight_color_bulb_salon_2:
+      state: on
+      transition: 5
+      brightness: 110
+      color_temp: 350
+    switch.switch_salon_switch_13_0:
+      state: off
     switch.sonoff_lamp:
       state: off
       
-- name: kino
+- name: niebieski
   entities:
-    group.bulbs_salon:
+    light.yeelight_color_bulb_salon_1:
       state: on
       transition: 5
       brightness: 128
       rgb_color: [20,20,50]
+    light.yeelight_color_bulb_salon_2:
+      state: on
+      transition: 5
+      brightness: 128
+      rgb_color: [20,20,50]
+    switch.switch_salon_switch_13_0:
+      state: on
     switch.sonoff_lamp:
       state: off
 
 - name: romantyczny
   entities:
-    group.bulbs_salon:
+    light.yeelight_color_bulb_salon_1:
       state: on
       transition: 5
       brightness: 128
       rgb_color: [255,102,0]
-    switch.sonoff_lamp:
+    light.yeelight_color_bulb_salon_2:
+      state: on
+      transition: 5
+      brightness: 128
+      rgb_color: [255,102,0]
+    switch.switch_salon_switch_13_0:
       state: off
+    switch.sonoff_lamp:
+      state: on
 
 - name: fiolet
   entities:
-    group.bulbs_salon:
+    light.yeelight_color_bulb_salon_1:
       state: on
       transition: 5
       brightness: 200
       rgb_color: [255,0,255]
+    light.yeelight_color_bulb_salon_2:
+      state: on
+      transition: 5
+      brightness: 200
+      rgb_color: [255,0,255]
+    switch.switch_salon_switch_13_0:
+      state: off
     switch.sonoff_lamp:
       state: off
 
 - name: standard_przed_zachodem
   entities:
-    group.bulbs_salon:
+    light.yeelight_color_bulb_salon_1:
+      state: on
+      transition: 5
+      brightness: 220
+      color_temp: 240
+    light.yeelight_color_bulb_salon_2:
       state: on
       transition: 5
       brightness: 220
@@ -48,7 +81,12 @@
 
 - name: standard_po_zachodzie
   entities:
-    group.bulbs_salon:
+    light.yeelight_color_bulb_salon_1:
+      state: on
+      transition: 5
+      brightness: 255
+      color_temp: 280
+    light.yeelight_color_bulb_salon_2:
       state: on
       transition: 5
       brightness: 255
@@ -56,10 +94,17 @@
 
 - name: czytanie
   entities:
-    group.bulbs_salon:
+    light.yeelight_color_bulb_salon_1:
       state: on
       transition: 5
       brightness: 220
       color_temp: 300
+    light.yeelight_color_bulb_salon_2:
+      state: on
+      transition: 5
+      brightness: 220
+      color_temp: 300
+    switch.switch_salon_switch_13_0:
+      state: off
     switch.sonoff_lamp:
       state: on

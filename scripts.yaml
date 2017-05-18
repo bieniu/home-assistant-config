@@ -25,37 +25,16 @@ fast_warm_up:
       entity_id: input_boolean.heating_season
       state: 'on'
     - service: climate.set_temperature
-      entity_id: climate.antresola_thermostat_heating_1_12_1
-      data:
-        temperature: 24
-    - service: climate.set_temperature
-      entity_id: climate.antek_thermostat_heating_1_3_1
-      data:
-        temperature: 24
-    - service: climate.set_temperature
-      entity_id: climate.sypialnia_thermostat_heating_1_4_1
-      data:
-        temperature: 24
-    - service: climate.set_temperature
-      entity_id: climate.kuchnia_thermostat_heating_1_5_1
+      entity_id:
+        - climate.antresola_thermostat_heating_1_12_1
+        - climate.antek_thermostat_heating_1_3_1
+        - climate.sypialnia_thermostat_heating_1_4_1
+        - climate.kuchnia_thermostat_heating_1_5_1
       data:
         temperature: 24
     - delay: '00:25:00'
     - service: automation.trigger
       entity_id: automation.heating_day
-
-#### LIGHTS ####
-# włączenie lampki na antresoli na 5 minut
-light_antresola_on:
-  sequence:
-    - service: light.turn_on
-      entity_id: light.gateway_light_f0b429cc6f0b
-      data:
-        brightness: 60
-        rgb_color: [190,0,190]
-    - delay: 0:05
-    - service: light.turn_off
-      entity_id: light.gateway_light_f0b429cc6f0b
 
 #### DENON ####
 denon_play_maciek_playlist:
@@ -100,3 +79,18 @@ xiaomi_alarm_stop:
     service: xiaomi.stop_ringtone
     data:
       gw_sid: !secret xiaomi_gateway_sid
+
+#### OTHER ####
+sleep_time:
+  sequence:
+    - service: switch.turn_off
+      entity_id:
+        - switch.switch_salon_switch_13_0
+        - switch.switch_salon_switch_13_0_2
+        - switch.sonoff_lamp
+        - switch.wake_on_lan_stacjonarny
+    - condition: state
+      entity_id: media_player.denon
+      state: 'on'
+    - service: media_player.turn_off
+      entity_id: media_player.denon

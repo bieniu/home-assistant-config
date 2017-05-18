@@ -10,6 +10,12 @@ light.yeelight_color_bulb_salon_1:
   friendly_name: Żarówka salon 1
 light.yeelight_color_bulb_salon_2:
   friendly_name: Żarówka salon 2
+switch.switch_salon_switch_13_0:
+  friendly_name: LEDy salon
+  icon: mdi:led-variant-on
+switch.switch_salon_switch_13_0_2:
+  friendly_name: Żarówki salon
+  icon: mdi:lightbulb
 
 #### RASPBERRY PI ####
 sensor.cpu_use:
@@ -53,26 +59,30 @@ group.denon:
   order: 10
 group.androidtv:
   order: 11
+#group.spotify:
+#  order: 12
 group.wire_devices:
-  order: 12
-group.wireless_devices:
   order: 13
-group.iot_devices:
+group.wireless_devices:
   order: 14
-group.internet:
+group.iot_devices:
   order: 15
-group.printer:
+group.internet:
   order: 16
-group.raspberry:
+group.printer:
   order: 17
-group.heating_temps:
+group.raspberry:
   order: 18
-group.heating_hours:
+group.energy_consumption:
   order: 19
-group.scripts:
+group.heating_hours:
   order: 20
-group.batteries:
+group.heating_temps:
   order: 21
+group.scripts:
+  order: 22
+group.batteries:
+  order: 23
 
 #### WEATHER ####
 sensor.dark_sky_temperature:
@@ -242,3 +252,12 @@ sensor.printer_pages_to_replace_drum:
 switch.sonoff_lamp:
   icon: mdi:lamp
   friendly_name: Lampa salon
+
+#### ENERGY ####
+sensor.switch_salon_energy_13_0:
+  friendly_name: LEDy salon
+  icon: mdi:flash-outline
+sensor.switch_salon_energy_13_0_2:
+  friendly_name: Żarówki salon
+  icon: mdi:flash-outline
+

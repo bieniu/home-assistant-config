@@ -51,7 +51,6 @@ zeroconf:
 
 recorder:
   purge_days: 3
-#  db_url: postgres://@/homeassistant
   exclude:
     domains:
       - automation
@@ -70,6 +69,20 @@ recorder:
       - sensor.raspberry_disk_free
       - sensor.ssl_certificate_expiry
       - binary_sensor.switch_158d000154964c
+      - sensor.androidtv_activity
+      - sensor.switch_salon_alarm_level_13_1
+      - sensor.switch_salon_alarm_type_13_0
+      - sensor.switch_salon_energy_13_0
+      - sensor.switch_salon_energy_13_0_2
+      - sensor.switch_salon_exporting_13_32
+      - sensor.switch_salon_exporting_13_32_2
+      - sensor.switch_salon_heat_13_7
+      - sensor.switch_salon_power_13_8
+      - sensor.switch_salon_power_13_8_2
+      - sensor.switch_salon_power_management_13_11
+      - sensor.switch_salon_sourcenodeid_13_2
+      - input_boolen.antresola_lamp_motion_on
+      - input_boolen.salon_light_scene_turn_on
 
 logger:
   default: warning
@@ -99,9 +112,7 @@ history:
       - device_tracker.emil
       - device_tracker.grazyna
       - device_tracker.jerzy
-      - group.bulbs_salon
       - group.peoples
-      - light.gateway_light_f0b429cc6f0b
       - sensor.edyta_presence
       - sensor.maciek_presence
       - sensor.dark_sky_humidity_custom
@@ -126,7 +137,6 @@ history:
       - sensor.temperature_antresola
       - sensor.illumination_f0b429cc6f0b
       - sensor.motion_antresola
-      - switch.sonoff_lamp
 
 logbook:
   include:
@@ -173,7 +183,7 @@ device_tracker:
     host: !secret router_ip
     username: !secret router_username
     password: !secret router_password
-    protocol: ssh
+    protocol: http
   - platform: nmap_tracker
     hosts: 
       - !secret router_ip
@@ -249,6 +259,7 @@ input_boolean:
   maciek_far_from_home:
   away_mode:
   antresola_lamp_motion_on:
+  salon_light_scene_turn_on:
 
 light:
   platform: yeelight
