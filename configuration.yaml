@@ -28,7 +28,7 @@ zone 3:
 
 sensor: !include sensors.yaml
 group: !include groups.yaml
-automation: !include automation.yaml
+automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 input_select:  !include input_select.yaml
@@ -58,31 +58,29 @@ recorder:
       - sun
       - scenes
       - script
+      - groups
     entities:
       - sensor.printer_toner_status
+      - sensor.printer_toner
+      - sensor.printer_pages_to_replace_drum
+      - sensor.printer_printed_pages
       - sensor.sunset
       - sensor.sunrise
       - sensor.sun_custom
-      - sensor.printer_pages_to_replace_drum
-      - sensor.printer_printed_pages
       - sensor.last_boot
       - sensor.raspberry_disk_free
       - sensor.ssl_certificate_expiry
-      - binary_sensor.switch_158d000154964c
       - sensor.androidtv_activity
-      - sensor.switch_salon_alarm_level_13_1
-      - sensor.switch_salon_alarm_type_13_0
+      - sensor.dune_activity
       - sensor.switch_salon_energy_13_0
       - sensor.switch_salon_energy_13_0_2
-      - sensor.switch_salon_exporting_13_32
-      - sensor.switch_salon_exporting_13_32_2
-      - sensor.switch_salon_heat_13_7
       - sensor.switch_salon_power_13_8
       - sensor.switch_salon_power_13_8_2
-      - sensor.switch_salon_power_management_13_11
-      - sensor.switch_salon_sourcenodeid_13_2
-      - input_boolen.antresola_lamp_motion_on
-      - input_boolen.salon_light_scene_turn_on
+      - binary_sensor.switch_158d000154964c
+  include:
+    entities:
+      - group.family
+      - group.peoples
 
 logger:
   default: warning
@@ -136,7 +134,6 @@ history:
       - sensor.temperature_lazienka
       - sensor.temperature_antresola
       - sensor.illumination_f0b429cc6f0b
-      - sensor.motion_antresola
 
 logbook:
   include:
@@ -155,7 +152,7 @@ config:
 
 zwave:
   usb_path: /dev/zwave
-  config_path: /srv/homeassistant/homeassistant_venv/lib/python3.4/site-packages/libopenzwave-0.3.3-py3.4-linux-armv7l.egg/config
+#  config_path: /srv/homeassistant/homeassistant_venv/lib/python3.4/site-packages/libopenzwave-0.3.3-py3.4-linux-armv7l.egg/config
   device_config: !include zwave_device_config.yaml
 
 mqtt:
@@ -183,7 +180,7 @@ device_tracker:
     host: !secret router_ip
     username: !secret router_username
     password: !secret router_password
-    protocol: http
+    protocol: ssh
   - platform: nmap_tracker
     hosts: 
       - !secret router_ip
@@ -191,6 +188,7 @@ device_tracker:
       - !secret lumia_ip
       - !secret synology_ip
       - !secret sonoff_lamp_ip
+      - !secret denon_ip
     home_interval: 10
     scan_options: " --privileged -sP "
   - platform: gpslogger

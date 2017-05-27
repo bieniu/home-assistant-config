@@ -15,6 +15,11 @@
   value_template: '{{ (value | float / 1024 / 1024 ) | round(1) }}'
   scan_interval: 900
 
+#- platform: command_line
+#  name: Dune Activity
+#  command: "curl -sf --connect-timeout 1 http://dune.bieniu.lan/cgi-bin/do?cmd=status | grep -oP '(?<=.player_state. value=.).*?(?=..>)'"
+#  scan_interval: 60
+
 - platform: google_travel_time
   name: Edyta To Home
   api_key: !secret distance_api_key

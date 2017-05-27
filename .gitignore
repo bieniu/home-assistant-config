@@ -3,6 +3,7 @@
 *.csr
 *.crt
 *.key
+*.sh
 www
 OZW_Log.txt
 home-assistant.log
@@ -12,7 +13,9 @@ lib
 deps
 tts
 custom_components
-restore_states*.*
+scripts/*.*
+scripts*
+dune-activity.sh
 secrets.yaml
 known_devices.yaml
 *.conf
