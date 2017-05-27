@@ -85,9 +85,9 @@ sleep_time:
   sequence:
     - service: switch.turn_off
       entity_id:
-        - switch.switch_salon_switch_13_0
-        - switch.switch_salon_switch_13_0_2
-        - switch.sonoff_lamp
+        - switch.light_salon_switch_13_0
+        - switch.light_salon_switch_13_0_2
+        - switch.light_lamp_salon
         - switch.wake_on_lan_stacjonarny
     - condition: state
       entity_id: media_player.denon

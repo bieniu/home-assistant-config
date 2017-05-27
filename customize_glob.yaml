@@ -5,7 +5,7 @@
   icon: mdi:water-percent
 
 #### CLIMATE ####
-'climate.*thermostat*':
+'climate.thermostat*':
   icon: mdi:radiator
   max_temp: 28
   min_temp: 4

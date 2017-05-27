@@ -1,18 +1,18 @@
-sensor.switch_salon_alarm_level_13_1:
+sensor.light_salon_alarm_level_13_1:
   ignored: true
-sensor.switch_salon_alarm_type_13_0:
+sensor.light_salon_alarm_type_13_0:
   ignored: true
-sensor.switch_salon_exporting_13_32:
+sensor.light_salon_exporting_13_32:
   ignored: true
-sensor.switch_salon_exporting_13_32_2:
+sensor.light_salon_exporting_13_32_2:
   ignored: true
-sensor.switch_salon_heat_13_7:
+sensor.light_salon_heat_13_7:
   ignored: true
-sensor.switch_salon_power_management_13_11:
+sensor.light_salon_power_management_13_11:
   ignored: true
-sensor.switch_salon_sourcenodeid_13_2:
+sensor.light_salon_sourcenodeid_13_2:
   ignored: true
-sensor.switch_salon_power_13_8:
+sensor.light_salon_power_13_8:
   ignored: true
-sensor.switch_salon_power_13_8_2:
+sensor.light_salon_power_13_8_2:
   ignored: true

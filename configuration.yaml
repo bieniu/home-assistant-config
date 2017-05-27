@@ -72,10 +72,8 @@ recorder:
       - sensor.ssl_certificate_expiry
       - sensor.androidtv_activity
       - sensor.dune_activity
-      - sensor.switch_salon_energy_13_0
-      - sensor.switch_salon_energy_13_0_2
-      - sensor.switch_salon_power_13_8
-      - sensor.switch_salon_power_13_8_2
+      - sensor.light_salon_energy_13_0
+      - sensor.light_salon_energy_13_0_2
       - binary_sensor.switch_158d000154964c
   include:
     entities:
@@ -226,7 +224,7 @@ switch:
       service:
         shell_command.stacjonarny_off
   - platform: mqtt
-    name: "Sonoff Lamp"
+    name: "Light Lamp Salon"
     command_topic: "cmnd/sonoff-lamp/power"
     state_topic: "stat/sonoff-lamp/POWER"
     qos: 1
@@ -265,11 +263,11 @@ light:
     192.168.1.240:
       name: yeelight color bulb salon 1
       transition: 500
-      save_on_change: False
+      save_on_change: false
     192.168.1.250:
       name: yeelight color bulb salon 2
       transition: 500
-      save_on_change: False
+      save_on_change: false
 
 binary_sensor:
   - platform: trend
