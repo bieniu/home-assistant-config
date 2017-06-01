@@ -1,0 +1,23 @@
+- platform: bluetooth_tracker
+  interval_seconds: 60
+  consider_home: 180
+  track_new_devices: false
+- platform: asuswrt
+  host: !secret router_ip
+  username: !secret router_username
+  password: !secret router_password
+  protocol: ssh
+- platform: nmap_tracker
+  hosts:
+    - !secret router_ip
+    - !secret switch_ip
+    - !secret lumia_ip
+    - !secret synology_ip
+    - !secret sonoff_lamp_ip
+    - !secret denon_ip
+  home_interval: 10
+  scan_options: " --privileged -sP "
+- platform: gpslogger
+- platform: ping
+  hosts:
+    modem: !secret modem_ip

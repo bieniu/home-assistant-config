@@ -81,7 +81,7 @@ xiaomi_alarm_stop:
       gw_sid: !secret xiaomi_gateway_sid
 
 #### OTHER ####
-sleep_time:
+sleep_mode:
   sequence:
     - service: switch.turn_off
       entity_id:
@@ -89,8 +89,5 @@ sleep_time:
         - switch.light_salon_switch_13_0_2
         - switch.light_lamp_salon
         - switch.wake_on_lan_stacjonarny
-    - condition: state
-      entity_id: media_player.denon
-      state: 'on'
-    - service: media_player.turn_off
-      entity_id: media_player.denon
+        - media_player.denon
+

@@ -59,8 +59,8 @@ group.denon:
   order: 10
 group.androidtv:
   order: 11
-#group.spotify:
-#  order: 12
+group.spotify:
+  order: 12
 group.wire_devices:
   order: 13
 group.wireless_devices:
@@ -254,10 +254,7 @@ switch.light_lamp_salon:
   friendly_name: Lampa salon
 
 #### ENERGY ####
-sensor.light_salon_energy_13_0:
-  friendly_name: LEDy salon
+sensor.energy_consumption_monthly_leds:
   icon: mdi:flash-outline
-sensor.light_salon_energy_13_0_2:
-  friendly_name: Żarówki salon
+sensor.energy_consumption_monthly_bulbs:
   icon: mdi:flash-outline
-

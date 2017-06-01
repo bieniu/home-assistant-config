@@ -10,11 +10,10 @@
 
 - platform: command_line
   name: HA Database Size
-  command: "ls -l /home/homeassistant/.homeassistant/home-assistant_v2.db | awk '{print $5}'"
+  command: "ls -l ~/.homeassistant/home-assistant_v2.db | awk '{print $5}'"
   unit_of_measurement: "MB"
   value_template: '{{ (value | float / 1024 / 1024 ) | round(1) }}'
   scan_interval: 900
-
 
 - platform: google_travel_time
   name: Edyta To Home
@@ -63,6 +62,18 @@
 
 - platform: template
   sensors:
+    energy_consumption_monthly_leds:
+      friendly_name: LEDy salon
+      entity_id: input_slider.leds_last_month_energy, sensor.light_salon_energy_13_0
+      unit_of_measurement: 'kWh'
+      value_template: "{{ ((states.sensor.light_salon_energy_13_0.state | float) - (states.input_slider.leds_last_month_energy.state | float)) | round(2) }}"
+
+    energy_consumption_monthly_bulbs:
+      friendly_name: Żarówki salon
+      entity_id: input_slider.bulbs_last_month_energy, sensor.light_salon_energy_13_0_2
+      unit_of_measurement: 'kWh'
+      value_template: "{{ ((states.sensor.light_salon_energy_13_0_2.state | float) - (states.input_slider.bulbs_last_month_energy.state | float)) | round(2) }}"
+
     temperature_salon:
       entity_id: sensor.temperature_158d00010fb340
       friendly_name: Temperatura salon/kuchnia

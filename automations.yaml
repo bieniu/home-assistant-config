@@ -1,3 +1,25 @@
+#### ENERGY CONSUMPTION ####
+# resetowanie miesięcznego zużycia energii
+- id: energy_reset_monthly_consumption
+  alias: 'Energy Reset Monthly Consumption'
+  trigger:
+    platform: time
+    hours: 0
+    minutes: 0
+    seconds: 0
+  condition:
+    condition: template
+    value_template: "{{ now().date().day == 1 }}"
+  action:
+    - service: input_slider.select_value
+      entity_id: input_slider.leds_last_month_energy
+      data_template:
+        value: "{{ states.sensor.light_salon_energy_13_0.state }}"
+    - service: input_slider.select_value
+      entity_id: input_slider.bulbs_last_month_energy
+      data_template:
+        value: "{{ states.sensor.light_salon_energy_13_0_2.state }}"
+
 #### NOTIFICATIONS ####
 # powiadomienie o wygasającym certyfikacie SSL
 - id: notification_ssl_cert_expiry
@@ -1143,6 +1165,9 @@
       - condition: state
         entity_id: group.bulbs_salon
         state: 'on'
+      - condition: state
+        entity_id: input_select.light_scenes_salon
+        state: 'film'
   action:
     service: input_select.select_option
     data:

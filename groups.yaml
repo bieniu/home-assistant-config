@@ -16,7 +16,7 @@ media players:
   entities:
     - group.denon
     - group.androidtv
-#    - group.spotify
+    - group.spotify
 
 denon:
   entities: media_player.denon
@@ -24,8 +24,8 @@ denon:
 androidtv:
   entities: media_player.androidtv
 
-#spotify:
-#  entities: media_player.spotify
+spotify:
+  entities: media_player.spotify
 
 network:
   name: Sieć
@@ -249,7 +249,7 @@ bulbs salon:
     - light.yeelight_color_bulb_salon_2
 
 energy consumption:
-  name: Zużycie energii
+  name: Miesięczne zużycie energii
   entities:
-    - sensor.light_salon_energy_13_0_2
-    - sensor.light_salon_energy_13_0
+    - sensor.energy_consumption_monthly_bulbs
+    - sensor.energy_consumption_monthly_leds

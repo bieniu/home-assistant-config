@@ -26,28 +26,15 @@ zone 3:
   latitude: 51.7539
   longitude: 19.4559
 
-sensor: !include sensors.yaml
-group: !include groups.yaml
-automation: !include automations.yaml
-script: !include scripts.yaml
-scene: !include scenes.yaml
-input_select:  !include input_select.yaml
-
 frontend:
 
 http:
   api_password: !secret api_password
-  ip_ban_enabled: True
+  ip_ban_enabled: true
   login_attempts_threshold: 5
   base_url: !secret http_base_url
   ssl_certificate: /etc/cert/cert.pem
   ssl_key: /etc/cert/cert.key
-
-updater:
-
-discovery:
-
-zeroconf:
 
 recorder:
   purge_days: 3
@@ -69,11 +56,22 @@ recorder:
       - sensor.sun_custom
       - sensor.last_boot
       - sensor.raspberry_disk_free
+      - sensor.printer_toner_status
+      - sensor.printer_toner
+      - sensor.printer_pages_to_replace_drum
+      - sensor.printer_printed_pages
+      - sensor.sunset
+      - sensor.sunrise
+      - sensor.sun_custom
+      - sensor.last_boot
+      - sensor.raspberry_disk_free
       - sensor.ssl_certificate_expiry
       - sensor.androidtv_activity
       - sensor.dune_activity
       - sensor.light_salon_energy_13_0
       - sensor.light_salon_energy_13_0_2
+      - sensor.energy_consumption_monthly_leds
+      - sensor.energy_consumption_monthly_bulbs
       - binary_sensor.switch_158d000154964c
   include:
     entities:
@@ -144,9 +142,26 @@ logbook:
       - sensor.edyta_presence
       - sensor.maciek_presence
 
+sensor: !include sensors.yaml
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+input_select: !include input_select.yaml
+shell_command: !include shell_command.yaml
+device_tracker: !include device_tracker.yaml
+
 sun:
 
 config:
+
+updater:
+
+discovery:
+
+zeroconf:
+
+ios:
 
 zwave:
   usb_path: /dev/zwave
@@ -160,48 +175,22 @@ mqtt:
   username: !secret mqtt_username
   password: !secret mqtt_password
 
-climate:
-  platform: zwave
-
 xiaomi:
   gateways:
     sid: !secret xiaomi_gateway_sid
     key: !secret xiaomi_gateway_key
     poll_motion: false
 
-device_tracker:
-  - platform: bluetooth_tracker
-    interval_seconds: 60
-    consider_home: 180
-    track_new_devices: false
-  - platform: asuswrt
-    host: !secret router_ip
-    username: !secret router_username
-    password: !secret router_password
-    protocol: ssh
-  - platform: nmap_tracker
-    hosts: 
-      - !secret router_ip
-      - !secret switch_ip
-      - !secret lumia_ip
-      - !secret synology_ip
-      - !secret sonoff_lamp_ip
-      - !secret denon_ip
-    home_interval: 10
-    scan_options: " --privileged -sP "
-  - platform: gpslogger
-  - platform: ping
-    hosts:
-      modem: !secret modem_ip
-
 media_player:
   - platform: denonavr
     host: !secret denon_ip
     name: Denon
-#  - platform: spotify
-#    client_id: !secret spotify_client_id
-#    client_secret: !secret spotify_client_secret
-#    cache_path: /home/homeassistant/.homeassistant/.spotify-token-cache
+  - platform: spotify
+    client_id: !secret spotify_client_id
+    client_secret: !secret spotify_client_secret
+    cache_path: /home/homeassistant/.homeassistant/.spotify-token-cache
+#    aliases:
+#      5d660f2ece57c2b170da6eef091825c8402d4580: 'Gabinet'
   - platform: cast
     host: !secret androidtv_ip
 #  - platform: dunehd
@@ -232,13 +221,6 @@ switch:
     payload_off: "OFF"
     retain: true
 
-shell_command:
-  stacjonarny_off: "curl http://stacjonarny:88/event.html?PowerOff"
-  reboot_pi: "sudo reboot"
-  shutdown_pi: "sudo shutdown -h now"
-  restart_hass: "sudo systemctl restart home-assistant.service"
-  reeboot_router: "echo 'reboot' | ssh maciek@router"
-
 input_boolean:
   heating_season:
     name: Sezon grzewczy
@@ -256,6 +238,16 @@ input_boolean:
   away_mode:
   antresola_lamp_motion_on:
   salon_light_scene_turn_on:
+
+input_slider:
+  bulbs_last_month_energy:
+    min: 0
+    max: 30000
+    step: 0.01
+  leds_last_month_energy:
+    min: 0
+    max: 30000
+    step: 0.01
 
 light:
   platform: yeelight
@@ -284,5 +276,3 @@ binary_sensor:
       temperature_antresola_down:
         entity_id: sensor.temperature_158d000149cc8c
         invert: Yes
-
-ios:
