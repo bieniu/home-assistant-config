@@ -1,0 +1,16 @@
+- platform: wake_on_lan
+  name: wake_on_lan_stacjonarny
+  host: !secret desktop_ip
+  mac_address: !secret desktop_mac_address
+  broadcast_address: 255.255.255.255
+  turn_off:
+    service:
+      shell_command.stacjonarny_off
+- platform: mqtt
+  name: "Light Lamp Salon"
+  command_topic: "cmnd/sonoff-lamp/power"
+  state_topic: "stat/sonoff-lamp/POWER"
+  qos: 1
+  payload_on: "ON"
+  payload_off: "OFF"
+  retain: true

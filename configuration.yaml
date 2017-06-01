@@ -150,6 +150,8 @@ scene: !include scenes.yaml
 input_select: !include input_select.yaml
 shell_command: !include shell_command.yaml
 device_tracker: !include device_tracker.yaml
+media_player: !include media_player.yaml
+switch: !include switches.yaml
 
 sun:
 
@@ -181,45 +183,11 @@ xiaomi:
     key: !secret xiaomi_gateway_key
     poll_motion: false
 
-media_player:
-  - platform: denonavr
-    host: !secret denon_ip
-    name: Denon
-  - platform: spotify
-    client_id: !secret spotify_client_id
-    client_secret: !secret spotify_client_secret
-    cache_path: /home/homeassistant/.homeassistant/.spotify-token-cache
-#    aliases:
-#      5d660f2ece57c2b170da6eef091825c8402d4580: 'Gabinet'
-  - platform: cast
-    host: !secret androidtv_ip
-#  - platform: dunehd
-#    host: !secret dune_ip
-#    name: Dune
-
 notify:
   name: html5
   platform: html5
   gcm_api_key: !secret gcm_api_key
   gcm_sender_id: !secret gcm_sender_id
-
-switch:
-  - platform: wake_on_lan
-    name: wake_on_lan_stacjonarny
-    host: !secret desktop_ip
-    mac_address: !secret desktop_mac_address
-    broadcast_address: 255.255.255.255
-    turn_off:
-      service:
-        shell_command.stacjonarny_off
-  - platform: mqtt
-    name: "Light Lamp Salon"
-    command_topic: "cmnd/sonoff-lamp/power"
-    state_topic: "stat/sonoff-lamp/POWER"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    retain: true
 
 input_boolean:
   heating_season:
