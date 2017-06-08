@@ -90,7 +90,6 @@ lights:
     - group.bulbs_salon
     - input_select.light_scenes_salon
     - light.gateway_light_f0b429cc6f0b
-    - input_boolean.disco_mode
 
 heating:
   name: Ogrzewanie
@@ -251,5 +250,5 @@ bulbs salon:
 energy consumption:
   name: Miesięczne zużycie energii
   entities:
-    - sensor.energy_consumption_monthly_bulbs
-    - sensor.energy_consumption_monthly_leds
+    - sensor.light_salon_energy_13_0_2
+    - sensor.light_salon_energy_13_0

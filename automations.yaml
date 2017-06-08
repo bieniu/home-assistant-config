@@ -11,14 +11,10 @@
     condition: template
     value_template: "{{ now().date().day == 1 }}"
   action:
-    - service: input_slider.select_value
-      entity_id: input_slider.leds_last_month_energy
-      data_template:
-        value: "{{ states.sensor.light_salon_energy_13_0.state }}"
-    - service: input_slider.select_value
-      entity_id: input_slider.bulbs_last_month_energy
-      data_template:
-        value: "{{ states.sensor.light_salon_energy_13_0_2.state }}"
+    - service: zwave.reset_node_meters
+      data: {"node_id":13,"instance":1}
+    - service: zwave.reset_node_meters
+      data: {"node_id":13,"instance":2}
 
 #### NOTIFICATIONS ####
 # powiadomienie o wygasającym certyfikacie SSL
@@ -42,7 +38,7 @@
   trigger:
     platform: state
     entity_id: sensor.androidtv_activity
-    state: 'Minecraft PE'
+    to: 'Minecraft PE'
     for:
       minutes: 60
   action:
@@ -64,7 +60,7 @@
   trigger:
     platform: state
     entity_id: zwave.__1
-    state: 'Dead (Probe)'
+    to: 'Dead (Probe)'
   action:
     service: notify.html5
     data_template:
@@ -150,6 +146,7 @@
       - sensor.migateway_status
       - sensor.synology_status
       - sensor.denon_status
+      - sensor.sonoff_lamp_status
     from: 'online'
     to: 'offline'
   action:
@@ -166,7 +163,7 @@
   alias: 'Notification Low Battery'
   trigger:
     platform: time
-    after: '18:00:00'
+    at: '18:00:00'
   condition:
     condition: template
     value_template: >-
@@ -219,7 +216,7 @@
   trigger:
     platform: state
     entity_id: sensor.maciek_presence
-    state: 'home'
+    to: 'home'
   condition:
     condition: state
     entity_id: input_boolean.maciek_far_from_home
@@ -234,7 +231,7 @@
   trigger:
     platform: state
     entity_id: sensor.edyta_presence
-    state: 'home'
+    to: 'home'
   condition:
     condition: state
     entity_id: input_boolean.edyta_far_from_home
@@ -294,22 +291,7 @@
         entity_id: group.peoples
         state: 'home'
   action:
-    - service: climate.set_temperature
-      entity_id: 
-        - climate.thermostat_antresola_heating_1_12_1
-        - climate.thermostat_kuchnia_heating_1_5_1
-      data_template:
-        temperature: '{{ states.input_select.heating_temp_day.state }}'
-    - service: climate.set_temperature
-      entity_id: 
-        - climate.thermostat_antek_heating_1_3_1
-        - climate.thermostat_sypialnia_heating_1_4_1
-      data_template:
-        temperature: '{{ states.input_select.heating_temp_bedroom_day.state }}'
-    - service: input_boolean.turn_off
-      entity_id:
-        - input_boolean.heating_night
-        - input_boolean.heating_salon_kuchnia_night
+    service: script.heating_day
 
 # zmniejszenie temperatury na noc w tygodniu jeśli trwa sezon grzewczy
 - id: heating_night
@@ -334,26 +316,7 @@
         entity_id: input_boolean.heating_season
         state: 'on'
   action:
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.heating_night
-    - service: climate.set_temperature
-      entity_id: climate.thermostat_antresola_heating_1_12_1
-      data_template:
-        temperature: '{{ states.input_select.heating_temp_night.state }}'
-    - service: climate.set_temperature
-      entity_id: 
-        - climate.thermostat_antek_heating_1_3_1
-        - climate.thermostat_sypialnia_heating_1_4_1
-      data_template:
-        temperature: '{{ states.input_select.heating_temp_bedroom_night.state }}'
-    - condition: template
-      value_template: "{{ (states.group.guests.state == 'not_home') and (states.media_player.denon.state == 'off') }}"
-    - service: climate.set_temperature
-      entity_id: climate.thermostat_kuchnia_heating_1_5_1
-      data_template:
-        temperature: '{{ states.input_select.heating_temp_night.state }}'
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.heating_salon_kuchnia_night
+    service: script.heating_night
 
 # zwiększenie temperatury rano w weekendy jeśli ktoś jest w domu i trwa sezon grzewczy
 - id: heating_day_weekend
@@ -378,8 +341,7 @@
         entity_id: group.peoples
         state: 'home'
   action:
-    service: automation.trigger
-    entity_id: automation.heating_day
+    service: script.heating_day
 
 # zmniejszenie temperatury na noc w weekendy jeśli trwa sezon grzewczy
 - id: heating_night_weekend
@@ -401,8 +363,7 @@
         entity_id: input_boolean.heating_season
         state: 'on'
   action:
-    service: automation.trigger
-    entity_id: automation.heating_night
+    service: script.heating_night
 
 # zmniejszenie temperatury na noc w salonie i kuchni po wyłączeniu TV
 - id: heating_night_salon_and_kuchnia
@@ -410,7 +371,7 @@
   trigger:
     platform: state
     entity_id: media_player.denon
-    state: 'off'
+    to: 'off'
   condition: 
     condition: and
     conditions:
@@ -447,30 +408,7 @@
     entity_id: input_boolean.heating_season
     state: 'on'
   action:
-    - service: climate.set_temperature
-      entity_id: 
-        - climate.thermostat_antresola_heating_1_12_1
-        - climate.thermostat_kuchnia_heating_1_5_1
-        - climate.thermostat_antek_heating_1_3_1
-        - climate.thermostat_sypialnia_heating_1_4_1
-      data_template:
-        temperature: '{{ states.input_select.heating_temp_eco.state }}'
-    - condition: state
-      entity_id: input_boolean.heating_airing
-      state: 'on'
-    - service: notify.ios_edyta_iphone
-      data:
-        title: 'Koniec przewietrzania'
-        message: 'Domownicy opóścili mieszkanie. Wyłączono tryb przewietrzania.'
-    - service: notify.html5_oneplus
-      data_template: 
-        title: 'Koniec przewietrzania'
-        message: 'Domownicy opóścili mieszkanie. Wyłączono tryb przewietrzania.'
-      data:
-        data:
-          tag: 'notification-airing-end'
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.heating_airing
+    service: script.heating_eco_mode
 
 # zwiększenie temperatury gdy domownicy wracają i jest sezon grzewczy
 - id: heating_peoples_back
@@ -490,10 +428,10 @@
         entity_id: input_boolean.heating_season
         state: 'on'
   action:
-    service: automation.trigger
-    entity_id: automation.heating_day
+    service: script.heating_day
 
-- alias: 'Heating Peoples Back Night'
+- id: heating_peoples_back_night
+  alias: 'Heating Peoples Back Night'
   trigger:
     platform: state
     entity_id: input_boolean.away_mode
@@ -509,8 +447,7 @@
         entity_id: input_boolean.heating_season
         state: 'on'
   action:
-    service: automation.trigger
-    entity_id: automation.heating_night
+    service: script.heating_night
 
 # włączenie ogrzewania 30 minut przed powrotem do domu w dzień gdy jest sezon grzewczy
 - id: heating_turn_on_before_return_to_home
@@ -540,15 +477,15 @@
         entity_id: input_boolean.away_mode
         state: 'on'
   action:
-    - service: automation.trigger
-      entity_id: automation.heating_day
+    - service: script.heating_day
     - service: input_boolean.turn_off
       entity_id:
         - input_boolean.edyta_far_from_home
         -  input_boolean.maciek_far_from_home
 
 # początek przewietrzania
-- alias: 'Heating Airing Begin'
+- id: heating_airing_begin
+  alias: 'Heating Airing Begin'
   trigger:
     platform: state
     entity_id: input_boolean.heating_airing
@@ -559,17 +496,11 @@
     entity_id: input_boolean.heating_season
     state: 'on'
   action:
-    - service: climate.set_temperature
-      entity_id: 
-        - climate.thermostat_antresola_heating_1_12_1
-        - climate.thermostat_kuchnia_heating_1_5_1
-        - climate.thermostat_antek_heating_1_3_1
-        - climate.thermostat_sypialnia_heating_1_4_1
-      data:
-        temperature: 8
+    service: script.heatin_airing_begin
 
 # koniec przewietrzania
-- alias: 'Heating Airing End'
+- id: heating_airing_end
+  alias: 'Heating Airing End'
   trigger:
     platform: state
     entity_id: input_boolean.heating_airing
@@ -585,11 +516,11 @@
         entity_id: input_boolean.away_mode
         state: 'off'
   action:
-    service: automation.trigger
-    entity_id: automation.heating_day
+    service: script.heating_day
 
 # koniec przewietrzania o zachodzie słońca
-- alias: 'Heating Airing End At Sunset'
+- id: heating_airing_end_at_sunset
+  alias: 'Heating Airing End At Sunset'
   trigger:
     platform: sun
     event: sunset
@@ -618,35 +549,30 @@
       entity_id: input_boolean.heating_airing
 
 # początek sezonu grzewczego
-- alias: 'Heating Season Begin'
+- id: heating_season_begin
+  alias: 'Heating Season Begin'
   trigger:
     platform: state
     entity_id: input_boolean.heating_season
     from: 'off'
     to: 'on'
   action:
-    service: automation.trigger
-    entity_id: automation.heating_day
+    service: script.heating_day
 
 # koniec sezonu grzewczego
-- alias: 'Heating Season End'
+- id: heating_season_end
+  alias: 'Heating Season End'
   trigger:
     platform: state
     entity_id: input_boolean.heating_season
     from: 'on'
     to: 'off'
   action:
-    - service: climate.set_temperature
-      entity_id:
-        - climate.thermostat_antresola_heating_1_12_1
-        - climate.thermostat_kuchnia_heating_1_5_1
-        - climate.thermostat_antek_heating_1_3_1
-        - climate.thermostat_sypialnia_heating_1_4_1
-      data:
-        temperature: 4
+    service: script.heating_season_end
 
 # ustawia w kuchni temperaturę z salonu
-- alias: 'Heating Sync Temp Salon Kuchnia'
+- id: heating_sync_temp_salon_kuchnia
+  alias: 'Heating Sync Temp Salon Kuchnia'
   trigger:
     platform: state
     entity_id: climate.thermostat_salon_heating_1_2_1
@@ -743,7 +669,7 @@
       entity_id: input_boolean.heating_airing
 
 #### LIGHT ####
-# włączenie trybu disco oświetlenia
+# tryb disco oświetlenia w salonie
 - id: light_disco_mode
   alias: 'Light Disco Mode'
   trigger: 
@@ -754,17 +680,6 @@
     entity_id: input_boolean.disco_mode
     state: 'on'
   action:
-    - service: switch.turn_off
-      entity_id:
-       - switch.light_salon_switch_13_0
-       - switch.light_lamp_salon
-    - service: switch.turn_on
-      entity_id: switch.light_salon_switch_13_0_2
-    - service: light.turn_on
-      entity_id: light.gateway_light_f0b429cc6f0b
-      data_template:
-        brightness: 60
-        rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
     - service: light.turn_on
       entity_id: light.yeelight_color_bulb_salon_1
       data_template:
@@ -778,113 +693,37 @@
         brightness: 60
         rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
 
-# wyłączenie trybu disco oświetlenia
-- id: light_disco_mode_end
-  alias: 'Light Disco Mode End'
-  trigger: 
-    platform: state
-    entity_id: input_boolean.disco_mode
-    from: 'on'
-    to: 'off'
-  action:
-    service: light.turn_off
-    entity_id: light.gateway_light_f0b429cc6f0b
-
-# standardowa scena oświetlenia w salonie przed zachodem słońca
-- id: light_scene_salon_standard_before_sunset
-  alias: 'Light Scene Salon Standard Before Sunset'
+# standardowa scena oświetlenia w salonie
+- id: light_scene_salon_standard
+  alias: 'Light Scene Salon Standard'
   trigger:
     - platform: state
       entity_id: input_select.light_scenes_salon
-      state: 'standard'
-    - platform: state
-      entity_id: input_boolean.disco_mode
-      from: 'on'
-      to: 'off'
+      to: 'standard'
     - platform: state
       entity_id: group.bulbs_salon
-      state: 'on'
+      to: 'on'
   condition:
     condition: and
     conditions:
-      - condition: sun
-        before: sunset
-        before_offset: "-02:00:00"
-      - condition: state
-        entity_id: group.bulbs_salon
-        state: 'on'
+#      - condition: template
+#        value_template: "{{ (states.light.yeelight_color_bulb_salon_1.state == 'on') and (states.light.yeelight_color_bulb_salon_1.state == 'on') }}"
       - condition: state
         entity_id: input_boolean.salon_light_scene_turn_on
         state: 'off'
   action:
-    - service: scene.turn_on
-      entity_id: scene.standard_przed_zachodem
-    - condition: template
-      value_template: "{{ states.input_select.light_scenes_salon.state != 'standard' }}"
-    - service: input_select.select_option
-      data:
-        entity_id: input_select.light_scenes_salon
-        option: 'standard'
-        
-# standardowa scena oświetlenia w salonie po zachodzie słońca
-- alias: 'Light Scene Salon Standard After Sunset'
-  trigger:
-    - platform: state
-      entity_id: input_select.light_scenes_salon
-      state: 'standard'
-    - platform: state
+    - service: input_boolean.turn_off
       entity_id: input_boolean.disco_mode
-      from: 'on'
-      to: 'off'
-    - platform: state
-      entity_id: group.bulbs_salon
-      state: 'on'
-  condition:
-    condition: and
-    conditions:
-      - condition: sun
-        after: sunset
-        after_offset: "-02:00:00"
-      - condition: state
-        entity_id: group.bulbs_salon
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.salon_light_scene_turn_on
-        state: 'off'
-  action:
-    - service: scene.turn_on
-      entity_id: scene.standard_po_zachodzie
-    - condition: template
-      value_template: "{{ states.input_select.light_scenes_salon.state != 'standard' }}"
+    - delay: '00:00:10'
+    - service: switch.flux_update
     - service: input_select.select_option
       data:
         entity_id: input_select.light_scenes_salon
         option: 'standard'
-
-# zmiana temperatury koloru światła o zachodzie słońca
-- alias: 'Light Change Color Temp At Sunset'
-  trigger:
-    platform: sun
-    event: sunset
-    offset: "-02:00:00"
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: group.bulbs_salon
-        state: 'on'
-      - condition: state
-        entity_id: input_select.light_scenes_salon
-        state: 'standard'
-      - condition: state
-        entity_id: input_boolean.disco_mode
-        state: 'off'
-  action:
-    service: scene.turn_on
-    entity_id: scene.standard_po_zachodzie
 
 # wybór sceny oświetlenia w salonie gdy zarówki włączone
-- alias: 'Light Scene Salon'
+- id: light_scene_salon
+  alias: 'Light Scene Salon'
   trigger:
     platform: state
     entity_id: input_select.light_scenes_salon
@@ -893,19 +732,16 @@
     conditions:
       - condition: template
         value_template: "{{ trigger.to_state.state != 'standard' }}"
-      - condition: state
-        entity_id: group.bulbs_salon
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.disco_mode
-        state: 'off'
+      - condition: template
+        value_template: "{{ (states.light.yeelight_color_bulb_salon_1.state == 'on') and (states.light.yeelight_color_bulb_salon_1.state == 'on') }}"
   action:
     service: scene.turn_on
     data_template:
       entity_id: scene.{{ trigger.to_state.state }}
 
-# wybór sceny oświetlenia w salonie gdy zarówki wyłączone
-- alias: 'Light Scene Salon When Bulbs Off'
+# wybór sceny oświetlenia w salonie gdy żarówki wyłączone
+- id: light_scene_salon_when_bulbs_off
+  alias: 'Light Scene Salon When Bulbs Off'
   trigger:
     platform: state
     entity_id: input_select.light_scenes_salon
@@ -916,14 +752,27 @@
         value_template: "{{ trigger.to_state.state != 'standard' }}"
       - condition: template
         value_template: "{{ (states.group.bulbs_salon.state == 'off') or (states.group.bulbs_salon.state == 'unknown') }}"
-      - condition: state
-        entity_id: input_boolean.disco_mode
-        state: 'off'
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.salon_light_scene_turn_on
     - service: switch.turn_on
       entity_id: switch.light_salon_switch_13_0_2
+
+- id: light_scene_salon_standard_when_bulbs_off
+  alias: 'Light Scene Salon Standard When Bulbs Off'
+  trigger:
+    platform: state
+    entity_id: input_select.light_scenes_salon
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: "{{ trigger.to_state.state == 'standard' }}"
+      - condition: template
+        value_template: "{{ (states.group.bulbs_salon.state == 'off') or (states.group.bulbs_salon.state == 'unknown') }}"
+  action:
+    service: switch.turn_on
+    entity_id: switch.light_salon_switch_13_0_2
 
 # scena gdy żarówki połączą się z siecią
 - id: light_scene_salon_when_bulbs_are_turning_on
@@ -1040,36 +889,21 @@
   alias: 'Light Salon Bulbs Auto Color Temp'
   trigger:
     platform: time
-    minutes: '/12'
+    minutes: '/10'
     seconds: 0
   condition:
     condition: and
     conditions:
-      - condition: sun
-        after: sunset
-      - condition: state
-        entity_id: group.bulbs_salon
-        state: 'on'
+      - condition: template
+        value_template: "{{ (states.light.yeelight_color_bulb_salon_1.state == 'on') and (states.light.yeelight_color_bulb_salon_1.state == 'on') }}"
       - condition: state
         entity_id: input_boolean.disco_mode
         state: 'off'
       - condition: state
-        entity_id: light.yeelight_color_bulb_salon_1
-        state: 'on'
-      - condition: state
         entity_id: input_select.light_scenes_salon
         state: 'standard'
-      - condition: template
-        value_template: '{{ (states.light.yeelight_color_bulb_salon_1.attributes.color_temp | int <= 320) }}'
   action:
-    service: light.turn_on
-    entity_id:
-      - light.yeelight_color_bulb_salon_1
-      - light.yeelight_color_bulb_salon_2
-    data_template:
-      transition: 10
-      brightness: '{{ states.light.yeelight_color_bulb_salon_1.attributes.brightness | int - 1 }}'
-      color_temp: '{{ states.light.yeelight_color_bulb_salon_1.attributes.color_temp | int + 4 }}'
+    service: switch.flux_update
 
 # wyłączenie oświetlenia w salonie po wyjściu z domu
 - id: light_turn_off_when_away_mode
@@ -1106,16 +940,16 @@
   trigger:
     - platform: state
       entity_id: sensor.androidtv_activity
-      state: 'Netflix'
+      to: 'Netflix'
     - platform: state
       entity_id: sensor.androidtv_activity
-      state: 'ShowMax'
+      to: 'ShowMax'
     - platform: state
       entity_id: sensor.androidtv_activity
-      state: 'YouTube'
+      to: 'YouTube'
     - platform: state
       entity_id: sensor.dune_activity
-      state: 'file_playback'
+      to: 'file_playback'
   condition:
     condition: and
     conditions:
@@ -1162,9 +996,8 @@
     conditions:
       - condition: sun
         after: sunset
-      - condition: state
-        entity_id: group.bulbs_salon
-        state: 'on'
+      - condition: template
+        value_template: "{{ (states.light.yeelight_color_bulb_salon_1.state == 'on') and (states.light.yeelight_color_bulb_salon_1.state == 'on') }}"
       - condition: state
         entity_id: input_select.light_scenes_salon
         state: 'film'
@@ -1199,12 +1032,12 @@
     data:
       visible: true
 
-- id: light_bulbs_group_not_visible
-  alias: 'Light Group Bulbs Not Visible'
+- id: light_bulbs_group_hidden
+  alias: 'Light Group Bulbs Hidden'
   trigger:
     - platform: state
       entity_id: switch.light_salon_switch_13_0_2
-      state: 'off'
+      to: 'off'
     - platform: homeassistant
       event: start
   condition:

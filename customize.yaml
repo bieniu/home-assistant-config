@@ -254,7 +254,9 @@ switch.light_lamp_salon:
   friendly_name: Lampa salon
 
 #### ENERGY ####
-sensor.energy_consumption_monthly_leds:
+sensor.light_salon_energy_13_0:
+  friendly_name: LEDy salon
   icon: mdi:flash-outline
-sensor.energy_consumption_monthly_bulbs:
+sensor.light_salon_energy_13_0_2:
+  friendly_name: Żarówki salon
   icon: mdi:flash-outline

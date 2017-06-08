@@ -14,6 +14,8 @@
       state: off
     switch.light_lamp_salon:
       state: off
+    input_boolean.disco_mode:
+      state: off
       
 - name: niebieski
   entities:
@@ -30,6 +32,8 @@
     switch.light_salon_switch_13_0:
       state: on
     switch.light_lamp_salon:
+      state: off
+    input_boolean.disco_mode:
       state: off
 
 - name: romantyczny
@@ -48,6 +52,8 @@
       state: off
     switch.light_lamp_salon:
       state: on
+    input_boolean.disco_mode:
+      state: off
 
 - name: fiolet
   entities:
@@ -65,32 +71,21 @@
       state: off
     switch.light_lamp_salon:
       state: off
+    input_boolean.disco_mode:
+      state: off
 
-- name: standard_przed_zachodem
+- name: standard
   entities:
     light.yeelight_color_bulb_salon_1:
       state: on
       transition: 5
-      brightness: 220
-      color_temp: 240
+      brightness: 250
     light.yeelight_color_bulb_salon_2:
       state: on
       transition: 5
-      brightness: 220
-      color_temp: 240
-
-- name: standard_po_zachodzie
-  entities:
-    light.yeelight_color_bulb_salon_1:
-      state: on
-      transition: 5
-      brightness: 255
-      color_temp: 280
-    light.yeelight_color_bulb_salon_2:
-      state: on
-      transition: 5
-      brightness: 255
-      color_temp: 280
+      brightness: 250
+    input_boolean.disco_mode:
+      state: off
 
 - name: czytanie
   entities:
@@ -108,3 +103,33 @@
       state: off
     switch.light_lamp_salon:
       state: on
+    input_boolean.disco_mode:
+      state: off
+
+- name: jasny
+  entities:
+    light.yeelight_color_bulb_salon_1:
+      state: on
+      transition: 5
+      brightness: 250
+      color_temp: 240
+    light.yeelight_color_bulb_salon_2:
+      state: on
+      transition: 5
+      brightness: 250
+      color_temp: 240
+    switch.light_salon_switch_13_0:
+      state: on
+    switch.light_lamp_salon:
+      state: on
+    input_boolean.disco_mode:
+      state: off
+
+- name: dyskoteka
+  entities:
+    input_boolean.disco_mode:
+      state: on
+    switch.light_salon_switch_13_0:
+      state: off
+    switch.light_lamp_salon:
+      state: off

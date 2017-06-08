@@ -33,8 +33,7 @@ fast_warm_up:
       data:
         temperature: 24
     - delay: '00:25:00'
-    - service: automation.trigger
-      entity_id: automation.heating_day
+    - service: script.heating_day
 
 #### DENON ####
 denon_play_maciek_playlist:
@@ -81,7 +80,7 @@ xiaomi_alarm_stop:
       gw_sid: !secret xiaomi_gateway_sid
 
 #### OTHER ####
-sleep_mode:
+night_mode:
   sequence:
     - service: switch.turn_off
       entity_id:
@@ -91,3 +90,94 @@ sleep_mode:
         - switch.wake_on_lan_stacjonarny
         - media_player.denon
 
+#### HEATING ####
+heating_day:
+  sequence:
+    - service: climate.set_temperature
+      entity_id: 
+        - climate.thermostat_antresola_heating_1_12_1
+        - climate.thermostat_kuchnia_heating_1_5_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_day.state }}'
+    - service: climate.set_temperature
+      entity_id: 
+        - climate.thermostat_antek_heating_1_3_1
+        - climate.thermostat_sypialnia_heating_1_4_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_bedroom_day.state }}'
+    - service: input_boolean.turn_off
+      entity_id:
+        - input_boolean.heating_night
+        - input_boolean.heating_salon_kuchnia_night
+
+heating_night:
+  sequence:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.heating_night
+    - service: climate.set_temperature
+      entity_id: climate.thermostat_antresola_heating_1_12_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_night.state }}'
+    - service: climate.set_temperature
+      entity_id: 
+        - climate.thermostat_antek_heating_1_3_1
+        - climate.thermostat_sypialnia_heating_1_4_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_bedroom_night.state }}'
+    - condition: template
+      value_template: "{{ (states.group.guests.state == 'not_home') and (states.media_player.denon.state == 'off') }}"
+    - service: climate.set_temperature
+      entity_id: climate.thermostat_kuchnia_heating_1_5_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_night.state }}'
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.heating_salon_kuchnia_night
+
+heating_eco_mode:
+  sequence:
+    - service: climate.set_temperature
+      entity_id: 
+        - climate.thermostat_antresola_heating_1_12_1
+        - climate.thermostat_kuchnia_heating_1_5_1
+        - climate.thermostat_antek_heating_1_3_1
+        - climate.thermostat_sypialnia_heating_1_4_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_eco.state }}'
+    - condition: state
+      entity_id: input_boolean.heating_airing
+      state: 'on'
+    - service: notify.ios_edyta_iphone
+      data:
+        title: 'Koniec przewietrzania'
+        message: 'Domownicy opóścili mieszkanie. Wyłączono tryb przewietrzania.'
+    - service: notify.html5_oneplus
+      data_template: 
+        title: 'Koniec przewietrzania'
+        message: 'Domownicy opóścili mieszkanie. Wyłączono tryb przewietrzania.'
+      data:
+        data:
+          tag: 'notification-airing-end'
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.heating_airing
+
+heating_season_end:
+  sequence:
+    service: climate.set_temperature
+    entity_id:
+      - climate.thermostat_antresola_heating_1_12_1
+      - climate.thermostat_kuchnia_heating_1_5_1
+      - climate.thermostat_antek_heating_1_3_1
+      - climate.thermostat_sypialnia_heating_1_4_1
+    data:
+      temperature: 4
+
+heating_airing_begin:
+  sequence:
+    service: climate.set_temperature
+    entity_id: 
+      - climate.thermostat_antresola_heating_1_12_1
+      - climate.thermostat_kuchnia_heating_1_5_1
+      - climate.thermostat_antek_heating_1_3_1
+      - climate.thermostat_sypialnia_heating_1_4_1
+    data:
+      temperature: 8

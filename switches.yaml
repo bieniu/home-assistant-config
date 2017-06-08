@@ -6,6 +6,7 @@
   turn_off:
     service:
       shell_command.stacjonarny_off
+
 - platform: mqtt
   name: "Light Lamp Salon"
   command_topic: "cmnd/sonoff-lamp/power"
@@ -14,3 +15,12 @@
   payload_on: "ON"
   payload_off: "OFF"
   retain: true
+
+- platform: flux
+  lights: group.bulbs_salon
+  name: Flux
+  start_colortemp: 4400
+  sunset_colortemp: 3700
+  stop_colortemp: 2700
+  mode: mired
+  brightness: 250

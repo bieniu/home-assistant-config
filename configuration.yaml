@@ -70,8 +70,6 @@ recorder:
       - sensor.dune_activity
       - sensor.light_salon_energy_13_0
       - sensor.light_salon_energy_13_0_2
-      - sensor.energy_consumption_monthly_leds
-      - sensor.energy_consumption_monthly_bulbs
       - binary_sensor.switch_158d000154964c
   include:
     entities:
@@ -86,11 +84,12 @@ logger:
     homeassistant.components.sensor.snmp: fatal
     homeassistant.components.sensor.statistics: error
     homeassistant.components.zwave: info
-    DenonAVR: fatal
+    homeassistant.components.media_player: fatal
+    homeassistant.helpers.entity: fatal
     pychromecast: fatal
+#    DenonAVR: fatal
 #    homeassistant.core: fatal
 #    homeassistant.components.device_tracker: debug
-#    homeassistant.components.media_player: debug
 #    homeassistant.components.mqtt: debug
 #    homeassistant.components.updater: debug
 #    custom_components.xiaomi: debug
