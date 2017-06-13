@@ -714,7 +714,7 @@
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.disco_mode
-    - delay: '00:00:10'
+    - delay: '00:00:15'
     - service: switch.flux_update
     - service: input_select.select_option
       data:
@@ -835,7 +835,7 @@
   alias: 'Light Turn On Antresola Lamp'
   trigger:
     platform: state
-    entity_id: binary_sensor.motion_sensor_158d00014d0a27
+    entity_id: binary_sensor.motion_sensor_158d00014d0a27, binary_sensor.motion_sensor_158d000120a226
     from: 'off'
     to: 'on'
   condition:
@@ -863,7 +863,7 @@
   alias: 'Light Turn Off Antresola Lamp'
   trigger:
     platform: state
-    entity_id: binary_sensor.motion_sensor_158d00014d0a27
+    entity_id: binary_sensor.motion_sensor_158d00014d0a27, binary_sensor.motion_sensor_158d000120a226
     from: 'on'
     to: 'off'
   condition:
@@ -873,16 +873,76 @@
         entity_id: light.gateway_light_f0b429cc6f0b
         state: 'on'
       - condition: state
-        entity_id: input_boolean.disco_mode
-        state: 'off'
-      - condition: state
         entity_id: input_boolean.antresola_lamp_motion_on
         state: 'on'
+      - condition: state
+        entity_id: binary_sensor.motion_sensor_158d00014d0a27
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.motion_sensor_158d000120a226
+        state: 'off'
   action:
     - service: homeassistant.turn_off
       entity_id:
         - light.gateway_light_f0b429cc6f0b
         - input_boolean.antresola_lamp_motion_on
+
+# włączanie lampy w salonie jak jest ruch
+- id: light_turn_on_salon_lamp
+  alias: 'Light Turn On Salon Lamp'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_sensor_158d000121c604
+    from: 'off'
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.away_mode
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.illumination_f0b429cc6f0b
+        below: 430
+      - condition: state
+        entity_id: switch.light_salon_switch_13_0
+        state: 'off'
+      - condition: state
+        entity_id: switch.light_salon_switch_13_0_2
+        state: 'off'
+      - condition: state
+        entity_id: group.guests
+        state: 'off'
+      - condition: state
+        entity_id: media_player.denon
+        state: 'off'
+  action:
+    - service: homeassistant.turn_on
+      entity_id:
+        - switch.light_lamp_salon
+        - input_boolean.salon_lamp_motion_on
+
+- id: light_turn_off_salon_lamp
+  alias: 'Light Turn Off Salon Lamp'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_sensor_158d000121c604
+    from: 'on'
+    to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: switch.light_lamp_salon
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.salon_lamp_motion_on
+        state: 'on'
+  action:
+    - service: homeassistant.turn_off
+      entity_id:
+        - switch.light_lamp_salon
+        - input_boolean.salon_lamp_motion_on
 
 # automatyczna zmiana temperatury koloru żarówek gdy wybrana scena standard
 - id: light_salon_bulbs_auto_color_temp

@@ -85,7 +85,7 @@ logger:
     homeassistant.components.sensor.statistics: error
     homeassistant.components.zwave: info
     homeassistant.components.media_player: fatal
-    homeassistant.helpers.entity: fatal
+#    homeassistant.helpers.entity: fatal
     pychromecast: fatal
 #    DenonAVR: fatal
 #    homeassistant.core: fatal
@@ -159,6 +159,8 @@ config:
 updater:
 
 discovery:
+  ignore:
+    denonavr
 
 zeroconf:
 
@@ -204,6 +206,7 @@ input_boolean:
   maciek_far_from_home:
   away_mode:
   antresola_lamp_motion_on:
+  salon_lamp_motion_on:
   salon_light_scene_turn_on:
 
 input_slider:

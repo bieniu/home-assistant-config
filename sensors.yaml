@@ -498,6 +498,58 @@
             mdi:battery-unknown
          {% endif %}
 
+    battery_body_sensor_schody:
+      friendly_name: sensor ruchu schody
+      unit_of_measurement: '%'
+      entity_id: binary_sensor.motion_sensor_158d000120a226
+      value_template: >-
+         {% if states.binary_sensor.motion_sensor_158d000120a226 %}
+            {{ states.binary_sensor.motion_sensor_158d000120a226.attributes.battery_level }}
+         {% else %}
+            {{ states.sensor.battery_body_sensor_schody.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.binary_sensor.motion_sensor_158d000120a226.attributes.battery_level %}
+            {% if states.binary_sensor.motion_sensor_158d000120a226.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.binary_sensor.motion_sensor_158d000120a226.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.binary_sensor.motion_sensor_158d000120a226.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.binary_sensor.motion_sensor_158d000120a226.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
+    battery_body_sensor_salon:
+      friendly_name: sensor ruchu salon
+      unit_of_measurement: '%'
+      entity_id: binary_sensor.motion_sensor_158d000121c604
+      value_template: >-
+         {% if states.binary_sensor.motion_sensor_158d000121c604 %}
+            {{ states.binary_sensor.motion_sensor_158d000121c604.attributes.battery_level }}
+         {% else %}
+            {{ states.sensor.battery_body_sensor_salon.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.binary_sensor.motion_sensor_158d000121c604.attributes.battery_level %}
+            {% if states.binary_sensor.motion_sensor_158d000121c604.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.binary_sensor.motion_sensor_158d000121c604.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.binary_sensor.motion_sensor_158d000121c604.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.binary_sensor.motion_sensor_158d000121c604.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
     battery_switch_lamp_salon:
       friendly_name: włącznik lampy salon
       unit_of_measurement: '%'
@@ -529,6 +581,26 @@
       entity_id: binary_sensor.motion_sensor_158d00014d0a27
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d00014d0a27.state == 'on' %}
+            ruch
+         {% else %}
+            brak ruchu
+         {% endif %}
+
+    motion_schody:
+      friendly_name: Ruch schody
+      entity_id: binary_sensor.motion_sensor_158d000120a226
+      value_template: >-
+         {% if states.binary_sensor.motion_sensor_158d000120a226.state == 'on' %}
+            ruch
+         {% else %}
+            brak ruchu
+         {% endif %}
+
+    motion_salon:
+      friendly_name: Ruch salon
+      entity_id: binary_sensor.motion_sensor_158d000121c604
+      value_template: >-
+         {% if states.binary_sensor.motion_sensor_158d000121c604.state == 'on' %}
             ruch
          {% else %}
             brak ruchu

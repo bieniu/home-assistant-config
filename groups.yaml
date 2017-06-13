@@ -69,6 +69,8 @@ sensors:
   entities:
     - sensor.temperature_salon
     - sensor.humidity_salon
+    - sensor.motion_salon
+    - sensor.motion_schody
     - sensor.temperature_antresola
     - sensor.humidity_antresola
     - sensor.illumination_f0b429cc6f0b
@@ -218,6 +220,8 @@ batteries:
     - sensor.battery_temp_humi_sensor_sypialnia
     - sensor.battery_temp_humi_sensor_antek
     - sensor.battery_temp_humi_sensor_lazienka
+    - sensor.battery_body_sensor_salon
+    - sensor.battery_body_sensor_schody
     - sensor.battery_body_sensor_antresola
     - sensor.battery_switch_lamp_salon
 

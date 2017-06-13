@@ -1,6 +1,10 @@
 #### MOTION ####
 sensor.motion_antresola:
   icon: mdi:run
+sensor.motion_schody:
+  icon: mdi:run
+sensor.motion_salon:
+  icon: mdi:run
 
 #### LIGHTS ####
 light.gateway_light_f0b429cc6f0b:
@@ -233,6 +237,14 @@ binary_sensor.switch_158d000154964c:
 
 binary_sensor.motion_sensor_158d00014d0a27:
   friendly_name: Ruch antresola
+  icon: mdi:run
+
+binary_sensor.motion_sensor_158d000120a226:
+  friendly_name: Ruch schody
+  icon: mdi:run
+
+binary_sensor.motion_sensor_158d000121c604:
+  friendly_name: Ruch salon
   icon: mdi:run
 
 #### PRINTER ####
