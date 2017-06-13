@@ -586,6 +586,13 @@
             brak ruchu
          {% endif %}
 
+      icon_template: >-
+         {% if states.binary_sensor.motion_sensor_158d00014d0a27.state == 'on' %}
+            mdi:run-fast
+         {% else %}
+            mdi:run
+         {% endif %}
+
     motion_schody:
       friendly_name: Ruch schody
       entity_id: binary_sensor.motion_sensor_158d000120a226
@@ -596,6 +603,13 @@
             brak ruchu
          {% endif %}
 
+      icon_template: >-
+         {% if states.binary_sensor.motion_sensor_158d000120a226.state == 'on' %}
+            mdi:run-fast
+         {% else %}
+            mdi:run
+         {% endif %}
+
     motion_salon:
       friendly_name: Ruch salon
       entity_id: binary_sensor.motion_sensor_158d000121c604
@@ -604,6 +618,13 @@
             ruch
          {% else %}
             brak ruchu
+         {% endif %}
+
+      icon_template: >-
+         {% if states.binary_sensor.motion_sensor_158d000121c604.state == 'on' %}
+            mdi:run-fast
+         {% else %}
+            mdi:run
          {% endif %}
 
     raspberry_disk_free:

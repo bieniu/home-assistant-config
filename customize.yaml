@@ -1,11 +1,3 @@
-#### MOTION ####
-sensor.motion_antresola:
-  icon: mdi:run
-sensor.motion_schody:
-  icon: mdi:run
-sensor.motion_salon:
-  icon: mdi:run
-
 #### LIGHTS ####
 light.gateway_light_f0b429cc6f0b:
   friendly_name: Lampka antresola
@@ -50,34 +42,32 @@ zone.home:
 
 #### GROUPS ####
 group.family:
-  order: 5
-group.weather:
   order: 6
-group.sensors:
+group.weather:
   order: 7
-group.heating:
+group.sensors:
   order: 8
-group.lights:
+group.heating:
   order: 9
-group.denon:
+group.lights:
   order: 10
-group.androidtv:
+group.denon:
   order: 11
-group.spotify:
+group.androidtv:
   order: 12
-group.wire_devices:
+group.spotify:
   order: 13
-group.wireless_devices:
+group.wire_devices:
   order: 14
-group.iot_devices:
+group.wireless_devices:
   order: 15
-group.internet:
+group.iot_devices:
   order: 16
-group.printer:
+group.internet:
   order: 17
-group.raspberry:
+group.printer:
   order: 18
-group.energy_consumption:
+group.raspberry:
   order: 19
 group.heating_hours:
   order: 20
@@ -85,8 +75,12 @@ group.heating_temps:
   order: 21
 group.scripts:
   order: 22
-group.batteries:
+group.energy_consumption:
   order: 23
+group.batteries_thermostats:
+  order: 24
+group.batteries_sensors:
+  order: 25
 
 #### WEATHER ####
 sensor.dark_sky_temperature:
