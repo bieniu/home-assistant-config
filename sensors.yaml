@@ -15,6 +15,11 @@
   value_template: '{{ (value | float / 1024 / 1024 ) | round(1) }}'
   scan_interval: 900
 
+- platform: command_line
+  name: Last restart
+  command: "sudo systemctl status home-assistant.service | head -3 | awk '{print $6}' | tail -1"
+  scan_interval: 1800
+
 - platform: google_travel_time
   name: Edyta To Home
   api_key: !secret distance_api_key
@@ -62,11 +67,17 @@
 
 - platform: template
   sensors:
+    illumination_antresola:
+      entity_id: sensor.illumination_f0b429cc6f0b
+      friendly_name: Natężenie światła antresola
+      unit_of_measurement: 'lx'
+      value_template: "{{ 1.02015 * 10 ** -12 * (states.sensor.illumination_f0b429cc6f0b.state | float) ** 4.94631 | round(0) }}"
+
     temperature_salon:
       entity_id: sensor.temperature_158d00010fb340
       friendly_name: Temperatura salon/kuchnia
       unit_of_measurement: '°C'
-      value_template: >- 
+      value_template: >-
          {% if states.sensor.temperature_158d00010fb340 %}
             {% if states.sensor.temperature_158d00010fb340.state | int < 60 %}
                {{ (states.sensor.temperature_158d00010fb340.state | float - 0.5) | round(1) }}
@@ -215,24 +226,24 @@
     battery_thermostat_antresola:
       friendly_name: termostat antresola
       unit_of_measurement: '%'
-      entity_id: zwave.thermostat_antresola_12
+      entity_id: zwave.thermostat_antresola
       value_template: >-
-         {% if states.zwave.thermostat_antresola_12 %}
-            {{ states.zwave.thermostat_antresola_12.attributes.battery_level }}
+         {% if states.zwave.thermostat_antresola %}
+            {{ states.zwave.thermostat_antresola.attributes.battery_level }}
          {% else %}
             {{ states.sensor.battery_thermostat_antresola.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.zwave.thermostat_antresola_12.attributes.battery_level %}
-            {% if states.zwave.thermostat_antresola_12.attributes.battery_level == 'unknown' %}
+         {% if states.zwave.thermostat_antresola.attributes.battery_level %}
+            {% if states.zwave.thermostat_antresola.attributes.battery_level == 'unknown' %}
                mdi:battery-unknown
-            {% elif states.zwave.thermostat_antresola_12.attributes.battery_level | int <= 5 %}
+            {% elif states.zwave.thermostat_antresola.attributes.battery_level | int <= 5 %}
                mdi:battery-outline
-            {% elif states.zwave.thermostat_antresola_12.attributes.battery_level | int >= 95 %}
+            {% elif states.zwave.thermostat_antresola.attributes.battery_level | int >= 95 %}
                mdi:battery
             {% else %}
-               mdi:battery-{{ ((states.zwave.thermostat_antresola_12.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+               mdi:battery-{{ ((states.zwave.thermostat_antresola.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
             {% endif %}
          {% else %}
             mdi:battery-unknown
@@ -241,24 +252,24 @@
     battery_thermostat_salon:
       friendly_name: termostat salon
       unit_of_measurement: '%'
-      entity_id: zwave.thermostat_salon_2
+      entity_id: zwave.thermostat_salon
       value_template: >-
-         {% if states.zwave.thermostat_salon_2 %}
-            {{ states.zwave.thermostat_salon_2.attributes.battery_level }}
+         {% if states.zwave.thermostat_salon %}
+            {{ states.zwave.thermostat_salon.attributes.battery_level }}
          {% else %}
             {{ states.sensor.battery_thermostat_salon.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.zwave.thermostat_salon_2.attributes.battery_level %}
-            {% if states.zwave.thermostat_salon_2.attributes.battery_level == 'unknown' %}
+         {% if states.zwave.thermostat_salon.attributes.battery_level %}
+            {% if states.zwave.thermostat_salon.attributes.battery_level == 'unknown' %}
                mdi:battery-unknown
-            {% elif states.zwave.thermostat_salon_2.attributes.battery_level | int <= 5 %}
+            {% elif states.zwave.thermostat_salon.attributes.battery_level | int <= 5 %}
                mdi:battery-outline
-            {% elif states.zwave.thermostat_salon_2.attributes.battery_level | int >= 95 %}
+            {% elif states.zwave.thermostat_salon.attributes.battery_level | int >= 95 %}
                mdi:battery
             {% else %}
-               mdi:battery-{{ ((states.zwave.thermostat_salon_2.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+               mdi:battery-{{ ((states.zwave.thermostat_salon.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
             {% endif %}
          {% else %}
             mdi:battery-unknown
@@ -267,24 +278,24 @@
     battery_thermostat_kuchnia:
       friendly_name: termostat kuchnia
       unit_of_measurement: '%'
-      entity_id: zwave.thermostat_kuchnia_5
+      entity_id: zwave.thermostat_kuchnia
       value_template: >-
-         {% if states.zwave.thermostat_kuchnia_5 %}
-            {{ states.zwave.thermostat_kuchnia_5.attributes.battery_level }}
+         {% if states.zwave.thermostat_kuchnia %}
+            {{ states.zwave.thermostat_kuchnia.attributes.battery_level }}
          {% else %}
             {{ states.sensor.battery_thermostat_kuchnia.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.zwave.thermostat_kuchnia_5.attributes.battery_level %}
-            {% if states.zwave.thermostat_kuchnia_5.attributes.battery_level == 'unknown' %}
+         {% if states.zwave.thermostat_kuchnia.attributes.battery_level %}
+            {% if states.zwave.thermostat_kuchnia.attributes.battery_level == 'unknown' %}
                mdi:battery-unknown
-            {% elif states.zwave.thermostat_kuchnia_5.attributes.battery_level | int <= 5 %}
+            {% elif states.zwave.thermostat_kuchnia.attributes.battery_level | int <= 5 %}
                mdi:battery-outline
-            {% elif states.zwave.thermostat_kuchnia_5.attributes.battery_level | int >= 95 %}
+            {% elif states.zwave.thermostat_kuchnia.attributes.battery_level | int >= 95 %}
                mdi:battery
             {% else %}
-               mdi:battery-{{ ((states.zwave.thermostat_kuchnia_5.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+               mdi:battery-{{ ((states.zwave.thermostat_kuchnia.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
             {% endif %}
          {% else %}
             mdi:battery-unknown
@@ -293,24 +304,24 @@
     battery_thermostat_sypialnia:
       friendly_name: termostat sypialnia
       unit_of_measurement: '%'
-      entity_id: zwave.thermostat_sypialnia_4
+      entity_id: zwave.thermostat_sypialnia
       value_template: >-
-         {% if states.zwave.thermostat_sypialnia_4 %}
-            {{ states.zwave.thermostat_sypialnia_4.attributes.battery_level }}
+         {% if states.zwave.thermostat_sypialnia %}
+            {{ states.zwave.thermostat_sypialnia.attributes.battery_level }}
          {% else %}
             {{ states.sensor.battery_thermostat_sypialnia.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.zwave.thermostat_sypialnia_4.attributes.battery_level %}
-            {% if states.zwave.thermostat_sypialnia_4.attributes.battery_level == 'unknown' %}
+         {% if states.zwave.thermostat_sypialnia.attributes.battery_level %}
+            {% if states.zwave.thermostat_sypialnia.attributes.battery_level == 'unknown' %}
                mdi:battery-unknown
-            {% elif states.zwave.thermostat_sypialnia_4.attributes.battery_level | int <= 5 %}
+            {% elif states.zwave.thermostat_sypialnia.attributes.battery_level | int <= 5 %}
                mdi:battery-outline
-            {% elif states.zwave.thermostat_sypialnia_4.attributes.battery_level | int >= 95 %}
+            {% elif states.zwave.thermostat_sypialnia.attributes.battery_level | int >= 95 %}
                mdi:battery
             {% else %}
-               mdi:battery-{{ ((states.zwave.thermostat_sypialnia_4.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+               mdi:battery-{{ ((states.zwave.thermostat_sypialnia.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
             {% endif %}
          {% else %}
             mdi:battery-unknown
@@ -319,24 +330,24 @@
     battery_thermostat_antek:
       friendly_name: termostat pokój Antka
       unit_of_measurement: '%'
-      entity_id: zwave.thermostat_antek_3
+      entity_id: zwave.thermostat_antek
       value_template: >-
-         {% if states.zwave.thermostat_antek_3 %}
-            {{ states.zwave.thermostat_antek_3.attributes.battery_level }}
+         {% if states.zwave.thermostat_antek %}
+            {{ states.zwave.thermostat_antek.attributes.battery_level }}
          {% else %}
             {{ states.sensor.battery_thermostat_antek.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.zwave.thermostat_antek_3.attributes.battery_level %}
-            {% if states.zwave.thermostat_antek_3.attributes.battery_level == 'unknown' %}
+         {% if states.zwave.thermostat_antek.attributes.battery_level %}
+            {% if states.zwave.thermostat_antek.attributes.battery_level == 'unknown' %}
                mdi:battery-unknown
-            {% elif states.zwave.thermostat_antek_3.attributes.battery_level | int <= 5 %}
+            {% elif states.zwave.thermostat_antek.attributes.battery_level | int <= 5 %}
                mdi:battery-outline
-            {% elif states.zwave.thermostat_antek_3.attributes.battery_level | int >= 95 %}
+            {% elif states.zwave.thermostat_antek.attributes.battery_level | int >= 95 %}
                mdi:battery
             {% else %}
-               mdi:battery-{{ ((states.zwave.thermostat_antek_3.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+               mdi:battery-{{ ((states.zwave.thermostat_antek.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
             {% endif %}
          {% else %}
             mdi:battery-unknown

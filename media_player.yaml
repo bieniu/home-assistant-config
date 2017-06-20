@@ -1,13 +1,13 @@
 - platform: denonavr
   host: !secret denon_ip
   name: Denon
-- platform: spotify
-  client_id: !secret spotify_client_id
-  client_secret: !secret spotify_client_secret
-  cache_path: /home/homeassistant/.homeassistant/.spotify-token-cache
-  aliases:
-    5d660f2ece57c2b170da6eef091825c8402d4580: 'Gabinet'
-    d21e573cdb9bd1b7576712f4d73862c355997e74: 'Salon'
+#- platform: spotify
+#  client_id: !secret spotify_client_id
+#  client_secret: !secret spotify_client_secret
+#  cache_path: /home/homeassistant/.homeassistant/.spotify-token-cache
+#  aliases:
+#    5d660f2ece57c2b170da6eef091825c8402d4580: 'Gabinet'
+#    d21e573cdb9bd1b7576712f4d73862c355997e74: 'Salon'
 #- platform: cast
 #  host: !secret androidtv_ip
 #- platform: dunehd

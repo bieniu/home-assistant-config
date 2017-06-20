@@ -1,18 +1,18 @@
-sensor.light_salon_alarm_level_13_1:
+sensor.light_salon_alarm_level:
   ignored: true
-sensor.light_salon_alarm_type_13_0:
+sensor.light_salon_alarm_type:
   ignored: true
-sensor.light_salon_exporting_13_32:
+sensor.light_salon_exporting:
   ignored: true
-sensor.light_salon_exporting_13_32_2:
+sensor.light_salon_exporting_2:
   ignored: true
-sensor.light_salon_heat_13_7:
+sensor.light_salon_heat:
   ignored: true
-sensor.light_salon_power_management_13_11:
+sensor.light_salon_power_management:
   ignored: true
-sensor.light_salon_sourcenodeid_13_2:
+sensor.light_salon_sourcenodeid:
   ignored: true
-sensor.light_salon_power_13_8:
+sensor.light_salon_power:
   ignored: true
-sensor.light_salon_power_13_8_2:
+sensor.light_salon_power_2:
   ignored: true

@@ -389,7 +389,7 @@
         state: 'off'
   action:
     - service: climate.set_temperature
-      entity_id: climate.thermostat_kuchnia_heating_1_5_1
+      entity_id: climate.thermostat_kuchnia_heating_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_night.state }}'
 
@@ -575,7 +575,7 @@
   alias: 'Heating Sync Temp Salon Kuchnia'
   trigger:
     platform: state
-    entity_id: climate.thermostat_salon_heating_1_2_1
+    entity_id: climate.thermostat_salon_heating_1
   condition:
     condition: and
     conditions:
@@ -586,22 +586,23 @@
            {% endif %}
       - condition: template
         value_template: >-
-           {% if (trigger.to_state and states.climate.thermostat_kuchnia_heating_1_5_1) %}
-              {{ trigger.to_state.attributes.temperature != states.climate.thermostat_kuchnia_heating_1_5_1.attributes.temperature }}
+           {% if (trigger.to_state and states.climate.thermostat_kuchnia_heating_1) %}
+              {{ trigger.to_state.attributes.temperature != states.climate.thermostat_kuchnia_heating_1.attributes.temperature }}
            {% endif %}
       - condition: template
         value_template: "{{ (trigger.to_state.attributes.temperature | float) != 4.3 }}"
   action:
     service: climate.set_temperature
-    entity_id: climate.thermostat_kuchnia_heating_1_5_1
+    entity_id: climate.thermostat_kuchnia_heating_1
     data_template:
       temperature: '{{ trigger.to_state.attributes.temperature }}'
 
 # ustawia w salonie temperaturę z kuchni
-- alias: 'Heating Sync Temp Kuchnia Salon'
+- id: heating_sync_temp_kuchnia_salon
+  alias: 'Heating Sync Temp Kuchnia Salon'
   trigger:
     platform: state
-    entity_id: climate.thermostat_kuchnia_heating_1_5_1
+    entity_id: climate.thermostat_kuchnia_heating_1
   condition:
     condition: and
     conditions:
@@ -612,19 +613,20 @@
            {% endif %}
       - condition: template
         value_template: >-
-           {% if (trigger.to_state and states.climate.thermostat_salon_heating_1_2_1) %}
-              {{ trigger.to_state.attributes.temperature != states.climate.thermostat_salon_heating_1_2_1.attributes.temperature }}
+           {% if (trigger.to_state and states.climate.thermostat_salon_heating_1) %}
+              {{ trigger.to_state.attributes.temperature != states.climate.thermostat_salon_heating_1.attributes.temperature }}
            {% endif %}
       - condition: template
         value_template: "{{ (trigger.to_state.attributes.temperature | float) != 4.3 }}"
   action:
     service: climate.set_temperature
-    entity_id: climate.thermostat_salon_heating_1_2_1
+    entity_id: climate.thermostat_salon_heating_1
     data_template:
       temperature: '{{ trigger.to_state.attributes.temperature }}'
 
 # otwarcie okna
-- alias: 'Heating Windows Opened'
+- id: heating_windows_opened
+  alias: 'Heating Windows Opened'
   trigger:
     - platform: template
       value_template: "{{ (states.sensor.temperature_salon_delta.state | float > 0.3) and (states.binary_sensor.temperature_salon_down.state == 'on') }}"
@@ -669,30 +671,6 @@
       entity_id: input_boolean.heating_airing
 
 #### LIGHT ####
-# tryb disco oświetlenia w salonie
-- id: light_disco_mode
-  alias: 'Light Disco Mode'
-  trigger: 
-    platform: time
-    seconds: '/5'
-  condition: 
-    condition: state
-    entity_id: input_boolean.disco_mode
-    state: 'on'
-  action:
-    - service: light.turn_on
-      entity_id: light.yeelight_color_bulb_salon_1
-      data_template:
-        transition: 4
-        brightness: 60
-        rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
-    - service: light.turn_on
-      entity_id: light.yeelight_color_bulb_salon_2
-      data_template:
-        transition: 4
-        brightness: 60
-        rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
-
 # standardowa scena oświetlenia w salonie
 - id: light_scene_salon_standard
   alias: 'Light Scene Salon Standard'
@@ -706,8 +684,6 @@
   condition:
     condition: and
     conditions:
-#      - condition: template
-#        value_template: "{{ (states.light.yeelight_color_bulb_salon_1.state == 'on') and (states.light.yeelight_color_bulb_salon_1.state == 'on') }}"
       - condition: state
         entity_id: input_boolean.salon_light_scene_turn_on
         state: 'off'
@@ -756,8 +732,9 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.salon_light_scene_turn_on
     - service: switch.turn_on
-      entity_id: switch.light_salon_switch_13_0_2
+      entity_id: switch.light_salon_switch_2
 
+# wybór sceny standard oświetlenia w salonie gdy żarówki wyłączone
 - id: light_scene_salon_standard_when_bulbs_off
   alias: 'Light Scene Salon Standard When Bulbs Off'
   trigger:
@@ -772,7 +749,7 @@
         value_template: "{{ (states.group.bulbs_salon.state == 'off') or (states.group.bulbs_salon.state == 'unknown') }}"
   action:
     service: switch.turn_on
-    entity_id: switch.light_salon_switch_13_0_2
+    entity_id: switch.light_salon_switch_2
 
 # scena gdy żarówki połączą się z siecią
 - id: light_scene_salon_when_bulbs_are_turning_on
@@ -815,7 +792,7 @@
       click_type: double
   action:
     service: switch.toggle
-    entity_id: switch.light_salon_switch_13_0_2
+    entity_id: switch.light_salon_switch_2
 
 # włączenie/wyłączenie LEDów w salonie
 - id: light_toggle_power_salon_leds
@@ -828,7 +805,7 @@
       click_type: hold
   action:
     service: switch.toggle
-    entity_id: switch.light_salon_switch_13_0
+    entity_id: switch.light_salon_switch
 
 # włączanie lampki na antresoli jak jest ciemno i jest ruch
 - id: light_turn_on_antresola_lamp
@@ -905,17 +882,20 @@
         entity_id: sensor.illumination_f0b429cc6f0b
         below: 430
       - condition: state
-        entity_id: switch.light_salon_switch_13_0
+        entity_id: switch.light_salon_switch
         state: 'off'
       - condition: state
-        entity_id: switch.light_salon_switch_13_0_2
+        entity_id: switch.light_salon_switch_2
+        state: 'off'
+      - condition: state
+        entity_id: switch.light_lamp_salon
         state: 'off'
       - condition: state
         entity_id: group.guests
-        state: 'off'
-      - condition: state
-        entity_id: media_player.denon
-        state: 'off'
+        state: 'not_home'
+#      - condition: state
+#        entity_id: media_player.denon
+#        state: 'off'
   action:
     - service: homeassistant.turn_on
       entity_id:
@@ -982,17 +962,17 @@
         entity_id: switch.light_lamp_salon
         state: 'on'
       - condition: state
-        entity_id: switch.light_salon_switch_13_0
+        entity_id: switch.light_salon_switch
         state: 'on'
       - condition: state
-        entity_id: switch.light_salon_switch_13_0_2
+        entity_id: switch.light_salon_switch_2
         state: 'on'
   action:
     service: switch.turn_off
     entity_id:
       - switch.light_lamp_salon
-      - switch.light_salon_switch_13_0
-      - switch.light_salon_switch_13_0_2
+      - switch.light_salon_switch
+      - switch.light_salon_switch_2
 
 # Scena oświetlenia salonu film po włączeniu Netflix/Showmax/Youtube/Dune
 - id: light_scene_film
@@ -1016,7 +996,7 @@
       - condition: sun
         after: sunset
       - condition: template
-        value_template: "{{ (states.switch.light_salon_switch_13_0.state == 'on') or (states.switch.light_salon_switch_13_0_2.state == 'on') or (states.switch.light_lamp_salon.state == 'on') }}"
+        value_template: "{{ (states.switch.light_salon_switch.state == 'on') or (states.switch.light_salon_switch_2.state == 'on') or (states.switch.light_lamp_salon.state == 'on') }}"
   action:
     service: input_select.select_option
     data:
@@ -1071,14 +1051,14 @@
   alias: 'Light Group Bulbs Visible'
   trigger:
     - platform: template
-      value_template: "{{ (states.switch.light_salon_switch_13_0_2.state == 'on') and (states.light.yeelight_color_bulb_salon_1.state == 'on') and (states.light.yeelight_color_bulb_salon_2.state == 'on') }}"
+      value_template: "{{ (states.switch.light_salon_switch_2.state == 'on') and (states.light.yeelight_color_bulb_salon_1.state == 'on') and (states.light.yeelight_color_bulb_salon_2.state == 'on') }}"
     - platform: homeassistant
       event: start
   condition:
     condition: and
     conditions:
       - condition: state
-        entity_id: switch.light_salon_switch_13_0_2
+        entity_id: switch.light_salon_switch_2
         state: 'on'
       - condition: state
         entity_id: light.yeelight_color_bulb_salon_1
@@ -1096,13 +1076,13 @@
   alias: 'Light Group Bulbs Hidden'
   trigger:
     - platform: state
-      entity_id: switch.light_salon_switch_13_0_2
+      entity_id: switch.light_salon_switch_2
       to: 'off'
     - platform: homeassistant
       event: start
   condition:
     condition: state
-    entity_id: switch.light_salon_switch_13_0_2
+    entity_id: switch.light_salon_switch_2
     state: 'off'
   action:
     service: group.set_visibility

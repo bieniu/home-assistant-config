@@ -2,14 +2,18 @@
 light.gateway_light_f0b429cc6f0b:
   friendly_name: Lampka antresola
   icon: mdi:spotlight
+
 light.yeelight_color_bulb_salon_1:
   friendly_name: Żarówka salon 1
+
 light.yeelight_color_bulb_salon_2:
   friendly_name: Żarówka salon 2
-switch.light_salon_switch_13_0:
+
+switch.light_salon_switch:
   friendly_name: LEDy salon
   icon: mdi:led-variant-on
-switch.light_salon_switch_13_0_2:
+
+switch.light_salon_switch_2:
   friendly_name: Żarówki salon
   icon: mdi:lightbulb
 
@@ -22,13 +26,16 @@ sensor.ram_use:
 sensor.raspberry_disk_free:
   icon: mdi:harddisk
 sensor.last_boot:
-  friendly_name: 'Ostatni restart'
+  friendly_name: 'Ostatni reboot'
 sensor.raspberry_cpu_temp:
   friendly_name: 'Temperatura CPU'
   icon: mdi:thermometer
 sensor.ha_database_size:
   friendly_name: 'Wielkość bazy danych'
   icon: mdi:database
+sensor.last_restart:
+  friendly_name: 'Ostatni restart'
+  icon: mdi:clock
 
 #### PEOPLES ####
 sensor.edyta_presence:
@@ -175,19 +182,19 @@ script.shutdown_pi:
   icon: mdi:power
 
 #### CLIMATE ####
-climate.thermostat_salon_heating_1_2_1:
+climate.thermostat_salon_heating_1:
   friendly_name: Salon
 
-climate.thermostat_antek_heating_1_3_1:
+climate.thermostat_antek_heating_1:
   friendly_name: Pokój Antka
 
-climate.thermostat_sypialnia_heating_1_4_1:
+climate.thermostat_sypialnia_heating_1:
   friendly_name: Sypialnia
 
-climate.thermostat_antresola_heating_1_12_1:
+climate.thermostat_antresola_heating_1:
   friendly_name: Antresola
 
-climate.thermostat_kuchnia_heating_1_5_1:
+climate.thermostat_kuchnia_heating_1:
   friendly_name: Kuchnia
 
 #### XIAOMI SENSORS ####
@@ -241,6 +248,9 @@ binary_sensor.motion_sensor_158d000121c604:
   friendly_name: Ruch salon
   icon: mdi:run
 
+sensor.illumination_antresola:
+  icon: mdi:lightbulb-on-outline
+
 #### PRINTER ####
 sensor.printer_status:
   friendly_name: Status drukarki
@@ -260,9 +270,9 @@ switch.light_lamp_salon:
   friendly_name: Lampa salon
 
 #### ENERGY ####
-sensor.light_salon_energy_13_0:
+sensor.light_salon_energy:
   friendly_name: LEDy salon
   icon: mdi:flash-outline
-sensor.light_salon_energy_13_0_2:
+sensor.light_salon_energy_2:
   friendly_name: Żarówki salon
   icon: mdi:flash-outline

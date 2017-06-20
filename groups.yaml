@@ -33,7 +33,7 @@ network:
 energy:
   name: Energia
   view: yes
-  icon: mdi:flash
+  icon: mdi:power-plug
   entities:
     - group.batteries_thermostats
     - group.batteries_sensors
@@ -93,8 +93,8 @@ lights:
   name: Oświetlenie
   control: hidden
   entities:
-    - switch.light_salon_switch_13_0_2
-    - switch.light_salon_switch_13_0
+    - switch.light_salon_switch_2
+    - switch.light_salon_switch
     - switch.light_lamp_salon
     - group.bulbs_salon
     - input_select.light_scenes_salon
@@ -104,11 +104,11 @@ heating:
   name: Ogrzewanie
   control: hidden
   entities:
-    - climate.thermostat_salon_heating_1_2_1
-    - climate.thermostat_kuchnia_heating_1_5_1
-    - climate.thermostat_antresola_heating_1_12_1
-    - climate.thermostat_sypialnia_heating_1_4_1
-    - climate.thermostat_antek_heating_1_3_1
+    - climate.thermostat_salon_heating_1
+    - climate.thermostat_kuchnia_heating_1
+    - climate.thermostat_antresola_heating_1
+    - climate.thermostat_sypialnia_heating_1
+    - climate.thermostat_antek_heating_1
     - script.fast_warm_up
     - input_boolean.heating_airing
 
@@ -119,19 +119,21 @@ family:
     - sensor.maciek_presence
     - device_tracker.grazyna
     - device_tracker.jerzy
+    - device_tracker.romana
     - device_tracker.agnieszka
     - device_tracker.emil
 
 peoples:
   name: Ludzie
   entities:
+    - sensor.maciek_presence
+    - sensor.edyta_presence
     - device_tracker.agnieszka
     - device_tracker.emil
     - device_tracker.grazyna
-    - sensor.maciek_presence
-    - sensor.edyta_presence
     - device_tracker.jerzy
-    - sensor.denon_presence
+    - device_tracker.romana
+#    - sensor.denon_presence
 
 guests:
   name: Goście
@@ -244,6 +246,7 @@ raspberry:
     - sensor.ram_use
     - sensor.raspberry_disk_free
     - sensor.last_boot
+    - sensor.last_restart
     - sensor.ha_database_size
 
 printer:
@@ -265,5 +268,5 @@ bulbs salon:
 energy consumption:
   name: Miesięczne zużycie energii
   entities:
-    - sensor.light_salon_energy_13_0_2
-    - sensor.light_salon_energy_13_0
+    - sensor.light_salon_energy_2
+    - sensor.light_salon_energy

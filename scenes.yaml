@@ -10,7 +10,7 @@
       transition: 5
       brightness: 110
       color_temp: 350
-    switch.light_salon_switch_13_0:
+    switch.light_salon_switch:
       state: off
     switch.light_lamp_salon:
       state: off
@@ -29,7 +29,7 @@
       transition: 5
       brightness: 128
       rgb_color: [20,20,50]
-    switch.light_salon_switch_13_0:
+    switch.light_salon_switch:
       state: on
     switch.light_lamp_salon:
       state: off
@@ -48,7 +48,7 @@
       transition: 5
       brightness: 128
       rgb_color: [255,102,0]
-    switch.light_salon_switch_13_0:
+    switch.light_salon_switch:
       state: off
     switch.light_lamp_salon:
       state: on
@@ -67,7 +67,7 @@
       transition: 5
       brightness: 200
       rgb_color: [255,0,255]
-    switch.light_salon_switch_13_0:
+    switch.light_salon_switch:
       state: off
     switch.light_lamp_salon:
       state: off
@@ -99,7 +99,7 @@
       transition: 5
       brightness: 220
       color_temp: 300
-    switch.light_salon_switch_13_0:
+    switch.light_salon_switch:
       state: off
     switch.light_lamp_salon:
       state: on
@@ -118,7 +118,7 @@
       transition: 5
       brightness: 250
       color_temp: 240
-    switch.light_salon_switch_13_0:
+    switch.light_salon_switch:
       state: on
     switch.light_lamp_salon:
       state: on
@@ -129,7 +129,13 @@
   entities:
     input_boolean.disco_mode:
       state: on
-    switch.light_salon_switch_13_0:
+    switch.light_salon_switch:
       state: off
     switch.light_lamp_salon:
       state: off
+    light.yeelight_color_bulb_salon_1:
+      state: on
+      effect: 'Disco'
+    light.yeelight_color_bulb_salon_2:
+      state: on
+      effect: 'Disco'
