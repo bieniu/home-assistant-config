@@ -6,6 +6,7 @@
 
 #### CLIMATE ####
 'climate.thermostat*':
+  friendly_name: Grzejnik
   icon: mdi:radiator
   max_temp: 28
   min_temp: 4

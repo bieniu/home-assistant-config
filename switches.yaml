@@ -24,3 +24,16 @@
   stop_colortemp: 2700
   mode: mired
   brightness: 250
+
+- platform: template
+  switches:
+    denon:
+      entity_id: media_player.denon
+      friendly_name: Amplituner
+      value_template: "{{ is_state('media_player.denon', 'on') }}"
+      turn_on:
+        service: media_player.turn_on
+        entity_id: media_player.denon
+      turn_off:
+        service: media_player.turn_on
+        entity_id: media_player.denon

@@ -1,6 +1,6 @@
 #### LIGHTS ####
 light.gateway_light_f0b429cc6f0b:
-  friendly_name: Lampka antresola
+  friendly_name: Lampka
   icon: mdi:spotlight
 
 light.yeelight_color_bulb_salon_1:
@@ -10,11 +10,11 @@ light.yeelight_color_bulb_salon_2:
   friendly_name: Żarówka salon 2
 
 switch.light_salon_switch:
-  friendly_name: LEDy salon
+  friendly_name: LEDy
   icon: mdi:led-variant-on
 
 switch.light_salon_switch_2:
-  friendly_name: Żarówki salon
+  friendly_name: Żarówki
   icon: mdi:lightbulb
 
 #### RASPBERRY PI ####
@@ -52,42 +52,50 @@ group.family:
   order: 6
 group.weather:
   order: 7
-group.sensors:
+group.salon:
   order: 8
-group.heating:
+group.kuchnia:
   order: 9
-group.lights:
+group.antresola:
   order: 10
-group.denon:
+group.pokoj_antek:
   order: 11
-group.androidtv:
+group.sypialnia:
   order: 12
-group.spotify:
+group.lazienka:
   order: 13
-group.wire_devices:
+group.denon:
   order: 14
-group.wireless_devices:
+group.androidtv:
   order: 15
-group.iot_devices:
+#group.spotify:
+#  order: 13
+group.wire_devices:
   order: 16
-group.internet:
+group.wireless_devices:
   order: 17
-group.printer:
+group.iot_devices:
   order: 18
-group.raspberry:
+group.internet:
   order: 19
-group.heating_hours:
+group.printer:
   order: 20
-group.heating_temps:
+group.raspberry:
   order: 21
-group.scripts:
+group.heating_settings:
   order: 22
-group.energy_consumption:
+group.heating_hours:
   order: 23
-group.batteries_thermostats:
+group.heating_temps:
   order: 24
-group.batteries_sensors:
+group.scripts:
   order: 25
+group.energy_consumption:
+  order: 26
+group.batteries_thermostats:
+  order: 27
+group.batteries_sensors:
+  order: 28
 
 #### WEATHER ####
 sensor.dark_sky_temperature:
@@ -138,6 +146,8 @@ sensor.oneplus_status:
   icon: mdi:cellphone-android
 sensor.denon_status:
   icon: mdi:amplifier
+switch.denon:
+  icon: mdi:amplifier
 sensor.androidtv_status:
   icon: mdi:cast
 sensor.laptopedyta_status:
@@ -181,22 +191,6 @@ script.reboot_router:
 script.shutdown_pi:
   icon: mdi:power
 
-#### CLIMATE ####
-climate.thermostat_salon_heating_1:
-  friendly_name: Salon
-
-climate.thermostat_antek_heating_1:
-  friendly_name: Pokój Antka
-
-climate.thermostat_sypialnia_heating_1:
-  friendly_name: Sypialnia
-
-climate.thermostat_antresola_heating_1:
-  friendly_name: Antresola
-
-climate.thermostat_kuchnia_heating_1:
-  friendly_name: Kuchnia
-
 #### XIAOMI SENSORS ####
 sensor.temperature_158d00010fb340:
   friendly_name: Temperatura salon
@@ -229,7 +223,7 @@ sensor.humidity_158d000149cc8c:
   friendly_name: Wilgotność antresola
 
 sensor.illumination_f0b429cc6f0b:
-  friendly_name: Natężenie światła antresola
+  friendly_name: Natężenie światła
   icon: mdi:lightbulb-on-outline
 
 binary_sensor.switch_158d000154964c:
@@ -243,6 +237,7 @@ binary_sensor.motion_sensor_158d00014d0a27:
 binary_sensor.motion_sensor_158d000120a226:
   friendly_name: Ruch schody
   icon: mdi:run
+
 
 binary_sensor.motion_sensor_158d000121c604:
   friendly_name: Ruch salon
@@ -267,7 +262,7 @@ sensor.printer_pages_to_replace_drum:
 #### SONOFF ####
 switch.light_lamp_salon:
   icon: mdi:lamp
-  friendly_name: Lampa salon
+  friendly_name: Lampa
 
 #### ENERGY ####
 sensor.light_salon_energy:
@@ -276,3 +271,9 @@ sensor.light_salon_energy:
 sensor.light_salon_energy_2:
   friendly_name: Żarówki salon
   icon: mdi:flash-outline
+
+sensor.humidity_indoor:
+  friendly_name: Średnia wilgotność wewnętrzna
+
+sensor.temperature_indoor:
+  friendly_name: Średnia temperatura wewnętrzna

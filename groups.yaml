@@ -5,9 +5,12 @@ default_view:
   entities:
     - group.family
     - group.weather
-    - group.sensors
-    - group.lights
-    - group.heating
+    - group.salon
+    - group.kuchnia
+    - group.antresola
+    - group.pokoj_antek
+    - group.sypialnia
+    - group.lazienka
 
 media players:
   name: Media
@@ -16,7 +19,7 @@ media players:
   entities:
     - group.denon
     - group.androidtv
-    - group.spotify
+#    - group.spotify
 
 network:
   name: Sieć
@@ -44,8 +47,9 @@ misc:
   view: yes
   icon: mdi:settings
   entities:
-    - group.heating_temps
+    - group.heating_settings
     - group.heating_hours
+    - group.heating_temps
     - group.scripts
 
 denon:
@@ -54,8 +58,8 @@ denon:
 androidtv:
   entities: media_player.androidtv
 
-spotify:
-  entities: media_player.spotify
+#spotify:
+#  entities: media_player.spotify
 
 weather:
   name: Pogoda
@@ -69,48 +73,6 @@ weather:
     - sensor.sun_custom
     - sensor.sunrise
     - sensor.sunset
-
-sensors:
-  name: Czujniki
-  control: hidden
-  entities:
-    - sensor.temperature_salon
-    - sensor.humidity_salon
-    - sensor.motion_salon
-    - sensor.motion_schody
-    - sensor.temperature_antresola
-    - sensor.humidity_antresola
-    - sensor.illumination_f0b429cc6f0b
-    - sensor.motion_antresola
-    - sensor.temperature_sypialnia
-    - sensor.humidity_sypialnia
-    - sensor.temperature_pokoj_antek
-    - sensor.humidity_pokoj_antek
-    - sensor.temperature_lazienka
-    - sensor.humidity_lazienka
-
-lights:
-  name: Oświetlenie
-  control: hidden
-  entities:
-    - switch.light_salon_switch_2
-    - switch.light_salon_switch
-    - switch.light_lamp_salon
-    - group.bulbs_salon
-    - input_select.light_scenes_salon
-    - light.gateway_light_f0b429cc6f0b
-
-heating:
-  name: Ogrzewanie
-  control: hidden
-  entities:
-    - climate.thermostat_salon_heating_1
-    - climate.thermostat_kuchnia_heating_1
-    - climate.thermostat_antresola_heating_1
-    - climate.thermostat_sypialnia_heating_1
-    - climate.thermostat_antek_heating_1
-    - script.fast_warm_up
-    - input_boolean.heating_airing
 
 family:
   name: Rodzina
@@ -133,7 +95,7 @@ peoples:
     - device_tracker.grazyna
     - device_tracker.jerzy
     - device_tracker.romana
-#    - sensor.denon_presence
+    - sensor.denon_presence
 
 guests:
   name: Goście
@@ -184,11 +146,18 @@ internet:
     - sensor.speedtest_upload
     - sensor.speedtest_ping
 
+heating settings:
+  name: Ustawienie ogrzewania
+  control: hidden
+  entities:
+    - input_boolean.heating_season
+    - script.fast_warm_up
+    - input_boolean.heating_airing
+
 heating temps:
   name: Temperatury ogrzewania
   control: hidden
   entities:
-    - input_boolean.heating_season
     - input_select.heating_temp_bedroom_day
     - input_select.heating_temp_bedroom_night
     - input_select.heating_temp_bathroom_day
@@ -258,7 +227,7 @@ printer:
     - sensor.printer_toner
 
 bulbs salon:
-  name: Kolor żarówek salon
+  name: Kolor żarówek
   icon: mdi:lightbulb
   control: hidden
   entities:
@@ -270,3 +239,61 @@ energy consumption:
   entities:
     - sensor.light_salon_energy_2
     - sensor.light_salon_energy
+
+salon:
+  name: Salon
+  control: hidden
+  entities:
+    - sensor.temperature_salon
+    - sensor.humidity_salon
+    - sensor.motion_salon
+    - climate.thermostat_salon_heating_1
+    - switch.light_salon_switch_2
+    - switch.light_salon_switch
+    - switch.light_lamp_salon
+    - group.bulbs_salon
+    - input_select.light_scenes_salon
+    - switch.denon
+
+kuchnia:
+  name: Kuchnia
+  control: hidden
+  entities:
+    - sensor.temperature_salon
+    - sensor.humidity_salon
+    - climate.thermostat_kuchnia_heating_1
+
+antresola:
+  name: Antresola
+  control: hidden
+  entities:
+  - sensor.temperature_antresola
+  - sensor.humidity_antresola
+  - sensor.illumination_f0b429cc6f0b
+  - sensor.motion_antresola
+#  - sensor.motion_schody
+  - climate.thermostat_antresola_heating_1
+  - light.gateway_light_f0b429cc6f0b
+
+pokoj_antek:
+  name: Pokój Antka
+  control: hidden
+  entities:
+    - sensor.temperature_pokoj_antek
+    - sensor.humidity_pokoj_antek
+    - climate.thermostat_antek_heating_1
+
+sypialnia:
+  name: Sypialnia
+  control: hidden
+  entities:
+    - sensor.temperature_sypialnia
+    - sensor.humidity_sypialnia
+    - climate.thermostat_sypialnia_heating_1
+
+lazienka:
+  name: Łazienka
+  control: hidden
+  entities:
+    - sensor.temperature_lazienka
+    - sensor.humidity_lazienka

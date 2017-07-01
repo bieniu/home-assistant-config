@@ -85,9 +85,9 @@ logger:
     homeassistant.components.sensor.snmp: fatal
     homeassistant.components.sensor.statistics: error
     homeassistant.components.zwave: info
-    homeassistant.components.media_player: fatal
-    pychromecast: fatal
-    DenonAVR: fatal
+#   homeassistant.components.media_player: info
+#    pychromecast: fatal
+#   DenonAVR: info
 #    homeassistant.core: fatal
 #    homeassistant.components.device_tracker: debug
 #    homeassistant.components.mqtt: debug
@@ -115,20 +115,12 @@ history:
       - sensor.dark_sky_temperature
       - sensor.dark_sky_wind_speed
       - sensor.ha_database_size
-      - sensor.humidity_pokoj_antek
-      - sensor.humidity_salon
-      - sensor.humidity_sypialnia
-      - sensor.humidity_lazienka
-      - sensor.humidity_antresola
       - sensor.speedtest_download
       - sensor.speedtest_ping
       - sensor.speedtest_upload
-      - sensor.temperature_pokoj_antek
-      - sensor.temperature_salon
-      - sensor.temperature_sypialnia
-      - sensor.temperature_lazienka
-      - sensor.temperature_antresola
       - sensor.illumination_f0b429cc6f0b
+      - sensor.temperature_indoor
+      - sensor.humidity_indoor
 
 logbook:
   include:
@@ -187,10 +179,13 @@ xiaomi:
     poll_motion: false
 
 notify:
-  name: html5
-  platform: html5
-  gcm_api_key: !secret gcm_api_key
-  gcm_sender_id: !secret gcm_sender_id
+  - platform: html5
+    name: html5
+    gcm_api_key: !secret gcm_api_key
+    gcm_sender_id: !secret gcm_sender_id
+  - platform: nfandroidtv
+    name: androidtv
+    host: !secret androidtv_ip
 
 input_boolean:
   heating_season:

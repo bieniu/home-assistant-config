@@ -125,7 +125,7 @@ heating_temp_eco:
   icon: mdi:temperature-celsius
 
 light_scenes_salon:
-  name: Tryb oświetlenia salon
+  name: Tryb oświetlenia
   icon: mdi:palette
   options:
     - 'standard'

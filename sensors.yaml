@@ -65,17 +65,31 @@
     - download
     - upload
 
+- platform: min_max
+  type: mean
+  name: Temperature Indoor
+  entity_ids:
+    - sensor.temperature_158d00010fb340
+    - sensor.temperature_158d0001100416
+    - sensor.temperature_158d00010fb2cd
+    - sensor.temperature_158d000129a158
+    - sensor.temperature_158d000149cc8c
+
+- platform: min_max
+  type: mean
+  name: Humidity Indoor
+  entity_ids:
+    - sensor.humidity_158d00010fb340
+    - sensor.humidity_158d0001100416
+    - sensor.humidity_158d00010fb2cd
+    - sensor.humidity_158d000129a158
+    - sensor.humidity_158d000149cc8c
+
 - platform: template
   sensors:
-    illumination_antresola:
-      entity_id: sensor.illumination_f0b429cc6f0b
-      friendly_name: Natężenie światła antresola
-      unit_of_measurement: 'lx'
-      value_template: "{{ 1.02015 * 10 ** -12 * (states.sensor.illumination_f0b429cc6f0b.state | float) ** 4.94631 | round(0) }}"
-
     temperature_salon:
       entity_id: sensor.temperature_158d00010fb340
-      friendly_name: Temperatura salon/kuchnia
+      friendly_name: Temperatura
       unit_of_measurement: '°C'
       value_template: >-
          {% if states.sensor.temperature_158d00010fb340 %}
@@ -90,7 +104,7 @@
 
     humidity_salon:
       entity_id: sensor.humidity_158d00010fb340
-      friendly_name: Wilgotność salon/kuchnia
+      friendly_name: Wilgotność
       unit_of_measurement: '%'
       value_template: >-
          {% if states.sensor.humidity_158d00010fb340 %}
@@ -105,7 +119,7 @@
 
     temperature_sypialnia:
       entity_id: sensor.temperature_158d0001100416
-      friendly_name: Temperatura sypialnia
+      friendly_name: Temperatura
       unit_of_measurement: '°C'
       value_template: >-
          {% if states.sensor.temperature_158d0001100416 %}
@@ -120,7 +134,7 @@
 
     humidity_sypialnia:
       entity_id: sensor.humidity_158d0001100416
-      friendly_name: Wilgotność sypialnia
+      friendly_name: Wilgotność
       unit_of_measurement: '%'
       value_template: >-
          {% if states.sensor.humidity_158d0001100416 %}
@@ -135,7 +149,7 @@
 
     temperature_pokoj_antek:
       entity_id: sensor.temperature_158d00010fb2cd
-      friendly_name: Temperatura pokój Antka
+      friendly_name: Temperatura
       unit_of_measurement: '°C'
       value_template: >-
          {% if states.sensor.temperature_158d00010fb2cd %}
@@ -150,7 +164,7 @@
 
     humidity_pokoj_antek:
       entity_id: sensor.humidity_158d00010fb2cd
-      friendly_name: Wilgotność pokój Antka
+      friendly_name: Wilgotność
       unit_of_measurement: '%'
       value_template: >-
          {% if states.sensor.humidity_158d00010fb2cd %}
@@ -165,7 +179,7 @@
 
     temperature_lazienka:
       entity_id: sensor.temperature_158d000129a158
-      friendly_name: Temperatura łazienka
+      friendly_name: Temperatura
       unit_of_measurement: '°C'
       value_template: >-
          {% if states.sensor.temperature_158d000129a158 %}
@@ -180,7 +194,7 @@
 
     humidity_lazienka:
       entity_id: sensor.humidity_158d000129a158
-      friendly_name: Wilgotność łazienka
+      friendly_name: Wilgotność
       unit_of_measurement: '%'
       value_template: >-
          {% if states.sensor.humidity_158d000129a158 %}
@@ -195,7 +209,7 @@
 
     temperature_antresola:
       entity_id: sensor.temperature_158d000149cc8c
-      friendly_name: Temperatura antesola
+      friendly_name: Temperatura
       unit_of_measurement: '°C'
       value_template: >-
          {% if states.sensor.temperature_158d000149cc8c %}
@@ -210,7 +224,7 @@
 
     humidity_antresola:
       entity_id: sensor.humidity_158d000149cc8c
-      friendly_name: Wilgotność antresola
+      friendly_name: Wilgotność
       unit_of_measurement: '%'
       value_template: >-
          {% if states.sensor.humidity_158d000149cc8c %}
@@ -588,13 +602,13 @@
          {% endif %}
 
     motion_antresola:
-      friendly_name: Ruch antresola
+      friendly_name: Ruch
       entity_id: binary_sensor.motion_sensor_158d00014d0a27
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d00014d0a27.state == 'on' %}
-            ruch
+            jest
          {% else %}
-            brak ruchu
+            brak
          {% endif %}
 
       icon_template: >-
@@ -605,13 +619,13 @@
          {% endif %}
 
     motion_schody:
-      friendly_name: Ruch schody
+      friendly_name: Ruch
       entity_id: binary_sensor.motion_sensor_158d000120a226
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d000120a226.state == 'on' %}
-            ruch
+            jest
          {% else %}
-            brak ruchu
+            brak
          {% endif %}
 
       icon_template: >-
@@ -622,13 +636,13 @@
          {% endif %}
 
     motion_salon:
-      friendly_name: Ruch salon
+      friendly_name: Ruch
       entity_id: binary_sensor.motion_sensor_158d000121c604
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d000121c604.state == 'on' %}
-            ruch
+            jest
          {% else %}
-            brak ruchu
+            brak
          {% endif %}
 
       icon_template: >-

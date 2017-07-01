@@ -44,15 +44,19 @@
   action:
     - service: notify.ios_edyta_iphone
       data:
-        title: 'Antoni gra ponad godzinę'
+        title: 'Zbyt długa gra'
         message: 'Antoni ponad godzinę gra w Minecrafta.'
     - service: notify.html5_oneplus
       data_template: 
-        title: 'Antoni gra ponad godzinę'
+        title: 'Zbyt długa gra'
         message: 'Antoni ponad godzinę gra w Minecrafta.'
       data:
         data:
           tag: 'notification-airing-end'
+    - service: notify.androidtv
+      data:
+        title: 'Zbyt długa gra'
+        message: 'Antoni grasz już w Minecrafta ponad godzinę.'
 
 # powiadomienie o błędzie inicjalizacji Z-Wave
 - id: notification_zwave_error
@@ -893,9 +897,9 @@
       - condition: state
         entity_id: group.guests
         state: 'not_home'
-#      - condition: state
-#        entity_id: media_player.denon
-#        state: 'off'
+      - condition: state
+        entity_id: media_player.denon
+        state: 'off'
   action:
     - service: homeassistant.turn_on
       entity_id:
