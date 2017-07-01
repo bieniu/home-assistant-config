@@ -69,8 +69,6 @@ recorder:
       - sensor.ssl_certificate_expiry
       - sensor.androidtv_activity
       - sensor.dune_activity
-      - sensor.light_salon_energy
-      - sensor.light_salon_energy_2
       - binary_sensor.switch_158d000154964c
   include:
     entities:
@@ -121,6 +119,8 @@ history:
       - sensor.illumination_f0b429cc6f0b
       - sensor.temperature_indoor
       - sensor.humidity_indoor
+      - sensor.light_salon_energy
+      - sensor.light_salon_energy_2
 
 logbook:
   include:
