@@ -82,13 +82,21 @@ xiaomi_alarm_stop:
 #### OTHER ####
 night_mode:
   sequence:
-    - service: switch.turn_off
-      entity_id:
-        - switch.light_salon_switch
-        - switch.light_salon_switch_2
-        - switch.light_lamp_salon
-        - switch.wake_on_lan_stacjonarny
-        - media_player.denon
+    service: switch.turn_off
+    entity_id:
+      - switch.light_salon_switch
+      - switch.light_salon_switch_2
+      - switch.light_lamp_salon
+      - switch.wake_on_lan_stacjonarny
+      - switch.denon
+
+light_away_mode:
+  sequence:
+    service: switch.turn_off
+    entity_id:
+      - switch.light_salon_switch
+      - switch.light_salon_switch_2
+      - switch.light_lamp_salon
 
 #### HEATING ####
 heating_day:

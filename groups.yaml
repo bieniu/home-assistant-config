@@ -225,6 +225,7 @@ printer:
     - sensor.printer_printed_pages
     - sensor.printer_pages_to_replace_drum
     - sensor.printer_toner
+    - sensor.printer_toner_used
 
 bulbs salon:
   name: Kolor żarówek

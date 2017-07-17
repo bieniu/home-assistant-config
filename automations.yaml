@@ -830,7 +830,7 @@
         state: 'off'
       - condition: numeric_state
         entity_id: sensor.illumination_f0b429cc6f0b
-        below: 430
+        below: 150
   action:
     - service: light.turn_on
       entity_id: light.gateway_light_f0b429cc6f0b
@@ -884,7 +884,7 @@
         state: 'off'
       - condition: numeric_state
         entity_id: sensor.illumination_f0b429cc6f0b
-        below: 430
+        below: 150
       - condition: state
         entity_id: switch.light_salon_switch
         state: 'off'
@@ -972,11 +972,7 @@
         entity_id: switch.light_salon_switch_2
         state: 'on'
   action:
-    service: switch.turn_off
-    entity_id:
-      - switch.light_lamp_salon
-      - switch.light_salon_switch
-      - switch.light_salon_switch_2
+    service: script.light_away_mode
 
 # Scena oświetlenia salonu film po włączeniu Netflix/Showmax/Youtube/Dune
 - id: light_scene_film

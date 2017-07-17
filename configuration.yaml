@@ -163,7 +163,6 @@ zwave:
   usb_path: /dev/zwave
 #  config_path: /srv/homeassistant/homeassistant_venv/lib/python3.4/site-packages/libopenzwave-0.3.3-py3.4-linux-armv7l.egg/config
   device_config: !include zwave_device_config.yaml
-  new_entity_ids: true
 
 mqtt:
   broker: !secret mqtt_broker_ip

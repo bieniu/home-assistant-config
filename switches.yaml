@@ -30,10 +30,10 @@
     denon:
       entity_id: media_player.denon
       friendly_name: Amplituner
-      value_template: "{{ not is_state('media_player.denon', 'on') }}"
+      value_template: "{{ not is_state('media_player.denon', 'off') }}"
       turn_on:
         service: media_player.turn_on
         entity_id: media_player.denon
       turn_off:
-        service: media_player.turn_on
+        service: media_player.turn_off
         entity_id: media_player.denon

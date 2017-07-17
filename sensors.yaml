@@ -1068,3 +1068,18 @@
   host: !secret brother_ip
   community: public
   baseoid: iso.3.6.1.2.1.43.11.1.1.9.1.2
+
+- platform: snmp
+  name: printer_toner_used
+  host: !secret brother_ip
+  community: public
+  baseoid: iso.3.6.1.4.1.2435.2.3.9.4.2.1.5.5.52.3.1.3.1
+  unit_of_measurement: "%"
+  icon_template: >-
+     {% if value < 25 %}
+        mdi:flask-empty-outline
+     {% elif value < 75 %}
+        mdi:flask-outline
+     {% else %}
+        mdi:flask-empty
+     {% endif %}
