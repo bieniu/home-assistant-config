@@ -21,3 +21,4 @@
 - platform: ping
   hosts:
     modem: !secret modem_ip
+    androidtv: !secret androidtv_ip

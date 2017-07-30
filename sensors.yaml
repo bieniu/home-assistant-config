@@ -20,6 +20,16 @@
   command: "sudo systemctl status home-assistant.service | head -3 | awk '{print $6}' | tail -1"
   scan_interval: 1800
 
+- platform: command_line
+  command: python3 -c "import requests; print(requests.get('https://pypi.python.org/pypi/homeassistant/json').json()['info']['version'])"
+  name: HA Version Current
+  scan_interval: 1800
+
+- platform: command_line
+  command: "head -5 /home/homeassistant/.homeassistant/.HA_VERSION"
+  name: HA Version Installed
+  scan_interval: 1800
+
 - platform: google_travel_time
   name: Edyta To Home
   api_key: !secret distance_api_key
@@ -74,6 +84,7 @@
     - sensor.temperature_158d00010fb2cd
     - sensor.temperature_158d000129a158
     - sensor.temperature_158d000149cc8c
+  round_digits: 1
 
 - platform: min_max
   type: mean
@@ -84,6 +95,7 @@
     - sensor.humidity_158d00010fb2cd
     - sensor.humidity_158d000129a158
     - sensor.humidity_158d000149cc8c
+  round_digits: 0
 
 - platform: template
   sensors:
@@ -93,7 +105,7 @@
       unit_of_measurement: '°C'
       value_template: >-
          {% if states.sensor.temperature_158d00010fb340 %}
-            {% if states.sensor.temperature_158d00010fb340.state | int < 60 %}
+            {% if states.sensor.temperature_158d00010fb340.state != 'unknown' %}
                {{ (states.sensor.temperature_158d00010fb340.state | float - 0.5) | round(1) }}
             {% else %}
                {{ states.sensor.temperature_salon.state }}
@@ -123,7 +135,7 @@
       unit_of_measurement: '°C'
       value_template: >-
          {% if states.sensor.temperature_158d0001100416 %}
-            {% if states.sensor.temperature_158d0001100416.state | int < 60 %} 
+            {% if states.sensor.temperature_158d0001100416.state != 'unknown' %} 
                {{ (states.sensor.temperature_158d0001100416.state | float - 0.5) | round(1) }}
             {% else %}
                {{ states.sensor.temperature_sypialnia.state }}
@@ -153,7 +165,7 @@
       unit_of_measurement: '°C'
       value_template: >-
          {% if states.sensor.temperature_158d00010fb2cd %}
-            {% if states.sensor.temperature_158d00010fb2cd.state | int < 60 %}
+            {% if states.sensor.temperature_158d00010fb2cd.state != 'unknown' %}
                {{ (states.sensor.temperature_158d00010fb2cd.state | float - 0.5) | round(1) }}
             {% else %}
                {{ states.sensor.temperature_pokoj_antek.state }}
@@ -183,7 +195,7 @@
       unit_of_measurement: '°C'
       value_template: >-
          {% if states.sensor.temperature_158d000129a158 %}
-            {% if states.sensor.temperature_158d000129a158.state | int < 60 %}
+            {% if states.sensor.temperature_158d000129a158.state != 'unknown' %}
                {{ (states.sensor.temperature_158d000129a158.state | float - 0.5) | round(1) }}
             {% else %}
                {{ states.sensor.temperature_lazienka.state }}
@@ -213,7 +225,7 @@
       unit_of_measurement: '°C'
       value_template: >-
          {% if states.sensor.temperature_158d000149cc8c %}
-            {% if states.sensor.temperature_158d000149cc8c.state | int < 60 %}
+            {% if states.sensor.temperature_158d000149cc8c.state != 'unknown' %}
                {{ (states.sensor.temperature_158d000149cc8c.state | float - 0.5) | round(1) }}
             {% else %}
                {{ states.sensor.temperature_antresola.state }}

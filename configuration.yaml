@@ -48,28 +48,19 @@ recorder:
       - groups
     entities:
       - sensor.printer_toner_status
-      - sensor.printer_toner
-      - sensor.printer_pages_to_replace_drum
-      - sensor.printer_printed_pages
       - sensor.sunset
       - sensor.sunrise
       - sensor.sun_custom
-      - sensor.last_boot
-      - sensor.raspberry_disk_free
-      - sensor.printer_toner_status
-      - sensor.printer_toner
-      - sensor.printer_pages_to_replace_drum
-      - sensor.printer_printed_pages
-      - sensor.sunset
-      - sensor.sunrise
-      - sensor.sun_custom
-      - sensor.last_boot
-      - sesnor.last_restart
-      - sensor.raspberry_disk_free
       - sensor.ssl_certificate_expiry
       - sensor.androidtv_activity
       - sensor.dune_activity
       - binary_sensor.switch_158d000154964c
+      - input_slider.gaming_end_hours
+      - input_slider.gaming_end_minutes
+      - input_boolean.gaming_timer
+      - binary_sensor.gaming
+      - sensor.ha_version_current
+      - sensor.ha_version_installed
   include:
     entities:
       - group.family
@@ -83,18 +74,14 @@ logger:
     homeassistant.components.sensor.snmp: fatal
     homeassistant.components.sensor.statistics: error
     homeassistant.components.zwave: info
+    homeassistant.components.sensor: error
+    pychromecast.socket_client: fatal
+    homeassistant.helpers.entity: fatal
 #   homeassistant.components.media_player: info
-#    pychromecast: fatal
-#   DenonAVR: info
-#    homeassistant.core: fatal
+#    DenonAVR: info
 #    homeassistant.components.device_tracker: debug
 #    homeassistant.components.mqtt: debug
 #    homeassistant.components.updater: debug
-#    custom_components.xiaomi: debug
-#    custom_components.sensor.xiaomi: debug
-#    custom_components.switch.xiaomi: debug
-#    custom_components.binary_sensor: debug
-#    custom_components.light.xiaomi: debug
 
 history:
   include:
@@ -143,6 +130,7 @@ shell_command: !include shell_command.yaml
 device_tracker: !include device_tracker.yaml
 media_player: !include media_player.yaml
 switch: !include switches.yaml
+light: !include lights.yaml
 
 sun:
 
@@ -173,7 +161,7 @@ mqtt:
 
 xiaomi:
   gateways:
-    sid: !secret xiaomi_gateway_sid
+    mac: !secret xiaomi_gateway_mac
     key: !secret xiaomi_gateway_key
     poll_motion: false
 
@@ -204,22 +192,31 @@ input_boolean:
   antresola_lamp_motion_on:
   salon_lamp_motion_on:
   salon_light_scene_turn_on:
+  gaming_timer:
+    initial: 'off'
 
-light:
-  platform: yeelight
-  devices:
-    192.168.1.240:
-      name: yeelight color bulb salon 1
-      transition: 500
-      save_on_change: false
-      use_music_mode: false
-    192.168.1.250:
-      name: yeelight color bulb salon 2
-      transition: 500
-      save_on_change: false
-      use_music_mode: false
+input_slider:
+  gaming_end_hours:
+    min: 0
+    max: 23
+    step: 1
+  gaming_end_minutes:
+    min: 0
+    max: 59
+    step: 1
 
 binary_sensor:
+  - platform: template
+    sensors:
+      gaming:
+        entity_id: sensor.androidtv_activity
+        value_template: >-
+           {% for game in ["GT Racing 2","CrossyRoad","Rayman Adventures","BADLAND","Fast like a Fox","BB Racing","Red Ball 4","Sky Force","Minion Rush","Superfrog HD","Leo's Fortune","Rayman Fiesta Run","Minecraft PE"] %}
+              {% if game == states.sensor.androidtv_activity.state %}
+                 True
+              {% endif %}
+           {% endfor %}
+
   - platform: trend
     sensors:
       temperature_salon_down:

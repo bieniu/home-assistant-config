@@ -1,0 +1,12 @@
+platform: yeelight
+devices:
+  192.168.2.240:
+    name: yeelight color bulb salon 1
+    transition: 500
+    save_on_change: false
+    use_music_mode: false
+  192.168.2.250:
+    name: yeelight color bulb salon 2
+    transition: 500
+    save_on_change: false
+    use_music_mode: false

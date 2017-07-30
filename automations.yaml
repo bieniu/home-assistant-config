@@ -1,3 +1,66 @@
+#### GAMES ####
+# początek grania
+- id: start_games
+  alias: 'Start Games'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.gaming
+    to: 'on'
+  condition:
+    condition: state
+    entity_id: input_boolean.gaming_timer
+    state: 'off'
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.gaming_timer
+    - service: input_slider.select_value
+      data_template:
+        entity_id: input_slider.gaming_end_hours
+        value: '{{ (now().strftime("%s") | int | timestamp_custom("%H")) | int + 1 }}'
+    - service: input_slider.select_value
+      data_template:
+        entity_id: input_slider.gaming_end_minutes
+        value: '{{ now().strftime("%s") | int | timestamp_custom("%M") }}'
+
+# koniec grania
+- id: end_games
+  alias: 'End Games'
+  trigger:
+    platform: time
+    minutes: '/1'
+    seconds: 0
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: '{{ ((now().strftime("%s") | int | timestamp_custom("%H")) | int) == (states.input_slider.gaming_end_hours.state | int)}}'
+      - condition: template
+        value_template: '{{ ((now().strftime("%s") | int | timestamp_custom("%M")) | int) == (states.input_slider.gaming_end_minutes.state | int) }}'
+      - condition: state
+        entity_id: input_boolean.gaming_timer
+        state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.gaming_timer
+    - condition: state
+      entity_id: binary_sensor.gaming
+      state: 'on'
+    - service: notify.html5_oneplus
+      data_template: 
+        title: 'Zbyt długa gra'
+        message: 'Gra trwa już godzinę. Pora skończyć!'
+      data:
+        data:
+          tag: 'notification-gaming-end'
+    - service: notify.ios_edyta_iphone
+      data:
+        title: 'Zbyt długa gra'
+        message: 'Gra trwa już godzinę. Pora skończyć!'
+    - service: notify.androidtv
+      data:
+        title: 'Zbyt długa gra'
+        message: 'Gra trwa już godzinę. Pora skończyć!'
+
 #### ENERGY CONSUMPTION ####
 # resetowanie miesięcznego zużycia energii
 - id: energy_reset_monthly_consumption
@@ -32,32 +95,6 @@
       data:
         tag: 'notification-ssl-cert'
 
-# powiadomienie o graniu przez Antka w Minecrafta ponad godzinę
-- id: notification_minecraft_more_than_hour
-  alias: 'Notification Minecraft More Than Hour'
-  trigger:
-    platform: state
-    entity_id: sensor.androidtv_activity
-    to: 'Minecraft PE'
-    for:
-      minutes: 60
-  action:
-    - service: notify.ios_edyta_iphone
-      data:
-        title: 'Zbyt długa gra'
-        message: 'Antoni ponad godzinę gra w Minecrafta.'
-    - service: notify.html5_oneplus
-      data_template: 
-        title: 'Zbyt długa gra'
-        message: 'Antoni ponad godzinę gra w Minecrafta.'
-      data:
-        data:
-          tag: 'notification-airing-end'
-    - service: notify.androidtv
-      data:
-        title: 'Zbyt długa gra'
-        message: 'Antoni grasz już w Minecrafta ponad godzinę.'
-
 # powiadomienie o błędzie inicjalizacji Z-Wave
 - id: notification_zwave_error
   alias: 'Notification Z-Wave Error'
@@ -85,6 +122,21 @@
     data_template:
       title: 'Aktualizacja Home Assistant'
       message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Home Assistant."
+    data:
+      data:
+        tag: 'notification-hass-update'
+        url: "https://home-assistant.io/blog/"
+
+- id: notification_custom_update_available
+  alias: 'Notification Custom Update Available'
+  trigger:
+    platform: template
+    value_template: "{{ states.sensor.ha_version_current.state != states.sensor.ha_version_installed.state }}"
+  action:
+    service: notify.html5_oneplus
+    data_template:
+      title: 'Aktualizacja Home Assistant'
+      message: "Dostępna jest aktualizacja do wersji {{ states.sensor.ha_version_current.state }} dla Home Assistant."
     data:
       data:
         tag: 'notification-hass-update'
@@ -162,16 +214,16 @@
       data:
         tag: 'notification-device-offline'
 
-# niski poziom baterii
-- id: notification_low_battery
-  alias: 'Notification Low Battery'
+# niski poziom baterii termostatów
+- id: notification_low_battery_thermostats
+  alias: 'Notification Low Battery Thermostats'
   trigger:
     platform: time
     at: '18:00:00'
   condition:
     condition: template
     value_template: >-
-       {% for entity_id in states.group.batteries.attributes.entity_id if states(entity_id) | int < 15 %}
+       {% for entity_id in states.group.batteries_thermostats.attributes.entity_id if states(entity_id) | int < 15 %}
        {%- if loop.first -%}
        {{ true }}
        {%- endif -%}
@@ -179,11 +231,34 @@
   action:
     service: notify.html5_oneplus
     data_template:
-      title: 'Niski poziom naładowania baterii'
-      message: "Wykryto niski poziom naładowania baterii w przynajmniej jednym urządzeniu."
+      title: 'Niski poziom naładowania baterii w termostacie'
+      message: "Wykryto niski poziom naładowania baterii w przynajmniej jednym termostacie."
     data:
       data:
-        tag: 'notification-low-battery'
+        tag: 'notification-low-battery-thermostats'
+
+# niski poziom baterii sensorów
+- id: notification_low_battery_sensors
+  alias: 'Notification Low Battery Sensors'
+  trigger:
+    platform: time
+    at: '19:00:00'
+  condition:
+    condition: template
+    value_template: >-
+       {% for entity_id in states.group.batteries_sensors.attributes.entity_id if states(entity_id) | int < 15 %}
+       {%- if loop.first -%}
+       {{ true }}
+       {%- endif -%}
+       {% endfor %}
+  action:
+    service: notify.html5_oneplus
+    data_template:
+      title: 'Niski poziom naładowania baterii w sensorach'
+      message: "Wykryto niski poziom naładowania baterii w przynajmniej jednym sensorze."
+    data:
+      data:
+        tag: 'notification-low-battery-sensors'
 
 #### PRESENCE ####
 # Edyta 40 minut od domu
@@ -830,7 +905,7 @@
         state: 'off'
       - condition: numeric_state
         entity_id: sensor.illumination_f0b429cc6f0b
-        below: 150
+        below: 135
   action:
     - service: light.turn_on
       entity_id: light.gateway_light_f0b429cc6f0b
@@ -884,7 +959,7 @@
         state: 'off'
       - condition: numeric_state
         entity_id: sensor.illumination_f0b429cc6f0b
-        below: 150
+        below: 135
       - condition: state
         entity_id: switch.light_salon_switch
         state: 'off'
@@ -1089,6 +1164,51 @@
     entity_id: group.bulbs_salon
     data:
       visible: false
+
+# włączenie lampy w salonie gdy ciemno, ruch, wyłączony TV i wyłączy się żarówki i LEDy
+- id: light_turn_on_salon_lamp_when_other_lights_turn_off
+  alias: 'Light Turn On Salon Lamp When Other Lights Turn Off'
+  trigger:
+    - platform: state
+      entity_id: switch.light_salon_switch
+      from: 'on'
+      to: 'off'
+    - platform: state
+      entity_id: switch.light_salon_switch_2
+      from: 'on'
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.away_mode
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.illumination_f0b429cc6f0b
+        below: 135
+      - condition: state
+        entity_id: switch.light_salon_switch
+        state: 'off'
+      - condition: state
+        entity_id: switch.light_salon_switch_2
+        state: 'off'
+      - condition: state
+        entity_id: switch.light_lamp_salon
+        state: 'off'
+      - condition: state
+        entity_id: group.guests
+        state: 'not_home'
+      - condition: state
+        entity_id: media_player.denon
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.motion_sensor_158d000121c604
+        state: 'on'
+  action:
+    - service: homeassistant.turn_on
+      entity_id:
+        - switch.light_lamp_salon
+        - input_boolean.salon_lamp_motion_on
 
 #### OTHERS ####
 - id: log_level
