@@ -1105,14 +1105,14 @@
       from: 'file_playback'
       to: 'navigator'
       for:
-        minutes: 1
+        seconds: 30
   condition:
     condition: and
     conditions:
       - condition: sun
         after: sunset
       - condition: template
-        value_template: "{{ (states.light.yeelight_color_bulb_salon_1.state == 'on') and (states.light.yeelight_color_bulb_salon_1.state == 'on') }}"
+        value_template: "{{ (states.switch.light_salon_switch.state == 'on') or (states.switch.light_salon_switch_2.state == 'on') or (states.switch.light_lamp_salon.state == 'on') }}"
       - condition: state
         entity_id: input_select.light_scenes_salon
         state: 'film'

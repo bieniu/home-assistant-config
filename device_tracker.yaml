@@ -15,6 +15,8 @@
     - !secret synology_ip
     - !secret sonoff_lamp_ip
     - !secret denon_ip
+    - !secret migateway_ip
+    - !secret brother_ip
   home_interval: 10
   scan_options: " --privileged -sP "
 - platform: gpslogger
