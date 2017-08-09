@@ -8,6 +8,7 @@ default_view:
     - group.salon
     - group.kuchnia
     - group.antresola
+    - group.gabinet
     - group.pokoj_antek
     - group.sypialnia
     - group.lazienka
@@ -115,8 +116,8 @@ wire devices:
     - sensor.raspberry_status
     - sensor.denon_status
     - sensor.dune_status
+    - sensor.stacjonarny_status
     - sensor.xbox_status
-    - switch.wake_on_lan_stacjonarny
 
 wireless devices:
   name: Urządzenia bezprzewodowe
@@ -199,13 +200,15 @@ batteries sensors:
   entities:
     - sensor.battery_temp_humi_sensor_salon
     - sensor.battery_temp_humi_sensor_antresola
+    - sensor.battery_temp_humi_sensor_gabinet
     - sensor.battery_temp_humi_sensor_sypialnia
     - sensor.battery_temp_humi_sensor_antek
     - sensor.battery_temp_humi_sensor_lazienka
     - sensor.battery_body_sensor_salon
     - sensor.battery_body_sensor_schody
     - sensor.battery_body_sensor_antresola
-    - sensor.battery_switch_lamp_salon
+    - sensor.battery_switch_light_salon_1
+    - sensor.battery_switch_light_salon_2
 
 raspberry:
   name: Raspberry Pi
@@ -275,6 +278,14 @@ antresola:
 #  - sensor.motion_schody
   - climate.thermostat_antresola_heating_1
   - light.gateway_light_f0b429cc6f0b
+
+gabinet:
+  name: Gabinet
+  control: hidden
+  entities:
+  - sensor.temperature_gabinet
+  - sensor.humidity_gabinet
+  - switch.wake_on_lan_stacjonarny
 
 pokoj_antek:
   name: Pokój Antka

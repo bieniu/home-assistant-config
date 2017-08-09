@@ -851,11 +851,16 @@
 - id: light_toggle_power_salon_lamp
   alias: 'Light Toggle Power Salon Lamp'
   trigger:
-    platform: event
-    event_type: click
-    event_data:
-      entity_id: binary_sensor.switch_158d000154964c
-      click_type: single
+    - platform: event
+      event_type: click
+      event_data:
+        entity_id: binary_sensor.switch_158d000154964c
+        click_type: single
+    - platform: event
+      event_type: click
+      event_data:
+        entity_id: binary_sensor.switch_158d00014a0911
+        click_type: single
   action:
     service: switch.toggle
     entity_id: switch.light_lamp_salon
@@ -864,11 +869,16 @@
 - id: light_toggle_power_salon_bulbs
   alias: 'Light Toggle Power Salon Bulbs'
   trigger:
-    platform: event
-    event_type: click
-    event_data:
-      entity_id: binary_sensor.switch_158d000154964c
-      click_type: double
+    - platform: event
+      event_type: click
+      event_data:
+        entity_id: binary_sensor.switch_158d000154964c
+        click_type: double
+    - platform: event
+      event_type: click
+      event_data:
+        entity_id: binary_sensor.switch_158d00014a0911
+        click_type: double
   action:
     service: switch.toggle
     entity_id: switch.light_salon_switch_2
@@ -877,11 +887,16 @@
 - id: light_toggle_power_salon_leds
   alias: 'Light Toggle Power Salon LEDs'
   trigger:
-    platform: event
-    event_type: click
-    event_data:
-      entity_id: binary_sensor.switch_158d000154964c
-      click_type: hold
+    - platform: event
+      event_type: click
+      event_data:
+        entity_id: binary_sensor.switch_158d000154964c
+        click_type: hold
+    - platform: event
+      event_type: click
+      event_data:
+        entity_id: binary_sensor.switch_158d00014a0911
+        click_type: hold
   action:
     service: switch.toggle
     entity_id: switch.light_salon_switch

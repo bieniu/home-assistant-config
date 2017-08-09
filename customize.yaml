@@ -58,44 +58,46 @@ group.kuchnia:
   order: 9
 group.antresola:
   order: 10
-group.pokoj_antek:
+group.gabinet:
   order: 11
-group.sypialnia:
+group.pokoj_antek:
   order: 12
-group.lazienka:
+group.sypialnia:
   order: 13
-group.denon:
+group.lazienka:
   order: 14
-group.androidtv:
+group.denon:
   order: 15
+group.androidtv:
+  order: 16
 #group.spotify:
 #  order: 13
 group.wire_devices:
-  order: 16
-group.wireless_devices:
   order: 17
-group.iot_devices:
+group.wireless_devices:
   order: 18
-group.internet:
+group.iot_devices:
   order: 19
-group.printer:
+group.internet:
   order: 20
-group.raspberry:
+group.printer:
   order: 21
-group.heating_settings:
+group.raspberry:
   order: 22
-group.heating_hours:
+group.heating_settings:
   order: 23
-group.heating_temps:
+group.heating_hours:
   order: 24
-group.scripts:
+group.heating_temps:
   order: 25
-group.energy_consumption:
+group.scripts:
   order: 26
-group.batteries_thermostats:
+group.energy_consumption:
   order: 27
-group.batteries_sensors:
+group.batteries_thermostats:
   order: 28
+group.batteries_sensors:
+  order: 29
 
 #### WEATHER ####
 sensor.dark_sky_temperature:
@@ -134,10 +136,12 @@ sensor.dune_status:
 sensor.raspberry_status:
   icon: mdi:raspberrypi
 switch.wake_on_lan_stacjonarny:
-  friendly_name: Komputer stacjonarny
+  friendly_name: Komputer
   icon: mdi:desktop-tower
 sensor.switch_status:
   icon: mdi:switch
+sensor.stacjonarny_status:
+  icon: mdi:desktop-tower
 sensor.xbox_status:
   icon: mdi:xbox
 sensor.iphone_status:
@@ -192,6 +196,9 @@ script.shutdown_pi:
   icon: mdi:power
 
 #### XIAOMI SENSORS ####
+sensor.temperature_158d0001826f20:
+  friendly_name: Temperatura gabinet
+
 sensor.temperature_158d00010fb340:
   friendly_name: Temperatura salon
 
@@ -210,6 +217,9 @@ sensor.temperature_158d000149cc8c:
 sensor.humidity_158d00010fb340:
   friendly_name: Wilgotność salon
 
+sensor.humidity_158d0001826f20:
+  friendly_name: Wilgotność gabinet
+
 sensor.humidity_158d0001100416:
   friendly_name: Wilgotność sypialnia
 
@@ -227,7 +237,11 @@ sensor.illumination_f0b429cc6f0b:
   icon: mdi:lightbulb-on-outline
 
 binary_sensor.switch_158d000154964c:
-  friendly_name: Lampa salon
+  friendly_name: Światło salon 1
+  icon: mdi:lamp
+
+binary_sensor.switch_158d00014a0911:
+  friendly_name: Światło salon 2
   icon: mdi:lamp
 
 binary_sensor.motion_sensor_158d00014d0a27:
@@ -237,7 +251,6 @@ binary_sensor.motion_sensor_158d00014d0a27:
 binary_sensor.motion_sensor_158d000120a226:
   friendly_name: Ruch schody
   icon: mdi:run
-
 
 binary_sensor.motion_sensor_158d000121c604:
   friendly_name: Ruch salon
