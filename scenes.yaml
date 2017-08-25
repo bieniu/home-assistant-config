@@ -14,9 +14,7 @@
       state: off
     switch.light_lamp_salon:
       state: off
-    input_boolean.disco_mode:
-      state: off
-      
+
 - name: niebieski
   entities:
     light.yeelight_color_bulb_salon_1:
@@ -32,8 +30,6 @@
     switch.light_salon_switch:
       state: on
     switch.light_lamp_salon:
-      state: off
-    input_boolean.disco_mode:
       state: off
 
 - name: romantyczny
@@ -52,8 +48,6 @@
       state: off
     switch.light_lamp_salon:
       state: on
-    input_boolean.disco_mode:
-      state: off
 
 - name: fiolet
   entities:
@@ -71,8 +65,6 @@
       state: off
     switch.light_lamp_salon:
       state: off
-    input_boolean.disco_mode:
-      state: off
 
 - name: standard
   entities:
@@ -84,8 +76,6 @@
       state: on
       transition: 5
       brightness: 250
-    input_boolean.disco_mode:
-      state: off
 
 - name: czytanie
   entities:
@@ -103,8 +93,6 @@
       state: off
     switch.light_lamp_salon:
       state: on
-    input_boolean.disco_mode:
-      state: off
 
 - name: jasny
   entities:
@@ -122,13 +110,9 @@
       state: on
     switch.light_lamp_salon:
       state: on
-    input_boolean.disco_mode:
-      state: off
 
 - name: dyskoteka
   entities:
-    input_boolean.disco_mode:
-      state: on
     switch.light_salon_switch:
       state: off
     switch.light_lamp_salon:

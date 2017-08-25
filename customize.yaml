@@ -17,6 +17,10 @@ switch.light_salon_switch_2:
   friendly_name: Żarówki
   icon: mdi:lightbulb
 
+light.yeelight_lightstrip_sypialnia:
+  friendly_name: LEDy
+  icon: mdi:led-variant-on
+
 #### RASPBERRY PI ####
 sensor.cpu_use:
   friendly_name: 'Obciążenie CPU'
@@ -176,6 +180,8 @@ sensor.yeelight1_status:
   icon: mdi:lightbulb-outline
 sensor.yeelight2_status:
   icon: mdi:lightbulb-outline
+sensor.yeelight_strip_status:
+  icon: mdi:led-variant-outline
 
 #### MEDIA PLAYERS ####
 media_player.androidtv:
@@ -236,6 +242,10 @@ sensor.illumination_f0b429cc6f0b:
   friendly_name: Natężenie światła
   icon: mdi:lightbulb-on-outline
 
+sensor.illumination_158d000165ffb8:
+  friendly_name: Natężenie światła
+  icon: mdi:lightbulb-on-outline
+
 binary_sensor.switch_158d000154964c:
   friendly_name: Światło salon 1
   icon: mdi:lamp
@@ -245,19 +255,20 @@ binary_sensor.switch_158d00014a0911:
   icon: mdi:lamp
 
 binary_sensor.motion_sensor_158d00014d0a27:
-  friendly_name: Ruch antresola
+  friendly_name: antresola
   icon: mdi:run
 
 binary_sensor.motion_sensor_158d000120a226:
-  friendly_name: Ruch schody
+  friendly_name: schody
   icon: mdi:run
 
 binary_sensor.motion_sensor_158d000121c604:
-  friendly_name: Ruch salon
+  friendly_name: salon
   icon: mdi:run
 
-sensor.illumination_antresola:
-  icon: mdi:lightbulb-on-outline
+binary_sensor.motion_sensor_158d000165ffb8:
+  friendly_name: sypialnia
+  icon: mdi:run
 
 #### PRINTER ####
 sensor.printer_status:

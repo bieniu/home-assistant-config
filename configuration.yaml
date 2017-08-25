@@ -55,6 +55,7 @@ recorder:
       - sensor.androidtv_activity
       - sensor.dune_activity
       - binary_sensor.switch_158d000154964c
+      - binary_sensor.switch_158d00014a0911
       - input_slider.gaming_end_hours
       - input_slider.gaming_end_minutes
       - input_boolean.gaming_timer
@@ -72,11 +73,12 @@ logger:
     homeassistant.components.automation: info
     homeassistant.components.sensor.template: error
     homeassistant.components.sensor.snmp: fatal
-    homeassistant.components.sensor.statistics: error
+    homeassistant.components.sensor.statistics: fatal
     homeassistant.components.zwave: info
     homeassistant.components.sensor: error
     pychromecast.socket_client: fatal
     homeassistant.helpers.entity: fatal
+    homeassistant.components.sensor.darksky: fatal
 #   homeassistant.components.media_player: info
 #    DenonAVR: info
 #    homeassistant.components.device_tracker: debug
@@ -103,7 +105,6 @@ history:
       - sensor.speedtest_download
       - sensor.speedtest_ping
       - sensor.speedtest_upload
-      - sensor.illumination_f0b429cc6f0b
       - sensor.temperature_indoor
       - sensor.humidity_indoor
       - sensor.light_salon_energy
@@ -180,9 +181,6 @@ input_boolean:
     icon: mdi:weather-snowy-rainy
   heating_salon_kuchnia_night:
   heating_night:
-  disco_mode:
-    name: Dyskoteka
-    icon: mdi:music
   heating_airing:
     name: Przewietrzanie
     icon: mdi:weather-windy
@@ -191,6 +189,7 @@ input_boolean:
   away_mode:
   antresola_lamp_motion_on:
   salon_lamp_motion_on:
+  sypialnia_lamp_motion_on:
   salon_light_scene_turn_on:
   gaming_timer:
     initial: 'off'
@@ -211,7 +210,7 @@ binary_sensor:
       gaming:
         entity_id: sensor.androidtv_activity
         value_template: >-
-           {% for game in ["GT Racing 2","CrossyRoad","Rayman Adventures","BADLAND","Fast like a Fox","BB Racing","Red Ball 4","Sky Force","Minion Rush","Superfrog HD","Leo's Fortune","Rayman Fiesta Run","Minecraft PE"] %}
+           {% for game in ["GT Racing 2","CrossyRoad","Rayman Adventures","BADLAND","Fast like a Fox","BB Racing","Red Ball 4","Sky Force","Minion Rush","Superfrog HD","Leo's Fortune","Rayman Fiesta Run","Minecraft PE","Riptide GP: Renegade"] %}
               {% if game == states.sensor.androidtv_activity.state %}
                  True
               {% endif %}

@@ -97,6 +97,8 @@ light_away_mode:
       - switch.light_salon_switch
       - switch.light_salon_switch_2
       - switch.light_lamp_salon
+      - light.gateway_light_f0b429cc6f0b
+      - light.yeelight_lightstrip_sypialnia
 
 #### HEATING ####
 heating_day:

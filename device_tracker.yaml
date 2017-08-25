@@ -24,3 +24,4 @@
   hosts:
     modem: !secret modem_ip
     androidtv: !secret androidtv_ip
+    miks_vpn: !secret miks_vpn_ip

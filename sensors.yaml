@@ -645,6 +645,32 @@
             mdi:battery-unknown
          {% endif %}
 
+    battery_body_sensor_sypialnia:
+      friendly_name: sensor ruchu sypialnia
+      unit_of_measurement: '%'
+      entity_id: binary_sensor.motion_sensor_158d000165ffb8
+      value_template: >-
+         {% if states.binary_sensor.motion_sensor_158d000165ffb8 %}
+            {{ states.binary_sensor.motion_sensor_158d000165ffb8.attributes.battery_level }}
+         {% else %}
+            {{ states.sensor.battery_body_sensor_sypialnia.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.binary_sensor.motion_sensor_158d000165ffb8.attributes.battery_level %}
+            {% if states.binary_sensor.motion_sensor_158d000165ffb8.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.binary_sensor.motion_sensor_158d000165ffb8.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.binary_sensor.motion_sensor_158d000165ffb8.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.binary_sensor.motion_sensor_158d000165ffb8.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
     battery_switch_light_salon_1:
       friendly_name: włącznik oświetlenia salon [1]
       unit_of_measurement: '%'
@@ -743,6 +769,23 @@
 
       icon_template: >-
          {% if states.binary_sensor.motion_sensor_158d000121c604.state == 'on' %}
+            mdi:run-fast
+         {% else %}
+            mdi:run
+         {% endif %}
+
+    motion_sypialnia:
+      friendly_name: Ruch
+      entity_id: binary_sensor.motion_sensor_158d000165ffb8
+      value_template: >-
+         {% if states.binary_sensor.motion_sensor_158d000165ffb8.state == 'on' %}
+            jest
+         {% else %}
+            brak
+         {% endif %}
+
+      icon_template: >-
+         {% if states.binary_sensor.motion_sensor_158d000165ffb8.state == 'on' %}
             mdi:run-fast
          {% else %}
             mdi:run
@@ -1078,6 +1121,11 @@
       friendly_name: Xiaomi Yeelight YLDP02YL [2]
       value_template: "{% if is_state('device_tracker.yeelight_color_2', 'home') %}online{% else %}offline{% endif %}"
       entity_id: device_tracker.yeelight_color_2
+
+    yeelight_strip_status:
+      friendly_name: Xiaomi Yeelight Lightstrip YLDD01YL
+      value_template: "{% if is_state('device_tracker.yeelight_light_strip', 'home') %}online{% else %}offline{% endif %}"
+      entity_id: device_tracker.yeelight_light_strip
 
     temperature_salon_delta:
       friendly_name: "Temperature Salon Delta"

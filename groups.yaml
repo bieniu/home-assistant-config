@@ -116,8 +116,8 @@ wire devices:
     - sensor.raspberry_status
     - sensor.denon_status
     - sensor.dune_status
-    - sensor.stacjonarny_status
     - sensor.xbox_status
+    - sensor.stacjonarny_status
 
 wireless devices:
   name: Urządzenia bezprzewodowe
@@ -139,6 +139,7 @@ iot devices:
     - sensor.sonoff_lamp_status
     - sensor.yeelight1_status
     - sensor.yeelight2_status
+    - sensor.yeelight_strip_status
 
 internet:
   name: Internet
@@ -207,6 +208,7 @@ batteries sensors:
     - sensor.battery_body_sensor_salon
     - sensor.battery_body_sensor_schody
     - sensor.battery_body_sensor_antresola
+    - sensor.battery_body_sensor_sypialnia
     - sensor.battery_switch_light_salon_1
     - sensor.battery_switch_light_salon_2
 
@@ -301,7 +303,10 @@ sypialnia:
   entities:
     - sensor.temperature_sypialnia
     - sensor.humidity_sypialnia
+    - sensor.illumination_158d000165ffb8
+    - sensor.motion_sypialnia
     - climate.thermostat_sypialnia_heating_1
+    - light.yeelight_lightstrip_sypialnia
 
 lazienka:
   name: Łazienka
