@@ -37,3 +37,13 @@
       turn_off:
         service: media_player.turn_off
         entity_id: media_player.denon
+    playstation:
+      entity_id: media_player.playstation
+      friendly_name: PlayStation
+      value_template: "{{ (not is_state('media_player.playstation', 'off')) and (states.media_player.playstation != None) }}"
+      turn_on:
+        service: media_player.turn_on
+        entity_id: media_player.playstation
+      turn_off:
+        service: media_player.turn_off
+        entity_id: media_player.playstation

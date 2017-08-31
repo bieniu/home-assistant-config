@@ -25,3 +25,4 @@ harmony_media_room.conf
 pyozw.sqlite
 .*
 !/.gitignore
+.ps4-wake.credentials.json

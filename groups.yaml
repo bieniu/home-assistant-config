@@ -20,6 +20,7 @@ media players:
   entities:
     - group.denon
     - group.androidtv
+    - group.playstation
 #    - group.spotify
 
 network:
@@ -61,6 +62,9 @@ androidtv:
 
 #spotify:
 #  entities: media_player.spotify
+
+playstation:
+  entities: media_player.playstation
 
 weather:
   name: Pogoda
@@ -116,7 +120,7 @@ wire devices:
     - sensor.raspberry_status
     - sensor.denon_status
     - sensor.dune_status
-    - sensor.xbox_status
+    - sensor.playstation_status
     - sensor.stacjonarny_status
 
 wireless devices:
@@ -125,6 +129,7 @@ wireless devices:
     - sensor.migateway_status
     - sensor.brother_status
     - sensor.androidtv_status
+    - sensor.xbox_status
     - sensor.laptop_status
     - sensor.laptopedyta_status
     - sensor.oneplus_status
@@ -260,6 +265,7 @@ salon:
     - group.bulbs_salon
     - input_select.light_scenes_salon
     - switch.denon
+    - switch.playstation
 
 kuchnia:
   name: Kuchnia

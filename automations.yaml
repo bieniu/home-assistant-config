@@ -1289,9 +1289,9 @@
     - service: light.turn_on
       entity_id: light.yeelight_lightstrip_sypialnia
       data:
-        brightness: 5
+        brightness: 1
         transition: 10
-    - delay: '00:00:12'
+    - delay: '00:00:11'
     - service: homeassistant.turn_off
       entity_id:
         - light.yeelight_lightstrip_sypialnia

@@ -25,10 +25,8 @@
   name: HA Version Current
   scan_interval: 1800
 
-- platform: command_line
-  command: "head -5 /home/homeassistant/.homeassistant/.HA_VERSION"
+- platform: version
   name: HA Version Installed
-  scan_interval: 1800
 
 - platform: google_travel_time
   name: Edyta To Home
@@ -1021,6 +1019,11 @@
       value_template: "{% if is_state('device_tracker.xbox', 'home') %}online{% else %}offline{% endif %}"
       friendly_name: Xbox360
       entity_id: device_tracker.xbox
+
+    playstation_status:
+      value_template: "{% if is_state('device_tracker.playstation', 'home') %}online{% else %}offline{% endif %}"
+      friendly_name: PlayStation 4 Pro
+      entity_id: device_tracker.playstation
 
     oneplus_status:
       value_template: "{% if is_state('device_tracker.maciek', 'home') %}online{% else %}offline{% endif %}"

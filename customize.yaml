@@ -74,34 +74,36 @@ group.denon:
   order: 15
 group.androidtv:
   order: 16
+group.playstation:
+  order: 17
 #group.spotify:
 #  order: 13
 group.wire_devices:
-  order: 17
-group.wireless_devices:
   order: 18
-group.iot_devices:
+group.wireless_devices:
   order: 19
-group.internet:
+group.iot_devices:
   order: 20
-group.printer:
+group.internet:
   order: 21
-group.raspberry:
+group.printer:
   order: 22
-group.heating_settings:
+group.raspberry:
   order: 23
-group.heating_hours:
+group.heating_settings:
   order: 24
-group.heating_temps:
+group.heating_hours:
   order: 25
-group.scripts:
+group.heating_temps:
   order: 26
-group.energy_consumption:
+group.scripts:
   order: 27
-group.batteries_thermostats:
+group.energy_consumption:
   order: 28
-group.batteries_sensors:
+group.batteries_thermostats:
   order: 29
+group.batteries_sensors:
+  order: 30
 
 #### WEATHER ####
 sensor.dark_sky_temperature:
@@ -148,6 +150,8 @@ sensor.stacjonarny_status:
   icon: mdi:desktop-tower
 sensor.xbox_status:
   icon: mdi:xbox
+sensor.playstation_status:
+  icon: mdi:playstation
 sensor.iphone_status:
   icon: mdi:cellphone-iphone
 sensor.oneplus_status:
@@ -156,6 +160,8 @@ sensor.denon_status:
   icon: mdi:amplifier
 switch.denon:
   icon: mdi:amplifier
+switch.playstation:
+  icon: mdi:playstation
 sensor.androidtv_status:
   icon: mdi:cast
 sensor.laptopedyta_status:
@@ -188,6 +194,8 @@ media_player.androidtv:
   friendly_name: Android TV
 media_player.dunehd:
   friendly_name: Dune
+media_player.denon:
+  friendly_name: Amplituner
 
 #### SCRIPTS ####
 script.restart_hass:
