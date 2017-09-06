@@ -17,6 +17,7 @@ scripts/*.*
 scripts*
 dune-activity.sh
 secrets.yaml
+travis_secrets.yaml
 known_devices.yaml
 *.conf
 plex.conf
