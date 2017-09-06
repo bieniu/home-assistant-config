@@ -37,7 +37,7 @@ http:
   ssl_key: /etc/cert/cert.key
 
 recorder:
-  purge_days: 3
+  purge_days: 4
   exclude:
     domains:
       - automation
@@ -164,7 +164,6 @@ xiaomi:
   gateways:
     mac: !secret xiaomi_gateway_mac
     key: !secret xiaomi_gateway_key
-    poll_motion: false
 
 notify:
   - platform: html5

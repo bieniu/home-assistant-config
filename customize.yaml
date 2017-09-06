@@ -76,8 +76,10 @@ group.androidtv:
   order: 16
 group.playstation:
   order: 17
+#group.dune:
+#  order: 18
 #group.spotify:
-#  order: 13
+#  order: 19
 group.wire_devices:
   order: 18
 group.wireless_devices:
@@ -152,6 +154,8 @@ sensor.xbox_status:
   icon: mdi:xbox
 sensor.playstation_status:
   icon: mdi:playstation
+sensor.fingbox_status:
+  icon: mdi:security-network
 sensor.iphone_status:
   icon: mdi:cellphone-iphone
 sensor.oneplus_status:
@@ -192,8 +196,6 @@ sensor.yeelight_strip_status:
 #### MEDIA PLAYERS ####
 media_player.androidtv:
   friendly_name: Android TV
-media_player.dunehd:
-  friendly_name: Dune
 media_player.denon:
   friendly_name: Amplituner
 

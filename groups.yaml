@@ -21,6 +21,7 @@ media players:
     - group.denon
     - group.androidtv
     - group.playstation
+#    - group.dune
 #    - group.spotify
 
 network:
@@ -60,11 +61,14 @@ denon:
 androidtv:
   entities: media_player.androidtv
 
-#spotify:
-#  entities: media_player.spotify
-
 playstation:
   entities: media_player.playstation
+
+#dune:
+#  entities: media_player.dune
+
+#spotify:
+#  entities: media_player.spotify
 
 weather:
   name: Pogoda
@@ -116,6 +120,7 @@ wire devices:
     - sensor.modem_status
     - sensor.router_status
     - sensor.switch_status
+    - sensor.fingbox_status
     - sensor.synology_status
     - sensor.raspberry_status
     - sensor.denon_status
