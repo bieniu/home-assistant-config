@@ -1,10 +1,11 @@
 - platform: denonavr
   host: !secret denon_ip
   name: Denon
+  timeout: 3
 - platform: ps4
   host: !secret playstation_ip
   filename: '/home/homeassistant/.homeassistant/ps4-wake.credentials.json'
-  imagemap_json: https://raw.githubusercontent.com/bieniu/ps4-games-imagemap/master/games-imagemap.json
+  local_store: games
   name: PlayStation
 #- platform: dunehd
 #  host: !secret dune_ip

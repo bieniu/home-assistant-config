@@ -293,10 +293,6 @@ sensor.printer_pages_to_replace_drum:
   friendly_name: Stron do wymiany bębna
   icon: mdi:file-document
 
-sensor.printer_toner_used:
-  friendly_name: Zużycie tonera
-  icon: mdi:flask-outline
-
 #### SONOFF ####
 switch.light_lamp_salon:
   icon: mdi:lamp

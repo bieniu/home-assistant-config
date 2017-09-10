@@ -92,7 +92,7 @@ night_mode:
 
 light_away_mode:
   sequence:
-    service: switch.turn_off
+    service: homeassistant.turn_off
     entity_id:
       - switch.light_salon_switch
       - switch.light_salon_switch_2

@@ -1101,6 +1101,9 @@
     - platform: state
       entity_id: sensor.dune_activity
       to: 'file_playback'
+    - platform: state
+      entity_id: media_player.playstation
+      to: 'playing'
   condition:
     condition: and
     conditions:
@@ -1140,6 +1143,12 @@
       entity_id: sensor.dune_activity
       from: 'file_playback'
       to: 'navigator'
+      for:
+        seconds: 30
+    - platform: state
+      entity_id: media_player.playstation
+      from: 'playing'
+      to: 'idle'
       for:
         seconds: 30
   condition:
@@ -1265,7 +1274,7 @@
         state: 'off'
       - condition: numeric_state
         entity_id: sensor.illumination_158d000165ffb8
-        below: 8
+        below: 3
   action:
     - service: light.turn_on
       entity_id: light.yeelight_lightstrip_sypialnia
