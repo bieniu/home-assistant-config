@@ -1348,7 +1348,7 @@
     service: input_select.select_option
     entity_id: input_select.salon_harmony
     data:
-      option: "Wyłączony"
+      option: "wyłączony"
 
 - id: harmony_starts_telewizja
   alias: 'Harmony Starts Telewizja'
@@ -1362,7 +1362,7 @@
     service: input_select.select_option
     entity_id: input_select.salon_harmony
     data:
-      option: "Telewizja"
+      option: "telewizja"
 
 - id: harmony_starts_filmy
   alias: 'Harmony Starts Filmy'
@@ -1376,7 +1376,7 @@
     service: input_select.select_option
     entity_id: input_select.salon_harmony
     data:
-      option: "Filmy"
+      option: "filmy"
 
 - id: harmony_starts_muzyka
   alias: 'Harmony Starts Muzyka'
@@ -1390,7 +1390,7 @@
     service: input_select.select_option
     entity_id: input_select.salon_harmony
     data:
-      option: "Muzyka"
+      option: "muzyka"
 
 - id: harmony_starts_netflix
   alias: 'Harmony Starts Netflix'
@@ -1439,7 +1439,7 @@
   trigger:
     platform: state
     entity_id: input_select.salon
-    to: 'Wyłączony'
+    to: 'wyłączony'
   action:
     service: script.turn_on
     entity_id: script.harmony_tv_off
@@ -1449,7 +1449,7 @@
   trigger:
     platform: state
     entity_id: input_select.salon
-    to: 'Telewizja'
+    to: 'telewizja'
   action:
     service: script.turn_on
     entity_id: script.harmony_telewizja
@@ -1459,7 +1459,7 @@
   trigger:
     platform: state
     entity_id: input_select.salon
-    to: 'Filmy'
+    to: 'filmy'
   action:
     service: script.turn_on
     entity_id: script.harmony_filmy
@@ -1469,7 +1469,7 @@
   trigger:
     platform: state
     entity_id: input_select.salon
-    to: 'Muzyka'
+    to: 'muzyka'
   action:
     service: script.turn_on
     entity_id: script.harmony_muzyka
