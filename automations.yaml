@@ -158,6 +158,8 @@
     condition: state
     entity_id: input_boolean.away_mode
     state: 'on'
+    for:
+      minutes: 10
   action:
     service: notify.html5_oneplus
     data_template:
@@ -946,6 +948,15 @@
       - condition: numeric_state
         entity_id: sensor.illumination_f0b429cc6f0b
         below: 135
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+#            after_offset: "+00:10:00"
+          - condition: sun
+            before: sunrise
+#            before_offset: "-00:10:00"
+
   action:
     - service: light.turn_on
       entity_id: light.gateway_light_f0b429cc6f0b
@@ -1013,6 +1024,14 @@
       - condition: state
         entity_id: media_player.denon
         state: 'off'
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+#            after_offset: "+00:10:00"
+          - condition: sun
+            before: sunrise
+#            before_offset: "-00:10:00"
   action:
     - service: homeassistant.turn_on
       entity_id:
@@ -1054,7 +1073,7 @@
   action:
     service: switch.flux_update
 
-# wyłączenie oświetlenia w salonie po wyjściu z domu
+# wyłączenie oświetlenia po wyjściu z domu
 - id: light_turn_off_when_away_mode
   alias: 'Light Turn Off When Away Mode'
   trigger: 
@@ -1275,6 +1294,14 @@
       - condition: numeric_state
         entity_id: sensor.illumination_158d000165ffb8
         below: 3
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+#            after_offset: "+00:10:00"
+          - condition: sun
+            before: sunrise
+#            before_offset: "-00:10:00"
   action:
     - service: light.turn_on
       entity_id: light.yeelight_lightstrip_sypialnia
@@ -1307,6 +1334,175 @@
     - delay: '00:00:10'
     - service: light.turn_off
       entity_id: light.yeelight_lightstrip_sypialnia
+
+#### HARMONY ####
+- id: harmony_turn_off_tv
+  alias: 'Harmony Turn Off TV'
+  trigger:
+    platform: state
+    entity_id: remote.salon
+  condition:
+    condition: template
+    value_template: '{{ trigger.to_state.attributes.current_activity == "PowerOff" }}'
+  action:
+    service: input_select.select_option
+    entity_id: input_select.salon_harmony
+    data:
+      option: "Wyłączony"
+
+- id: harmony_starts_telewizja
+  alias: 'Harmony Starts Telewizja'
+  trigger:
+    platform: state
+    entity_id: remote.salon
+  condition:
+    condition: template
+    value_template: '{{ trigger.to_state.attributes.current_activity == "Telewizja" }}'
+  action:
+    service: input_select.select_option
+    entity_id: input_select.salon_harmony
+    data:
+      option: "Telewizja"
+
+- id: harmony_starts_filmy
+  alias: 'Harmony Starts Filmy'
+  trigger:
+    platform: state
+    entity_id: remote.salon
+  condition:
+    condition: template
+    value_template: '{{ trigger.to_state.attributes.current_activity == "Filmy" }}'
+  action:
+    service: input_select.select_option
+    entity_id: input_select.salon_harmony
+    data:
+      option: "Filmy"
+
+- id: harmony_starts_muzyka
+  alias: 'Harmony Starts Muzyka'
+  trigger:
+    platform: state
+    entity_id: remote.salon
+  condition:
+    condition: template
+    value_template: '{{ trigger.to_state.attributes.current_activity == "Muzyka" }}'
+  action:
+    service: input_select.select_option
+    entity_id: input_select.salon_harmony
+    data:
+      option: "Muzyka"
+
+- id: harmony_starts_netflix
+  alias: 'Harmony Starts Netflix'
+  trigger:
+    platform: state
+    entity_id: remote.salon
+  condition:
+    condition: template
+    value_template: '{{ trigger.to_state.attributes.current_activity == "Netflix" }}'
+  action:
+    service: input_select.select_option
+    entity_id: input_select.salon_harmony
+    data:
+      option: "Netflix"
+
+- id: harmony_starts_playstation
+  alias: 'Harmony Starts PlayStation'
+  trigger:
+    platform: state
+    entity_id: remote.salon
+  condition:
+    condition: template
+    value_template: '{{ trigger.to_state.attributes.current_activity == "PlayStation" }}'
+  action:
+    service: input_select.select_option
+    entity_id: input_select.salon_harmony
+    data:
+      option: "PlayStation"
+
+- id: harmony_starts_xbox
+  alias: 'Harmony Starts Xbox'
+  trigger:
+    platform: state
+    entity_id: remote.salon
+  condition:
+    condition: template
+    value_template: '{{ trigger.to_state.attributes.current_activity == "Xbox" }}'
+  action:
+    service: input_select.select_option
+    entity_id: input_select.salon_harmony
+    data:
+      option: "Xbox"
+
+- id: hass_turn_off_tv
+  alias: 'HASS Turn Off TV'
+  trigger:
+    platform: state
+    entity_id: input_select.salon
+    to: 'Wyłączony'
+  action:
+    service: script.turn_on
+    entity_id: script.harmony_tv_off
+
+- id: hass_starts_telewizja
+  alias: 'HASS Starts Telewizja'
+  trigger:
+    platform: state
+    entity_id: input_select.salon
+    to: 'Telewizja'
+  action:
+    service: script.turn_on
+    entity_id: script.harmony_telewizja
+
+- id: hass_starts_filmy
+  alias: 'HASS Starts Filmy'
+  trigger:
+    platform: state
+    entity_id: input_select.salon
+    to: 'Filmy'
+  action:
+    service: script.turn_on
+    entity_id: script.harmony_filmy
+
+- id: hass_starts_muzyka
+  alias: 'HASS Starts Muzyka'
+  trigger:
+    platform: state
+    entity_id: input_select.salon
+    to: 'Muzyka'
+  action:
+    service: script.turn_on
+    entity_id: script.harmony_muzyka
+
+- id: hass_starts_netflix
+  alias: 'HASS Starts Netflix'
+  trigger:
+    platform: state
+    entity_id: input_select.salon
+    to: 'Netflix'
+  action:
+    service: script.turn_on
+    entity_id: script.harmony_netflix
+
+- id: hass_starts_playstation
+  alias: 'HASS Starts PlayStation'
+  trigger:
+    platform: state
+    entity_id: input_select.salon
+    to: 'PlayStation'
+  action:
+    service: script.turn_on
+    entity_id: script.harmony_playstation
+
+- id: hass_starts_xbox
+  alias: 'HASS Starts Xbox'
+  trigger:
+    platform: state
+    entity_id: input_select.salon
+    to: 'Xbox'
+  action:
+    service: script.turn_on
+    entity_id: script.harmony_xbox
 
 #### OTHERS ####
 - id: log_level

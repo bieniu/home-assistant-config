@@ -913,6 +913,8 @@
                opady deszczu
             {% elif states.sensor.dark_sky_summary.state == 'Flurries and Breezy' %}
                wietrznie i obfity deszcz
+            {% elif states.sensor.dark_sky_summary.state == 'Breezy and Partly Cloudy' %}
+               wietrznie i częściowe zachmurzenie
             {% else %}
                {{ states.sensor.dark_sky_summary.state }}
             {% endif %}
@@ -1029,6 +1031,11 @@
       value_template: "{% if is_state('device_tracker.fingbox', 'home') %}online{% else %}offline{% endif %}"
       friendly_name: Fingbox
       entity_id: device_tracker.fingbox
+
+    harmonyhub_status:
+      value_template: "{% if is_state('device_tracker.harmonyhub', 'home') %}online{% else %}offline{% endif %}"
+      friendly_name: Logitech Harmony Hub
+      entity_id: device_tracker.harmonyhub
 
     oneplus_status:
       value_template: "{% if is_state('device_tracker.maciek', 'home') %}online{% else %}offline{% endif %}"

@@ -149,3 +149,15 @@ log_level:
     - 'info'
     - 'debug'
   initial: 'warning'
+
+salon_harmony:
+    name: Telewizor
+    options:
+      - Wyłączony
+      - Telewizja
+      - Filmy
+      - Muzyka
+      - Netflix
+      - PlayStation
+      - Xbox
+    icon: mdi:monitor

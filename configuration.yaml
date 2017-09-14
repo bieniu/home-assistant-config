@@ -142,7 +142,8 @@ updater:
 
 discovery:
   ignore:
-    denonavr
+    - denonavr
+    - harmony
 
 zeroconf:
 
@@ -229,3 +230,8 @@ binary_sensor:
       temperature_antresola_down:
         entity_id: sensor.temperature_158d000149cc8c
         invert: Yes
+
+remote:
+  - platform: harmony
+    name: Salon
+    host: !secret harmonyhub_ip

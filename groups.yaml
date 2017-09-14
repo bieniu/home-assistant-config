@@ -132,6 +132,7 @@ wireless devices:
   name: Urządzenia bezprzewodowe
   entities:
     - sensor.migateway_status
+    - sensor.harmonyhub_status
     - sensor.brother_status
     - sensor.androidtv_status
     - sensor.xbox_status
@@ -270,6 +271,7 @@ salon:
     - input_select.light_scenes_salon
     - switch.denon
     - switch.playstation
+    - input_select.salon_harmony
 
 kuchnia:
   name: Kuchnia

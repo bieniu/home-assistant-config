@@ -191,3 +191,50 @@ heating_airing_begin:
       - climate.thermostat_sypialnia_heating_1
     data:
       temperature: 8
+
+harmony_playstation:
+  sequence:
+    service: remote.turn_on
+    entity_id: remote.salon
+    data:
+      activity: "28310358"
+
+harmony_xbox:
+  sequence:
+    service: remote.turn_on
+    entity_id: remote.salon
+    data:
+      activity: "28309078"
+
+harmony_telewizja:
+  sequence:
+    service: remote.turn_on
+    entity_id: remote.salon
+    data:
+      activity: "28309076"
+
+harmony_muzyka:
+  sequence:
+    service: remote.turn_on
+    entity_id: remote.salon
+    data:
+      activity: "28309079"
+
+harmony_filmy:
+  sequence:
+    service: remote.turn_on
+    entity_id: remote.salon
+    data:
+      activity: "28309077"
+
+harmony_netflix:
+  sequence:
+    service: remote.turn_on
+    entity_id: remote.salon
+    data:
+      activity: "28309080"
+      
+harmony_tv_off:
+  sequence:
+    service: remote.turn_off
+    entity_id: remote.salon

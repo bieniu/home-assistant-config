@@ -156,6 +156,8 @@ sensor.playstation_status:
   icon: mdi:playstation
 sensor.fingbox_status:
   icon: mdi:security-network
+sensor.harmonyhub_status:
+  icon: mdi:remote
 sensor.iphone_status:
   icon: mdi:cellphone-iphone
 sensor.oneplus_status:
