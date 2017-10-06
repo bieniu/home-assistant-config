@@ -10,11 +10,7 @@
 - platform: nmap_tracker
   hosts:
     - !secret router_ip
-    - !secret switch_ip
     - !secret lumia_ip
-    - !secret synology_ip
-    - !secret sonoff_lamp_ip
-    - !secret denon_ip
     - !secret migateway_ip
     - !secret brother_ip
   home_interval: 10
@@ -23,3 +19,7 @@
 - platform: ping
   hosts:
     modem: !secret modem_ip
+    switch: !secret switch_ip
+    denon: !secret denon_ip
+    sonoff_lamp: !secret sonoff_lamp_ip
+    synology: !secret synology_ip

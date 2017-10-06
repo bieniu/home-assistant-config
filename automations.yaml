@@ -604,7 +604,7 @@
     entity_id: input_boolean.heating_season
     state: 'on'
   action:
-    service: script.heatin_airing_begin
+    service: script.heating_airing_begin
 
 # koniec przewietrzania
 - id: heating_airing_end
@@ -1104,7 +1104,7 @@
   action:
     service: script.light_away_mode
 
-# Scena oświetlenia salonu film po włączeniu Netflix/Showmax/Youtube/Dune
+# Scena oświetlenia salonu film po włączeniu Netflix/Showmax/Youtube/Dune/gry na PS
 - id: light_scene_film
   alias: 'Light Scene Film'
   trigger:
@@ -1130,6 +1130,8 @@
         after: sunset
       - condition: template
         value_template: "{{ (states.switch.light_salon_switch.state == 'on') or (states.switch.light_salon_switch_2.state == 'on') or (states.switch.light_lamp_salon.state == 'on') }}"
+      - condition: time
+        after: '19:30:00'
   action:
     service: input_select.select_option
     data:
@@ -1326,14 +1328,14 @@
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.sypialnia_lamp_motion_on
-    - service: light.turn_on
-      entity_id: light.yeelight_lightstrip_sypialnia
-      data:
-        brightness: 1
-        transition: 10
-    - delay: '00:00:10'
     - service: light.turn_off
       entity_id: light.yeelight_lightstrip_sypialnia
+      data:
+#        brightness: 1
+        transition: 10
+#    - delay: '00:00:10'
+#    - service: light.turn_off
+#      entity_id: light.yeelight_lightstrip_sypialnia
 
 #### HARMONY ####
 - id: harmony_turn_off_tv
@@ -1415,10 +1417,14 @@
     condition: template
     value_template: '{{ trigger.to_state.attributes.current_activity == "PlayStation" }}'
   action:
-    service: input_select.select_option
-    entity_id: input_select.salon_harmony
-    data:
-      option: "PlayStation"
+    - service: input_select.select_option
+      entity_id: input_select.salon_harmony
+      data:
+        option: "PlayStation"
+    - condition: template
+      value_template: '{{ trigger.from_state.state == "PowerOff" }}'
+    - service: switch.turn_on
+      entity_id: switch.playstation
 
 - id: harmony_starts_xbox
   alias: 'Harmony Starts Xbox'
@@ -1438,7 +1444,7 @@
   alias: 'HASS Turn Off TV'
   trigger:
     platform: state
-    entity_id: input_select.salon
+    entity_id: input_select.salon_harmony
     to: 'wyłączony'
   action:
     service: script.turn_on
@@ -1448,7 +1454,7 @@
   alias: 'HASS Starts Telewizja'
   trigger:
     platform: state
-    entity_id: input_select.salon
+    entity_id: input_select.salon_harmony
     to: 'telewizja'
   action:
     service: script.turn_on
@@ -1458,7 +1464,7 @@
   alias: 'HASS Starts Filmy'
   trigger:
     platform: state
-    entity_id: input_select.salon
+    entity_id: input_select.salon_harmony
     to: 'filmy'
   action:
     service: script.turn_on
@@ -1468,7 +1474,7 @@
   alias: 'HASS Starts Muzyka'
   trigger:
     platform: state
-    entity_id: input_select.salon
+    entity_id: input_select.salon_harmony
     to: 'muzyka'
   action:
     service: script.turn_on
@@ -1478,7 +1484,7 @@
   alias: 'HASS Starts Netflix'
   trigger:
     platform: state
-    entity_id: input_select.salon
+    entity_id: input_select.salon_harmony
     to: 'Netflix'
   action:
     service: script.turn_on
@@ -1488,17 +1494,21 @@
   alias: 'HASS Starts PlayStation'
   trigger:
     platform: state
-    entity_id: input_select.salon
+    entity_id: input_select.salon_harmony
     to: 'PlayStation'
   action:
-    service: script.turn_on
-    entity_id: script.harmony_playstation
+    - service: script.turn_on
+      entity_id: script.harmony_playstation
+    - condition: template
+      value_template: '{{ trigger.from_state.state == "wyłączony" }}'
+    - service: switch.turn_on
+      entity_id: switch.playstation
 
 - id: hass_starts_xbox
   alias: 'HASS Starts Xbox'
   trigger:
     platform: state
-    entity_id: input_select.salon
+    entity_id: input_select.salon_harmony
     to: 'Xbox'
   action:
     service: script.turn_on

@@ -161,7 +161,7 @@ mqtt:
   username: !secret mqtt_username
   password: !secret mqtt_password
 
-xiaomi:
+xiaomi_aqara:
   gateways:
     mac: !secret xiaomi_gateway_mac
     key: !secret xiaomi_gateway_key
@@ -210,7 +210,7 @@ binary_sensor:
       gaming:
         entity_id: sensor.androidtv_activity
         value_template: >-
-           {% for game in ["GT Racing 2","CrossyRoad","Rayman Adventures","BADLAND","Fast like a Fox","BB Racing","Red Ball 4","Sky Force","Minion Rush","Superfrog HD","Leo's Fortune","Rayman Fiesta Run","Minecraft PE","Riptide GP: Renegade"] %}
+           {% for game in ["GT Racing 2","CrossyRoad","Rayman Adventures","BADLAND","Fast like a Fox","BB Racing","Red Ball 4","Sky Force","Minion Rush","Superfrog HD","Leo's Fortune","Rayman Fiesta Run","Minecraft","Riptide GP: Renegade"] %}
               {% if game == states.sensor.androidtv_activity.state %}
                  True
               {% endif %}

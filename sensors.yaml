@@ -415,7 +415,7 @@
       entity_id: sensor.temperature_158d00010fb2cd
       value_template: >-
          {% if states.sensor.temperature_158d00010fb2cd %}
-            {{ states.sensor.temperature_158d00010fb2cd.attributes.battery_level }}
+            {{ states.sensor.temperature_158d00010fb2cd.attributes.battery_level | round(0) }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_antek.state }}
          {% endif %}
@@ -441,7 +441,7 @@
       entity_id: sensor.temperature_158d00010fb340
       value_template: >-
          {% if states.sensor.temperature_158d00010fb340 %}
-            {{ states.sensor.temperature_158d00010fb340.attributes.battery_level }}
+            {{ states.sensor.temperature_158d00010fb340.attributes.battery_level | round(0) }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_salon.state }}
          {% endif %}
@@ -467,7 +467,7 @@
       entity_id: sensor.temperature_158d0001100416
       value_template: >-
          {% if states.sensor.temperature_158d0001100416 %}
-            {{ states.sensor.temperature_158d0001100416.attributes.battery_level }}
+            {{ states.sensor.temperature_158d0001100416.attributes.battery_level | round(0) }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_sypialnia.state }}
          {% endif %}
@@ -493,7 +493,7 @@
       entity_id: sensor.temperature_158d000129a158
       value_template: >-
          {% if states.sensor.temperature_158d000129a158 %}
-            {{ states.sensor.temperature_158d000129a158.attributes.battery_level }}
+            {{ states.sensor.temperature_158d000129a158.attributes.battery_level | round(0) }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_lazienka.state }}
          {% endif %}
@@ -519,7 +519,7 @@
       entity_id: sensor.temperature_158d000149cc8c
       value_template: >-
          {% if states.sensor.temperature_158d000149cc8c %}
-            {{ states.sensor.temperature_158d000149cc8c.attributes.battery_level }}
+            {{ states.sensor.temperature_158d000149cc8c.attributes.battery_level | round(0) }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_antresola.state }}
          {% endif %}
@@ -545,7 +545,7 @@
       entity_id: sensor.temperature_158d0001826f20
       value_template: >-
          {% if states.sensor.temperature_158d0001826f20 %}
-            {{ states.sensor.temperature_158d0001826f20.attributes.battery_level }}
+            {{ states.sensor.temperature_158d0001826f20.attributes.battery_level | round(0) }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_gabinet.state }}
          {% endif %}
@@ -571,7 +571,7 @@
       entity_id: binary_sensor.motion_sensor_158d00014d0a27
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d00014d0a27 %}
-            {{ states.binary_sensor.motion_sensor_158d00014d0a27.attributes.battery_level }}
+            {{ states.binary_sensor.motion_sensor_158d00014d0a27.attributes.battery_level | round(0) }}
          {% else %}
             {{ states.sensor.battery_body_sensor_atresola.state }}
          {% endif %}
@@ -597,7 +597,7 @@
       entity_id: binary_sensor.motion_sensor_158d000120a226
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d000120a226 %}
-            {{ states.binary_sensor.motion_sensor_158d000120a226.attributes.battery_level }}
+            {{ states.binary_sensor.motion_sensor_158d000120a226.attributes.battery_level | round(0) }}
          {% else %}
             {{ states.sensor.battery_body_sensor_schody.state }}
          {% endif %}
@@ -623,7 +623,7 @@
       entity_id: binary_sensor.motion_sensor_158d000121c604
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d000121c604 %}
-            {{ states.binary_sensor.motion_sensor_158d000121c604.attributes.battery_level }}
+            {{ states.binary_sensor.motion_sensor_158d000121c604.attributes.battery_level | round(0) }}
          {% else %}
             {{ states.sensor.battery_body_sensor_salon.state }}
          {% endif %}
@@ -649,7 +649,7 @@
       entity_id: binary_sensor.motion_sensor_158d000165ffb8
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d000165ffb8 %}
-            {{ states.binary_sensor.motion_sensor_158d000165ffb8.attributes.battery_level }}
+            {{ states.binary_sensor.motion_sensor_158d000165ffb8.attributes.battery_level | round(0) }}
          {% else %}
             {{ states.sensor.battery_body_sensor_sypialnia.state }}
          {% endif %}
@@ -675,7 +675,7 @@
       entity_id: binary_sensor.switch_158d000154964c
       value_template: >-
          {% if states.binary_sensor.switch_158d000154964c %}
-            {{ states.binary_sensor.switch_158d000154964c.attributes.battery_level }}
+            {{ states.binary_sensor.switch_158d000154964c.attributes.battery_level | round(0) }}
          {% else %}
             {{ states.sensor.battery_switch_light_salon_1.state }}
          {% endif %}
@@ -701,7 +701,7 @@
       entity_id: binary_sensor.switch_158d00014a0911
       value_template: >-
          {% if states.binary_sensor.switch_158d00014a0911 %}
-            {{ states.binary_sensor.switch_158d00014a0911.attributes.battery_level }}
+            {{ states.binary_sensor.switch_158d00014a0911.attributes.battery_level | round(0) }}
          {% else %}
             {{ states.sensor.battery_switch_light_salon_2.state }}
          {% endif %}
@@ -1192,22 +1192,26 @@
 - platform: statistics
   name: Temperature Salon Statistics
   entity_id: sensor.temperature_158d00010fb340
-  sampling_size: 4
+  max_age:
+    minutes: 30
 
 - platform: statistics
   name: Temperature Sypialnia Statistics
   entity_id: sensor.temperature_158d0001100416
-  sampling_size: 4
+  max_age:
+    minutes: 30
 
 - platform: statistics
   name: Temperature Pokój Antek Statistics
   entity_id: sensor.temperature_158d00010fb2cd
-  sampling_size: 4
+  max_age:
+    minutes: 30
 
 - platform: statistics
   name: Temperature Antresola Statistics
   entity_id: sensor.temperature_158d000149cc8c
-  sampling_size: 4
+  max_age:
+    minutes: 30
 
 - platform: snmp
   name: printer_status
