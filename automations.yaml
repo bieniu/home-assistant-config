@@ -13,13 +13,13 @@
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.gaming_timer
-    - service: input_slider.select_value
+    - service: input_number.select_value
       data_template:
-        entity_id: input_slider.gaming_end_hours
+        entity_id: input_number.gaming_end_hours
         value: '{{ (now().strftime("%s") | int | timestamp_custom("%H")) | int + 1 }}'
-    - service: input_slider.select_value
+    - service: input_number.select_value
       data_template:
-        entity_id: input_slider.gaming_end_minutes
+        entity_id: input_number.gaming_end_minutes
         value: '{{ now().strftime("%s") | int | timestamp_custom("%M") }}'
 
 # koniec grania
@@ -33,9 +33,9 @@
     condition: and
     conditions:
       - condition: template
-        value_template: '{{ ((now().strftime("%s") | int | timestamp_custom("%H")) | int) == (states.input_slider.gaming_end_hours.state | int)}}'
+        value_template: '{{ ((now().strftime("%s") | int | timestamp_custom("%H")) | int) == (states.input_number.gaming_end_hours.state | int)}}'
       - condition: template
-        value_template: '{{ ((now().strftime("%s") | int | timestamp_custom("%M")) | int) == (states.input_slider.gaming_end_minutes.state | int) }}'
+        value_template: '{{ ((now().strftime("%s") | int | timestamp_custom("%M")) | int) == (states.input_number.gaming_end_minutes.state | int) }}'
       - condition: state
         entity_id: input_boolean.gaming_timer
         state: 'on'
@@ -46,10 +46,9 @@
       entity_id: binary_sensor.gaming
       state: 'on'
     - service: notify.html5_oneplus
-      data_template: 
+      data: 
         title: 'Zbyt długa gra'
         message: 'Gra trwa już godzinę. Pora skończyć!'
-      data:
         data:
           tag: 'notification-gaming-end'
     - service: notify.ios_edyta_iphone
@@ -104,10 +103,9 @@
     to: 'Dead (Probe)'
   action:
     service: notify.html5
-    data_template:
+    data:
       title: 'Błąd inicjalizacji Z-Wave'
       message: "Prawdopodobnie wystąpił błąd inicjalizacji Z-Wave. Wymagany restart Home Assistant."
-    data:
       data:
         tag: 'notification-zwave-error'
 
@@ -259,10 +257,9 @@
        {% endfor %}
   action:
     service: notify.html5_oneplus
-    data_template:
+    data:
       title: 'Niski poziom naładowania baterii w termostacie'
       message: "Wykryto niski poziom naładowania baterii w przynajmniej jednym termostacie."
-    data:
       data:
         tag: 'notification-low-battery-thermostats'
 
@@ -282,10 +279,9 @@
        {% endfor %}
   action:
     service: notify.html5_oneplus
-    data_template:
+    data:
       title: 'Niski poziom naładowania baterii w sensorach'
       message: "Wykryto niski poziom naładowania baterii w przynajmniej jednym sensorze."
-    data:
       data:
         tag: 'notification-low-battery-sensors'
 
@@ -647,10 +643,9 @@
         title: 'Koniec przewietrzania'
         message: 'O zachodzie słońca wyłączono tryb przewietrzania. Proszę zamknąć okna!'
     - service: notify.html5_oneplus
-      data_template: 
+      data:
         title: 'Koniec przewietrzania'
         message: 'O zachodzie słońca wyłączono tryb przewietrzania. Proszę zamknąć okna!'
-      data:
         data:
           tag: 'notification-airing-sunset-end'
     - service: input_boolean.turn_off
@@ -769,10 +764,9 @@
         title: 'Otwarcie okien'
         message: 'Wykryto otwarcie okien przy włączonym ogrzewaniu. Przełączono ogrzewanie w tryb przewietrzania. Pamiętaj, że musisz ręcznie wyłączyć tryb przewietrzania po zamknięciu okien!'
     - service: notify.html5_oneplus
-      data_template: 
+      data: 
         title: 'Otwarcie okien'
         message: 'Wykryto otwarcie okien przy włączonym ogrzewaniu. Przełączono ogrzewanie w tryb przewietrzania. Pamiętaj, że musisz ręcznie wyłączyć tryb przewietrzania po zamknięciu okien!'
-      data:
         data:
           tag: 'notification-window-opened'
     - service: input_boolean.turn_on
@@ -947,7 +941,7 @@
         state: 'off'
       - condition: numeric_state
         entity_id: sensor.illumination_f0b429cc6f0b
-        below: 135
+        below: 60
       - condition: or
         conditions:
           - condition: sun
@@ -1008,7 +1002,7 @@
         state: 'off'
       - condition: numeric_state
         entity_id: sensor.illumination_f0b429cc6f0b
-        below: 135
+        below: 60
       - condition: state
         entity_id: switch.light_salon_switch
         state: 'off'
@@ -1251,7 +1245,7 @@
         state: 'off'
       - condition: numeric_state
         entity_id: sensor.illumination_f0b429cc6f0b
-        below: 135
+        below: 60
       - condition: state
         entity_id: switch.light_salon_switch
         state: 'off'
@@ -1300,10 +1294,8 @@
         conditions:
           - condition: sun
             after: sunset
-#            after_offset: "+00:10:00"
           - condition: sun
             before: sunrise
-#            before_offset: "-00:10:00"
   action:
     - service: light.turn_on
       entity_id: light.yeelight_lightstrip_sypialnia
@@ -1312,6 +1304,41 @@
         rgb_color: [233,96,255]
     - service: input_boolean.turn_on
       entity_id: input_boolean.sypialnia_lamp_motion_on
+
+# włączanie LEDów w sypialni jak natężenie światłą spadnie poniżej 3, a jest ruch
+- id: light_turn_on_sypialnia_leds_when_suddenly_dark
+  alias: 'Light Turn On Sypialnia LEDs When Suddenly Dark'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.illumination_158d000165ffb8
+    below: 3
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.away_mode
+        state: 'off'
+      - condition: state
+        entity_id: light.yeelight_lightstrip_sypialnia
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.motion_sensor_158d000165ffb8
+        state: 'on'
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+          - condition: sun
+            before: sunrise
+  action:
+    - service: light.turn_on
+      entity_id: light.yeelight_lightstrip_sypialnia
+      data:
+        brightness: 200
+        rgb_color: [233,96,255]
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.sypialnia_lamp_motion_on
+
 
 # wyłączanie LEDów w sypialni jak brak ruchu
 - id: light_turn_off_sypialnia_leds

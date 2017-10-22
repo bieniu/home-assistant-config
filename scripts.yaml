@@ -233,8 +233,18 @@ harmony_netflix:
     entity_id: remote.salon
     data:
       activity: "28309080"
-      
+
 harmony_tv_off:
   sequence:
     service: remote.turn_off
     entity_id: remote.salon
+
+notification_with_image:
+  sequence:
+    service: notify.html5_oneplus
+    data:
+      title: 'Title'
+      message: 'Message'
+      data:
+        tag: 'notification-image'
+        image: 'https://home.bieniu.eu/local/edyta.jpg'

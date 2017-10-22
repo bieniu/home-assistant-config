@@ -187,6 +187,7 @@ heating hours:
     - input_select.heating_night_end
     - input_select.heating_night_start_weekend
     - input_select.heating_night_end_weekend
+#    - input_datetime.test
 
 scripts:
   name: Skrypty i ustawienia

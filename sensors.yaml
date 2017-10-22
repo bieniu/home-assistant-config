@@ -1,5 +1,5 @@
 - platform: cert_expiry
-  host: bieniu.eu
+  host: !secret http_base_url
 
 - platform: command_line
   name: Raspberry CPU Temp
@@ -72,6 +72,7 @@
     - ping
     - download
     - upload
+  server: 9399
 
 - platform: min_max
   type: mean
@@ -1193,25 +1194,25 @@
   name: Temperature Salon Statistics
   entity_id: sensor.temperature_158d00010fb340
   max_age:
-    minutes: 30
+    minutes: 20
 
 - platform: statistics
   name: Temperature Sypialnia Statistics
   entity_id: sensor.temperature_158d0001100416
   max_age:
-    minutes: 30
+    minutes: 20
 
 - platform: statistics
   name: Temperature Pokój Antek Statistics
   entity_id: sensor.temperature_158d00010fb2cd
   max_age:
-    minutes: 30
+    minutes: 20
 
 - platform: statistics
   name: Temperature Antresola Statistics
   entity_id: sensor.temperature_158d000149cc8c
   max_age:
-    minutes: 30
+    minutes: 20
 
 - platform: snmp
   name: printer_status

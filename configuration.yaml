@@ -28,16 +28,17 @@ zone 3:
 
 frontend:
 
+map:
+
 http:
   api_password: !secret api_password
   ip_ban_enabled: true
   login_attempts_threshold: 5
   base_url: !secret http_base_url
-  ssl_certificate: /etc/cert/cert.pem
-  ssl_key: /etc/cert/cert.key
 
 recorder:
-  purge_days: 4
+  purge_interval: 4
+  purge_keep_days: 2
   exclude:
     domains:
       - automation
@@ -56,8 +57,8 @@ recorder:
       - sensor.dune_activity
       - binary_sensor.switch_158d000154964c
       - binary_sensor.switch_158d00014a0911
-      - input_slider.gaming_end_hours
-      - input_slider.gaming_end_minutes
+      - input_number.gaming_end_hours
+      - input_number.gaming_end_minutes
       - input_boolean.gaming_timer
       - binary_sensor.gaming
       - sensor.ha_version_current
@@ -79,6 +80,8 @@ logger:
     pychromecast.socket_client: fatal
     homeassistant.helpers.entity: fatal
     homeassistant.components.sensor.darksky: fatal
+#    homeassistant.components.sensor.xiaomi_aqara: debug
+#    homeassistant.components.xiaomi_aqara: debug
 #   homeassistant.components.media_player: info
 #    DenonAVR: info
 #    homeassistant.components.device_tracker: debug
@@ -194,7 +197,7 @@ input_boolean:
   gaming_timer:
     initial: 'off'
 
-input_slider:
+input_number:
   gaming_end_hours:
     min: 0
     max: 23
@@ -235,3 +238,9 @@ remote:
   - platform: harmony
     name: Salon
     host: !secret harmonyhub_ip
+
+input_datetime:
+  test:
+    name: Czas
+    has_date: false
+    has_time: true
