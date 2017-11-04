@@ -110,20 +110,20 @@
         tag: 'notification-zwave-error'
 
 # powiadomienie o dostępnej aktualizacji HA
-- id: notification_update_available
-  alias: 'Notification Update Available'
-  trigger:
-    platform: state
-    entity_id: updater.updater
-  action:
-    service: notify.html5_oneplus
-    data_template:
-      title: 'Aktualizacja Home Assistant'
-      message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Home Assistant."
-    data:
-      data:
-        tag: 'notification-hass-update'
-        url: "https://home-assistant.io/blog/"
+#- id: notification_update_available
+#  alias: 'Notification Update Available'
+#  trigger:
+#    platform: state
+#    entity_id: updater.updater
+#  action:
+#    service: notify.html5_oneplus
+#    data_template:
+#      title: 'Aktualizacja Home Assistant'
+#      message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Home Assistant."
+#    data:
+#      data:
+#        tag: 'notification-hass-update'
+#        url: "https://home-assistant.io/blog/"
 
 - id: notification_custom_update_available
   alias: 'Notification Custom Update Available'
@@ -215,77 +215,72 @@
       data:
         tag: 'notification-new-device'
 
-# powiadomieniu o zmianie statusu ważnych urządzeń na offline
-- id: 'Notification Device Offline'
-  alias: 'Notification Device Offline'
-  trigger:
-    platform: state
-    entity_id:
-      - sensor.router_status
-      - sensor.modem_status
-      - sensor.switch_status
-      - sensor.migateway_status
-      - sensor.synology_status
-      - sensor.denon_status
-      - sensor.sonoff_lamp_status
-      - sensor.fingbox_status
-      - sensor.brother_status
-    from: 'online'
-    to: 'offline'
-  action:
-    service: notify.html5_oneplus
-    data_template:
-      title: 'Urządzenie offline'
-      message: "{{ trigger.to_state.attributes.friendly_name }} jest {{ trigger.to_state.state }}."
-    data:
-      data:
-        tag: 'notification-device-offline'
-
-# niski poziom baterii termostatów
-- id: notification_low_battery_thermostats
-  alias: 'Notification Low Battery Thermostats'
+# niski poziom naładowania baterii
+- id: notification_low_battery
+  alias: 'Notification Low Battery'
   trigger:
     platform: time
     at: '18:00:00'
   condition:
     condition: template
-    value_template: >-
-       {% for entity_id in states.group.batteries_thermostats.attributes.entity_id if states(entity_id) | int < 15 %}
-       {%- if loop.first -%}
-       {{ true }}
-       {%- endif -%}
-       {% endfor %}
+    value_template: >
+       {% macro battery_level() %}
+          {%- set threshold = 20 -%}
+          {% set domains = ['light', 'switch', 'sensor', 'zwave', 'lock', 'binary_sensor'] %}
+          {% for domain in domains -%}
+             {% for item in states[domain] if (((item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) or ("battery" in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == "low" or item.state | lower == "unknown")))) and not (( "humidity" in item.entity_id) or ("illumination" in item.entity_id)) -%}
+                {% if (item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) -%}
+                   {{ item.name }} ({{ item.attributes['battery_level'] }}){%- if not loop.last %}, {% endif -%}{% endif -%}
+                {% if "battery" in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == "low" or item.state | lower == "unknown") -%}
+                   {{ item.name }} ({{ item.state }}){% if not loop.last %}, {%- endif %} {% endif -%}
+             {% endfor %}
+          {%- endfor %}
+       {% endmacro %}
+       {{ battery_level() |trim != "" }}
   action:
     service: notify.html5_oneplus
-    data:
-      title: 'Niski poziom naładowania baterii w termostacie'
-      message: "Wykryto niski poziom naładowania baterii w przynajmniej jednym termostacie."
+    data_template:
+      title: 'Niski poziom naładowania baterii'
+      message: >
+         {% macro battery_level() %}
+            {%- set threshold = 20 -%}
+            {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'lock', 'binary_sensor'] -%}
+            {% for domain in domains -%}
+               {% for item in states[domain] if (((item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) or ("battery" in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == "low" or item.state | lower == "unknown")))) and not (( "humidity" in item.entity_id) or ("illumination" in item.entity_id)) -%}
+                 {% if (item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) -%}
+                    {{ item.entity_id }} [{{ item.attributes['battery_level'] | round(0) }}%]{%- if not loop.last %}, {% endif -%}{% endif -%}
+                 {% if "battery" in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == "low" or item.state | lower == "unknown") -%}
+                    {{ item.entity_id }} [{{ item.state | round(0) }}%]{% if not loop.last %}, {%- endif %} {% endif -%}
+               {% endfor %}
+            {%- endfor %}
+         {% endmacro %}
+         W następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level() }}
       data:
-        tag: 'notification-low-battery-thermostats'
-
-# niski poziom baterii sensorów
-- id: notification_low_battery_sensors
-  alias: 'Notification Low Battery Sensors'
-  trigger:
-    platform: time
-    at: '19:00:00'
-  condition:
-    condition: template
-    value_template: >-
-       {% for entity_id in states.group.batteries_sensors.attributes.entity_id if states(entity_id) | int < 15 %}
-       {%- if loop.first -%}
-       {{ true }}
-       {%- endif -%}
-       {% endfor %}
-  action:
-    service: notify.html5_oneplus
-    data:
-      title: 'Niski poziom naładowania baterii w sensorach'
-      message: "Wykryto niski poziom naładowania baterii w przynajmniej jednym sensorze."
-      data:
-        tag: 'notification-low-battery-sensors'
+        tag: 'notification-low-battery'
 
 #### PRESENCE ####
+# Gościa w domu
+- id: guests_at_home
+  alias: 'Guests At Home'
+  trigger:
+    platform: state
+    entity_id: group.guests
+    to: 'home'
+  action:
+    service: input_boolean.turn_on
+    entity_id: input_boolean.guests
+
+# Gościa poza domem
+- id: no_guests_at_home
+  alias: 'No Guests At Home'
+  trigger:
+    platform: state
+    entity_id: group.guests
+    to: 'not_home'
+  action:
+    service: input_boolean.turn_off
+    entity_id: input_boolean.guests
+
 # Edyta 40 minut od domu
 - id: presence_edyta_far_from_home
   alias: 'Presence Edyta Far From Home'
@@ -483,8 +478,8 @@
         entity_id: input_boolean.heating_season
         state: 'on'
       - condition: state
-        entity_id: group.guests
-        state: 'not_home'
+        entity_id: input_boolean.guests
+        state: 'off'
       - condition: state
         entity_id: input_boolean.heating_night
         state: 'on'
@@ -1013,8 +1008,8 @@
         entity_id: switch.light_lamp_salon
         state: 'off'
       - condition: state
-        entity_id: group.guests
-        state: 'not_home'
+        entity_id: input_boolean.guests
+        state: 'off'
       - condition: state
         entity_id: media_player.denon
         state: 'off'
@@ -1022,10 +1017,8 @@
         conditions:
           - condition: sun
             after: sunset
-#            after_offset: "+00:10:00"
           - condition: sun
             before: sunrise
-#            before_offset: "-00:10:00"
   action:
     - service: homeassistant.turn_on
       entity_id:
@@ -1256,8 +1249,8 @@
         entity_id: switch.light_lamp_salon
         state: 'off'
       - condition: state
-        entity_id: group.guests
-        state: 'not_home'
+        entity_id: input_boolean.guests
+        state: 'off'
       - condition: state
         entity_id: media_player.denon
         state: 'off'
@@ -1374,10 +1367,14 @@
     condition: template
     value_template: '{{ trigger.to_state.attributes.current_activity == "PowerOff" }}'
   action:
-    service: input_select.select_option
-    entity_id: input_select.salon_harmony
-    data:
-      option: "wyłączony"
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.harmony_command
+    - service: input_select.select_option
+      entity_id: input_select.salon_harmony
+      data:
+        option: "wyłączony"
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.harmony_command
 
 - id: harmony_starts_telewizja
   alias: 'Harmony Starts Telewizja'
@@ -1388,10 +1385,14 @@
     condition: template
     value_template: '{{ trigger.to_state.attributes.current_activity == "Telewizja" }}'
   action:
-    service: input_select.select_option
-    entity_id: input_select.salon_harmony
-    data:
-      option: "telewizja"
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.harmony_command
+    - service: input_select.select_option
+      entity_id: input_select.salon_harmony
+      data:
+        option: "telewizja"
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.harmony_command
 
 - id: harmony_starts_filmy
   alias: 'Harmony Starts Filmy'
@@ -1402,10 +1403,14 @@
     condition: template
     value_template: '{{ trigger.to_state.attributes.current_activity == "Filmy" }}'
   action:
-    service: input_select.select_option
-    entity_id: input_select.salon_harmony
-    data:
-      option: "filmy"
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.harmony_command
+    - service: input_select.select_option
+      entity_id: input_select.salon_harmony
+      data:
+        option: "filmy"
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.harmony_command
 
 - id: harmony_starts_muzyka
   alias: 'Harmony Starts Muzyka'
@@ -1416,10 +1421,14 @@
     condition: template
     value_template: '{{ trigger.to_state.attributes.current_activity == "Muzyka" }}'
   action:
-    service: input_select.select_option
-    entity_id: input_select.salon_harmony
-    data:
-      option: "muzyka"
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.harmony_command
+    - service: input_select.select_option
+      entity_id: input_select.salon_harmony
+      data:
+        option: "muzyka"
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.harmony_command
 
 - id: harmony_starts_netflix
   alias: 'Harmony Starts Netflix'
@@ -1430,10 +1439,14 @@
     condition: template
     value_template: '{{ trigger.to_state.attributes.current_activity == "Netflix" }}'
   action:
-    service: input_select.select_option
-    entity_id: input_select.salon_harmony
-    data:
-      option: "Netflix"
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.harmony_command
+    - service: input_select.select_option
+      entity_id: input_select.salon_harmony
+      data:
+        option: "Netflix"
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.harmony_command
 
 - id: harmony_starts_playstation
   alias: 'Harmony Starts PlayStation'
@@ -1444,6 +1457,8 @@
     condition: template
     value_template: '{{ trigger.to_state.attributes.current_activity == "PlayStation" }}'
   action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.harmony_command
     - service: input_select.select_option
       entity_id: input_select.salon_harmony
       data:
@@ -1452,6 +1467,8 @@
       value_template: '{{ trigger.from_state.state == "PowerOff" }}'
     - service: switch.turn_on
       entity_id: switch.playstation
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.harmony_command
 
 - id: harmony_starts_xbox
   alias: 'Harmony Starts Xbox'
@@ -1462,10 +1479,14 @@
     condition: template
     value_template: '{{ trigger.to_state.attributes.current_activity == "Xbox" }}'
   action:
-    service: input_select.select_option
-    entity_id: input_select.salon_harmony
-    data:
-      option: "Xbox"
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.harmony_command
+    - service: input_select.select_option
+      entity_id: input_select.salon_harmony
+      data:
+        option: "Xbox"
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.harmony_command
 
 - id: hass_turn_off_tv
   alias: 'HASS Turn Off TV'
@@ -1473,6 +1494,10 @@
     platform: state
     entity_id: input_select.salon_harmony
     to: 'wyłączony'
+  condition:
+    condition: state
+    entity_id: input_boolean.harmony_command
+    state: 'off'
   action:
     service: script.turn_on
     entity_id: script.harmony_tv_off
@@ -1483,6 +1508,10 @@
     platform: state
     entity_id: input_select.salon_harmony
     to: 'telewizja'
+  condition:
+    condition: state
+    entity_id: input_boolean.harmony_command
+    state: 'off'
   action:
     service: script.turn_on
     entity_id: script.harmony_telewizja
@@ -1493,6 +1522,10 @@
     platform: state
     entity_id: input_select.salon_harmony
     to: 'filmy'
+  condition:
+    condition: state
+    entity_id: input_boolean.harmony_command
+    state: 'off'
   action:
     service: script.turn_on
     entity_id: script.harmony_filmy
@@ -1503,6 +1536,10 @@
     platform: state
     entity_id: input_select.salon_harmony
     to: 'muzyka'
+  condition:
+    condition: state
+    entity_id: input_boolean.harmony_command
+    state: 'off'
   action:
     service: script.turn_on
     entity_id: script.harmony_muzyka
@@ -1513,6 +1550,10 @@
     platform: state
     entity_id: input_select.salon_harmony
     to: 'Netflix'
+  condition:
+    condition: state
+    entity_id: input_boolean.harmony_command
+    state: 'off'
   action:
     service: script.turn_on
     entity_id: script.harmony_netflix
@@ -1523,6 +1564,10 @@
     platform: state
     entity_id: input_select.salon_harmony
     to: 'PlayStation'
+  condition:
+    condition: state
+    entity_id: input_boolean.harmony_command
+    state: 'off'
   action:
     - service: script.turn_on
       entity_id: script.harmony_playstation
@@ -1537,6 +1582,10 @@
     platform: state
     entity_id: input_select.salon_harmony
     to: 'Xbox'
+  condition:
+    condition: state
+    entity_id: input_boolean.harmony_command
+    state: 'off'
   action:
     service: script.turn_on
     entity_id: script.harmony_xbox

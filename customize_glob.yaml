@@ -11,3 +11,14 @@
   max_temp: 28
   min_temp: 4
 
+#### ENERGY ####
+'sensor.*energy*':
+  icon: mdi:flash-outline
+
+#### MOTION ####
+'binary_sensor.motion_sensor_*':
+  icon: mdi:run
+
+#### ILLUMINATION ####
+'sensor.illumination_*':
+  icon: mdi:lightbulb-on-outline

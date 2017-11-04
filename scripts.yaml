@@ -26,10 +26,11 @@ fast_warm_up:
       state: 'on'
     - service: climate.set_temperature
       entity_id:
-        - climate.antresola_thermostat_heating_1
-        - climate.antek_thermostat_heating_1
-        - climate.sypialnia_thermostat_heating_1
-        - climate.kuchnia_thermostat_heating_1
+        - climate.thermostat_antresola_heating_1
+        - climate.thermostat_antek_heating_1
+        - climate.thermostat_sypialnia_heating_1
+        - climate.thermostat_kuchnia_heating_1
+        - climate.thermostat_lazienka_heating_1
       data:
         temperature: 24
     - delay: '00:25:00'
@@ -104,6 +105,10 @@ light_away_mode:
 heating_day:
   sequence:
     - service: climate.set_temperature
+      entity_id: climate.thermostat_lazienka_heating_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_bathroom_day.state }}'
+    - service: climate.set_temperature
       entity_id: 
         - climate.thermostat_antresola_heating_1
         - climate.thermostat_kuchnia_heating_1
@@ -134,6 +139,10 @@ heating_night:
         - climate.thermostat_sypialnia_heating_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_bedroom_night.state }}'
+    - service: climate.set_temperature
+      entity_id: climate.thermostat_lazienka_heating_1
+      data_template:
+        temperature: '{{ states.input_select.heating_temp_bathroom_night.state }}'
     - condition: template
       value_template: "{{ (states.group.guests.state == 'not_home') and (states.media_player.denon.state == 'off') }}"
     - service: climate.set_temperature
@@ -151,6 +160,7 @@ heating_eco_mode:
         - climate.thermostat_kuchnia_heating_1
         - climate.thermostat_antek_heating_1
         - climate.thermostat_sypialnia_heating_1
+        - climate.thermostat_lazienka_heating_1
       data_template:
         temperature: '{{ states.input_select.heating_temp_eco.state }}'
     - condition: state
@@ -178,6 +188,7 @@ heating_season_end:
       - climate.thermostat_kuchnia_heating_1
       - climate.thermostat_antek_heating_1
       - climate.thermostat_sypialnia_heating_1
+      - climate.thermostat_lazienka_heating_1
     data:
       temperature: 4
 
@@ -189,6 +200,7 @@ heating_airing_begin:
       - climate.thermostat_kuchnia_heating_1
       - climate.thermostat_antek_heating_1
       - climate.thermostat_sypialnia_heating_1
+      - climate.thermostat_lazienka_heating_1
     data:
       temperature: 8
 

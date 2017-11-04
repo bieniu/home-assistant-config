@@ -196,7 +196,7 @@ sensor.yeelight_strip_status:
   icon: mdi:led-variant-outline
 
 #### MEDIA PLAYERS ####
-media_player.androidtv:
+media_player.salon:
   friendly_name: Android TV
 media_player.denon:
   friendly_name: Amplituner
@@ -252,11 +252,9 @@ sensor.humidity_158d000149cc8c:
 
 sensor.illumination_f0b429cc6f0b:
   friendly_name: Natężenie światła
-  icon: mdi:lightbulb-on-outline
 
 sensor.illumination_158d000165ffb8:
   friendly_name: Natężenie światła
-  icon: mdi:lightbulb-on-outline
 
 binary_sensor.switch_158d000154964c:
   friendly_name: Światło salon 1
@@ -268,19 +266,15 @@ binary_sensor.switch_158d00014a0911:
 
 binary_sensor.motion_sensor_158d00014d0a27:
   friendly_name: antresola
-  icon: mdi:run
 
 binary_sensor.motion_sensor_158d000120a226:
   friendly_name: schody
-  icon: mdi:run
 
 binary_sensor.motion_sensor_158d000121c604:
   friendly_name: salon
-  icon: mdi:run
 
 binary_sensor.motion_sensor_158d000165ffb8:
   friendly_name: sypialnia
-  icon: mdi:run
 
 #### PRINTER ####
 sensor.printer_status:
@@ -303,10 +297,8 @@ switch.light_lamp_salon:
 #### ENERGY ####
 sensor.light_salon_energy:
   friendly_name: LEDy salon
-  icon: mdi:flash-outline
 sensor.light_salon_energy_2:
   friendly_name: Żarówki salon
-  icon: mdi:flash-outline
 
 sensor.humidity_indoor:
   friendly_name: Średnia wilgotność wewnętrzna

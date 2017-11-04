@@ -306,6 +306,32 @@
             mdi:battery-unknown
          {% endif %}
 
+    battery_thermostat_lazienka:
+      friendly_name: termostat łazienka
+      unit_of_measurement: '%'
+      entity_id: zwave.thermostat_lazienka
+      value_template: >-
+         {% if states.zwave.thermostat_lazienka %}
+            {{ states.zwave.thermostat_lazienka.attributes.battery_level }}
+         {% else %}
+            {{ states.sensor.battery_thermostat_lazienka.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.zwave.thermostat_lazienka.attributes.battery_level %}
+            {% if states.zwave.thermostat_lazienka.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.zwave.thermostat_lazienka.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.zwave.thermostat_lazienka.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.zwave.thermostat_lazienka.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
     battery_thermostat_salon:
       friendly_name: termostat salon
       unit_of_measurement: '%'
@@ -888,6 +914,8 @@
                pochmurno
             {% elif states.sensor.dark_sky_summary.state == 'Drizzle' %}
                mżawka
+            {% elif states.sensor.dark_sky_summary.state == 'Drizzle and Windy' %}
+               mżawka i wietrznie
             {% elif states.sensor.dark_sky_summary.state == 'Light Snow' %}
                lekkie opady śniegu
             {% elif states.sensor.dark_sky_summary.state == 'Light Snow and Breezy' %}
@@ -908,6 +936,8 @@
                lekkie opady deszczu
             {% elif states.sensor.dark_sky_summary.state == 'Light Rain and Breezy' %}
                wietrznie i lekkie opady deszczu
+            {% elif states.sensor.dark_sky_summary.state == 'Light Rain and Windy' %}
+               wietrznie i lekkie opady deszczu
             {% elif states.sensor.dark_sky_summary.state == 'Snow' %}
                opady śniegu
             {% elif states.sensor.dark_sky_summary.state == 'Rain' %}
@@ -916,6 +946,10 @@
                wietrznie i obfity deszcz
             {% elif states.sensor.dark_sky_summary.state == 'Breezy and Partly Cloudy' %}
                wietrznie i częściowe zachmurzenie
+            {% elif states.sensor.dark_sky_summary.state == 'Breezy and Overcast' %}
+               wietrznie i pochmurno
+            {% elif states.sensor.dark_sky_summary.state == 'Breezy' %}
+               wietrznie
             {% else %}
                {{ states.sensor.dark_sky_summary.state }}
             {% endif %}

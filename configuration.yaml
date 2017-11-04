@@ -63,6 +63,7 @@ recorder:
       - binary_sensor.gaming
       - sensor.ha_version_current
       - sensor.ha_version_installed
+      - input_boolean.harmony_command
   include:
     entities:
       - group.family
@@ -80,6 +81,7 @@ logger:
     pychromecast.socket_client: fatal
     homeassistant.helpers.entity: fatal
     homeassistant.components.sensor.darksky: fatal
+#   homeassistant.components.recorder: debug
 #    homeassistant.components.sensor.xiaomi_aqara: debug
 #    homeassistant.components.xiaomi_aqara: debug
 #   homeassistant.components.media_player: info
@@ -140,8 +142,8 @@ sun:
 
 config:
 
-updater:
-  include_used_components: true
+#updater:
+#  include_used_components: true
 
 discovery:
   ignore:
@@ -196,6 +198,11 @@ input_boolean:
   salon_light_scene_turn_on:
   gaming_timer:
     initial: 'off'
+  harmony_command:
+    initial: 'off'
+  guests:
+    name: Goście
+    icon: mdi:account
 
 input_number:
   gaming_end_hours:
@@ -238,9 +245,3 @@ remote:
   - platform: harmony
     name: Salon
     host: !secret harmonyhub_ip
-
-input_datetime:
-  test:
-    name: Czas
-    has_date: false
-    has_time: true

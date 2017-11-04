@@ -59,7 +59,7 @@ denon:
   entities: media_player.denon
 
 androidtv:
-  entities: media_player.androidtv
+  entities: media_player.salon
 
 playstation:
   entities: media_player.playstation
@@ -103,7 +103,9 @@ peoples:
     - device_tracker.emil
     - device_tracker.grazyna
     - device_tracker.jerzy
+    - device_tracker.jerzy_bt
     - device_tracker.romana
+    - device_tracker.romana_bt
     - sensor.denon_presence
 
 guests:
@@ -166,6 +168,7 @@ heating settings:
     - input_boolean.heating_season
     - script.fast_warm_up
     - input_boolean.heating_airing
+    - input_boolean.guests
 
 heating temps:
   name: Temperatury ogrzewania
@@ -205,8 +208,9 @@ batteries thermostats:
     - sensor.battery_thermostat_salon
     - sensor.battery_thermostat_kuchnia
     - sensor.battery_thermostat_antresola
-    - sensor.battery_thermostat_sypialnia
     - sensor.battery_thermostat_antek
+    - sensor.battery_thermostat_sypialnia
+    - sensor.battery_thermostat_lazienka
 
 batteries sensors:
   name: Baterie sensorów
@@ -214,8 +218,8 @@ batteries sensors:
     - sensor.battery_temp_humi_sensor_salon
     - sensor.battery_temp_humi_sensor_antresola
     - sensor.battery_temp_humi_sensor_gabinet
-    - sensor.battery_temp_humi_sensor_sypialnia
     - sensor.battery_temp_humi_sensor_antek
+    - sensor.battery_temp_humi_sensor_sypialnia
     - sensor.battery_temp_humi_sensor_lazienka
     - sensor.battery_body_sensor_salon
     - sensor.battery_body_sensor_schody
@@ -327,3 +331,4 @@ lazienka:
   entities:
     - sensor.temperature_lazienka
     - sensor.humidity_lazienka
+    - climate.thermostat_lazienka_heating_1
