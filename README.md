@@ -28,8 +28,8 @@
 
 ## Screenshots
 
-[HA Overview](https://github.com/bieniu/home-assistant-config/blob/master/HA-overview.png)
-[HA Media](https://github.com/bieniu/home-assistant-config/blob/master/HA-media.png)
-[HA Network](https://github.com/bieniu/home-assistant-config/blob/master/HA-network.png)
-[HA Energy](https://github.com/bieniu/home-assistant-config/blob/master/HA-energy.png)
-[HA Settings](https://github.com/bieniu/home-assistant-config/blob/master/HA-settings.png)
+![HA Overview](https://github.com/bieniu/home-assistant-config/blob/master/HA-overview.png)
+![HA Media](https://github.com/bieniu/home-assistant-config/blob/master/HA-media.png)
+![HA Network](https://github.com/bieniu/home-assistant-config/blob/master/HA-network.png)
+![HA Energy](https://github.com/bieniu/home-assistant-config/blob/master/HA-energy.png)
+![HA Settings](https://github.com/bieniu/home-assistant-config/blob/master/HA-settings.png)
