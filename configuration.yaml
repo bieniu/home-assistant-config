@@ -37,8 +37,8 @@ http:
   base_url: !secret http_base_url
 
 recorder:
-  purge_interval: 4
-  purge_keep_days: 2
+#  purge_interval: 4
+#  purge_keep_days: 2
   exclude:
     domains:
       - automation
@@ -251,3 +251,12 @@ remote:
 #    name: Czas
 #    has_date: false
 #    has_time: true
+
+history_graph:
+  power_consumption:
+    name: Zużycie energii
+    entities:
+      - sensor.light_salon_power
+      - sensor.light_salon_power_2
+    hours_to_show: 240
+    refresh: 60

@@ -260,6 +260,7 @@ energy consumption:
   entities:
     - sensor.light_salon_energy_2
     - sensor.light_salon_energy
+    - history_graph.zuzycie_energii
 
 salon:
   name: Salon

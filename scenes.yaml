@@ -76,6 +76,10 @@
       state: on
       transition: 5
       brightness: 250
+    switch.light_salon_switch:
+      state: off
+    switch.light_lamp_salon:
+      state: off
 
 - name: czytanie
   entities:

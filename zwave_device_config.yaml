@@ -12,7 +12,3 @@ sensor.light_salon_power_management:
   ignored: true
 sensor.light_salon_sourcenodeid:
   ignored: true
-sensor.light_salon_power:
-  ignored: true
-sensor.light_salon_power_2:
-  ignored: true

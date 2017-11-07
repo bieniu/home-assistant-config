@@ -78,6 +78,21 @@
     - service: zwave.reset_node_meters
       data: {"node_id":13,"instance":2}
 
+#### PURGE RECORDER DATABASE ####
+- id: purge_recorder_database
+  alias: 'Purge Recorder Database'
+  trigger:
+    platform: time
+    hours: 4
+    minutes: 0
+    seconds: 0
+  condition:
+    condition: time
+    weekday: fri
+  action:
+    service: recorder.purge
+    data: {"keep_days":7}
+
 #### NOTIFICATIONS ####
 # powiadomienie o wygasającym certyfikacie SSL
 - id: notification_ssl_cert_expiry
