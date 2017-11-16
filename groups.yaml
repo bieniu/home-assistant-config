@@ -4,9 +4,8 @@ default_view:
   icon: mdi:home
   entities:
     - group.family
-    - group.weather
-    - group.salon
     - group.kuchnia
+    - group.salon
     - group.antresola
     - group.gabinet
     - group.pokoj_antek
@@ -29,12 +28,13 @@ network:
   view: yes
   icon: mdi:ethernet
   entities:
-    - group.wire_devices
-    - group.wireless_devices
-    - group.iot_devices
     - group.internet
     - group.raspberry
     - group.printer
+    - group.wire_devices
+    - group.wireless_devices
+    - group.iot_devices
+    - group.zwave_devices
 
 energy:
   name: Energia
@@ -45,6 +45,14 @@ energy:
     - group.batteries_sensors
     - group.energy_consumption
 
+climate:
+  name: Klimat
+  icon: mdi:cloud
+  view: yes
+  entities:
+    - group.weather
+    - group.weather_graphs
+
 misc:
   name: Różne
   view: yes
@@ -54,6 +62,27 @@ misc:
     - group.heating_hours
     - group.heating_temps
     - group.scripts
+
+weather:
+  name: Pogoda
+  entities:
+    - sensor.dark_sky_summary_custom
+    - sensor.dark_sky_temperature
+    - sensor.dark_sky_humidity_custom
+    - sensor.dark_sky_pressure_custom
+    - sensor.dark_sky_wind_speed
+    - sensor.dark_sky_precip_probability_custom
+    - sensor.sun_custom
+    - sensor.sunrise
+    - sensor.sunset
+    - sensor.temperature_indoor
+    - sensor.humidity_indoor
+
+weather graphs:
+  name: Wykresy
+  entities:
+    - history_graph.temperatura
+    - history_graph.wilgotnosc
 
 denon:
   entities: media_player.denon
@@ -69,19 +98,6 @@ playstation:
 
 #spotify:
 #  entities: media_player.spotify
-
-weather:
-  name: Pogoda
-  entities:
-    - sensor.dark_sky_summary_custom
-    - sensor.dark_sky_temperature
-    - sensor.dark_sky_humidity_custom
-    - sensor.dark_sky_pressure_custom
-    - sensor.dark_sky_wind_speed
-    - sensor.dark_sky_precip_probability_custom
-    - sensor.sun_custom
-    - sensor.sunrise
-    - sensor.sunset
 
 family:
   name: Rodzina
@@ -145,6 +161,7 @@ wireless devices:
     - sensor.lumia_status
     - sensor.ipad_status
     - sensor.kindle_status
+    - sensor.inkbook_status
 
 iot devices:
   name: Urządzenia IoT
@@ -153,6 +170,18 @@ iot devices:
     - sensor.yeelight1_status
     - sensor.yeelight2_status
     - sensor.yeelight_strip_status
+
+zwave devices:
+  name: Urządzenia Z-Wave
+  entities:
+    - zwave.aeotec_zw090_zstick_gen5
+    - zwave.light_salon
+    - zwave.thermostat_salon
+    - zwave.thermostat_kuchnia
+    - zwave.thermostat_antresola
+    - zwave.thermostat_antek
+    - zwave.thermostat_sypialnia
+    - zwave.thermostat_lazienka
 
 internet:
   name: Internet
@@ -190,7 +219,6 @@ heating hours:
     - input_select.heating_night_end
     - input_select.heating_night_start_weekend
     - input_select.heating_night_end_weekend
-#    - input_datetime.test
 
 scripts:
   name: Skrypty i ustawienia
@@ -244,7 +272,7 @@ printer:
   entities:
     - sensor.printer_status
     - sensor.printer_printed_pages
-    - sensor.printer_pages_to_replace_drum
+    - sensor.printer_drum_usage
     - sensor.printer_toner
 
 bulbs salon:
@@ -283,7 +311,7 @@ kuchnia:
   name: Kuchnia
   control: hidden
   entities:
-    - sensor.temperature_salon
+    - sensor.temperature_kuchnia
     - sensor.humidity_salon
     - climate.thermostat_kuchnia_heating_1
 
@@ -311,8 +339,8 @@ pokoj_antek:
   name: Pokój Antka
   control: hidden
   entities:
-    - sensor.temperature_pokoj_antek
-    - sensor.humidity_pokoj_antek
+    - sensor.temperature_antek
+    - sensor.humidity_antek
     - climate.thermostat_antek_heating_1
 
 sypialnia:

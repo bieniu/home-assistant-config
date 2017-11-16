@@ -81,7 +81,7 @@
     - sensor.temperature_salon
     - sensor.temperature_antresola
     - sensor.temperature_gabinet
-    - sensor.temperature_pokoj_antek
+    - sensor.temperature_antek
     - sensor.temperature_sypialnia
     - sensor.temperature_lazienka
   round_digits: 1
@@ -93,13 +93,28 @@
     - sensor.humidity_salon
     - sensor.humidity_antresola
     - sensor.humidity_gabinet
-    - sensor.humidity_pokoj_antek
+    - sensor.humidity_antek
     - sensor.humidity_sypialnia
     - sensor.humidity_lazienka
   round_digits: 0
 
 - platform: template
   sensors:
+    temperature_kuchnia:
+      entity_id: sensor.temperature_158d00010fb340
+      friendly_name: Temperatura
+      unit_of_measurement: '°C'
+      value_template: >-
+         {% if states.sensor.temperature_158d00010fb340 %}
+            {% if states.sensor.temperature_158d00010fb340.state != 'unknown' %}
+               {{ (states.sensor.temperature_158d00010fb340.state | float - 0.5) | round(1) }}
+            {% else %}
+               {{ states.sensor.temperature_kuchnia.state }}
+            {% endif %}
+         {% else %}
+            {{ states.sensor.temperature_kuchnia.state }}
+         {% endif %}
+
     temperature_salon:
       entity_id: sensor.temperature_158d00010fb340
       friendly_name: Temperatura
@@ -160,7 +175,7 @@
             {{ states.sensor.humidity_sypialnia.state }}
          {% endif %}
 
-    temperature_pokoj_antek:
+    temperature_antek:
       entity_id: sensor.temperature_158d00010fb2cd
       friendly_name: Temperatura
       unit_of_measurement: '°C'
@@ -169,10 +184,10 @@
             {% if states.sensor.temperature_158d00010fb2cd.state != 'unknown' %}
                {{ (states.sensor.temperature_158d00010fb2cd.state | float - 0.5) | round(1) }}
             {% else %}
-               {{ states.sensor.temperature_pokoj_antek.state }}
+               {{ states.sensor.temperature_antek.state }}
             {% endif %}
          {% else %}
-            {{ states.sensor.temperature_pokoj_antek.state }}
+            {{ states.sensor.temperature_antek.state }}
          {% endif %}
 
     temperature_gabinet:
@@ -205,7 +220,7 @@
             {{ states.sensor.humidity_gabinet.state }}
          {% endif %}
 
-    humidity_pokoj_antek:
+    humidity_antek:
       entity_id: sensor.humidity_158d00010fb2cd
       friendly_name: Wilgotność
       unit_of_measurement: '%'
@@ -214,10 +229,10 @@
             {% if states.sensor.humidity_158d00010fb2cd.state != 'unknown' %}
                {{ states.sensor.humidity_158d00010fb2cd.state | round(0) }}
             {% else %}
-               {{ states.sensor.humidity_pokoj_antek.state }}
+               {{ states.sensor.humidity_antek.state }}
             {% endif %}
          {% else %}
-            {{ states.sensor.humidity_pokoj_antek.state }}
+            {{ states.sensor.humidity_antek.state }}
          {% endif %}
 
     temperature_lazienka:
@@ -753,7 +768,7 @@
       entity_id: binary_sensor.motion_sensor_158d00014d0a27
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d00014d0a27.state == 'on' %}
-            jest
+            wykryto
          {% else %}
             brak
          {% endif %}
@@ -770,7 +785,7 @@
       entity_id: binary_sensor.motion_sensor_158d000120a226
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d000120a226.state == 'on' %}
-            jest
+            wykryto
          {% else %}
             brak
          {% endif %}
@@ -787,7 +802,7 @@
       entity_id: binary_sensor.motion_sensor_158d000121c604
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d000121c604.state == 'on' %}
-            jest
+            wykryto
          {% else %}
             brak
          {% endif %}
@@ -804,7 +819,7 @@
       entity_id: binary_sensor.motion_sensor_158d000165ffb8
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d000165ffb8.state == 'on' %}
-            jest
+            wykryto
          {% else %}
             brak
          {% endif %}
@@ -884,7 +899,7 @@
          {% endif %}
 
     dark_sky_humidity_custom:
-      friendly_name: Wilgotność
+      friendly_name: Wilgotność zewnętrzna
       unit_of_measurement: '%'
       entity_id: sensor.dark_sky_humidity
       value_template: >-
@@ -1092,6 +1107,11 @@
       friendly_name: Kindle Keyboard 3G
       entity_id: device_tracker.kindle
 
+    inkbook_status:
+      value_template: "{% if is_state('device_tracker.inkbook', 'home') %}online{% else %}offline{% endif %}"
+      friendly_name: inkBook Classic 2
+      entity_id: device_tracker.inkbook
+
     lumia_status:
       value_template: "{% if is_state('device_tracker.lumia', 'home') %}online{% else %}offline{% endif %}"
       friendly_name: Lumia 640
@@ -1177,30 +1197,6 @@
       value_template: "{% if is_state('device_tracker.yeelight_light_strip', 'home') %}online{% else %}offline{% endif %}"
       entity_id: device_tracker.yeelight_light_strip
 
-    temperature_salon_delta:
-      friendly_name: "Temperature Salon Delta"
-      value_template: "{{ (states.sensor.temperature_salon_statistics_mean.attributes.max_value | float) - (states.sensor.temperature_salon_statistics_mean.attributes.min_value | float) }}"
-      entity_id: sensor.temperature_salon_statistics_mean
-      unit_of_measurement: "°C"
-
-    temperature_sypialnia_delta:
-      friendly_name: "Temperature Sypialnia Delta"
-      value_template: "{{ (states.sensor.temperature_sypialnia_statistics_mean.attributes.max_value | float) - (states.sensor.temperature_sypialnia_statistics_mean.attributes.min_value | float) }}"
-      entity_id: sensor.temperature_sypialnia_statistics_mean
-      unit_of_measurement: "°C"
-
-    temperature_pokoj_antek_delta:
-      friendly_name: "Temperature Pokój Antek Delta"
-      value_template: "{{ (states.sensor.temperature_pokoj_antek_statistics_mean.attributes.max_value | float) - (states.sensor.temperature_pokoj_antek_statistics_mean.attributes.min_value | float) }}"
-      entity_id: sensor.temperature_pokoj_antek_statistics_mean
-      unit_of_measurement: "°C"
-
-    temperature_antresola_delta:
-      friendly_name: "Temperature Antresola Delta"
-      value_template: "{{ (states.sensor.temperature_antresola_statistics_mean.attributes.max_value | float) - (states.sensor.temperature_antresola_statistics_mean.attributes.min_value | float) }}"
-      entity_id: sensor.temperature_antresola_statistics_mean
-      unit_of_measurement: "°C"
-    
     printer_toner:
       friendly_name: "Kartidż z tonerem"
       entity_id: sensor.printer_toner_status
@@ -1224,30 +1220,6 @@
             mdi:flask-empty-outline
          {% endif %}
 
-- platform: statistics
-  name: Temperature Salon Statistics
-  entity_id: sensor.temperature_158d00010fb340
-  max_age:
-    minutes: 20
-
-- platform: statistics
-  name: Temperature Sypialnia Statistics
-  entity_id: sensor.temperature_158d0001100416
-  max_age:
-    minutes: 20
-
-- platform: statistics
-  name: Temperature Pokój Antek Statistics
-  entity_id: sensor.temperature_158d00010fb2cd
-  max_age:
-    minutes: 20
-
-- platform: statistics
-  name: Temperature Antresola Statistics
-  entity_id: sensor.temperature_158d000149cc8c
-  max_age:
-    minutes: 20
-
 - platform: snmp
   name: printer_status
   host: !secret brother_ip
@@ -1259,15 +1231,23 @@
   host: !secret brother_ip
   community: public
   baseoid: iso.3.6.1.2.1.43.10.2.1.4.1.1
+  value_template: '{{ value | int }}'
 
 - platform: snmp
   name: printer_toner_status
   host: !secret brother_ip
   community: public
   baseoid: iso.3.6.1.2.1.43.11.1.1.9.1.1
+  value_template: '{{ value | lower }}'
 
 - platform: snmp
-  name: printer_pages_to_replace_drum
+  name: printer_drum_usage
   host: !secret brother_ip
   community: public
   baseoid: iso.3.6.1.2.1.43.11.1.1.9.1.2
+  value_template: '{{ (100 - ((value | int) / 12000 * 100)) | round(1) }}'
+  unit_of_measurement: '%'
+
+- platform: uptime
+  name: Home Assistant Uptime
+  unit_of_measurement: minutes

@@ -53,12 +53,10 @@ zone.home:
 
 #### GROUPS ####
 group.family:
-  order: 6
-group.weather:
   order: 7
-group.salon:
-  order: 8
 group.kuchnia:
+  order: 8
+group.salon:
   order: 9
 group.antresola:
   order: 10
@@ -80,36 +78,42 @@ group.playstation:
 #  order: 18
 #group.spotify:
 #  order: 19
-group.wire_devices:
-  order: 18
-group.wireless_devices:
-  order: 19
-group.iot_devices:
-  order: 20
 group.internet:
-  order: 21
+  order: 18
+group.raspberry:
+  order: 19
 group.printer:
   order: 22
-group.raspberry:
+group.wire_devices:
+  order: 21
+group.wireless_devices:
+  order: 22
+group.iot_devices:
   order: 23
-group.heating_settings:
+group.zwave_devices:
   order: 24
-group.heating_hours:
+group.weather:
   order: 25
-group.heating_temps:
+group.weather_graphs:
   order: 26
-group.scripts:
+group.heating_settings:
   order: 27
-group.energy_consumption:
+group.heating_hours:
   order: 28
-group.batteries_thermostats:
+group.heating_temps:
   order: 29
-group.batteries_sensors:
+group.scripts:
   order: 30
+group.energy_consumption:
+  order: 31
+group.batteries_thermostats:
+  order: 32
+group.batteries_sensors:
+  order: 33
 
 #### WEATHER ####
 sensor.dark_sky_temperature:
-  friendly_name: Temperatura
+  friendly_name: Temperatura zewnętrzna
 sensor.dark_sky_wind_speed:
   friendly_name: Prędkość wiatru
 sensor.dark_sky_pressure_custom:
@@ -179,7 +183,9 @@ sensor.lumia_status:
 sensor.ipad_status:
   icon: mdi:tablet-ipad
 sensor.kindle_status:
-  icon: mdi:cellphone
+  icon: mdi:tablet-ipad
+sensor.inkbook_status:
+  icon: mdi:tablet-ipad
 sensor.modem_status:
   icon: mdi:router-wireless
 sensor.migateway_status:
@@ -285,8 +291,8 @@ sensor.printer_printed_pages:
   friendly_name: Wydrukowanych stron
   icon: mdi:file-document
 
-sensor.printer_pages_to_replace_drum:
-  friendly_name: Stron do wymiany bębna
+sensor.printer_drum_usage:
+  friendly_name: Zużycie bębna
   icon: mdi:file-document
 
 #### SONOFF ####
@@ -305,7 +311,29 @@ sensor.light_salon_power_2:
   friendly_name: Żarówki salon
 
 sensor.humidity_indoor:
-  friendly_name: Średnia wilgotność wewnętrzna
+  friendly_name: Wilgotność wewnętrzna
 
 sensor.temperature_indoor:
-  friendly_name: Średnia temperatura wewnętrzna
+  friendly_name: Temperatura wewnętrzna
+
+#### Z-WAVE ####
+zwave.light_salon:
+  friendly_name: Fibaro FGS223 Double Relay
+
+zwave.thermostat_antek:
+  friendly_name: Danfoss 014G0013 Thermostat
+
+zwave.thermostat_antresola:
+  friendly_name: Danfoss 014G0013 Thermostat
+  
+zwave.thermostat_kuchnia:
+  friendly_name: Danfoss 014G0013 Thermostat
+
+zwave.thermostat_lazienka:
+  friendly_name: Danfoss 014G0013 Thermostat
+
+zwave.thermostat_salon:
+  friendly_name: Danfoss 014G0013 Thermostat
+
+zwave.thermostat_sypialnia:
+  friendly_name: Danfoss 014G0013 Thermostat

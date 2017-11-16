@@ -13,11 +13,11 @@
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.gaming_timer
-    - service: input_number.select_value
+    - service: input_number.set_value
       data_template:
         entity_id: input_number.gaming_end_hours
         value: '{{ (now().strftime("%s") | int | timestamp_custom("%H")) | int + 1 }}'
-    - service: input_number.select_value
+    - service: input_number.set_value
       data_template:
         entity_id: input_number.gaming_end_minutes
         value: '{{ now().strftime("%s") | int | timestamp_custom("%M") }}'
@@ -83,7 +83,7 @@
   alias: 'Purge Recorder Database'
   trigger:
     platform: time
-    hours: 4
+    hours: 3
     minutes: 0
     seconds: 0
   condition:
@@ -110,17 +110,32 @@
         tag: 'notification-ssl-cert'
 
 # powiadomienie o błędzie inicjalizacji Z-Wave
-- id: notification_zwave_error
-  alias: 'Notification Z-Wave Error'
+- id: notification_zwave_dead
+  alias: 'Notification Z-Wave Dead'
   trigger:
-    platform: state
-    entity_id: zwave.__1
-    to: 'Dead (Probe)'
+    platform: template
+    value_template: >
+       {% macro zwave_dead() %}
+          {% for item in states.zwave %}
+             {%- if (item.state != 'Ready') and (item.state != 'Sleeping')%}{% if not loop.first and not loop.last %}, {% endif %}{% if loop.last %}, {% endif %}{{ item.entity_id }}{% endif -%}
+          {% endfor %}
+       {% endmacro %}
+       {{ zwave_dead() | trim != '' }}
+  condition:
+    condition: numeric_state
+    entity_id: sensor.uptime
+    above: 10
   action:
     service: notify.html5
-    data:
-      title: 'Błąd inicjalizacji Z-Wave'
-      message: "Prawdopodobnie wystąpił błąd inicjalizacji Z-Wave. Wymagany restart Home Assistant."
+    data_template:
+      title: 'Błąd urządzenia Z-Wave'
+      message: >
+         {% macro zwave_dead() %}
+            {% for item in states.zwave %}
+               {%- if (item.state != 'Dead') and (item.state != 'Probe')%}{% if not loop.first and not loop.last %}, {% endif %}{% if loop.last %}, {% endif %}{{ item.entity_id }}{% endif -%}
+            {% endfor %}
+         {% endmacro %}
+         Wystąpił błąd urządzenia Z-Wave {{ zwave_dead() | trim }}. Wymagany restart Home Assistant'a.
       data:
         tag: 'notification-zwave-error'
 
@@ -738,49 +753,42 @@
       temperature: '{{ trigger.to_state.attributes.temperature }}'
 
 # otwarcie okna
-- id: heating_windows_opened
-  alias: 'Heating Windows Opened'
-  trigger:
-    - platform: template
-      value_template: "{{ (states.sensor.temperature_salon_delta.state | float > 0.3) and (states.binary_sensor.temperature_salon_down.state == 'on') }}"
-    - platform: template
-      value_template: "{{ (states.sensor.temperature_antresola_delta.state | float > 0.3) and (states.binary_sensor.temperature_antresola_down.state == 'on') }}"
-    - platform: template
-      value_template: "{{ (states.sensor.temperature_sypialnia_delta.state | float > 0.3) and (states.binary_sensor.temperature_sypialnia_down.state == 'on') }}"
-    - platform: template
-      value_template: "{{ (states.sensor.temperature_pokoj_antek_delta.state | float > 0.3) and (states.binary_sensor.temperature_pokoj_antek_down.state == 'on') }}"
-  condition:
-    condition: and
-    conditions:
-      - condition: sun
-        after: sunrise
-      - condition: sun
-        before: sunset
-      - condition: state
-        entity_id: input_boolean.heating_night
-        state: 'off'
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.heating_airing
-        state: 'off'
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: 'off'
-  action:
-    - service: notify.ios_edyta_iphone
-      data:
-        title: 'Otwarcie okien'
-        message: 'Wykryto otwarcie okien przy włączonym ogrzewaniu. Przełączono ogrzewanie w tryb przewietrzania. Pamiętaj, że musisz ręcznie wyłączyć tryb przewietrzania po zamknięciu okien!'
-    - service: notify.html5_oneplus
-      data: 
-        title: 'Otwarcie okien'
-        message: 'Wykryto otwarcie okien przy włączonym ogrzewaniu. Przełączono ogrzewanie w tryb przewietrzania. Pamiętaj, że musisz ręcznie wyłączyć tryb przewietrzania po zamknięciu okien!'
-        data:
-          tag: 'notification-window-opened'
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.heating_airing
+#- id: heating_windows_opened
+#  alias: 'Heating Windows Opened'
+#  trigger:
+#
+#  condition:
+#    condition: and
+#    conditions:
+#      - condition: sun
+#        after: sunrise
+#      - condition: sun
+#        before: sunset
+#      - condition: state
+#        entity_id: input_boolean.heating_night
+#        state: 'off'
+#      - condition: state
+#        entity_id: input_boolean.heating_season
+#        state: 'on'
+#      - condition: state
+#        entity_id: input_boolean.heating_airing
+#        state: 'off'
+#      - condition: state
+#        entity_id: input_boolean.away_mode
+#        state: 'off'
+#  action:
+#    - service: notify.ios_edyta_iphone
+#      data:
+#        title: 'Otwarcie okien'
+#        message: 'Wykryto otwarcie okien przy włączonym ogrzewaniu. Przełączono ogrzewanie w tryb przewietrzania. Pamiętaj, że musisz ręcznie wyłączyć tryb przewietrzania po zamknięciu okien!'
+#    - service: notify.html5_oneplus
+#      data: 
+#        title: 'Otwarcie okien'
+#        message: 'Wykryto otwarcie okien przy włączonym ogrzewaniu. Przełączono ogrzewanie w tryb przewietrzania. Pamiętaj, że musisz ręcznie wyłączyć tryb przewietrzania po zamknięciu okien!'
+#        data:
+#          tag: 'notification-window-opened'
+#    - service: input_boolean.turn_on
+#      entity_id: input_boolean.heating_airing
 
 #### LIGHT ####
 # standardowa scena oświetlenia w salonie
@@ -1615,3 +1623,126 @@
     service: logger.set_level
     data_template:
       homeassistant.components: "{{ trigger.to_state.state }}"
+
+#- id: heating_update_current_temperature_sypialnia
+#  alias: 'Heating Update Current Temperature Sypialnia'
+#  trigger:
+#    platform: state
+#    entity_id: sensor.temperature_sypialnia
+#  action:
+#    service: python_script.thermostat_current_temp
+#    data:
+#      thermostat: climate.thermostat_sypialnia_heating_1
+#      sensor: sensor.temperature_sypialnia
+
+#- id: heating_update_current_temperature_salon
+#  alias: 'Heating Update Current Temperature Salon'
+#  trigger:
+#    platform: state
+#    entity_id: sensor.temperature_salon
+#  action:
+#    - service: python_script.thermostat_current_temp
+#      data:
+#        thermostat: climate.thermostat_salon_heating_1
+#        sensor: sensor.temperature_salon
+#    - service: python_script.thermostat_current_temp
+#      data:
+#        thermostat: climate.thermostat_kuchnia_heating_1
+#        sensor: sensor.temperature_salon
+
+#- id: heating_update_current_temperature_antresola
+#  alias: 'Heating Update Current Temperature Antresola'
+#  trigger:
+#    platform: state
+#    entity_id: sensor.temperature_antresola
+#  action:
+#    service: python_script.thermostat_current_temp
+#    data:
+#      thermostat: climate.thermostat_antresola_heating_1
+#      sensor: sensor.temperature_antresola
+
+#- id: heating_update_current_temperature_lazienka
+#  alias: 'Heating Update Current Temperature Lazienka'
+#  trigger:
+#    platform: state
+#    entity_id: sensor.temperature_lazienka
+#  action:
+#    service: python_script.thermostat_current_temp
+#    data:
+#      thermostat: climate.thermostat_lazienka_heating_1
+#      sensor: sensor.temperature_lazienka
+
+#- id: heating_update_current_temperature_antek
+#  alias: 'Heating Update Current Temperature Antek'
+#  trigger:
+#    platform: state
+#    entity_id: sensor.temperature_antek
+#  action:
+#    service: python_script.thermostat_current_temp
+#    data:
+#      thermostat: climate.thermostat_antek_heating_1
+#      sensor: sensor.temperature_antek
+
+- id: heating_update_current_temperature
+  alias: 'Heating Update Current Temperature'
+  trigger:
+    platform: state
+    entity_id:
+      - sensor.temperature_antek
+      - sensor.temperature_salon
+      - sensor.temperature_kuchnia
+      - sensor.temperature_antresola
+      - sensor.temperature_sypialnia
+      - sensor.temperature_lazienka
+      - climate.thermostat_antek_heating_1
+      - climate.thermostat_kuchnia_heating_1
+      - climate.thermostat_salon_heating_1
+      - climate.thermostat_antresola_heating_1
+      - climate.thermostat_sypialnia_heating_1
+      - climate.thermostat_lazienka_heating_1
+  action:
+    service: python_script.thermostat_current_temp
+    data_template:
+      thermostat: >-
+         {% if "thermostat" in trigger.entity_id %}
+            {{ trigger.entity_id }}
+         {% else %}
+            climate.thermostat_{{ trigger.entity_id | replace('sensor.temperature_', '') }}_heating_1
+         {% endif %}
+      sensor: >-
+         {% if "sensor" in trigger.entity_id %}
+            {{ trigger.entity_id }}
+         {% else %}
+            sensor.temperature_{{ (trigger.entity_id | replace('climate.thermostat_', '')) | replace('_heating_1', '') }}
+         {% endif %}
+
+- id: heating_update_current_temperature_at_start
+  alias: 'Heating Update Current Temperature At Start'
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+    - service: python_script.thermostat_current_temp
+      data:
+        thermostat: climate.thermostat_antek_heating_1
+        sensor: sensor.temperature_antek
+    - service: python_script.thermostat_current_temp
+      data:
+        thermostat: climate.thermostat_kuchnia_heating_1
+        sensor: sensor.temperature_kuchnia
+    - service: python_script.thermostat_current_temp
+      data:
+        thermostat: climate.thermostat_salon_heating_1
+        sensor: sensor.temperature_salon
+    - service: python_script.thermostat_current_temp
+      data:
+        thermostat: climate.thermostat_antresola_heating_1
+        sensor: sensor.temperature_antresola
+    - service: python_script.thermostat_current_temp
+      data:
+        thermostat: climate.thermostat_sypialnia_heating_1
+        sensor: sensor.temperature_sypialnia
+    - service: python_script.thermostat_current_temp
+      data:
+        thermostat: climate.thermostat_lazienka_heating_1
+        sensor: sensor.temperature_lazienka

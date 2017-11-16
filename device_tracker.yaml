@@ -9,7 +9,6 @@
   protocol: ssh
 - platform: nmap_tracker
   hosts:
-    - !secret router_ip
     - !secret lumia_ip
     - !secret migateway_ip
     - !secret brother_ip
@@ -18,6 +17,7 @@
 - platform: gpslogger
 - platform: ping
   hosts:
+    router: !secret router_ip
     modem: !secret modem_ip
     switch: !secret switch_ip
     denon: !secret denon_ip

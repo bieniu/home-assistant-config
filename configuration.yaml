@@ -47,6 +47,8 @@ recorder:
       - scenes
       - script
       - groups
+      - mqtt
+      - device_tracker
     entities:
       - sensor.printer_toner_status
       - sensor.sunset
@@ -64,10 +66,34 @@ recorder:
       - sensor.ha_version_current
       - sensor.ha_version_installed
       - input_boolean.harmony_command
+      - sensor.uptime
+      - binary_sensor.motion_sensor_158d00014d0a27
+      - binary_sensor.motion_sensor_158d000120a226
+      - binary_sensor.motion_sensor_158d000121c604
+      - binary_sensor.motion_sensor_158d000165ffb8
+      - sensor.temperature_158d0001826f20
+      - sensor.temperature_158d00010fb340
+      - sensor.temperature_158d0001100416
+      - sensor.temperature_158d00010fb2cd
+      - sensor.temperature_158d000129a158
+      - sensor.temperature_158d000149cc8c
+      - sensor.humidity_158d00010fb340
+      - sensor.humidity_158d0001826f20
+      - sensor.humidity_158d0001100416
+      - sensor.humidity_158d00010fb2cd
+      - sensor.humidity_158d000129a158
+      - sensor.humidity_158d000149cc8c
   include:
     entities:
       - group.family
       - group.peoples
+      - device_tracker.grazyna
+      - device_tracker.jerzy
+      - device_tracker.romana
+      - device_tracker.agnieszka
+      - device_tracker.emil
+      - device_tracker.maciek_gps_bt
+      - device_tracker.edyta_iphone
 
 logger:
   default: warning
@@ -81,7 +107,7 @@ logger:
     pychromecast.socket_client: fatal
     homeassistant.helpers.entity: fatal
     homeassistant.components.sensor.darksky: fatal
-#    homeassistant.components.recorder: debug
+    homeassistant.components.recorder: info
 #    homeassistant.components.sensor.xiaomi_aqara: debug
 #    homeassistant.components.xiaomi_aqara: debug
 #    homeassistant.components.media_player: info
@@ -226,31 +252,10 @@ binary_sensor:
               {% endif %}
            {% endfor %}
 
-  - platform: trend
-    sensors:
-      temperature_salon_down:
-        entity_id: sensor.temperature_158d00010fb340
-        invert: Yes
-      temperature_sypialnia_down:
-        entity_id: sensor.temperature_158d0001100416
-        invert: Yes
-      temperature_pokoj_antek_down:
-        entity_id: sensor.temperature_158d00010fb2cd
-        invert: Yes
-      temperature_antresola_down:
-        entity_id: sensor.temperature_158d000149cc8c
-        invert: Yes
-
 remote:
   - platform: harmony
     name: Salon
     host: !secret harmonyhub_ip
-
-#input_datetime:
-#  test:
-#    name: Czas
-#    has_date: false
-#    has_time: true
 
 history_graph:
   power_consumption:
@@ -258,5 +263,21 @@ history_graph:
     entities:
       - sensor.light_salon_power
       - sensor.light_salon_power_2
-    hours_to_show: 240
+    hours_to_show: 48
     refresh: 60
+  temperature:
+    name: Temperatura
+    entities:
+      - sensor.temperature_indoor
+      - sensor.dark_sky_temperature
+    hours_to_show: 48
+    refresh: 60
+  humidity:
+    name: Wilgotność
+    entities:
+      - sensor.humidity_indoor
+      - sensor.dark_sky_humidity_custom
+    hours_to_show: 48
+    refresh: 60
+
+python_script:
