@@ -20,6 +20,10 @@
   icon: mdi:run
   device_class: motion
 
+#### WINDOW ####
+'binary_sensor.door_window_sensor_*':
+  device_class: opening
+
 #### ILLUMINATION ####
 'sensor.illumination_*':
   icon: mdi:lightbulb-on-outline

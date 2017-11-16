@@ -763,6 +763,92 @@
             mdi:battery-unknown
          {% endif %}
 
+    battery_window_sensor_kuchnia:
+      friendly_name: sensor okna kuchnia
+      unit_of_measurement: '%'
+      entity_id: binary_sensor.door_window_sensor_158d0001a223ff
+      value_template: >-
+         {% if states.binary_sensor.door_window_sensor_158d0001a223ff %}
+            {{ states.binary_sensor.door_window_sensor_158d0001a223ff.attributes.battery_level | round(0) }}
+         {% else %}
+            {{ states.sensor.battery_window_sensor_kuchnia.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.binary_sensor.door_window_sensor_158d0001a223ff.attributes.battery_level %}
+            {% if states.binary_sensor.door_window_sensor_158d0001a223ff.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.binary_sensor.door_window_sensor_158d0001a223ff.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.binary_sensor.door_window_sensor_158d0001a223ff.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.binary_sensor.door_window_sensor_158d0001a223ff.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
+    battery_door_sensor_sypialnia:
+      friendly_name: sensor drzwi balkonowych sypialnia
+      unit_of_measurement: '%'
+      entity_id: binary_sensor.door_window_sensor_158d0001a5dbdb
+      value_template: >-
+         {% if states.binary_sensor.door_window_sensor_158d0001a5dbdb %}
+            {{ states.binary_sensor.door_window_sensor_158d0001a5dbdb.attributes.battery_level | round(0) }}
+         {% else %}
+            {{ states.sensor.battery_door_sensor_sypialnia.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.binary_sensor.door_window_sensor_158d0001a5dbdb.attributes.battery_level %}
+            {% if states.binary_sensor.door_window_sensor_158d0001a5dbdb.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.binary_sensor.door_window_sensor_158d0001a5dbdb.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.binary_sensor.door_window_sensor_158d0001a5dbdb.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.binary_sensor.door_window_sensor_158d0001a5dbdb.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
+    window_kuchnia:
+      friendly_name: Okno
+      entity_id: binary_sensor.door_window_sensor_158d0001a223ff
+      value_template: >-
+         {% if states.binary_sensor.door_window_sensor_158d0001a223ff.state == 'on' %}
+            otwarte
+         {% else %}
+            zamknięte
+         {% endif %}
+
+      icon_template: >-
+         {% if states.binary_sensor.door_window_sensor_158d0001a223ff.state == 'on' %}
+            mdi:window-open 
+         {% else %}
+            mdi:window-closed
+         {% endif %}
+
+    door_sypialnia:
+      friendly_name: Drzwi balkonowe
+      entity_id: binary_sensor.door_window_sensor_158d0001a5dbdb
+      value_template: >-
+         {% if states.binary_sensor.door_window_sensor_158d0001a5dbdb.state == 'on' %}
+            otwarte
+         {% else %}
+            zamknięte
+         {% endif %}
+
+      icon_template: >-
+         {% if states.binary_sensor.door_window_sensor_158d0001a5dbdb.state == 'on' %}
+            mdi:door-open 
+         {% else %}
+            mdi:door-closed
+         {% endif %}
+
     motion_antresola:
       friendly_name: Ruch
       entity_id: binary_sensor.motion_sensor_158d00014d0a27

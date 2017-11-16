@@ -282,6 +282,12 @@ binary_sensor.motion_sensor_158d000121c604:
 binary_sensor.motion_sensor_158d000165ffb8:
   friendly_name: sypialnia
 
+binary_sensor.door_window_sensor_158d0001a5dbdb:
+  friendly_name: Sypialnia drzwi balkonowe
+
+binary_sensor.door_window_sensor_158d0001a223ff:
+  friendly_name: Kuchnia okno
+
 #### PRINTER ####
 sensor.printer_status:
   friendly_name: Status drukarki

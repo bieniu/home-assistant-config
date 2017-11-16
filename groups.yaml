@@ -253,6 +253,8 @@ batteries sensors:
     - sensor.battery_body_sensor_schody
     - sensor.battery_body_sensor_antresola
     - sensor.battery_body_sensor_sypialnia
+    - sensor.battery_window_sensor_kuchnia
+    - sensor.battery_door_sensor_sypialnia
     - sensor.battery_switch_light_salon_1
     - sensor.battery_switch_light_salon_2
 
@@ -313,6 +315,7 @@ kuchnia:
   entities:
     - sensor.temperature_kuchnia
     - sensor.humidity_salon
+    - sensor.window_kuchnia
     - climate.thermostat_kuchnia_heating_1
 
 antresola:
@@ -351,6 +354,7 @@ sypialnia:
     - sensor.humidity_sypialnia
     - sensor.illumination_158d000165ffb8
     - sensor.motion_sypialnia
+    - sensor.door_sypialnia
     - climate.thermostat_sypialnia_heating_1
     - light.yeelight_lightstrip_sypialnia
 

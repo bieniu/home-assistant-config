@@ -10,7 +10,8 @@
 * Fibaro FGS223 Double Relay
 * Xiaomi Mi Smart Home Gateway 2
 * Xiaomi Temperature/Humidity Sensors
-* Xiaomi Motion Sensors
+* Xiaomi Motion/Illumination Sensors
+* Xiaomi Window/Door Sensors
 * Xiaomi Switches
 * Xiaomi Yeelight Color Bulbs [YLDP02YL]
 * Xiaomi Yeelight Lightstrip [YLDD01YL]
@@ -20,7 +21,7 @@
 
 * ASUS RT-AC66U [router]
 * Logitech Harmony Ultimate [remote]
-* Denon AVR-X2100W [receiver]
+* Denon AVR-X2100W [AV receiver]
 * PlayStation 4 Pro
 * Xiaomi Mi Box 4K [AndroidTV box]
 * Synology DS110j [NAS]

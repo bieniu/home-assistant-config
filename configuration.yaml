@@ -83,6 +83,8 @@ recorder:
       - sensor.humidity_158d00010fb2cd
       - sensor.humidity_158d000129a158
       - sensor.humidity_158d000149cc8c
+      - binary_sensor.door_window_sensor_158d0001a5dbdb
+      - binary_sensor.door_window_sensor_158d0001a223ff
   include:
     entities:
       - group.family
