@@ -26,6 +26,8 @@
 * Xiaomi Mi Box 4K [AndroidTV box]
 * Synology DS110j [NAS]
 * Brother HL-L2340D [printer]
+* iPhone [iOS Home Assistant app]
+* OnePlus One [GPSLogger app]
 
 ## Screenshots
 
