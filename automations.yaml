@@ -655,6 +655,12 @@
     condition: and
     conditions:
       - condition: state
+        entity_id: binary_sensor.door_window_sensor_158d0001a5dbdb
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.door_window_sensor_158d0001a223ff
+        state: 'off'
+      - condition: state
         entity_id: input_boolean.heating_season
         state: 'on'
       - condition: state
@@ -810,37 +816,6 @@
          {% else %}
             sensor.temperature_{{ (trigger.entity_id | replace('climate.thermostat_', '')) | replace('_heating_1', '') }}
          {% endif %}
-
-- id: heating_update_current_temperature_at_start
-  alias: 'Heating Update Current Temperature At Start'
-  trigger:
-    platform: homeassistant
-    event: start
-  action:
-    - service: python_script.thermostat_current_temp
-      data:
-        thermostat: climate.thermostat_antek_heating_1
-        sensor: sensor.temperature_antek
-    - service: python_script.thermostat_current_temp
-      data:
-        thermostat: climate.thermostat_kuchnia_heating_1
-        sensor: sensor.temperature_kuchnia
-    - service: python_script.thermostat_current_temp
-      data:
-        thermostat: climate.thermostat_salon_heating_1
-        sensor: sensor.temperature_salon
-    - service: python_script.thermostat_current_temp
-      data:
-        thermostat: climate.thermostat_antresola_heating_1
-        sensor: sensor.temperature_antresola
-    - service: python_script.thermostat_current_temp
-      data:
-        thermostat: climate.thermostat_sypialnia_heating_1
-        sensor: sensor.temperature_sypialnia
-    - service: python_script.thermostat_current_temp
-      data:
-        thermostat: climate.thermostat_lazienka_heating_1
-        sensor: sensor.temperature_lazienka
 
 #### LIGHT ####
 # standardowa scena oświetlenia w salonie

@@ -9,24 +9,25 @@ homeassistant:
   customize_glob: !include customize_glob.yaml
 
 zone:
-  name: work
+  name: w pracy
   icon: mdi:domain
   latitude: 52.1344
   longitude: 21.0586
 
 zone 2:
-  name: work
+  name: w pracy
   icon: mdi:domain
   latitude: 52.2316
   longitude: 21.0013
 
 zone 3:
-  name: work
+  name: w pracy
   icon: mdi:domain
   latitude: 51.7539
   longitude: 19.4559
 
 frontend:
+  javascript_version: latest
 
 map:
 
@@ -67,10 +68,6 @@ recorder:
       - sensor.ha_version_installed
       - input_boolean.harmony_command
       - sensor.uptime
-      - binary_sensor.motion_sensor_158d00014d0a27
-      - binary_sensor.motion_sensor_158d000120a226
-      - binary_sensor.motion_sensor_158d000121c604
-      - binary_sensor.motion_sensor_158d000165ffb8
       - sensor.temperature_158d0001826f20
       - sensor.temperature_158d00010fb340
       - sensor.temperature_158d0001100416
@@ -83,8 +80,6 @@ recorder:
       - sensor.humidity_158d00010fb2cd
       - sensor.humidity_158d000129a158
       - sensor.humidity_158d000149cc8c
-      - binary_sensor.door_window_sensor_158d0001a5dbdb
-      - binary_sensor.door_window_sensor_158d0001a223ff
   include:
     entities:
       - group.family
@@ -100,7 +95,7 @@ recorder:
 logger:
   default: warning
   logs:
-    homeassistant.components.automation: info
+#    homeassistant.components.automation: info
     homeassistant.components.sensor.template: error
     homeassistant.components.sensor.snmp: fatal
     homeassistant.components.sensor.statistics: fatal
@@ -155,6 +150,7 @@ logbook:
       - sensor.maciek_presence
 
 sensor: !include sensors.yaml
+binary_sensor: !include binary_sensors.yaml
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
@@ -242,18 +238,6 @@ input_number:
     max: 59
     step: 1
 
-binary_sensor:
-  - platform: template
-    sensors:
-      gaming:
-        entity_id: sensor.androidtv_activity
-        value_template: >-
-           {% for game in ["GT Racing 2","CrossyRoad","Rayman Adventures","BADLAND","Fast like a Fox","BB Racing","Red Ball 4","Sky Force","Minion Rush","Superfrog HD","Leo's Fortune","Rayman Fiesta Run","Minecraft","Riptide GP: Renegade"] %}
-              {% if game == states.sensor.androidtv_activity.state %}
-                 True
-              {% endif %}
-           {% endfor %}
-
 remote:
   - platform: harmony
     name: Salon
@@ -283,3 +267,8 @@ history_graph:
     refresh: 60
 
 python_script:
+
+emulated_hue:
+  expose_by_default: false
+  exposed_domains:
+    - switch

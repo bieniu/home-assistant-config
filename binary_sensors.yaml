@@ -1,0 +1,36 @@
+- platform: template
+  sensors:
+    gaming:
+      entity_id: sensor.androidtv_activity
+      value_template: >-
+         {% for game in ["GT Racing 2","CrossyRoad","Rayman Adventures","BADLAND","Fast like a Fox","BB Racing","Red Ball 4","Sky Force","Minion Rush","Superfrog HD","Leo's Fortune","Rayman Fiesta Run","Minecraft","Riptide GP: Renegade"] %}
+            {% if game == states.sensor.androidtv_activity.state %}
+               True
+            {% endif %}
+         {% endfor %}
+
+    edyta_presence:
+      entity_id: device_tracker.edyta_iphone,device_tracker.edyta
+      friendly_name: Edyta
+      device_class: occupancy
+      value_template: >-
+         {% if states.device_tracker.edyta_iphone.state == 'home' or states.device_tracker.edyta.state == 'home' %}
+            True
+         {% else %}
+            False
+         {% endif %}
+
+    maciek_presence:
+      entity_id: device_tracker.maciek,device_tracker.maciek_gps_bt
+      friendly_name: Maciek
+      device_class: occupancy
+      value_template: >-
+         {% if states.device_tracker.maciek_gps_bt.state == 'home' or states.device_tracker.maciek.state == 'home' %}
+            True
+         {% else %}
+            False
+         {% endif %}
+
+    denon_presence:
+      value_template: "{{ is_state('media_player.denon', 'on') }}"
+      entity_id: media_player.denon

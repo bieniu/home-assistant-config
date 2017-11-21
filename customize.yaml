@@ -12,10 +12,14 @@ light.yeelight_color_bulb_salon_2:
 switch.light_salon_switch:
   friendly_name: LEDy
   icon: mdi:led-variant-on
+  emulated_hue_hidden: false
+  emulated_hue_name: LEDy
 
 switch.light_salon_switch_2:
   friendly_name: Żarówki
   icon: mdi:lightbulb
+  emulated_hue_hidden: false
+  emulated_hue_name: Zarowki
 
 light.yeelight_lightstrip_sypialnia:
   friendly_name: LEDy
@@ -42,9 +46,9 @@ sensor.last_restart:
   icon: mdi:clock
 
 #### PEOPLES ####
-sensor.edyta_presence:
+binary_sensor.edyta_presence:
   entity_picture: /local/edyta.jpg
-sensor.maciek_presence:
+binary_sensor.maciek_presence:
   entity_picture: /local/maciek.jpg
 
 #### ZONES ####
@@ -270,23 +274,23 @@ binary_sensor.switch_158d00014a0911:
   friendly_name: Światło salon 2
   icon: mdi:lamp
 
-binary_sensor.motion_sensor_158d00014d0a27:
-  friendly_name: antresola
+binary_sensor.motion_sensor_158d00014d0a27: # antresola
+  friendly_name: Ruch
 
-binary_sensor.motion_sensor_158d000120a226:
+binary_sensor.motion_sensor_158d000120a226: # schody
   friendly_name: schody
 
-binary_sensor.motion_sensor_158d000121c604:
-  friendly_name: salon
+binary_sensor.motion_sensor_158d000121c604: # salon
+  friendly_name: Ruch
 
-binary_sensor.motion_sensor_158d000165ffb8:
-  friendly_name: sypialnia
+binary_sensor.motion_sensor_158d000165ffb8: # sypialnia
+  friendly_name: Ruch
 
-binary_sensor.door_window_sensor_158d0001a5dbdb:
-  friendly_name: Sypialnia drzwi balkonowe
+binary_sensor.door_window_sensor_158d0001a5dbdb: # sypialnia
+  friendly_name: Drzwi balkonowe
 
-binary_sensor.door_window_sensor_158d0001a223ff:
-  friendly_name: Kuchnia okno
+binary_sensor.door_window_sensor_158d0001a223ff: # kuchnia
+  friendly_name: Okno
 
 #### PRINTER ####
 sensor.printer_status:
@@ -305,6 +309,7 @@ sensor.printer_drum_usage:
 switch.light_lamp_salon:
   icon: mdi:lamp
   friendly_name: Lampa
+  emulated_hue_hidden: false
 
 #### ENERGY ####
 sensor.light_salon_energy:

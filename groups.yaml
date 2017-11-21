@@ -102,8 +102,8 @@ playstation:
 family:
   name: Rodzina
   entities:
-    - sensor.edyta_presence
-    - sensor.maciek_presence
+    - binary_sensor.edyta_presence
+    - binary_sensor.maciek_presence
     - device_tracker.grazyna
     - device_tracker.jerzy
     - device_tracker.romana
@@ -113,8 +113,8 @@ family:
 peoples:
   name: Ludzie
   entities:
-    - sensor.maciek_presence
-    - sensor.edyta_presence
+    - binary_sensor.maciek_presence
+    - binary_sensor.edyta_presence
     - device_tracker.agnieszka
     - device_tracker.emil
     - device_tracker.grazyna
@@ -122,7 +122,7 @@ peoples:
     - device_tracker.jerzy_bt
     - device_tracker.romana
     - device_tracker.romana_bt
-    - sensor.denon_presence
+    - binary_sensor.denon_presence
 
 guests:
   name: Goście
@@ -298,7 +298,7 @@ salon:
   entities:
     - sensor.temperature_salon
     - sensor.humidity_salon
-    - sensor.motion_salon
+    - binary_sensor.motion_sensor_158d000121c604
     - climate.thermostat_salon_heating_1
     - switch.light_salon_switch_2
     - switch.light_salon_switch
@@ -315,7 +315,7 @@ kuchnia:
   entities:
     - sensor.temperature_kuchnia
     - sensor.humidity_salon
-    - sensor.window_kuchnia
+    - binary_sensor.door_window_sensor_158d0001a223ff
     - climate.thermostat_kuchnia_heating_1
 
 antresola:
@@ -325,7 +325,8 @@ antresola:
   - sensor.temperature_antresola
   - sensor.humidity_antresola
   - sensor.illumination_f0b429cc6f0b
-  - sensor.motion_antresola
+#  - sensor.motion_antresola
+  - binary_sensor.motion_sensor_158d00014d0a27
 #  - sensor.motion_schody
   - climate.thermostat_antresola_heating_1
   - light.gateway_light_f0b429cc6f0b
@@ -353,8 +354,8 @@ sypialnia:
     - sensor.temperature_sypialnia
     - sensor.humidity_sypialnia
     - sensor.illumination_158d000165ffb8
-    - sensor.motion_sypialnia
-    - sensor.door_sypialnia
+    - binary_sensor.motion_sensor_158d000165ffb8
+    - binary_sensor.door_window_sensor_158d0001a5dbdb
     - climate.thermostat_sypialnia_heating_1
     - light.yeelight_lightstrip_sypialnia
 

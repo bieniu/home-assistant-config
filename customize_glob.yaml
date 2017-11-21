@@ -23,6 +23,7 @@
 #### WINDOW ####
 'binary_sensor.door_window_sensor_*':
   device_class: opening
+  icon: mdi:window-open
 
 #### ILLUMINATION ####
 'sensor.illumination_*':
