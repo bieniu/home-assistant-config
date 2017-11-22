@@ -289,7 +289,7 @@
         tag: 'notification-low-battery'
 
 #### PRESENCE ####
-# Gościa w domu
+# Goście w domu
 - id: guests_at_home
   alias: 'Guests At Home'
   trigger:
@@ -345,7 +345,7 @@
   trigger:
     platform: state
     entity_id: sensor.maciek_presence
-    to: 'home'
+    to: 'w domu'
   condition:
     condition: state
     entity_id: input_boolean.maciek_far_from_home
@@ -360,7 +360,7 @@
   trigger:
     platform: state
     entity_id: sensor.edyta_presence
-    to: 'home'
+    to: 'w domu'
   condition:
     condition: state
     entity_id: input_boolean.edyta_far_from_home
@@ -375,7 +375,6 @@
   trigger:
     platform: state
     entity_id: group.peoples
-    from: 'home'
     to: 'not_home'
   action:
     service: input_boolean.turn_on
@@ -387,7 +386,6 @@
   trigger:
     platform: state
     entity_id: group.peoples
-    from: 'not_home'
     to: 'home'
   action:
     service: input_boolean.turn_off

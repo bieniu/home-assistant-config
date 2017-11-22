@@ -9,19 +9,19 @@ homeassistant:
   customize_glob: !include customize_glob.yaml
 
 zone:
-  name: w pracy
+  name: work
   icon: mdi:domain
   latitude: 52.1344
   longitude: 21.0586
 
 zone 2:
-  name: w pracy
+  name: work
   icon: mdi:domain
   latitude: 52.2316
   longitude: 21.0013
 
 zone 3:
-  name: w pracy
+  name: work
   icon: mdi:domain
   latitude: 51.7539
   longitude: 19.4559
@@ -95,7 +95,7 @@ recorder:
 logger:
   default: warning
   logs:
-#    homeassistant.components.automation: info
+    homeassistant.components.automation: info
     homeassistant.components.sensor.template: error
     homeassistant.components.sensor.snmp: fatal
     homeassistant.components.sensor.statistics: fatal
@@ -216,6 +216,8 @@ input_boolean:
   edyta_far_from_home:
   maciek_far_from_home:
   away_mode:
+    name: Poza domem
+    icon: mdi:home-outline
   antresola_lamp_motion_on:
   salon_lamp_motion_on:
   sypialnia_lamp_motion_on:
@@ -226,7 +228,7 @@ input_boolean:
     initial: 'off'
   guests:
     name: Goście
-    icon: mdi:account
+    icon: mdi:account-multiple
 
 input_number:
   gaming_end_hours:
@@ -272,3 +274,4 @@ emulated_hue:
   expose_by_default: false
   exposed_domains:
     - switch
+    - scene

@@ -102,8 +102,8 @@ playstation:
 family:
   name: Rodzina
   entities:
-    - binary_sensor.edyta_presence
-    - binary_sensor.maciek_presence
+    - sensor.edyta_presence
+    - sensor.maciek_presence
     - device_tracker.grazyna
     - device_tracker.jerzy
     - device_tracker.romana
@@ -113,8 +113,10 @@ family:
 peoples:
   name: Ludzie
   entities:
-    - binary_sensor.maciek_presence
-    - binary_sensor.edyta_presence
+    - device_tracker.maciek
+    - device_tracker.maciek_gps_bt
+    - device_tracker.edyta
+    - device_tracker.edyta_iphone
     - device_tracker.agnieszka
     - device_tracker.emil
     - device_tracker.grazyna
@@ -122,7 +124,7 @@ peoples:
     - device_tracker.jerzy_bt
     - device_tracker.romana
     - device_tracker.romana_bt
-    - binary_sensor.denon_presence
+    - sensor.denon_presence
 
 guests:
   name: Goście
@@ -197,6 +199,7 @@ heating settings:
     - input_boolean.heating_season
     - script.fast_warm_up
     - input_boolean.heating_airing
+    - input_boolean.away_mode
     - input_boolean.guests
 
 heating temps:
