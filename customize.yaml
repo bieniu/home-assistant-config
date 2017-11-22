@@ -25,38 +25,6 @@ light.yeelight_lightstrip_sypialnia:
   friendly_name: LEDy
   icon: mdi:led-variant-on
 
-scene.standard:
-  emulated_hue_hidden: false
-  emulated_hue_name: Standard
-
-scene.film:
-  emulated_hue_hidden: false
-  emulated_hue_name: Film
-
-scene.niebieski:
-  emulated_hue_hidden: false
-  emulated_hue_name: Niebieski
-
-scene.romantyczny:
-  emulated_hue_hidden: false
-  emulated_hue_name: Romantyczny
-
-scene.fiolet:
-  emulated_hue_hidden: false
-  emulated_hue_name: Fiolet
-
-scene.czytanie:
-  emulated_hue_hidden: false
-  emulated_hue_name: Czytanie
-
-scene.jasny:
-  emulated_hue_hidden: false
-  emulated_hue_name: Jasny
-
-scene.dyskoteka:
-  emulated_hue_hidden: false
-  emulated_hue_name: Dyskoteka
-
 #### RASPBERRY PI ####
 sensor.cpu_use:
   friendly_name: 'Obciążenie CPU'

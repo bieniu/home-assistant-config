@@ -228,7 +228,7 @@ input_boolean:
     initial: 'off'
   guests:
     name: Goście
-    icon: mdi:account-multiple
+    icon: mdi:account-multiple-outline
 
 input_number:
   gaming_end_hours:
@@ -274,4 +274,3 @@ emulated_hue:
   expose_by_default: false
   exposed_domains:
     - switch
-    - scene
