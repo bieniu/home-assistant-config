@@ -843,10 +843,6 @@
             poza domem
          {% endif %}
 
-    denon_presence:
-      value_template: "{% if is_state('media_player.denon', 'off') %}not_home{% else %}home{% endif %}"
-      entity_id: media_player.denon
-
     raspberry_disk_free:
       friendly_name: Wolne miejsce
       unit_of_measurement: 'GB'

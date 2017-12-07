@@ -121,9 +121,7 @@ peoples:
     - device_tracker.emil
     - device_tracker.grazyna
     - device_tracker.jerzy
-    - device_tracker.jerzy_bt
     - device_tracker.romana
-    - device_tracker.romana_bt
     - sensor.denon_presence
 
 guests:
@@ -328,9 +326,7 @@ antresola:
   - sensor.temperature_antresola
   - sensor.humidity_antresola
   - sensor.illumination_f0b429cc6f0b
-#  - sensor.motion_antresola
   - binary_sensor.motion_sensor_158d00014d0a27
-#  - sensor.motion_schody
   - climate.thermostat_antresola_heating_1
   - light.gateway_light_f0b429cc6f0b
 
@@ -369,3 +365,9 @@ lazienka:
     - sensor.temperature_lazienka
     - sensor.humidity_lazienka
     - climate.thermostat_lazienka_heating_1
+
+windows:
+  name: Okna
+  entities:
+    - binary_sensor.door_window_sensor_158d0001a5dbdb
+    - binary_sensor.door_window_sensor_158d0001a223ff

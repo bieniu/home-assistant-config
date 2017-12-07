@@ -29,6 +29,8 @@ zone 3:
 frontend:
   javascript_version: latest
 
+frontend_custom:
+
 map:
 
 http:
@@ -38,8 +40,6 @@ http:
   base_url: !secret http_base_url
 
 recorder:
-#  purge_interval: 4
-#  purge_keep_days: 2
   exclude:
     domains:
       - automation
@@ -80,10 +80,10 @@ recorder:
       - sensor.humidity_158d00010fb2cd
       - sensor.humidity_158d000129a158
       - sensor.humidity_158d000149cc8c
+      - binary_sensor.presence
   include:
     entities:
       - group.family
-      - group.peoples
       - device_tracker.grazyna
       - device_tracker.jerzy
       - device_tracker.romana
@@ -120,7 +120,6 @@ history:
       - device_tracker.emil
       - device_tracker.grazyna
       - device_tracker.jerzy
-      - group.peoples
       - sensor.edyta_presence
       - sensor.maciek_presence
       - sensor.dark_sky_humidity_custom
@@ -180,7 +179,6 @@ ios:
 
 zwave:
   usb_path: /dev/zwave
-#  config_path: /srv/homeassistant/homeassistant_venv/lib/python3.4/site-packages/libopenzwave-0.3.3-py3.4-linux-armv7l.egg/config
   device_config: !include zwave_device_config.yaml
 
 mqtt:

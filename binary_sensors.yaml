@@ -8,3 +8,27 @@
                True
             {% endif %}
          {% endfor %}
+
+    people_at_home:
+      entity_id:
+        - device_tracker.maciek
+        - device_tracker.maciek_gps_bt
+        - device_tracker.edyta
+        - device_tracker.edyta_iphone
+        - device_tracker.agnieszka
+        - device_tracker.emil
+        - device_tracker.grazyna
+        - device_tracker.jerzy
+        - device_tracker.romana
+        - media_player.denon
+      value_template: >-
+         {{ is_state('device_tracker.maciek', 'home')
+            or is_state('device_tracker.maciek_gps_bt', 'home')
+            or is_state('device_tracker.edyta', 'home')
+            or is_state('device_tracker.edyta_iphone', 'home')
+            or is_state('device_tracker.agnieszka', 'home')
+            or is_state('device_tracker.emil', 'home')
+            or is_state('device_tracker.grazyna', 'home')
+            or is_state('device_tracker.jerzy', 'home')
+            or is_state('device_tracker.romana', 'home')
+            or is_state('media_player.denon', 'on') }}

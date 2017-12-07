@@ -88,10 +88,12 @@
     seconds: 0
   condition:
     condition: time
-    weekday: fri
+    weekday:
+      - tue
+      - fri
   action:
     service: recorder.purge
-    data: {"keep_days":7}
+    data: {"keep_days":4}
 
 #### NOTIFICATIONS ####
 # powiadomienie o wygasającym certyfikacie SSL
@@ -139,22 +141,6 @@
       data:
         tag: 'notification-zwave-error'
 
-# powiadomienie o dostępnej aktualizacji HA
-#- id: notification_update_available
-#  alias: 'Notification Update Available'
-#  trigger:
-#    platform: state
-#    entity_id: updater.updater
-#  action:
-#    service: notify.html5_oneplus
-#    data_template:
-#      title: 'Aktualizacja Home Assistant'
-#      message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Home Assistant."
-#    data:
-#      data:
-#        tag: 'notification-hass-update'
-#        url: "https://home-assistant.io/blog/"
-
 - id: notification_custom_update_available
   alias: 'Notification Custom Update Available'
   trigger:
@@ -191,11 +177,36 @@
   action:
     service: notify.html5_oneplus
     data_template:
-      title: 'Wykryto ruch'
-      message: "O godzinie {{ now().strftime('%H:%M') }} wykryto ruch w pomieszczeniu: {{ trigger.to_state.attributes.friendly_name }}"
+      title: 'Wykryto ruch w pustym mieszkaniu'
+      message: "Wykryto ruch w pomieszczeniu: {{ trigger.to_state.attributes.location }} o godzinie {{ now().strftime('%H:%M') }}."
     data:
       data:
         tag: 'notification-hass-motion'
+
+# powiadomienie jak otworzy się okno i nikogo w domu
+- id: notification_window_opened_when_away_mode
+  alias: 'Notification Window Opened When Away Mode'
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.door_window_sensor_158d0001a5dbdb
+        - binary_sensor.door_window_sensor_158d0001a223ff
+      from: 'off'
+      to: 'on'
+  condition:
+    condition: state
+    entity_id: input_boolean.away_mode
+    state: 'on'
+    for:
+      minutes: 10
+  action:
+    service: notify.html5_oneplus
+    data_template:
+      title: 'Wykryto otwarcie okna w pustym mieszkaniu'
+      message: "Wykryto otwarcie okna w pomieszczeniu: {{ trigger.to_state.attributes.location }} o godzinie {{ now().strftime('%H:%M') }}."
+    data:
+      data:
+        tag: 'notification-hass-window-opened'
 
 # powiadomienie o dostępnej aktualizacji dla routera
 - id: notification_router_update_available
@@ -374,19 +385,32 @@
   alias: 'Presence Peoples Away'
   trigger:
     platform: state
-    entity_id: group.peoples
-    to: 'not_home'
+    entity_id: binary_sensor.people_at_home
+    to: 'off'
   action:
-    service: input_boolean.turn_on
-    entity_id: input_boolean.away_mode
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.away_mode
+    - condition: state
+      entity_id: group.windows
+      state: 'on'
+    - service: notify.html5_oneplus
+      data: 
+        title: 'Otwarte okno'
+        message: 'W mieszkaniu przynajmniej jedno okno jest otwarte!'
+        data:
+          tag: 'notification-opened-window'
+    - service: notify.ios_edyta_iphone
+      data:
+        title: 'Otwarte okno'
+        message: 'W mieszkaniu przynajmniej jedno okno jest otwarte!'
 
 # domownicy w domu
 - id: presence_peoples_back
   alias: 'Presence Peoples Back'
   trigger:
     platform: state
-    entity_id: group.peoples
-    to: 'home'
+    entity_id: binary_sensor.people_at_home
+    to: 'on'
   action:
     service: input_boolean.turn_off
     entity_id: input_boolean.away_mode
@@ -415,8 +439,8 @@
         entity_id: input_boolean.heating_season
         state: 'on'
       - condition: state
-        entity_id: group.peoples
-        state: 'home'
+        entity_id: input_boolean.away_mode
+        state: 'off'
   action:
     service: script.heating_day
 
@@ -465,8 +489,8 @@
         entity_id: input_boolean.heating_season
         state: 'on'
       - condition: state
-        entity_id: group.peoples
-        state: 'home'
+        entity_id: input_boolean.away_mode
+        state: 'off'
   action:
     service: script.heating_day
 
@@ -589,9 +613,6 @@
         after: '05:30:00'
         before: '23:00:00'
       - condition: state
-        entity_id: group.peoples
-        state: 'not_home'
-      - condition: state
         entity_id: input_boolean.edyta_far_from_home
         state: 'on'
       - condition: state
@@ -619,13 +640,11 @@
       from: 'off'
       to: 'on'
     - platform: state
-      entity_id:
-        - binary_sensor.door_window_sensor_158d0001a5dbdb
-        - binary_sensor.door_window_sensor_158d0001a223ff
+      entity_id: group.windows
       from: 'off'
       to: 'on'
       for:
-        minutes: 10
+        minutes: 5
   condition:
     condition: state
     entity_id: input_boolean.heating_season
@@ -642,9 +661,7 @@
       from: 'on'
       to: 'off'
     - platform: state
-      entity_id:
-        - binary_sensor.door_window_sensor_158d0001a5dbdb
-        - binary_sensor.door_window_sensor_158d0001a223ff
+      entity_id: group.windows
       from: 'on'
       to: 'off'
       for:
@@ -653,10 +670,7 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: binary_sensor.door_window_sensor_158d0001a5dbdb
-        state: 'off'
-      - condition: state
-        entity_id: binary_sensor.door_window_sensor_158d0001a223ff
+        entity_id: group.windows
         state: 'off'
       - condition: state
         entity_id: input_boolean.heating_season
@@ -816,6 +830,7 @@
          {% endif %}
 
 #### LIGHT ####
+## SALON ##
 # standardowa scena oświetlenia w salonie
 - id: light_scene_salon_standard
   alias: 'Light Scene Salon Standard'
@@ -965,6 +980,109 @@
     service: switch.toggle
     entity_id: switch.light_salon_switch
 
+# włączanie lampy w salonie jak pojawi się ruch, wyłączy światła lub TV
+- id: light_turn_on_salon_lamp
+  alias: 'Light Turn On Salon Lamp'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_158d000121c604
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: switch.light_salon_switch
+      from: 'on'
+      to: 'off'
+    - platform: state
+      entity_id: switch.light_salon_switch_2
+      from: 'on'
+      to: 'off'
+    - platform: state
+      entity_id: media_player.denon
+      to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.away_mode
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.illumination_f0b429cc6f0b
+        below: 60
+      - condition: state
+        entity_id: switch.light_salon_switch
+        state: 'off'
+      - condition: state
+        entity_id: switch.light_salon_switch_2
+        state: 'off'
+      - condition: state
+        entity_id: switch.light_lamp_salon
+        state: 'off'
+      - condition: state
+        entity_id: input_boolean.guests
+        state: 'off'
+      - condition: state
+        entity_id: media_player.denon
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.motion_sensor_158d000121c604
+        state: 'on'
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+          - condition: sun
+            before: sunrise
+  action:
+    - service: homeassistant.turn_on
+      entity_id:
+        - switch.light_lamp_salon
+        - input_boolean.salon_lamp_motion_on
+
+# wyłączenie lampy w salonie jak zniknie ruch lub włączy się światła
+- id: light_turn_off_salon_lamp
+  alias: 'Light Turn Off Salon Lamp'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_158d000121c604
+      from: 'on'
+      to: 'off'
+    - platform: state
+      entity_id: switch.light_salon_switch
+      from: 'off'
+      to: 'on'
+    - platform: state
+      entity_id: switch.light_salon_switch_2
+      from: 'off'
+      to: 'on'
+  condition:
+    condition: state
+    entity_id: input_boolean.salon_lamp_motion_on
+    state: 'on'
+  action:
+    - service: homeassistant.turn_off
+      entity_id:
+        - switch.light_lamp_salon
+        - input_boolean.salon_lamp_motion_on
+
+# automatyczna zmiana temperatury koloru żarówek gdy wybrana scena standard
+- id: light_salon_bulbs_auto_color_temp
+  alias: 'Light Salon Bulbs Auto Color Temp'
+  trigger:
+    platform: time
+    minutes: '/10'
+    seconds: 0
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: "{{ (states.light.yeelight_color_bulb_salon_1.state == 'on') and (states.light.yeelight_color_bulb_salon_1.state == 'on') }}"
+      - condition: state
+        entity_id: input_select.light_scenes_salon
+        state: 'standard'
+  action:
+    service: switch.flux_update
+
+## ANTRESOLA ##
 # włączanie lampki na antresoli jak jest ciemno i jest ruch
 - id: light_turn_on_antresola_lamp
   alias: 'Light Turn On Antresola Lamp'
@@ -989,11 +1107,8 @@
         conditions:
           - condition: sun
             after: sunset
-#            after_offset: "+00:10:00"
           - condition: sun
             before: sunrise
-#            before_offset: "-00:10:00"
-
   action:
     - service: light.turn_on
       entity_id: light.gateway_light_f0b429cc6f0b
@@ -1028,85 +1143,6 @@
       entity_id:
         - light.gateway_light_f0b429cc6f0b
         - input_boolean.antresola_lamp_motion_on
-
-# włączanie lampy w salonie jak jest ruch
-- id: light_turn_on_salon_lamp
-  alias: 'Light Turn On Salon Lamp'
-  trigger:
-    platform: state
-    entity_id: binary_sensor.motion_sensor_158d000121c604
-    from: 'off'
-    to: 'on'
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: 'off'
-      - condition: numeric_state
-        entity_id: sensor.illumination_f0b429cc6f0b
-        below: 60
-      - condition: state
-        entity_id: switch.light_salon_switch
-        state: 'off'
-      - condition: state
-        entity_id: switch.light_salon_switch_2
-        state: 'off'
-      - condition: state
-        entity_id: switch.light_lamp_salon
-        state: 'off'
-      - condition: state
-        entity_id: input_boolean.guests
-        state: 'off'
-      - condition: state
-        entity_id: media_player.denon
-        state: 'off'
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
-  action:
-    - service: homeassistant.turn_on
-      entity_id:
-        - switch.light_lamp_salon
-        - input_boolean.salon_lamp_motion_on
-
-- id: light_turn_off_salon_lamp
-  alias: 'Light Turn Off Salon Lamp'
-  trigger:
-    platform: state
-    entity_id: binary_sensor.motion_sensor_158d000121c604
-    from: 'on'
-    to: 'off'
-  condition:
-    condition: state
-    entity_id: input_boolean.salon_lamp_motion_on
-    state: 'on'
-  action:
-    - service: homeassistant.turn_off
-      entity_id:
-        - switch.light_lamp_salon
-        - input_boolean.salon_lamp_motion_on
-
-# automatyczna zmiana temperatury koloru żarówek gdy wybrana scena standard
-- id: light_salon_bulbs_auto_color_temp
-  alias: 'Light Salon Bulbs Auto Color Temp'
-  trigger:
-    platform: time
-    minutes: '/10'
-    seconds: 0
-  condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{ (states.light.yeelight_color_bulb_salon_1.state == 'on') and (states.light.yeelight_color_bulb_salon_1.state == 'on') }}"
-      - condition: state
-        entity_id: input_select.light_scenes_salon
-        state: 'standard'
-  action:
-    service: switch.flux_update
 
 # wyłączenie oświetlenia po wyjściu z domu
 - id: light_turn_off_when_away_mode
@@ -1266,51 +1302,6 @@
     data:
       visible: false
 
-# włączenie lampy w salonie gdy ciemno, ruch, wyłączony TV i wyłączy się żarówki i LEDy
-- id: light_turn_on_salon_lamp_when_other_lights_turn_off
-  alias: 'Light Turn On Salon Lamp When Other Lights Turn Off'
-  trigger:
-    - platform: state
-      entity_id: switch.light_salon_switch
-      from: 'on'
-      to: 'off'
-    - platform: state
-      entity_id: switch.light_salon_switch_2
-      from: 'on'
-      to: 'off'
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: 'off'
-      - condition: numeric_state
-        entity_id: sensor.illumination_f0b429cc6f0b
-        below: 60
-      - condition: state
-        entity_id: switch.light_salon_switch
-        state: 'off'
-      - condition: state
-        entity_id: switch.light_salon_switch_2
-        state: 'off'
-      - condition: state
-        entity_id: switch.light_lamp_salon
-        state: 'off'
-      - condition: state
-        entity_id: input_boolean.guests
-        state: 'off'
-      - condition: state
-        entity_id: media_player.denon
-        state: 'off'
-      - condition: state
-        entity_id: binary_sensor.motion_sensor_158d000121c604
-        state: 'on'
-  action:
-    - service: homeassistant.turn_on
-      entity_id:
-        - switch.light_lamp_salon
-        - input_boolean.salon_lamp_motion_on
-
 # włączanie LEDów w sypialni jak jest ruch
 - id: light_turn_on_sypialnia_leds
   alias: 'Light Turn On Sypialnia LEDs'
@@ -1381,14 +1372,17 @@
       entity_id: input_boolean.sypialnia_lamp_motion_on
 
 
-# wyłączanie LEDów w sypialni jak brak ruchu
+# wyłączanie LEDów w sypialni jak brak ruchu lub zrobi się jaśniej
 - id: light_turn_off_sypialnia_leds
   alias: 'Light Turn Off Sypialnia LEDs'
   trigger:
-    platform: state
-    entity_id: binary_sensor.motion_sensor_158d000165ffb8
-    from: 'on'
-    to: 'off'
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_158d000165ffb8
+      from: 'on'
+      to: 'off'
+    - platform: numeric_state
+      entity_id: sensor.illumination_158d000165ffb8
+      above: 2
   condition:
     condition: state
     entity_id: input_boolean.sypialnia_lamp_motion_on
@@ -1399,11 +1393,7 @@
     - service: light.turn_off
       entity_id: light.yeelight_lightstrip_sypialnia
       data:
-#        brightness: 1
         transition: 10
-#    - delay: '00:00:10'
-#    - service: light.turn_off
-#      entity_id: light.yeelight_lightstrip_sypialnia
 
 #### HARMONY ####
 - id: harmony_turn_off_tv

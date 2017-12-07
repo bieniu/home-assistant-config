@@ -262,9 +262,11 @@ sensor.humidity_158d000149cc8c:
 
 sensor.illumination_f0b429cc6f0b:
   friendly_name: Natężenie światła
+  location: antresola
 
 sensor.illumination_158d000165ffb8:
   friendly_name: Natężenie światła
+  location: sypialnia
 
 binary_sensor.switch_158d000154964c:
   friendly_name: Światło salon 1
@@ -274,23 +276,29 @@ binary_sensor.switch_158d00014a0911:
   friendly_name: Światło salon 2
   icon: mdi:lamp
 
-binary_sensor.motion_sensor_158d00014d0a27: # antresola
+binary_sensor.motion_sensor_158d00014d0a27:
   friendly_name: Ruch
+  location: antresola
 
-binary_sensor.motion_sensor_158d000120a226: # schody
-  friendly_name: schody
-
-binary_sensor.motion_sensor_158d000121c604: # salon
+binary_sensor.motion_sensor_158d000120a226:
   friendly_name: Ruch
+  location: schody
 
-binary_sensor.motion_sensor_158d000165ffb8: # sypialnia
+binary_sensor.motion_sensor_158d000121c604:
   friendly_name: Ruch
+  location: salon
 
-binary_sensor.door_window_sensor_158d0001a5dbdb: # sypialnia
+binary_sensor.motion_sensor_158d000165ffb8:
+  friendly_name: Ruch
+  location: sypialnia
+
+binary_sensor.door_window_sensor_158d0001a5dbdb:
   friendly_name: Drzwi balkonowe
+  location: sypialnia
 
-binary_sensor.door_window_sensor_158d0001a223ff: # kuchnia
+binary_sensor.door_window_sensor_158d0001a223ff:
   friendly_name: Okno
+  location: kuchnia
 
 #### PRINTER ####
 sensor.printer_status:

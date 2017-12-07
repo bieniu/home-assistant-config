@@ -29,10 +29,16 @@
 * iPhone [iOS Home Assistant app]
 * OnePlus One [GPSLogger app]
 
+## Home Assistant Custom Components
+
+* [PlayStation 4 media_player](https://github.com/hmn/home-assistant-config/blob/master/custom_components/media_player/ps4.py)
+* [Custom Frontend](https://github.com/home-assistant/home-assistant/pull/10783)
+
 ## Screenshots
 
 ![HA Overview](https://github.com/bieniu/home-assistant-config/blob/master/HA-overview.png)
 ![HA Media](https://github.com/bieniu/home-assistant-config/blob/master/HA-media.png)
 ![HA Network](https://github.com/bieniu/home-assistant-config/blob/master/HA-network.png)
 ![HA Energy](https://github.com/bieniu/home-assistant-config/blob/master/HA-energy.png)
+![HA Climate](https://github.com/bieniu/home-assistant-config/blob/master/HA-climate.png)
 ![HA Settings](https://github.com/bieniu/home-assistant-config/blob/master/HA-settings.png)
