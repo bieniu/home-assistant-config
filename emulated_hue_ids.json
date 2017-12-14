@@ -1,1 +1,21 @@
-{"1": "light.yeelight_lightstrip_sypialnia", "2": "light.yeelight_color_bulb_salon_1", "3": "light.yeelight_color_bulb_salon_2", "4": "light.gateway_light_f0b429cc6f0b", "5": "group.bulbs_salon", "6": "switch.light_lamp_salon", "7": "switch.light_salon_switch", "8": "switch.light_salon_switch_2", "9": "scene.fiolet", "10": "scene.standard", "11": "scene.jasny", "12": "scene.czytanie", "13": "scene.film", "14": "scene.dyskoteka", "15": "scene.niebieski", "16": "scene.romantyczny"}
+{
+    "1": "light.yeelight_lightstrip_sypialnia",
+    "10": "scene.standard",
+    "11": "scene.jasny",
+    "12": "scene.czytanie",
+    "13": "scene.film",
+    "14": "scene.dyskoteka",
+    "15": "scene.niebieski",
+    "16": "scene.romantyczny",
+    "17": "switch.sonoff_switch_single",
+    "18": "switch.sonoff_single",
+    "19": "switch.sonoff_triple",
+    "2": "light.yeelight_color_bulb_salon_1",
+    "3": "light.yeelight_color_bulb_salon_2",
+    "4": "light.gateway_light_f0b429cc6f0b",
+    "5": "group.bulbs_salon",
+    "6": "switch.light_lamp_salon",
+    "7": "switch.light_salon_switch",
+    "8": "switch.light_salon_switch_2",
+    "9": "scene.fiolet"
+}

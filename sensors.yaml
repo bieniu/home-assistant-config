@@ -84,6 +84,7 @@
     - sensor.temperature_antek
     - sensor.temperature_sypialnia
     - sensor.temperature_lazienka
+    - sensor.temperature_goscinny
   round_digits: 1
 
 - platform: min_max
@@ -96,6 +97,7 @@
     - sensor.humidity_antek
     - sensor.humidity_sypialnia
     - sensor.humidity_lazienka
+    - sensor.humidity_goscinny
   round_digits: 0
 
 - platform: template
@@ -263,6 +265,36 @@
             {% endif %}
          {% else %}
             {{ states.sensor.humidity_lazienka.state }}
+         {% endif %}
+
+    temperature_goscinny:
+      entity_id: sensor.temperature_158d0001c09930
+      friendly_name: Temperatura
+      unit_of_measurement: '°C'
+      value_template: >-
+         {% if states.sensor.temperature_158d0001c09930 %}
+            {% if states.sensor.temperature_158d0001c09930.state != 'unknown' %}
+               {{ (states.sensor.temperature_158d0001c09930.state | float - 0.5) | round(1) }}
+            {% else %}
+               {{ states.sensor.temperature_goscinny.state }}
+            {% endif %}
+         {% else %}
+            {{ states.sensor.temperature_goscinny.state }}
+         {% endif %}
+
+    humidity_goscinny:
+      entity_id: sensor.humidity_158d0001c09930
+      friendly_name: Wilgotność
+      unit_of_measurement: '%'
+      value_template: >-
+         {% if states.sensor.humidity_158d0001c09930 %}
+            {% if states.sensor.humidity_158d0001c09930.state != 'unknown' %}
+               {{ states.sensor.humidity_158d0001c09930.state | round(0) }}
+            {% else %}
+               {{ states.sensor.humidity_goscinny.state }}
+            {% endif %}
+         {% else %}
+            {{ states.sensor.humidity_goscinny.state }}
          {% endif %}
 
     temperature_antresola:
@@ -503,6 +535,32 @@
             mdi:battery-unknown
          {% endif %}
 
+    battery_temp_humi_sensor_goscinny:
+      friendly_name: sensor temperatury pokój gościnny
+      unit_of_measurement: '%'
+      entity_id: sensor.temperature_158d0001c09930
+      value_template: >-
+         {% if states.sensor.temperature_158d0001c09930 %}
+            {{ states.sensor.temperature_158d0001c09930.attributes.battery_level | round(0) }}
+         {% else %}
+            {{ states.sensor.battery_temp_humi_sensor_goscinny.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.sensor.temperature_158d0001c09930.attributes.battery_level %}
+            {% if states.sensor.temperature_158d0001c09930.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.sensor.temperature_158d0001c09930.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.sensor.temperature_158d0001c09930.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.sensor.temperature_158d0001c09930.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
     battery_temp_humi_sensor_sypialnia:
       friendly_name: sensor temperatury sypialnia
       unit_of_measurement: '%'
@@ -711,6 +769,32 @@
             mdi:battery-unknown
          {% endif %}
 
+    battery_body_sensor_antek:
+      friendly_name: sensor ruchu pokój Antka
+      unit_of_measurement: '%'
+      entity_id: binary_sensor.motion_sensor_158d00016612fb
+      value_template: >-
+         {% if states.binary_sensor.motion_sensor_158d00016612fb %}
+            {{ states.binary_sensor.motion_sensor_158d00016612fb.attributes.battery_level | round(0) }}
+         {% else %}
+            {{ states.sensor.battery_body_sensor_antek.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.binary_sensor.motion_sensor_158d00016612fb.attributes.battery_level %}
+            {% if states.binary_sensor.motion_sensor_158d00016612fb.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.binary_sensor.motion_sensor_158d00016612fb.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.binary_sensor.motion_sensor_158d00016612fb.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.binary_sensor.motion_sensor_158d00016612fb.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
     battery_switch_light_salon_1:
       friendly_name: włącznik oświetlenia salon [1]
       unit_of_measurement: '%'
@@ -810,6 +894,32 @@
                mdi:battery
             {% else %}
                mdi:battery-{{ ((states.binary_sensor.door_window_sensor_158d0001a5dbdb.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
+    battery_door_sensor_pracownia:
+      friendly_name: sensor drzwi balkonowych pracownia
+      unit_of_measurement: '%'
+      entity_id: binary_sensor.door_window_sensor_158d00019fd83f
+      value_template: >-
+         {% if states.binary_sensor.door_window_sensor_158d00019fd83f %}
+            {{ states.binary_sensor.door_window_sensor_158d00019fd83f.attributes.battery_level | round(0) }}
+         {% else %}
+            {{ states.sensor.battery_door_sensor_pracownia.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.binary_sensor.door_window_sensor_158d00019fd83f.attributes.battery_level %}
+            {% if states.binary_sensor.door_window_sensor_158d00019fd83f.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.binary_sensor.door_window_sensor_158d00019fd83f.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.binary_sensor.door_window_sensor_158d00019fd83f.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.binary_sensor.door_window_sensor_158d00019fd83f.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
             {% endif %}
          {% else %}
             mdi:battery-unknown
@@ -1158,24 +1268,39 @@
          {% endif %}
 
     sonoff_lamp_status:
-      friendly_name: Sonoff Basic
+      friendly_name: Sonoff Basic [1]
       value_template: "{% if is_state('device_tracker.sonoff_lamp', 'home') %}online{% else %}offline{% endif %}"
       entity_id: device_tracker.sonoff_lamp
 
-    yeelight1_status:
+    sonoff_switch_single_status:
+      friendly_name: Sonoff Basic [2]
+      value_template: "{% if is_state('device_tracker.sonoff_switch_single', 'home') %}online{% else %}offline{% endif %}"
+      entity_id: device_tracker.sonoff_switch_single
+
+    sonoff_switch_triple_status:
+      friendly_name: Sonoff Basic [3]
+      value_template: "{% if is_state('device_tracker.sonoff_switch_triple', 'home') %}online{% else %}offline{% endif %}"
+      entity_id: device_tracker.sonoff_switch_triple
+
+    yeelight_bulb_salon1_status:
       friendly_name: Xiaomi Yeelight YLDP02YL [1]
-      value_template: "{% if is_state('device_tracker.yeelight_color_1', 'home') %}online{% else %}offline{% endif %}"
-      entity_id: device_tracker.yeelight_color_1
+      value_template: "{% if is_state('device_tracker.yeelight_bulb_salon1', 'home') %}online{% else %}offline{% endif %}"
+      entity_id: device_tracker.yeelight_bulb_salon1
 
-    yeelight2_status:
+    yeelight_bulb_salon2_status:
       friendly_name: Xiaomi Yeelight YLDP02YL [2]
-      value_template: "{% if is_state('device_tracker.yeelight_color_2', 'home') %}online{% else %}offline{% endif %}"
-      entity_id: device_tracker.yeelight_color_2
+      value_template: "{% if is_state('device_tracker.yeelight_bulb_salon2', 'home') %}online{% else %}offline{% endif %}"
+      entity_id: device_tracker.yeelight_bulb_salon2
 
-    yeelight_strip_status:
-      friendly_name: Xiaomi Yeelight Lightstrip YLDD01YL
-      value_template: "{% if is_state('device_tracker.yeelight_light_strip', 'home') %}online{% else %}offline{% endif %}"
-      entity_id: device_tracker.yeelight_light_strip
+    yeelight_lightstrip_sypialnia_status:
+      friendly_name: Xiaomi Yeelight Lightstrip YLDD01YL [1]
+      value_template: "{% if is_state('device_tracker.yeelight_lightstrip_sypialnia', 'home') %}online{% else %}offline{% endif %}"
+      entity_id: device_tracker.yeelight_lightstrip_sypialnia
+
+    yeelight_lightstrip_antek_status:
+      friendly_name: Xiaomi Yeelight Lightstrip YLDD01YL [2]
+      value_template: "{% if is_state('device_tracker.yeelight_lightstrip_antek', 'home') %}online{% else %}offline{% endif %}"
+      entity_id: device_tracker.yeelight_lightstrip_antek
 
     printer_toner:
       friendly_name: "Kartidż z tonerem"

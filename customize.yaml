@@ -21,10 +21,6 @@ switch.light_salon_switch_2:
   emulated_hue_hidden: false
   emulated_hue_name: Zarowki
 
-light.yeelight_lightstrip_sypialnia:
-  friendly_name: LEDy
-  icon: mdi:led-variant-on
-
 #### RASPBERRY PI ####
 sensor.cpu_use:
   friendly_name: 'Obciążenie CPU'
@@ -62,58 +58,64 @@ group.kuchnia:
   order: 8
 group.salon:
   order: 9
-group.antresola:
+group.pracownia:
   order: 10
-group.gabinet:
+group.goscinny:
   order: 11
-group.pokoj_antek:
+group.antresola:
   order: 12
-group.sypialnia:
+group.gabinet:
   order: 13
-group.lazienka:
+group.pokoj_antek:
   order: 14
-group.denon:
+group.sypialnia:
   order: 15
-group.androidtv:
+group.lazienka:
   order: 16
-group.playstation:
+group.denon:
   order: 17
+group.androidtv:
+  order: 18
+group.playstation:
+  order: 19
 #group.dune:
 #  order: 18
 #group.spotify:
 #  order: 19
 group.internet:
-  order: 18
+  order: 20
 group.raspberry:
-  order: 19
+  order: 21
 group.printer:
   order: 22
 group.wire_devices:
-  order: 21
-group.wireless_devices:
-  order: 22
-group.iot_devices:
   order: 23
-group.zwave_devices:
+group.wireless_devices:
   order: 24
-group.weather:
+group.iot_devices:
   order: 25
-group.weather_graphs:
+group.zwave_devices:
   order: 26
-group.heating_settings:
+group.weather:
   order: 27
-group.heating_hours:
+group.weather_graphs:
   order: 28
-group.heating_temps:
+group.heating_settings:
   order: 29
-group.scripts:
+group.heating_hours:
   order: 30
-group.energy_consumption:
+group.heating_temps:
   order: 31
-group.batteries_thermostats:
+group.scripts:
   order: 32
-group.batteries_sensors:
+group.energy_consumption:
   order: 33
+group.batteries_thermostats:
+  order: 34
+group.batteries_switches:
+  order: 35
+group.batteries_sensors:
+  order: 36
 
 #### WEATHER ####
 sensor.dark_sky_temperature:
@@ -196,14 +198,6 @@ sensor.migateway_status:
   icon: mdi:router-wireless
 sensor.brother_status:
   icon: mdi:printer
-sensor.sonoff_lamp_status:
-  icon: mdi:toggle-switch-off
-sensor.yeelight1_status:
-  icon: mdi:lightbulb-outline
-sensor.yeelight2_status:
-  icon: mdi:lightbulb-outline
-sensor.yeelight_strip_status:
-  icon: mdi:led-variant-outline
 
 #### MEDIA PLAYERS ####
 media_player.salon:
@@ -230,6 +224,9 @@ sensor.temperature_158d0001826f20:
 sensor.temperature_158d00010fb340:
   friendly_name: Temperatura salon
 
+sensor.temperature_158d0001c09930:
+  friendly_name: Temperatura pokój gościnny
+
 sensor.temperature_158d0001100416:
   friendly_name: Temperatura sypialnia
 
@@ -251,6 +248,9 @@ sensor.humidity_158d0001826f20:
 sensor.humidity_158d0001100416:
   friendly_name: Wilgotność sypialnia
 
+sensor.humidity_158d0001c09930:
+  friendly_name: Wilgotność pokój gościnny
+
 sensor.humidity_158d00010fb2cd:
   friendly_name: Wilgotność pokój Antka
 
@@ -267,6 +267,10 @@ sensor.illumination_f0b429cc6f0b:
 sensor.illumination_158d000165ffb8:
   friendly_name: Natężenie światła
   location: sypialnia
+
+sensor.illumination_158d00016612fb:
+  friendly_name: Natężenie światła
+  location: pokój Antka
 
 binary_sensor.switch_158d000154964c:
   friendly_name: Światło salon 1
@@ -292,9 +296,17 @@ binary_sensor.motion_sensor_158d000165ffb8:
   friendly_name: Ruch
   location: sypialnia
 
+binary_sensor.motion_sensor_158d00016612fb:
+  friendly_name: Ruch
+  location: pokój Antka
+
 binary_sensor.door_window_sensor_158d0001a5dbdb:
   friendly_name: Drzwi balkonowe
   location: sypialnia
+
+binary_sensor.door_window_sensor_158d00019fd83f:
+  friendly_name: Drzwi balkonowe
+  location: pracownia
 
 binary_sensor.door_window_sensor_158d0001a223ff:
   friendly_name: Okno
@@ -319,13 +331,26 @@ switch.light_lamp_salon:
   friendly_name: Lampa
   emulated_hue_hidden: false
 
+switch.sonoff_single:
+  icon: mdi:led-variant-on
+  friendly_name: Lampki na balkonie
+  emulated_hue_hidden: false
+
+switch.sonoff_triple:
+  icon: mdi:led-variant-on
+  friendly_name: Lampki na balkonie
+  emulated_hue_hidden: false
+
 #### ENERGY ####
 sensor.light_salon_energy:
   friendly_name: LEDy salon
+
 sensor.light_salon_power:
   friendly_name: LEDy salon
+
 sensor.light_salon_energy_2:
   friendly_name: Żarówki salon
+
 sensor.light_salon_power_2:
   friendly_name: Żarówki salon
 
@@ -356,3 +381,7 @@ zwave.thermostat_salon:
 
 zwave.thermostat_sypialnia:
   friendly_name: Danfoss 014G0013 Thermostat
+
+#### GROUPS ####
+group.bulbs_salon:
+  state: ''

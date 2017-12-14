@@ -6,6 +6,8 @@ default_view:
     - group.family
     - group.kuchnia
     - group.salon
+    - group.pracownia
+    - group.goscinny
     - group.antresola
     - group.gabinet
     - group.pokoj_antek
@@ -42,6 +44,7 @@ energy:
   icon: mdi:power-plug
   entities:
     - group.batteries_thermostats
+    - group.batteries_switches
     - group.batteries_sensors
     - group.energy_consumption
 
@@ -167,9 +170,12 @@ iot devices:
   name: Urządzenia IoT
   entities:
     - sensor.sonoff_lamp_status
-    - sensor.yeelight1_status
-    - sensor.yeelight2_status
-    - sensor.yeelight_strip_status
+    - sensor.sonoff_switch_single_status
+    - sensor.sonoff_switch_triple_status
+    - sensor.yeelight_bulb_salon1_status
+    - sensor.yeelight_bulb_salon2_status
+    - sensor.yeelight_lightstrip_antek_status
+    - sensor.yeelight_lightstrip_sypialnia_status
 
 zwave devices:
   name: Urządzenia Z-Wave
@@ -245,6 +251,7 @@ batteries sensors:
   name: Baterie sensorów
   entities:
     - sensor.battery_temp_humi_sensor_salon
+    - sensor.battery_temp_humi_sensor_goscinny
     - sensor.battery_temp_humi_sensor_antresola
     - sensor.battery_temp_humi_sensor_gabinet
     - sensor.battery_temp_humi_sensor_antek
@@ -253,9 +260,15 @@ batteries sensors:
     - sensor.battery_body_sensor_salon
     - sensor.battery_body_sensor_schody
     - sensor.battery_body_sensor_antresola
+    - sensor.battery_body_sensor_antek
     - sensor.battery_body_sensor_sypialnia
     - sensor.battery_window_sensor_kuchnia
+    - sensor.battery_door_sensor_pracownia
     - sensor.battery_door_sensor_sypialnia
+
+batteries switches:
+  name: Baterie przełączników
+  entities:
     - sensor.battery_switch_light_salon_1
     - sensor.battery_switch_light_salon_2
 
@@ -319,6 +332,13 @@ kuchnia:
     - binary_sensor.door_window_sensor_158d0001a223ff
     - climate.thermostat_kuchnia_heating_1
 
+goscinny:
+  name: Pokój gościnny
+  control: hidden
+  entities:
+    - sensor.temperature_goscinny
+    - sensor.humidity_goscinny
+
 antresola:
   name: Antresola
   control: hidden
@@ -344,7 +364,10 @@ pokoj_antek:
   entities:
     - sensor.temperature_antek
     - sensor.humidity_antek
+    - sensor.illumination_158d00016612fb
+    - binary_sensor.motion_sensor_158d00016612fb
     - climate.thermostat_antek_heating_1
+    - light.yeelight_lightstrip_antek
 
 sypialnia:
   name: Sypialnia
@@ -357,6 +380,14 @@ sypialnia:
     - binary_sensor.door_window_sensor_158d0001a5dbdb
     - climate.thermostat_sypialnia_heating_1
     - light.yeelight_lightstrip_sypialnia
+    - switch.sonoff_single
+
+pracownia:
+  name: Pracownia
+  control: hidden
+  entities:
+    - binary_sensor.door_window_sensor_158d00019fd83f 
+    - switch.sonoff_triple
 
 lazienka:
   name: Łazienka
@@ -371,3 +402,4 @@ windows:
   entities:
     - binary_sensor.door_window_sensor_158d0001a5dbdb
     - binary_sensor.door_window_sensor_158d0001a223ff
+    - binary_sensor.door_window_sensor_158d00019fd83f

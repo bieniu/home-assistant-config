@@ -22,4 +22,6 @@
     switch: !secret switch_ip
     denon: !secret denon_ip
     sonoff_lamp: !secret sonoff_lamp_ip
+    sonoff_switch_single: !secret sonoff_switch_single_ip
+    sonoff_switch_triple: !secret sonoff_switch_triple_ip
     synology: !secret synology_ip

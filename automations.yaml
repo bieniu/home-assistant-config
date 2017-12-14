@@ -166,6 +166,7 @@
         - binary_sensor.motion_sensor_158d000120a226
         - binary_sensor.motion_sensor_158d000121c604
         - binary_sensor.motion_sensor_158d000165ffb8
+        - binary_sensor.motion_sensor_158d00016612fb
       from: 'off'
       to: 'on'
   condition:
@@ -191,6 +192,7 @@
       entity_id:
         - binary_sensor.door_window_sensor_158d0001a5dbdb
         - binary_sensor.door_window_sensor_158d0001a223ff
+        - binary_sensor.door_window_sensor_158d00019fd83f
       from: 'off'
       to: 'on'
   condition:
@@ -829,6 +831,54 @@
             sensor.temperature_{{ (trigger.entity_id | replace('climate.thermostat_', '')) | replace('_heating_1', '') }}
          {% endif %}
 
+# zmniejszanie nastawy termostatu o 1 stopień gdy temperatura w łazience przekroczy 22.5 stopnie
+- id: heating_lazienka_target_temp_down
+  alias: 'Heating Lazienka Target Temp Down'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.temperature_lazienka
+    above: 22.4
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: '{{ states.climate.thermostat_lazienka_heating_1.attributes.temperature | float > 22 }}'
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.heating_airing
+        state: 'off'
+  action:
+    service: climate.set_temperature
+    entity_id: climate.thermostat_lazienka_heating_1
+    data_template:
+      temperature: '{{ states.input_select.heating_temp_bathroom_day.state | int - 1 }}'
+
+# zwiekszenie nastawy termostatu o 1 stopień gdy temperatura w łazience poniżej 22 stopni
+- id: heating_lazienka_target_temp_up
+  alias: 'Heating Lazienka Target Temp Up'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.temperature_lazienka
+    below: 22
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: '{{ (states.climate.thermostat_lazienka_heating_1.attributes.temperature | float < 23) and (states.climate.thermostat_lazienka_heating_1.attributes.temperature | float > 20) }}'
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.heating_airing
+        state: 'off'
+  action:
+    service: climate.set_temperature
+    entity_id: climate.thermostat_lazienka_heating_1
+    data_template:
+      temperature: '{{ states.input_select.heating_temp_bathroom_day.state | int + 1 }}'
+
 #### LIGHT ####
 ## SALON ##
 # standardowa scena oświetlenia w salonie
@@ -1170,6 +1220,9 @@
         entity_id: light.yeelight_lightstrip_sypialnia
         state: 'on'
       - condition: state
+        entity_id: light.yeelight_lightstrip_antek
+        state: 'on'
+      - condition: state
         entity_id: light.gateway_light_f0b429cc6f0b
         state: 'on'
   action:
@@ -1301,7 +1354,31 @@
     entity_id: group.bulbs_salon
     data:
       visible: false
+# włączenie lampek świątecznych o zachodzie słońca
+- id: light_turn_on_christmas_lights
+  alias: 'Light Turn On Christmas Lights'
+  trigger:
+    platform: sun
+    event: sunset
+  action:
+    service: switch.turn_on
+    entity_id:
+      - switch.sonoff_single
+      - switch.sonoff_triple
 
+# wyłączenie lampek świątecznych o wschodzie słońca i o północy
+- id: light_turn_off_christmas_lights
+  alias: 'Light Turn Off Christmas Lights'
+  trigger:
+    platform: time
+    at: '00:00:00'
+  action:
+    service: switch.turn_off
+    entity_id:
+      - switch.sonoff_single
+      - switch.sonoff_triple
+
+## SYPIALNIA ##
 # włączanie LEDów w sypialni jak jest ruch
 - id: light_turn_on_sypialnia_leds
   alias: 'Light Turn On Sypialnia LEDs'
@@ -1392,6 +1469,99 @@
       entity_id: input_boolean.sypialnia_lamp_motion_on
     - service: light.turn_off
       entity_id: light.yeelight_lightstrip_sypialnia
+      data:
+        transition: 10
+
+## POKÓJ ANTKA ##
+# włączanie LEDów w pokoju Antka jak jest ruch
+- id: light_turn_on_antek_leds
+  alias: 'Light Turn On Antek LEDs'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_sensor_158d00016612fb
+    from: 'off'
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.away_mode
+        state: 'off'
+      - condition: state
+        entity_id: light.yeelight_lightstrip_antek
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.illumination_158d00016612fb
+        below: 3
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+          - condition: sun
+            before: sunrise
+  action:
+    - service: light.turn_on
+      entity_id: light.yeelight_lightstrip_antek
+      data_template:
+        brightness: 150
+        rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.antek_lamp_motion_on
+
+# włączanie LEDów w pokoju Antka jak natężenie światłą spadnie poniżej 3, a jest ruch
+- id: light_turn_on_antek_leds_when_suddenly_dark
+  alias: 'Light Turn On Antek LEDs When Suddenly Dark'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.illumination_158d00016612fb
+    below: 3
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.away_mode
+        state: 'off'
+      - condition: state
+        entity_id: light.yeelight_lightstrip_antek
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.motion_sensor_158d00016612fb
+        state: 'on'
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+          - condition: sun
+            before: sunrise
+  action:
+    - service: light.turn_on
+      entity_id: light.yeelight_lightstrip_antek
+      data_template:
+        brightness: 150
+        rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.antek_lamp_motion_on
+
+# wyłączanie LEDów w pokoju Antka jak brak ruchu lub zrobi się jaśniej
+- id: light_turn_off_antek_leds
+  alias: 'Light Turn Off Antek LEDs'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_158d00016612fb
+      from: 'on'
+      to: 'off'
+    - platform: numeric_state
+      entity_id: sensor.illumination_158d00016612fb
+      above: 2
+  condition:
+    condition: state
+    entity_id: input_boolean.antek_lamp_motion_on
+    state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.antek_lamp_motion_on
+    - service: light.turn_off
+      entity_id: light.yeelight_lightstrip_antek
       data:
         transition: 10
 

@@ -50,6 +50,7 @@ recorder:
       - groups
       - mqtt
       - device_tracker
+      - input_boolean
     entities:
       - sensor.printer_toner_status
       - sensor.sunset
@@ -62,11 +63,9 @@ recorder:
       - binary_sensor.switch_158d00014a0911
       - input_number.gaming_end_hours
       - input_number.gaming_end_minutes
-      - input_boolean.gaming_timer
       - binary_sensor.gaming
       - sensor.ha_version_current
       - sensor.ha_version_installed
-      - input_boolean.harmony_command
       - sensor.uptime
       - sensor.temperature_158d0001826f20
       - sensor.temperature_158d00010fb340
@@ -74,12 +73,14 @@ recorder:
       - sensor.temperature_158d00010fb2cd
       - sensor.temperature_158d000129a158
       - sensor.temperature_158d000149cc8c
+      - sensor.temperature_158d0001c09930
       - sensor.humidity_158d00010fb340
       - sensor.humidity_158d0001826f20
       - sensor.humidity_158d0001100416
       - sensor.humidity_158d00010fb2cd
       - sensor.humidity_158d000129a158
       - sensor.humidity_158d000149cc8c
+      - sensor.humidity_158d0001c09930
       - binary_sensor.presence
   include:
     entities:
@@ -91,6 +92,10 @@ recorder:
       - device_tracker.emil
       - device_tracker.maciek_gps_bt
       - device_tracker.edyta_iphone
+      - input_boolean.heating_season
+      - input_boolean.heating_airing
+      - input_boolean.away_mode
+      - input_boolean.guests
 
 logger:
   default: warning
@@ -219,6 +224,7 @@ input_boolean:
   antresola_lamp_motion_on:
   salon_lamp_motion_on:
   sypialnia_lamp_motion_on:
+  antek_lamp_motion_on:
   salon_light_scene_turn_on:
   gaming_timer:
     initial: 'off'
