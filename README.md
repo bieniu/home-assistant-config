@@ -14,8 +14,8 @@
 * Xiaomi Window/Door Sensors
 * Xiaomi Switches
 * Xiaomi Yeelight Color Bulbs [YLDP02YL]
-* Xiaomi Yeelight Lightstrip [YLDD01YL]
-* Sonoff Basic Switch [Tasmota firmware]
+* Xiaomi Yeelight Lightstrips [YLDD01YL]
+* Sonoff Basic Switches [Tasmota firmware]
 
 ## Integrated Devices
 
