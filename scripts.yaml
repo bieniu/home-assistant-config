@@ -261,3 +261,13 @@ notification_with_image:
       data:
         tag: 'notification-image'
         image: 'https://home.bieniu.eu/local/edyta.jpg'
+
+#### LIGHT ####
+light_turn_off_antek_leds:
+  sequence:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.antek_lamp_motion_on
+    - service: light.turn_off
+      entity_id: light.yeelight_lightstrip_antek
+      data:
+        transition: 10

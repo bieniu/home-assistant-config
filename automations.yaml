@@ -1,4 +1,4 @@
-#### GAMES ####
+#### GAMES #######################################################################################
 # początek grania
 - id: start_games
   alias: 'Start Games'
@@ -59,8 +59,9 @@
       data:
         title: 'Zbyt długa gra'
         message: 'Gra trwa już godzinę. Pora skończyć!'
+##################################################################################################
 
-#### ENERGY CONSUMPTION ####
+#### ENERGY CONSUMPTION ##########################################################################
 # resetowanie miesięcznego zużycia energii
 - id: energy_reset_monthly_consumption
   alias: 'Energy Reset Monthly Consumption'
@@ -77,8 +78,9 @@
       data: {"node_id":13,"instance":1}
     - service: zwave.reset_node_meters
       data: {"node_id":13,"instance":2}
+##################################################################################################
 
-#### PURGE RECORDER DATABASE ####
+#### PURGE RECORDER DATABASE #####################################################################
 - id: purge_recorder_database
   alias: 'Purge Recorder Database'
   trigger:
@@ -94,8 +96,9 @@
   action:
     service: recorder.purge
     data: {"keep_days":4}
+##################################################################################################
 
-#### NOTIFICATIONS ####
+#### NOTIFICATIONS ###############################################################################
 # powiadomienie o wygasającym certyfikacie SSL
 - id: notification_ssl_cert_expiry
   alias: 'Notification SSL Cert Expiry'
@@ -141,6 +144,7 @@
       data:
         tag: 'notification-zwave-error'
 
+# powiadomienie o aktualizacji
 - id: notification_custom_update_available
   alias: 'Notification Custom Update Available'
   trigger:
@@ -258,7 +262,7 @@
       data:
         tag: 'notification-new-device'
 
-# niski poziom naładowania baterii
+# powiadomienie o niskim poziomie naładowania baterii
 - id: notification_low_battery
   alias: 'Notification Low Battery'
   trigger:
@@ -300,8 +304,9 @@
          W następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level() }}
       data:
         tag: 'notification-low-battery'
+##################################################################################################
 
-#### PRESENCE ####
+#### OBECNOŚĆ ####################################################################################
 # Goście w domu
 - id: guests_at_home
   alias: 'Guests At Home'
@@ -416,8 +421,9 @@
   action:
     service: input_boolean.turn_off
     entity_id: input_boolean.away_mode
+##################################################################################################
 
-#### HEATING ####
+#### HEATING #####################################################################################
 # zwiększenie temperatury rano w tygodniu jeśli ktoś jest w domu i trwa sezon grzewczy
 - id: heating_day
   alias: 'Heating Day'
@@ -680,6 +686,8 @@
       - condition: state
         entity_id: input_boolean.away_mode
         state: 'off'
+      - condition: template
+        value_template: "{{ (trigger.entity_id == 'group.windows' and states.input_boolean.heating_airing.state == 'on') or trigger.entity_id == 'input_boolean.heating_airing' }}"
   action:
     service: script.heating_day
 
@@ -788,6 +796,7 @@
     data_template:
       temperature: '{{ trigger.to_state.attributes.temperature }}'
 
+# uruchamia skrypt aktualizaujący current temp
 - id: heating_update_current_temperature
   alias: 'Heating Update Current Temperature'
   trigger:
@@ -831,7 +840,7 @@
             sensor.temperature_{{ (trigger.entity_id | replace('climate.thermostat_', '')) | replace('_heating_1', '') }}
          {% endif %}
 
-# zmniejszanie nastawy termostatu o 1 stopień gdy temperatura w łazience przekroczy 22.5 stopnie
+# zmniejszanie nastawy termostatu do 22 stopni gdy temperatura w łazience przekroczy 22.5 stopnie
 - id: heating_lazienka_target_temp_down
   alias: 'Heating Lazienka Target Temp Down'
   trigger:
@@ -852,10 +861,10 @@
   action:
     service: climate.set_temperature
     entity_id: climate.thermostat_lazienka_heating_1
-    data_template:
-      temperature: '{{ states.input_select.heating_temp_bathroom_day.state | int - 1 }}'
+    data:
+      temperature: 22
 
-# zwiekszenie nastawy termostatu o 1 stopień gdy temperatura w łazience poniżej 22 stopni
+# zwiekszenie nastawy termostatu do 23 stopni gdy temperatura w łazience poniżej 22 stopni
 - id: heating_lazienka_target_temp_up
   alias: 'Heating Lazienka Target Temp Up'
   trigger:
@@ -876,10 +885,70 @@
   action:
     service: climate.set_temperature
     entity_id: climate.thermostat_lazienka_heating_1
-    data_template:
-      temperature: '{{ states.input_select.heating_temp_bathroom_day.state | int + 1 }}'
+    data:
+      temperature: 23
+##################################################################################################
 
-#### LIGHT ####
+#### LIGHT #######################################################################################
+# wyłączenie oświetlenia po wyjściu z domu
+- id: light_turn_off_when_away_mode
+  alias: 'Light Turn Off When Away Mode'
+  trigger: 
+    platform: state
+    entity_id: input_boolean.away_mode
+    from: 'off'
+    to: 'on'
+    for:
+      minutes: 10
+  condition:
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: switch.light_lamp_salon
+        state: 'on'
+      - condition: state
+        entity_id: switch.light_salon_switch
+        state: 'on'
+      - condition: state
+        entity_id: switch.light_salon_switch_2
+        state: 'on'
+      - condition: state
+        entity_id: light.yeelight_lightstrip_sypialnia
+        state: 'on'
+      - condition: state
+        entity_id: light.yeelight_lightstrip_antek
+        state: 'on'
+      - condition: state
+        entity_id: light.gateway_light_f0b429cc6f0b
+        state: 'on'
+  action:
+    service: script.light_away_mode
+
+## CHRISTMAS LIGHTS ##
+# włączenie lampek świątecznych o zachodzie słońca
+- id: light_turn_on_christmas_lights
+  alias: 'Light Turn On Christmas Lights'
+  trigger:
+    platform: sun
+    event: sunset
+  action:
+    service: switch.turn_on
+    entity_id:
+      - switch.sonoff_single
+      - switch.sonoff_triple
+
+# wyłączenie lampek świątecznych o wschodzie słońca i o północy
+- id: light_turn_off_christmas_lights
+  alias: 'Light Turn Off Christmas Lights'
+  trigger:
+    platform: time
+    at: '00:00:00'
+  action:
+    service: switch.turn_off
+    entity_id:
+      - switch.sonoff_single
+      - switch.sonoff_triple
+
 ## SALON ##
 # standardowa scena oświetlenia w salonie
 - id: light_scene_salon_standard
@@ -1132,102 +1201,6 @@
   action:
     service: switch.flux_update
 
-## ANTRESOLA ##
-# włączanie lampki na antresoli jak jest ciemno i jest ruch
-- id: light_turn_on_antresola_lamp
-  alias: 'Light Turn On Antresola Lamp'
-  trigger:
-    platform: state
-    entity_id: binary_sensor.motion_sensor_158d00014d0a27, binary_sensor.motion_sensor_158d000120a226
-    from: 'off'
-    to: 'on'
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: 'off'
-      - condition: state
-        entity_id: light.gateway_light_f0b429cc6f0b
-        state: 'off'
-      - condition: numeric_state
-        entity_id: sensor.illumination_f0b429cc6f0b
-        below: 60
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
-  action:
-    - service: light.turn_on
-      entity_id: light.gateway_light_f0b429cc6f0b
-      data_template:
-        brightness: 200
-        rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.antresola_lamp_motion_on
-
-# wyłączanie lampki na antresoli jak brak ruchu
-- id: light_turn_off_antresola_lamp
-  alias: 'Light Turn Off Antresola Lamp'
-  trigger:
-    platform: state
-    entity_id: binary_sensor.motion_sensor_158d00014d0a27, binary_sensor.motion_sensor_158d000120a226
-    from: 'on'
-    to: 'off'
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.antresola_lamp_motion_on
-        state: 'on'
-      - condition: state
-        entity_id: binary_sensor.motion_sensor_158d00014d0a27
-        state: 'off'
-      - condition: state
-        entity_id: binary_sensor.motion_sensor_158d000120a226
-        state: 'off'
-  action:
-    - service: homeassistant.turn_off
-      entity_id:
-        - light.gateway_light_f0b429cc6f0b
-        - input_boolean.antresola_lamp_motion_on
-
-# wyłączenie oświetlenia po wyjściu z domu
-- id: light_turn_off_when_away_mode
-  alias: 'Light Turn Off When Away Mode'
-  trigger: 
-    platform: state
-    entity_id: input_boolean.away_mode
-    from: 'off'
-    to: 'on'
-    for:
-      minutes: 10
-  condition:
-    condition: or
-    conditions:
-      - condition: state
-        entity_id: switch.light_lamp_salon
-        state: 'on'
-      - condition: state
-        entity_id: switch.light_salon_switch
-        state: 'on'
-      - condition: state
-        entity_id: switch.light_salon_switch_2
-        state: 'on'
-      - condition: state
-        entity_id: light.yeelight_lightstrip_sypialnia
-        state: 'on'
-      - condition: state
-        entity_id: light.yeelight_lightstrip_antek
-        state: 'on'
-      - condition: state
-        entity_id: light.gateway_light_f0b429cc6f0b
-        state: 'on'
-  action:
-    service: script.light_away_mode
-
 # Scena oświetlenia salonu film po włączeniu Netflix/Showmax/Youtube/Dune/gry na PS
 - id: light_scene_film
   alias: 'Light Scene Film'
@@ -1312,6 +1285,7 @@
       entity_id: input_select.light_scenes_salon
       option: 'standard'
 
+# grupa żarówki widoczna jak żarówki włączone
 - id: light_bulbs_group_visible
   alias: 'Light Group Bulbs Visible'
   trigger:
@@ -1337,6 +1311,7 @@
     data:
       visible: true
 
+# grupa żarówki niewidoczna jak żarówki wyłączone
 - id: light_bulbs_group_hidden
   alias: 'Light Group Bulbs Hidden'
   trigger:
@@ -1354,39 +1329,81 @@
     entity_id: group.bulbs_salon
     data:
       visible: false
-# włączenie lampek świątecznych o zachodzie słońca
-- id: light_turn_on_christmas_lights
-  alias: 'Light Turn On Christmas Lights'
-  trigger:
-    platform: sun
-    event: sunset
-  action:
-    service: switch.turn_on
-    entity_id:
-      - switch.sonoff_single
-      - switch.sonoff_triple
 
-# wyłączenie lampek świątecznych o wschodzie słońca i o północy
-- id: light_turn_off_christmas_lights
-  alias: 'Light Turn Off Christmas Lights'
-  trigger:
-    platform: time
-    at: '00:00:00'
-  action:
-    service: switch.turn_off
-    entity_id:
-      - switch.sonoff_single
-      - switch.sonoff_triple
-
-## SYPIALNIA ##
-# włączanie LEDów w sypialni jak jest ruch
-- id: light_turn_on_sypialnia_leds
-  alias: 'Light Turn On Sypialnia LEDs'
+## ANTRESOLA ##
+# włączanie lampki na antresoli jak jest ciemno i jest ruch
+- id: light_turn_on_antresola_lamp
+  alias: 'Light Turn On Antresola Lamp'
   trigger:
     platform: state
-    entity_id: binary_sensor.motion_sensor_158d000165ffb8
+    entity_id: binary_sensor.motion_sensor_158d00014d0a27, binary_sensor.motion_sensor_158d000120a226
     from: 'off'
     to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.away_mode
+        state: 'off'
+      - condition: state
+        entity_id: light.gateway_light_f0b429cc6f0b
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.illumination_f0b429cc6f0b
+        below: 60
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+          - condition: sun
+            before: sunrise
+  action:
+    - service: light.turn_on
+      entity_id: light.gateway_light_f0b429cc6f0b
+      data_template:
+        brightness: 200
+        rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.antresola_lamp_motion_on
+
+# wyłączanie lampki na antresoli jak brak ruchu
+- id: light_turn_off_antresola_lamp
+  alias: 'Light Turn Off Antresola Lamp'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_sensor_158d00014d0a27, binary_sensor.motion_sensor_158d000120a226
+    from: 'on'
+    to: 'off'
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.antresola_lamp_motion_on
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.motion_sensor_158d00014d0a27
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.motion_sensor_158d000120a226
+        state: 'off'
+  action:
+    - service: homeassistant.turn_off
+      entity_id:
+        - light.gateway_light_f0b429cc6f0b
+        - input_boolean.antresola_lamp_motion_on
+
+## SYPIALNIA ##
+# włączanie LEDów w sypialni jak jest ruch i ciemno
+- id: light_turn_on_sypialnia_leds_when_dark_and_motion
+  alias: 'Light Turn On Sypialnia LEDs When Dark And Motion'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_158d000165ffb8
+      from: 'off'
+      to: 'on'
+    - platform: numeric_state
+      entity_id: sensor.illumination_158d000165ffb8
+      below: 3
   condition:
     condition: and
     conditions:
@@ -1399,37 +1416,6 @@
       - condition: numeric_state
         entity_id: sensor.illumination_158d000165ffb8
         below: 3
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
-  action:
-    - service: light.turn_on
-      entity_id: light.yeelight_lightstrip_sypialnia
-      data:
-        brightness: 200
-        rgb_color: [233,96,255]
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.sypialnia_lamp_motion_on
-
-# włączanie LEDów w sypialni jak natężenie światłą spadnie poniżej 3, a jest ruch
-- id: light_turn_on_sypialnia_leds_when_suddenly_dark
-  alias: 'Light Turn On Sypialnia LEDs When Suddenly Dark'
-  trigger:
-    platform: numeric_state
-    entity_id: sensor.illumination_158d000165ffb8
-    below: 3
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: 'off'
-      - condition: state
-        entity_id: light.yeelight_lightstrip_sypialnia
-        state: 'off'
       - condition: state
         entity_id: binary_sensor.motion_sensor_158d000165ffb8
         state: 'on'
@@ -1447,7 +1433,6 @@
         rgb_color: [233,96,255]
     - service: input_boolean.turn_on
       entity_id: input_boolean.sypialnia_lamp_motion_on
-
 
 # wyłączanie LEDów w sypialni jak brak ruchu lub zrobi się jaśniej
 - id: light_turn_off_sypialnia_leds
@@ -1473,66 +1458,36 @@
         transition: 10
 
 ## POKÓJ ANTKA ##
-# włączanie LEDów w pokoju Antka jak jest ruch
-- id: light_turn_on_antek_leds
-  alias: 'Light Turn On Antek LEDs'
+# włączanie LEDów w pokoju Antka jak natężenie światła spadnie poniżej 3 i jest ruch przed 20tą
+- id: light_turn_on_antek_leds_when_dark_and_motion
+  alias: 'Light Turn On Antek LEDs When Dark And Motion'
   trigger:
-    platform: state
-    entity_id: binary_sensor.motion_sensor_158d00016612fb
-    from: 'off'
-    to: 'on'
+    - platform: numeric_state
+      entity_id: sensor.illumination_158d00016612fb
+      below: 3
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_158d00016612fb
+      from: 'off'
+      to: 'on'
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'off'
-      - condition: state
-        entity_id: light.yeelight_lightstrip_antek
-        state: 'off'
-      - condition: numeric_state
-        entity_id: sensor.illumination_158d00016612fb
-        below: 3
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
-  action:
-    - service: light.turn_on
-      entity_id: light.yeelight_lightstrip_antek
-      data_template:
-        brightness: 150
-        rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.antek_lamp_motion_on
-
-# włączanie LEDów w pokoju Antka jak natężenie światłą spadnie poniżej 3, a jest ruch
-- id: light_turn_on_antek_leds_when_suddenly_dark
-  alias: 'Light Turn On Antek LEDs When Suddenly Dark'
-  trigger:
-    platform: numeric_state
-    entity_id: sensor.illumination_158d00016612fb
-    below: 3
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: 'off'
-      - condition: state
-        entity_id: light.yeelight_lightstrip_antek
         state: 'off'
       - condition: state
         entity_id: binary_sensor.motion_sensor_158d00016612fb
         state: 'on'
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
+      - condition: numeric_state
+        entity_id: sensor.illumination_158d00016612fb
+        below: 3
+      - condition: state
+        entity_id: light.yeelight_lightstrip_antek
+        state: 'off'
+      - condition: time
+        before: '20:00:00'
+      - condition: sun
+        after: sunrise
   action:
     - service: light.turn_on
       entity_id: light.yeelight_lightstrip_antek
@@ -1542,7 +1497,7 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.antek_lamp_motion_on
 
-# wyłączanie LEDów w pokoju Antka jak brak ruchu lub zrobi się jaśniej
+# wyłączanie LEDów w pokoju Antka jak brak ruchu lub zrobi się jaśniej przed 20tą
 - id: light_turn_off_antek_leds
   alias: 'Light Turn Off Antek LEDs'
   trigger:
@@ -1554,18 +1509,91 @@
       entity_id: sensor.illumination_158d00016612fb
       above: 2
   condition:
-    condition: state
-    entity_id: input_boolean.antek_lamp_motion_on
-    state: 'on'
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.antek_lamp_motion_on
+        state: 'on'
+      - condition: time
+        before: '20:00:00'
+      - condition: sun
+        after: sunrise
   action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.antek_lamp_motion_on
-    - service: light.turn_off
+    service: script.light_turn_off_antek_leds
+
+# włączanie LEDów w pokoju Antka jak natężenie światła spadnie poniżej 3 i jest ruch po 20tej
+- id: light_turn_on_antek_leds_when_dark_and_motion_after_20
+  alias: 'Light Turn On Antek LEDs When Dark And Motion After 20'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_158d00016612fb
+      from: 'off'
+      to: 'on'
+    - platform: numeric_state
+      entity_id: sensor.illumination_158d00016612fb
+      below: 2
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.away_mode
+        state: 'off'
+      - condition: state
+        entity_id: binary_sensor.motion_sensor_158d00016612fb
+        state: 'on'
+      - condition: numeric_state
+        entity_id: sensor.illumination_158d00016612fb
+        below: 3
+      - condition: state
+        entity_id: light.yeelight_lightstrip_antek
+        state: 'off'
+      - condition: or
+        conditions:
+          - condition: time
+            after: '19:59:59'
+          - condition: sun
+            before: sunrise
+  action:
+    - service: light.turn_on
       entity_id: light.yeelight_lightstrip_antek
       data:
-        transition: 10
+        brightness: 15
+        rgb_color: [255,190,0]
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.antek_lamp_motion_on
 
-#### HARMONY ####
+# wyłączanie LEDów w pokoju Antka jak brak ruchu lub zrobi się jaśniej i jak wschód słońca
+- id: light_turn_off_antek_leds_at sunrise
+  alias: 'Light Turn Off Antek LEDs At Sunrise'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_sensor_158d00016612fb
+      from: 'on'
+      to: 'off'
+    - platform: numeric_state
+      entity_id: sensor.illumination_158d00016612fb
+      above: 2
+    - platform: sun
+      event: sunrise
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: binary_sensor.motion_sensor_158d00016612fb
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.illumination_158d00016612fb
+        above: 2
+      - condition: state
+        entity_id: input_boolean.antek_lamp_motion_on
+        state: 'on'
+      - condition: sun
+        after: sunrise
+  action:
+    service: script.light_turn_off_antek_leds
+##################################################################################################
+
+#### HARMONY #####################################################################################
 - id: harmony_turn_off_tv
   alias: 'Harmony Turn Off TV'
   trigger:
@@ -1797,8 +1825,9 @@
   action:
     service: script.turn_on
     entity_id: script.harmony_xbox
+##################################################################################################
 
-#### OTHERS ####
+#### OTHERS ######################################################################################
 - id: log_level
   alias: 'Log Level'
   trigger:
