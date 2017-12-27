@@ -275,7 +275,7 @@ batteries switches:
 raspberry:
   name: Raspberry Pi
   entities:
-    - sensor.cpu_use
+    - sensor.cpu_used
     - sensor.raspberry_cpu_temp
     - sensor.ram_use
     - sensor.raspberry_disk_free
@@ -289,7 +289,7 @@ printer:
     - sensor.printer_status
     - sensor.printer_printed_pages
     - sensor.printer_drum_usage
-    - sensor.printer_toner
+    - sensor.printer_toner_status
 
 bulbs salon:
   name: Kolor żarówek
@@ -346,7 +346,7 @@ antresola:
   - sensor.temperature_antresola
   - sensor.humidity_antresola
   - sensor.illumination_f0b429cc6f0b
-  - binary_sensor.motion_sensor_158d00014d0a27
+  - binary_sensor.motion_antresola
   - climate.thermostat_antresola_heating_1
   - light.gateway_light_f0b429cc6f0b
 

@@ -166,8 +166,7 @@
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.motion_sensor_158d00014d0a27
-        - binary_sensor.motion_sensor_158d000120a226
+        - binary_sensor.motion_antresola
         - binary_sensor.motion_sensor_158d000121c604
         - binary_sensor.motion_sensor_158d000165ffb8
         - binary_sensor.motion_sensor_158d00016612fb
@@ -652,11 +651,16 @@
       from: 'off'
       to: 'on'
       for:
-        minutes: 5
+        minutes: 10
   condition:
-    condition: state
-    entity_id: input_boolean.heating_season
-    state: 'on'
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.away_mode
+        state: 'off'
   action:
     service: script.heating_airing_begin
 
@@ -673,7 +677,7 @@
       from: 'on'
       to: 'off'
       for:
-        minutes: 5
+        minutes: 10
   condition:
     condition: and
     conditions:
@@ -689,7 +693,12 @@
       - condition: template
         value_template: "{{ (trigger.entity_id == 'group.windows' and states.input_boolean.heating_airing.state == 'on') or trigger.entity_id == 'input_boolean.heating_airing' }}"
   action:
-    service: script.heating_day
+    - service: script.heating_day
+    - condition: state
+      entity_id: input_boolean.heating_airing
+      state: 'on'
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.heating_airing
 
 # koniec przewietrzania o zachodzie słońca
 - id: heating_airing_end_at_sunset
@@ -1336,7 +1345,7 @@
   alias: 'Light Turn On Antresola Lamp'
   trigger:
     platform: state
-    entity_id: binary_sensor.motion_sensor_158d00014d0a27, binary_sensor.motion_sensor_158d000120a226
+    entity_id: binary_sensor.motion_antresola
     from: 'off'
     to: 'on'
   condition:
@@ -1371,21 +1380,13 @@
   alias: 'Light Turn Off Antresola Lamp'
   trigger:
     platform: state
-    entity_id: binary_sensor.motion_sensor_158d00014d0a27, binary_sensor.motion_sensor_158d000120a226
+    entity_id: binary_sensor.motion_antresola
     from: 'on'
     to: 'off'
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.antresola_lamp_motion_on
-        state: 'on'
-      - condition: state
-        entity_id: binary_sensor.motion_sensor_158d00014d0a27
-        state: 'off'
-      - condition: state
-        entity_id: binary_sensor.motion_sensor_158d000120a226
-        state: 'off'
+    condition: state
+    entity_id: input_boolean.antresola_lamp_motion_on
+    state: 'on'
   action:
     - service: homeassistant.turn_off
       entity_id:

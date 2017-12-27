@@ -22,7 +22,7 @@ switch.light_salon_switch_2:
   emulated_hue_name: Zarowki
 
 #### RASPBERRY PI ####
-sensor.cpu_use:
+sensor.cpu_used:
   friendly_name: 'Obciążenie CPU'
 sensor.ram_use:
   friendly_name: 'Zajęty RAM'
@@ -262,15 +262,12 @@ sensor.humidity_158d000149cc8c:
 
 sensor.illumination_f0b429cc6f0b:
   friendly_name: Natężenie światła
-  location: antresola
 
 sensor.illumination_158d000165ffb8:
   friendly_name: Natężenie światła
-  location: sypialnia
 
 sensor.illumination_158d00016612fb:
   friendly_name: Natężenie światła
-  location: pokój Antka
 
 binary_sensor.switch_158d000154964c:
   friendly_name: Światło salon 1
@@ -281,7 +278,9 @@ binary_sensor.switch_158d00014a0911:
   icon: mdi:lamp
 
 binary_sensor.motion_sensor_158d00014d0a27:
-  friendly_name: Ruch
+  location: antresola
+
+binary_sensor.motion_antresola:
   location: antresola
 
 binary_sensor.motion_sensor_158d000120a226:
@@ -289,15 +288,12 @@ binary_sensor.motion_sensor_158d000120a226:
   location: schody
 
 binary_sensor.motion_sensor_158d000121c604:
-  friendly_name: Ruch
   location: salon
 
 binary_sensor.motion_sensor_158d000165ffb8:
-  friendly_name: Ruch
   location: sypialnia
 
 binary_sensor.motion_sensor_158d00016612fb:
-  friendly_name: Ruch
   location: pokój Antka
 
 binary_sensor.door_window_sensor_158d0001a5dbdb:
@@ -316,6 +312,10 @@ binary_sensor.door_window_sensor_158d0001a223ff:
 sensor.printer_status:
   friendly_name: Status drukarki
   icon: mdi:printer
+
+sensor.printer_toner_status:
+  friendly_name: Kartridż z tonerem
+  icon: mdi:flask-empty
 
 sensor.printer_printed_pages:
   friendly_name: Wydrukowanych stron

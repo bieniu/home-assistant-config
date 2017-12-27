@@ -16,7 +16,8 @@
   icon: mdi:flash-outline
 
 #### MOTION ####
-'binary_sensor.motion_sensor_*':
+'binary_sensor.motion_*':
+  friendly_name: Ruch
   icon: mdi:run
   device_class: motion
 

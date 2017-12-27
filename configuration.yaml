@@ -27,7 +27,7 @@ zone 3:
   longitude: 19.4559
 
 frontend:
-  javascript_version: latest
+  javascript_version: es5
 
 frontend_custom:
 
@@ -52,7 +52,6 @@ recorder:
       - device_tracker
       - input_boolean
     entities:
-      - sensor.printer_toner_status
       - sensor.sunset
       - sensor.sunrise
       - sensor.sun_custom
@@ -61,6 +60,8 @@ recorder:
       - sensor.dune_activity
       - binary_sensor.switch_158d000154964c
       - binary_sensor.switch_158d00014a0911
+      - binary_sensor.motion_sensor_158d000120a226
+      - binary_sensor.motion_sensor_158d00014d0a27
       - input_number.gaming_end_hours
       - input_number.gaming_end_minutes
       - binary_sensor.gaming

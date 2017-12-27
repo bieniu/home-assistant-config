@@ -195,15 +195,20 @@ heating_season_end:
 
 heating_airing_begin:
   sequence:
-    service: climate.set_temperature
-    entity_id: 
-      - climate.thermostat_antresola_heating_1
-      - climate.thermostat_kuchnia_heating_1
-      - climate.thermostat_antek_heating_1
-      - climate.thermostat_sypialnia_heating_1
-      - climate.thermostat_lazienka_heating_1
-    data:
-      temperature: 8
+    - service: climate.set_temperature
+      entity_id: 
+        - climate.thermostat_antresola_heating_1
+        - climate.thermostat_kuchnia_heating_1
+        - climate.thermostat_antek_heating_1
+        - climate.thermostat_sypialnia_heating_1
+        - climate.thermostat_lazienka_heating_1
+      data:
+        temperature: 8
+    - condition: state
+      entity_id: input_boolean.heating_airing
+      state: 'off'
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.heating_airing
 
 harmony_playstation:
   sequence:

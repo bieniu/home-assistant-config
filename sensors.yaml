@@ -1302,48 +1302,44 @@
       value_template: "{% if is_state('device_tracker.yeelight_lightstrip_antek', 'home') %}online{% else %}offline{% endif %}"
       entity_id: device_tracker.yeelight_lightstrip_antek
 
-    printer_toner:
-      friendly_name: "Kartidż z tonerem"
-      entity_id: sensor.printer_toner_status
-      value_template: >-
-         {% if states.sensor.printer_toner_status.state == '-3' %}
-            niepusty
-         {% elif states.sensor.printer_toner_status.state == '-2' %}
-            prawie pusty
-         {% elif states.sensor.printer_toner_status.state == '-1' %}
-            pusty
-         {% elif states.sensor.printer_toner_status.state == '0' %}
-            brak
-         {% else %}
-            brak danych
-         {% endif %}
-
-      icon_template: >-
-         {% if states.sensor.printer_toner_status.state == '-3' %}
-            mdi:flask-empty
-         {% else %}
-            mdi:flask-empty-outline
-         {% endif %}
-
 - platform: snmp
   name: printer_status
   host: !secret brother_ip
   community: public
   baseoid: iso.3.6.1.2.1.43.18.1.1.8.1.1
+  value_template: >- 
+     {% if value == 'DRUKOWANIE' %}
+        drukowanie
+     {% elif (value == 'OCZEKIWANIE') or (value == 'MA£O TONERU') %}
+        oczekiwanie
+     {% else %}
+        {{ value }}
+     {% endif %}
 
 - platform: snmp
   name: printer_printed_pages
   host: !secret brother_ip
   community: public
   baseoid: iso.3.6.1.2.1.43.10.2.1.4.1.1
-  value_template: '{{ value | int }}'
+  value_template: '{{ (value | int) }}'
 
 - platform: snmp
   name: printer_toner_status
   host: !secret brother_ip
   community: public
   baseoid: iso.3.6.1.2.1.43.11.1.1.9.1.1
-  value_template: '{{ value | lower }}'
+  value_template: >-
+     {% if value == '-3' %}
+        niepusty
+     {% elif value == '-2' %}
+        prawie pusty
+     {% elif value == '-1' %}
+        pusty
+     {% elif value == '0' %}
+        brak
+     {% else %}
+        brak danych
+     {% endif %}
 
 - platform: snmp
   name: printer_drum_usage

@@ -32,3 +32,11 @@
             or is_state('device_tracker.jerzy', 'home')
             or is_state('device_tracker.romana', 'home')
             or is_state('media_player.denon', 'on') }}
+
+    motion_antresola:
+      entity_id:
+        - binary_sensor.motion_sensor_158d000120a226
+        - binary_sensor.motion_sensor_158d00014d0a27
+      value_template: >-
+         {{ is_state('binary_sensor.motion_sensor_158d000120a226', 'on')
+            or is_state('binary_sensor.motion_sensor_158d00014d0a27', 'on') }}

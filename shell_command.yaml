@@ -1,5 +1,4 @@
-stacjonarny_off: "curl http://stacjonarny:88/event.html?PowerOff"
-stacjonarny_off_2: "net rpc shutdown -I !secret: desktop_ip -U !secret desktop_user%!secret desktop_pass"
+stacjonarny_off: "bash /home/homeassistant/.homeassistant/scripts/stacjonarny-off.sh"
 reboot_pi: "sudo reboot"
 shutdown_pi: "sudo shutdown -h now"
 restart_hass: "sudo systemctl restart home-assistant.service"
