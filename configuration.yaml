@@ -40,6 +40,7 @@ http:
   base_url: !secret http_base_url
 
 recorder:
+  db_url: !secret mysql_db_url
   exclude:
     domains:
       - automation

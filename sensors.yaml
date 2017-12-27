@@ -10,9 +10,10 @@
 
 - platform: command_line
   name: HA Database Size
-  command: "ls -l ~/.homeassistant/home-assistant_v2.db | awk '{print $5}'"
+  command: !secret mysql_db_size_command
+  #command: "ls -l ~/.homeassistant/home-assistant_v2.db | awk '{print $5}'"
   unit_of_measurement: "MB"
-  value_template: '{{ (value | float / 1024 / 1024 ) | round(1) }}'
+  #value_template: '{{ (value | float / 1024 / 1024 ) | round(1) }}'
   scan_interval: 900
 
 - platform: command_line
