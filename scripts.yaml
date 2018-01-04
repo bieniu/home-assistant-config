@@ -271,8 +271,20 @@ notification_with_image:
 light_turn_off_antek_leds:
   sequence:
     - service: input_boolean.turn_off
-      entity_id: input_boolean.antek_lamp_motion_on
+      entity_id:
+        - input_boolean.antek_lamp_motion_on
+        - input_boolean.antek_lamp_night
     - service: light.turn_off
       entity_id: light.yeelight_lightstrip_antek
       data:
         transition: 10
+
+light_turn_on_antek_leds:
+  sequence:
+    - service: light.turn_on
+      entity_id: light.yeelight_lightstrip_antek
+      data_template:
+        brightness: 150
+        rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.antek_lamp_motion_on

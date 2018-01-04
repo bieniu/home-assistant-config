@@ -848,6 +848,32 @@
             mdi:battery-unknown
          {% endif %}
 
+    battery_switch_light_antek:
+      friendly_name: włącznik oświetlenia pokój Antka
+      unit_of_measurement: '%'
+      entity_id: binary_sensor.switch_158d0001d87c4f
+      value_template: >-
+         {% if states.binary_sensor.switch_158d0001d87c4f %}
+            {{ states.binary_sensor.switch_158d0001d87c4f.attributes.battery_level | round(0) }}
+         {% else %}
+            {{ states.sensor.battery_switch_light_antek.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.binary_sensor.switch_158d0001d87c4f.attributes.battery_level %}
+            {% if states.binary_sensor.switch_158d0001d87c4f.attributes.battery_level == 'unknown' %}
+               mdi:battery-unknown
+            {% elif states.binary_sensor.switch_158d0001d87c4f.attributes.battery_level | int <= 5 %}
+               mdi:battery-outline
+            {% elif states.binary_sensor.switch_158d0001d87c4f.attributes.battery_level | int >= 95 %}
+               mdi:battery
+            {% else %}
+               mdi:battery-{{ ((states.binary_sensor.switch_158d0001d87c4f.attributes.battery_level | float + 0.01) / 10) | round * 10 }}
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
     battery_window_sensor_kuchnia:
       friendly_name: sensor okna kuchnia
       unit_of_measurement: '%'

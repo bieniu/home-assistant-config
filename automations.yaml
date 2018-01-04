@@ -88,14 +88,14 @@
     hours: 3
     minutes: 0
     seconds: 0
-  condition:
-    condition: time
-    weekday:
-      - tue
-      - fri
+#  condition:
+#    condition: time
+#    weekday:
+#      - tue
+#      - fri
   action:
     service: recorder.purge
-    data: {"keep_days":4}
+    data: {"keep_days":7}
 ##################################################################################################
 
 #### NOTIFICATIONS ###############################################################################
@@ -1459,7 +1459,7 @@
         transition: 10
 
 ## POKÓJ ANTKA ##
-# włączanie LEDów w pokoju Antka jak natężenie światła spadnie poniżej 3 i jest ruch przed 20tą
+# włączanie LEDów w pokoju Antka jak natężenie światła spadnie poniżej 3 i jest ruch
 - id: light_turn_on_antek_leds_when_dark_and_motion
   alias: 'Light Turn On Antek LEDs When Dark And Motion'
   trigger:
@@ -1485,20 +1485,19 @@
       - condition: state
         entity_id: light.yeelight_lightstrip_antek
         state: 'off'
-      - condition: time
-        before: '20:00:00'
-      - condition: sun
-        after: sunrise
+      - condition: state
+        entity_id: input_boolean.antek_lamp_night
+        state: 'off'
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+          - condition: sun
+            before: sunrise
   action:
-    - service: light.turn_on
-      entity_id: light.yeelight_lightstrip_antek
-      data_template:
-        brightness: 150
-        rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.antek_lamp_motion_on
+    service: script.light_turn_on_antek_leds
 
-# wyłączanie LEDów w pokoju Antka jak brak ruchu lub zrobi się jaśniej przed 20tą
+# wyłączanie LEDów w pokoju Antka jak brak ruchu lub zrobi się jaśniej
 - id: light_turn_off_antek_leds
   alias: 'Light Turn Off Antek LEDs'
   trigger:
@@ -1515,24 +1514,18 @@
       - condition: state
         entity_id: input_boolean.antek_lamp_motion_on
         state: 'on'
-      - condition: time
-        before: '20:00:00'
-      - condition: sun
-        after: sunrise
   action:
     service: script.light_turn_off_antek_leds
 
-# włączanie LEDów w pokoju Antka jak natężenie światła spadnie poniżej 3 i jest ruch po 20tej
-- id: light_turn_on_antek_leds_when_dark_and_motion_after_20
-  alias: 'Light Turn On Antek LEDs When Dark And Motion After 20'
+# włączanie LEDów w pokoju Antka w tryb nocny
+- id: light_turn_on_antek_leds_night
+  alias: 'Light Turn On Antek LEDs Night'
   trigger:
-    - platform: state
-      entity_id: binary_sensor.motion_sensor_158d00016612fb
-      from: 'off'
-      to: 'on'
-    - platform: numeric_state
-      entity_id: sensor.illumination_158d00016612fb
-      below: 2
+    platform: event
+    event_type: click
+    event_data:
+      entity_id: binary_sensor.switch_158d0001d87c4f
+      click_type: hold
   condition:
     condition: and
     conditions:
@@ -1540,18 +1533,12 @@
         entity_id: input_boolean.away_mode
         state: 'off'
       - condition: state
-        entity_id: binary_sensor.motion_sensor_158d00016612fb
-        state: 'on'
-      - condition: numeric_state
-        entity_id: sensor.illumination_158d00016612fb
-        below: 3
-      - condition: state
-        entity_id: light.yeelight_lightstrip_antek
+        entity_id: input_boolean.antek_lamp_night
         state: 'off'
       - condition: or
         conditions:
-          - condition: time
-            after: '19:59:59'
+          - condition: sun
+            after: sunset
           - condition: sun
             before: sunrise
   action:
@@ -1561,37 +1548,81 @@
         brightness: 15
         rgb_color: [255,190,0]
     - service: input_boolean.turn_on
+      entity_id: input_boolean.antek_lamp_night
+    - service: input_boolean.turn_off
       entity_id: input_boolean.antek_lamp_motion_on
 
-# wyłączanie LEDów w pokoju Antka jak brak ruchu lub zrobi się jaśniej i jak wschód słońca
-- id: light_turn_off_antek_leds_at sunrise
-  alias: 'Light Turn Off Antek LEDs At Sunrise'
+# wyłączanie LEDów w pokoju Antka z trybu nocnego
+- id: light_turn_off_antek_leds_night
+  alias: 'Light Turn Off Antek LEDs Night'
   trigger:
-    - platform: state
-      entity_id: binary_sensor.motion_sensor_158d00016612fb
-      from: 'on'
-      to: 'off'
-    - platform: numeric_state
-      entity_id: sensor.illumination_158d00016612fb
-      above: 2
-    - platform: sun
-      event: sunrise
+    platform: event
+    event_type: click
+    event_data:
+      entity_id: binary_sensor.switch_158d0001d87c4f
+      click_type: hold
   condition:
     condition: and
     conditions:
       - condition: state
-        entity_id: binary_sensor.motion_sensor_158d00016612fb
+        entity_id: input_boolean.away_mode
         state: 'off'
-      - condition: numeric_state
-        entity_id: sensor.illumination_158d00016612fb
-        above: 2
       - condition: state
-        entity_id: input_boolean.antek_lamp_motion_on
+        entity_id: input_boolean.antek_lamp_night
         state: 'on'
-      - condition: sun
-        after: sunrise
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+          - condition: sun
+            before: sunrise
+  action:
+    - service: script.light_turn_on_antek_leds
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.antek_lamp_night
+
+# wyłączanie LEDów w pokoju Antka jak wschód słońca
+- id: light_turn_off_antek_leds_at_sunrise
+  alias: 'Light Turn Off Antek LEDs At Sunrise'
+  trigger:
+    platform: sun
+    event: sunrise
+  condition:
+    condition: state
+    entity_id: light.yeelight_lightstrip_antek
+    state: 'on'
   action:
     service: script.light_turn_off_antek_leds
+
+# włączenie/wyłączenie LEDów w pokoju Antka
+- id: light_toggle_antek_leds
+  alias: 'Light Toggle Antek LEDs'
+  trigger:
+    - platform: event
+      event_type: click
+      event_data:
+        entity_id: binary_sensor.switch_158d0001d87c4f
+        click_type: single
+  action:
+    service: light.toggle
+    entity_id: light.yeelight_lightstrip_antek
+
+# losowy kolor LEDów w pokoju Antka
+- id: light_random_color_antek_leds
+  alias: 'Light Random Color Antek LEDs'
+  trigger:
+    - platform: event
+      event_type: click
+      event_data:
+        entity_id: binary_sensor.switch_158d0001d87c4f
+        click_type: double
+  action:
+    service: light.turn_on
+    entity_id: light.yeelight_lightstrip_antek
+    data_template:
+      brightness: 150
+      rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
+
 ##################################################################################################
 
 #### HARMONY #####################################################################################

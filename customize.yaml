@@ -108,13 +108,13 @@ group.heating_temps:
   order: 31
 group.scripts:
   order: 32
-group.energy_consumption:
-  order: 33
 group.batteries_thermostats:
-  order: 34
+  order: 33
 group.batteries_switches:
-  order: 35
+  order: 34
 group.batteries_sensors:
+  order: 35
+group.energy_consumption:
   order: 36
 
 #### WEATHER ####
@@ -277,6 +277,10 @@ binary_sensor.switch_158d00014a0911:
   friendly_name: Światło salon 2
   icon: mdi:lamp
 
+binary_sensor.switch_158d0001d87c4f:
+  friendly_name: LEDy Antek
+  icon: mdi:led-variant-on
+
 binary_sensor.motion_sensor_158d00014d0a27:
   location: antresola
 
@@ -381,7 +385,3 @@ zwave.thermostat_salon:
 
 zwave.thermostat_sypialnia:
   friendly_name: Danfoss 014G0013 Thermostat
-
-#### GROUPS ####
-group.bulbs_salon:
-  state: ''

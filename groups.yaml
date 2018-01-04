@@ -226,6 +226,7 @@ heating hours:
     - input_select.heating_night_end
     - input_select.heating_night_start_weekend
     - input_select.heating_night_end_weekend
+    - input_datetime.heating_night_start
 
 scripts:
   name: Skrypty i ustawienia
@@ -247,6 +248,13 @@ batteries thermostats:
     - sensor.battery_thermostat_sypialnia
     - sensor.battery_thermostat_lazienka
 
+batteries switches:
+  name: Baterie przełączników
+  entities:
+    - sensor.battery_switch_light_salon_1
+    - sensor.battery_switch_light_salon_2
+    - sensor.battery_switch_light_antek
+
 batteries sensors:
   name: Baterie sensorów
   entities:
@@ -266,11 +274,12 @@ batteries sensors:
     - sensor.battery_door_sensor_pracownia
     - sensor.battery_door_sensor_sypialnia
 
-batteries switches:
-  name: Baterie przełączników
+energy consumption:
+  name: Miesięczne zużycie energii
   entities:
-    - sensor.battery_switch_light_salon_1
-    - sensor.battery_switch_light_salon_2
+    - sensor.light_salon_energy_2
+    - sensor.light_salon_energy
+    - history_graph.zuzycie_energii
 
 raspberry:
   name: Raspberry Pi
@@ -298,13 +307,6 @@ bulbs salon:
   entities:
     - light.yeelight_color_bulb_salon_1
     - light.yeelight_color_bulb_salon_2
-
-energy consumption:
-  name: Miesięczne zużycie energii
-  entities:
-    - sensor.light_salon_energy_2
-    - sensor.light_salon_energy
-    - history_graph.zuzycie_energii
 
 salon:
   name: Salon

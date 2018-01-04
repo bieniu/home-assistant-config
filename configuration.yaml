@@ -52,6 +52,7 @@ recorder:
       - mqtt
       - device_tracker
       - input_boolean
+      - history_graph
     entities:
       - sensor.sunset
       - sensor.sunrise
@@ -61,6 +62,7 @@ recorder:
       - sensor.dune_activity
       - binary_sensor.switch_158d000154964c
       - binary_sensor.switch_158d00014a0911
+      - binary_sensor.switch_158d0001d87c4f
       - binary_sensor.motion_sensor_158d000120a226
       - binary_sensor.motion_sensor_158d00014d0a27
       - input_number.gaming_end_hours
@@ -186,7 +188,9 @@ ios:
 
 zwave:
   usb_path: /dev/zwave
+  network_key: !secret zwave_network_key
   device_config: !include zwave_device_config.yaml
+  debug: true
 
 mqtt:
   broker: !secret mqtt_broker_ip
@@ -227,6 +231,7 @@ input_boolean:
   salon_lamp_motion_on:
   sypialnia_lamp_motion_on:
   antek_lamp_motion_on:
+  antek_lamp_night:
   salon_light_scene_turn_on:
   gaming_timer:
     initial: 'off'
@@ -245,6 +250,13 @@ input_number:
     min: 0
     max: 59
     step: 1
+
+input_datetime:
+  heating_night_start:
+    name: Początek nocnego obniżenia temperatury
+    has_date: false
+    has_time: true
+    icon: mdi:clock-start
 
 remote:
   - platform: harmony
