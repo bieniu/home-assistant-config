@@ -43,10 +43,10 @@ energy:
   view: yes
   icon: mdi:power-plug
   entities:
+    - group.energy_consumption
     - group.batteries_thermostats
     - group.batteries_switches
     - group.batteries_sensors
-    - group.energy_consumption
 
 climate:
   name: Klimat
@@ -226,7 +226,6 @@ heating hours:
     - input_select.heating_night_end
     - input_select.heating_night_start_weekend
     - input_select.heating_night_end_weekend
-    - input_datetime.heating_night_start
 
 scripts:
   name: Skrypty i ustawienia

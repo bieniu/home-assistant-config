@@ -849,13 +849,13 @@
             sensor.temperature_{{ (trigger.entity_id | replace('climate.thermostat_', '')) | replace('_heating_1', '') }}
          {% endif %}
 
-# zmniejszanie nastawy termostatu do 22 stopni gdy temperatura w łazience przekroczy 22.5 stopnie
+# zmniejszanie nastawy termostatu do 22 stopni gdy temperatura w łazience przekroczy 22.8 stopnie
 - id: heating_lazienka_target_temp_down
   alias: 'Heating Lazienka Target Temp Down'
   trigger:
     platform: numeric_state
     entity_id: sensor.temperature_lazienka
-    above: 22.4
+    above: 22.8
   condition:
     condition: and
     conditions:
@@ -879,7 +879,7 @@
   trigger:
     platform: numeric_state
     entity_id: sensor.temperature_lazienka
-    below: 22
+    below: 22.2
   condition:
     condition: and
     conditions:

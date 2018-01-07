@@ -108,13 +108,13 @@ group.heating_temps:
   order: 31
 group.scripts:
   order: 32
-group.batteries_thermostats:
-  order: 33
-group.batteries_switches:
-  order: 34
-group.batteries_sensors:
-  order: 35
 group.energy_consumption:
+  order: 33
+group.batteries_thermostats:
+  order: 34
+group.batteries_switches:
+  order: 35
+group.batteries_sensors:
   order: 36
 
 #### WEATHER ####

@@ -251,13 +251,6 @@ input_number:
     max: 59
     step: 1
 
-input_datetime:
-  heating_night_start:
-    name: Początek nocnego obniżenia temperatury
-    has_date: false
-    has_time: true
-    icon: mdi:clock-start
-
 remote:
   - platform: harmony
     name: Salon
