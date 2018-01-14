@@ -1,0 +1,60 @@
+db_url: !secret mysql_db_url
+exclude:
+  domains:
+    - automation
+    - updater
+    - sun
+    - scenes
+    - script
+    - groups
+    - mqtt
+    - device_tracker
+    - input_boolean
+    - history_graph
+  entities:
+    - sensor.sunset
+    - sensor.sunrise
+    - sensor.sun_custom
+    - sensor.ssl_certificate_expiry
+    - sensor.androidtv_activity
+    - sensor.dune_activity
+    - binary_sensor.switch_158d000154964c
+    - binary_sensor.switch_158d00014a0911
+    - binary_sensor.switch_158d0001d87c4f
+    - binary_sensor.motion_sensor_158d000120a226
+    - binary_sensor.motion_sensor_158d00014d0a27
+    - input_number.gaming_end_hours
+    - input_number.gaming_end_minutes
+    - binary_sensor.gaming
+    - sensor.ha_version_current
+    - sensor.ha_version_installed
+    - sensor.uptime
+    - sensor.temperature_158d0001826f20
+    - sensor.temperature_158d00010fb340
+    - sensor.temperature_158d0001100416
+    - sensor.temperature_158d00010fb2cd
+    - sensor.temperature_158d000129a158
+    - sensor.temperature_158d000149cc8c
+    - sensor.temperature_158d0001c09930
+    - sensor.humidity_158d00010fb340
+    - sensor.humidity_158d0001826f20
+    - sensor.humidity_158d0001100416
+    - sensor.humidity_158d00010fb2cd
+    - sensor.humidity_158d000129a158
+    - sensor.humidity_158d000149cc8c
+    - sensor.humidity_158d0001c09930
+    - binary_sensor.presence
+include:
+  entities:
+    - group.family
+    - device_tracker.grazyna
+    - device_tracker.jerzy
+    - device_tracker.romana
+    - device_tracker.agnieszka
+    - device_tracker.emil
+    - device_tracker.maciek_gps_bt
+    - device_tracker.edyta_iphone
+    - input_boolean.heating_season
+    - input_boolean.heating_airing
+    - input_boolean.away_mode
+    - input_boolean.guests

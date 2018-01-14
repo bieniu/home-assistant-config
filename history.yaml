@@ -1,0 +1,22 @@
+include:
+  entities:
+    - device_tracker.agnieszka
+    - device_tracker.emil
+    - device_tracker.grazyna
+    - device_tracker.jerzy
+    - sensor.edyta_presence
+    - sensor.maciek_presence
+    - sensor.dark_sky_humidity_custom
+    - sensor.dark_sky_precip_probability_custom
+    - sensor.dark_sky_pressure_custom
+    - sensor.dark_sky_summary_custom
+    - sensor.dark_sky_temperature
+    - sensor.dark_sky_wind_speed
+    - sensor.ha_database_size
+    - sensor.speedtest_download
+    - sensor.speedtest_ping
+    - sensor.speedtest_upload
+    - sensor.temperature_indoor
+    - sensor.humidity_indoor
+    - sensor.light_salon_energy
+    - sensor.light_salon_energy_2

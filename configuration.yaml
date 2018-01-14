@@ -31,22 +31,12 @@ frontend:
   themes:
     red:
       paper-item-icon-color: red
-    yellow:
-      paper-item-icon-color: '#FCD73B'
+    grey:
+      paper-item-icon-color: '#C4C4C4'
 
 frontend_custom:
 
-customizer:
-  custom_ui: local
-  hide_attributes:
-    - old_entity_id
-    - emulated_hue_hidden
-    - value_index
-    - value_instance
-    - value_id
-    - location
-    - no_motion_since
-    - battery_level
+customizer: !include customizer.yaml
 
 map:
 
@@ -56,112 +46,12 @@ http:
   login_attempts_threshold: 5
   base_url: !secret http_base_url
 
-recorder:
-  db_url: !secret mysql_db_url
-  exclude:
-    domains:
-      - automation
-      - updater
-      - sun
-      - scenes
-      - script
-      - groups
-      - mqtt
-      - device_tracker
-      - input_boolean
-      - history_graph
-    entities:
-      - sensor.sunset
-      - sensor.sunrise
-      - sensor.sun_custom
-      - sensor.ssl_certificate_expiry
-      - sensor.androidtv_activity
-      - sensor.dune_activity
-      - binary_sensor.switch_158d000154964c
-      - binary_sensor.switch_158d00014a0911
-      - binary_sensor.switch_158d0001d87c4f
-      - binary_sensor.motion_sensor_158d000120a226
-      - binary_sensor.motion_sensor_158d00014d0a27
-      - input_number.gaming_end_hours
-      - input_number.gaming_end_minutes
-      - binary_sensor.gaming
-      - sensor.ha_version_current
-      - sensor.ha_version_installed
-      - sensor.uptime
-      - sensor.temperature_158d0001826f20
-      - sensor.temperature_158d00010fb340
-      - sensor.temperature_158d0001100416
-      - sensor.temperature_158d00010fb2cd
-      - sensor.temperature_158d000129a158
-      - sensor.temperature_158d000149cc8c
-      - sensor.temperature_158d0001c09930
-      - sensor.humidity_158d00010fb340
-      - sensor.humidity_158d0001826f20
-      - sensor.humidity_158d0001100416
-      - sensor.humidity_158d00010fb2cd
-      - sensor.humidity_158d000129a158
-      - sensor.humidity_158d000149cc8c
-      - sensor.humidity_158d0001c09930
-      - binary_sensor.presence
-  include:
-    entities:
-      - group.family
-      - device_tracker.grazyna
-      - device_tracker.jerzy
-      - device_tracker.romana
-      - device_tracker.agnieszka
-      - device_tracker.emil
-      - device_tracker.maciek_gps_bt
-      - device_tracker.edyta_iphone
-      - input_boolean.heating_season
-      - input_boolean.heating_airing
-      - input_boolean.away_mode
-      - input_boolean.guests
+recorder: !include recorder.yaml
 
-logger:
-  default: warning
-  logs:
-    homeassistant.components.automation: info
-    homeassistant.components.sensor.template: error
-    homeassistant.components.sensor.snmp: fatal
-    homeassistant.components.sensor.statistics: fatal
-    homeassistant.components.zwave: info
-    homeassistant.components.sensor: error
-    pychromecast.socket_client: fatal
-    homeassistant.helpers.entity: fatal
-    homeassistant.components.sensor.darksky: fatal
-    homeassistant.components.recorder: info
-#    homeassistant.components.sensor.xiaomi_aqara: debug
-#    homeassistant.components.xiaomi_aqara: debug
-#    homeassistant.components.media_player: info
-#    DenonAVR: info
-#    homeassistant.components.device_tracker: debug
-#    homeassistant.components.mqtt: debug
-#    homeassistant.components.updater: debug
+logger: !include logger.yaml
 
-history:
-  include:
-    entities:
-      - device_tracker.agnieszka
-      - device_tracker.emil
-      - device_tracker.grazyna
-      - device_tracker.jerzy
-      - sensor.edyta_presence
-      - sensor.maciek_presence
-      - sensor.dark_sky_humidity_custom
-      - sensor.dark_sky_precip_probability_custom
-      - sensor.dark_sky_pressure_custom
-      - sensor.dark_sky_summary_custom
-      - sensor.dark_sky_temperature
-      - sensor.dark_sky_wind_speed
-      - sensor.ha_database_size
-      - sensor.speedtest_download
-      - sensor.speedtest_ping
-      - sensor.speedtest_upload
-      - sensor.temperature_indoor
-      - sensor.humidity_indoor
-      - sensor.light_salon_energy
-      - sensor.light_salon_energy_2
+history: !include history.yaml
+
 
 logbook:
   include:
@@ -190,9 +80,6 @@ light: !include lights.yaml
 sun:
 
 config:
-
-#updater:
-#  include_used_components: true
 
 discovery:
   ignore:
@@ -230,33 +117,7 @@ notify:
     name: androidtv
     host: !secret androidtv_hostname
 
-input_boolean:
-  heating_season:
-    name: Sezon grzewczy
-    icon: mdi:weather-snowy-rainy
-  heating_salon_kuchnia_night:
-  heating_night:
-  heating_airing:
-    name: Przewietrzanie
-    icon: mdi:weather-windy
-  edyta_far_from_home:
-  maciek_far_from_home:
-  away_mode:
-    name: Poza domem
-    icon: mdi:home-outline
-  antresola_lamp_motion_on:
-  salon_lamp_motion_on:
-  sypialnia_lamp_motion_on:
-  antek_lamp_motion_on:
-  antek_lamp_night:
-  salon_light_scene_turn_on:
-  gaming_timer:
-    initial: 'off'
-  harmony_command:
-    initial: 'off'
-  guests:
-    name: Goście
-    icon: mdi:account-multiple-outline
+input_boolean: !include input_boolean.yaml
 
 input_number:
   gaming_end_hours:
@@ -273,28 +134,7 @@ remote:
     name: Salon
     host: !secret harmonyhub_hostname
 
-history_graph:
-  power_consumption:
-    name: Zużycie energii
-    entities:
-      - sensor.light_salon_power
-      - sensor.light_salon_power_2
-    hours_to_show: 48
-    refresh: 60
-  temperature:
-    name: Temperatura
-    entities:
-      - sensor.temperature_indoor
-      - sensor.dark_sky_temperature
-    hours_to_show: 48
-    refresh: 60
-  humidity:
-    name: Wilgotność
-    entities:
-      - sensor.humidity_indoor
-      - sensor.dark_sky_humidity_custom
-    hours_to_show: 48
-    refresh: 60
+history_graph: !include history_graphs.yaml
 
 python_script:
 

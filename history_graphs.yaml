@@ -1,0 +1,21 @@
+power_consumption:
+  name: Zużycie energii
+  entities:
+    - sensor.light_salon_power
+    - sensor.light_salon_power_2
+  hours_to_show: 48
+  refresh: 60
+temperature:
+  name: Temperatura
+  entities:
+    - sensor.temperature_indoor
+    - sensor.dark_sky_temperature
+  hours_to_show: 48
+  refresh: 60
+humidity:
+  name: Wilgotność
+  entities:
+    - sensor.humidity_indoor
+    - sensor.dark_sky_humidity_custom
+  hours_to_show: 48
+  refresh: 60
