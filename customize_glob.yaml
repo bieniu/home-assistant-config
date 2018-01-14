@@ -56,9 +56,9 @@
 'sensor.*_status':
   custom_ui_state_card: state-card-custom-ui
   templates:
-    theme: if (state === 'offline') return 'grey'; else return 'default';
+    theme: if (state === 'online') return 'yellow'; else return 'default';
 
 'zwave.*':
   custom_ui_state_card: state-card-custom-ui
   templates:
-    theme: if (attribute.is_failed === 'true') return 'red'; else return 'default';
+    theme: if (attributes.is_failed === 'true') return 'red'; else return 'default';
