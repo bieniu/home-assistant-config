@@ -2,19 +2,15 @@
 light.gateway_light_f0b429cc6f0b:
   friendly_name: Lampka
   icon: mdi:spotlight
-
 light.yeelight_color_bulb_salon_1:
   friendly_name: Żarówka salon 1
-
 light.yeelight_color_bulb_salon_2:
   friendly_name: Żarówka salon 2
-
 switch.light_salon_switch:
   friendly_name: LEDy
   icon: mdi:led-variant-on
   emulated_hue_hidden: false
   emulated_hue_name: LEDy
-
 switch.light_salon_switch_2:
   friendly_name: Żarówki
   icon: mdi:lightbulb
@@ -153,9 +149,6 @@ sensor.dune_status:
   icon: mdi:filmstrip
 sensor.raspberry_status:
   icon: mdi:raspberrypi
-switch.wake_on_lan_stacjonarny:
-  friendly_name: Komputer
-  icon: mdi:desktop-tower
 sensor.switch_status:
   icon: mdi:switch
 sensor.stacjonarny_status:
@@ -174,10 +167,6 @@ sensor.oneplus_status:
   icon: mdi:cellphone-android
 sensor.denon_status:
   icon: mdi:amplifier
-switch.denon:
-  icon: mdi:amplifier
-switch.playstation:
-  icon: mdi:playstation
 sensor.androidtv_status:
   icon: mdi:cast
 sensor.laptopedyta_status:
@@ -198,6 +187,15 @@ sensor.migateway_status:
   icon: mdi:router-wireless
 sensor.brother_status:
   icon: mdi:printer
+
+#### SWITCHES ####
+switch.denon:
+  icon: mdi:amplifier
+switch.playstation:
+  icon: mdi:playstation
+switch.wake_on_lan_stacjonarny:
+  friendly_name: Komputer
+  icon: mdi:desktop-tower
 
 #### MEDIA PLAYERS ####
 media_player.salon:
@@ -220,55 +218,38 @@ script.shutdown_pi:
 #### XIAOMI SENSORS ####
 sensor.temperature_158d0001826f20:
   friendly_name: Temperatura gabinet
-
 sensor.temperature_158d00010fb340:
   friendly_name: Temperatura salon
-
 sensor.temperature_158d0001c09930:
   friendly_name: Temperatura pokój gościnny
-
 sensor.temperature_158d0001100416:
   friendly_name: Temperatura sypialnia
-
 sensor.temperature_158d00010fb2cd:
   friendly_name: Temperatura pokój Antka
-
 sensor.temperature_158d000129a158:
   friendly_name: Temperatura łazienka
-
 sensor.temperature_158d000149cc8c:
   friendly_name: Temperatura antresola
-
 sensor.humidity_158d00010fb340:
   friendly_name: Wilgotność salon
-
 sensor.humidity_158d0001826f20:
   friendly_name: Wilgotność gabinet
-
 sensor.humidity_158d0001100416:
   friendly_name: Wilgotność sypialnia
-
 sensor.humidity_158d0001c09930:
   friendly_name: Wilgotność pokój gościnny
-
 sensor.humidity_158d00010fb2cd:
   friendly_name: Wilgotność pokój Antka
-
 sensor.humidity_158d000129a158:
   friendly_name: Wilgotność łazienka
-
 sensor.humidity_158d000149cc8c:
   friendly_name: Wilgotność antresola
-
 sensor.illumination_f0b429cc6f0b:
   friendly_name: Natężenie światła
-
 sensor.illumination_158d000165ffb8:
   friendly_name: Natężenie światła
-
 sensor.illumination_158d00016612fb:
   friendly_name: Natężenie światła
-
 binary_sensor.switch_158d000154964c:
   friendly_name: Światło salon 1
   icon: mdi:lamp
@@ -316,30 +297,31 @@ binary_sensor.door_window_sensor_158d0001a223ff:
 sensor.printer_status:
   friendly_name: Status drukarki
   icon: mdi:printer
-
-sensor.printer_toner_status:
-  friendly_name: Kartridż z tonerem
-  icon: mdi:flask-empty
-
 sensor.printer_printed_pages:
-  friendly_name: Wydrukowanych stron
+  friendly_name: Wydrukowano
   icon: mdi:file-document
-
 sensor.printer_drum_usage:
   friendly_name: Zużycie bębna
-  icon: mdi:file-document
+  icon: mdi:chart-donut
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    theme: if (state > 90) return 'red'; else return 'default';
+sensor.printer_toner:
+  friendly_name: Pozostały toner
+  icon: mdi:flask-outline
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    theme: if (state < 10) return 'red'; else return 'default';
 
 #### SONOFF ####
 switch.light_lamp_salon:
   icon: mdi:lamp
   friendly_name: Lampa
   emulated_hue_hidden: false
-
 switch.sonoff_single:
   icon: mdi:led-variant-on
   friendly_name: Lampki na balkonie
   emulated_hue_hidden: false
-
 switch.sonoff_triple:
   icon: mdi:led-variant-on
   friendly_name: Lampki na balkonie
@@ -348,40 +330,29 @@ switch.sonoff_triple:
 #### ENERGY ####
 sensor.light_salon_energy:
   friendly_name: LEDy salon
-
 sensor.light_salon_power:
   friendly_name: LEDy salon
-
 sensor.light_salon_energy_2:
   friendly_name: Żarówki salon
-
 sensor.light_salon_power_2:
   friendly_name: Żarówki salon
-
 sensor.humidity_indoor:
   friendly_name: Wilgotność wewnętrzna
-
 sensor.temperature_indoor:
   friendly_name: Temperatura wewnętrzna
 
 #### Z-WAVE ####
 zwave.light_salon:
   friendly_name: Fibaro FGS223 Double Relay
-
 zwave.thermostat_antek:
   friendly_name: Danfoss 014G0013 Thermostat
-
 zwave.thermostat_antresola:
   friendly_name: Danfoss 014G0013 Thermostat
-  
 zwave.thermostat_kuchnia:
   friendly_name: Danfoss 014G0013 Thermostat
-
 zwave.thermostat_lazienka:
   friendly_name: Danfoss 014G0013 Thermostat
-
 zwave.thermostat_salon:
   friendly_name: Danfoss 014G0013 Thermostat
-
 zwave.thermostat_sypialnia:
   friendly_name: Danfoss 014G0013 Thermostat

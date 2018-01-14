@@ -20,6 +20,8 @@
   friendly_name: Ruch
   icon: mdi:run
   device_class: motion
+  custom_ui_state_card: state-card-custom-ui
+  show_last_changed: true
 
 #### WINDOW ####
 'binary_sensor.door_window_sensor_*':
@@ -45,3 +47,18 @@
 
 'sensor.yeelight_bulb_*_status':
   icon: mdi:lightbulb-outline
+
+'sensor.battery_*':
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    theme: if (state < 10) return 'red'; else return 'default';
+
+'sensor.*_status':
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    theme: if (state === 'offline') return 'grey'; else return 'default';
+
+'zwave.*':
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    theme: if (attribute.is_failed === 'true') return 'red'; else return 'default';

@@ -28,8 +28,26 @@ zone 3:
 
 frontend:
   javascript_version: es5
+  themes:
+    red:
+      paper-item-icon-color: red
+    grey:
+      paper-item-icon-color: grey
 
 frontend_custom:
+
+customizer:
+  custom_ui: local
+  hide_attributes:
+    - old_entity_id
+    - emulated_hue_hidden
+    - value_index
+    - value_instance
+    - value_id
+    - location
+    - no_motion_since
+    - battery_level
+    - attribution
 
 map:
 
@@ -211,7 +229,7 @@ notify:
     gcm_sender_id: !secret gcm_sender_id
   - platform: nfandroidtv
     name: androidtv
-    host: !secret androidtv_ip
+    host: !secret androidtv_hostname
 
 input_boolean:
   heating_season:
@@ -254,7 +272,7 @@ input_number:
 remote:
   - platform: harmony
     name: Salon
-    host: !secret harmonyhub_ip
+    host: !secret harmonyhub_hostname
 
 history_graph:
   power_consumption:

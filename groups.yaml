@@ -297,7 +297,7 @@ printer:
     - sensor.printer_status
     - sensor.printer_printed_pages
     - sensor.printer_drum_usage
-    - sensor.printer_toner_status
+    - sensor.printer_toner
 
 bulbs salon:
   name: Kolor żarówek

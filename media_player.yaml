@@ -1,5 +1,5 @@
 - platform: denonavr
-  host: !secret denon_ip
+  host: !secret denon_hostname
   name: Denon
   timeout: 3
 - platform: ps4
@@ -8,7 +8,7 @@
   local_store: games
   name: PlayStation
 #- platform: dunehd
-#  host: !secret dune_ip
+#  host: !secret dune_hostname
 #  name: Dune
 #- platform: spotify
 #  client_id: !secret spotify_client_id
@@ -18,4 +18,4 @@
 #    5d660f2ece57c2b170da6eef091825c8402d4580: 'Gabinet'
 #    d21e573cdb9bd1b7576712f4d73862c355997e74: 'Salon'
 #- platform: cast
-#  host: !secret androidtv_ip
+#  host: !secret androidtv_hostname

@@ -95,7 +95,7 @@
 #      - fri
   action:
     service: recorder.purge
-    data: {"keep_days":7}
+    data: {"keep_days":4}
 ##################################################################################################
 
 #### NOTIFICATIONS ###############################################################################
@@ -271,7 +271,7 @@
     condition: template
     value_template: >
        {% macro battery_level() %}
-          {%- set threshold = 20 -%}
+          {%- set threshold = 10 -%}
           {% set domains = ['light', 'switch', 'sensor', 'zwave', 'lock', 'binary_sensor'] %}
           {% for domain in domains -%}
              {% for item in states[domain] if (((item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) or ("battery" in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == "low" or item.state | lower == "unknown")))) and not (( "humidity" in item.entity_id) or ("illumination" in item.entity_id)) -%}
