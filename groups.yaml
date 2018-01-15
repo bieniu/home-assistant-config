@@ -138,44 +138,44 @@ wire devices:
   name: Urządzenia przewodowe
   control: hidden
   entities:
-    - sensor.modem_status
-    - sensor.router_status
-    - sensor.switch_status
-    - sensor.fingbox_status
-    - sensor.synology_status
-    - sensor.raspberry_status
-    - sensor.denon_status
-    - sensor.dune_status
-    - sensor.playstation_status
-    - sensor.stacjonarny_status
+    - binary_sensor.modem_status
+    - binary_sensor.router_status
+    - binary_sensor.switch_status
+    - binary_sensor.fingbox_status
+    - binary_sensor.synology_status
+    - binary_sensor.raspberry_status
+    - binary_sensor.denon_status
+    - binary_sensor.dune_status
+    - binary_sensor.playstation_status
+    - binary_sensor.stacjonarny_status
 
 wireless devices:
   name: Urządzenia bezprzewodowe
   entities:
-    - sensor.migateway_status
-    - sensor.harmonyhub_status
-    - sensor.brother_status
-    - sensor.androidtv_status
-    - sensor.xbox_status
-    - sensor.laptop_status
-    - sensor.laptopedyta_status
-    - sensor.oneplus_status
-    - sensor.iphone_status
-    - sensor.lumia_status
-    - sensor.ipad_status
-    - sensor.kindle_status
-    - sensor.inkbook_status
+    - binary_sensor.migateway_status
+    - binary_sensor.harmonyhub_status
+    - binary_sensor.brother_status
+    - binary_sensor.androidtv_status
+    - binary_sensor.xbox_status
+    - binary_sensor.laptop_status
+    - binary_sensor.laptopedyta_status
+    - binary_sensor.oneplus_status
+    - binary_sensor.iphone_status
+    - binary_sensor.lumia_status
+    - binary_sensor.ipad_status
+    - binary_sensor.kindle_status
+    - binary_sensor.inkbook_status
 
 iot devices:
   name: Urządzenia IoT
   entities:
-    - sensor.sonoff_lamp_status
-    - sensor.sonoff_switch_single_status
-    - sensor.sonoff_switch_triple_status
-    - sensor.yeelight_bulb_salon1_status
-    - sensor.yeelight_bulb_salon2_status
-    - sensor.yeelight_lightstrip_antek_status
-    - sensor.yeelight_lightstrip_sypialnia_status
+    - binary_sensor.sonoff_lamp_status
+    - binary_sensor.sonoff_switch_single_status
+    - binary_sensor.sonoff_switch_triple_status
+    - binary_sensor.yeelight_bulb_salon1_status
+    - binary_sensor.yeelight_bulb_salon2_status
+    - binary_sensor.yeelight_lightstrip_antek_status
+    - binary_sensor.yeelight_lightstrip_sypialnia_status
 
 zwave devices:
   name: Urządzenia Z-Wave

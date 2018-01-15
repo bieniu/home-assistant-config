@@ -141,51 +141,51 @@ sensor.speedtest_ping:
   icon: mdi:timer
 
 #### NETWORK DEVICES ####
-sensor.router_status:
+binary_sensor.router_status:
   icon: mdi:router-wireless
-sensor.synology_status:
+binary_sensor.synology_status:
   icon: mdi:server-network
-sensor.dune_status:
+binary_sensor.dune_status:
   icon: mdi:filmstrip
-sensor.raspberry_status:
+binary_sensor.raspberry_status:
   icon: mdi:raspberrypi
-sensor.switch_status:
+binary_sensor.switch_status:
   icon: mdi:switch
-sensor.stacjonarny_status:
+binary_sensor.stacjonarny_status:
   icon: mdi:desktop-tower
-sensor.xbox_status:
+binary_sensor.xbox_status:
   icon: mdi:xbox
-sensor.playstation_status:
+binary_sensor.playstation_status:
   icon: mdi:playstation
-sensor.fingbox_status:
+binary_sensor.fingbox_status:
   icon: mdi:security-network
-sensor.harmonyhub_status:
+binary_sensor.harmonyhub_status:
   icon: mdi:remote
-sensor.iphone_status:
+binary_sensor.iphone_status:
   icon: mdi:cellphone-iphone
-sensor.oneplus_status:
+binary_binary_sensor.oneplus_status:
   icon: mdi:cellphone-android
-sensor.denon_status:
+binary_sensor.denon_status:
   icon: mdi:amplifier
-sensor.androidtv_status:
+binary_sensor.androidtv_status:
   icon: mdi:cast
-sensor.laptopedyta_status:
+binary_sensor.laptopedyta_status:
   icon: mdi:laptop
-sensor.laptop_status:
+binary_sensor.laptop_status:
   icon: mdi:laptop
-sensor.lumia_status:
+binary_sensor.lumia_status:
   icon: mdi:cellphone
-sensor.ipad_status:
+binary_sensor.ipad_status:
   icon: mdi:tablet-ipad
-sensor.kindle_status:
+binary_sensor.kindle_status:
   icon: mdi:tablet-ipad
-sensor.inkbook_status:
+binary_sensor.inkbook_status:
   icon: mdi:tablet-ipad
-sensor.modem_status:
+binary_sensor.modem_status:
   icon: mdi:router-wireless
-sensor.migateway_status:
+binary_sensor.migateway_status:
   icon: mdi:router-wireless
-sensor.brother_status:
+binary_sensor.brother_status:
   icon: mdi:printer
 
 #### SWITCHES ####

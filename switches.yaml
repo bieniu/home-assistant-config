@@ -46,7 +46,6 @@
 - platform: template
   switches:
     denon:
-      entity_id: media_player.denon
       friendly_name: Amplituner
       value_template: "{{ (not is_state('media_player.denon', 'off')) and (states.media_player.denon != None) }}"
       turn_on:
@@ -56,7 +55,6 @@
         service: media_player.turn_off
         entity_id: media_player.denon
     playstation:
-      entity_id: media_player.playstation
       friendly_name: PlayStation
       value_template: "{{ (not is_state('media_player.playstation', 'off')) and (states.media_player.playstation != None) }}"
       turn_on:

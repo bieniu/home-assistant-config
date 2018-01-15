@@ -1,26 +1,14 @@
 - platform: template
   sensors:
     gaming:
-      entity_id: sensor.androidtv_activity
       value_template: >-
          {% for game in ["GT Racing 2","CrossyRoad","Rayman Adventures","BADLAND","Fast like a Fox","BB Racing","Red Ball 4","Sky Force","Minion Rush","Superfrog HD","Leo's Fortune","Rayman Fiesta Run","Minecraft","Riptide GP: Renegade"] %}
             {% if game == states.sensor.androidtv_activity.state %}
-               True
+               true
             {% endif %}
          {% endfor %}
 
     people_at_home:
-      entity_id:
-        - device_tracker.maciek
-        - device_tracker.maciek_gps_bt
-        - device_tracker.edyta
-        - device_tracker.edyta_iphone
-        - device_tracker.agnieszka
-        - device_tracker.emil
-        - device_tracker.grazyna
-        - device_tracker.jerzy
-        - device_tracker.romana
-        - media_player.denon
       value_template: >-
          {{ is_state('device_tracker.maciek', 'home')
             or is_state('device_tracker.maciek_gps_bt', 'home')
@@ -34,9 +22,126 @@
             or is_state('media_player.denon', 'on') }}
 
     motion_antresola:
-      entity_id:
-        - binary_sensor.motion_sensor_158d000120a226
-        - binary_sensor.motion_sensor_158d00014d0a27
       value_template: >-
          {{ is_state('binary_sensor.motion_sensor_158d000120a226', 'on')
             or is_state('binary_sensor.motion_sensor_158d00014d0a27', 'on') }}
+
+    router_status:
+      value_template: "{{ is_state('device_tracker.router', 'home') }}"
+      friendly_name: ASUS RT-AC66U
+
+    synology_status:
+      value_template: "{{ is_state('device_tracker.synology', 'home') }}"
+      friendly_name: Synology DS110j
+
+    stacjonarny_status:
+      value_template: "{{ is_state('device_tracker.stacjonarny', 'home') }}"
+      friendly_name: Komputer
+
+    dune_status:
+      value_template: "{{ is_state('device_tracker.dune', 'home') }}"
+      friendly_name: Dune BD Prime 3.0
+
+    raspberry_status:
+      value_template: "{{ is_state('device_tracker.raspberry', 'home') }}"
+      friendly_name: Raspberry Pi 3
+
+    switch_status:
+      value_template: "{{ is_state('device_tracker.switch', 'home') }}"
+      friendly_name: TP-Link TL-WDR4300
+
+    xbox_status:
+      value_template: "{{ is_state('device_tracker.xbox', 'home') }}"
+      friendly_name: Xbox360
+
+    playstation_status:
+      value_template: "{{ is_state('device_tracker.playstation', 'home') }}"
+      friendly_name: PlayStation 4 Pro
+
+    fingbox_status:
+      value_template: "{{ is_state('device_tracker.fingbox', 'home') }}"
+      friendly_name: Fingbox
+
+    harmonyhub_status:
+      value_template: "{{ is_state('device_tracker.harmonyhub', 'home') }}"
+      friendly_name: Logitech Harmony Hub
+
+    oneplus_status:
+      value_template: "{{ is_state('device_tracker.maciek', 'home') }}"
+      friendly_name: OnePlus One
+
+    iphone_status:
+      value_template: "{{ is_state('device_tracker.edyta', 'home') }}"
+      friendly_name: iPhone 6S
+
+    ipad_status:
+      value_template: "{{ is_state('device_tracker.ipad', 'home') }}"
+      friendly_name: iPad Air
+
+    kindle_status:
+      value_template: "{{ is_state('device_tracker.kindle', 'home') }}"
+      friendly_name: Kindle Keyboard 3G
+
+    inkbook_status:
+      value_template: "{{ is_state('device_tracker.inkbook', 'home') }}"
+      friendly_name: inkBook Classic 2
+
+    lumia_status:
+      value_template: "{{ is_state('device_tracker.lumia', 'home') }}"
+      friendly_name: Lumia 640
+
+    modem_status:
+      value_template: "{{ is_state('device_tracker.modem', 'home') }}"
+      friendly_name: ZTE GPON F660
+
+    androidtv_status:
+      value_template: "{{ is_state('device_tracker.androidtv', 'home') }}"
+      friendly_name: Xiaomi Mi Box
+
+    laptopedyta_status:
+      value_template: "{{ is_state('device_tracker.laptopedyta', 'home') }}"
+      friendly_name: HP EliteBook 820 G3
+
+    denon_status:
+      value_template: "{{ is_state('device_tracker.denon', 'home') }}"
+      friendly_name: Denon AVR-X2100W
+
+    laptop_status:
+      value_template: "{{ is_state('device_tracker.laptop', 'home') }}"
+      friendly_name: Lenovo IdeaPad Z510p
+
+    migateway_status:
+      value_template: "{{ is_state('device_tracker.migateway', 'home') }}"
+      friendly_name: Xiaomi Mi Smart Home Gateway
+
+    brother_status:
+      value_template: "{{ is_state('device_tracker.brother', 'home') }}"
+      friendly_name: Brother HL-L2340DW
+
+    sonoff_lamp_status:
+      friendly_name: Sonoff Basic [1]
+      value_template: "{{ is_state('device_tracker.sonoff_lamp', 'home') }}"
+
+    sonoff_switch_single_status:
+      friendly_name: Sonoff Basic [2]
+      value_template: "{{ is_state('device_tracker.sonoff_switch_single', 'home') }}"
+
+    sonoff_switch_triple_status:
+      friendly_name: Sonoff Basic [3]
+      value_template: "{{ is_state('device_tracker.sonoff_switch_triple', 'home') }}"
+
+    yeelight_bulb_salon1_status:
+      friendly_name: Xiaomi Yeelight YLDP02YL [1]
+      value_template: "{{ is_state('device_tracker.yeelight_bulb_salon1', 'home') }}"
+
+    yeelight_bulb_salon2_status:
+      friendly_name: Xiaomi Yeelight YLDP02YL [2]
+      value_template: "{{ is_state('device_tracker.yeelight_bulb_salon2', 'home') }}"
+
+    yeelight_lightstrip_sypialnia_status:
+      friendly_name: Xiaomi Yeelight Lightstrip YLDD01YL [1]
+      value_template: "{{ is_state('device_tracker.yeelight_lightstrip_sypialnia', 'home') }}"
+
+    yeelight_lightstrip_antek_status:
+      friendly_name: Xiaomi Yeelight Lightstrip YLDD01YL [2]
+      value_template: "{{ is_state('device_tracker.yeelight_lightstrip_antek', 'home') }}"

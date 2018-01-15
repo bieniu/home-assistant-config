@@ -32,7 +32,8 @@ frontend:
     red:
       paper-item-icon-color: red
     grey:
-      paper-item-icon-color: '#C4C4C4'
+      paper-item-icon-color: '#969696'
+      paper-item-icon-active-color: '#44739e'
 
 frontend_custom:
 

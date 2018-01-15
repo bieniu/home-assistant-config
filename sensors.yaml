@@ -104,7 +104,6 @@
 - platform: template
   sensors:
     temperature_kuchnia:
-      entity_id: sensor.temperature_158d00010fb340
       friendly_name: Temperatura
       unit_of_measurement: '°C'
       value_template: >-
@@ -119,7 +118,6 @@
          {% endif %}
 
     temperature_salon:
-      entity_id: sensor.temperature_158d00010fb340
       friendly_name: Temperatura
       unit_of_measurement: '°C'
       value_template: >-
@@ -134,7 +132,6 @@
          {% endif %}
 
     humidity_salon:
-      entity_id: sensor.humidity_158d00010fb340
       friendly_name: Wilgotność
       unit_of_measurement: '%'
       value_template: >-
@@ -149,7 +146,6 @@
          {% endif %}
 
     temperature_sypialnia:
-      entity_id: sensor.temperature_158d0001100416
       friendly_name: Temperatura
       unit_of_measurement: '°C'
       value_template: >-
@@ -164,7 +160,6 @@
          {% endif %}
 
     humidity_sypialnia:
-      entity_id: sensor.humidity_158d0001100416
       friendly_name: Wilgotność
       unit_of_measurement: '%'
       value_template: >-
@@ -179,7 +174,6 @@
          {% endif %}
 
     temperature_antek:
-      entity_id: sensor.temperature_158d00010fb2cd
       friendly_name: Temperatura
       unit_of_measurement: '°C'
       value_template: >-
@@ -194,7 +188,6 @@
          {% endif %}
 
     temperature_gabinet:
-      entity_id: sensor.temperature_158d0001826f20
       friendly_name: Temperatura
       unit_of_measurement: '°C'
       value_template: >-
@@ -209,7 +202,6 @@
          {% endif %}
 
     humidity_gabinet:
-      entity_id: sensor.humidity_158d0001826f20
       friendly_name: Wilgotność
       unit_of_measurement: '%'
       value_template: >-
@@ -224,7 +216,6 @@
          {% endif %}
 
     humidity_antek:
-      entity_id: sensor.humidity_158d00010fb2cd
       friendly_name: Wilgotność
       unit_of_measurement: '%'
       value_template: >-
@@ -239,7 +230,6 @@
          {% endif %}
 
     temperature_lazienka:
-      entity_id: sensor.temperature_158d000129a158
       friendly_name: Temperatura
       unit_of_measurement: '°C'
       value_template: >-
@@ -254,7 +244,6 @@
          {% endif %}
 
     humidity_lazienka:
-      entity_id: sensor.humidity_158d000129a158
       friendly_name: Wilgotność
       unit_of_measurement: '%'
       value_template: >-
@@ -269,7 +258,6 @@
          {% endif %}
 
     temperature_goscinny:
-      entity_id: sensor.temperature_158d0001c09930
       friendly_name: Temperatura
       unit_of_measurement: '°C'
       value_template: >-
@@ -284,7 +272,6 @@
          {% endif %}
 
     humidity_goscinny:
-      entity_id: sensor.humidity_158d0001c09930
       friendly_name: Wilgotność
       unit_of_measurement: '%'
       value_template: >-
@@ -299,7 +286,6 @@
          {% endif %}
 
     temperature_antresola:
-      entity_id: sensor.temperature_158d000149cc8c
       friendly_name: Temperatura
       unit_of_measurement: '°C'
       value_template: >-
@@ -314,7 +300,6 @@
          {% endif %}
 
     humidity_antresola:
-      entity_id: sensor.humidity_158d000149cc8c
       friendly_name: Wilgotność
       unit_of_measurement: '%'
       value_template: >-
@@ -331,7 +316,6 @@
     battery_thermostat_antresola:
       friendly_name: termostat antresola
       unit_of_measurement: '%'
-      entity_id: zwave.thermostat_antresola
       value_template: >-
          {% if states.zwave.thermostat_antresola %}
             {{ states.zwave.thermostat_antresola.attributes.battery_level }}
@@ -355,7 +339,6 @@
     battery_thermostat_lazienka:
       friendly_name: termostat łazienka
       unit_of_measurement: '%'
-      entity_id: zwave.thermostat_lazienka
       value_template: >-
          {% if states.zwave.thermostat_lazienka %}
             {{ states.zwave.thermostat_lazienka.attributes.battery_level }}
@@ -379,7 +362,6 @@
     battery_thermostat_salon:
       friendly_name: termostat salon
       unit_of_measurement: '%'
-      entity_id: zwave.thermostat_salon
       value_template: >-
          {% if states.zwave.thermostat_salon %}
             {{ states.zwave.thermostat_salon.attributes.battery_level }}
@@ -403,7 +385,6 @@
     battery_thermostat_kuchnia:
       friendly_name: termostat kuchnia
       unit_of_measurement: '%'
-      entity_id: zwave.thermostat_kuchnia
       value_template: >-
          {% if states.zwave.thermostat_kuchnia %}
             {{ states.zwave.thermostat_kuchnia.attributes.battery_level }}
@@ -427,7 +408,6 @@
     battery_thermostat_sypialnia:
       friendly_name: termostat sypialnia
       unit_of_measurement: '%'
-      entity_id: zwave.thermostat_sypialnia
       value_template: >-
          {% if states.zwave.thermostat_sypialnia %}
             {{ states.zwave.thermostat_sypialnia.attributes.battery_level }}
@@ -451,7 +431,6 @@
     battery_thermostat_antek:
       friendly_name: termostat pokój Antka
       unit_of_measurement: '%'
-      entity_id: zwave.thermostat_antek
       value_template: >-
          {% if states.zwave.thermostat_antek %}
             {{ states.zwave.thermostat_antek.attributes.battery_level }}
@@ -475,7 +454,6 @@
     battery_temp_humi_sensor_antek:
       friendly_name: sensor temperatury pokój Antka
       unit_of_measurement: '%'
-      entity_id: sensor.temperature_158d00010fb2cd
       value_template: >-
          {% if states.sensor.temperature_158d00010fb2cd %}
             {{ states.sensor.temperature_158d00010fb2cd.attributes.battery_level | round }}
@@ -499,7 +477,6 @@
     battery_temp_humi_sensor_salon:
       friendly_name: sensor temperatury salon
       unit_of_measurement: '%'
-      entity_id: sensor.temperature_158d00010fb340
       value_template: >-
          {% if states.sensor.temperature_158d00010fb340 %}
             {{ states.sensor.temperature_158d00010fb340.attributes.battery_level | round }}
@@ -523,7 +500,6 @@
     battery_temp_humi_sensor_goscinny:
       friendly_name: sensor temperatury pokój gościnny
       unit_of_measurement: '%'
-      entity_id: sensor.temperature_158d0001c09930
       value_template: >-
          {% if states.sensor.temperature_158d0001c09930 %}
             {{ states.sensor.temperature_158d0001c09930.attributes.battery_level | round }}
@@ -547,7 +523,6 @@
     battery_temp_humi_sensor_sypialnia:
       friendly_name: sensor temperatury sypialnia
       unit_of_measurement: '%'
-      entity_id: sensor.temperature_158d0001100416
       value_template: >-
          {% if states.sensor.temperature_158d0001100416 %}
             {{ states.sensor.temperature_158d0001100416.attributes.battery_level | round }}
@@ -571,7 +546,6 @@
     battery_temp_humi_sensor_lazienka:
       friendly_name: sensor temperatury łazienka
       unit_of_measurement: '%'
-      entity_id: sensor.temperature_158d000129a158
       value_template: >-
          {% if states.sensor.temperature_158d000129a158 %}
             {{ states.sensor.temperature_158d000129a158.attributes.battery_level | round }}
@@ -595,7 +569,6 @@
     battery_temp_humi_sensor_antresola:
       friendly_name: sensor temperatury antresola
       unit_of_measurement: '%'
-      entity_id: sensor.temperature_158d000149cc8c
       value_template: >-
          {% if states.sensor.temperature_158d000149cc8c %}
             {{ states.sensor.temperature_158d000149cc8c.attributes.battery_level | round }}
@@ -619,7 +592,6 @@
     battery_temp_humi_sensor_gabinet:
       friendly_name: sensor temperatury gabinet
       unit_of_measurement: '%'
-      entity_id: sensor.temperature_158d0001826f20
       value_template: >-
          {% if states.sensor.temperature_158d0001826f20 %}
             {{ states.sensor.temperature_158d0001826f20.attributes.battery_level | round }}
@@ -643,7 +615,6 @@
     battery_body_sensor_antresola:
       friendly_name: sensor ruchu antresola
       unit_of_measurement: '%'
-      entity_id: binary_sensor.motion_sensor_158d00014d0a27
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d00014d0a27 %}
             {{ states.binary_sensor.motion_sensor_158d00014d0a27.attributes.battery_level | round }}
@@ -667,7 +638,6 @@
     battery_body_sensor_schody:
       friendly_name: sensor ruchu schody
       unit_of_measurement: '%'
-      entity_id: binary_sensor.motion_sensor_158d000120a226
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d000120a226 %}
             {{ states.binary_sensor.motion_sensor_158d000120a226.attributes.battery_level | round }}
@@ -691,7 +661,6 @@
     battery_body_sensor_salon:
       friendly_name: sensor ruchu salon
       unit_of_measurement: '%'
-      entity_id: binary_sensor.motion_sensor_158d000121c604
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d000121c604 %}
             {{ states.binary_sensor.motion_sensor_158d000121c604.attributes.battery_level | round }}
@@ -715,7 +684,6 @@
     battery_body_sensor_sypialnia:
       friendly_name: sensor ruchu sypialnia
       unit_of_measurement: '%'
-      entity_id: binary_sensor.motion_sensor_158d000165ffb8
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d000165ffb8 %}
             {{ states.binary_sensor.motion_sensor_158d000165ffb8.attributes.battery_level | round }}
@@ -739,7 +707,6 @@
     battery_body_sensor_antek:
       friendly_name: sensor ruchu pokój Antka
       unit_of_measurement: '%'
-      entity_id: binary_sensor.motion_sensor_158d00016612fb
       value_template: >-
          {% if states.binary_sensor.motion_sensor_158d00016612fb %}
             {{ states.binary_sensor.motion_sensor_158d00016612fb.attributes.battery_level | round }}
@@ -763,7 +730,6 @@
     battery_switch_light_salon_1:
       friendly_name: włącznik oświetlenia salon [1]
       unit_of_measurement: '%'
-      entity_id: binary_sensor.switch_158d000154964c
       value_template: >-
          {% if states.binary_sensor.switch_158d000154964c %}
             {{ states.binary_sensor.switch_158d000154964c.attributes.battery_level | round }}
@@ -787,7 +753,6 @@
     battery_switch_light_salon_2:
       friendly_name: włącznik oświetlenia salon [2]
       unit_of_measurement: '%'
-      entity_id: binary_sensor.switch_158d00014a0911
       value_template: >-
          {% if states.binary_sensor.switch_158d00014a0911 %}
             {{ states.binary_sensor.switch_158d00014a0911.attributes.battery_level | round }}
@@ -811,7 +776,6 @@
     battery_switch_light_antek:
       friendly_name: włącznik oświetlenia pokój Antka
       unit_of_measurement: '%'
-      entity_id: binary_sensor.switch_158d0001d87c4f
       value_template: >-
          {% if states.binary_sensor.switch_158d0001d87c4f %}
             {{ states.binary_sensor.switch_158d0001d87c4f.attributes.battery_level | round }}
@@ -835,7 +799,6 @@
     battery_window_sensor_kuchnia:
       friendly_name: sensor okna kuchnia
       unit_of_measurement: '%'
-      entity_id: binary_sensor.door_window_sensor_158d0001a223ff
       value_template: >-
          {% if states.binary_sensor.door_window_sensor_158d0001a223ff %}
             {{ states.binary_sensor.door_window_sensor_158d0001a223ff.attributes.battery_level | round }}
@@ -859,7 +822,6 @@
     battery_door_sensor_sypialnia:
       friendly_name: sensor drzwi balkonowych sypialnia
       unit_of_measurement: '%'
-      entity_id: binary_sensor.door_window_sensor_158d0001a5dbdb
       value_template: >-
          {% if states.binary_sensor.door_window_sensor_158d0001a5dbdb %}
             {{ states.binary_sensor.door_window_sensor_158d0001a5dbdb.attributes.battery_level | round }}
@@ -883,7 +845,6 @@
     battery_door_sensor_pracownia:
       friendly_name: sensor drzwi balkonowych pracownia
       unit_of_measurement: '%'
-      entity_id: binary_sensor.door_window_sensor_158d00019fd83f
       value_template: >-
          {% if states.binary_sensor.door_window_sensor_158d00019fd83f %}
             {{ states.binary_sensor.door_window_sensor_158d00019fd83f.attributes.battery_level | round }}
@@ -905,7 +866,6 @@
          {% endif %}
 
     edyta_presence:
-      entity_id: device_tracker.edyta_iphone,device_tracker.edyta
       friendly_name: Edyta
       value_template: >-
          {% if is_state('device_tracker.edyta_iphone', 'work') %}
@@ -919,7 +879,6 @@
          {% endif %}
 
     maciek_presence:
-      entity_id: device_tracker.maciek,device_tracker.maciek_gps_bt
       friendly_name: Maciek
       value_template: >-
          {% if is_state('device_tracker.maciek_gps_bt', 'work') %}
@@ -935,7 +894,6 @@
     raspberry_disk_free:
       friendly_name: Wolne miejsce
       unit_of_measurement: 'GB'
-      entity_id: sensor.disk_free_
       value_template: >-
          {% if states.sensor.disk_free_ %}
             {{ states.sensor.disk_free_.state }}
@@ -944,7 +902,6 @@
          {% endif %}
 
     sun_custom:
-      entity_id: sun.sun
       friendly_name: Pozycja słońca
       value_template: >-
          {% if states.sun.sun %}
@@ -969,7 +926,6 @@
          {% endif %}
 
     sunrise:
-      entity_id: sun.sun
       friendly_name: Wschód słońca
       value_template: >-
          {% if states.sun.sun %} 
@@ -979,7 +935,6 @@
          {% endif %}
 
     sunset:
-      entity_id: sun.sun
       friendly_name: Zachód słońca
       value_template: >-
          {% if states.sun.sun %}
@@ -991,7 +946,6 @@
     dark_sky_pressure_custom:
       friendly_name: Ciśnienie
       unit_of_measurement: 'hPa'
-      entity_id: sensor.dark_sky_pressure
       value_template: >-
          {% if states.sensor.dark_sky_pressure.state %}
             {{ states.sensor.dark_sky_pressure.state }}
@@ -1002,7 +956,6 @@
     dark_sky_humidity_custom:
       friendly_name: Wilgotność zewnętrzna
       unit_of_measurement: '%'
-      entity_id: sensor.dark_sky_humidity
       value_template: >-
          {% if states.sensor.dark_sky_humidity.state %}
             {{ states.sensor.dark_sky_humidity.state | round(0) }}
@@ -1013,7 +966,7 @@
     dark_sky_precip_probability_custom:
       friendly_name: Szansa na opady
       unit_of_measurement: '%'
-      entity_id: sensor.dark_sky_precip_probability
+
       value_template: >-
          {% if states.sensor.dark_sky_precip_probability.state %}
             {{ states.sensor.dark_sky_precip_probability.state | round(0) }}
@@ -1023,7 +976,6 @@
 
     dark_sky_summary_custom:
       friendly_name: Warunki pogodowe
-      entity_id: sensor.dark_sky_summary
       value_template: >-
          {% if states.sensor.dark_sky_summary %}
             {% if states.sensor.dark_sky_summary.state == 'Overcast' %}
@@ -1106,181 +1058,6 @@
             mdi:tag-text-outline
          {% endif %}
 
-    router_status:
-      value_template: "{% if is_state('device_tracker.router', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: ASUS RT-AC66U
-      entity_id: device_tracker.router
-
-    synology_status:
-      value_template: "{% if is_state('device_tracker.synology', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: Synology DS110j
-      entity_id: device_tracker.synology
-
-    stacjonarny_status:
-      value_template: "{% if is_state('device_tracker.stacjonarny', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: Komputer
-      entity_id: device_tracker.stacjonarny
-
-    dune_status:
-      friendly_name: Dune BD Prime 3.0
-      value_template: "{% if is_state('device_tracker.dune', 'home') %}online{% else %}offline{% endif %}"
-      entity_id: device_tracker.dune
-
-    raspberry_status:
-      value_template: "{% if is_state('device_tracker.raspberry', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: Raspberry Pi 3
-      entity_id: device_tracker.raspberry
-
-    switch_status:
-      value_template: "{% if is_state('device_tracker.switch', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: TP-Link TL-WDR4300
-      entity_id: device_tracker.switch
-
-    xbox_status:
-      value_template: "{% if is_state('device_tracker.xbox', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: Xbox360
-      entity_id: device_tracker.xbox
-
-    playstation_status:
-      value_template: "{% if is_state('device_tracker.playstation', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: PlayStation 4 Pro
-      entity_id: device_tracker.playstation
-
-    fingbox_status:
-      value_template: "{% if is_state('device_tracker.fingbox', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: Fingbox
-      entity_id: device_tracker.fingbox
-
-    harmonyhub_status:
-      value_template: "{% if is_state('device_tracker.harmonyhub', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: Logitech Harmony Hub
-      entity_id: device_tracker.harmonyhub
-
-    oneplus_status:
-      value_template: "{% if is_state('device_tracker.maciek', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: OnePlus One
-      entity_id: device_tracker.maciek
-
-    iphone_status:
-      value_template: "{% if is_state('device_tracker.edyta', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: iPhone 6S
-      entity_id: device_tracker.edyta
-
-    ipad_status:
-      value_template: "{% if is_state('device_tracker.ipad', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: iPad Air
-      entity_id: device_tracker.ipad
-
-    kindle_status:
-      value_template: "{% if is_state('device_tracker.kindle', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: Kindle Keyboard 3G
-      entity_id: device_tracker.kindle
-
-    inkbook_status:
-      value_template: "{% if is_state('device_tracker.inkbook', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: inkBook Classic 2
-      entity_id: device_tracker.inkbook
-
-    lumia_status:
-      value_template: "{% if is_state('device_tracker.lumia', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: Lumia 640
-      entity_id: device_tracker.lumia
-
-    modem_status:
-      value_template: "{% if is_state('device_tracker.modem', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: ZTE GPON F660
-      entity_id: device_tracker.modem
-
-    androidtv_status:
-      friendly_name: Xiaomi Mi Box
-      entity_id: device_tracker.androidtv
-      value_template: >-
-         {% if states.device_tracker.androidtv.state == 'home' %}
-            online
-         {% else %}
-            offline
-         {% endif %}
-
-    laptopedyta_status:
-      value_template: "{% if is_state('device_tracker.laptopedyta', 'home') %}online{% else %}offline{% endif %}"
-      friendly_name: HP EliteBook 820 G3
-      entity_id: device_tracker.laptopedyta
-
-    denon_status:
-      friendly_name: Denon AVR-X2100W
-      entity_id: device_tracker.denon
-      value_template: >-
-         {% if states.device_tracker.denon.state == 'home' %}
-            online
-         {% else %}
-            offline
-         {% endif %}
-
-    laptop_status:
-      friendly_name: Lenovo IdeaPad Z510
-      entity_id: device_tracker.laptop
-      value_template: >-
-         {% if is_state('device_tracker.laptop', 'home') %}
-            online
-         {% else %}
-            offline
-         {% endif %}
-
-    migateway_status:
-      friendly_name: Xiaomi Mi Smart Home Gateway
-      entity_id: device_tracker.migateway
-      value_template: >-
-         {% if is_state('device_tracker.migateway', 'home') %}
-            online
-         {% else %}
-            offline
-         {% endif %}
-
-    brother_status:
-      friendly_name: Brother HL-L2340DW
-      entity_id: device_tracker.brother
-      value_template: >-
-         {% if is_state('device_tracker.brother', 'home') %}
-            online
-         {% else %}
-            offline
-         {% endif %}
-
-    sonoff_lamp_status:
-      friendly_name: Sonoff Basic [1]
-      value_template: "{% if is_state('device_tracker.sonoff_lamp', 'home') %}online{% else %}offline{% endif %}"
-      entity_id: device_tracker.sonoff_lamp
-
-    sonoff_switch_single_status:
-      friendly_name: Sonoff Basic [2]
-      value_template: "{% if is_state('device_tracker.sonoff_switch_single', 'home') %}online{% else %}offline{% endif %}"
-      entity_id: device_tracker.sonoff_switch_single
-
-    sonoff_switch_triple_status:
-      friendly_name: Sonoff Basic [3]
-      value_template: "{% if is_state('device_tracker.sonoff_switch_triple', 'home') %}online{% else %}offline{% endif %}"
-      entity_id: device_tracker.sonoff_switch_triple
-
-    yeelight_bulb_salon1_status:
-      friendly_name: Xiaomi Yeelight YLDP02YL [1]
-      value_template: "{% if is_state('device_tracker.yeelight_bulb_salon1', 'home') %}online{% else %}offline{% endif %}"
-      entity_id: device_tracker.yeelight_bulb_salon1
-
-    yeelight_bulb_salon2_status:
-      friendly_name: Xiaomi Yeelight YLDP02YL [2]
-      value_template: "{% if is_state('device_tracker.yeelight_bulb_salon2', 'home') %}online{% else %}offline{% endif %}"
-      entity_id: device_tracker.yeelight_bulb_salon2
-
-    yeelight_lightstrip_sypialnia_status:
-      friendly_name: Xiaomi Yeelight Lightstrip YLDD01YL [1]
-      value_template: "{% if is_state('device_tracker.yeelight_lightstrip_sypialnia', 'home') %}online{% else %}offline{% endif %}"
-      entity_id: device_tracker.yeelight_lightstrip_sypialnia
-
-    yeelight_lightstrip_antek_status:
-      friendly_name: Xiaomi Yeelight Lightstrip YLDD01YL [2]
-      value_template: "{% if is_state('device_tracker.yeelight_lightstrip_antek', 'home') %}online{% else %}offline{% endif %}"
-      entity_id: device_tracker.yeelight_lightstrip_antek
-
 - platform: uptime
   name: Home Assistant Uptime
   unit_of_measurement: minutes
@@ -1314,7 +1091,7 @@
   resource: !secret brother_status_url
   name: printer_status
   select: 'dd:nth-of-type(1)'
-  scan_interval: 2
+  scan_interval: 3
   value_template: >-
      {% if value == 'DRUKOWANIE' %}
         drukowanie

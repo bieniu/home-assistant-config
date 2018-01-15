@@ -9,21 +9,21 @@
   username: !secret router_username
   password: !secret router_password
   protocol: ssh
-- platform: nmap_tracker
-  hosts:
-    - !secret lumia_hostname
-    - !secret migateway_hostname
-    - !secret brother_hostname
-  home_interval: 10
-  scan_options: " --privileged -sP "
+#- platform: nmap_tracker
+#  hosts:
+#    - !secret lumia_hostname
+#    - !secret migateway_hostname
+#    - !secret brother_hostname
+#  home_interval: 10
+#  scan_options: " --privileged -sP "
 - platform: gpslogger
 - platform: ping
   hosts:
     router: !secret router_hostname
     modem: !secret modem_hostname
     switch: !secret switch_hostname
-    denon: !secret denon_hostname
-    sonoff_lamp: !secret sonoff_lamp_hostname
-    sonoff_switch_single: !secret sonoff_switch_single_hostname
-    sonoff_switch_triple: !secret sonoff_switch_triple_hostname
-    synology: !secret synology_hostname
+#    denon: !secret denon_hostname
+#    sonoff_lamp: !secret sonoff_lamp_hostname
+#    sonoff_switch_single: !secret sonoff_switch_single_hostname
+#    sonoff_switch_triple: !secret sonoff_switch_triple_hostname
+#    synology: !secret synology_hostname
