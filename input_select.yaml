@@ -154,11 +154,11 @@ log_level:
 salon_harmony:
     name: Telewizor
     options:
-      - wyłączony
-      - telewizja
-      - filmy
-      - muzyka
-      - Netflix
-      - PlayStation
-      - Xbox
+      - 'wyłączony'
+      - 'telewizja'
+      - 'filmy'
+      - 'muzyka'
+      - 'Netflix'
+      - 'PlayStation'
+      - 'Xbox'
     icon: mdi:television

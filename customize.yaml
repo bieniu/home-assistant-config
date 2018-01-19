@@ -23,8 +23,11 @@ sensor.cpu_used:
 sensor.ram_use:
   friendly_name: 'Zajęty RAM'
   icon: mdi:chip
-sensor.raspberry_disk_free:
-  icon: mdi:harddisk
+sensor.disk_used_:
+  friendly_name: 'Zajęte miejsce'
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    theme: if (state > 70) return 'red'; else return 'default';
 sensor.last_boot:
   friendly_name: 'Ostatni reboot'
 sensor.raspberry_cpu_temp:
@@ -163,7 +166,7 @@ binary_sensor.harmonyhub_status:
   icon: mdi:remote
 binary_sensor.iphone_status:
   icon: mdi:cellphone-iphone
-binary_binary_sensor.oneplus_status:
+binary_sensor.oneplus_status:
   icon: mdi:cellphone-android
 binary_sensor.denon_status:
   icon: mdi:amplifier
@@ -244,12 +247,6 @@ sensor.humidity_158d000129a158:
   friendly_name: Wilgotność łazienka
 sensor.humidity_158d000149cc8c:
   friendly_name: Wilgotność antresola
-sensor.illumination_f0b429cc6f0b:
-  friendly_name: Natężenie światła
-sensor.illumination_158d000165ffb8:
-  friendly_name: Natężenie światła
-sensor.illumination_158d00016612fb:
-  friendly_name: Natężenie światła
 binary_sensor.switch_158d000154964c:
   friendly_name: Światło salon 1
   icon: mdi:lamp
@@ -268,11 +265,17 @@ binary_sensor.motion_sensor_158d00014d0a27:
 binary_sensor.motion_antresola:
   location: antresola
 
+binary_sensor.motion_salon:
+  location: salon
+
 binary_sensor.motion_sensor_158d000120a226:
   friendly_name: Ruch
   location: schody
 
 binary_sensor.motion_sensor_158d000121c604:
+  location: salon
+
+binary_sensor.motion_sensor_158d0001e16389:
   location: salon
 
 binary_sensor.motion_sensor_158d000165ffb8:

@@ -27,7 +27,7 @@ zone 3:
   longitude: 19.4559
 
 frontend:
-  javascript_version: es5
+  javascript_version: latest
   themes:
     red:
       paper-item-icon-color: red

@@ -264,7 +264,8 @@ batteries sensors:
     - sensor.battery_temp_humi_sensor_antek
     - sensor.battery_temp_humi_sensor_sypialnia
     - sensor.battery_temp_humi_sensor_lazienka
-    - sensor.battery_body_sensor_salon
+    - sensor.battery_body_sensor_salon_1
+    - sensor.battery_body_sensor_salon_2
     - sensor.battery_body_sensor_schody
     - sensor.battery_body_sensor_antresola
     - sensor.battery_body_sensor_antek
@@ -286,7 +287,7 @@ raspberry:
     - sensor.cpu_used
     - sensor.raspberry_cpu_temp
     - sensor.ram_use
-    - sensor.raspberry_disk_free
+    - sensor.disk_used_
     - sensor.last_boot
     - sensor.last_restart
     - sensor.ha_database_size
@@ -313,7 +314,8 @@ salon:
   entities:
     - sensor.temperature_salon
     - sensor.humidity_salon
-    - binary_sensor.motion_sensor_158d000121c604
+    - sensor.illumination_158d0001e16389
+    - binary_sensor.motion_salon
     - climate.thermostat_salon_heating_1
     - switch.light_salon_switch_2
     - switch.light_salon_switch

@@ -26,6 +26,11 @@
          {{ is_state('binary_sensor.motion_sensor_158d000120a226', 'on')
             or is_state('binary_sensor.motion_sensor_158d00014d0a27', 'on') }}
 
+    motion_salon:
+      value_template: >-
+         {{ is_state('binary_sensor.motion_sensor_158d0001e16389', 'on')
+            or is_state('binary_sensor.motion_sensor_158d000121c604', 'on') }}
+
     router_status:
       value_template: "{{ is_state('device_tracker.router', 'home') }}"
       friendly_name: ASUS RT-AC66U
@@ -72,7 +77,7 @@
 
     iphone_status:
       value_template: "{{ is_state('device_tracker.edyta', 'home') }}"
-      friendly_name: iPhone 6S
+      friendly_name: iPhone 8 Plus
 
     ipad_status:
       value_template: "{{ is_state('device_tracker.ipad', 'home') }}"
@@ -108,7 +113,7 @@
 
     laptop_status:
       value_template: "{{ is_state('device_tracker.laptop', 'home') }}"
-      friendly_name: Lenovo IdeaPad Z510p
+      friendly_name: Lenovo IdeaPad Z510
 
     migateway_status:
       value_template: "{{ is_state('device_tracker.migateway', 'home') }}"

@@ -43,7 +43,7 @@
 
 - platform: systemmonitor
   resources:
-    - type: disk_free
+    - type: disk_use_percent
       arg: /
     - type: memory_use_percent
     - type: processor_use
@@ -317,7 +317,7 @@
       friendly_name: termostat antresola
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.zwave.thermostat_antresola %}
+         {% if states.zwave.thermostat_antresola.attributes.battery_level %}
             {{ states.zwave.thermostat_antresola.attributes.battery_level }}
          {% else %}
             {{ states.sensor.battery_thermostat_antresola.state }}
@@ -340,7 +340,7 @@
       friendly_name: termostat łazienka
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.zwave.thermostat_lazienka %}
+         {% if states.zwave.thermostat_lazienka.attributes.battery_level %}
             {{ states.zwave.thermostat_lazienka.attributes.battery_level }}
          {% else %}
             {{ states.sensor.battery_thermostat_lazienka.state }}
@@ -363,7 +363,7 @@
       friendly_name: termostat salon
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.zwave.thermostat_salon %}
+         {% if states.zwave.thermostat_salon.attributes.battery_level %}
             {{ states.zwave.thermostat_salon.attributes.battery_level }}
          {% else %}
             {{ states.sensor.battery_thermostat_salon.state }}
@@ -386,7 +386,7 @@
       friendly_name: termostat kuchnia
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.zwave.thermostat_kuchnia %}
+         {% if states.zwave.thermostat_kuchnia.attributes.battery_level %}
             {{ states.zwave.thermostat_kuchnia.attributes.battery_level }}
          {% else %}
             {{ states.sensor.battery_thermostat_kuchnia.state }}
@@ -409,7 +409,7 @@
       friendly_name: termostat sypialnia
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.zwave.thermostat_sypialnia %}
+         {% if states.zwave.thermostat_sypialnia.attributes.battery_level %}
             {{ states.zwave.thermostat_sypialnia.attributes.battery_level }}
          {% else %}
             {{ states.sensor.battery_thermostat_sypialnia.state }}
@@ -432,7 +432,7 @@
       friendly_name: termostat pokój Antka
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.zwave.thermostat_antek %}
+         {% if states.zwave.thermostat_antek.attributes.battery_level %}
             {{ states.zwave.thermostat_antek.attributes.battery_level }}
          {% else %}
             {{ states.sensor.battery_thermostat_antek.state }}
@@ -455,7 +455,7 @@
       friendly_name: sensor temperatury pokój Antka
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.sensor.temperature_158d00010fb2cd %}
+         {% if states.sensor.temperature_158d00010fb2cd.attributes.battery_level %}
             {{ states.sensor.temperature_158d00010fb2cd.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_antek.state }}
@@ -478,7 +478,7 @@
       friendly_name: sensor temperatury salon
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.sensor.temperature_158d00010fb340 %}
+         {% if states.sensor.temperature_158d00010fb340.attributes.battery_level %}
             {{ states.sensor.temperature_158d00010fb340.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_salon.state }}
@@ -501,7 +501,7 @@
       friendly_name: sensor temperatury pokój gościnny
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.sensor.temperature_158d0001c09930 %}
+         {% if states.sensor.temperature_158d0001c09930.attributes.battery_level %}
             {{ states.sensor.temperature_158d0001c09930.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_goscinny.state }}
@@ -524,7 +524,7 @@
       friendly_name: sensor temperatury sypialnia
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.sensor.temperature_158d0001100416 %}
+         {% if states.sensor.temperature_158d0001100416.attributes.battery_level %}
             {{ states.sensor.temperature_158d0001100416.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_sypialnia.state }}
@@ -547,7 +547,7 @@
       friendly_name: sensor temperatury łazienka
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.sensor.temperature_158d000129a158 %}
+         {% if states.sensor.temperature_158d000129a158.attributes.battery_level %}
             {{ states.sensor.temperature_158d000129a158.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_lazienka.state }}
@@ -570,7 +570,7 @@
       friendly_name: sensor temperatury antresola
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.sensor.temperature_158d000149cc8c %}
+         {% if states.sensor.temperature_158d000149cc8c.attributes.battery_level %}
             {{ states.sensor.temperature_158d000149cc8c.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_antresola.state }}
@@ -593,7 +593,7 @@
       friendly_name: sensor temperatury gabinet
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.sensor.temperature_158d0001826f20 %}
+         {% if states.sensor.temperature_158d0001826f20.attributes.battery_level %}
             {{ states.sensor.temperature_158d0001826f20.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_gabinet.state }}
@@ -616,7 +616,7 @@
       friendly_name: sensor ruchu antresola
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.binary_sensor.motion_sensor_158d00014d0a27 %}
+         {% if states.binary_sensor.motion_sensor_158d00014d0a27.attributes.battery_level %}
             {{ states.binary_sensor.motion_sensor_158d00014d0a27.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_body_sensor_atresola.state }}
@@ -639,7 +639,7 @@
       friendly_name: sensor ruchu schody
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.binary_sensor.motion_sensor_158d000120a226 %}
+         {% if states.binary_sensor.motion_sensor_158d000120a226.attributes.battery_level %}
             {{ states.binary_sensor.motion_sensor_158d000120a226.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_body_sensor_schody.state }}
@@ -658,14 +658,14 @@
             mdi:battery-unknown
          {% endif %}
 
-    battery_body_sensor_salon:
-      friendly_name: sensor ruchu salon
+    battery_body_sensor_salon_1:
+      friendly_name: sensor ruchu salon [1]
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.binary_sensor.motion_sensor_158d000121c604 %}
+         {% if states.binary_sensor.motion_sensor_158d000121c604.attributes.battery_level %}
             {{ states.binary_sensor.motion_sensor_158d000121c604.attributes.battery_level | round }}
          {% else %}
-            {{ states.sensor.battery_body_sensor_salon.state }}
+            {{ states.sensor.battery_body_sensor_salon_1.state }}
          {% endif %}
 
       icon_template: >-
@@ -685,7 +685,7 @@
       friendly_name: sensor ruchu sypialnia
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.binary_sensor.motion_sensor_158d000165ffb8 %}
+         {% if states.binary_sensor.motion_sensor_158d000165ffb8.attributes.battery_level %}
             {{ states.binary_sensor.motion_sensor_158d000165ffb8.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_body_sensor_sypialnia.state }}
@@ -708,7 +708,7 @@
       friendly_name: sensor ruchu pokój Antka
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.binary_sensor.motion_sensor_158d00016612fb %}
+         {% if states.binary_sensor.motion_sensor_158d00016612fb.attributes.battery_level %}
             {{ states.binary_sensor.motion_sensor_158d00016612fb.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_body_sensor_antek.state }}
@@ -727,11 +727,34 @@
             mdi:battery-unknown
          {% endif %}
 
+    battery_body_sensor_salon_2:
+      friendly_name: sensor ruchu salon [2]
+      unit_of_measurement: '%'
+      value_template: >-
+         {% if states.binary_sensor.motion_sensor_158d0001e16389.attributes.battery_level %}
+            {{ states.binary_sensor.motion_sensor_158d0001e16389.attributes.battery_level | round }}
+         {% else %}
+            {{ states.sensor.battery_body_sensor_salon_2.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.binary_sensor.motion_sensor_158d0001e16389.attributes.battery_level %}
+            {% if states.binary_sensor.motion_sensor_158d0001e16389.attributes.battery_level != 'unknown' %}
+               {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
+               {% set charge = (states.binary_sensor.motion_sensor_158d0001e16389.attributes.battery_level | float / 10) | round %}
+               mdi:battery{{ battery[charge] }}
+            {% else %}
+               mdi:battery-unknown
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
     battery_switch_light_salon_1:
       friendly_name: włącznik oświetlenia salon [1]
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.binary_sensor.switch_158d000154964c %}
+         {% if states.binary_sensor.switch_158d000154964c.attributes.battery_level %}
             {{ states.binary_sensor.switch_158d000154964c.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_switch_light_salon_1.state }}
@@ -754,7 +777,7 @@
       friendly_name: włącznik oświetlenia salon [2]
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.binary_sensor.switch_158d00014a0911 %}
+         {% if states.binary_sensor.switch_158d00014a0911.attributes.battery_level %}
             {{ states.binary_sensor.switch_158d00014a0911.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_switch_light_salon_2.state }}
@@ -777,7 +800,7 @@
       friendly_name: włącznik oświetlenia pokój Antka
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.binary_sensor.switch_158d0001d87c4f %}
+         {% if states.binary_sensor.switch_158d0001d87c4f.attributes.battery_level %}
             {{ states.binary_sensor.switch_158d0001d87c4f.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_switch_light_antek.state }}
@@ -800,7 +823,7 @@
       friendly_name: sensor okna kuchnia
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.binary_sensor.door_window_sensor_158d0001a223ff %}
+         {% if states.binary_sensor.door_window_sensor_158d0001a223ff.attributes.battery_level %}
             {{ states.binary_sensor.door_window_sensor_158d0001a223ff.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_window_sensor_kuchnia.state }}
@@ -823,7 +846,7 @@
       friendly_name: sensor drzwi balkonowych sypialnia
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.binary_sensor.door_window_sensor_158d0001a5dbdb %}
+         {% if states.binary_sensor.door_window_sensor_158d0001a5dbdb.attributes.battery_level %}
             {{ states.binary_sensor.door_window_sensor_158d0001a5dbdb.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_door_sensor_sypialnia.state }}
@@ -846,7 +869,7 @@
       friendly_name: sensor drzwi balkonowych pracownia
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.binary_sensor.door_window_sensor_158d00019fd83f %}
+         {% if states.binary_sensor.door_window_sensor_158d00019fd83f.attributes.battery_level %}
             {{ states.binary_sensor.door_window_sensor_158d00019fd83f.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_door_sensor_pracownia.state }}
@@ -889,16 +912,6 @@
             w domu
          {% else %}
             poza domem
-         {% endif %}
-
-    raspberry_disk_free:
-      friendly_name: Wolne miejsce
-      unit_of_measurement: 'GB'
-      value_template: >-
-         {% if states.sensor.disk_free_ %}
-            {{ states.sensor.disk_free_.state }}
-         {% else %}
-            {{ states.sensor.raspberry_disk_free.state }}
          {% endif %}
 
     sun_custom:

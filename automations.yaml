@@ -88,11 +88,6 @@
     hours: 3
     minutes: 0
     seconds: 0
-#  condition:
-#    condition: time
-#    weekday:
-#      - tue
-#      - fri
   action:
     service: recorder.purge
     data: {"keep_days":4}
@@ -167,7 +162,7 @@
     - platform: state
       entity_id:
         - binary_sensor.motion_antresola
-        - binary_sensor.motion_sensor_158d000121c604
+        - binary_sensor.motion_salon
         - binary_sensor.motion_sensor_158d000165ffb8
         - binary_sensor.motion_sensor_158d00016612fb
       from: 'off'
@@ -1113,7 +1108,9 @@
   alias: 'Light Turn On Salon Lamp'
   trigger:
     - platform: state
-      entity_id: binary_sensor.motion_sensor_158d000121c604
+      entity_id:
+        - binary_sensor.motion_salon
+        - binary_sensor.motion_sensor_158d000120a226
       from: 'off'
       to: 'on'
     - platform: state
@@ -1127,6 +1124,9 @@
     - platform: state
       entity_id: media_player.denon
       to: 'off'
+    - platform: numeric_state
+      entity_id: sensor.illumination_158d0001e16389
+      above: 10
   condition:
     condition: and
     conditions:
@@ -1134,8 +1134,8 @@
         entity_id: input_boolean.away_mode
         state: 'off'
       - condition: numeric_state
-        entity_id: sensor.illumination_f0b429cc6f0b
-        below: 60
+        entity_id: sensor.illumination_158d0001e16389
+        below: 10
       - condition: state
         entity_id: switch.light_salon_switch
         state: 'off'
@@ -1171,7 +1171,7 @@
   alias: 'Light Turn Off Salon Lamp'
   trigger:
     - platform: state
-      entity_id: binary_sensor.motion_sensor_158d000121c604
+      entity_id: binary_sensor.motion_salon
       from: 'on'
       to: 'off'
     - platform: state
