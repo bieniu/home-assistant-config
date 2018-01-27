@@ -46,7 +46,9 @@ energy:
     - group.energy_consumption
     - group.batteries_thermostats
     - group.batteries_switches
-    - group.batteries_sensors
+    - group.batteries_temp_sensors
+    - group.batteries_windows_sensors
+    - group.batteries_motion_sensors
 
 climate:
   name: Klimat
@@ -70,9 +72,9 @@ weather:
   name: Pogoda
   entities:
     - sensor.dark_sky_summary_custom
-    - sensor.dark_sky_temperature
-    - sensor.dark_sky_humidity_custom
-    - sensor.dark_sky_pressure_custom
+    - sensor.temperature_outdoor
+    - sensor.humidity_158d0002273538
+    - sensor.pressure_158d0002273538
     - sensor.dark_sky_wind_speed
     - sensor.dark_sky_precip_probability_custom
     - sensor.sun_custom
@@ -86,6 +88,7 @@ weather graphs:
   entities:
     - history_graph.temperatura
     - history_graph.wilgotnosc
+    - history_graph.cisnienie
 
 denon:
   entities: media_player.denon
@@ -169,9 +172,9 @@ wireless devices:
 iot devices:
   name: Urządzenia IoT
   entities:
-    - binary_sensor.sonoff_lamp_status
-    - binary_sensor.sonoff_switch_single_status
-    - binary_sensor.sonoff_switch_triple_status
+    - binary_sensor.sonoff_switch_lamp_status
+#    - binary_sensor.sonoff_switch_single_status
+#    - binary_sensor.sonoff_switch_triple_status
     - binary_sensor.yeelight_bulb_salon1_status
     - binary_sensor.yeelight_bulb_salon2_status
     - binary_sensor.yeelight_lightstrip_antek_status
@@ -254,22 +257,35 @@ batteries switches:
     - sensor.battery_switch_light_salon_2
     - sensor.battery_switch_light_antek
 
-batteries sensors:
-  name: Baterie sensorów
+batteries temp sensors:
+  name: Baterie sensorów temperatury
   entities:
     - sensor.battery_temp_humi_sensor_salon
+    - sensor.battery_temp_humi_sensor_pracownia
     - sensor.battery_temp_humi_sensor_goscinny
     - sensor.battery_temp_humi_sensor_antresola
     - sensor.battery_temp_humi_sensor_gabinet
     - sensor.battery_temp_humi_sensor_antek
     - sensor.battery_temp_humi_sensor_sypialnia
     - sensor.battery_temp_humi_sensor_lazienka
+    - sensor.battery_temp_humi_sensor_outdoor
+
+batteries motion sensors:
+  name: Baterie sensorów ruchu
+  entities:
     - sensor.battery_body_sensor_salon_1
     - sensor.battery_body_sensor_salon_2
     - sensor.battery_body_sensor_schody
     - sensor.battery_body_sensor_antresola
     - sensor.battery_body_sensor_antek
     - sensor.battery_body_sensor_sypialnia
+    - sensor.battery_window_sensor_kuchnia
+    - sensor.battery_door_sensor_pracownia
+    - sensor.battery_door_sensor_sypialnia
+
+batteries windows sensors:
+  name: Baterie sensorów okien/drzwi
+  entities:
     - sensor.battery_window_sensor_kuchnia
     - sensor.battery_door_sensor_pracownia
     - sensor.battery_door_sensor_sypialnia
@@ -313,7 +329,7 @@ salon:
   control: hidden
   entities:
     - sensor.temperature_salon
-    - sensor.humidity_salon
+    - sensor.humidity_158d00010fb340
     - sensor.illumination_158d0001e16389
     - binary_sensor.motion_salon
     - climate.thermostat_salon_heating_1
@@ -331,7 +347,7 @@ kuchnia:
   control: hidden
   entities:
     - sensor.temperature_kuchnia
-    - sensor.humidity_salon
+    - sensor.humidity_158d00010fb340
     - binary_sensor.door_window_sensor_158d0001a223ff
     - climate.thermostat_kuchnia_heating_1
 
@@ -340,14 +356,14 @@ goscinny:
   control: hidden
   entities:
     - sensor.temperature_goscinny
-    - sensor.humidity_goscinny
+    - sensor.humidity_158d0001c09930
 
 antresola:
   name: Antresola
   control: hidden
   entities:
   - sensor.temperature_antresola
-  - sensor.humidity_antresola
+  - sensor.humidity_158d000149cc8c
   - sensor.illumination_f0b429cc6f0b
   - binary_sensor.motion_antresola
   - climate.thermostat_antresola_heating_1
@@ -358,7 +374,7 @@ gabinet:
   control: hidden
   entities:
   - sensor.temperature_gabinet
-  - sensor.humidity_gabinet
+  - sensor.humidity_158d0001826f20
   - switch.wake_on_lan_stacjonarny
 
 pokoj_antek:
@@ -366,7 +382,7 @@ pokoj_antek:
   control: hidden
   entities:
     - sensor.temperature_antek
-    - sensor.humidity_antek
+    - sensor.humidity_158d00010fb2cd
     - sensor.illumination_158d00016612fb
     - binary_sensor.motion_sensor_158d00016612fb
     - climate.thermostat_antek_heating_1
@@ -377,27 +393,29 @@ sypialnia:
   control: hidden
   entities:
     - sensor.temperature_sypialnia
-    - sensor.humidity_sypialnia
+    - sensor.humidity_158d0001100416
     - sensor.illumination_158d000165ffb8
     - binary_sensor.motion_sensor_158d000165ffb8
     - binary_sensor.door_window_sensor_158d0001a5dbdb
     - climate.thermostat_sypialnia_heating_1
     - light.yeelight_lightstrip_sypialnia
-    - switch.sonoff_single
+#    - switch.sonoff_single
 
 pracownia:
   name: Pracownia
   control: hidden
   entities:
-    - binary_sensor.door_window_sensor_158d00019fd83f 
-    - switch.sonoff_triple
+    - sensor.temperature_pracownia
+    - sensor.humidity_158d000201d5d5
+    - binary_sensor.door_window_sensor_158d00019fd83f
+#    - switch.sonoff_triple
 
 lazienka:
   name: Łazienka
   control: hidden
   entities:
     - sensor.temperature_lazienka
-    - sensor.humidity_lazienka
+    - sensor.humidity_158d000129a158
     - climate.thermostat_lazienka_heating_1
 
 windows:

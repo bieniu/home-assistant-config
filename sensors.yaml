@@ -31,13 +31,13 @@
 
 - platform: google_travel_time
   name: Edyta To Home
-  api_key: !secret distance_api_key
+  api_key: !secret google_api_key
   origin: device_tracker.edyta_iphone
   destination: zone.home
 
 - platform: google_travel_time
   name: Maciek To Home
-  api_key: !secret distance_api_key
+  api_key: !secret google_api_key
   origin: device_tracker.maciek_gps_bt
   destination: zone.home
 
@@ -54,11 +54,8 @@
   update_inverval: '00:10'
   monitored_conditions:
     - summary
-    - temperature
     - icon
     - wind_speed
-    - humidity
-    - pressure
     - precip_probability
 
 - platform: speedtest
@@ -86,23 +83,53 @@
     - sensor.temperature_sypialnia
     - sensor.temperature_lazienka
     - sensor.temperature_goscinny
+    - sensor.temperature_pracownia
   round_digits: 1
 
 - platform: min_max
   type: mean
   name: Humidity Indoor
   entity_ids:
-    - sensor.humidity_salon
-    - sensor.humidity_antresola
-    - sensor.humidity_gabinet
-    - sensor.humidity_antek
-    - sensor.humidity_sypialnia
-    - sensor.humidity_lazienka
-    - sensor.humidity_goscinny
+    - sensor.humidity_158d00010fb340
+    - sensor.humidity_158d000149cc8c
+    - sensor.humidity_158d0001826f20
+    - sensor.humidity_158d00010fb2cd
+    - sensor.humidity_158d0001100416
+    - sensor.humidity_158d000129a158
+    - sensor.humidity_158d0001c09930
+    - sensor.humidity_158d000201d5d5
   round_digits: 0
 
 - platform: template
   sensors:
+    temperature_outdoor:
+      friendly_name: Temperatura zewnętrzna
+      unit_of_measurement: '°C'
+      value_template: >-
+         {% if states.sensor.temperature_158d0002273538 %}
+            {% if states.sensor.temperature_158d0002273538.state != 'unknown' %}
+               {{ (states.sensor.temperature_158d0002273538.state | float - 0.5) | round(1) }}
+            {% else %}
+               {{ states.sensor.temperature_outdoor.state }}
+            {% endif %}
+         {% else %}
+            {{ states.sensor.temperature_outdoor.state }}
+         {% endif %}
+
+    temperature_pracownia:
+      friendly_name: Temperatura
+      unit_of_measurement: '°C'
+      value_template: >-
+         {% if states.sensor.temperature_158d000201d5d5 %}
+            {% if states.sensor.temperature_158d000201d5d5.state != 'unknown' %}
+               {{ (states.sensor.temperature_158d000201d5d5.state | float - 0.5) | round(1) }}
+            {% else %}
+               {{ states.sensor.temperature_pracownia.state }}
+            {% endif %}
+         {% else %}
+            {{ states.sensor.temperature_pracownia.state }}
+         {% endif %}
+
     temperature_kuchnia:
       friendly_name: Temperatura
       unit_of_measurement: '°C'
@@ -131,20 +158,6 @@
             {{ states.sensor.temperature_salon.state }}
          {% endif %}
 
-    humidity_salon:
-      friendly_name: Wilgotność
-      unit_of_measurement: '%'
-      value_template: >-
-         {% if states.sensor.humidity_158d00010fb340 %}
-            {% if states.sensor.humidity_158d00010fb340.state != 'unknown' %}
-               {{ states.sensor.humidity_158d00010fb340.state | round(0) }}
-            {% else %}
-               {{ states.sensor.humidity_salon.state }}
-            {% endif %}
-         {% else %}
-            {{ states.sensor.humidity_salon.state }}
-         {% endif %}
-
     temperature_sypialnia:
       friendly_name: Temperatura
       unit_of_measurement: '°C'
@@ -157,20 +170,6 @@
             {% endif %}
          {% else %}
             {{ states.sensor.temperature_sypialnia.state }}
-         {% endif %}
-
-    humidity_sypialnia:
-      friendly_name: Wilgotność
-      unit_of_measurement: '%'
-      value_template: >-
-         {% if states.sensor.humidity_158d0001100416 %}
-            {% if states.sensor.humidity_158d0001100416.state != 'unknown' %}
-               {{ states.sensor.humidity_158d0001100416.state | round(0) }}
-            {% else %}
-               {{ states.sensor.humidity_sypialnia.state }}
-            {% endif %}
-         {% else %}
-            {{ states.sensor.humidity_sypialnia.state }}
          {% endif %}
 
     temperature_antek:
@@ -201,60 +200,18 @@
             {{ states.sensor.temperature_gabinet.state }}
          {% endif %}
 
-    humidity_gabinet:
-      friendly_name: Wilgotność
-      unit_of_measurement: '%'
-      value_template: >-
-         {% if states.sensor.humidity_158d0001826f20 %}
-            {% if states.sensor.humidity_158d0001826f20.state != 'unknown' %}
-               {{ states.sensor.humidity_158d0001826f20.state | round(0) }}
-            {% else %}
-               {{ states.sensor.humidity_gabinet.state }}
-            {% endif %}
-         {% else %}
-            {{ states.sensor.humidity_gabinet.state }}
-         {% endif %}
-
-    humidity_antek:
-      friendly_name: Wilgotność
-      unit_of_measurement: '%'
-      value_template: >-
-         {% if states.sensor.humidity_158d00010fb2cd %}
-            {% if states.sensor.humidity_158d00010fb2cd.state != 'unknown' %}
-               {{ states.sensor.humidity_158d00010fb2cd.state | round(0) }}
-            {% else %}
-               {{ states.sensor.humidity_antek.state }}
-            {% endif %}
-         {% else %}
-            {{ states.sensor.humidity_antek.state }}
-         {% endif %}
-
-    temperature_lazienka:
+    temperature_antresola:
       friendly_name: Temperatura
       unit_of_measurement: '°C'
       value_template: >-
-         {% if states.sensor.temperature_158d000129a158 %}
-            {% if states.sensor.temperature_158d000129a158.state != 'unknown' %}
-               {{ (states.sensor.temperature_158d000129a158.state | float - 0.5) | round(1) }}
+         {% if states.sensor.temperature_158d000149cc8c %}
+            {% if states.sensor.temperature_158d000149cc8c.state != 'unknown' %}
+               {{ (states.sensor.temperature_158d000149cc8c.state | float - 0.5) | round(1) }}
             {% else %}
-               {{ states.sensor.temperature_lazienka.state }}
+               {{ states.sensor.temperature_antresola.state }}
             {% endif %}
          {% else %}
-            {{ states.sensor.temperature_lazienka.state }}
-         {% endif %}
-
-    humidity_lazienka:
-      friendly_name: Wilgotność
-      unit_of_measurement: '%'
-      value_template: >-
-         {% if states.sensor.humidity_158d000129a158 %}
-            {% if states.sensor.humidity_158d000129a158.state != 'unknown' %}
-               {{ states.sensor.humidity_158d000129a158.state | round(0) }}
-            {% else %}
-               {{ states.sensor.humidity_lazienka.state }}
-            {% endif %}
-         {% else %}
-            {{ states.sensor.humidity_lazienka.state }}
+            {{ states.sensor.temperature_antresola.state }}
          {% endif %}
 
     temperature_goscinny:
@@ -271,46 +228,18 @@
             {{ states.sensor.temperature_goscinny.state }}
          {% endif %}
 
-    humidity_goscinny:
-      friendly_name: Wilgotność
-      unit_of_measurement: '%'
-      value_template: >-
-         {% if states.sensor.humidity_158d0001c09930 %}
-            {% if states.sensor.humidity_158d0001c09930.state != 'unknown' %}
-               {{ states.sensor.humidity_158d0001c09930.state | round(0) }}
-            {% else %}
-               {{ states.sensor.humidity_goscinny.state }}
-            {% endif %}
-         {% else %}
-            {{ states.sensor.humidity_goscinny.state }}
-         {% endif %}
-
-    temperature_antresola:
+    temperature_lazienka:
       friendly_name: Temperatura
       unit_of_measurement: '°C'
       value_template: >-
-         {% if states.sensor.temperature_158d000149cc8c %}
-            {% if states.sensor.temperature_158d000149cc8c.state != 'unknown' %}
-               {{ (states.sensor.temperature_158d000149cc8c.state | float - 0.5) | round(1) }}
+         {% if states.sensor.temperature_158d000129a158 %}
+            {% if states.sensor.temperature_158d000129a158.state != 'unknown' %}
+               {{ (states.sensor.temperature_158d000129a158.state | float - 0.5) | round(1) }}
             {% else %}
-               {{ states.sensor.temperature_antresola.state }}
+               {{ states.sensor.temperature_lazienka.state }}
             {% endif %}
          {% else %}
-            {{ states.sensor.temperature_antresola.state }}
-         {% endif %}
-
-    humidity_antresola:
-      friendly_name: Wilgotność
-      unit_of_measurement: '%'
-      value_template: >-
-         {% if states.sensor.humidity_158d000149cc8c %}
-            {% if states.sensor.humidity_158d000149cc8c.state != 'unknown' %}
-               {{ states.sensor.humidity_158d000149cc8c.state | round(0) }}
-            {% else %}
-               {{ states.sensor.humidity_antresola.state }}
-            {% endif %}
-         {% else %}
-            {{ states.sensor.humidity_antresola.state }}
+            {{ states.sensor.temperature_lazienka.state }}
          {% endif %}
 
     battery_thermostat_antresola:
@@ -443,6 +372,52 @@
             {% if states.zwave.thermostat_antek.attributes.battery_level != 'unknown' %}
                {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
                {% set charge = (states.zwave.thermostat_antek.attributes.battery_level | float / 10) | round %}
+               mdi:battery{{ battery[charge] }}
+            {% else %}
+               mdi:battery-unknown
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
+    battery_temp_humi_sensor_outdoor:
+      friendly_name: sensor temperatury zewnętrznej
+      unit_of_measurement: '%'
+      value_template: >-
+         {% if states.sensor.temperature_158d0002273538.attributes.battery_level %}
+            {{ states.sensor.temperature_158d0002273538.attributes.battery_level | round }}
+         {% else %}
+            {{ states.sensor.battery_temp_humi_sensor_outdoor.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.sensor.temperature_158d0002273538.attributes.battery_level %}
+            {% if states.sensor.temperature_158d0002273538.attributes.battery_level != 'unknown' %}
+               {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
+               {% set charge = (states.sensor.temperature_158d0002273538.attributes.battery_level | float / 10) | round %}
+               mdi:battery{{ battery[charge] }}
+            {% else %}
+               mdi:battery-unknown
+            {% endif %}
+         {% else %}
+            mdi:battery-unknown
+         {% endif %}
+
+    battery_temp_humi_sensor_pracownia:
+      friendly_name: sensor temperatury pracownia
+      unit_of_measurement: '%'
+      value_template: >-
+         {% if states.sensor.temperature_158d000201d5d5.attributes.battery_level %}
+            {{ states.sensor.temperature_158d000201d5d5.attributes.battery_level | round }}
+         {% else %}
+            {{ states.sensor.battery_temp_humi_sensor_pracownia.state }}
+         {% endif %}
+
+      icon_template: >-
+         {% if states.sensor.temperature_158d000201d5d5.attributes.battery_level %}
+            {% if states.sensor.temperature_158d000201d5d5.attributes.battery_level != 'unknown' %}
+               {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
+               {% set charge = (states.sensor.temperature_158d000201d5d5.attributes.battery_level | float / 10) | round %}
                mdi:battery{{ battery[charge] }}
             {% else %}
                mdi:battery-unknown
@@ -954,26 +929,6 @@
             {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom("%H:%M") }}
          {% else %}
             {{ states.sensor.sunset.state }}
-         {% endif %}
-
-    dark_sky_pressure_custom:
-      friendly_name: Ciśnienie
-      unit_of_measurement: 'hPa'
-      value_template: >-
-         {% if states.sensor.dark_sky_pressure.state %}
-            {{ states.sensor.dark_sky_pressure.state }}
-         {% else %}
-            {{ states.sensor.dark_sky_pressure_custom.state }}
-         {% endif %}
-
-    dark_sky_humidity_custom:
-      friendly_name: Wilgotność zewnętrzna
-      unit_of_measurement: '%'
-      value_template: >-
-         {% if states.sensor.dark_sky_humidity.state %}
-            {{ states.sensor.dark_sky_humidity.state | round(0) }}
-         {% else %}
-            {{ states.sensor.dark_sky_humidity_custom.state }}
          {% endif %}
 
     dark_sky_precip_probability_custom:

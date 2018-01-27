@@ -117,14 +117,14 @@
     value_template: >
        {% macro zwave_dead() %}
           {% for item in states.zwave %}
-             {%- if (item.state != 'Ready') and (item.state != 'Sleeping')%}{% if not loop.first and not loop.last %}, {% endif %}{% if loop.last %}, {% endif %}{{ item.entity_id }}{% endif -%}
+             {%- if (item.state != 'ready') and (item.state != 'sleeping') and (item.state != 'initializing') %}{% if not loop.first and not loop.last %}, {% endif %}{% if loop.last %}, {% endif %}{{ item.entity_id }}{% endif -%}
           {% endfor %}
        {% endmacro %}
        {{ zwave_dead() | trim != '' }}
   condition:
     condition: numeric_state
-    entity_id: sensor.uptime
-    above: 10
+    entity_id: sensor.home_assistant_uptime
+    above: 3
   action:
     service: notify.html5
     data_template:
@@ -132,7 +132,7 @@
       message: >
          {% macro zwave_dead() %}
             {% for item in states.zwave %}
-               {%- if (item.state != 'Dead') and (item.state != 'Probe')%}{% if not loop.first and not loop.last %}, {% endif %}{% if loop.last %}, {% endif %}{{ item.entity_id }}{% endif -%}
+               {%- if (item.state != 'ready') and (item.state != 'sleeping') and (item.state != 'initializing') %}{% if not loop.first and not loop.last %}, {% endif %}{% if loop.last %}, {% endif %}{{ item.entity_id }}{% endif -%}
             {% endfor %}
          {% endmacro %}
          Wystąpił błąd urządzenia Z-Wave {{ zwave_dead() | trim }}. Wymagany restart Home Assistant'a.
@@ -930,28 +930,28 @@
 
 ## CHRISTMAS LIGHTS ##
 # włączenie lampek świątecznych o zachodzie słońca
-- id: light_turn_on_christmas_lights
-  alias: 'Light Turn On Christmas Lights'
-  trigger:
-    platform: sun
-    event: sunset
-  action:
-    service: switch.turn_on
-    entity_id:
-      - switch.sonoff_single
-      - switch.sonoff_triple
+#- id: light_turn_on_christmas_lights
+#  alias: 'Light Turn On Christmas Lights'
+#  trigger:
+#    platform: sun
+#    event: sunset
+#  action:
+#    service: switch.turn_on
+#    entity_id:
+#      - switch.sonoff_single
+#      - switch.sonoff_triple
 
 # wyłączenie lampek świątecznych o wschodzie słońca i o północy
-- id: light_turn_off_christmas_lights
-  alias: 'Light Turn Off Christmas Lights'
-  trigger:
-    platform: time
-    at: '00:00:00'
-  action:
-    service: switch.turn_off
-    entity_id:
-      - switch.sonoff_single
-      - switch.sonoff_triple
+#- id: light_turn_off_christmas_lights
+#  alias: 'Light Turn Off Christmas Lights'
+#  trigger:
+#    platform: time
+#    at: '00:00:00'
+#  action:
+#    service: switch.turn_off
+#    entity_id:
+#      - switch.sonoff_single
+#      - switch.sonoff_triple
 
 ## SALON ##
 # standardowa scena oświetlenia w salonie
@@ -1103,7 +1103,7 @@
     service: switch.toggle
     entity_id: switch.light_salon_switch
 
-# włączanie lampy w salonie jak pojawi się ruch, wyłączy światła lub TV
+# włączanie lampy w salonie jak pojawi się ruch lub zrobi się ciemno lub wyłączone światło/TV
 - id: light_turn_on_salon_lamp
   alias: 'Light Turn On Salon Lamp'
   trigger:
@@ -1113,6 +1113,9 @@
         - binary_sensor.motion_sensor_158d000120a226
       from: 'off'
       to: 'on'
+    - platform: numeric_state
+      entity_id: sensor.illumination_158d0001e16389
+      below: 10
     - platform: state
       entity_id: switch.light_salon_switch
       from: 'on'
@@ -1122,20 +1125,20 @@
       from: 'on'
       to: 'off'
     - platform: state
+      entity_id: switch.light_lamp_salon
+      from: 'on'
+      to: 'off'
+    - platform: state
       entity_id: media_player.denon
       to: 'off'
-    - platform: numeric_state
-      entity_id: sensor.illumination_158d0001e16389
-      above: 10
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: input_boolean.away_mode
         state: 'off'
-      - condition: numeric_state
-        entity_id: sensor.illumination_158d0001e16389
-        below: 10
+      - condition: template
+        value_template: "{{ (states.sensor.illumination_158d0001e16389.state | int < 10) or (states.sensor.illumination_f0b429cc6f0b.state | int < 60) }}"
       - condition: state
         entity_id: switch.light_salon_switch
         state: 'off'
@@ -1152,7 +1155,7 @@
         entity_id: media_player.denon
         state: 'off'
       - condition: state
-        entity_id: binary_sensor.motion_sensor_158d000121c604
+        entity_id: binary_sensor.motion_salon
         state: 'on'
       - condition: or
         conditions:
@@ -1182,6 +1185,9 @@
       entity_id: switch.light_salon_switch_2
       from: 'off'
       to: 'on'
+    - platform: numeric_state
+      entity_id: sensor.illumination_158d0001e16389
+      above: 20
   condition:
     condition: state
     entity_id: input_boolean.salon_lamp_motion_on

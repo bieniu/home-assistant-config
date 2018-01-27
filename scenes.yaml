@@ -113,7 +113,7 @@
     switch.light_salon_switch:
       state: on
     switch.light_lamp_salon:
-      state: on
+      state: off
 
 - name: dyskoteka
   entities:

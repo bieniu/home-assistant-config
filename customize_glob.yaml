@@ -1,8 +1,34 @@
-#### TEMP & HUMIDITY SENSORS ####
-'sensor.temperature*':
+#### TEMP SENSORS ####
+'sensor.temperature_*':
   icon: mdi:thermometer
-'sensor.humidity*':
+
+#### HUMIDITY SENSORS ####
+'sensor.humidity_*':
   icon: mdi:water-percent
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    state: ${Math.round(state)}
+
+#### MOTION SENSORS ####
+'binary_sensor.motion_*':
+  friendly_name: Ruch
+  icon: mdi:run
+  device_class: motion
+  custom_ui_state_card: state-card-custom-ui
+  show_last_changed: true
+
+#### WINDOW/DOOR SENSORS ####
+'binary_sensor.door_window_sensor_*':
+  device_class: opening
+  icon: mdi:window-open
+
+#### ILLUMINATION SENSORS ####
+'sensor.illumination_*':
+  icon: mdi:lightbulb-on-outline
+  friendly_name: Natężenie światła
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    state: ${Math.round(state)}
 
 #### CLIMATE ####
 'climate.thermostat*':
@@ -18,24 +44,6 @@
 'sensor.*energy*':
   icon: mdi:flash-outline
 
-#### MOTION ####
-'binary_sensor.motion_*':
-  friendly_name: Ruch
-  icon: mdi:run
-  device_class: motion
-  custom_ui_state_card: state-card-custom-ui
-  show_last_changed: true
-
-#### WINDOW ####
-'binary_sensor.door_window_sensor_*':
-  device_class: opening
-  icon: mdi:window-open
-
-#### ILLUMINATION ####
-'sensor.illumination_*':
-  icon: mdi:lightbulb-on-outline
-  friendly_name: Natężenie światła
-
 #### SONOFF ####
 'binary_sensor.sonoff_*_status':
   icon: mdi:toggle-switch-off
@@ -45,24 +53,24 @@
   friendly_name: LEDy
   icon: mdi:led-variant-on
 
-#### OTHER ####
-'binary_sensor.yeelight_lightstrip_*_status':
-  icon: mdi:led-variant-outline
-
-'binary_sensor.yeelight_bulb_*_status':
-  icon: mdi:lightbulb-outline
-
+#### BATTERY SENSORS ####
 'sensor.battery_*':
   custom_ui_state_card: state-card-custom-ui
   templates:
     theme: if (state < 10) return 'red'; else return 'default';
 
+#### NETWORK DEVICES ####
+'binary_sensor.yeelight_lightstrip_*_status':
+  icon: mdi:led-variant-outline
+'binary_sensor.yeelight_bulb_*_status':
+  icon: mdi:lightbulb-outline
 'binary_sensor.*_status':
   device_class: connectivity
   custom_ui_state_card: state-card-custom-ui
   theme: 'grey'
 
+#### Z-WAVE ####
 'zwave.*':
   custom_ui_state_card: state-card-custom-ui
   templates:
-    theme: if (attributes.is_failed === 'true') return 'red'; else return 'default';
+    theme: if (state === 'dead') return 'red'; else return 'default';

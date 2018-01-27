@@ -123,30 +123,30 @@
       value_template: "{{ is_state('device_tracker.brother', 'home') }}"
       friendly_name: Brother HL-L2340DW
 
-    sonoff_lamp_status:
-      friendly_name: Sonoff Basic [1]
-      value_template: "{{ is_state('device_tracker.sonoff_lamp', 'home') }}"
+    sonoff_switch_lamp_status:
+      friendly_name: Sonoff Basic
+      value_template: "{{ is_state('device_tracker.sonoff_switch_lamp', 'home') }}"
 
-    sonoff_switch_single_status:
-      friendly_name: Sonoff Basic [2]
-      value_template: "{{ is_state('device_tracker.sonoff_switch_single', 'home') }}"
+#    sonoff_switch_single_status:
+#      friendly_name: Sonoff Basic [2]
+#      value_template: "{{ is_state('device_tracker.sonoff_switch_single', 'home') }}"
 
-    sonoff_switch_triple_status:
-      friendly_name: Sonoff Basic [3]
-      value_template: "{{ is_state('device_tracker.sonoff_switch_triple', 'home') }}"
+#    sonoff_switch_triple_status:
+#      friendly_name: Sonoff Basic [3]
+#      value_template: "{{ is_state('device_tracker.sonoff_switch_triple', 'home') }}"
 
     yeelight_bulb_salon1_status:
-      friendly_name: Xiaomi Yeelight YLDP02YL [1]
+      friendly_name: Yeelight Bulb YLDP02YL [1]
       value_template: "{{ is_state('device_tracker.yeelight_bulb_salon1', 'home') }}"
 
     yeelight_bulb_salon2_status:
-      friendly_name: Xiaomi Yeelight YLDP02YL [2]
+      friendly_name: Yeelight Bulb YLDP02YL [2]
       value_template: "{{ is_state('device_tracker.yeelight_bulb_salon2', 'home') }}"
 
     yeelight_lightstrip_sypialnia_status:
-      friendly_name: Xiaomi Yeelight Lightstrip YLDD01YL [1]
+      friendly_name: Yeelight Lightstrip YLDD01YL [1]
       value_template: "{{ is_state('device_tracker.yeelight_lightstrip_sypialnia', 'home') }}"
 
     yeelight_lightstrip_antek_status:
-      friendly_name: Xiaomi Yeelight Lightstrip YLDD01YL [2]
+      friendly_name: Yeelight Lightstrip YLDD01YL [2]
       value_template: "{{ is_state('device_tracker.yeelight_lightstrip_antek', 'home') }}"

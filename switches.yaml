@@ -9,30 +9,30 @@
 
 - platform: mqtt
   name: "Light Lamp Salon"
-  command_topic: "cmnd/sonoff-lamp/power"
-  state_topic: "stat/sonoff-lamp/POWER"
+  command_topic: "cmnd/sonoff-switch-lamp/power"
+  state_topic: "stat/sonoff-switch-lamp/POWER"
   qos: 1
   payload_on: "ON"
   payload_off: "OFF"
   retain: true
 
-- platform: mqtt
-  name: "Sonoff Single"
-  command_topic: "cmnd/sonoff-switch-single/power"
-  state_topic: "stat/sonoff-switch-single/POWER"
-  qos: 1
-  payload_on: "ON"
-  payload_off: "OFF"
-  retain: true
+#- platform: mqtt
+#  name: "Sonoff Single"
+#  command_topic: "cmnd/sonoff-switch-single/power"
+#  state_topic: "stat/sonoff-switch-single/POWER"
+#  qos: 1
+#  payload_on: "ON"
+#  payload_off: "OFF"
+#  retain: true
 
-- platform: mqtt
-  name: "Sonoff Triple"
-  command_topic: "cmnd/sonoff-switch-triple/power"
-  state_topic: "stat/sonoff-switch-triple/POWER"
-  qos: 1
-  payload_on: "ON"
-  payload_off: "OFF"
-  retain: true
+#- platform: mqtt
+#  name: "Sonoff Triple"
+#  command_topic: "cmnd/sonoff-switch-triple/power"
+#  state_topic: "stat/sonoff-switch-triple/POWER"
+#  qos: 1
+#  payload_on: "ON"
+#  payload_off: "OFF"
+#  retain: true
 
 - platform: flux
   lights: group.bulbs_salon

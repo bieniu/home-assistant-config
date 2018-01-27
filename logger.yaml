@@ -2,7 +2,6 @@ default: warning
 logs:
   homeassistant.components.automation: info
   homeassistant.components.sensor.template: error
-  homeassistant.components.sensor.snmp: fatal
   homeassistant.components.sensor.statistics: fatal
   homeassistant.components.zwave: info
   homeassistant.components.sensor: error
@@ -10,10 +9,8 @@ logs:
   homeassistant.helpers.entity: fatal
   homeassistant.components.sensor.darksky: fatal
   homeassistant.components.recorder: info
+  homeassistant.components.media_player.spotify: info
 #  homeassistant.components.sensor.xiaomi_aqara: debug
 #  homeassistant.components.xiaomi_aqara: debug
 #  homeassistant.components.media_player: info
-#  DenonAVR: info
 #  homeassistant.components.device_tracker: debug
-#  homeassistant.components.mqtt: debug
-#  homeassistant.components.updater: debug

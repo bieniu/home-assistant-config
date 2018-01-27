@@ -8,3 +8,5 @@ hide_attributes:
   - location
   - no_motion_since
   - battery_level
+  - state
+columns: [280, 560, 840, 1120, 1400, 1680]

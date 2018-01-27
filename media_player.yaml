@@ -15,7 +15,7 @@
 #  client_secret: !secret spotify_client_secret
 #  cache_path: /home/homeassistant/.homeassistant/.spotify-token-cache
 #  aliases:
-#    5d660f2ece57c2b170da6eef091825c8402d4580: 'Gabinet'
+#    0267cda31c46ce6ea8e82dc65cd44ca68312249d: 'Gabinet'
 #    d21e573cdb9bd1b7576712f4d73862c355997e74: 'Salon'
 #- platform: cast
 #  host: !secret androidtv_hostname
