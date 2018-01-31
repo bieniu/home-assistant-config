@@ -56,7 +56,8 @@ climate:
   view: yes
   entities:
     - group.weather
-    - group.weather_graphs
+    - group.weather_graphs_01
+    - group.weather_graphs_02
 
 misc:
   name: Różne
@@ -83,12 +84,17 @@ weather:
     - sensor.temperature_indoor
     - sensor.humidity_indoor
 
-weather graphs:
+weather graphs 01:
   name: Wykresy
   entities:
     - history_graph.temperatura
     - history_graph.wilgotnosc
+
+weather graphs 02:
+  name: Wykresy
+  entities:
     - history_graph.cisnienie
+    - history_graph.predkosc_wiatru
 
 denon:
   entities: media_player.denon

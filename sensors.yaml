@@ -964,7 +964,7 @@
                częściowe zachmurzenie
             {% elif states.sensor.dark_sky_summary.state == 'Clear' %}
                bezchmurnie
-            {% elif states.sensor.dark_sky_summary.state == 'Breezy and Mostly Cloudy' %}
+            {% elif (states.sensor.dark_sky_summary.state == 'Breezy and Mostly Cloudy' or states.sensor.dark_sky_summary.state == 'Windy and Mostly Cloudy') %}
                wietrznie i przewaga chmur
             {% elif states.sensor.dark_sky_summary.state == 'Drizzle and Breezy' %}
                wietrznie i mżawka
@@ -982,7 +982,7 @@
                wietrznie i obfity deszcz
             {% elif states.sensor.dark_sky_summary.state == 'Breezy and Partly Cloudy' %}
                wietrznie i częściowe zachmurzenie
-            {% elif states.sensor.dark_sky_summary.state == 'Breezy and Overcast' %}
+            {% elif (states.sensor.dark_sky_summary.state == 'Breezy and Overcast' or states.sensor.dark_sky_summary.state == 'Windy and Overcast') %}
                wietrznie i pochmurno
             {% elif states.sensor.dark_sky_summary.state == 'Breezy' %}
                wietrznie

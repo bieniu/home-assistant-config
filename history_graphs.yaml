@@ -29,3 +29,9 @@ pressure:
   entities: sensor.pressure_158d0002273538
   hours_to_show: 48
   refresh: 60
+
+wind_speed:
+  name: Prędkość wiatru
+  entities: sensor.dark_sky_wind_speed
+  hours_to_show: 48
+  refresh: 60

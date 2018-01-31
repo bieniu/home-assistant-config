@@ -101,28 +101,30 @@ group.zwave_devices:
   order: 26
 group.weather:
   order: 27
-group.weather_graphs:
+group.weather_graphs_01:
   order: 28
-group.heating_settings:
+group.weather_graphs_02:
   order: 29
-group.heating_hours:
+group.heating_settings:
   order: 30
-group.heating_temps:
+group.heating_hours:
   order: 31
-group.scripts:
+group.heating_temps:
   order: 32
-group.energy_consumption:
+group.scripts:
   order: 33
-group.batteries_thermostats:
+group.energy_consumption:
   order: 34
-group.batteries_switches:
+group.batteries_thermostats:
   order: 35
-group.batteries_temp_sensors:
+group.batteries_switches:
   order: 36
-group.batteries_windows_sensors:
+group.batteries_temp_sensors:
   order: 37
-group.batteries_motion_sensors:
+group.batteries_windows_sensors:
   order: 38
+group.batteries_motion_sensors:
+  order: 39
 
 #### WEATHER ####
 sensor.dark_sky_temperature:

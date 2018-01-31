@@ -6,7 +6,9 @@ hide_attributes:
   - value_instance
   - value_id
   - location
-  - no_motion_since
+  - no motion since
   - battery_level
   - state
-columns: [280, 560, 840, 1120, 1400, 1680]
+  - templates
+  - theme
+columns: [280, 560, 840, 1120, 1400]
