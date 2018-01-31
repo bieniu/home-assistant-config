@@ -1,6 +1,5 @@
-stacjonarny_off: !secret desktop_turn_off_command
-#stacjonarny_off: "bash /home/homeassistant/.homeassistant/scripts/stacjonarny-off.sh"
+stacjonarny_off: !secret desktop_turn_off_cmd
 reboot_pi: "sudo reboot"
 shutdown_pi: "sudo shutdown -h now"
 restart_hass: "sudo systemctl restart home-assistant.service"
-reboot_router: "echo 'reboot' | ssh maciek@router"
+reboot_router: !secret router_reboot_cmd
