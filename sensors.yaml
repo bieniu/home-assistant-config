@@ -1030,30 +1030,30 @@
   name: Home Assistant Uptime
   unit_of_measurement: minutes
 
-- platform: scrape
-  resource: !secret brother_status_url
-  name: printer_toner
-  select: '.tonerremain'
-  attribute: 'height'
-  scan_interval: 1800
-  value_template: '{{ ((value | int) / 60 * 100) | round }}'
-  unit_of_measurement: '%'
+#- platform: scrape
+#  resource: !secret brother_status_url
+#  name: printer_toner
+#  select: '.tonerremain'
+#  attribute: 'height'
+#  scan_interval: 1800
+#  value_template: '{{ ((value | int) / 60 * 100) | round }}'
+#  unit_of_measurement: '%'
 
-- platform: scrape
-  resource: !secret brother_information_url
-  name: printer_printed_pages
-  select: 'dd:nth-of-type(5)'
-  scan_interval: 300
-  value_template: '{{ (value | int) }}'
-  unit_of_measurement: 'str'
+#- platform: scrape
+#  resource: !secret brother_information_url
+#  name: printer_printed_pages
+#  select: 'dd:nth-of-type(5)'
+#  scan_interval: 300
+#  value_template: '{{ (value | int) }}'
+#  unit_of_measurement: 'str'
 
-- platform: scrape
-  resource: !secret brother_information_url
-  name: printer_drum_usage
-  select: 'dd:nth-of-type(9)'
-  scan_interval: 1800
-  value_template: '{{ 100 - ((value | replace("(", "") | replace("%)", "")) | int) }}'
-  unit_of_measurement: '%'
+#- platform: scrape
+#  resource: !secret brother_information_url
+#  name: printer_drum_usage
+#  select: 'dd:nth-of-type(9)'
+#  scan_interval: 1800
+#  value_template: '{{ 100 - ((value | replace("(", "") | replace("%)", "")) | int) }}'
+#  unit_of_measurement: '%'
 
 - platform: scrape
   resource: !secret brother_status_url
