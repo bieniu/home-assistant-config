@@ -325,21 +325,6 @@ binary_sensor.door_window_sensor_158d0001a223ff:
 sensor.printer_status:
   friendly_name: Status drukarki
   icon: mdi:printer
-#sensor.printer_printed_pages:
-#  friendly_name: Wydrukowano
-#  icon: mdi:file-document
-#sensor.printer_drum_usage:
-#  friendly_name: Zużycie bębna
-#  icon: mdi:chart-donut
-#  custom_ui_state_card: state-card-custom-ui
-#  templates:
-#    theme: if (state > 90) return 'red'; else return 'default';
-#sensor.printer_toner:
-#  friendly_name: Pozostały toner
-#  icon: mdi:flask-outline
-#  custom_ui_state_card: state-card-custom-ui
-#  templates:
-#    theme: if (state < 10) return 'red'; else return 'default';
 
 #### SONOFF ####
 switch.light_lamp_salon:
