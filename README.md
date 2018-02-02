@@ -28,7 +28,7 @@
 * Synology DS110j [NAS]
 * Brother HL-L2340D [printer]
 * iPhone [iOS Home Assistant app]
-* OnePlus One [GPSLogger app]
+* OnePlus One [Android phone by [GPSLogger](https://play.google.com/store/apps/details?id=com.mendhak.gpslogger) app]
 
 ## Home Assistant Custom Components
 
