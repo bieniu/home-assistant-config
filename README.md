@@ -23,12 +23,12 @@
 * Logitech Harmony Ultimate [remote]
 * Denon AVR-X2100W [AV receiver]
 * PlayStation 4 Pro
-* Xiaomi Mi Box 4K [AndroidTV box by [Tasker app](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm)]
+* Xiaomi Mi Box 4K [AndroidTV box by [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm)]
 * Dune BD Prime 3.0 [network media player by custom shell script]
 * Synology DS110j [NAS]
 * Brother HL-L2340D [printer by custom python script]
-* iPhone [iOS [Home Assistant app](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401)]
-* OnePlus One [Android phone by [GPSLogger app](https://play.google.com/store/apps/details?id=com.mendhak.gpslogger)]
+* iPhone [iOS [Home Assistant](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401)]
+* OnePlus One [Android phone by [GPSLogger](https://play.google.com/store/apps/details?id=com.mendhak.gpslogger)]
 
 ## Home Assistant Custom Components
 
