@@ -9,13 +9,13 @@
 * Danfoss Z-Wave Thermostats [014G0013]
 * Fibaro FGS223 Double Relay
 * Xiaomi Mi Smart Home Gateway 2
-* Xiaomi Temperature/Humidity Sensors
+* Xiaomi Temperature/Humidity/Pressure Sensors
 * Xiaomi Motion/Illumination Sensors
 * Xiaomi Window/Door Sensors
 * Xiaomi Switches
 * Xiaomi Yeelight Color Bulbs [YLDP02YL]
 * Xiaomi Yeelight Lightstrips [YLDD01YL]
-* Sonoff Basic Switches [Tasmota firmware]
+* Sonoff Basic Switches [[Tasmota firmware](https://github.com/arendst/Sonoff-Tasmota)]
 
 ## Integrated Devices
 
@@ -23,12 +23,12 @@
 * Logitech Harmony Ultimate [remote]
 * Denon AVR-X2100W [AV receiver]
 * PlayStation 4 Pro
-* Xiaomi Mi Box 4K [AndroidTV boxby Tasker]
-* Dune BD Prime 3.0 [custom shell script]
+* Xiaomi Mi Box 4K [AndroidTV box by [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm)]
+* Dune BD Prime 3.0 [network media player by custom shell script]
 * Synology DS110j [NAS]
-* Brother HL-L2340D [printer]
-* iPhone [iOS Home Assistant app]
-* OnePlus One [GPSLogger app]
+* Brother HL-L2340D [printer by custom python script]
+* iPhone [iOS [Home Assistant](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401)]
+* OnePlus One [Android phone by [GPSLogger](https://play.google.com/store/apps/details?id=com.mendhak.gpslogger)]
 
 ## Home Assistant Custom Components
 
