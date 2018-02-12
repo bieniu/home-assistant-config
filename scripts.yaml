@@ -88,7 +88,7 @@ night_mode:
       - switch.light_salon_switch
       - switch.light_salon_switch_2
       - switch.light_lamp_salon
-      - switch.wake_on_lan_stacjonarny
+      - switch.stacjonarny
       - switch.denon
 
 light_away_mode:

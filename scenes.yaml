@@ -1,11 +1,6 @@
 - name: film
   entities:
-    light.yeelight_color_bulb_salon_1:
-      state: on
-      transition: 5
-      brightness: 110
-      color_temp: 350
-    light.yeelight_color_bulb_salon_2:
+    light.bulbs_salon:
       state: on
       transition: 5
       brightness: 110
@@ -17,12 +12,7 @@
 
 - name: niebieski
   entities:
-    light.yeelight_color_bulb_salon_1:
-      state: on
-      transition: 5
-      brightness: 128
-      rgb_color: [20,20,50]
-    light.yeelight_color_bulb_salon_2:
+    light.bulbs_salon:
       state: on
       transition: 5
       brightness: 128
@@ -34,12 +24,7 @@
 
 - name: romantyczny
   entities:
-    light.yeelight_color_bulb_salon_1:
-      state: on
-      transition: 5
-      brightness: 128
-      rgb_color: [255,102,0]
-    light.yeelight_color_bulb_salon_2:
+    light.bulbs_salon:
       state: on
       transition: 5
       brightness: 128
@@ -51,12 +36,7 @@
 
 - name: fiolet
   entities:
-    light.yeelight_color_bulb_salon_1:
-      state: on
-      transition: 5
-      brightness: 200
-      rgb_color: [255,0,255]
-    light.yeelight_color_bulb_salon_2:
+    light.bulbs_salon:
       state: on
       transition: 5
       brightness: 200
@@ -68,14 +48,10 @@
 
 - name: standard
   entities:
-    light.yeelight_color_bulb_salon_1:
+    light.bulbs_salon:
       state: on
       transition: 5
-      brightness: 250
-    light.yeelight_color_bulb_salon_2:
-      state: on
-      transition: 5
-      brightness: 250
+      brightness: 255
     switch.light_salon_switch:
       state: off
     switch.light_lamp_salon:
@@ -83,12 +59,7 @@
 
 - name: czytanie
   entities:
-    light.yeelight_color_bulb_salon_1:
-      state: on
-      transition: 5
-      brightness: 220
-      color_temp: 300
-    light.yeelight_color_bulb_salon_2:
+    light.bulbs_salon:
       state: on
       transition: 5
       brightness: 220
@@ -100,15 +71,10 @@
 
 - name: jasny
   entities:
-    light.yeelight_color_bulb_salon_1:
+    light.bulbs_salon:
       state: on
       transition: 5
-      brightness: 250
-      color_temp: 240
-    light.yeelight_color_bulb_salon_2:
-      state: on
-      transition: 5
-      brightness: 250
+      brightness: 255
       color_temp: 240
     switch.light_salon_switch:
       state: on
@@ -121,9 +87,6 @@
       state: off
     switch.light_lamp_salon:
       state: off
-    light.yeelight_color_bulb_salon_1:
-      state: on
-      effect: 'Disco'
-    light.yeelight_color_bulb_salon_2:
+    light.bulbs_salon:
       state: on
       effect: 'Disco'

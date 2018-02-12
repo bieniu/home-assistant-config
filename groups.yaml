@@ -116,11 +116,11 @@ family:
   entities:
     - sensor.edyta_presence
     - sensor.maciek_presence
-    - device_tracker.grazyna
-    - device_tracker.jerzy
-    - device_tracker.romana
-    - device_tracker.agnieszka
-    - device_tracker.emil
+    - sensor.grazyna_presence
+    - sensor.jerzy_presence
+    - sensor.romana_presence
+    - sensor.agnieszka_presence
+    - sensor.emil_presence
 
 peoples:
   name: Ludzie
@@ -130,10 +130,15 @@ peoples:
     - device_tracker.edyta
     - device_tracker.edyta_iphone
     - device_tracker.agnieszka
+    - device_tracker.agnieszka_bt
     - device_tracker.emil
+    - device_tracker.emil_bt
     - device_tracker.grazyna
+    - device_tracker.grazyna_bt
     - device_tracker.jerzy
+    - device_tracker.jerzy_bt
     - device_tracker.romana
+    - device_tracker.romana_bt
     - sensor.denon_presence
 
 guests:
@@ -308,7 +313,7 @@ raspberry:
   entities:
     - sensor.cpu_used
     - sensor.raspberry_cpu_temp
-    - sensor.ram_use
+    - sensor.ram_used
     - sensor.disk_used_
     - sensor.last_boot
     - sensor.last_restart
@@ -322,14 +327,6 @@ printer:
     - sensor.printer_drum_usage
     - sensor.printer_toner
 
-bulbs salon:
-  name: Kolor żarówek
-  icon: mdi:lightbulb
-  control: hidden
-  entities:
-    - light.yeelight_color_bulb_salon_1
-    - light.yeelight_color_bulb_salon_2
-
 salon:
   name: Salon
   control: hidden
@@ -340,9 +337,9 @@ salon:
     - binary_sensor.motion_salon
     - climate.thermostat_salon_heating_1
     - switch.light_salon_switch_2
+    - light.bulbs_salon
     - switch.light_salon_switch
     - switch.light_lamp_salon
-    - group.bulbs_salon
     - input_select.light_scenes_salon
     - switch.denon
     - switch.playstation
@@ -381,7 +378,7 @@ gabinet:
   entities:
   - sensor.temperature_gabinet
   - sensor.humidity_158d0001826f20
-  - switch.wake_on_lan_stacjonarny
+  - switch.stacjonarny
 
 pokoj_antek:
   name: Pokój Antka

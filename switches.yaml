@@ -1,5 +1,5 @@
 - platform: wake_on_lan
-  name: wake_on_lan_stacjonarny
+  name: stacjonarny
   host: !secret desktop_hostname
   mac_address: !secret desktop_mac_address
   broadcast_address: 255.255.255.255
@@ -9,9 +9,9 @@
 
 - platform: mqtt
   name: "Light Lamp Salon"
-  command_topic: "cmnd/sonoff-switch-lamp/power"
-  state_topic: "stat/sonoff-switch-lamp/POWER"
-  availability_topic: "tele/sonoff-switch-lamp/LWT"
+  command_topic: "homeassistant/switch/light-lamp-salon/cmnd/power"
+  state_topic: "homeassistant/switch/light-lamp-salon/stat/POWER"
+  availability_topic: "homeassistant/switch/light-lamp-salon/tele/LWT"
   payload_available: "Aktywny"
   payload_not_available: "Nieaktywny"
   payload_on: "ON"
@@ -19,38 +19,14 @@
   qos: 1
   retain: true
 
-#- platform: mqtt
-#  name: "Sonoff Single"
-#  command_topic: "cmnd/sonoff-switch-single/power"
-#  state_topic: "stat/sonoff-switch-single/POWER"
-#  availability_topic: "tele/sonoff-switch-single/LWT"
-#  payload_available: "Aktywny"
-#  payload_not_available: "Nieaktywny"
-#  payload_on: "ON"
-#  payload_off: "OFF"
-#  qos: 1
-#  retain: true
-
-#- platform: mqtt
-#  name: "Sonoff Triple"
-#  command_topic: "cmnd/sonoff-switch-triple/power"
-#  state_topic: "stat/sonoff-switch-triple/POWER"
-#  availability_topic: "tele/sonoff-switch-triple/LWT"
-#  payload_available: "Aktywny"
-#  payload_not_available: "Nieaktywny"
-#  payload_on: "ON"
-#  payload_off: "OFF"
-#  qos: 1
-#  retain: true
-
 - platform: flux
-  lights: group.bulbs_salon
+  lights: light.bulbs_salon
   name: Flux
   start_colortemp: 4400
   sunset_colortemp: 3700
-  stop_colortemp: 2700
+  stop_colortemp: 3000
   mode: mired
-  brightness: 250
+  brightness: 255
 
 - platform: template
   switches:

@@ -45,10 +45,15 @@ include:
   entities:
     - group.family
     - device_tracker.grazyna
+    - device_tracker.grazyna_bt
     - device_tracker.jerzy
+    - device_tracker.jerzy_bt
     - device_tracker.romana
+    - device_tracker.romana_bt
     - device_tracker.agnieszka
+    - device_tracker.agnieszka_bt
     - device_tracker.emil
+    - device_tracker.emil_bt
     - device_tracker.maciek_gps_bt
     - device_tracker.edyta_iphone
     - input_boolean.heating_season

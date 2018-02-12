@@ -468,6 +468,9 @@
       - condition: state
         entity_id: input_boolean.heating_season
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.away_mode
+        state: 'off'
   action:
     service: script.heating_night
 
@@ -515,6 +518,9 @@
       - condition: state
         entity_id: input_boolean.heating_season
         state: 'on'
+      - condition: state
+        entity_id: input_boolean.away_mode
+        state: 'off'
   action:
     service: script.heating_night
 
@@ -962,7 +968,7 @@
       entity_id: input_select.light_scenes_salon
       to: 'standard'
     - platform: state
-      entity_id: group.bulbs_salon
+      entity_id: light.bulbs_salon
       to: 'on'
   condition:
     condition: and
@@ -1008,7 +1014,7 @@
       - condition: template
         value_template: "{{ trigger.to_state.state != 'standard' }}"
       - condition: template
-        value_template: "{{ (states.group.bulbs_salon.state == 'off') or (states.group.bulbs_salon.state == 'unknown') }}"
+        value_template: "{{ (states.light.bulbs_salon.state == 'off') or (states.light.bulbs_salon.state == 'unavailable') }}"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.salon_light_scene_turn_on
@@ -1027,7 +1033,7 @@
       - condition: template
         value_template: "{{ trigger.to_state.state == 'standard' }}"
       - condition: template
-        value_template: "{{ (states.group.bulbs_salon.state == 'off') or (states.group.bulbs_salon.state == 'unknown') }}"
+        value_template: "{{ (states.light.bulbs_salon.state == 'off') or (states.light.bulbs_salon.state == 'unavailable') }}"
   action:
     service: switch.turn_on
     entity_id: switch.light_salon_switch_2
@@ -1299,51 +1305,6 @@
     data:
       entity_id: input_select.light_scenes_salon
       option: 'standard'
-
-# grupa żarówki widoczna jak żarówki włączone
-- id: light_bulbs_group_visible
-  alias: 'Light Group Bulbs Visible'
-  trigger:
-    - platform: template
-      value_template: "{{ (states.switch.light_salon_switch_2.state == 'on') and (states.light.yeelight_color_bulb_salon_1.state == 'on') and (states.light.yeelight_color_bulb_salon_2.state == 'on') }}"
-    - platform: homeassistant
-      event: start
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: switch.light_salon_switch_2
-        state: 'on'
-      - condition: state
-        entity_id: light.yeelight_color_bulb_salon_1
-        state: 'on'
-      - condition: state
-        entity_id: light.yeelight_color_bulb_salon_2
-        state: 'on'
-  action:
-    service: group.set_visibility
-    entity_id: group.bulbs_salon
-    data:
-      visible: true
-
-# grupa żarówki niewidoczna jak żarówki wyłączone
-- id: light_bulbs_group_hidden
-  alias: 'Light Group Bulbs Hidden'
-  trigger:
-    - platform: state
-      entity_id: switch.light_salon_switch_2
-      to: 'off'
-    - platform: homeassistant
-      event: start
-  condition:
-    condition: state
-    entity_id: switch.light_salon_switch_2
-    state: 'off'
-  action:
-    service: group.set_visibility
-    entity_id: group.bulbs_salon
-    data:
-      visible: false
 
 ## ANTRESOLA ##
 # włączanie lampki na antresoli jak jest ciemno i jest ruch

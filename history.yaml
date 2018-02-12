@@ -2,21 +2,17 @@ include:
   entities:
     - input_boolean.away_mode
     - sensor.edyta_presence
-    - sensor.maciek_presence
-    
-    - device_tracker.jerzy
-    - device_tracker.grazyna
-    - device_tracker.romana
-    - device_tracker.emil
-    - device_tracker.agnieszka
-#    - sensor.dark_sky_humidity_custom
+    - sensor.maciek_presence    
+    - sensor.jerzy_presence
+    - sensor.grazyna_presence
+    - sensor.romana_presence
+    - sensor.emil_presence
+    - sensor.agnieszka_presence
     - sensor.dark_sky_precip_probability_custom
     - sensor.humidity_158d0002273538
     - sensor.pressure_158d0002273538
-#    - sensor.dark_sky_pressure_custom
     - sensor.dark_sky_summary_custom
     - sensor.temperature_outdoor
-#    - sensor.dark_sky_temperature
     - sensor.dark_sky_wind_speed
     - sensor.ha_database_size
     - sensor.speedtest_download

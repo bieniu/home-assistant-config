@@ -3,28 +3,37 @@ light.gateway_light_f0b429cc6f0b:
   friendly_name: Lampka
   icon: mdi:spotlight
 light.yeelight_color_bulb_salon_1:
-  friendly_name: Żarówka salon 1
+  friendly_name: 'Żarówka salon 1'
 light.yeelight_color_bulb_salon_2:
-  friendly_name: Żarówka salon 2
+  friendly_name: 'Żarówka salon 2'
 switch.light_salon_switch:
   friendly_name: LEDy
   icon: mdi:led-variant-on
   emulated_hue_hidden: false
   emulated_hue_name: LEDy
 switch.light_salon_switch_2:
-  friendly_name: Żarówki
+  friendly_name: 'Żarówki'
   icon: mdi:lightbulb
   emulated_hue_hidden: false
   emulated_hue_name: Zarowki
-group.bulbs_salon:
+light.bulbs_salon:
+  friendly_name: 'Żarówki'
   custom_ui_state_card: state-card-custom-ui
+  hide_control: true
+  state_card_mode: single-line
+  slider_theme:
+    min: 0
+    max: 255
+    pin: true
+    off_when_min: false
+    report_when_not_changed: false
   templates:
-    state: ''
+    hidden: return (state === 'unavailable');
 
 #### RASPBERRY PI ####
 sensor.cpu_used:
   friendly_name: 'Obciążenie CPU'
-sensor.ram_use:
+sensor.ram_used:
   friendly_name: 'Zajęty RAM'
   icon: mdi:chip
 sensor.disk_used_:
@@ -49,6 +58,31 @@ sensor.edyta_presence:
   entity_picture: /local/edyta.jpg
 sensor.maciek_presence:
   entity_picture: /local/maciek.jpg
+sensor.jerzy_presence:
+  entity_picture: /local/jerzy.jpg
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    hidden: return (state === 'poza domem');
+sensor.romana_presence:
+  entity_picture: /local/romana.jpg
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    hidden: return (state === 'poza domem');
+sensor.grazyna_presence:
+  entity_picture: /local/grazyna.jpg
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    hidden: return (state === 'poza domem');
+sensor.agnieszka_presence:
+  entity_picture: /local/agnieszka.jpg
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    hidden: return (state === 'poza domem');
+sensor.emil_presence:
+  entity_picture: /local/emil.jpg
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    hidden: return (state === 'poza domem');
 
 #### ZONES ####
 zone.home:
@@ -206,7 +240,7 @@ switch.denon:
   icon: mdi:amplifier
 switch.playstation:
   icon: mdi:playstation
-switch.wake_on_lan_stacjonarny:
+switch.stacjonarny:
   friendly_name: Komputer
   icon: mdi:desktop-tower
 

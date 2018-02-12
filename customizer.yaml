@@ -11,4 +11,5 @@ hide_attributes:
   - state
   - templates
   - theme
-columns: [280, 560, 840, 1120, 1400]
+  - open since
+columns: [300, 600, 900, 1200, 1500]

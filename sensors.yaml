@@ -889,6 +889,61 @@
             poza domem
          {% endif %}
 
+    jerzy_presence:
+      friendly_name: Jerzy
+      value_template: >-
+         {% if is_state('device_tracker.jerzy_bt', 'home') %}
+            w domu
+         {% elif is_state('device_tracker.jerzy', 'home') %}
+            w domu
+         {% else %}
+            poza domem
+         {% endif %}
+
+    romana_presence:
+      friendly_name: Romana
+      value_template: >-
+         {% if is_state('device_tracker.romana_bt', 'home') %}
+            w domu
+         {% elif is_state('device_tracker.romana', 'home') %}
+            w domu
+         {% else %}
+            poza domem
+         {% endif %}
+
+    emil_presence:
+      friendly_name: Emil
+      value_template: >-
+         {% if is_state('device_tracker.emi_bt', 'home') %}
+            w domu
+         {% elif is_state('device_tracker.emil', 'home') %}
+            w domu
+         {% else %}
+            poza domem
+         {% endif %}
+
+    grazyna_presence:
+      friendly_name: Grażyna
+      value_template: >-
+         {% if is_state('device_tracker.grazyna_bt', 'home') %}
+            w domu
+         {% elif is_state('device_tracker.grazyna', 'home') %}
+            w domu
+         {% else %}
+            poza domem
+         {% endif %}
+
+    agnieszka_presence:
+      friendly_name: Agnieszka
+      value_template: >-
+         {% if is_state('device_tracker.agnieszka_bt', 'home') %}
+            w domu
+         {% elif is_state('device_tracker.agnieszka', 'home') %}
+            w domu
+         {% else %}
+            poza domem
+         {% endif %}
+
     sun_custom:
       friendly_name: Pozycja słońca
       value_template: >-
@@ -1034,7 +1089,7 @@
   resource: !secret brother_status_url
   name: printer_status
   select: 'dd:nth-of-type(1)'
-  scan_interval: 4
+  scan_interval: 3
   value_template: >-
      {% if value == 'DRUKOWANIE' %}
         drukowanie

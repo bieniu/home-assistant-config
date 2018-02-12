@@ -15,10 +15,15 @@
             or is_state('device_tracker.edyta', 'home')
             or is_state('device_tracker.edyta_iphone', 'home')
             or is_state('device_tracker.agnieszka', 'home')
+            or is_state('device_tracker.agnieszka_bt', 'home')
             or is_state('device_tracker.emil', 'home')
+            or is_state('device_tracker.emil_bt', 'home')
             or is_state('device_tracker.grazyna', 'home')
+            or is_state('device_tracker.grazyna_bt', 'home')
             or is_state('device_tracker.jerzy', 'home')
+            or is_state('device_tracker.jerzy_bt', 'home')
             or is_state('device_tracker.romana', 'home')
+            or is_state('device_tracker.romana_bt', 'home')
             or is_state('media_player.denon', 'on') }}
 
     motion_antresola:
