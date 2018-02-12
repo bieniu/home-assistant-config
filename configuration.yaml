@@ -85,6 +85,7 @@ discovery:
   ignore:
     - denonavr
     - harmony
+    - yeelight
 
 zeroconf:
 
@@ -140,7 +141,4 @@ history_graph: !include history_graphs.yaml
 
 python_script:
 
-emulated_hue:
-  expose_by_default: false
-  exposed_domains:
-    - switch
+emulated_hue: !include emulated_hue.yaml

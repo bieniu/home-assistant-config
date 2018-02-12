@@ -311,10 +311,10 @@ energy consumption:
 raspberry:
   name: Raspberry Pi
   entities:
-    - sensor.cpu_used
+    - sensor.processor_use
     - sensor.raspberry_cpu_temp
-    - sensor.ram_used
-    - sensor.disk_used_
+    - sensor.memory_use_percent
+    - sensor.disk_use_percent_
     - sensor.last_boot
     - sensor.last_restart
     - sensor.ha_database_size

@@ -12,4 +12,7 @@ hide_attributes:
   - templates
   - theme
   - open since
-columns: [300, 600, 900, 1200, 1500]
+  - homeassistant db
+  - value
+  - power consumption
+columns: [325, 650, 975, 1300, 1625]

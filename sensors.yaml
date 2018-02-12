@@ -9,14 +9,6 @@
   scan_interval: 300
 
 - platform: command_line
-  name: HA Database Size
-  command: !secret mysql_db_size_cmd
-  #command: "ls -l ~/.homeassistant/home-assistant_v2.db | awk '{print $5}'"
-  #value_template: '{{ (value | float / 1024 / 1024 ) | round(1) }}'
-  unit_of_measurement: "MB"
-  scan_interval: 900
-
-- platform: command_line
   name: Last restart
   command: "sudo systemctl status home-assistant.service | head -3 | awk '{print $6}' | tail -1"
   scan_interval: 1800
@@ -26,8 +18,37 @@
   name: HA Version Current
   scan_interval: 1800
 
+- platform: sql
+  db_url: !secret mysql_db_url
+  queries:
+    - name: HA Database Size
+      query: 'SELECT table_schema "homeassistant_db", Round(Sum(data_length + index_length) / 1024 / 1024, 1) "value" FROM information_schema.tables WHERE table_schema="homeassistant_db" GROUP BY table_schema;'
+      column: 'value'
+      unit_of_measurement: MB
+  scan_interval: 900
+
 - platform: version
   name: HA Version Installed
+
+- platform: uptime
+  name: Home Assistant Uptime
+  unit_of_measurement: minutes
+
+- platform: scrape
+  resource: !secret brother_status_url
+  name: printer_status
+  select: 'dd:nth-of-type(1)'
+  scan_interval: 3
+  value_template: >-
+     {% if value == 'DRUKOWANIE' %}
+        drukowanie
+     {% elif ('PROSZ' in value) and ('CZEKA' in value) %}
+        nagrzewanie
+     {% elif (('MA' in value)  and ('TONERU' in value)) or (value == 'OCZEKIWANIE') %}
+        oczekiwanie
+     {% else %}
+        {{ (value | lower) }}
+     {% endif %}
 
 - platform: google_travel_time
   name: Edyta To Home
@@ -1080,23 +1101,3 @@
          {% else %}
             mdi:tag-text-outline
          {% endif %}
-
-- platform: uptime
-  name: Home Assistant Uptime
-  unit_of_measurement: minutes
-
-- platform: scrape
-  resource: !secret brother_status_url
-  name: printer_status
-  select: 'dd:nth-of-type(1)'
-  scan_interval: 3
-  value_template: >-
-     {% if value == 'DRUKOWANIE' %}
-        drukowanie
-     {% elif ('PROSZ' in value) and ('CZEKA' in value) %}
-        nagrzewanie
-     {% elif (('MA' in value)  and ('TONERU' in value)) or (value == 'OCZEKIWANIE') %}
-        oczekiwanie
-     {% else %}
-        {{ (value | lower) }}
-     {% endif %}

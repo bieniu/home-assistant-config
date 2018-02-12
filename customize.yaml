@@ -9,13 +9,9 @@ light.yeelight_color_bulb_salon_2:
 switch.light_salon_switch:
   friendly_name: LEDy
   icon: mdi:led-variant-on
-  emulated_hue_hidden: false
-  emulated_hue_name: LEDy
 switch.light_salon_switch_2:
   friendly_name: 'Żarówki'
   icon: mdi:lightbulb
-  emulated_hue_hidden: false
-  emulated_hue_name: Zarowki
 light.bulbs_salon:
   friendly_name: 'Żarówki'
   custom_ui_state_card: state-card-custom-ui
@@ -31,12 +27,12 @@ light.bulbs_salon:
     hidden: return (state === 'unavailable');
 
 #### RASPBERRY PI ####
-sensor.cpu_used:
+sensor.processor_use:
   friendly_name: 'Obciążenie CPU'
-sensor.ram_used:
+sensor.memory_use_percent:
   friendly_name: 'Zajęty RAM'
   icon: mdi:chip
-sensor.disk_used_:
+sensor.disk_use_percent_:
   friendly_name: 'Zajęte miejsce'
   custom_ui_state_card: state-card-custom-ui
   templates:
@@ -364,15 +360,12 @@ sensor.printer_status:
 switch.light_lamp_salon:
   icon: mdi:lamp
   friendly_name: Lampa
-  emulated_hue_hidden: false
 switch.sonoff_single:
   icon: mdi:led-variant-on
   friendly_name: Lampki na balkonie
-  emulated_hue_hidden: false
 switch.sonoff_triple:
   icon: mdi:led-variant-on
   friendly_name: Lampki na balkonie
-  emulated_hue_hidden: false
 
 #### ENERGY ####
 sensor.light_salon_energy:
