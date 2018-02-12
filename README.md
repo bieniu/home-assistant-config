@@ -35,6 +35,7 @@
 * [PlayStation 4 media_player](https://github.com/hmn/home-assistant-config/blob/master/custom_components/media_player/ps4.py)
 * [Custom Frontend](https://github.com/home-assistant/home-assistant/pull/10783)
 * [Home Assistant Customizer](https://github.com/andrey-git/home-assistant-customizer/)
+* [Grouped Light](https://github.com/OttoWinter/home-assistant/blob/4f631a155b5b9bce8eb61107e0102d61fc29b98d/homeassistant/components/light/grouped_light.py)
 
 ## Screenshots
 
