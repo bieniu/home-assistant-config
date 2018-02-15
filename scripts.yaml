@@ -33,7 +33,7 @@ fast_warm_up:
         - climate.thermostat_lazienka_heating_1
       data:
         temperature: 24
-    - delay: '00:25:00'
+    - delay: '01:00:00'
     - service: script.heating_day
 
 #### DENON ####

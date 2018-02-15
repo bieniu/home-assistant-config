@@ -15,4 +15,5 @@ hide_attributes:
   - homeassistant db
   - value
   - power consumption
+  - database
 columns: [325, 650, 975, 1300, 1625]

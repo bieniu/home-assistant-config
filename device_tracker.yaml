@@ -1,7 +1,8 @@
 - platform: bluetooth_tracker
   interval_seconds: 60
   consider_home: 180
-  track_new_devices: false
+#  track_new_devices: false
+
 - platform: asuswrt
   host: !secret router_hostname
   username: !secret router_username
