@@ -30,7 +30,6 @@ exclude:
     - binary_sensor.gaming
     - sensor.ha_version_current
     - sensor.ha_version_installed
-    - sensor.uptime
     - sensor.temperature_158d0001826f20
     - sensor.temperature_158d00010fb340
     - sensor.temperature_158d0001100416
@@ -41,6 +40,7 @@ exclude:
     - sensor.temperature_158d000201d5d5
     - sensor.temperature_158d0002273538
     - binary_sensor.presence
+    - sensor.home_assistant_uptime
 include:
   entities:
     - group.family

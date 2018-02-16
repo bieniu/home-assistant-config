@@ -10,39 +10,39 @@ sensor.edyta_iphone_battery_level:
 sensor.edyta_iphone_battery_state:
   platform: ios
   unique_id: state_edyta_iphone
-climate.thermostat_salon_heating_1:
+climate.thermostat_salon:
   platform: zwave
   unique_id: 2-72057594076774418
-climate.thermostat_antek_heating_1:
+climate.thermostat_antek:
   platform: zwave
   unique_id: 3-72057594093551634
-climate.thermostat_sypialnia_heating_1:
+climate.thermostat_sypialnia:
   platform: zwave
   unique_id: 4-72057594110328850
-climate.thermostat_kuchnia_heating_1:
+climate.thermostat_kuchnia:
   platform: zwave
   unique_id: 5-72057594127106066
-climate.thermostat_antresola_heating_1:
+climate.thermostat_antresola:
   platform: zwave
   unique_id: 12-72057594244546578
-switch.light_salon_switch:
+switch.light_salon_leds:
   platform: zwave
   unique_id: 13-72057594260832256
-switch.light_salon_switch_2:
+switch.light_salon_bulbs:
   platform: zwave
   unique_id: 13-144115188298760192
-sensor.light_salon_energy:
+sensor.light_salon_leds_energy:
   platform: zwave
   unique_id: 13-72057594261045250
-sensor.light_salon_energy_2:
+sensor.light_salon_bulbs_energy:
   platform: zwave
   unique_id: 13-144115188298973186
-sensor.light_salon_power:
+sensor.light_salon_leds_power:
   platform: zwave
   unique_id: 13-72057594261045378
-sensor.light_salon_power_2:
+sensor.light_salon_bulbs_power:
   platform: zwave
   unique_id: 13-144115188298973314
-climate.thermostat_lazienka_heating_1:
+climate.thermostat_lazienka:
   platform: zwave
   unique_id: 14-72057594278101010

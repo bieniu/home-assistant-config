@@ -49,7 +49,7 @@
   icon: mdi:toggle-switch-off
 
 #### LIGHTS ####
-'light.yeelight_lightstrip_*':
+'light.lightstrip_*':
   friendly_name: LEDy
   icon: mdi:led-variant-on
 

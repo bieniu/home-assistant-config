@@ -304,8 +304,8 @@ batteries windows sensors:
 energy consumption:
   name: Miesięczne zużycie energii
   entities:
-    - sensor.light_salon_energy_2
-    - sensor.light_salon_energy
+    - sensor.light_salon_bulbs_energy
+    - sensor.light_salon_leds_energy
     - history_graph.zuzycie_energii
 
 raspberry:
@@ -335,10 +335,10 @@ salon:
     - sensor.humidity_158d00010fb340
     - sensor.illumination_158d0001e16389
     - binary_sensor.motion_salon
-    - climate.thermostat_salon_heating_1
-    - switch.light_salon_switch_2
+    - climate.thermostat_salon
+    - switch.light_salon_bulbs
     - light.bulbs_salon
-    - switch.light_salon_switch
+    - switch.light_salon_leds
     - switch.light_lamp_salon
     - input_select.light_scenes_salon
     - switch.denon
@@ -352,7 +352,7 @@ kuchnia:
     - sensor.temperature_kuchnia
     - sensor.humidity_158d00010fb340
     - binary_sensor.door_window_sensor_158d0001a223ff
-    - climate.thermostat_kuchnia_heating_1
+    - climate.thermostat_kuchnia
 
 goscinny:
   name: Pokój gościnny
@@ -369,7 +369,7 @@ antresola:
   - sensor.humidity_158d000149cc8c
   - sensor.illumination_f0b429cc6f0b
   - binary_sensor.motion_antresola
-  - climate.thermostat_antresola_heating_1
+  - climate.thermostat_antresola
   - light.gateway_light_f0b429cc6f0b
 
 gabinet:
@@ -388,8 +388,8 @@ pokoj_antek:
     - sensor.humidity_158d00010fb2cd
     - sensor.illumination_158d00016612fb
     - binary_sensor.motion_sensor_158d00016612fb
-    - climate.thermostat_antek_heating_1
-    - light.yeelight_lightstrip_antek
+    - climate.thermostat_antek
+    - light.lightstrip_antek
 
 sypialnia:
   name: Sypialnia
@@ -400,8 +400,8 @@ sypialnia:
     - sensor.illumination_158d000165ffb8
     - binary_sensor.motion_sensor_158d000165ffb8
     - binary_sensor.door_window_sensor_158d0001a5dbdb
-    - climate.thermostat_sypialnia_heating_1
-    - light.yeelight_lightstrip_sypialnia
+    - climate.thermostat_sypialnia
+    - light.lightstrip_sypialnia
 #    - switch.sonoff_single
 
 pracownia:
@@ -419,7 +419,7 @@ lazienka:
   entities:
     - sensor.temperature_lazienka
     - sensor.humidity_158d000129a158
-    - climate.thermostat_lazienka_heating_1
+    - climate.thermostat_lazienka
 
 windows:
   name: Okna

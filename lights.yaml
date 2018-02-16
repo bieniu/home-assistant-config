@@ -1,22 +1,22 @@
 - platform: yeelight
   devices:
     192.168.2.245:
-      name: yeelight color bulb salon 1
+      name: bulb salon 1
       transition: 500
       save_on_change: false
       use_music_mode: false
     192.168.2.250:
-      name: yeelight color bulb salon 2
+      name: bulb salon 2
       transition: 500
       save_on_change: false
       use_music_mode: false
     192.168.2.220:
-      name: yeelight lightstrip sypialnia
+      name: lightstrip sypialnia
       transition: 500
       save_on_change: false
       use_music_mode: false
     192.168.2.225:
-      name: yeelight lightstrip antek
+      name: lightstrip antek
       transition: 500
       save_on_change: false
       use_music_mode: false
@@ -24,5 +24,5 @@
 - platform: grouped_light
   name: Bulbs Salon
   entities:
-    - light.yeelight_color_bulb_salon_1
-    - light.yeelight_color_bulb_salon_2
+    - light.bulb_salon_1
+    - light.bulb_salon_2

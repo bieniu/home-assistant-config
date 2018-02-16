@@ -20,5 +20,5 @@ include:
     - sensor.speedtest_upload
     - sensor.temperature_indoor
     - sensor.humidity_indoor
-    - sensor.light_salon_energy
-    - sensor.light_salon_energy_2
+    - sensor.light_salon_leds_energy
+    - sensor.light_salon_bulbs_energy

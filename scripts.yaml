@@ -26,11 +26,11 @@ fast_warm_up:
       state: 'on'
     - service: climate.set_temperature
       entity_id:
-        - climate.thermostat_antresola_heating_1
-        - climate.thermostat_antek_heating_1
-        - climate.thermostat_sypialnia_heating_1
-        - climate.thermostat_kuchnia_heating_1
-        - climate.thermostat_lazienka_heating_1
+        - climate.thermostat_antresola
+        - climate.thermostat_antek
+        - climate.thermostat_sypialnia
+        - climate.thermostat_kuchnia
+        - climate.thermostat_lazienka
       data:
         temperature: 24
     - delay: '01:00:00'
@@ -85,8 +85,8 @@ night_mode:
   sequence:
     service: switch.turn_off
     entity_id:
-      - switch.light_salon_switch
-      - switch.light_salon_switch_2
+      - switch.light_salon_leds
+      - switch.light_salon_bulbs
       - switch.light_lamp_salon
       - switch.stacjonarny
       - switch.denon
@@ -95,30 +95,30 @@ light_away_mode:
   sequence:
     service: homeassistant.turn_off
     entity_id:
-      - switch.light_salon_switch
-      - switch.light_salon_switch_2
+      - switch.light_salon_leds
+      - switch.light_salon_bulbs
       - switch.light_lamp_salon
       - light.gateway_light_f0b429cc6f0b
-      - light.yeelight_lightstrip_sypialnia
-      - light.yeelight_lightstrip_antek
+      - light.lightstrip_sypialnia
+      - light.lightstrip_antek
 
 #### HEATING ####
 heating_day:
   sequence:
     - service: climate.set_temperature
-      entity_id: climate.thermostat_lazienka_heating_1
+      entity_id: climate.thermostat_lazienka
       data_template:
         temperature: '{{ states.input_select.heating_temp_bathroom_day.state }}'
     - service: climate.set_temperature
       entity_id: 
-        - climate.thermostat_antresola_heating_1
-        - climate.thermostat_kuchnia_heating_1
+        - climate.thermostat_antresola
+        - climate.thermostat_kuchnia
       data_template:
         temperature: '{{ states.input_select.heating_temp_day.state }}'
     - service: climate.set_temperature
       entity_id: 
-        - climate.thermostat_antek_heating_1
-        - climate.thermostat_sypialnia_heating_1
+        - climate.thermostat_antek
+        - climate.thermostat_sypialnia
       data_template:
         temperature: '{{ states.input_select.heating_temp_bedroom_day.state }}'
     - service: input_boolean.turn_off
@@ -131,23 +131,23 @@ heating_night:
     - service: input_boolean.turn_on
       entity_id: input_boolean.heating_night
     - service: climate.set_temperature
-      entity_id: climate.thermostat_antresola_heating_1
+      entity_id: climate.thermostat_antresola
       data_template:
         temperature: '{{ states.input_select.heating_temp_night.state }}'
     - service: climate.set_temperature
       entity_id: 
-        - climate.thermostat_antek_heating_1
-        - climate.thermostat_sypialnia_heating_1
+        - climate.thermostat_antek
+        - climate.thermostat_sypialnia
       data_template:
         temperature: '{{ states.input_select.heating_temp_bedroom_night.state }}'
     - service: climate.set_temperature
-      entity_id: climate.thermostat_lazienka_heating_1
+      entity_id: climate.thermostat_lazienka
       data_template:
         temperature: '{{ states.input_select.heating_temp_bathroom_night.state }}'
     - condition: template
       value_template: "{{ (states.group.guests.state == 'not_home') and (states.media_player.denon.state == 'off') }}"
     - service: climate.set_temperature
-      entity_id: climate.thermostat_kuchnia_heating_1
+      entity_id: climate.thermostat_kuchnia
       data_template:
         temperature: '{{ states.input_select.heating_temp_night.state }}'
     - service: input_boolean.turn_on
@@ -157,11 +157,11 @@ heating_eco_mode:
   sequence:
     - service: climate.set_temperature
       entity_id: 
-        - climate.thermostat_antresola_heating_1
-        - climate.thermostat_kuchnia_heating_1
-        - climate.thermostat_antek_heating_1
-        - climate.thermostat_sypialnia_heating_1
-        - climate.thermostat_lazienka_heating_1
+        - climate.thermostat_antresola
+        - climate.thermostat_kuchnia
+        - climate.thermostat_antek
+        - climate.thermostat_sypialnia
+        - climate.thermostat_lazienka
       data_template:
         temperature: '{{ states.input_select.heating_temp_eco.state }}'
     - condition: state
@@ -185,11 +185,11 @@ heating_season_end:
   sequence:
     service: climate.set_temperature
     entity_id:
-      - climate.thermostat_antresola_heating_1
-      - climate.thermostat_kuchnia_heating_1
-      - climate.thermostat_antek_heating_1
-      - climate.thermostat_sypialnia_heating_1
-      - climate.thermostat_lazienka_heating_1
+      - climate.thermostat_antresola
+      - climate.thermostat_kuchnia
+      - climate.thermostat_antek
+      - climate.thermostat_sypialnia
+      - climate.thermostat_lazienka
     data:
       temperature: 4
 
@@ -197,11 +197,11 @@ heating_airing_begin:
   sequence:
     - service: climate.set_temperature
       entity_id: 
-        - climate.thermostat_antresola_heating_1
-        - climate.thermostat_kuchnia_heating_1
-        - climate.thermostat_antek_heating_1
-        - climate.thermostat_sypialnia_heating_1
-        - climate.thermostat_lazienka_heating_1
+        - climate.thermostat_antresola
+        - climate.thermostat_kuchnia
+        - climate.thermostat_antek
+        - climate.thermostat_sypialnia
+        - climate.thermostat_lazienka
       data:
         temperature: 8
     - condition: state
@@ -275,14 +275,14 @@ light_turn_off_antek_leds:
         - input_boolean.antek_lamp_motion_on
         - input_boolean.antek_lamp_night
     - service: light.turn_off
-      entity_id: light.yeelight_lightstrip_antek
+      entity_id: light.lightstrip_antek
       data:
         transition: 10
 
 light_turn_on_antek_leds:
   sequence:
     - service: light.turn_on
-      entity_id: light.yeelight_lightstrip_antek
+      entity_id: light.lightstrip_antek
       data_template:
         brightness: 150
         rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']

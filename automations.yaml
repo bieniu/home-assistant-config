@@ -548,7 +548,7 @@
         state: 'off'
   action:
     - service: climate.set_temperature
-      entity_id: climate.thermostat_kuchnia_heating_1
+      entity_id: climate.thermostat_kuchnia
       data_template:
         temperature: '{{ states.input_select.heating_temp_night.state }}'
 
@@ -796,7 +796,7 @@
   alias: 'Heating Sync Temp Salon Kuchnia'
   trigger:
     platform: state
-    entity_id: climate.thermostat_salon_heating_1
+    entity_id: climate.thermostat_salon
   condition:
     condition: and
     conditions:
@@ -807,14 +807,14 @@
            {% endif %}
       - condition: template
         value_template: >-
-           {% if (trigger.to_state and states.climate.thermostat_kuchnia_heating_1) %}
-              {{ trigger.to_state.attributes.temperature != states.climate.thermostat_kuchnia_heating_1.attributes.temperature }}
+           {% if (trigger.to_state and states.climate.thermostat_kuchnia) %}
+              {{ trigger.to_state.attributes.temperature != states.climate.thermostat_kuchnia.attributes.temperature }}
            {% endif %}
       - condition: template
         value_template: "{{ (trigger.to_state.attributes.temperature | float) != 4.3 }}"
   action:
     service: climate.set_temperature
-    entity_id: climate.thermostat_kuchnia_heating_1
+    entity_id: climate.thermostat_kuchnia
     data_template:
       temperature: '{{ trigger.to_state.attributes.temperature }}'
 
@@ -823,7 +823,7 @@
   alias: 'Heating Sync Temp Kuchnia Salon'
   trigger:
     platform: state
-    entity_id: climate.thermostat_kuchnia_heating_1
+    entity_id: climate.thermostat_kuchnia
   condition:
     condition: and
     conditions:
@@ -834,14 +834,14 @@
            {% endif %}
       - condition: template
         value_template: >-
-           {% if (trigger.to_state and states.climate.thermostat_salon_heating_1) %}
-              {{ trigger.to_state.attributes.temperature != states.climate.thermostat_salon_heating_1.attributes.temperature }}
+           {% if (trigger.to_state and states.climate.thermostat_salon) %}
+              {{ trigger.to_state.attributes.temperature != states.climate.thermostat_salon.attributes.temperature }}
            {% endif %}
       - condition: template
         value_template: "{{ (trigger.to_state.attributes.temperature | float) != 4.3 }}"
   action:
     service: climate.set_temperature
-    entity_id: climate.thermostat_salon_heating_1
+    entity_id: climate.thermostat_salon
     data_template:
       temperature: '{{ trigger.to_state.attributes.temperature }}'
 
@@ -857,12 +857,12 @@
       - sensor.temperature_antresola
       - sensor.temperature_sypialnia
       - sensor.temperature_lazienka
-      - climate.thermostat_antek_heating_1
-      - climate.thermostat_kuchnia_heating_1
-      - climate.thermostat_salon_heating_1
-      - climate.thermostat_antresola_heating_1
-      - climate.thermostat_sypialnia_heating_1
-      - climate.thermostat_lazienka_heating_1
+      - climate.thermostat_antek
+      - climate.thermostat_kuchnia
+      - climate.thermostat_salon
+      - climate.thermostat_antresola
+      - climate.thermostat_sypialnia
+      - climate.thermostat_lazienka
   condition:
     condition: template
     value_template: >-
@@ -880,13 +880,13 @@
          {% if "thermostat" in trigger.entity_id %}
             {{ trigger.entity_id }}
          {% else %}
-            climate.thermostat_{{ trigger.entity_id | replace('sensor.temperature_', '') }}_heating_1
+            climate.thermostat_{{ trigger.entity_id | replace('sensor.temperature_', '') }}
          {% endif %}
       sensor: >-
          {% if "sensor" in trigger.entity_id %}
             {{ trigger.entity_id }}
          {% else %}
-            sensor.temperature_{{ (trigger.entity_id | replace('climate.thermostat_', '')) | replace('_heating_1', '') }}
+            sensor.temperature_{{ (trigger.entity_id | replace('climate.thermostat_', '')) | replace('', '') }}
          {% endif %}
 
 # zmniejszanie nastawy termostatu do 22 stopni gdy temperatura w łazience przekroczy 22.8 stopnie
@@ -900,7 +900,7 @@
     condition: and
     conditions:
       - condition: template
-        value_template: '{{ states.climate.thermostat_lazienka_heating_1.attributes.temperature | float > 22 }}'
+        value_template: '{{ states.climate.thermostat_lazienka.attributes.temperature | float > 22 }}'
       - condition: state
         entity_id: input_boolean.heating_season
         state: 'on'
@@ -909,7 +909,7 @@
         state: 'off'
   action:
     service: climate.set_temperature
-    entity_id: climate.thermostat_lazienka_heating_1
+    entity_id: climate.thermostat_lazienka
     data:
       temperature: 22
 
@@ -924,7 +924,7 @@
     condition: and
     conditions:
       - condition: template
-        value_template: '{{ (states.climate.thermostat_lazienka_heating_1.attributes.temperature | float < 23) and (states.climate.thermostat_lazienka_heating_1.attributes.temperature | float > 20) }}'
+        value_template: '{{ (states.climate.thermostat_lazienka.attributes.temperature | float < 23) and (states.climate.thermostat_lazienka.attributes.temperature | float > 20) }}'
       - condition: state
         entity_id: input_boolean.heating_season
         state: 'on'
@@ -933,7 +933,7 @@
         state: 'off'
   action:
     service: climate.set_temperature
-    entity_id: climate.thermostat_lazienka_heating_1
+    entity_id: climate.thermostat_lazienka
     data:
       temperature: 23
 ##################################################################################################
@@ -956,16 +956,16 @@
         entity_id: switch.light_lamp_salon
         state: 'on'
       - condition: state
-        entity_id: switch.light_salon_switch
+        entity_id: switch.light_salon_leds
         state: 'on'
       - condition: state
-        entity_id: switch.light_salon_switch_2
+        entity_id: switch.light_salon_bulbs
         state: 'on'
       - condition: state
-        entity_id: light.yeelight_lightstrip_sypialnia
+        entity_id: light.lightstrip_sypialnia
         state: 'on'
       - condition: state
-        entity_id: light.yeelight_lightstrip_antek
+        entity_id: light.lightstrip_antek
         state: 'on'
       - condition: state
         entity_id: light.gateway_light_f0b429cc6f0b
@@ -1035,7 +1035,7 @@
       - condition: template
         value_template: "{{ trigger.to_state.state != 'standard' }}"
       - condition: template
-        value_template: "{{ (states.light.yeelight_color_bulb_salon_1.state == 'on') and (states.light.yeelight_color_bulb_salon_1.state == 'on') }}"
+        value_template: "{{ (states.light.bulb_salon_1.state == 'on') and (states.light.bulb_salon_1.state == 'on') }}"
   action:
     service: scene.turn_on
     data_template:
@@ -1058,7 +1058,7 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.salon_light_scene_turn_on
     - service: switch.turn_on
-      entity_id: switch.light_salon_switch_2
+      entity_id: switch.light_salon_bulbs
 
 # wybór sceny standard oświetlenia w salonie gdy żarówki wyłączone
 - id: light_scene_salon_standard_when_bulbs_off
@@ -1075,14 +1075,15 @@
         value_template: "{{ (states.light.bulbs_salon.state == 'off') or (states.light.bulbs_salon.state == 'unavailable') }}"
   action:
     service: switch.turn_on
-    entity_id: switch.light_salon_switch_2
+    entity_id: switch.light_salon_bulbs
 
 # scena gdy żarówki połączą się z siecią
 - id: light_scene_salon_when_bulbs_are_turning_on
   alias: 'Light Scene Salon When Bulbs Are Turning On'
   trigger:
-    platform: template
-    value_template: "{{ (states.light.yeelight_color_bulb_salon_1.state == 'on') and (states.light.yeelight_color_bulb_salon_2.state == 'on') }}"
+    platform: state
+    entity_id: light.bulbs_salon
+    to: 'on'
   condition:
     condition: state
     entity_id: input_boolean.salon_light_scene_turn_on
@@ -1128,7 +1129,7 @@
         click_type: double
   action:
     service: switch.toggle
-    entity_id: switch.light_salon_switch_2
+    entity_id: switch.light_salon_bulbs
 
 # włączenie/wyłączenie LEDów w salonie
 - id: light_toggle_power_salon_leds
@@ -1146,7 +1147,7 @@
         click_type: hold
   action:
     service: switch.toggle
-    entity_id: switch.light_salon_switch
+    entity_id: switch.light_salon_leds
 
 # włączanie lampy w salonie jak pojawi się ruch lub zrobi się ciemno lub wyłączone światło/TV
 - id: light_turn_on_salon_lamp
@@ -1162,11 +1163,11 @@
       entity_id: sensor.illumination_158d0001e16389
       below: 10
     - platform: state
-      entity_id: switch.light_salon_switch
+      entity_id: switch.light_salon_leds
       from: 'on'
       to: 'off'
     - platform: state
-      entity_id: switch.light_salon_switch_2
+      entity_id: switch.light_salon_bulbs
       from: 'on'
       to: 'off'
     - platform: state
@@ -1185,10 +1186,10 @@
       - condition: template
         value_template: "{{ (states.sensor.illumination_158d0001e16389.state | int < 10) or (states.sensor.illumination_f0b429cc6f0b.state | int < 60) }}"
       - condition: state
-        entity_id: switch.light_salon_switch
+        entity_id: switch.light_salon_leds
         state: 'off'
       - condition: state
-        entity_id: switch.light_salon_switch_2
+        entity_id: switch.light_salon_bulbs
         state: 'off'
       - condition: state
         entity_id: switch.light_lamp_salon
@@ -1223,11 +1224,11 @@
       from: 'on'
       to: 'off'
     - platform: state
-      entity_id: switch.light_salon_switch
+      entity_id: switch.light_salon_leds
       from: 'off'
       to: 'on'
     - platform: state
-      entity_id: switch.light_salon_switch_2
+      entity_id: switch.light_salon_bulbs
       from: 'off'
       to: 'on'
     - platform: numeric_state
@@ -1254,7 +1255,7 @@
     condition: and
     conditions:
       - condition: template
-        value_template: "{{ (states.light.yeelight_color_bulb_salon_1.state == 'on') and (states.light.yeelight_color_bulb_salon_1.state == 'on') }}"
+        value_template: "{{ (states.light.bulb_salon_1.state == 'on') and (states.light.bulb_salon_1.state == 'on') }}"
       - condition: state
         entity_id: input_select.light_scenes_salon
         state: 'standard'
@@ -1286,7 +1287,7 @@
       - condition: sun
         after: sunset
       - condition: template
-        value_template: "{{ (states.switch.light_salon_switch.state == 'on') or (states.switch.light_salon_switch_2.state == 'on') or (states.switch.light_lamp_salon.state == 'on') }}"
+        value_template: "{{ (states.switch.light_salon_leds.state == 'on') or (states.switch.light_salon_bulbs.state == 'on') or (states.switch.light_lamp_salon.state == 'on') }}"
       - condition: time
         after: '19:30:00'
   action:
@@ -1335,7 +1336,7 @@
       - condition: sun
         after: sunset
       - condition: template
-        value_template: "{{ (states.switch.light_salon_switch.state == 'on') or (states.switch.light_salon_switch_2.state == 'on') or (states.switch.light_lamp_salon.state == 'on') }}"
+        value_template: "{{ (states.switch.light_salon_leds.state == 'on') or (states.switch.light_salon_bulbs.state == 'on') or (states.switch.light_lamp_salon.state == 'on') }}"
       - condition: state
         entity_id: input_select.light_scenes_salon
         state: 'film'
@@ -1418,7 +1419,7 @@
         entity_id: input_boolean.away_mode
         state: 'off'
       - condition: state
-        entity_id: light.yeelight_lightstrip_sypialnia
+        entity_id: light.lightstrip_sypialnia
         state: 'off'
       - condition: numeric_state
         entity_id: sensor.illumination_158d000165ffb8
@@ -1434,7 +1435,7 @@
             before: sunrise
   action:
     - service: light.turn_on
-      entity_id: light.yeelight_lightstrip_sypialnia
+      entity_id: light.lightstrip_sypialnia
       data:
         brightness: 200
         rgb_color: [233,96,255]
@@ -1460,7 +1461,7 @@
     - service: input_boolean.turn_off
       entity_id: input_boolean.sypialnia_lamp_motion_on
     - service: light.turn_off
-      entity_id: light.yeelight_lightstrip_sypialnia
+      entity_id: light.lightstrip_sypialnia
       data:
         transition: 10
 
@@ -1489,7 +1490,7 @@
         entity_id: sensor.illumination_158d00016612fb
         below: 3
       - condition: state
-        entity_id: light.yeelight_lightstrip_antek
+        entity_id: light.lightstrip_antek
         state: 'off'
       - condition: state
         entity_id: input_boolean.antek_lamp_night
@@ -1549,7 +1550,7 @@
             before: sunrise
   action:
     - service: light.turn_on
-      entity_id: light.yeelight_lightstrip_antek
+      entity_id: light.lightstrip_antek
       data:
         brightness: 15
         rgb_color: [255,190,0]
@@ -1595,7 +1596,7 @@
     event: sunrise
   condition:
     condition: state
-    entity_id: light.yeelight_lightstrip_antek
+    entity_id: light.lightstrip_antek
     state: 'on'
   action:
     service: script.light_turn_off_antek_leds
@@ -1611,7 +1612,7 @@
         click_type: single
   action:
     service: light.toggle
-    entity_id: light.yeelight_lightstrip_antek
+    entity_id: light.lightstrip_antek
 
 # losowy kolor LEDów w pokoju Antka
 - id: light_random_color_antek_leds
@@ -1624,7 +1625,7 @@
         click_type: double
   action:
     service: light.turn_on
-    entity_id: light.yeelight_lightstrip_antek
+    entity_id: light.lightstrip_antek
     data_template:
       brightness: 150
       rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
