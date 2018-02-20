@@ -44,6 +44,7 @@ http:
   api_password: !secret api_password
   ip_ban_enabled: true
   login_attempts_threshold: 5
+  use_x_forwarded_for: true
   base_url: !secret http_base_url
 
 recorder: !include recorder.yaml

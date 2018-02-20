@@ -25,22 +25,22 @@ climate.thermostat_kuchnia:
 climate.thermostat_antresola:
   platform: zwave
   unique_id: 12-72057594244546578
-switch.light_salon_leds:
+switch.light_leds_salon:
   platform: zwave
   unique_id: 13-72057594260832256
-switch.light_salon_bulbs:
+switch.light_bulbs_salon:
   platform: zwave
   unique_id: 13-144115188298760192
-sensor.light_salon_leds_energy:
+sensor.light_leds_salon_energy:
   platform: zwave
   unique_id: 13-72057594261045250
-sensor.light_salon_bulbs_energy:
+sensor.light_bulbs_salon_energy:
   platform: zwave
   unique_id: 13-144115188298973186
-sensor.light_salon_leds_power:
+sensor.light_leds_salon_power:
   platform: zwave
   unique_id: 13-72057594261045378
-sensor.light_salon_bulbs_power:
+sensor.light_bulbs_salon_power:
   platform: zwave
   unique_id: 13-144115188298973314
 climate.thermostat_lazienka:

@@ -956,10 +956,10 @@
         entity_id: switch.light_lamp_salon
         state: 'on'
       - condition: state
-        entity_id: switch.light_salon_leds
+        entity_id: switch.light_leds_salon
         state: 'on'
       - condition: state
-        entity_id: switch.light_salon_bulbs
+        entity_id: switch.light_bulbs_salon
         state: 'on'
       - condition: state
         entity_id: light.lightstrip_sypialnia
@@ -1035,7 +1035,7 @@
       - condition: template
         value_template: "{{ trigger.to_state.state != 'standard' }}"
       - condition: template
-        value_template: "{{ (states.light.bulb_salon_1.state == 'on') and (states.light.bulb_salon_1.state == 'on') }}"
+        value_template: "{{ (states.light.bulb_salon_1.state == 'on') and (states.light.bulb_salon_2.state == 'on') }}"
   action:
     service: scene.turn_on
     data_template:
@@ -1058,7 +1058,7 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.salon_light_scene_turn_on
     - service: switch.turn_on
-      entity_id: switch.light_salon_bulbs
+      entity_id: switch.light_bulbs_salon
 
 # wybór sceny standard oświetlenia w salonie gdy żarówki wyłączone
 - id: light_scene_salon_standard_when_bulbs_off
@@ -1075,7 +1075,7 @@
         value_template: "{{ (states.light.bulbs_salon.state == 'off') or (states.light.bulbs_salon.state == 'unavailable') }}"
   action:
     service: switch.turn_on
-    entity_id: switch.light_salon_bulbs
+    entity_id: switch.light_bulbs_salon
 
 # scena gdy żarówki połączą się z siecią
 - id: light_scene_salon_when_bulbs_are_turning_on
@@ -1129,7 +1129,7 @@
         click_type: double
   action:
     service: switch.toggle
-    entity_id: switch.light_salon_bulbs
+    entity_id: switch.light_bulbs_salon
 
 # włączenie/wyłączenie LEDów w salonie
 - id: light_toggle_power_salon_leds
@@ -1147,7 +1147,7 @@
         click_type: hold
   action:
     service: switch.toggle
-    entity_id: switch.light_salon_leds
+    entity_id: switch.light_leds_salon
 
 # włączanie lampy w salonie jak pojawi się ruch lub zrobi się ciemno lub wyłączone światło/TV
 - id: light_turn_on_salon_lamp
@@ -1163,11 +1163,11 @@
       entity_id: sensor.illumination_158d0001e16389
       below: 10
     - platform: state
-      entity_id: switch.light_salon_leds
+      entity_id: switch.light_leds_salon
       from: 'on'
       to: 'off'
     - platform: state
-      entity_id: switch.light_salon_bulbs
+      entity_id: switch.light_bulbs_salon
       from: 'on'
       to: 'off'
     - platform: state
@@ -1186,10 +1186,10 @@
       - condition: template
         value_template: "{{ (states.sensor.illumination_158d0001e16389.state | int < 10) or (states.sensor.illumination_f0b429cc6f0b.state | int < 60) }}"
       - condition: state
-        entity_id: switch.light_salon_leds
+        entity_id: switch.light_leds_salon
         state: 'off'
       - condition: state
-        entity_id: switch.light_salon_bulbs
+        entity_id: switch.light_bulbs_salon
         state: 'off'
       - condition: state
         entity_id: switch.light_lamp_salon
@@ -1224,11 +1224,11 @@
       from: 'on'
       to: 'off'
     - platform: state
-      entity_id: switch.light_salon_leds
+      entity_id: switch.light_leds_salon
       from: 'off'
       to: 'on'
     - platform: state
-      entity_id: switch.light_salon_bulbs
+      entity_id: switch.light_bulbs_salon
       from: 'off'
       to: 'on'
     - platform: numeric_state
@@ -1255,7 +1255,7 @@
     condition: and
     conditions:
       - condition: template
-        value_template: "{{ (states.light.bulb_salon_1.state == 'on') and (states.light.bulb_salon_1.state == 'on') }}"
+        value_template: "{{ (states.light.bulb_salon_1.state == 'on') and (states.light.bulb_salon_2.state == 'on') }}"
       - condition: state
         entity_id: input_select.light_scenes_salon
         state: 'standard'
@@ -1287,9 +1287,12 @@
       - condition: sun
         after: sunset
       - condition: template
-        value_template: "{{ (states.switch.light_salon_leds.state == 'on') or (states.switch.light_salon_bulbs.state == 'on') or (states.switch.light_lamp_salon.state == 'on') }}"
+        value_template: "{{ (states.switch.light_leds_salon.state == 'on') or (states.switch.light_bulbs_salon.state == 'on') or (states.switch.light_lamp_salon.state == 'on') }}"
       - condition: time
         after: '19:30:00'
+      - condition: state
+        entity_id: input_boolean.guests
+        state: 'off'
   action:
     service: input_select.select_option
     data:
@@ -1336,7 +1339,7 @@
       - condition: sun
         after: sunset
       - condition: template
-        value_template: "{{ (states.switch.light_salon_leds.state == 'on') or (states.switch.light_salon_bulbs.state == 'on') or (states.switch.light_lamp_salon.state == 'on') }}"
+        value_template: "{{ (states.switch.light_leds_salon.state == 'on') or (states.switch.light_bulbs_salon.state == 'on') or (states.switch.light_lamp_salon.state == 'on') }}"
       - condition: state
         entity_id: input_select.light_scenes_salon
         state: 'film'

@@ -6,17 +6,17 @@ light.bulb_salon_1:
   friendly_name: 'Żarówka salon 1'
 light.bulb_salon_2:
   friendly_name: 'Żarówka salon 2'
-switch.light_salon_leds:
+switch.light_leds_salon:
   friendly_name: LEDy
   icon: mdi:led-variant-on
-switch.light_salon_bulbs:
+switch.light_bulbs_salon:
   friendly_name: 'Żarówki'
   icon: mdi:lightbulb
 light.bulbs_salon:
   friendly_name: 'Żarówki'
   custom_ui_state_card: state-card-custom-ui
-  hide_control: true
   state_card_mode: single-line
+  hide_control: true
   slider_theme:
     min: 0
     max: 255
@@ -322,14 +322,13 @@ binary_sensor.switch_158d0001d87c4f:
   icon: mdi:led-variant-on
 
 #### XIAOMI MOTION SENSORS ####
-binary_sensor.motion_sensor_158d00014d0a27:
-  location: antresola
 binary_sensor.motion_antresola:
   location: antresola
 binary_sensor.motion_salon:
   location: salon
+binary_sensor.motion_sensor_158d00014d0a27:
+  location: antresola
 binary_sensor.motion_sensor_158d000120a226:
-  friendly_name: Ruch
   location: schody
 binary_sensor.motion_sensor_158d000121c604:
   location: salon
@@ -368,13 +367,13 @@ switch.sonoff_triple:
   friendly_name: Lampki na balkonie
 
 #### ENERGY ####
-sensor.light_salon_leds_energy:
+sensor.light_leds_salon_energy:
   friendly_name: LEDy salon
-sensor.light_salon_leds_power:
+sensor.light_leds_salon_power:
   friendly_name: LEDy salon
-sensor.light_salon_bulbs_energy:
+sensor.light_bulbs_salon_energy:
   friendly_name: Żarówki salon
-sensor.light_salon_bulbs_power:
+sensor.light_bulbs_salon_power:
   friendly_name: Żarówki salon
 sensor.humidity_indoor:
   friendly_name: Wilgotność wewnętrzna

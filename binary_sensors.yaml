@@ -129,16 +129,16 @@
       friendly_name: Brother HL-L2340DW
 
     sonoff_switch_lamp_status:
-      friendly_name: Sonoff Basic
+      friendly_name: Sonoff Basic [1]
       value_template: "{{ is_state('device_tracker.sonoff_switch_lamp', 'home') }}"
 
-#    sonoff_switch_single_status:
-#      friendly_name: Sonoff Basic [2]
-#      value_template: "{{ is_state('device_tracker.sonoff_switch_single', 'home') }}"
+    sonoff_switch_single_status:
+      friendly_name: Sonoff Basic [2]
+      value_template: "{{ is_state('device_tracker.sonoff_switch_single', 'home') }}"
 
-#    sonoff_switch_triple_status:
-#      friendly_name: Sonoff Basic [3]
-#      value_template: "{{ is_state('device_tracker.sonoff_switch_triple', 'home') }}"
+    sonoff_switch_triple_status:
+      friendly_name: Sonoff Basic [3]
+      value_template: "{{ is_state('device_tracker.sonoff_switch_triple', 'home') }}"
 
     yeelight_bulb_salon1_status:
       friendly_name: Yeelight Bulb YLDP02YL [1]

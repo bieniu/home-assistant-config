@@ -2,9 +2,9 @@ expose_by_default: false
 exposed_domains:
   - switch
 entities:
-  switch.light_salon_leds:
+  switch.light_leds_salon:
     hidden: false
-  switch.light_salon_bulbs:
+  switch.light_bulbs_salon:
     hidden: false
     name: Zarowki
   switch.light_lamp_salon:

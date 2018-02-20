@@ -5,7 +5,7 @@
       transition: 5
       brightness: 110
       color_temp: 350
-    switch.light_salon_leds:
+    switch.light_leds_salon:
       state: off
     switch.light_lamp_salon:
       state: off
@@ -17,7 +17,7 @@
       transition: 5
       brightness: 128
       rgb_color: [20,20,50]
-    switch.light_salon_leds:
+    switch.light_leds_salon:
       state: on
     switch.light_lamp_salon:
       state: off
@@ -29,7 +29,7 @@
       transition: 5
       brightness: 128
       rgb_color: [255,102,0]
-    switch.light_salon_leds:
+    switch.light_leds_salon:
       state: off
     switch.light_lamp_salon:
       state: on
@@ -41,7 +41,7 @@
       transition: 5
       brightness: 200
       rgb_color: [255,0,255]
-    switch.light_salon_leds:
+    switch.light_leds_salon:
       state: off
     switch.light_lamp_salon:
       state: off
@@ -52,7 +52,7 @@
       state: on
       transition: 5
       brightness: 255
-    switch.light_salon_leds:
+    switch.light_leds_salon:
       state: off
     switch.light_lamp_salon:
       state: off
@@ -64,7 +64,7 @@
       transition: 5
       brightness: 220
       color_temp: 300
-    switch.light_salon_leds:
+    switch.light_leds_salon:
       state: off
     switch.light_lamp_salon:
       state: on
@@ -76,14 +76,14 @@
       transition: 5
       brightness: 255
       color_temp: 240
-    switch.light_salon_leds:
+    switch.light_leds_salon:
       state: on
     switch.light_lamp_salon:
       state: off
 
 - name: dyskoteka
   entities:
-    switch.light_salon_leds:
+    switch.light_leds_salon:
       state: off
     switch.light_lamp_salon:
       state: off

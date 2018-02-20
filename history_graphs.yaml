@@ -1,8 +1,8 @@
 power_consumption:
   name: Zużycie energii
   entities:
-    - sensor.light_salon_leds_power
-    - sensor.light_salon_bulbs_power
+    - sensor.light_leds_salon_power
+    - sensor.light_bulbs_salon_power
   hours_to_show: 48
   refresh: 60
 

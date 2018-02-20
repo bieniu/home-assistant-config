@@ -184,8 +184,8 @@ iot devices:
   name: Urządzenia IoT
   entities:
     - binary_sensor.sonoff_switch_lamp_status
-#    - binary_sensor.sonoff_switch_single_status
-#    - binary_sensor.sonoff_switch_triple_status
+    - binary_sensor.sonoff_switch_single_status
+    - binary_sensor.sonoff_switch_triple_status
     - binary_sensor.yeelight_bulb_salon1_status
     - binary_sensor.yeelight_bulb_salon2_status
     - binary_sensor.yeelight_lightstrip_antek_status
@@ -245,9 +245,6 @@ scripts:
   name: Skrypty i ustawienia
   control: hidden
   entities:
-    - script.restart_hass
-    - script.reboot_pi
-    - script.shutdown_pi
     - script.reboot_router
     - input_select.log_level
 
@@ -290,9 +287,6 @@ batteries motion sensors:
     - sensor.battery_body_sensor_antresola
     - sensor.battery_body_sensor_antek
     - sensor.battery_body_sensor_sypialnia
-    - sensor.battery_window_sensor_kuchnia
-    - sensor.battery_door_sensor_pracownia
-    - sensor.battery_door_sensor_sypialnia
 
 batteries windows sensors:
   name: Baterie sensorów okien/drzwi
@@ -304,8 +298,8 @@ batteries windows sensors:
 energy consumption:
   name: Miesięczne zużycie energii
   entities:
-    - sensor.light_salon_bulbs_energy
-    - sensor.light_salon_leds_energy
+    - sensor.light_bulbs_salon_energy
+    - sensor.light_leds_salon_energy
     - history_graph.zuzycie_energii
 
 raspberry:
@@ -336,9 +330,9 @@ salon:
     - sensor.illumination_158d0001e16389
     - binary_sensor.motion_salon
     - climate.thermostat_salon
-    - switch.light_salon_bulbs
+    - switch.light_bulbs_salon
     - light.bulbs_salon
-    - switch.light_salon_leds
+    - switch.light_leds_salon
     - switch.light_lamp_salon
     - input_select.light_scenes_salon
     - switch.denon

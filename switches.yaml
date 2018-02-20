@@ -23,8 +23,8 @@
   lights: light.bulbs_salon
   name: Flux
   start_colortemp: 4400
-  sunset_colortemp: 3700
-  stop_colortemp: 3000
+  sunset_colortemp: 3800
+  stop_colortemp: 3200
   mode: mired
   brightness: 255
 
@@ -32,7 +32,7 @@
   switches:
     denon:
       friendly_name: Amplituner
-      value_template: "{{ (not is_state('media_player.denon', 'off')) and (not is_state('media_player.denon', None)) }}"
+      value_template: "{{ is_state('media_player.denon', 'on') }}"
       turn_on:
         service: media_player.turn_on
         entity_id: media_player.denon
@@ -41,7 +41,7 @@
         entity_id: media_player.denon
     playstation:
       friendly_name: PlayStation
-      value_template: "{{ (not is_state('media_player.playstation', 'off')) and (not is_state('media_player.playstation', None)) }}"
+      value_template: "{{ is_state('media_player.playstation', 'on') }}"
       turn_on:
         service: media_player.turn_on
         entity_id: media_player.playstation

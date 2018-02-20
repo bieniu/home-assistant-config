@@ -10,7 +10,7 @@
 
 - platform: command_line
   name: Last restart
-  command: "sudo systemctl status home-assistant.service | head -3 | awk '{print $6}' | tail -1"
+  command: "systemctl status home-assistant.service | head -3 | awk '{print $6}' | tail -1"
   scan_interval: 1800
 
 - platform: command_line

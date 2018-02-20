@@ -25,11 +25,6 @@ exclude:
     - binary_sensor.motion_sensor_158d00014d0a27
     - binary_sensor.motion_sensor_158d000121c604
     - binary_sensor.motion_sensor_158d0001e16389
-    - input_number.gaming_end_hours
-    - input_number.gaming_end_minutes
-    - binary_sensor.gaming
-    - sensor.ha_version_current
-    - sensor.ha_version_installed
     - sensor.temperature_158d0001826f20
     - sensor.temperature_158d00010fb340
     - sensor.temperature_158d0001100416
@@ -39,8 +34,15 @@ exclude:
     - sensor.temperature_158d0001c09930
     - sensor.temperature_158d000201d5d5
     - sensor.temperature_158d0002273538
-    - binary_sensor.presence
+    - input_number.gaming_end_hours
+    - input_number.gaming_end_minutes
+    - binary_sensor.gaming
+    - sensor.ha_version_current
+    - sensor.ha_version_installed
     - sensor.home_assistant_uptime
+    - binary_sensor.presence
+    - light.bulb_salon_1
+    - light.bulb_salon_2
 include:
   entities:
     - group.family

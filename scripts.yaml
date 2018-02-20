@@ -83,20 +83,20 @@ xiaomi_alarm_stop:
 #### OTHER ####
 night_mode:
   sequence:
-    service: switch.turn_off
-    entity_id:
-      - switch.light_salon_leds
-      - switch.light_salon_bulbs
-      - switch.light_lamp_salon
-      - switch.stacjonarny
-      - switch.denon
+    - service: script.harmony_tv_off
+    - service: switch.turn_off
+      entity_id:
+        - switch.light_leds_salon
+        - light.bulbs_salon
+        - switch.light_lamp_salon
+        - switch.stacjonarny
 
 light_away_mode:
   sequence:
     service: homeassistant.turn_off
     entity_id:
-      - switch.light_salon_leds
-      - switch.light_salon_bulbs
+      - switch.light_leds_salon
+      - light.bulbs_salon
       - switch.light_lamp_salon
       - light.gateway_light_f0b429cc6f0b
       - light.lightstrip_sypialnia
