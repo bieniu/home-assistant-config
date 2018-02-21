@@ -70,7 +70,7 @@
     - type: last_boot
 
 - platform: darksky
-  api_key: 07cbbc5a9a0f3bdc5a650ba8c2487dda
+  api_key: !secret darksky_api_key
   update_inverval: '00:10'
   monitored_conditions:
     - summary
