@@ -46,7 +46,7 @@
     switch.light_lamp_salon:
       state: off
 
-- name: standard
+- name: automatyczny
   entities:
     light.bulbs_salon:
       state: on
@@ -75,9 +75,9 @@
       state: on
       transition: 5
       brightness: 255
-      color_temp: 240
+      color_temp: 260
     switch.light_leds_salon:
-      state: on
+      state: off
     switch.light_lamp_salon:
       state: off
 

@@ -26,7 +26,7 @@ zone 3:
   longitude: 19.4559
 
 frontend:
-  javascript_version: latest
+  javascript_version: auto
   themes:
     red:
       paper-item-icon-color: red
@@ -83,10 +83,10 @@ sun:
 config:
 
 discovery:
-  ignore:
-    - denonavr
-    - harmony
-    - yeelight
+#  ignore:
+#    - denonavr
+#    - harmony
+#    - yeelight
 
 zeroconf:
 
@@ -143,3 +143,6 @@ history_graph: !include history_graphs.yaml
 python_script:
 
 emulated_hue: !include emulated_hue.yaml
+
+homekit:
+  pincode: !secret homekit_pincode

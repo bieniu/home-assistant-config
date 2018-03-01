@@ -48,3 +48,4 @@
       turn_off:
         service: media_player.turn_off
         entity_id: media_player.playstation
+

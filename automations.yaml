@@ -16,11 +16,11 @@
     - service: input_number.set_value
       data_template:
         entity_id: input_number.gaming_end_hours
-        value: '{{ (now().strftime("%s") | int | timestamp_custom("%H")) | int + 1 }}'
+        value: '{{ now().strftime("%H") }}'
     - service: input_number.set_value
       data_template:
         entity_id: input_number.gaming_end_minutes
-        value: '{{ now().strftime("%s") | int | timestamp_custom("%M") }}'
+        value: '{{ now().strftime("%M") }}'
 
 # koniec grania
 - id: end_games
@@ -33,9 +33,9 @@
     condition: and
     conditions:
       - condition: template
-        value_template: '{{ ((now().strftime("%s") | int | timestamp_custom("%H")) | int) == (states.input_number.gaming_end_hours.state | int)}}'
+        value_template: '{{ (now().strftime("%H") | int) == (states.input_number.gaming_end_hours.state | int + 1)}}'
       - condition: template
-        value_template: '{{ ((now().strftime("%s") | int | timestamp_custom("%M")) | int) == (states.input_number.gaming_end_minutes.state | int) }}'
+        value_template: '{{ (now().strftime("%M") | int) == (states.input_number.gaming_end_minutes.state | int) }}'
       - condition: state
         entity_id: input_boolean.gaming_timer
         state: 'on'
@@ -163,8 +163,8 @@
       entity_id:
         - binary_sensor.motion_antresola
         - binary_sensor.motion_salon
-        - binary_sensor.motion_sensor_158d000165ffb8
-        - binary_sensor.motion_sensor_158d00016612fb
+        - binary_sensor.motion_sypialnia
+        - binary_sensor.motion_antek
       from: 'off'
       to: 'on'
   condition:
@@ -188,9 +188,9 @@
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.door_window_sensor_158d0001a5dbdb
-        - binary_sensor.door_window_sensor_158d0001a223ff
-        - binary_sensor.door_window_sensor_158d00019fd83f
+        - binary_sensor.balcony_door_sypialnia
+        - binary_sensor.window_kuchnia
+        - binary_sensor.balcony_door_pracownia
       from: 'off'
       to: 'on'
   condition:
@@ -429,7 +429,7 @@
     condition: and
     conditions:
       - condition: template
-        value_template: '{{ (now().strftime("%s") | int | timestamp_custom("%H:%M")) == states.input_select.heating_night_end.state }}'
+        value_template: '{{ now().strftime("%H:%M") == states.input_select.heating_night_end.state }}'
       - condition: time
         weekday:
           - mon
@@ -457,7 +457,7 @@
     condition: and
     conditions:
       - condition: template
-        value_template: '{{ (now().strftime("%s") | int | timestamp_custom("%H:%M")) == states.input_select.heating_night_start.state }}'
+        value_template: '{{ now().strftime("%H:%M") == states.input_select.heating_night_start.state }}'
       - condition: time
         weekday:
           - sun
@@ -485,7 +485,7 @@
     condition: and
     conditions:
       - condition: template
-        value_template: '{{ (now().strftime("%s") | int | timestamp_custom("%H:%M")) == states.input_select.heating_night_end_weekend.state }}'
+        value_template: '{{ now().strftime("%H:%M") == states.input_select.heating_night_end_weekend.state }}'
       - condition: time
         weekday:
           - sat
@@ -510,7 +510,7 @@
     condition: and
     conditions:
       - condition: template
-        value_template: '{{ (now().strftime("%s") | int | timestamp_custom("%H:%M")) == states.input_select.heating_night_start_weekend.state }}'
+        value_template: '{{ now().strftime("%H:%M") == states.input_select.heating_night_start_weekend.state }}'
       - condition: time
         weekday:
           - fri
@@ -968,7 +968,7 @@
         entity_id: light.lightstrip_antek
         state: 'on'
       - condition: state
-        entity_id: light.gateway_light_f0b429cc6f0b
+        entity_id: light.gateway_antresola
         state: 'on'
   action:
     service: script.light_away_mode
@@ -999,13 +999,13 @@
 #      - switch.sonoff_triple
 
 ## SALON ##
-# standardowa scena oświetlenia w salonie
-- id: light_scene_salon_standard
-  alias: 'Light Scene Salon Standard'
+# automatyczna scena oświetlenia w salonie
+- id: light_scene_salon_auto
+  alias: 'Light Scene Salon Auto'
   trigger:
     - platform: state
       entity_id: input_select.light_scenes_salon
-      to: 'standard'
+      to: 'automatyczny'
     - platform: state
       entity_id: light.bulbs_salon
       to: 'on'
@@ -1021,7 +1021,7 @@
     - service: input_select.select_option
       data:
         entity_id: input_select.light_scenes_salon
-        option: 'standard'
+        option: 'automatyczny'
 
 # wybór sceny oświetlenia w salonie gdy zarówki włączone
 - id: light_scene_salon
@@ -1033,7 +1033,7 @@
     condition: and
     conditions:
       - condition: template
-        value_template: "{{ trigger.to_state.state != 'standard' }}"
+        value_template: "{{ trigger.to_state.state != 'automatyczny' }}"
       - condition: template
         value_template: "{{ (states.light.bulb_salon_1.state == 'on') and (states.light.bulb_salon_2.state == 'on') }}"
   action:
@@ -1051,7 +1051,7 @@
     condition: and
     conditions:
       - condition: template
-        value_template: "{{ trigger.to_state.state != 'standard' }}"
+        value_template: "{{ trigger.to_state.state != 'automatyczny' }}"
       - condition: template
         value_template: "{{ (states.light.bulbs_salon.state == 'off') or (states.light.bulbs_salon.state == 'unavailable') }}"
   action:
@@ -1060,9 +1060,9 @@
     - service: switch.turn_on
       entity_id: switch.light_bulbs_salon
 
-# wybór sceny standard oświetlenia w salonie gdy żarówki wyłączone
-- id: light_scene_salon_standard_when_bulbs_off
-  alias: 'Light Scene Salon Standard When Bulbs Off'
+# wybór sceny auto oświetlenia w salonie gdy żarówki wyłączone
+- id: light_scene_salon_auto_when_bulbs_off
+  alias: 'Light Scene Salon Auto When Bulbs Off'
   trigger:
     platform: state
     entity_id: input_select.light_scenes_salon
@@ -1070,7 +1070,7 @@
     condition: and
     conditions:
       - condition: template
-        value_template: "{{ trigger.to_state.state == 'standard' }}"
+        value_template: "{{ trigger.to_state.state == 'automatyczny' }}"
       - condition: template
         value_template: "{{ (states.light.bulbs_salon.state == 'off') or (states.light.bulbs_salon.state == 'unavailable') }}"
   action:
@@ -1102,12 +1102,12 @@
     - platform: event
       event_type: click
       event_data:
-        entity_id: binary_sensor.switch_158d000154964c
+        entity_id: binary_sensor.switch_light_salon_1
         click_type: single
     - platform: event
       event_type: click
       event_data:
-        entity_id: binary_sensor.switch_158d00014a0911
+        entity_id: binary_sensor.switch_light_salon_2
         click_type: single
   action:
     service: switch.toggle
@@ -1120,12 +1120,12 @@
     - platform: event
       event_type: click
       event_data:
-        entity_id: binary_sensor.switch_158d000154964c
+        entity_id: binary_sensor.switch_light_salon_1
         click_type: double
     - platform: event
       event_type: click
       event_data:
-        entity_id: binary_sensor.switch_158d00014a0911
+        entity_id: binary_sensor.switch_light_salon_2
         click_type: double
   action:
     service: switch.toggle
@@ -1138,12 +1138,12 @@
     - platform: event
       event_type: click
       event_data:
-        entity_id: binary_sensor.switch_158d000154964c
+        entity_id: binary_sensor.switch_light_salon_1
         click_type: hold
     - platform: event
       event_type: click
       event_data:
-        entity_id: binary_sensor.switch_158d00014a0911
+        entity_id: binary_sensor.switch_light_salon_2
         click_type: hold
   action:
     service: switch.toggle
@@ -1156,11 +1156,11 @@
     - platform: state
       entity_id:
         - binary_sensor.motion_salon
-        - binary_sensor.motion_sensor_158d000120a226
+        - binary_sensor.motion_schody
       from: 'off'
       to: 'on'
     - platform: numeric_state
-      entity_id: sensor.illumination_158d0001e16389
+      entity_id: sensor.illumination_salon
       below: 10
     - platform: state
       entity_id: switch.light_leds_salon
@@ -1184,7 +1184,7 @@
         entity_id: input_boolean.away_mode
         state: 'off'
       - condition: template
-        value_template: "{{ (states.sensor.illumination_158d0001e16389.state | int < 10) or (states.sensor.illumination_f0b429cc6f0b.state | int < 60) }}"
+        value_template: "{{ (states.sensor.illumination_salon.state | int < 10) or (states.sensor.illumination_antresola.state | int < 60) }}"
       - condition: state
         entity_id: switch.light_leds_salon
         state: 'off'
@@ -1232,7 +1232,7 @@
       from: 'off'
       to: 'on'
     - platform: numeric_state
-      entity_id: sensor.illumination_158d0001e16389
+      entity_id: sensor.illumination_salon
       above: 20
   condition:
     condition: state
@@ -1244,7 +1244,7 @@
         - switch.light_lamp_salon
         - input_boolean.salon_lamp_motion_on
 
-# automatyczna zmiana temperatury koloru żarówek gdy wybrana scena standard
+# automatyczna zmiana temperatury koloru żarówek gdy wybrana scena auto
 - id: light_salon_bulbs_auto_color_temp
   alias: 'Light Salon Bulbs Auto Color Temp'
   trigger:
@@ -1258,7 +1258,7 @@
         value_template: "{{ (states.light.bulb_salon_1.state == 'on') and (states.light.bulb_salon_2.state == 'on') }}"
       - condition: state
         entity_id: input_select.light_scenes_salon
-        state: 'standard'
+        state: 'automatyczny'
   action:
     service: switch.flux_update
 
@@ -1299,9 +1299,9 @@
       entity_id: input_select.light_scenes_salon
       option: 'film'
 
-# Scena oświetlenia salonu standard po wyłączeniu filmu
-- id: light_scene_standard_after_film
-  alias: 'Light Scene Standard After Film'
+# Scena oświetlenia salonu auto po wyłączeniu filmu
+- id: light_scene_auto_after_film
+  alias: 'Light Scene Auto After Film'
   trigger:
     - platform: state
       entity_id: sensor.androidtv_activity
@@ -1347,7 +1347,7 @@
     service: input_select.select_option
     data:
       entity_id: input_select.light_scenes_salon
-      option: 'standard'
+      option: 'automatyczny'
 
 ## ANTRESOLA ##
 # włączanie lampki na antresoli jak jest ciemno i jest ruch
@@ -1365,10 +1365,10 @@
         entity_id: input_boolean.away_mode
         state: 'off'
       - condition: state
-        entity_id: light.gateway_light_f0b429cc6f0b
+        entity_id: light.gateway_antresola
         state: 'off'
       - condition: numeric_state
-        entity_id: sensor.illumination_f0b429cc6f0b
+        entity_id: sensor.illumination_antresola
         below: 60
       - condition: or
         conditions:
@@ -1378,7 +1378,7 @@
             before: sunrise
   action:
     - service: light.turn_on
-      entity_id: light.gateway_light_f0b429cc6f0b
+      entity_id: light.gateway_antresola
       data_template:
         brightness: 200
         rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
@@ -1400,7 +1400,7 @@
   action:
     - service: homeassistant.turn_off
       entity_id:
-        - light.gateway_light_f0b429cc6f0b
+        - light.gateway_antresola
         - input_boolean.antresola_lamp_motion_on
 
 ## SYPIALNIA ##
@@ -1409,11 +1409,11 @@
   alias: 'Light Turn On Sypialnia LEDs When Dark And Motion'
   trigger:
     - platform: state
-      entity_id: binary_sensor.motion_sensor_158d000165ffb8
+      entity_id: binary_sensor.motion_sypialnia
       from: 'off'
       to: 'on'
     - platform: numeric_state
-      entity_id: sensor.illumination_158d000165ffb8
+      entity_id: sensor.illumination_sypialnia
       below: 3
   condition:
     condition: and
@@ -1425,10 +1425,10 @@
         entity_id: light.lightstrip_sypialnia
         state: 'off'
       - condition: numeric_state
-        entity_id: sensor.illumination_158d000165ffb8
+        entity_id: sensor.illumination_sypialnia
         below: 3
       - condition: state
-        entity_id: binary_sensor.motion_sensor_158d000165ffb8
+        entity_id: binary_sensor.motion_sypialnia
         state: 'on'
       - condition: or
         conditions:
@@ -1450,11 +1450,11 @@
   alias: 'Light Turn Off Sypialnia LEDs'
   trigger:
     - platform: state
-      entity_id: binary_sensor.motion_sensor_158d000165ffb8
+      entity_id: binary_sensor.motion_sypialnia
       from: 'on'
       to: 'off'
     - platform: numeric_state
-      entity_id: sensor.illumination_158d000165ffb8
+      entity_id: sensor.illumination_sypialnia
       above: 2
   condition:
     condition: state
@@ -1474,10 +1474,10 @@
   alias: 'Light Turn On Antek LEDs When Dark And Motion'
   trigger:
     - platform: numeric_state
-      entity_id: sensor.illumination_158d00016612fb
+      entity_id: sensor.illumination_antek
       below: 3
     - platform: state
-      entity_id: binary_sensor.motion_sensor_158d00016612fb
+      entity_id: binary_sensor.motion_antek
       from: 'off'
       to: 'on'
   condition:
@@ -1487,10 +1487,10 @@
         entity_id: input_boolean.away_mode
         state: 'off'
       - condition: state
-        entity_id: binary_sensor.motion_sensor_158d00016612fb
+        entity_id: binary_sensor.motion_antek
         state: 'on'
       - condition: numeric_state
-        entity_id: sensor.illumination_158d00016612fb
+        entity_id: sensor.illumination_antek
         below: 3
       - condition: state
         entity_id: light.lightstrip_antek
@@ -1512,11 +1512,11 @@
   alias: 'Light Turn Off Antek LEDs'
   trigger:
     - platform: state
-      entity_id: binary_sensor.motion_sensor_158d00016612fb
+      entity_id: binary_sensor.motion_antek
       from: 'on'
       to: 'off'
     - platform: numeric_state
-      entity_id: sensor.illumination_158d00016612fb
+      entity_id: sensor.illumination_antek
       above: 2
   condition:
     condition: and
@@ -1534,7 +1534,7 @@
     platform: event
     event_type: click
     event_data:
-      entity_id: binary_sensor.switch_158d0001d87c4f
+      entity_id: binary_sensor.switch_light_antek
       click_type: hold
   condition:
     condition: and
@@ -1569,7 +1569,7 @@
     platform: event
     event_type: click
     event_data:
-      entity_id: binary_sensor.switch_158d0001d87c4f
+      entity_id: binary_sensor.switch_light_antek
       click_type: hold
   condition:
     condition: and
@@ -1611,7 +1611,7 @@
     - platform: event
       event_type: click
       event_data:
-        entity_id: binary_sensor.switch_158d0001d87c4f
+        entity_id: binary_sensor.switch_light_antek
         click_type: single
   action:
     service: light.toggle
@@ -1624,7 +1624,7 @@
     - platform: event
       event_type: click
       event_data:
-        entity_id: binary_sensor.switch_158d0001d87c4f
+        entity_id: binary_sensor.switch_light_antek
         click_type: double
   action:
     service: light.turn_on

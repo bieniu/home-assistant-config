@@ -4,7 +4,7 @@
   timeout: 3
 - platform: ps4
   host: !secret playstation_ip
-  filename: '/home/homeassistant/.homeassistant/ps4-wake.credentials.json'
+#  credentials_filename: '/home/homeassistant/.homeassistant/.ps4-wake.credentials.json'
   local_store: games
   name: PlayStation
 #- platform: dunehd

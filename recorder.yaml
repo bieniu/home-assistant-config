@@ -15,25 +15,24 @@ exclude:
     - sensor.sunset
     - sensor.sunrise
     - sensor.sun_custom
-    - sensor.ssl_certificate_expiry
     - sensor.androidtv_activity
     - sensor.dune_activity
-    - binary_sensor.switch_158d000154964c
-    - binary_sensor.switch_158d00014a0911
-    - binary_sensor.switch_158d0001d87c4f
-    - binary_sensor.motion_sensor_158d000120a226
-    - binary_sensor.motion_sensor_158d00014d0a27
-    - binary_sensor.motion_sensor_158d000121c604
-    - binary_sensor.motion_sensor_158d0001e16389
-    - sensor.temperature_158d0001826f20
-    - sensor.temperature_158d00010fb340
-    - sensor.temperature_158d0001100416
-    - sensor.temperature_158d00010fb2cd
-    - sensor.temperature_158d000129a158
-    - sensor.temperature_158d000149cc8c
-    - sensor.temperature_158d0001c09930
-    - sensor.temperature_158d000201d5d5
-    - sensor.temperature_158d0002273538
+    - binary_sensor.switch_light_salon_1
+    - binary_sensor.switch_light_salon_2
+    - binary_sensor.switch_light_antek
+    - binary_sensor.motion_schody
+    - binary_sensor.motion_antresola_org
+    - binary_sensor.motion_salon_1_org
+    - binary_sensor.motion_salon_2_org
+    - sensor.temperature_gabinet_org
+    - sensor.temperature_salon_org
+    - sensor.temperature_sypialnia_org
+    - sensor.temperature_antek_org
+    - sensor.temperature_lazienka_org
+    - sensor.temperature_antresola_org
+    - sensor.temperature_goscinny_org
+    - sensor.temperature_pracownia_org
+    - sensor.temperature_outdoor_org
     - input_number.gaming_end_hours
     - input_number.gaming_end_minutes
     - binary_sensor.gaming

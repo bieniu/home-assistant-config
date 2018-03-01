@@ -28,13 +28,13 @@
 
     motion_antresola:
       value_template: >-
-         {{ is_state('binary_sensor.motion_sensor_158d000120a226', 'on')
-            or is_state('binary_sensor.motion_sensor_158d00014d0a27', 'on') }}
+         {{ is_state('binary_sensor.motion_schody', 'on')
+            or is_state('binary_sensor.motion_antresola_org', 'on') }}
 
     motion_salon:
       value_template: >-
-         {{ is_state('binary_sensor.motion_sensor_158d0001e16389', 'on')
-            or is_state('binary_sensor.motion_sensor_158d000121c604', 'on') }}
+         {{ is_state('binary_sensor.motion_salon_1_org', 'on')
+            or is_state('binary_sensor.motion_salon_2_org', 'on') }}
 
     router_status:
       value_template: "{{ is_state('device_tracker.router', 'home') }}"

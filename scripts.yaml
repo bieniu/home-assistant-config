@@ -98,7 +98,7 @@ light_away_mode:
       - switch.light_leds_salon
       - light.bulbs_salon
       - switch.light_lamp_salon
-      - light.gateway_light_f0b429cc6f0b
+      - light.gateway_antresola
       - light.lightstrip_sypialnia
       - light.lightstrip_antek
 

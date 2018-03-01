@@ -129,7 +129,7 @@ light_scenes_salon:
   name: Tryb oświetlenia
   icon: mdi:palette
   options:
-    - 'standard'
+    - 'automatyczny'
     - 'jasny'
     - 'film'
     - 'czytanie'

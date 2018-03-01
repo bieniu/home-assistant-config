@@ -18,13 +18,13 @@ humidity:
   name: Wilgotność
   entities:
     - sensor.humidity_indoor
-    - sensor.humidity_158d0002273538
+    - sensor.humidity_outdoor
   hours_to_show: 48
   refresh: 60
 
 pressure:
   name: Ciśnienie
-  entities: sensor.pressure_158d0002273538
+  entities: sensor.pressure_outdoor
   hours_to_show: 48
   refresh: 60
 

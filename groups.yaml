@@ -74,10 +74,10 @@ weather:
   entities:
     - sensor.dark_sky_summary_custom
     - sensor.temperature_outdoor
-    - sensor.humidity_158d0002273538
-    - sensor.pressure_158d0002273538
+    - sensor.humidity_outdoor
+    - sensor.pressure_outdoor
     - sensor.dark_sky_wind_speed
-    - sensor.dark_sky_precip_probability_custom
+    - sensor.dark_sky_precip_probability
     - sensor.sun_custom
     - sensor.sunrise
     - sensor.sunset
@@ -312,6 +312,7 @@ raspberry:
     - sensor.last_boot
     - sensor.last_restart
     - sensor.ha_database_size
+    - sensor.ssl_certificate_expiry
 
 printer:
   name: Drukarka
@@ -326,12 +327,12 @@ salon:
   control: hidden
   entities:
     - sensor.temperature_salon
-    - sensor.humidity_158d00010fb340
-    - sensor.illumination_158d0001e16389
+    - sensor.humidity_salon
+    - sensor.illumination_salon
     - binary_sensor.motion_salon
     - climate.thermostat_salon
     - switch.light_bulbs_salon
-    - light.bulbs_salon
+#    - light.bulbs_salon
     - switch.light_leds_salon
     - switch.light_lamp_salon
     - input_select.light_scenes_salon
@@ -344,8 +345,8 @@ kuchnia:
   control: hidden
   entities:
     - sensor.temperature_kuchnia
-    - sensor.humidity_158d00010fb340
-    - binary_sensor.door_window_sensor_158d0001a223ff
+    - sensor.humidity_salon
+    - binary_sensor.window_kuchnia
     - climate.thermostat_kuchnia
 
 goscinny:
@@ -353,25 +354,25 @@ goscinny:
   control: hidden
   entities:
     - sensor.temperature_goscinny
-    - sensor.humidity_158d0001c09930
+    - sensor.humidity_goscinny
 
 antresola:
   name: Antresola
   control: hidden
   entities:
   - sensor.temperature_antresola
-  - sensor.humidity_158d000149cc8c
-  - sensor.illumination_f0b429cc6f0b
+  - sensor.humidity_antresola
+  - sensor.illumination_antresola
   - binary_sensor.motion_antresola
   - climate.thermostat_antresola
-  - light.gateway_light_f0b429cc6f0b
+  - light.gateway_antresola
 
 gabinet:
   name: Gabinet
   control: hidden
   entities:
   - sensor.temperature_gabinet
-  - sensor.humidity_158d0001826f20
+  - sensor.humidity_gabinet
   - switch.stacjonarny
 
 pokoj_antek:
@@ -379,9 +380,9 @@ pokoj_antek:
   control: hidden
   entities:
     - sensor.temperature_antek
-    - sensor.humidity_158d00010fb2cd
-    - sensor.illumination_158d00016612fb
-    - binary_sensor.motion_sensor_158d00016612fb
+    - sensor.humidity_antek
+    - sensor.illumination_antek
+    - binary_sensor.motion_antek
     - climate.thermostat_antek
     - light.lightstrip_antek
 
@@ -390,10 +391,10 @@ sypialnia:
   control: hidden
   entities:
     - sensor.temperature_sypialnia
-    - sensor.humidity_158d0001100416
-    - sensor.illumination_158d000165ffb8
-    - binary_sensor.motion_sensor_158d000165ffb8
-    - binary_sensor.door_window_sensor_158d0001a5dbdb
+    - sensor.humidity_sypialnia
+    - sensor.illumination_sypialnia
+    - binary_sensor.motion_sypialnia
+    - binary_sensor.balcony_door_sypialnia
     - climate.thermostat_sypialnia
     - light.lightstrip_sypialnia
 #    - switch.sonoff_single
@@ -403,8 +404,8 @@ pracownia:
   control: hidden
   entities:
     - sensor.temperature_pracownia
-    - sensor.humidity_158d000201d5d5
-    - binary_sensor.door_window_sensor_158d00019fd83f
+    - sensor.humidity_pracownia
+    - binary_sensor.balcony_door_pracownia
 #    - switch.sonoff_triple
 
 lazienka:
@@ -412,12 +413,12 @@ lazienka:
   control: hidden
   entities:
     - sensor.temperature_lazienka
-    - sensor.humidity_158d000129a158
+    - sensor.humidity_lazienka
     - climate.thermostat_lazienka
 
 windows:
   name: Okna
   entities:
-    - binary_sensor.door_window_sensor_158d0001a5dbdb
-    - binary_sensor.door_window_sensor_158d0001a223ff
-    - binary_sensor.door_window_sensor_158d00019fd83f
+    - binary_sensor.balcony_door_sypialnia
+    - binary_sensor.window_kuchnia
+    - binary_sensor.balcony_door_pracownia

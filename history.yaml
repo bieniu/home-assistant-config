@@ -8,9 +8,9 @@ include:
     - sensor.romana_presence
     - sensor.emil_presence
     - sensor.agnieszka_presence
-    - sensor.dark_sky_precip_probability_custom
-    - sensor.humidity_158d0002273538
-    - sensor.pressure_158d0002273538
+    - sensor.dark_sky_precip_probability
+    - sensor.humidity_outdoor
+    - sensor.pressure_outdoor
     - sensor.dark_sky_summary_custom
     - sensor.temperature_outdoor
     - sensor.dark_sky_wind_speed

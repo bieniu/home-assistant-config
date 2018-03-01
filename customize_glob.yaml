@@ -18,7 +18,11 @@
   show_last_changed: true
 
 #### WINDOW/DOOR SENSORS ####
-'binary_sensor.door_window_sensor_*':
+'binary_sensor.balcony_door_*':
+  device_class: opening
+  icon: mdi:window-open
+
+'binary_sensor.window_*':
   device_class: opening
   icon: mdi:window-open
 
