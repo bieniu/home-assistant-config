@@ -1,0 +1,39 @@
+test:
+  module: test
+  class: TestLog
+
+#update_thermostat_kuchnia:
+#  module: update_thermostat
+#  class: UpdateThermostat
+#  thermostat: climate.thermostat_kuchnia
+#  sensor: sensor.temperature_kuchnia
+
+#update_thermostat_salon:
+#  module: update_thermostat
+#  class: UpdateThermostat
+#  thermostat: climate.thermostat_salon
+#  sensor: sensor.temperature_salon
+
+#update_thermostat_antresola:
+#  module: update_thermostat
+#  class: UpdateThermostat
+#  thermostat: climate.thermostat_antresola
+#  sensor: sensor.temperature_antresola
+
+#update_thermostat_sypialnia:
+#  module: update_thermostat
+#  class: UpdateThermostat
+#  thermostat: climate.thermostat_sypialnia
+#  sensor: sensor.temperature_sypialnia
+
+#update_thermostat_lazienka:
+#  module: update_thermostat
+#  class: UpdateThermostat
+#  thermostat: climate.thermostat_lazienka
+#  sensor: sensor.temperature_lazienka
+
+#update_thermostat_antek:
+#  module: update_thermostat
+#  class: UpdateThermostat
+#  thermostat: climate.thermostat_antek
+#  sensor: sensor.temperature_antek

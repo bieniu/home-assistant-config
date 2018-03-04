@@ -46,16 +46,16 @@ sensor.light_bulbs_salon_power:
 climate.thermostat_lazienka:
   platform: zwave
   unique_id: 14-72057594278101010
-binary_sensor.motion_schody:
+binary_sensor.motion_antresola_2:
   platform: xiaomi_aqara
   unique_id: status158d000120a226
-binary_sensor.motion_salon_2_org:
+binary_sensor.motion_salon_2:
   platform: xiaomi_aqara
   unique_id: status158d0001e16389
-binary_sensor.motion_antresola_org:
+binary_sensor.motion_antresola_1:
   platform: xiaomi_aqara
   unique_id: status158d00014d0a27
-binary_sensor.motion_salon_1_org:
+binary_sensor.motion_salon_1:
   platform: xiaomi_aqara
   unique_id: status158d000121c604
 binary_sensor.switch_light_salon_2:
@@ -85,7 +85,7 @@ binary_sensor.switch_light_antek:
 light.gateway_antresola:
   platform: xiaomi_aqara
   unique_id: rgbf0b429cc6f0b
-sensor.temperature_sypialnia_org:
+sensor.temperature_sypialnia:
   platform: xiaomi_aqara
   unique_id: temperature158d0001100416
 sensor.humidity_antresola:
@@ -94,13 +94,13 @@ sensor.humidity_antresola:
 sensor.pressure_outdoor:
   platform: xiaomi_aqara
   unique_id: pressure158d0002273538
-sensor.temperature_pracownia_org:
+sensor.temperature_pracownia:
   platform: xiaomi_aqara
   unique_id: temperature158d000201d5d5
-sensor.temperature_gabinet_org:
+sensor.temperature_gabinet:
   platform: xiaomi_aqara
   unique_id: temperature158d0001826f20
-sensor.temperature_outdoor_org:
+sensor.temperature_outdoor:
   platform: xiaomi_aqara
   unique_id: temperature158d0002273538
 sensor.illumination_salon:
@@ -109,19 +109,19 @@ sensor.illumination_salon:
 sensor.humidity_antek:
   platform: xiaomi_aqara
   unique_id: humidity158d00010fb2cd
-sensor.temperature_antek_org:
+sensor.temperature_antek:
   platform: xiaomi_aqara
   unique_id: temperature158d00010fb2cd
 sensor.humidity_gabinet:
   platform: xiaomi_aqara
   unique_id: humidity158d0001826f20
-sensor.temperature_goscinny_org:
+sensor.temperature_goscinny:
   platform: xiaomi_aqara
   unique_id: temperature158d0001c09930
 sensor.illumination_antek:
   platform: xiaomi_aqara
   unique_id: lux158d00016612fb
-sensor.temperature_antresola_org:
+sensor.temperature_antresola:
   platform: xiaomi_aqara
   unique_id: temperature158d000149cc8c
 sensor.illumination_antresola:
@@ -133,7 +133,7 @@ sensor.illumination_sypialnia:
 sensor.humidity_sypialnia:
   platform: xiaomi_aqara
   unique_id: humidity158d0001100416
-sensor.temperature_salon_org:
+sensor.temperature_salon:
   platform: xiaomi_aqara
   unique_id: temperature158d00010fb340
 sensor.humidity_pracownia:
@@ -145,7 +145,7 @@ sensor.humidity_salon:
 sensor.humidity_outdoor:
   platform: xiaomi_aqara
   unique_id: humidity158d0002273538
-sensor.temperature_lazienka_org:
+sensor.temperature_lazienka:
   platform: xiaomi_aqara
   unique_id: temperature158d000129a158
 sensor.humidity_lazienka:

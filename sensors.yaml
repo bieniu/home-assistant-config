@@ -72,7 +72,7 @@
 - platform: darksky
   api_key: !secret darksky_api_key
   update_inverval:
-    minutes: 20
+    minutes: 15
   monitored_conditions:
     - summary
     - icon
@@ -123,144 +123,18 @@
 
 - platform: template
   sensors:
-    temperature_outdoor:
-      friendly_name: Temperatura zewnętrzna
-      unit_of_measurement: '°C'
-      value_template: >-
-         {% if states.sensor.temperature_outdoor_org %}
-            {% if states.sensor.temperature_outdoor_org.state != 'unknown' %}
-               {{ (states.sensor.temperature_outdoor_org.state | float - 0.5) | round(1) }}
-            {% else %}
-               {{ states.sensor.temperature_outdoor.state }}
-            {% endif %}
-         {% else %}
-            {{ states.sensor.temperature_outdoor.state }}
-         {% endif %}
-
-    temperature_pracownia:
-      friendly_name: Temperatura
-      unit_of_measurement: '°C'
-      value_template: >-
-         {% if states.sensor.temperature_pracownia_org %}
-            {% if states.sensor.temperature_pracownia_org.state != 'unknown' %}
-               {{ (states.sensor.temperature_pracownia_org.state | float - 0.5) | round(1) }}
-            {% else %}
-               {{ states.sensor.temperature_pracownia.state }}
-            {% endif %}
-         {% else %}
-            {{ states.sensor.temperature_pracownia.state }}
-         {% endif %}
-
     temperature_kuchnia:
       friendly_name: Temperatura
       unit_of_measurement: '°C'
       value_template: >-
-         {% if states.sensor.temperature_salon_org %}
-            {% if states.sensor.temperature_salon_org.state != 'unknown' %}
-               {{ (states.sensor.temperature_salon_org.state | float - 0.5) | round(1) }}
+         {% if states.sensor.temperature_salon %}
+            {% if states.sensor.temperature_salon.state != 'unknown' %}
+               {{ states.sensor.temperature_salon.state | float | round(1) }}
             {% else %}
                {{ states.sensor.temperature_kuchnia.state }}
             {% endif %}
          {% else %}
             {{ states.sensor.temperature_kuchnia.state }}
-         {% endif %}
-
-    temperature_salon:
-      friendly_name: Temperatura
-      unit_of_measurement: '°C'
-      value_template: >-
-         {% if states.sensor.temperature_salon_org %}
-            {% if states.sensor.temperature_salon_org.state != 'unknown' %}
-               {{ (states.sensor.temperature_salon_org.state | float - 0.5) | round(1) }}
-            {% else %}
-               {{ states.sensor.temperature_salon.state }}
-            {% endif %}
-         {% else %}
-            {{ states.sensor.temperature_salon.state }}
-         {% endif %}
-
-    temperature_sypialnia:
-      friendly_name: Temperatura
-      unit_of_measurement: '°C'
-      value_template: >-
-         {% if states.sensor.temperature_sypialnia_org %}
-            {% if states.sensor.temperature_sypialnia_org.state != 'unknown' %} 
-               {{ (states.sensor.temperature_sypialnia_org.state | float - 0.5) | round(1) }}
-            {% else %}
-               {{ states.sensor.temperature_sypialnia.state }}
-            {% endif %}
-         {% else %}
-            {{ states.sensor.temperature_sypialnia.state }}
-         {% endif %}
-
-    temperature_antek:
-      friendly_name: Temperatura
-      unit_of_measurement: '°C'
-      value_template: >-
-         {% if states.sensor.temperature_antek_org %}
-            {% if states.sensor.temperature_antek_org.state != 'unknown' %}
-               {{ (states.sensor.temperature_antek_org.state | float - 0.5) | round(1) }}
-            {% else %}
-               {{ states.sensor.temperature_antek.state }}
-            {% endif %}
-         {% else %}
-            {{ states.sensor.temperature_antek.state }}
-         {% endif %}
-
-    temperature_gabinet:
-      friendly_name: Temperatura
-      unit_of_measurement: '°C'
-      value_template: >-
-         {% if states.sensor.temperature_gabinet_org %}
-            {% if states.sensor.temperature_gabinet_org.state != 'unknown' %}
-               {{ (states.sensor.temperature_gabinet_org.state | float - 0.5) | round(1) }}
-            {% else %}
-               {{ states.sensor.temperature_gabinet.state }}
-            {% endif %}
-         {% else %}
-            {{ states.sensor.temperature_gabinet.state }}
-         {% endif %}
-
-    temperature_antresola:
-      friendly_name: Temperatura
-      unit_of_measurement: '°C'
-      value_template: >-
-         {% if states.sensor.temperature_antresola_org %}
-            {% if states.sensor.temperature_antresola_org.state != 'unknown' %}
-               {{ (states.sensor.temperature_antresola_org.state | float - 0.5) | round(1) }}
-            {% else %}
-               {{ states.sensor.temperature_antresola.state }}
-            {% endif %}
-         {% else %}
-            {{ states.sensor.temperature_antresola.state }}
-         {% endif %}
-
-    temperature_goscinny:
-      friendly_name: Temperatura
-      unit_of_measurement: '°C'
-      value_template: >-
-         {% if states.sensor.temperature_goscinny_org %}
-            {% if states.sensor.temperature_goscinny_org.state != 'unknown' %}
-               {{ (states.sensor.temperature_goscinny_org.state | float - 0.5) | round(1) }}
-            {% else %}
-               {{ states.sensor.temperature_goscinny.state }}
-            {% endif %}
-         {% else %}
-            {{ states.sensor.temperature_goscinny.state }}
-         {% endif %}
-
-    temperature_lazienka:
-      friendly_name: Temperatura
-      unit_of_measurement: '°C'
-      value_template: >-
-         {% if states.sensor.temperature_lazienka_org %}
-            {% if states.sensor.temperature_lazienka_org.state != 'unknown' %}
-               {{ (states.sensor.temperature_lazienka_org.state | float - 0.5) | round(1) }}
-            {% else %}
-               {{ states.sensor.temperature_lazienka.state }}
-            {% endif %}
-         {% else %}
-            {{ states.sensor.temperature_lazienka.state }}
          {% endif %}
 
     battery_thermostat_antresola:
@@ -405,17 +279,17 @@
       friendly_name: sensor temperatury zewnętrznej
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.sensor.temperature_outdoor_org.attributes.battery_level %}
-            {{ states.sensor.temperature_outdoor_org.attributes.battery_level | round }}
+         {% if states.sensor.temperature_outdoor.attributes.battery_level %}
+            {{ states.sensor.temperature_outdoor.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_outdoor.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.sensor.temperature_outdoor_org.attributes.battery_level %}
-            {% if states.sensor.temperature_outdoor_org.attributes.battery_level != 'unknown' %}
+         {% if states.sensor.temperature_outdoor.attributes.battery_level %}
+            {% if states.sensor.temperature_outdoor.attributes.battery_level != 'unknown' %}
                {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
-               {% set charge = (states.sensor.temperature_outdoor_org.attributes.battery_level | float / 10) | round %}
+               {% set charge = (states.sensor.temperature_outdoor.attributes.battery_level | float / 10) | round %}
                mdi:battery{{ battery[charge] }}
             {% else %}
                mdi:battery-unknown
@@ -428,17 +302,17 @@
       friendly_name: sensor temperatury pracownia
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.sensor.temperature_pracownia_org.attributes.battery_level %}
-            {{ states.sensor.temperature_pracownia_org.attributes.battery_level | round }}
+         {% if states.sensor.temperature_pracownia.attributes.battery_level %}
+            {{ states.sensor.temperature_pracownia.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_pracownia.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.sensor.temperature_pracownia_org.attributes.battery_level %}
-            {% if states.sensor.temperature_pracownia_org.attributes.battery_level != 'unknown' %}
+         {% if states.sensor.temperature_pracownia.attributes.battery_level %}
+            {% if states.sensor.temperature_pracownia.attributes.battery_level != 'unknown' %}
                {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
-               {% set charge = (states.sensor.temperature_pracownia_org.attributes.battery_level | float / 10) | round %}
+               {% set charge = (states.sensor.temperature_pracownia.attributes.battery_level | float / 10) | round %}
                mdi:battery{{ battery[charge] }}
             {% else %}
                mdi:battery-unknown
@@ -451,17 +325,17 @@
       friendly_name: sensor temperatury pokój Antka
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.sensor.temperature_antek_org.attributes.battery_level %}
-            {{ states.sensor.temperature_antek_org.attributes.battery_level | round }}
+         {% if states.sensor.temperature_antek.attributes.battery_level %}
+            {{ states.sensor.temperature_antek.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_antek.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.sensor.temperature_antek_org.attributes.battery_level %}
-            {% if states.sensor.temperature_antek_org.attributes.battery_level != 'unknown' %}
+         {% if states.sensor.temperature_antek.attributes.battery_level %}
+            {% if states.sensor.temperature_antek.attributes.battery_level != 'unknown' %}
                {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
-               {% set charge = (states.sensor.temperature_antek_org.attributes.battery_level | float / 10) | round %}
+               {% set charge = (states.sensor.temperature_antek.attributes.battery_level | float / 10) | round %}
                mdi:battery{{ battery[charge] }}
             {% else %}
                mdi:battery-unknown
@@ -474,17 +348,17 @@
       friendly_name: sensor temperatury salon
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.sensor.temperature_salon_org.attributes.battery_level %}
-            {{ states.sensor.temperature_salon_org.attributes.battery_level | round }}
+         {% if states.sensor.temperature_salon.attributes.battery_level %}
+            {{ states.sensor.temperature_salon.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_salon.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.sensor.temperature_salon_org.attributes.battery_level %}
-            {% if states.sensor.temperature_salon_org.attributes.battery_level != 'unknown' %}
+         {% if states.sensor.temperature_salon.attributes.battery_level %}
+            {% if states.sensor.temperature_salon.attributes.battery_level != 'unknown' %}
                {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
-               {% set charge = (states.sensor.temperature_salon_org.attributes.battery_level | float / 10) | round %}
+               {% set charge = (states.sensor.temperature_salon.attributes.battery_level | float / 10) | round %}
                mdi:battery{{ battery[charge] }}
             {% else %}
                mdi:battery-unknown
@@ -497,17 +371,17 @@
       friendly_name: sensor temperatury pokój gościnny
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.sensor.temperature_goscinny_org.attributes.battery_level %}
-            {{ states.sensor.temperature_goscinny_org.attributes.battery_level | round }}
+         {% if states.sensor.temperature_goscinny.attributes.battery_level %}
+            {{ states.sensor.temperature_goscinny.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_goscinny.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.sensor.temperature_goscinny_org.attributes.battery_level %}
-            {% if states.sensor.temperature_goscinny_org.attributes.battery_level != 'unknown' %}
+         {% if states.sensor.temperature_goscinny.attributes.battery_level %}
+            {% if states.sensor.temperature_goscinny.attributes.battery_level != 'unknown' %}
                {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
-               {% set charge = (states.sensor.temperature_goscinny_org.attributes.battery_level | float / 10) | round %}
+               {% set charge = (states.sensor.temperature_goscinny.attributes.battery_level | float / 10) | round %}
                mdi:battery{{ battery[charge] }}
             {% else %}
                mdi:battery-unknown
@@ -520,17 +394,17 @@
       friendly_name: sensor temperatury sypialnia
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.sensor.temperature_sypialnia_org.attributes.battery_level %}
-            {{ states.sensor.temperature_sypialnia_org.attributes.battery_level | round }}
+         {% if states.sensor.temperature_sypialnia.attributes.battery_level %}
+            {{ states.sensor.temperature_sypialnia.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_sypialnia.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.sensor.temperature_sypialnia_org.attributes.battery_level %}
-            {% if states.sensor.temperature_sypialnia_org.attributes.battery_level != 'unknown' %}
+         {% if states.sensor.temperature_sypialnia.attributes.battery_level %}
+            {% if states.sensor.temperature_sypialnia.attributes.battery_level != 'unknown' %}
                {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
-               {% set charge = (states.sensor.temperature_sypialnia_org.attributes.battery_level | float / 10) | round %}
+               {% set charge = (states.sensor.temperature_sypialnia.attributes.battery_level | float / 10) | round %}
                mdi:battery{{ battery[charge] }}
             {% else %}
                mdi:battery-unknown
@@ -543,17 +417,17 @@
       friendly_name: sensor temperatury łazienka
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.sensor.temperature_lazienka_org.attributes.battery_level %}
-            {{ states.sensor.temperature_lazienka_org.attributes.battery_level | round }}
+         {% if states.sensor.temperature_lazienka.attributes.battery_level %}
+            {{ states.sensor.temperature_lazienka.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_lazienka.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.sensor.temperature_lazienka_org.attributes.battery_level %}
-            {% if states.sensor.temperature_lazienka_org.attributes.battery_level != 'unknown' %}
+         {% if states.sensor.temperature_lazienka.attributes.battery_level %}
+            {% if states.sensor.temperature_lazienka.attributes.battery_level != 'unknown' %}
                {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
-               {% set charge = (states.sensor.temperature_lazienka_org.attributes.battery_level | float / 10) | round %}
+               {% set charge = (states.sensor.temperature_lazienka.attributes.battery_level | float / 10) | round %}
                mdi:battery{{ battery[charge] }}
             {% else %}
                mdi:battery-unknown
@@ -566,17 +440,17 @@
       friendly_name: sensor temperatury antresola
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.sensor.temperature_antresola_org.attributes.battery_level %}
-            {{ states.sensor.temperature_antresola_org.attributes.battery_level | round }}
+         {% if states.sensor.temperature_antresola.attributes.battery_level %}
+            {{ states.sensor.temperature_antresola.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_antresola.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.sensor.temperature_antresola_org.attributes.battery_level %}
-            {% if states.sensor.temperature_antresola_org.attributes.battery_level != 'unknown' %}
+         {% if states.sensor.temperature_antresola.attributes.battery_level %}
+            {% if states.sensor.temperature_antresola.attributes.battery_level != 'unknown' %}
                {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
-               {% set charge = (states.sensor.temperature_antresola_org.attributes.battery_level | float / 10) | round %}
+               {% set charge = (states.sensor.temperature_antresola.attributes.battery_level | float / 10) | round %}
                mdi:battery{{ battery[charge] }}
             {% else %}
                mdi:battery-unknown
@@ -589,17 +463,17 @@
       friendly_name: sensor temperatury gabinet
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.sensor.temperature_gabinet_org.attributes.battery_level %}
-            {{ states.sensor.temperature_gabinet_org.attributes.battery_level | round }}
+         {% if states.sensor.temperature_gabinet.attributes.battery_level %}
+            {{ states.sensor.temperature_gabinet.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_temp_humi_sensor_gabinet.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.sensor.temperature_gabinet_org.attributes.battery_level %}
-            {% if states.sensor.temperature_gabinet_org.attributes.battery_level != 'unknown' %}
+         {% if states.sensor.temperature_gabinet.attributes.battery_level %}
+            {% if states.sensor.temperature_gabinet.attributes.battery_level != 'unknown' %}
                {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
-               {% set charge = (states.sensor.temperature_gabinet_org.attributes.battery_level | float / 10) | round %}
+               {% set charge = (states.sensor.temperature_gabinet.attributes.battery_level | float / 10) | round %}
                mdi:battery{{ battery[charge] }}
             {% else %}
                mdi:battery-unknown
@@ -612,17 +486,17 @@
       friendly_name: sensor ruchu antresola
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.binary_sensor.motion_antresola_org.attributes.battery_level %}
-            {{ states.binary_sensor.motion_antresola_org.attributes.battery_level | round }}
+         {% if states.binary_sensor.motion_antresola_1.attributes.battery_level %}
+            {{ states.binary_sensor.motion_antresola_1.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_body_sensor_atresola.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.binary_sensor.motion_antresola_org.attributes.battery_level %}
-            {% if states.binary_sensor.motion_antresola_org.attributes.battery_level != 'unknown' %}
+         {% if states.binary_sensor.motion_antresola_1.attributes.battery_level %}
+            {% if states.binary_sensor.motion_antresola_1.attributes.battery_level != 'unknown' %}
                {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
-               {% set charge = (states.binary_sensor.motion_antresola_org.attributes.battery_level | float / 10) | round %}
+               {% set charge = (states.binary_sensor.motion_antresola_1.attributes.battery_level | float / 10) | round %}
                mdi:battery{{ battery[charge] }}
             {% else %}
                mdi:battery-unknown
@@ -635,17 +509,17 @@
       friendly_name: sensor ruchu schody
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.binary_sensor.motion_schody.attributes.battery_level %}
-            {{ states.binary_sensor.motion_schody.attributes.battery_level | round }}
+         {% if states.binary_sensor.motion_antresola_2.attributes.battery_level %}
+            {{ states.binary_sensor.motion_antresola_2.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_body_sensor_schody.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.binary_sensor.motion_schody.attributes.battery_level %}
-            {% if states.binary_sensor.motion_schody.attributes.battery_level != 'unknown' %}
+         {% if states.binary_sensor.motion_antresola_2.attributes.battery_level %}
+            {% if states.binary_sensor.motion_antresola_2.attributes.battery_level != 'unknown' %}
                {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
-               {% set charge = (states.binary_sensor.motion_schody.attributes.battery_level | float / 10) | round %}
+               {% set charge = (states.binary_sensor.motion_antresola_2.attributes.battery_level | float / 10) | round %}
                mdi:battery{{ battery[charge] }}
             {% else %}
                mdi:battery-unknown
@@ -658,17 +532,17 @@
       friendly_name: sensor ruchu salon [1]
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.binary_sensor.motion_salon_1_org.attributes.battery_level %}
-            {{ states.binary_sensor.motion_salon_1_org.attributes.battery_level | round }}
+         {% if states.binary_sensor.motion_salon_1.attributes.battery_level %}
+            {{ states.binary_sensor.motion_salon_1.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_body_sensor_salon_1.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.binary_sensor.motion_salon_1_org.attributes.battery_level %}
-            {% if states.binary_sensor.motion_salon_1_org.attributes.battery_level != 'unknown' %}
+         {% if states.binary_sensor.motion_salon_1.attributes.battery_level %}
+            {% if states.binary_sensor.motion_salon_1.attributes.battery_level != 'unknown' %}
                {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
-               {% set charge = (states.binary_sensor.motion_salon_1_org.attributes.battery_level | float / 10) | round %}
+               {% set charge = (states.binary_sensor.motion_salon_1.attributes.battery_level | float / 10) | round %}
                mdi:battery{{ battery[charge] }}
             {% else %}
                mdi:battery-unknown
@@ -727,17 +601,17 @@
       friendly_name: sensor ruchu salon [2]
       unit_of_measurement: '%'
       value_template: >-
-         {% if states.binary_sensor.motion_salon_2_org.attributes.battery_level %}
-            {{ states.binary_sensor.motion_salon_2_org.attributes.battery_level | round }}
+         {% if states.binary_sensor.motion_salon_2.attributes.battery_level %}
+            {{ states.binary_sensor.motion_salon_2.attributes.battery_level | round }}
          {% else %}
             {{ states.sensor.battery_body_sensor_salon_2.state }}
          {% endif %}
 
       icon_template: >-
-         {% if states.binary_sensor.motion_salon_2_org.attributes.battery_level %}
-            {% if states.binary_sensor.motion_salon_2_org.attributes.battery_level != 'unknown' %}
+         {% if states.binary_sensor.motion_salon_2.attributes.battery_level %}
+            {% if states.binary_sensor.motion_salon_2.attributes.battery_level != 'unknown' %}
                {% set battery = ['-outline','-10','-20','-30','-40','-50','-60','-70','-80','-90','-100'] %}
-               {% set charge = (states.binary_sensor.motion_salon_2_org.attributes.battery_level | float / 10) | round %}
+               {% set charge = (states.binary_sensor.motion_salon_2.attributes.battery_level | float / 10) | round %}
                mdi:battery{{ battery[charge] }}
             {% else %}
                mdi:battery-unknown

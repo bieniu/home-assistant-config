@@ -4,6 +4,7 @@ default_view:
   icon: mdi:home
   entities:
     - group.family
+    - group.przedpokoj
     - group.kuchnia
     - group.salon
     - group.pracownia
@@ -184,7 +185,7 @@ iot devices:
   name: Urządzenia IoT
   entities:
     - binary_sensor.sonoff_switch_lamp_status
-    - binary_sensor.sonoff_switch_single_status
+    - binary_sensor.sonoff_switch_leds_status
     - binary_sensor.sonoff_switch_triple_status
     - binary_sensor.yeelight_bulb_salon1_status
     - binary_sensor.yeelight_bulb_salon2_status
@@ -332,7 +333,6 @@ salon:
     - binary_sensor.motion_salon
     - climate.thermostat_salon
     - switch.light_bulbs_salon
-#    - light.bulbs_salon
     - switch.light_leds_salon
     - switch.light_lamp_salon
     - input_select.light_scenes_salon
@@ -397,7 +397,6 @@ sypialnia:
     - binary_sensor.balcony_door_sypialnia
     - climate.thermostat_sypialnia
     - light.lightstrip_sypialnia
-#    - switch.sonoff_single
 
 pracownia:
   name: Pracownia
@@ -415,6 +414,11 @@ lazienka:
     - sensor.temperature_lazienka
     - sensor.humidity_lazienka
     - climate.thermostat_lazienka
+
+przedpokoj:
+  name: Przedpokój
+  control: hidden
+  entities: switch.light_leds_przedpokoj
 
 windows:
   name: Okna

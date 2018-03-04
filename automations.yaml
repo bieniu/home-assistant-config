@@ -846,48 +846,48 @@
       temperature: '{{ trigger.to_state.attributes.temperature }}'
 
 # uruchamia skrypt aktualizaujący current temp
-- id: heating_update_current_temperature
-  alias: 'Heating Update Current Temperature'
-  trigger:
-    platform: state
-    entity_id:
-      - sensor.temperature_antek
-      - sensor.temperature_salon
-      - sensor.temperature_kuchnia
-      - sensor.temperature_antresola
-      - sensor.temperature_sypialnia
-      - sensor.temperature_lazienka
-      - climate.thermostat_antek
-      - climate.thermostat_kuchnia
-      - climate.thermostat_salon
-      - climate.thermostat_antresola
-      - climate.thermostat_sypialnia
-      - climate.thermostat_lazienka
-  condition:
-    condition: template
-    value_template: >-
-      {% if "thermostat" in trigger.entity_id and trigger.to_state.attributes.current_temperature == none %}
-         true
-      {% elif "sensor" in trigger.entity_id %}
-         true
-      {% else %}
-         false
-      {% endif %}
-  action:
-    service: python_script.thermostat_current_temp
-    data_template:
-      thermostat: >-
-         {% if "thermostat" in trigger.entity_id %}
-            {{ trigger.entity_id }}
-         {% else %}
-            climate.thermostat_{{ trigger.entity_id | replace('sensor.temperature_', '') }}
-         {% endif %}
-      sensor: >-
-         {% if "sensor" in trigger.entity_id %}
-            {{ trigger.entity_id }}
-         {% else %}
-            sensor.temperature_{{ (trigger.entity_id | replace('climate.thermostat_', '')) | replace('', '') }}
-         {% endif %}
+# - id: heating_update_current_temperature
+  # alias: 'Heating Update Current Temperature'
+  # trigger:
+    # platform: state
+    # entity_id:
+      # - sensor.temperature_antek
+      # - sensor.temperature_salon
+      # - sensor.temperature_kuchnia
+      # - sensor.temperature_antresola
+      # - sensor.temperature_sypialnia
+      # - sensor.temperature_lazienka
+      # - climate.thermostat_antek
+      # - climate.thermostat_kuchnia
+      # - climate.thermostat_salon
+      # - climate.thermostat_antresola
+      # - climate.thermostat_sypialnia
+      # - climate.thermostat_lazienka
+  # condition:
+    # condition: template
+    # value_template: >-
+      # {% if "thermostat" in trigger.entity_id and trigger.to_state.attributes.current_temperature == none %}
+         # true
+      # {% elif "sensor" in trigger.entity_id %}
+         # true
+      # {% else %}
+         # false
+      # {% endif %}
+  # action:
+    # service: python_script.thermostat_current_temp
+    # data_template:
+      # thermostat: >-
+         # {% if "thermostat" in trigger.entity_id %}
+            # {{ trigger.entity_id }}
+         # {% else %}
+            # climate.thermostat_{{ trigger.entity_id | replace('sensor.temperature_', '') }}
+         # {% endif %}
+      # sensor: >-
+         # {% if "sensor" in trigger.entity_id %}
+            # {{ trigger.entity_id }}
+         # {% else %}
+            # sensor.temperature_{{ (trigger.entity_id | replace('climate.thermostat_', '')) | replace('', '') }}
+         # {% endif %}
 
 # zmniejszanie nastawy termostatu do 22 stopni gdy temperatura w łazience przekroczy 22.8 stopnie
 - id: heating_lazienka_target_temp_down
@@ -1156,7 +1156,7 @@
     - platform: state
       entity_id:
         - binary_sensor.motion_salon
-        - binary_sensor.motion_schody
+        - binary_sensor.motion_antresola_2
       from: 'off'
       to: 'on'
     - platform: numeric_state
@@ -1172,6 +1172,10 @@
       to: 'off'
     - platform: state
       entity_id: switch.light_lamp_salon
+      from: 'on'
+      to: 'off'
+    - platform: state
+      entity_id: switch.light_leds_przedpokoj
       from: 'on'
       to: 'off'
     - platform: state
@@ -1195,6 +1199,9 @@
         entity_id: switch.light_lamp_salon
         state: 'off'
       - condition: state
+        entity_id: switch.light_leds_przedpokoj
+        state: 'off'
+      - condition: state
         entity_id: input_boolean.guests
         state: 'off'
       - condition: state
@@ -1213,6 +1220,7 @@
     - service: homeassistant.turn_on
       entity_id:
         - switch.light_lamp_salon
+        - switch.light_leds_przedpokoj
         - input_boolean.salon_lamp_motion_on
 
 # wyłączenie lampy w salonie jak zniknie ruch lub włączy się światła
@@ -1242,6 +1250,7 @@
     - service: homeassistant.turn_off
       entity_id:
         - switch.light_lamp_salon
+        - switch.light_leds_przedpokoj
         - input_boolean.salon_lamp_motion_on
 
 # automatyczna zmiana temperatury koloru żarówek gdy wybrana scena auto

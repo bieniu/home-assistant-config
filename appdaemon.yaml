@@ -1,0 +1,10 @@
+AppDaemon:
+  logfile: /home/homeassistant/.homeassistant/appdaemon.log
+  errorfile: /home/homeassistant/.homeassistant/appdaemon.log
+  threads: 10
+  logsize: 100000
+  log_generations: 3
+
+HASS:
+  ha_url: !secret local_url
+  ha_key: !secret api_password

@@ -83,10 +83,10 @@ sun:
 config:
 
 discovery:
-#  ignore:
-#    - denonavr
-#    - harmony
-#    - yeelight
+  ignore:
+    - denonavr
+    - harmony
+    - yeelight
 
 zeroconf:
 

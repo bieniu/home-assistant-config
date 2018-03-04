@@ -1,3 +1,39 @@
+climate.thermostat_salon:
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
+    current_temperature: ${entities['sensor.temperature_salon'].state}
+
+climate.thermostat_kuchnia:
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
+    current_temperature: ${entities['sensor.temperature_kuchnia'].state}
+
+climate.thermostat_antresola:
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
+    current_temperature: ${entities['sensor.temperature_antresola'].state}
+
+climate.thermostat_antek:
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
+    current_temperature: ${entities['sensor.temperature_antek'].state}
+
+climate.thermostat_sypialnia:
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
+    current_temperature: ${entities['sensor.temperature_sypialnia'].state}
+
+climate.thermostat_lazienka:
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
+    current_temperature: ${entities['sensor.temperature_lazienka'].state}
+
 #### LIGHTS ####
 light.gateway_antresola:
   friendly_name: Lampka
@@ -87,74 +123,76 @@ zone.home:
 #### GROUPS ####
 group.family:
   order: 7
-group.kuchnia:
+group.przedpokoj:
   order: 8
-group.salon:
+group.kuchnia:
   order: 9
-group.pracownia:
+group.salon:
   order: 10
-group.goscinny:
+group.pracownia:
   order: 11
-group.antresola:
+group.goscinny:
   order: 12
-group.gabinet:
+group.antresola:
   order: 13
-group.pokoj_antek:
+group.gabinet:
   order: 14
-group.sypialnia:
+group.pokoj_antek:
   order: 15
-group.lazienka:
+group.sypialnia:
   order: 16
-group.denon:
+group.lazienka:
   order: 17
-group.androidtv:
+group.denon:
   order: 18
-group.playstation:
+group.androidtv:
   order: 19
+group.playstation:
+  order: 20
 #group.dune:
 #  order: 18
 #group.spotify:
 #  order: 20
 group.internet:
-  order: 20
-group.raspberry:
   order: 21
-group.printer:
+group.raspberry:
   order: 22
-group.wire_devices:
+group.printer:
   order: 23
-group.wireless_devices:
+group.wire_devices:
   order: 24
-group.iot_devices:
+group.wireless_devices:
   order: 25
-group.zwave_devices:
+group.iot_devices:
   order: 26
-group.weather:
+group.zwave_devices:
   order: 27
-group.weather_graphs_01:
+group.weather:
   order: 28
-group.weather_graphs_02:
+group.weather_graphs_01:
   order: 29
-group.heating_settings:
+group.weather_graphs_02:
   order: 30
-group.heating_hours:
+group.heating_settings:
   order: 31
-group.heating_temps:
+group.heating_hours:
   order: 32
-group.scripts:
+group.heating_temps:
   order: 33
-group.energy_consumption:
+group.scripts:
   order: 34
-group.batteries_thermostats:
+group.energy_consumption:
   order: 35
-group.batteries_switches:
+group.batteries_thermostats:
   order: 36
-group.batteries_temp_sensors:
+group.batteries_switches:
   order: 37
-group.batteries_windows_sensors:
+group.batteries_temp_sensors:
   order: 38
-group.batteries_motion_sensors:
+group.batteries_windows_sensors:
   order: 39
+group.batteries_motion_sensors:
+  order: 40
 
 #### WEATHER ####
 sensor.dark_sky_temperature:
@@ -263,50 +301,42 @@ script.shutdown_pi:
   icon: mdi:power
 
 #### XIAOMI SENSORS ####
-sensor.temperature_outdoor_org:
+sensor.temperature_outdoor:
   friendly_name: Temperatura zewnętrzna
-sensor.temperature_pracownia_org:
-  friendly_name: Temperatura pracownia
-sensor.temperature_gabinet_org:
-  friendly_name: Temperatura gabinet
-sensor.temperature_salon_org:
-  friendly_name: Temperatura salon
-sensor.temperature_goscinny_org:
-  friendly_name: Temperatura pokój gościnny
-sensor.temperature_sypialnia_org:
-  friendly_name: Temperatura sypialnia
-sensor.temperature_antek_org:
-  friendly_name: Temperatura pokój Antka
-sensor.temperature_lazienka_org:
-  friendly_name: Temperatura łazienka
-sensor.temperature_antresola_org:
-  friendly_name: Temperatura antresola
+sensor.temperature_pracownia:
+  friendly_name: Temperatura
+sensor.temperature_gabinet:
+  friendly_name: Temperatura
+sensor.temperature_salon:
+  friendly_name: Temperatura
+sensor.temperature_goscinny:
+  friendly_name: Temperatura
+sensor.temperature_sypialnia:
+  friendly_name: Temperatura
+sensor.temperature_antek:
+  friendly_name: Temperatura
+sensor.temperature_lazienka:
+  friendly_name: Temperatura
+sensor.temperature_antresola:
+  friendly_name: Temperatura
 sensor.humidity_outdoor:
   friendly_name: Wilgotność zewnętrzna
 sensor.humidity_pracownia:
   friendly_name: Wilgotność
-  location: pracownia
 sensor.humidity_salon:
   friendly_name: Wilgotność
-  location: salon
 sensor.humidity_gabinet:
   friendly_name: Wilgotność
-  location: gabinet
 sensor.humidity_sypialnia:
   friendly_name: Wilgotność
-  location: sypialnia
 sensor.humidity_goscinny:
   friendly_name: Wilgotność
-  location: pokój gościnny
 sensor.humidity_antek:
   friendly_name: Wilgotność
-  location: pokój Antka
 sensor.humidity_lazienka:
   friendly_name: Wilgotność
-  location: łazienka
 sensor.humidity_antresola:
   friendly_name: Wilgotność
-  location: antresola
 sensor.pressure_outdoor:
   friendly_name: Ciśnienie
   icon: mdi:gauge
@@ -330,13 +360,13 @@ binary_sensor.motion_antresola:
   location: antresola
 binary_sensor.motion_salon:
   location: salon
-binary_sensor.motion_antresola_org:
+binary_sensor.motion_antresola_1:
   location: antresola
-binary_sensor.motion_schody:
-  location: schody
-binary_sensor.motion_salon_1_org:
+binary_sensor.motion_antresola_2:
+  location: antresola
+binary_sensor.motion_salon_1:
   location: salon
-binary_sensor.motion_salon_2_org:
+binary_sensor.motion_salon_2:
   location: salon
 binary_sensor.motion_sypialnia:
   location: sypialnia
@@ -363,9 +393,9 @@ sensor.printer_status:
 switch.light_lamp_salon:
   icon: mdi:lamp
   friendly_name: Lampa
-switch.sonoff_single:
+switch.light_leds_przedpokoj:
   icon: mdi:led-variant-on
-  friendly_name: Lampki na balkonie
+  friendly_name: LEDy
 switch.sonoff_triple:
   icon: mdi:led-variant-on
   friendly_name: Lampki na balkonie

@@ -19,6 +19,18 @@
   qos: 1
   retain: true
 
+- platform: mqtt
+  name: "Light LEDs Przedpokoj"
+  command_topic: "homeassistant/switch/light-leds-przedpokoj/cmnd/power"
+  state_topic: "homeassistant/switch/light-leds-przedpokoj/stat/POWER"
+  availability_topic: "homeassistant/switch/light-leds-przedpokoj/tele/LWT"
+  payload_available: "Aktywny"
+  payload_not_available: "Nieaktywny"
+  payload_on: "ON"
+  payload_off: "OFF"
+  qos: 1
+  retain: true
+
 - platform: flux
   lights: light.bulbs_salon
   name: Flux

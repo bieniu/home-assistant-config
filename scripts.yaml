@@ -1,18 +1,3 @@
-restart_hass:
-  alias: Restart Home Assistant'a
-  sequence:
-    service: shell_command.restart_hass
-
-reboot_pi:
-  alias: Restart Raspberry Pi
-  sequence:
-    service: shell_command.reboot_pi
-
-shutdown_pi:
-  alias: Wyłącz Raspberry Pi
-  sequence:
-    service: shell_command.shutdown_pi
-
 reboot_router:
   alias: Restart routera
   sequence:
@@ -87,8 +72,9 @@ night_mode:
     - service: switch.turn_off
       entity_id:
         - switch.light_leds_salon
-        - light.bulbs_salon
+        - switch.light_bulbs_salon
         - switch.light_lamp_salon
+        - switch.light_leds_salon
         - switch.stacjonarny
 
 light_away_mode:
@@ -96,8 +82,9 @@ light_away_mode:
     service: homeassistant.turn_off
     entity_id:
       - switch.light_leds_salon
-      - light.bulbs_salon
+      - switch.light_bulbs_salon
       - switch.light_lamp_salon
+      - switch.light_leds_przedpokoj
       - light.gateway_antresola
       - light.lightstrip_sypialnia
       - light.lightstrip_antek

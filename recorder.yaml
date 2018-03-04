@@ -20,19 +20,10 @@ exclude:
     - binary_sensor.switch_light_salon_1
     - binary_sensor.switch_light_salon_2
     - binary_sensor.switch_light_antek
-    - binary_sensor.motion_schody
-    - binary_sensor.motion_antresola_org
-    - binary_sensor.motion_salon_1_org
-    - binary_sensor.motion_salon_2_org
-    - sensor.temperature_gabinet_org
-    - sensor.temperature_salon_org
-    - sensor.temperature_sypialnia_org
-    - sensor.temperature_antek_org
-    - sensor.temperature_lazienka_org
-    - sensor.temperature_antresola_org
-    - sensor.temperature_goscinny_org
-    - sensor.temperature_pracownia_org
-    - sensor.temperature_outdoor_org
+    - binary_sensor.motion_antresola_1
+    - binary_sensor.motion_antresola_2
+    - binary_sensor.motion_salon_1
+    - binary_sensor.motion_salon_2
     - input_number.gaming_end_hours
     - input_number.gaming_end_minutes
     - binary_sensor.gaming

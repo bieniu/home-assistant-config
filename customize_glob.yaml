@@ -40,9 +40,9 @@
   icon: mdi:radiator
   max_temp: 28
   min_temp: 4
-  custom_ui_state_card: state-card-custom-ui
-  templates:
-    state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
+  # custom_ui_state_card: state-card-custom-ui
+  # templates:
+    # state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
 
 #### ENERGY ####
 'sensor.*energy*':
