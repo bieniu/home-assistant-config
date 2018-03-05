@@ -1,39 +1,17 @@
-test:
-  module: test
-  class: TestLog
-
-#update_thermostat_kuchnia:
-#  module: update_thermostat
-#  class: UpdateThermostat
-#  thermostat: climate.thermostat_kuchnia
-#  sensor: sensor.temperature_kuchnia
-
-#update_thermostat_salon:
-#  module: update_thermostat
-#  class: UpdateThermostat
-#  thermostat: climate.thermostat_salon
-#  sensor: sensor.temperature_salon
-
-#update_thermostat_antresola:
-#  module: update_thermostat
-#  class: UpdateThermostat
-#  thermostat: climate.thermostat_antresola
-#  sensor: sensor.temperature_antresola
-
-#update_thermostat_sypialnia:
-#  module: update_thermostat
-#  class: UpdateThermostat
-#  thermostat: climate.thermostat_sypialnia
-#  sensor: sensor.temperature_sypialnia
-
-#update_thermostat_lazienka:
-#  module: update_thermostat
-#  class: UpdateThermostat
-#  thermostat: climate.thermostat_lazienka
-#  sensor: sensor.temperature_lazienka
-
-#update_thermostat_antek:
-#  module: update_thermostat
-#  class: UpdateThermostat
-#  thermostat: climate.thermostat_antek
-#  sensor: sensor.temperature_antek
+update_thermostats:
+  module: update_thermostats
+  class: UpdateThermostats
+  thermostats:
+    - climate.thermostat_kuchnia
+    - climate.thermostat_salon
+    - climate.thermostat_antresola
+    - climate.thermostat_sypialnia
+    - climate.thermostat_lazienka
+    - climate.thermostat_antek
+  sensors:
+    - sensor.temperature_kuchnia
+    - sensor.temperature_salon
+    - sensor.temperature_antresola
+    - sensor.temperature_sypialnia
+    - sensor.temperature_lazienka
+    - sensor.temperature_antek

@@ -1,38 +1,38 @@
-climate.thermostat_salon:
-  custom_ui_state_card: state-card-custom-ui
-  templates:
-    state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
-    current_temperature: ${entities['sensor.temperature_salon'].state}
+# climate.thermostat_salon:
+  # custom_ui_state_card: state-card-custom-ui
+  # templates:
+    # state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
+    # current_temperature: ${entities['sensor.temperature_salon'].state}
 
-climate.thermostat_kuchnia:
-  custom_ui_state_card: state-card-custom-ui
-  templates:
-    state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
-    current_temperature: ${entities['sensor.temperature_kuchnia'].state}
+# climate.thermostat_kuchnia:
+  # custom_ui_state_card: state-card-custom-ui
+  # templates:
+    # state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
+    # current_temperature: ${entities['sensor.temperature_kuchnia'].state}
 
-climate.thermostat_antresola:
-  custom_ui_state_card: state-card-custom-ui
-  templates:
-    state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
-    current_temperature: ${entities['sensor.temperature_antresola'].state}
+# climate.thermostat_antresola:
+  # custom_ui_state_card: state-card-custom-ui
+  # templates:
+    # state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
+    # current_temperature: ${entities['sensor.temperature_antresola'].state}
 
-climate.thermostat_antek:
-  custom_ui_state_card: state-card-custom-ui
-  templates:
-    state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
-    current_temperature: ${entities['sensor.temperature_antek'].state}
+# climate.thermostat_antek:
+  # custom_ui_state_card: state-card-custom-ui
+  # templates:
+    # state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
+    # current_temperature: ${entities['sensor.temperature_antek'].state}
 
-climate.thermostat_sypialnia:
-  custom_ui_state_card: state-card-custom-ui
-  templates:
-    state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
-    current_temperature: ${entities['sensor.temperature_sypialnia'].state}
+# climate.thermostat_sypialnia:
+  # custom_ui_state_card: state-card-custom-ui
+  # templates:
+    # state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
+    # current_temperature: ${entities['sensor.temperature_sypialnia'].state}
 
-climate.thermostat_lazienka:
-  custom_ui_state_card: state-card-custom-ui
-  templates:
-    state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
-    current_temperature: ${entities['sensor.temperature_lazienka'].state}
+# climate.thermostat_lazienka:
+  # custom_ui_state_card: state-card-custom-ui
+  # templates:
+    # state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
+    # current_temperature: ${entities['sensor.temperature_lazienka'].state}
 
 #### LIGHTS ####
 light.gateway_antresola:

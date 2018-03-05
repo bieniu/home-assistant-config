@@ -1,6 +1,6 @@
 default: warning
 logs:
-#  homeassistant.components.automation: info
+  homeassistant.components.automation: info
   homeassistant.components.sensor.template: error
   homeassistant.components.sensor.statistics: fatal
   homeassistant.components.zwave: info
