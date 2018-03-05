@@ -1,4 +1,5 @@
 import appdaemon.appapi as appapi
+from time import sleep
 
 class UpdateThermostats(appapi.AppDaemon):
 
@@ -6,7 +7,9 @@ class UpdateThermostats(appapi.AppDaemon):
 
 		if len(self.args['thermostats']) != len(self.args['sensors']):
 			raise Exception('Wrong arguments! The arguments sensors and thermostats must contain the same number of elements.')
-
+		
+		sleep(60) # time to initialize thermostats and sensors
+		
 		for i in range(len(self.args['thermostats'])):
 			self.listen_state(self.update_thermostat_state, self.args['thermostats'][i], attribute = "current_temperature")
 			self.listen_state(self.update_thermostat_state, self.args['sensors'][i])
