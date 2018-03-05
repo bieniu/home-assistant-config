@@ -29,4 +29,4 @@ class UpdateThermostats(appapi.AppDaemon):
 			else:
 				state = 'idle'
 			self.set_state(self.thermostat, state=state, attributes = {"current_temperature": temperature})
-			# self.log('{} state updated'.format(self.thermostat))
+			self.log('{} state updated'.format(self.thermostat))

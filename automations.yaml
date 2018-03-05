@@ -975,28 +975,28 @@
 
 ## CHRISTMAS LIGHTS ##
 # włączenie lampek świątecznych o zachodzie słońca
-#- id: light_turn_on_christmas_lights
-#  alias: 'Light Turn On Christmas Lights'
-#  trigger:
-#    platform: sun
-#    event: sunset
-#  action:
-#    service: switch.turn_on
-#    entity_id:
-#      - switch.sonoff_single
-#      - switch.sonoff_triple
+# - id: light_turn_on_christmas_lights
+  # alias: 'Light Turn On Christmas Lights'
+  # trigger:
+    # platform: sun
+    # event: sunset
+  # action:
+    # service: switch.turn_on
+    # entity_id:
+      # - switch.sonoff_single
+      # - switch.sonoff_triple
 
 # wyłączenie lampek świątecznych o wschodzie słońca i o północy
-#- id: light_turn_off_christmas_lights
-#  alias: 'Light Turn Off Christmas Lights'
-#  trigger:
-#    platform: time
-#    at: '00:00:00'
-#  action:
-#    service: switch.turn_off
-#    entity_id:
-#      - switch.sonoff_single
-#      - switch.sonoff_triple
+# - id: light_turn_off_christmas_lights
+  # alias: 'Light Turn Off Christmas Lights'
+  # trigger:
+    # platform: time
+    # at: '00:00:00'
+  # action:
+    # service: switch.turn_off
+    # entity_id:
+      # - switch.sonoff_single
+      # - switch.sonoff_triple
 
 ## SALON ##
 # automatyczna scena oświetlenia w salonie
