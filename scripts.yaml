@@ -3,53 +3,6 @@ reboot_router:
   sequence:
     service: shell_command.reboot_router
 
-fast_warm_up:
-  alias: Szybkie dogrzanie
-  sequence:
-    - condition: state
-      entity_id: input_boolean.heating_season
-      state: 'on'
-    - service: climate.set_temperature
-      entity_id:
-        - climate.thermostat_antresola
-        - climate.thermostat_antek
-        - climate.thermostat_sypialnia
-        - climate.thermostat_kuchnia
-        - climate.thermostat_lazienka
-      data:
-        temperature: 24
-    - delay: '01:00:00'
-    - service: script.heating_day
-
-#### DENON ####
-denon_play_maciek_playlist:
-  sequence:
-    - service: media_player.turn_on
-      entity_id: media_player.denon
-    - service: media_player.select_source
-      data:
-        entity_id: media_player.denon
-        source: Spotify
-    - delay: 10
-    - service: media_player.select_source
-      data:
-        entity_id: media_player.spotify
-        source: Denon AVR-X2100W
-    - service: media_player.play_media
-      data:
-        entity_id: media_player.spotify
-        media_content_id: 'spotify:user:1166820816:playlist:56y1N3Ba9smMZAJBjUk1qn'
-        media_content_type: 'playlist'
-
-denon_play_internet_radio:
-  sequence:
-    - service: media_player.turn_on
-      entity_id: media_player.denon
-    - service: media_player.select_source
-      data:
-        entity_id: media_player.denon
-        source: Internet Radio
-
 #### XIAOMI GATEWAY ALARM ####
 xiaomi_alarm:
   sequence:
@@ -90,6 +43,24 @@ light_away_mode:
       - light.lightstrip_antek
 
 #### HEATING ####
+fast_warm_up:
+  alias: Szybkie dogrzanie
+  sequence:
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: 'on'
+    - service: climate.set_temperature
+      entity_id:
+        - climate.thermostat_antresola
+        - climate.thermostat_antek
+        - climate.thermostat_sypialnia
+        - climate.thermostat_kuchnia
+        - climate.thermostat_lazienka
+      data:
+        temperature: 24
+    - delay: '01:00:00'
+    - service: script.heating_day
+
 heating_day:
   sequence:
     - service: climate.set_temperature
@@ -243,16 +214,6 @@ harmony_tv_off:
   sequence:
     service: remote.turn_off
     entity_id: remote.salon
-
-notification_with_image:
-  sequence:
-    service: notify.html5_oneplus
-    data:
-      title: 'Title'
-      message: 'Message'
-      data:
-        tag: 'notification-image'
-        image: 'https://home.bieniu.eu/local/edyta.jpg'
 
 #### LIGHT ####
 light_turn_off_antek_leds:
