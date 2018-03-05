@@ -1,39 +1,3 @@
-# climate.thermostat_salon:
-  # custom_ui_state_card: state-card-custom-ui
-  # templates:
-    # state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
-    # current_temperature: ${entities['sensor.temperature_salon'].state}
-
-# climate.thermostat_kuchnia:
-  # custom_ui_state_card: state-card-custom-ui
-  # templates:
-    # state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
-    # current_temperature: ${entities['sensor.temperature_kuchnia'].state}
-
-# climate.thermostat_antresola:
-  # custom_ui_state_card: state-card-custom-ui
-  # templates:
-    # state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
-    # current_temperature: ${entities['sensor.temperature_antresola'].state}
-
-# climate.thermostat_antek:
-  # custom_ui_state_card: state-card-custom-ui
-  # templates:
-    # state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
-    # current_temperature: ${entities['sensor.temperature_antek'].state}
-
-# climate.thermostat_sypialnia:
-  # custom_ui_state_card: state-card-custom-ui
-  # templates:
-    # state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
-    # current_temperature: ${entities['sensor.temperature_sypialnia'].state}
-
-# climate.thermostat_lazienka:
-  # custom_ui_state_card: state-card-custom-ui
-  # templates:
-    # state: if (attributes.temperature > 8) return 'heat'; else return 'idle';
-    # current_temperature: ${entities['sensor.temperature_lazienka'].state}
-
 #### LIGHTS ####
 light.gateway_antresola:
   friendly_name: Lampka
@@ -149,10 +113,6 @@ group.androidtv:
   order: 19
 group.playstation:
   order: 20
-#group.dune:
-#  order: 18
-#group.spotify:
-#  order: 20
 group.internet:
   order: 21
 group.raspberry:
@@ -396,9 +356,6 @@ switch.light_lamp_salon:
 switch.light_leds_przedpokoj:
   icon: mdi:led-variant-on
   friendly_name: LEDy
-switch.sonoff_triple:
-  icon: mdi:led-variant-on
-  friendly_name: Lampki na balkonie
 
 #### ENERGY ####
 sensor.light_leds_salon_energy:

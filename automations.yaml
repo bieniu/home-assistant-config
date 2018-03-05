@@ -888,54 +888,6 @@
          # {% else %}
             # sensor.temperature_{{ (trigger.entity_id | replace('climate.thermostat_', '')) | replace('', '') }}
          # {% endif %}
-
-# zmniejszanie nastawy termostatu do 22 stopni gdy temperatura w łazience przekroczy 22.8 stopnie
-- id: heating_lazienka_target_temp_down
-  alias: 'Heating Lazienka Target Temp Down'
-  trigger:
-    platform: numeric_state
-    entity_id: sensor.temperature_lazienka
-    above: 22.8
-  condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: '{{ states.climate.thermostat_lazienka.attributes.temperature | float > 22 }}'
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.heating_airing
-        state: 'off'
-  action:
-    service: climate.set_temperature
-    entity_id: climate.thermostat_lazienka
-    data:
-      temperature: 22
-
-# zwiekszenie nastawy termostatu do 23 stopni gdy temperatura w łazience poniżej 22 stopni
-- id: heating_lazienka_target_temp_up
-  alias: 'Heating Lazienka Target Temp Up'
-  trigger:
-    platform: numeric_state
-    entity_id: sensor.temperature_lazienka
-    below: 22.2
-  condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: '{{ (states.climate.thermostat_lazienka.attributes.temperature | float < 23) and (states.climate.thermostat_lazienka.attributes.temperature | float > 20) }}'
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.heating_airing
-        state: 'off'
-  action:
-    service: climate.set_temperature
-    entity_id: climate.thermostat_lazienka
-    data:
-      temperature: 23
 ##################################################################################################
 
 #### LIGHT #######################################################################################
@@ -972,31 +924,6 @@
         state: 'on'
   action:
     service: script.light_away_mode
-
-## CHRISTMAS LIGHTS ##
-# włączenie lampek świątecznych o zachodzie słońca
-# - id: light_turn_on_christmas_lights
-  # alias: 'Light Turn On Christmas Lights'
-  # trigger:
-    # platform: sun
-    # event: sunset
-  # action:
-    # service: switch.turn_on
-    # entity_id:
-      # - switch.sonoff_single
-      # - switch.sonoff_triple
-
-# wyłączenie lampek świątecznych o wschodzie słońca i o północy
-# - id: light_turn_off_christmas_lights
-  # alias: 'Light Turn Off Christmas Lights'
-  # trigger:
-    # platform: time
-    # at: '00:00:00'
-  # action:
-    # service: switch.turn_off
-    # entity_id:
-      # - switch.sonoff_single
-      # - switch.sonoff_triple
 
 ## SALON ##
 # automatyczna scena oświetlenia w salonie

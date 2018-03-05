@@ -8,10 +8,6 @@ class UpdateThermostats(appapi.AppDaemon):
 			raise Exception('Wrong arguments! The arguments sensors and thermostats must contain the same number of elements.')
 
 		for i in range(len(self.args['thermostats'])):
-			if not self.entity_exists(self.args['thermostats'][i]) or not self.entity_exists(self.args['sensors'][i]):
-				raise Exception('Wrong arguments! Arguments contain non-existent in Home Assistant entity.')
-
-		for i in range(len(self.args['thermostats'])):
 			self.listen_state(self.update_thermostat_state, self.args['thermostats'][i], attribute = "current_temperature")
 			self.listen_state(self.update_thermostat_state, self.args['sensors'][i])
 
@@ -29,4 +25,3 @@ class UpdateThermostats(appapi.AppDaemon):
 			else:
 				state = 'idle'
 			self.set_state(self.thermostat, state=state, attributes = {"current_temperature": temperature})
-			# self.log('{} state updated'.format(self.thermostat))

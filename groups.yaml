@@ -23,8 +23,6 @@ media players:
     - group.denon
     - group.androidtv
     - group.playstation
-#    - group.dune
-#    - group.spotify
 
 network:
   name: Sieć
@@ -105,12 +103,6 @@ androidtv:
 
 playstation:
   entities: media_player.playstation
-
-#dune:
-#  entities: media_player.dune
-
-#spotify:
-#  entities: media_player.spotify
 
 family:
   name: Rodzina
