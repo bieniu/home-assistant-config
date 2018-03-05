@@ -10,6 +10,8 @@ class UpdateThermostats(appapi.AppDaemon):
 		for i in range(len(self.args['thermostats'])):
 			self.listen_state(self.update_thermostat_state, self.args['thermostats'][i], attribute = "current_temperature")
 			self.listen_state(self.update_thermostat_state, self.args['sensors'][i])
+			if self.get_state(self.args['thermostats'][i], attribute="current_temperature") == None:
+				self.update_thermostat_state(self.args['thermostats'][i], attribute = None, old = None, new = None, kwargs = None)
 
 	def update_thermostat_state(self, entity, attribute, old, new, kwargs):
 		for i in range(len(self.args['thermostats'])):
@@ -25,3 +27,5 @@ class UpdateThermostats(appapi.AppDaemon):
 			else:
 				state = 'idle'
 			self.set_state(self.thermostat, state=state, attributes = {"current_temperature": temperature})
+		else:
+			self.log('No temperature data on the sensor {}.'.format(self.sensor))
