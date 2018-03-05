@@ -1,3 +1,4 @@
+__pycache__/
 .*
 *.pid
 *.xml
@@ -8,7 +9,6 @@
 *.json
 *.conf
 *.db-journal
-*.pyc
 test.py
 OZW_Log.txt
 home-assistant.log
