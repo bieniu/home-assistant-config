@@ -1,6 +1,28 @@
 import appdaemon.appapi as appapi
 from time import sleep
 
+"""
+Update Z-Wave thermostats (e.g. Danfoss 014G0013) state and current temperature from sensor.
+Arguments:
+ - thermostats: list of thermostats entities
+ - sensors: list of sensors entities
+The order of thermostats and sensors is important. The first thermostat takes data from the first sensor, the second thermostat from the second sensor, etc.
+
+Configuration example:
+
+update_thermostats:
+  module: update_thermostats
+  class: UpdateThermostats
+  thermostats:
+    - climate.thermostat_kitchen
+    - climate.thermostat_room
+    - climate.thermostat_bathroom
+  sensors:
+    - sensor.temperature_kitchen
+    - sensor.temperature_room
+    - sensor.temperature_bathroom
+
+"""
 
 class UpdateThermostats(appapi.AppDaemon):
 
@@ -19,7 +41,6 @@ class UpdateThermostats(appapi.AppDaemon):
 				self.thermostat_state_changed(self.args['thermostats'][i], attribute = "current_temperature", old = None, new = None, kwargs = None)
 
 	def thermostat_state_changed(self, entity, attribute, old, new, kwargs):
-		self.log('entity: {}, attribute: {}, old: {}, new: {}'.format(entity, attribute, old, new))
 		for i in range(len(self.args['thermostats'])):
 			if entity == self.args['thermostats'][i]:
 				sensor_id = self.args['sensors'][i]
@@ -31,12 +52,10 @@ class UpdateThermostats(appapi.AppDaemon):
 			if sensor_temp is not None and sensor_temp != 'Unknown':
 				self.find_thermostat_state(float(target_temp))
 				self.set_state(entity, state=self.state, attributes = {"current_temperature": sensor_temp})
-				self.log('{}: state updated to {} and current temperature to {}'.format(entity, self.state, sensor_temp))
 			else:
 				self.log('No temperature data on the sensor {}.'.format(sensor_id))
 
 	def sensor_state_changed(self, entity, attribute, old, new, kwargs):
-		self.log('entity: {}, attribute: {}, old: {}, new: {}'.format(entity, attribute, old, new))
 		for i in range(len(self.args['sensors'])):
 			if entity == self.args['sensors'][i]:
 				thermostat_id = self.args['thermostats'][i]
@@ -48,7 +67,6 @@ class UpdateThermostats(appapi.AppDaemon):
 			if new is not None and new != 'Unknown':
 				self.find_thermostat_state(float(target_temp))
 				self.set_state(thermostat_id, state=self.state, attributes = {"current_temperature": new})
-				self.log('{}: state updated to {} and current temperature to {}'.format(thermostat_id, self.state, new))
 			else:
 				self.log('No temperature data on the sensor {}.'.format(self.entity))
 
@@ -62,7 +80,6 @@ class UpdateThermostats(appapi.AppDaemon):
 		n = 0
 		while not (self.entity_exists(entity) or n > 120):
 			n += 1
-			self.log('Waiting {} sec for {} sec.'.format(str(n), entity))
 			sleep(1)
 		if n > 120:
 			return False
