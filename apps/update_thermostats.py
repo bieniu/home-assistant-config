@@ -1,11 +1,10 @@
 import appdaemon.appapi as appapi
 from time import sleep
-import asyncio
+
 
 class UpdateThermostats(appapi.AppDaemon):
 
 	def initialize(self):
-
 		if len(self.args['thermostats']) != len(self.args['sensors']):
 			raise Exception('Wrong arguments! The arguments sensors and thermostats must contain the same number of elements.')
 		
