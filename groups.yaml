@@ -397,7 +397,6 @@ pracownia:
     - sensor.temperature_pracownia
     - sensor.humidity_pracownia
     - binary_sensor.balcony_door_pracownia
-#    - switch.sonoff_triple
 
 lazienka:
   name: Łazienka
