@@ -253,7 +253,7 @@ script.restart_hass:
   icon: mdi:refresh
 script.reboot_pi:
   icon: mdi:refresh
-script.fast_warm_up:
+script.heating_fast_warm_up:
   icon: mdi:clock-fast
 script.reboot_router:
   icon: mdi:refresh

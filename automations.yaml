@@ -633,7 +633,7 @@
         entity_id: input_boolean.away_mode
         state: 'on'
       - condition: state
-        entity_id: script.fast_warm_up
+        entity_id: script.heating_fast_warm_up
         state: 'off'
   action:
     - service: script.heating_day
@@ -643,7 +643,7 @@
         -  input_boolean.maciek_far_from_home
 
 # włączenie szybkiego dogrzewania 60 minut przed powrotem do domu w dzień gdy jest sezon grzewczy gdy nieobecność domowników dłuższa niż 10 godzin
-- id: heating_fast_warm_up_before_return_to_home
+- id: heating_heating_fast_warm_up_before_return_to_home
   alias: 'Heating Fast Warm Up Before Return To Home'
   trigger:
     platform: template
@@ -669,10 +669,10 @@
         for:
           hours: 10
       - condition: state
-        entity_id: script.fast_warm_up
+        entity_id: script.heating_fast_warm_up
         state: 'off'
   action:
-    - service: script.fast_warm_up
+    - service: script.heating_fast_warm_up
     - service: input_boolean.turn_off
       entity_id:
         - input_boolean.edyta_far_from_home
@@ -844,6 +844,54 @@
     entity_id: climate.thermostat_salon
     data_template:
       temperature: '{{ trigger.to_state.attributes.temperature }}'
+
+# zmniejszanie nastawy termostatu do 22 stopni gdy temperatura w łazience przekroczy 22.8 stopnie
+- id: heating_lazienka_target_temp_down
+  alias: 'Heating Lazienka Target Temp Down'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.temperature_lazienka
+    above: 22.8
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: '{{ states.climate.thermostat_lazienka.attributes.temperature | float > 22 }}'
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.heating_airing
+        state: 'off'
+  action:
+    service: climate.set_temperature
+    entity_id: climate.thermostat_lazienka
+    data:
+      temperature: 22
+
+# zwiekszenie nastawy termostatu do 23 stopni gdy temperatura w łazience poniżej 22 stopni
+- id: heating_lazienka_target_temp_up
+  alias: 'Heating Lazienka Target Temp Up'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.temperature_lazienka
+    below: 22.2
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: '{{ (states.climate.thermostat_lazienka.attributes.temperature | float < 23) and (states.climate.thermostat_lazienka.attributes.temperature | float > 20) }}'
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.heating_airing
+        state: 'off'
+  action:
+    service: climate.set_temperature
+    entity_id: climate.thermostat_lazienka
+    data:
+      temperature: 23
 
 # uruchamia skrypt aktualizaujący current temp
 # - id: heating_update_current_temperature

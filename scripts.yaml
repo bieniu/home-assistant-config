@@ -43,7 +43,7 @@ light_away_mode:
       - light.lightstrip_antek
 
 #### HEATING ####
-fast_warm_up:
+heating_fast_warm_up:
   alias: Szybkie dogrzanie
   sequence:
     - condition: state

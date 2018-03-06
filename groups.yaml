@@ -208,7 +208,7 @@ heating settings:
   control: hidden
   entities:
     - input_boolean.heating_season
-    - script.fast_warm_up
+    - script.heating_fast_warm_up
     - input_boolean.heating_airing
     - input_boolean.away_mode
     - input_boolean.guests

@@ -22,13 +22,14 @@ class UpdateThermostats(appapi.AppDaemon):
 				self.thermostat = self.args['thermostats'][i]
 				self.sensor = self.args['sensors'][i]
 
-		temperature = self.get_state(self.sensor)
+		current_temp = self.get_state(self.sensor)
+		target_temp = self.get_state(self.args['thermostats'][i], attribute="temperature")
 
-		if temperature is not None and temperature != 'Unknown':
-			if float(temperature) > 8:
+		if current_temp is not None and current_temp != 'Unknown':
+			if float(target_temp) > 8:
 				state = 'heat'
 			else:
 				state = 'idle'
-			self.set_state(self.thermostat, state=state, attributes = {"current_temperature": temperature})
+			self.set_state(self.thermostat, state=state, attributes = {"current_temperature": current_temp})
 		else:
 			self.log('No temperature data on the sensor {}.'.format(self.sensor))
