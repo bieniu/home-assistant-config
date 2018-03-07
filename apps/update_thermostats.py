@@ -33,9 +33,9 @@ class UpdateThermostats(appapi.AppDaemon):
 		for i in range(len(self.args['thermostats'])):
 			if self.check_entity(self.args['thermostats'][i]) == False:
 				raise Exception('Wrong arguments! At least one of the entities does not exist.')
-			self.listen_state(self.thermostat_state_changed, self.args['thermostats'][i], attribute = "current_temperature")
 			if self.check_entity(self.args['sensors'][i]) == False:
 				raise Exception('Wrong arguments! At least one of the entities does not exist.')
+			self.listen_state(self.thermostat_state_changed, self.args['thermostats'][i], attribute = "current_temperature", new = None)
 			self.listen_state(self.sensor_state_changed, self.args['sensors'][i])
 			if self.get_state(self.args['thermostats'][i], attribute="current_temperature") == None:
 				self.thermostat_state_changed(self.args['thermostats'][i], attribute = "current_temperature", old = None, new = None, kwargs = None)
