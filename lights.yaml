@@ -21,7 +21,7 @@
       save_on_change: false
       use_music_mode: false
 
-- platform: grouped_light
+- platform: group
   name: Bulbs Salon
   entities:
     - light.bulb_salon_1

@@ -14,17 +14,6 @@ switch.light_bulbs_salon:
   icon: mdi:lightbulb
 light.bulbs_salon:
   friendly_name: 'Żarówki'
-  custom_ui_state_card: state-card-custom-ui
-  state_card_mode: single-line
-  hide_control: true
-  slider_theme:
-    min: 0
-    max: 255
-    pin: true
-    off_when_min: false
-    report_when_not_changed: false
-  templates:
-    hidden: return (state === 'unavailable');
 
 #### RASPBERRY PI ####
 sensor.processor_use:

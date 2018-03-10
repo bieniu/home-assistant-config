@@ -1,6 +1,3 @@
-import appdaemon.appapi as appapi
-from time import sleep
-
 """
 Update Z-Wave thermostats (e.g. Danfoss 014G0013) state and current temperature from sensor.
 Arguments:
@@ -29,6 +26,9 @@ update_thermostats:
   idle_heat_temp: 10
 
 """
+
+import appdaemon.appapi as appapi
+from time import sleep
 
 class UpdateThermostats(appapi.AppDaemon):
 
