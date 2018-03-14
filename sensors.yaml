@@ -43,6 +43,8 @@
         drukowanie
      {% elif ('PROSZ' in value) and ('CZEKA' in value) %}
         nagrzewanie
+     {% elif value == 'PRZYJMUJE DANE' %}
+        przyjmowanie danych
      {% elif (('MA' in value)  and ('TONERU' in value)) or (value == 'OCZEKIWANIE') %}
         oczekiwanie
      {% else %}

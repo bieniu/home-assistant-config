@@ -1,3 +1,12 @@
+# uruchamia HomeKit gdy zwave gotowe
+- id: start_homekit
+  alias: 'Start HomeKit'
+  trigger:
+    platform: event
+    event_type: zwave.network_ready
+  action:
+    service: homekit.start
+
 #### GAMES #######################################################################################
 # początek grania
 - id: start_games
@@ -561,7 +570,7 @@
     from: 'off'
     to: 'on'
     for:
-      minutes: 20
+      minutes: 10
   condition:
     condition: state
     entity_id: input_boolean.heating_season
@@ -894,48 +903,88 @@
       temperature: 23
 
 # uruchamia skrypt aktualizaujący current temp
-# - id: heating_update_current_temperature
-  # alias: 'Heating Update Current Temperature'
-  # trigger:
-    # platform: state
-    # entity_id:
-      # - sensor.temperature_antek
-      # - sensor.temperature_salon
-      # - sensor.temperature_kuchnia
-      # - sensor.temperature_antresola
-      # - sensor.temperature_sypialnia
-      # - sensor.temperature_lazienka
-      # - climate.thermostat_antek
-      # - climate.thermostat_kuchnia
-      # - climate.thermostat_salon
-      # - climate.thermostat_antresola
-      # - climate.thermostat_sypialnia
-      # - climate.thermostat_lazienka
-  # condition:
-    # condition: template
-    # value_template: >-
-      # {% if "thermostat" in trigger.entity_id and trigger.to_state.attributes.current_temperature == none %}
-         # true
-      # {% elif "sensor" in trigger.entity_id %}
-         # true
-      # {% else %}
-         # false
-      # {% endif %}
-  # action:
-    # service: python_script.thermostat_current_temp
-    # data_template:
-      # thermostat: >-
-         # {% if "thermostat" in trigger.entity_id %}
-            # {{ trigger.entity_id }}
-         # {% else %}
-            # climate.thermostat_{{ trigger.entity_id | replace('sensor.temperature_', '') }}
-         # {% endif %}
-      # sensor: >-
-         # {% if "sensor" in trigger.entity_id %}
-            # {{ trigger.entity_id }}
-         # {% else %}
-            # sensor.temperature_{{ (trigger.entity_id | replace('climate.thermostat_', '')) | replace('', '') }}
-         # {% endif %}
+- id: heating_update_thermostats
+  alias: 'Heating Update Thermostats'
+  trigger:
+    platform: state
+    entity_id:
+      - sensor.temperature_antek
+      - sensor.temperature_salon
+      - sensor.temperature_kuchnia
+      - sensor.temperature_antresola
+      - sensor.temperature_sypialnia
+      - sensor.temperature_lazienka
+      - climate.thermostat_antek
+      - climate.thermostat_kuchnia
+      - climate.thermostat_salon
+      - climate.thermostat_antresola
+      - climate.thermostat_sypialnia
+      - climate.thermostat_lazienka
+  condition:
+    condition: template
+    value_template: >-
+      {% if "thermostat" in trigger.entity_id and trigger.to_state.attributes.current_temperature == none %}
+         true
+      {% elif "sensor" in trigger.entity_id %}
+         true
+      {% else %}
+         false
+      {% endif %}
+  action:
+    service: python_script.update_thermostat
+    data_template:
+      thermostat: >-
+         {% if "thermostat" in trigger.entity_id %}
+            {{ trigger.entity_id }}
+         {% else %}
+            climate.thermostat_{{ trigger.entity_id | replace('sensor.temperature_', '') }}
+         {% endif %}
+      sensor: >-
+         {% if "sensor" in trigger.entity_id %}
+            {{ trigger.entity_id }}
+         {% else %}
+            sensor.temperature_{{ (trigger.entity_id | replace('climate.thermostat_', '')) }}
+         {% endif %}
+      heat_state: 'auto'
+
+# uruchamia skrypt aktualizaujący current temp na starcie HA
+- id: heating_update_current_temperature_at_start
+  alias: 'Heating Update Current Temperature At Start'
+  trigger:
+    platform: event
+    event_type: zwave.network_ready
+  action:
+    - service: python_script.update_thermostat
+      data:
+        thermostat: climate.thermostat_antek
+        sensor: sensor.temperature_antek
+        heat_state: 'auto'
+    - service: python_script.update_thermostat
+      data:
+        thermostat: climate.thermostat_kuchnia
+        sensor: sensor.temperature_kuchnia
+        heat_state: 'auto'
+    - service: python_script.update_thermostat
+      data:
+        thermostat: climate.thermostat_salon
+        sensor: sensor.temperature_salon
+        heat_state: 'auto'
+    - service: python_script.update_thermostat
+      data:
+        thermostat: climate.thermostat_antresola
+        sensor: sensor.temperature_antresola
+        heat_state: 'auto'
+    - service: python_script.update_thermostat
+      data:
+        thermostat: climate.thermostat_sypialnia
+        sensor: sensor.temperature_sypialnia
+        heat_state: 'auto'
+    - service: python_script.update_thermostat
+      data:
+        thermostat: climate.thermostat_lazienka
+        sensor: sensor.temperature_lazienka
+        heat_state: 'auto'
+
 ##################################################################################################
 
 #### LIGHT #######################################################################################
