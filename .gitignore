@@ -9,6 +9,8 @@ __pycache__/
 *.json
 *.conf
 *.db-journal
+*.bak
+*.off
 test.py
 OZW_Log.txt
 home-assistant.log
@@ -24,4 +26,5 @@ scripts
 secrets.yaml
 travis_secrets.yaml
 known_devices.yaml
+WIP*.py
 !/.gitignore

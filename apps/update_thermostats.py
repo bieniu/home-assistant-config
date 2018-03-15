@@ -67,9 +67,9 @@ class UpdateThermostats(appapi.AppDaemon):
 			self.idle_heat_temp = 8
 		if 'debug' in self.args:
 			if self.args['debug']:
-				self.log_level = 'DEBUG'
+				self.log_level = 'INFO'
 		else:
-			self.log_level = 'INFO'
+			self.log_level = 'DEBUG'
 
 		if wait_for_zwave:
 			self.log('Waiting for zwave.network_ready event...')
@@ -88,7 +88,6 @@ class UpdateThermostats(appapi.AppDaemon):
 			if self.entity_exists(self.args['sensors'][i]) == False:
 				self.error('Wrong arguments! At least one of the entities does not exist.')
 				return
-      
 			self.listen_state(self.thermostat_state_changed, self.args['thermostats'][i], attribute = 'current_temperature', new = None)
 			self.listen_state(self.sensor_state_changed, self.args['sensors'][i])
 			if self.get_state(self.args['thermostats'][i], attribute="current_temperature") == None:

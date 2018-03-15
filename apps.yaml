@@ -2,9 +2,6 @@ update_thermostats:
   module: update_thermostats
   class: UpdateThermostats
   heat_state: auto
-  idle_state: idle
-  idle_heat_temp: 8
-  wait_for_zwave: true
   thermostats:
     - climate.thermostat_kuchnia
     - climate.thermostat_salon
