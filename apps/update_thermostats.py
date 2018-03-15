@@ -96,7 +96,7 @@ class UpdateThermostats(appapi.AppDaemon):
 			if sensor_temp is not None and sensor_temp != 'Unknown':
 				self.find_thermostat_state(float(target_temp))
 				self.set_state(entity, state=self.state, attributes = {"current_temperature": sensor_temp})
-				self.log('Updated state and current temperature for {}.'.format(thermostat_id))
+				self.log('Updated state and current temperature for {}.'.format(entity))
 			else:
 				self.log('No temperature data on the sensor {}.'.format(sensor_id))
 
