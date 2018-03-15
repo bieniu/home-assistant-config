@@ -6,6 +6,8 @@ Arguments:
  - heat_state			- name of heating state, default 'heat'
  - idle_state			- name of idle state, default 'idle'
  - idle_heat_temp		- temperature value between 'idle' and 'heat' states, default 8
+ - wait_for_zwave               - defines whether the script has to wait for the initialization of the Z-wave component, default False
+ 				  With wait_for_zwave = True script waits for zwave.network_ready event to start.
 The order of thermostats and sensors is important. The first thermostat takes data from the first sensor, the second thermostat from the second sensor, etc.
 
 Configuration example:
@@ -24,11 +26,11 @@ update_thermostats:
   heat_state: auto
   idle_state: off
   idle_heat_temp: 10
+  wait_for_zwave: true
 
 """
 
 import appdaemon.appapi as appapi
-from time import sleep
 
 class UpdateThermostats(appapi.AppDaemon):
 
@@ -36,23 +38,32 @@ class UpdateThermostats(appapi.AppDaemon):
 		if len(self.args['thermostats']) != len(self.args['sensors']):
 			raise Exception('Wrong arguments! The arguments sensors and thermostats must contain the same number of elements.')
 		
+		self.WAIT_FOR_ZWAVE = False
 		self.HEAT_STATE = 'heat'
 		self.IDLE_STATE = 'idle'
 		self.IDLE_HEAT_TEMP = 8
 		
+		if self.args['wait_for_zwave'] is not None:
+			self.WAIT_FOR_ZWAVE = self.args['wait_for_zwave']
 		if self.args['heat_state'] is not None:
 			self.HEAT_STATE = self.args['heat_state']
 		if self.args['idle_state'] is not None:
 			self.IDLE_STATE = self.args['idle_state']
 		if self.args['idle_heat_temp'] is not None:
 			self.IDLE_HEAT_TEMP = float(self.args['idle_heat_temp'])
-
+		if self.WAIT_FOR_ZWAVE:
+			event_listener = self.listen_event(self.start_listen_states(self) event = 'zwave.network_ready')
+		else:
+			self.start_listen_states(self)
+	def start_listen_states(self):
+		if event_listener is not None:
+			cancel_listen_event(event_listener)
 		for i in range(len(self.args['thermostats'])):
-			if self.check_entity(self.args['thermostats'][i]) == False:
+			if self.entity_exists(self.args['thermostats'][i]) == False:
 				raise Exception('Wrong arguments! At least one of the entities does not exist.')
-			if self.check_entity(self.args['sensors'][i]) == False:
+			if self.entity_exists(self.args['sensors'][i]) == False:
 				raise Exception('Wrong arguments! At least one of the entities does not exist.')
-			self.listen_state(self.thermostat_state_changed, self.args['thermostats'][i], attribute = "current_temperature", new = None)
+			self.listen_state(self.thermostat_state_changed, self.args['thermostats'][i], attribute = 'current_temperature', new = None)
 			self.listen_state(self.sensor_state_changed, self.args['sensors'][i])
 			if self.get_state(self.args['thermostats'][i], attribute="current_temperature") == None:
 				self.thermostat_state_changed(self.args['thermostats'][i], attribute = "current_temperature", old = None, new = None, kwargs = None)
@@ -92,13 +103,3 @@ class UpdateThermostats(appapi.AppDaemon):
 			self.state = self.HEAT_STATE
 		else:
 			self.state = self.IDLE_STATE
-
-	def check_entity(self, entity):
-		n = 0
-		while not (self.entity_exists(entity) or n > 120):
-			n += 1
-			sleep(1)
-		if n > 120:
-			return False
-		else:
-			return True
