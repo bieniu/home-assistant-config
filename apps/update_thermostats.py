@@ -41,6 +41,7 @@ class UpdateThermostats(appapi.AppDaemon):
 				return
 		except KeyError:
 			self.error('Wrong arguments! You must supply a valid sensors and thermostats entities.')
+			return
 
 		self.zwave_ready_handle = None
 
