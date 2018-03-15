@@ -114,7 +114,7 @@ class UpdateThermostats(appapi.AppDaemon):
 				
 	def update_thermostat(entity, target_temp, current_temp kwargs):
 			self.find_thermostat_state(float(target_temp))
-			self.log('Updating state and current temperature for {}.'.format(entity))
+			self.log('Updating state and current temperature for {}...'.format(entity), level='DEBUG')
 			self.set_state(entity, state=self.state, attributes = {"current_temperature": current_temp})
 		
 		
