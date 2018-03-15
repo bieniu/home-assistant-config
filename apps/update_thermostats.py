@@ -100,7 +100,7 @@ class UpdateThermostats(appapi.AppDaemon):
 				sensor_id = self.args['sensors'][i]
 
 		sensor_temp = self.get_state(sensor_id)
-		target_temp = self.get_state(entity, attribute="temperature")
+		target_temp = self.get_state(entity, attribute = "temperature")
 
 		if sensor_temp is not None and sensor_temp != 'Unknown':
 			if new == None or float(new) != float(sensor_temp):
@@ -113,8 +113,8 @@ class UpdateThermostats(appapi.AppDaemon):
 			if entity == self.args['sensors'][i]:
 				thermostat_id = self.args['thermostats'][i]
 
-		current_temp = self.get_state(thermostat_id, attribute="current_temperature")
-		target_temp = self.get_state(thermostat_id, attribute="temperature")
+		current_temp = self.get_state(thermostat_id, attribute = "current_temperature")
+		target_temp = self.get_state(thermostat_id, attribute = "temperature")
 
 		if new is not None and new != 'Unknown':
 			if current_temp == None or float(current_temp) != float(new):
