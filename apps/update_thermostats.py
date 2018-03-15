@@ -1,13 +1,13 @@
 """
 Update Z-Wave thermostats (e.g. Danfoss 014G0013) state and current temperature from sensor.
 Arguments:
- - thermostats			- list of thermostats entities
- - sensors				- list of sensors entities
- - heat_state			- name of heating state, default 'heat'
- - idle_state			- name of idle state, default 'idle'
- - idle_heat_temp		- temperature value between 'idle' and 'heat' states, default 8
- - wait_for_zwave               - defines whether the script has to wait for the initialization of the Z-wave component, default False
- 				  With wait_for_zwave = True script waits for zwave.network_ready event to start.
+ - thermostats			- list of thermostats entities (required)
+ - sensors				- list of sensors entities (required)
+ - heat_state			- name of heating state, default 'heat' (optional)
+ - idle_state			- name of idle state, default 'idle' (optional)
+ - idle_heat_temp		- temperature value between 'idle' and 'heat' states, default 8 (optional)
+ - wait_for_zwave		- defines whether the script has to wait for the initialization of the Z-wave component, default False (optional)
+						  With wait_for_zwave = True script waits for zwave.network_ready event to start. You have to restart Home Assistant to generate this event.
 The order of thermostats and sensors is important. The first thermostat takes data from the first sensor, the second thermostat from the second sensor, etc.
 
 Configuration example:
@@ -35,28 +35,40 @@ import appdaemon.appapi as appapi
 class UpdateThermostats(appapi.AppDaemon):
 
 	def initialize(self):
-		if len(self.args['thermostats']) != len(self.args['sensors']):
-			raise Exception('Wrong arguments! The arguments sensors and thermostats must contain the same number of elements.')
-		
-		self.WAIT_FOR_ZWAVE = False
-		self.HEAT_STATE = 'heat'
-		self.IDLE_STATE = 'idle'
-		self.IDLE_HEAT_TEMP = 8
-		
-		if self.args['wait_for_zwave'] is not None:
-			self.WAIT_FOR_ZWAVE = self.args['wait_for_zwave']
-		if self.args['heat_state'] is not None:
-			self.HEAT_STATE = self.args['heat_state']
-		if self.args['idle_state'] is not None:
-			self.IDLE_STATE = self.args['idle_state']
-		if self.args['idle_heat_temp'] is not None:
-			self.IDLE_HEAT_TEMP = float(self.args['idle_heat_temp'])
-		if self.WAIT_FOR_ZWAVE:
-			self.listen_event(self.start_listen_states event = 'zwave.network_ready')
+		try:
+			if len(self.args['thermostats']) != len(self.args['sensors']):
+				self.error('Wrong arguments! The arguments sensors and thermostats must contain the same number of elements.')
+				return
+		except KeyError:
+			self.error('Wrong arguments! You must supply a valid sensors and thermostats entities.')
+
+		self.zwave_ready_handle = None
+
+		if 'wait_for_zwave' in self.args:
+			wait_for_zwave = self.args['wait_for_zwave']
 		else:
-			self.start_listen_states
+			wait_for_zwave = False
+		if 'heat_state' in self.args:
+			self.heat_state = self.args['heat_state']
+		else:
+			self.heat_state = 'heat'
+		if 'idle_state' in self.args:
+			self.idle_state = self.args['idle_state']
+		else:
+			self.idle_state = 'idle'
+		if 'idle_heat_temp' in self.args:
+			self.idle_heat_temp = self.args['idle_heat_temp']
+		else:
+			self.idle_heat_temp = 8
+
+		if wait_for_zwave:
+			self.zwave_ready_handle = self.listen_event(self.start_listen_states(), event = 'zwave.network_ready')
+		else:
+			self.start_listen_states()
 
 	def start_listen_states(self):
+		if self.zwave_ready_handle is not None:
+			self.cancel_listen_event(self.zwave_ready_handle)
 		for i in range(len(self.args['thermostats'])):
 			if self.entity_exists(self.args['thermostats'][i]) == False:
 				raise Exception('Wrong arguments! At least one of the entities does not exist.')
@@ -98,7 +110,7 @@ class UpdateThermostats(appapi.AppDaemon):
 				self.log('No temperature data on the sensor {}.'.format(self.entity))
 
 	def find_thermostat_state(self, target_temp):
-		if target_temp > self.IDLE_HEAT_TEMP:
-			self.state = self.HEAT_STATE
+		if target_temp > self.idle_heat_temp:
+			self.state = self.heat_state
 		else:
-			self.state = self.IDLE_STATE
+			self.state = self.idle_state
