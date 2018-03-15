@@ -52,12 +52,11 @@ class UpdateThermostats(appapi.AppDaemon):
 		if self.args['idle_heat_temp'] is not None:
 			self.IDLE_HEAT_TEMP = float(self.args['idle_heat_temp'])
 		if self.WAIT_FOR_ZWAVE:
-			event_listener = self.listen_event(self.start_listen_states(self) event = 'zwave.network_ready')
+			self.listen_event(self.start_listen_states event = 'zwave.network_ready')
 		else:
-			self.start_listen_states(self)
+			self.start_listen_states
+
 	def start_listen_states(self):
-		if event_listener is not None:
-			cancel_listen_event(event_listener)
 		for i in range(len(self.args['thermostats'])):
 			if self.entity_exists(self.args['thermostats'][i]) == False:
 				raise Exception('Wrong arguments! At least one of the entities does not exist.')
