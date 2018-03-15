@@ -92,30 +92,32 @@ class UpdateThermostats(appapi.AppDaemon):
 		sensor_temp = self.get_state(sensor_id)
 		target_temp = self.get_state(entity, attribute="temperature")
 
-		if new == None or float(new) != float(sensor_temp):
-			if sensor_temp is not None and sensor_temp != 'Unknown':
-				self.find_thermostat_state(float(target_temp))
-				self.set_state(entity, state=self.state, attributes = {"current_temperature": sensor_temp})
-				self.log('Updated state and current temperature for {}.'.format(entity))
-			else:
-				self.log('No temperature data on the sensor {}.'.format(sensor_id))
+		if sensor_temp is not None and sensor_temp != 'Unknown':
+			if new == None or float(new) != float(sensor_temp):
+				update_thermostat(entity, target_temp, sensor_temp)			
+		else:
+			self.log('No temperature data on the sensor {}.'.format(sensor_id))
 
 	def sensor_state_changed(self, entity, attribute, old, new, kwargs):
 		for i in range(len(self.args['sensors'])):
 			if entity == self.args['sensors'][i]:
 				thermostat_id = self.args['thermostats'][i]
 
-				current_temp = self.get_state(thermostat_id, attribute="current_temperature")
+		current_temp = self.get_state(thermostat_id, attribute="current_temperature")
 		target_temp = self.get_state(thermostat_id, attribute="temperature")
 
-		if current_temp == None or float(current_temp) != float(new):
-			if new is not None and new != 'Unknown':
-				self.find_thermostat_state(float(target_temp))
-				self.set_state(thermostat_id, state=self.state, attributes = {"current_temperature": new})
-				self.log('Updated state and current temperature for {}.'.format(thermostat_id))
-			else:
-				self.log('No temperature data on the sensor {}.'.format(self.entity))
-
+		if new is not None and new != 'Unknown':
+			if current_temp == None or float(current_temp) != float(new):
+				update_temperature(thermostat_id, target_temp, new)
+		else:
+			self.log('No temperature data on the sensor {}.'.format(entity))
+				
+	def update_thermostat(entity, target_temp, current_temp kwargs):
+			self.find_thermostat_state(float(target_temp))
+			self.log('Updating state and current temperature for {}.'.format(entity))
+			self.set_state(entity, state=self.state, attributes = {"current_temperature": current_temp})
+		
+		
 	def find_thermostat_state(self, target_temp):
 		if target_temp > self.idle_heat_temp:
 			self.state = self.heat_state
