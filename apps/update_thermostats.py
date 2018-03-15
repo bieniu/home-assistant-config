@@ -6,7 +6,7 @@ Arguments:
  - heat_state			- name of heating state, default 'heat' (optional)
  - idle_state			- name of idle state, default 'idle' (optional)
  - idle_heat_temp		- temperature value between 'idle' and 'heat' states, default 8 (optional)
- - wait_for_zwave		- defines whether the script has to wait for the initialization of the Z-wave component, default False (optional)
+ - wait_for_zwave		- defines whether the script has to wait for the initialization of the Z-wave component, default True (optional)
 						  With wait_for_zwave = True script waits for zwave.network_ready event to start. You have to restart Home Assistant to generate this event.
 The order of thermostats and sensors is important. The first thermostat takes data from the first sensor, the second thermostat from the second sensor, etc.
 
@@ -48,7 +48,7 @@ class UpdateThermostats(appapi.AppDaemon):
 		if 'wait_for_zwave' in self.args:
 			wait_for_zwave = self.args['wait_for_zwave']
 		else:
-			wait_for_zwave = False
+			wait_for_zwave = True
 		if 'heat_state' in self.args:
 			self.heat_state = self.args['heat_state']
 		else:
