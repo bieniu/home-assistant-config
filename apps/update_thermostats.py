@@ -63,18 +63,22 @@ class UpdateThermostats(appapi.AppDaemon):
 			self.idle_heat_temp = 8
 
 		if wait_for_zwave:
-			self.zwave_ready_handle = self.listen_event(self.start_listen_states(), event = 'zwave.network_ready')
+			self.log('Waiting for zwave.network_ready event...')
+			self.zwave_ready_handle = self.listen_event(self.start_listen_states, 'zwave.network_ready')
 		else:
 			self.start_listen_states()
 
-	def start_listen_states(self):
+	def start_listen_states(self, event, data, kwargs):
 		if self.zwave_ready_handle is not None:
 			self.cancel_listen_event(self.zwave_ready_handle)
+		self.log('Checking thermostats and sensors...')
 		for i in range(len(self.args['thermostats'])):
 			if self.entity_exists(self.args['thermostats'][i]) == False:
-				raise Exception('Wrong arguments! At least one of the entities does not exist.')
+				self.error('Wrong arguments! At least one of the entities does not exist.')
+				return
 			if self.entity_exists(self.args['sensors'][i]) == False:
-				raise Exception('Wrong arguments! At least one of the entities does not exist.')
+				self.error('Wrong arguments! At least one of the entities does not exist.')
+				return
 			self.listen_state(self.thermostat_state_changed, self.args['thermostats'][i], attribute = 'current_temperature', new = None)
 			self.listen_state(self.sensor_state_changed, self.args['sensors'][i])
 			if self.get_state(self.args['thermostats'][i], attribute="current_temperature") == None:
@@ -92,6 +96,7 @@ class UpdateThermostats(appapi.AppDaemon):
 			if sensor_temp is not None and sensor_temp != 'Unknown':
 				self.find_thermostat_state(float(target_temp))
 				self.set_state(entity, state=self.state, attributes = {"current_temperature": sensor_temp})
+				self.log('Updated state and current temperature for {}.'.format(thermostat_id))
 			else:
 				self.log('No temperature data on the sensor {}.'.format(sensor_id))
 
@@ -107,6 +112,7 @@ class UpdateThermostats(appapi.AppDaemon):
 			if new is not None and new != 'Unknown':
 				self.find_thermostat_state(float(target_temp))
 				self.set_state(thermostat_id, state=self.state, attributes = {"current_temperature": new})
+				self.log('Updated state and current temperature for {}.'.format(thermostat_id))
 			else:
 				self.log('No temperature data on the sensor {}.'.format(self.entity))
 
