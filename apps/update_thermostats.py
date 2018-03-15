@@ -13,6 +13,7 @@ Arguments:
 The order of thermostats and sensors is important. The first thermostat takes data from the first sensor, the second thermostat from
 the second sensor, etc.
 
+
 Configuration example:
 
 update_thermostats:
@@ -87,12 +88,11 @@ class UpdateThermostats(appapi.AppDaemon):
 			if self.entity_exists(self.args['sensors'][i]) == False:
 				self.error('Wrong arguments! At least one of the entities does not exist.')
 				return
-			self.listen_state(self.thermostat_state_changed, self.args['thermostats'][i], attribute = 'current_temperature',
-							  new = None)
+      
+			self.listen_state(self.thermostat_state_changed, self.args['thermostats'][i], attribute = 'current_temperature', new = None)
 			self.listen_state(self.sensor_state_changed, self.args['sensors'][i])
 			if self.get_state(self.args['thermostats'][i], attribute="current_temperature") == None:
-				self.thermostat_state_changed(self.args['thermostats'][i], attribute = "current_temperature", old = None,
-											  new = None, kwargs = None)
+				self.thermostat_state_changed(self.args['thermostats'][i], attribute = "current_temperature", old = None, new = None, kwargs = None)
 		self.log('Ready for action...')
 
 	def thermostat_state_changed(self, entity, attribute, old, new, kwargs):
