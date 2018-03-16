@@ -29,6 +29,7 @@
 * Brother HL-L2340D [printer by custom python script]
 * iPhone [iOS [Home Assistant](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401)]
 * OnePlus One [Android phone by [GPSLogger](https://play.google.com/store/apps/details?id=com.mendhak.gpslogger)]
+* CyberPower DL650ELCD [UPS]
 
 ## Home Assistant Custom Components
 
