@@ -43,6 +43,7 @@ energy:
   icon: mdi:power-plug
   entities:
     - group.energy_consumption
+    - group.ups
     - group.batteries_thermostats
     - group.batteries_switches
     - group.batteries_temp_sensors
@@ -195,6 +196,16 @@ zwave devices:
     - zwave.thermostat_antek
     - zwave.thermostat_sypialnia
     - zwave.thermostat_lazienka
+
+ups:
+  name: UPS
+  entities:
+    - sensor.ups_status
+    - sensor.ups_battery_charge
+    - sensor.ups_battery_runtime
+    - sensor.ups_load
+    - sensor.ups_battery_voltage
+    - sensor.ups_input_voltage
 
 internet:
   name: Internet

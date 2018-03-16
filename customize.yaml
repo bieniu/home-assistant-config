@@ -15,6 +15,20 @@ switch.light_bulbs_salon:
 light.bulbs_salon:
   friendly_name: 'Żarówki'
 
+#### UPS ####
+sensor.ups_status:
+  icon: mdi:information-outline
+sensor.ups_battery_charge:
+  friendly_name: Naładowanie baterii
+sensor.ups_battery_runtime:
+  friendly_name: Czas do rozładowania
+sensor.ups_battery_voltage:
+  friendly_name: Napięcie baterii
+sensor.ups_input_voltage:
+  friendly_name: Napięcie sieciowe
+sensor.ups_load:
+  friendly_name: Obciążenie
+
 #### RASPBERRY PI ####
 sensor.processor_use:
   friendly_name: 'Obciążenie CPU'
@@ -132,16 +146,18 @@ group.scripts:
   order: 34
 group.energy_consumption:
   order: 35
-group.batteries_thermostats:
+group.ups:
   order: 36
-group.batteries_switches:
+group.batteries_thermostats:
   order: 37
-group.batteries_temp_sensors:
+group.batteries_switches:
   order: 38
-group.batteries_windows_sensors:
+group.batteries_temp_sensors:
   order: 39
-group.batteries_motion_sensors:
+group.batteries_windows_sensors:
   order: 40
+group.batteries_motion_sensors:
+  order: 41
 
 #### WEATHER ####
 sensor.dark_sky_temperature:

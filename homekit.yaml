@@ -1,0 +1,35 @@
+pincode: !secret homekit_pincode
+auto_start: false
+filter:
+  include_domains:
+    - climate
+  include_entities:
+    - switch.light_bulbs_salon
+    - switch.light_leds_salon
+    - switch.light_lamp_salon
+    - switch.light_leds_przedpokoj
+    - switch.stacjonarny
+    - switch.playstation
+    - switch.denon
+    - light.gateway_antresola
+    - light.lightstrip_antek
+    - light.lightstrip_sypialnia
+    - sensor.temperature_antek
+    - sensor.temperature_antresola
+    - sensor.temperature_gabinet
+    - sensor.temperature_goscinny
+    - sensor.temperature_kuchnia
+    - sensor.temperature_lazienka
+    - sensor.temperature_pracownia
+    - sensor.temperature_salon
+    - sensor.temperature_sypialnia
+    - sensor.temperature_outdoor
+    - sensor.humidity_antek
+    - sensor.humidity_antresola
+    - sensor.humidity_gabinet
+    - sensor.humidity_goscinny
+    - sensor.humidity_lazienka
+    - sensor.humidity_pracownia
+    - sensor.humidity_salon
+    - sensor.humidity_sypialnia
+    - sensor.humidity_outdoor

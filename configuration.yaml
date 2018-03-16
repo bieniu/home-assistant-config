@@ -144,23 +144,4 @@ python_script:
 
 emulated_hue: !include emulated_hue.yaml
 
-homekit:
-  auto_start: false
-  filter:
-    include_domains:
-      - climate
-    include_entities:
-      - switch.light_bulbs_salon
-      - switch.light_leds_salon
-      - switch.light_lamp_salon
-      - switch.light_leds_przedpokoj
-      - switch.stacjonarny
-      - sensor.temperature_antek
-      - sensor.temperature_antresola
-      - sensor.temperature_gabinet
-      - sensor.temperature_goscinny
-      - sensor.temperature_kuchnia
-      - sensor.temperature_lazienka
-      - sensor.temperature_pracownia
-      - sensor.temperature_salon
-      - sensor.temperature_sypialnia
+homekit: !include homekit.yaml

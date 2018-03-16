@@ -33,6 +33,7 @@ exclude:
     - binary_sensor.presence
     - light.bulb_salon_1
     - light.bulb_salon_2
+    - sensor.ups_status_data
 include:
   entities:
     - group.family

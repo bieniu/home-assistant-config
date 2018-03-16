@@ -1,3 +1,15 @@
+- platform: nut
+  name: UPS
+  host: !secret ups_host
+  alias: ups
+  resources:
+    - ups.status
+    - ups.load
+    - input.voltage
+    - battery.runtime
+    - battery.voltage
+    - battery.charge
+
 - platform: cert_expiry
   host: !secret http_base_url
 
@@ -163,7 +175,7 @@
          {% endif %}
 
     battery_thermostat_lazienka:
-      friendly_name: termostat łazienka
+      friendly_name: łazienka
       unit_of_measurement: '%'
       value_template: >-
          {% if states.zwave.thermostat_lazienka.attributes.battery_level %}
@@ -186,7 +198,7 @@
          {% endif %}
 
     battery_thermostat_salon:
-      friendly_name: termostat salon
+      friendly_name: salon
       unit_of_measurement: '%'
       value_template: >-
          {% if states.zwave.thermostat_salon.attributes.battery_level %}
@@ -209,7 +221,7 @@
          {% endif %}
 
     battery_thermostat_kuchnia:
-      friendly_name: termostat kuchnia
+      friendly_name: kuchnia
       unit_of_measurement: '%'
       value_template: >-
          {% if states.zwave.thermostat_kuchnia.attributes.battery_level %}
@@ -232,7 +244,7 @@
          {% endif %}
 
     battery_thermostat_sypialnia:
-      friendly_name: termostat sypialnia
+      friendly_name: sypialnia
       unit_of_measurement: '%'
       value_template: >-
          {% if states.zwave.thermostat_sypialnia.attributes.battery_level %}
@@ -255,7 +267,7 @@
          {% endif %}
 
     battery_thermostat_antek:
-      friendly_name: termostat pokój Antka
+      friendly_name: pokój Antka
       unit_of_measurement: '%'
       value_template: >-
          {% if states.zwave.thermostat_antek.attributes.battery_level %}
@@ -278,7 +290,7 @@
          {% endif %}
 
     battery_temp_humi_sensor_outdoor:
-      friendly_name: sensor temperatury zewnętrznej
+      friendly_name: zewnętrzny
       unit_of_measurement: '%'
       value_template: >-
          {% if states.sensor.temperature_outdoor.attributes.battery_level %}
@@ -301,7 +313,7 @@
          {% endif %}
 
     battery_temp_humi_sensor_pracownia:
-      friendly_name: sensor temperatury pracownia
+      friendly_name: pracownia
       unit_of_measurement: '%'
       value_template: >-
          {% if states.sensor.temperature_pracownia.attributes.battery_level %}
@@ -324,7 +336,7 @@
          {% endif %}
 
     battery_temp_humi_sensor_antek:
-      friendly_name: sensor temperatury pokój Antka
+      friendly_name: pokój Antka
       unit_of_measurement: '%'
       value_template: >-
          {% if states.sensor.temperature_antek.attributes.battery_level %}
@@ -347,7 +359,7 @@
          {% endif %}
 
     battery_temp_humi_sensor_salon:
-      friendly_name: sensor temperatury salon
+      friendly_name: salon
       unit_of_measurement: '%'
       value_template: >-
          {% if states.sensor.temperature_salon.attributes.battery_level %}
@@ -370,7 +382,7 @@
          {% endif %}
 
     battery_temp_humi_sensor_goscinny:
-      friendly_name: sensor temperatury pokój gościnny
+      friendly_name: pokój gościnny
       unit_of_measurement: '%'
       value_template: >-
          {% if states.sensor.temperature_goscinny.attributes.battery_level %}
@@ -393,7 +405,7 @@
          {% endif %}
 
     battery_temp_humi_sensor_sypialnia:
-      friendly_name: sensor temperatury sypialnia
+      friendly_name: sypialnia
       unit_of_measurement: '%'
       value_template: >-
          {% if states.sensor.temperature_sypialnia.attributes.battery_level %}
@@ -416,7 +428,7 @@
          {% endif %}
 
     battery_temp_humi_sensor_lazienka:
-      friendly_name: sensor temperatury łazienka
+      friendly_name: łazienka
       unit_of_measurement: '%'
       value_template: >-
          {% if states.sensor.temperature_lazienka.attributes.battery_level %}
@@ -439,7 +451,7 @@
          {% endif %}
 
     battery_temp_humi_sensor_antresola:
-      friendly_name: sensor temperatury antresola
+      friendly_name: antresola
       unit_of_measurement: '%'
       value_template: >-
          {% if states.sensor.temperature_antresola.attributes.battery_level %}
@@ -462,7 +474,7 @@
          {% endif %}
 
     battery_temp_humi_sensor_gabinet:
-      friendly_name: sensor temperatury gabinet
+      friendly_name: gabinet
       unit_of_measurement: '%'
       value_template: >-
          {% if states.sensor.temperature_gabinet.attributes.battery_level %}
@@ -485,7 +497,7 @@
          {% endif %}
 
     battery_body_sensor_antresola:
-      friendly_name: sensor ruchu antresola
+      friendly_name: antresola
       unit_of_measurement: '%'
       value_template: >-
          {% if states.binary_sensor.motion_antresola_1.attributes.battery_level %}
@@ -508,7 +520,7 @@
          {% endif %}
 
     battery_body_sensor_schody:
-      friendly_name: sensor ruchu schody
+      friendly_name: schody
       unit_of_measurement: '%'
       value_template: >-
          {% if states.binary_sensor.motion_antresola_2.attributes.battery_level %}
@@ -531,7 +543,7 @@
          {% endif %}
 
     battery_body_sensor_salon_1:
-      friendly_name: sensor ruchu salon [1]
+      friendly_name: salon [1]
       unit_of_measurement: '%'
       value_template: >-
          {% if states.binary_sensor.motion_salon_1.attributes.battery_level %}
@@ -554,7 +566,7 @@
          {% endif %}
 
     battery_body_sensor_sypialnia:
-      friendly_name: sensor ruchu sypialnia
+      friendly_name: sypialnia
       unit_of_measurement: '%'
       value_template: >-
          {% if states.binary_sensor.motion_sypialnia.attributes.battery_level %}
@@ -577,7 +589,7 @@
          {% endif %}
 
     battery_body_sensor_antek:
-      friendly_name: sensor ruchu pokój Antka
+      friendly_name: pokój Antka
       unit_of_measurement: '%'
       value_template: >-
          {% if states.binary_sensor.motion_antek.attributes.battery_level %}
@@ -600,7 +612,7 @@
          {% endif %}
 
     battery_body_sensor_salon_2:
-      friendly_name: sensor ruchu salon [2]
+      friendly_name: salon [2]
       unit_of_measurement: '%'
       value_template: >-
          {% if states.binary_sensor.motion_salon_2.attributes.battery_level %}
@@ -623,7 +635,7 @@
          {% endif %}
 
     battery_switch_light_salon_1:
-      friendly_name: włącznik oświetlenia salon [1]
+      friendly_name: salon [1]
       unit_of_measurement: '%'
       value_template: >-
          {% if states.binary_sensor.switch_light_salon_1.attributes.battery_level %}
@@ -646,7 +658,7 @@
          {% endif %}
 
     battery_switch_light_salon_2:
-      friendly_name: włącznik oświetlenia salon [2]
+      friendly_name: salon [2]
       unit_of_measurement: '%'
       value_template: >-
          {% if states.binary_sensor.switch_light_salon_2.attributes.battery_level %}
@@ -669,7 +681,7 @@
          {% endif %}
 
     battery_switch_light_antek:
-      friendly_name: włącznik oświetlenia pokój Antka
+      friendly_name: pokój Antka
       unit_of_measurement: '%'
       value_template: >-
          {% if states.binary_sensor.switch_light_antek.attributes.battery_level %}
@@ -692,7 +704,7 @@
          {% endif %}
 
     battery_window_sensor_kuchnia:
-      friendly_name: sensor okna kuchnia
+      friendly_name: kuchnia
       unit_of_measurement: '%'
       value_template: >-
          {% if states.binary_sensor.window_kuchnia.attributes.battery_level %}
@@ -715,7 +727,7 @@
          {% endif %}
 
     battery_door_sensor_sypialnia:
-      friendly_name: sensor drzwi balkonowych sypialnia
+      friendly_name: sypialnia
       unit_of_measurement: '%'
       value_template: >-
          {% if states.binary_sensor.balcony_door_sypialnia.attributes.battery_level %}
@@ -738,7 +750,7 @@
          {% endif %}
 
     battery_door_sensor_pracownia:
-      friendly_name: sensor drzwi balkonowych pracownia
+      friendly_name: pracownia
       unit_of_measurement: '%'
       value_template: >-
          {% if states.binary_sensor.balcony_door_pracownia.attributes.battery_level %}
@@ -965,4 +977,23 @@
             {% endif %}
          {% else %}
             mdi:tag-text-outline
+         {% endif %}
+
+    ups_status:
+      friendly_name: Status
+      value_template: >-
+         {% if states.sensor.ups_status_data %}
+            {% if states.sensor.ups_status_data.state == 'OL' %}
+               zasilanie sieciowe
+            {% elif states.sensor.ups_status_data.state == 'BL' %}
+               zasilanie bateryjne
+            {% elif states.sensor.ups_status_data.state == 'LB' %}
+               słaba bateria
+            {% elif states.sensor.ups_status_data.state == 'SD' %}
+               wyłączanie
+            {% else %}
+               {{ states.sensor.ups_status_data.state }}
+            {% endif %}
+         {% else %}
+            unknown
          {% endif %}
