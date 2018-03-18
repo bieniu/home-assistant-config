@@ -34,9 +34,9 @@ update_thermostats:
 
 """
 
-import appdaemon.appapi as appapi
+import appdaemon.plugins.hass.hassapi as hass
 
-class UpdateThermostats(appapi.AppDaemon):
+class UpdateThermostats(hass.Hass):
 
 	def initialize(self):
 		try:

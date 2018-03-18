@@ -1,9 +1,9 @@
-import appdaemon.appapi as appapi
+import appdaemon.plugins.hass.hassapi as hass
 from bs4 import BeautifulSoup
 from requests import get
 from datetime import datetime
 
-class BrotherPrinterStatus(appapi.AppDaemon):
+class BrotherPrinterStatus(hass.Hass):
 
 	def initialize(self):
 
