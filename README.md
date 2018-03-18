@@ -26,7 +26,7 @@
 * Xiaomi Mi Box 4K [AndroidTV box by [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm)]
 * Dune BD Prime 3.0 [network media player by custom shell script]
 * Synology DS110j [NAS]
-* Brother HL-L2340D [printer by custom python script]
+* Brother HL-L2340D
 * iPhone [iOS [Home Assistant](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401)]
 * OnePlus One [Android phone by [GPSLogger](https://play.google.com/store/apps/details?id=com.mendhak.gpslogger)]
 * CyberPower DL650ELCD [UPS]
@@ -39,6 +39,7 @@
 
 ## AppDaemon
 * [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/home-assistant-config/blob/master/apps/update_thermostats.py)
+* [Brother printer status sensors](https://github.com/bieniu/home-assistant-config/blob/master/apps/brother_printer_status.py)
 
 ## Screenshots
 
