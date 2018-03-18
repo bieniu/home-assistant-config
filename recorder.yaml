@@ -34,6 +34,7 @@ exclude:
     - light.bulb_salon_1
     - light.bulb_salon_2
     - sensor.ups_status_data
+    - sensor.printer_status
 include:
   entities:
     - group.family

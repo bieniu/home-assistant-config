@@ -350,9 +350,12 @@ binary_sensor.window_kuchnia:
   location: kuchnia
 
 #### PRINTER ####
-sensor.printer_status:
-  friendly_name: Status drukarki
+sensor.printer_status_custom:
   icon: mdi:printer
+sensor.printer_toner:
+  custom_ui_state_card: state-card-custom-ui
+  templates:
+    theme: if (state < 10) return 'red'; else return 'default';
 
 #### SONOFF ####
 switch.light_lamp_salon:

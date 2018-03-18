@@ -1,18 +1,24 @@
-update_thermostats:
-  module: update_thermostats
-  class: UpdateThermostats
-  heat_state: auto
-  thermostats:
-    - climate.thermostat_kuchnia
-    - climate.thermostat_salon
-    - climate.thermostat_antresola
-    - climate.thermostat_sypialnia
-    - climate.thermostat_lazienka
-    - climate.thermostat_antek
-  sensors:
-    - sensor.temperature_kuchnia
-    - sensor.temperature_salon
-    - sensor.temperature_antresola
-    - sensor.temperature_sypialnia
-    - sensor.temperature_lazienka
-    - sensor.temperature_antek
+brother_printer_status:
+  module: brother_printer_status
+  class: BrotherPrinterStatus
+  host: !secret brother_hostname
+  interval: 5
+
+# update_thermostats:
+  # module: update_thermostats
+  # class: UpdateThermostats
+  # heat_state: auto
+  # thermostats:
+    # - climate.thermostat_kuchnia
+    # - climate.thermostat_salon
+    # - climate.thermostat_antresola
+    # - climate.thermostat_sypialnia
+    # - climate.thermostat_lazienka
+    # - climate.thermostat_antek
+  # sensors:
+    # - sensor.temperature_kuchnia
+    # - sensor.temperature_salon
+    # - sensor.temperature_antresola
+    # - sensor.temperature_sypialnia
+    # - sensor.temperature_lazienka
+    # - sensor.temperature_antek

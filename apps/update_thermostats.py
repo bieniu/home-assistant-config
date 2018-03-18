@@ -62,7 +62,7 @@ class UpdateThermostats(appapi.AppDaemon):
 		else:
 			self.idle_state = 'idle'
 		if 'idle_heat_temp' in self.args:
-			self.idle_heat_temp = self.args['idle_heat_temp']
+			self.idle_heat_temp = int(self.args['idle_heat_temp'])
 		else:
 			self.idle_heat_temp = 8
 		if 'debug' in self.args:
@@ -125,7 +125,7 @@ class UpdateThermostats(appapi.AppDaemon):
 	def update_thermostat(self, entity, target_temp, current_temp):
 			self.find_thermostat_state(float(target_temp))
 			self.log('Updating state and current temperature for {}...'.format(entity), self.log_level)
-			self.set_state(entity, state=self.state, attributes = {"current_temperature": current_temp})
+			self.set_state(entity, state = self.state, attributes = {"current_temperature": current_temp})
 
 	def find_thermostat_state(self, target_temp):
 		if target_temp > self.idle_heat_temp:

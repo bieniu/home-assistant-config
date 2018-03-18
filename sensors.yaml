@@ -45,24 +45,6 @@
   name: Home Assistant Uptime
   unit_of_measurement: minutes
 
-- platform: scrape
-  resource: !secret brother_status_url
-  name: printer_status
-  select: 'dd:nth-of-type(1)'
-  scan_interval: 3
-  value_template: >-
-     {% if value == 'DRUKOWANIE' %}
-        drukowanie
-     {% elif ('PROSZ' in value) and ('CZEKA' in value) %}
-        nagrzewanie
-     {% elif value == 'PRZYJMUJE DANE' %}
-        przyjmowanie danych
-     {% elif (('MA' in value)  and ('TONERU' in value)) or (value == 'OCZEKIWANIE') %}
-        oczekiwanie
-     {% else %}
-        {{ (value | lower) }}
-     {% endif %}
-
 - platform: google_travel_time
   name: Edyta To Home
   api_key: !secret google_api_key
@@ -137,6 +119,25 @@
 
 - platform: template
   sensors:
+    printer_status_custom:
+      friendly_name: Status drukarki
+      value_template: >-
+         {% if states.sensor.printer_status %}
+            {% if 'DRUKOWANIE' in states.sensor.printer_status.state %}
+               drukowanie
+            {% elif 'PROSZ' in states.sensor.printer_status.state %}
+               nagrzewanie
+            {% elif 'PRZYJMUJE DANE' in states.sensor.printer_status.state %}
+               przyjmowanie danych
+            {% elif 'TONERU' in states.sensor.printer_status.state or 'OCZEKIWANIE' in states.sensor.printer_status.state %}
+               oczekiwanie
+            {% else %}
+               {{ (states.sensor.printer_status.state | lower) }}
+            {% endif %}
+         {% else %}
+            unknown
+         {% endif %}
+
     temperature_kuchnia:
       friendly_name: Temperatura
       unit_of_measurement: '°C'
@@ -152,7 +153,7 @@
          {% endif %}
 
     battery_thermostat_antresola:
-      friendly_name: termostat antresola
+      friendly_name: antresola
       unit_of_measurement: '%'
       value_template: >-
          {% if states.zwave.thermostat_antresola.attributes.battery_level %}
@@ -880,7 +881,7 @@
     sunrise:
       friendly_name: Wschód słońca
       value_template: >-
-         {% if states.sun.sun %} 
+         {% if states.sun.sun %}
             {{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom("%H:%M") }}
          {% else %}
             {{ states.sensor.sunrise.state }}
@@ -985,7 +986,7 @@
          {% if states.sensor.ups_status_data %}
             {% if states.sensor.ups_status_data.state == 'OL' %}
                zasilanie sieciowe
-            {% elif states.sensor.ups_status_data.state == 'BL' %}
+            {% elif states.sensor.ups_status_data.state == 'OB DISCHRG' %}
                zasilanie bateryjne
             {% elif states.sensor.ups_status_data.state == 'LB' %}
                słaba bateria
