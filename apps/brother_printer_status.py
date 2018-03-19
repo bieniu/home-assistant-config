@@ -25,7 +25,7 @@ class BrotherPrinterStatus(hass.Hass):
 
 	def initialize(self):
 
-		_version__ = '0.1'
+		__version__ = '0.1'
 
 		self.MAX_IMAGE_HEIGHT = 60
 		self.INFO_URL = '/general/information.html'
