@@ -2,7 +2,7 @@ brother_printer_status:
   module: brother_printer_status
   class: BrotherPrinterStatus
   host: !secret brother_hostname
-  interval: 5
+  status_interval: 5
 
 # update_thermostats:
   # module: update_thermostats

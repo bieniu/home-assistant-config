@@ -39,7 +39,10 @@ import appdaemon.plugins.hass.hassapi as hass
 class UpdateThermostats(hass.Hass):
 
 	def initialize(self):
-		try:
+
+        __version__ = '0.1'
+
+        try:
 			if len(self.args['thermostats']) != len(self.args['sensors']):
 				self.error('Wrong arguments! The arguments sensors and thermostats must contain the same number of elements.')
 				return

@@ -1,7 +1,7 @@
 log:
   logfile: /home/homeassistant/.homeassistant/appdaemon.log
   errorfile: /home/homeassistant/.homeassistant/appdaemon.log
-  logsize: 1000
+  logsize: 10000
   log_generations: 3
 appdaemon:
   threads: 10
