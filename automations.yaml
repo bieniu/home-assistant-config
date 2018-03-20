@@ -55,7 +55,7 @@
       entity_id: binary_sensor.gaming
       state: 'on'
     - service: notify.html5_oneplus
-      data: 
+      data:
         title: 'Zbyt długa gra'
         message: 'Gra trwa już godzinę. Pora skończyć!'
         data:
@@ -225,7 +225,7 @@
     entity_id: sensor.router_update
   action:
     service: notify.html5_oneplus
-    data_template: 
+    data_template:
       title: 'Nowa wersja oprogramowania routera'
       message: "Dostępna jest aktualizacja oprogramowania routera do wersji {{ trigger.to_state.state }}."
     data:
@@ -242,7 +242,7 @@
     above: 70
   action:
     service: notify.html5_oneplus
-    data_template: 
+    data_template:
       title: 'Mało miejsca na sysku Synology'
       message: "Dysk Synology jest zajęty w {{ trigger.to_state.state }}%."
     data:
@@ -404,7 +404,7 @@
       entity_id: group.windows
       state: 'on'
     - service: notify.html5_oneplus
-      data: 
+      data:
         title: 'Otwarte okno'
         message: 'W mieszkaniu przynajmniej jedno okno jest otwarte!'
         data:
@@ -540,7 +540,7 @@
     platform: state
     entity_id: media_player.denon
     to: 'off'
-  condition: 
+  condition:
     condition: and
     conditions:
       - condition: state
@@ -990,7 +990,7 @@
 # wyłączenie oświetlenia po wyjściu z domu
 - id: light_turn_off_when_away_mode
   alias: 'Light Turn Off When Away Mode'
-  trigger: 
+  trigger:
     platform: state
     entity_id: input_boolean.away_mode
     from: 'off'
@@ -1340,19 +1340,19 @@
       from: 'Netflix'
       to: 'Ekran główny'
       for:
-        minutes: 2
+        seconds: 30
     - platform: state
       entity_id: sensor.androidtv_activity
       from: 'ShowMax'
       to: 'Ekran główny'
       for:
-        minutes: 2
+        seconds: 30
     - platform: state
       entity_id: sensor.androidtv_activity
       from: 'YouTube'
       to: 'Ekran główny'
       for:
-        minutes: 2
+        seconds: 30
     - platform: state
       entity_id: sensor.dune_activity
       from: 'file_playback'
@@ -1368,8 +1368,6 @@
   condition:
     condition: and
     conditions:
-      - condition: sun
-        after: sunset
       - condition: template
         value_template: "{{ (states.switch.light_leds_salon.state == 'on') or (states.switch.light_bulbs_salon.state == 'on') or (states.switch.light_lamp_salon.state == 'on') }}"
       - condition: state

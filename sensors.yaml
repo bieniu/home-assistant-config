@@ -123,16 +123,16 @@
       friendly_name: Status drukarki
       value_template: >-
          {% if states.sensor.printer_status %}
-            {% if 'DRUKOWANIE' in states.sensor.printer_status.state %}
+            {% if 'drukowanie' in states.sensor.printer_status.state %}
                drukowanie
-            {% elif 'PROSZ' in states.sensor.printer_status.state %}
+            {% elif 'prosz' in states.sensor.printer_status.state %}
                nagrzewanie
-            {% elif 'PRZYJMUJE DANE' in states.sensor.printer_status.state %}
-               przyjmowanie danych
-            {% elif 'TONERU' in states.sensor.printer_status.state or 'OCZEKIWANIE' in states.sensor.printer_status.state %}
+            {% elif 'toneru' in states.sensor.printer_status.state or 'oczekiwanie' in states.sensor.printer_status.state %}
                oczekiwanie
+            {% elif 'wymie' in states.sensor.printer_status.state %}
+               brak toneru
             {% else %}
-               {{ (states.sensor.printer_status.state | lower) }}
+               {{ states.sensor.printer_status.state }}
             {% endif %}
          {% else %}
             unknown

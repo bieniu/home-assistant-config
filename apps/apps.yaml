@@ -1,8 +1,15 @@
-brother_printer_status:
-  module: brother_printer_status
-  class: BrotherPrinterStatus
-  host: !secret brother_hostname
-  status_interval: 5
+dune_activity:
+  module: dune_activity
+  class: DuneActivity
+  host: !secret dune_hostname
+  interval: 10
+
+#brother_printer_status:
+#  module: brother_printer_status
+#  class: BrotherPrinterStatus
+#  host: !secret brother_hostname
+#  status_interval: 5
+#  info_interval: 120
 
 # update_thermostats:
   # module: update_thermostats
