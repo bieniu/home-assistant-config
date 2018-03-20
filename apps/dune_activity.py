@@ -1,5 +1,5 @@
 """
-Adds sensor to HA DuneHD media playet current activity.
+Adds sensor to HA with DuneHD media player current activity.
 Arguments:
  - host			- hostname or IP address of the DuneHD media player (required)
  - interval		- interval scanning, default 60 sec. (optional)
@@ -31,7 +31,7 @@ class DuneActivity(hass.Hass):
             if self.args['host'] is not None:
                 self.HOST = self.args['host']
         except KeyError:
-            self.error('Wrong arguments! You must supply a valid dune media player hostname or IP address.')
+            self.error('Wrong arguments! You must supply a valid DuneHD media player hostname or IP address.')
             return
         if 'interval' in self.args:
             interval = int(self.args['interval'])

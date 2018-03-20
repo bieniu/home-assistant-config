@@ -24,7 +24,7 @@
 * Denon AVR-X2100W [AV receiver]
 * PlayStation 4 Pro
 * Xiaomi Mi Box 4K [AndroidTV box by [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm)]
-* Dune BD Prime 3.0 [network media player by custom shell script]
+* Dune BD Prime 3.0 [network media player by AppDaemon script]
 * Synology DS110j [NAS]
 * Brother HL-L2340D
 * iPhone [iOS [Home Assistant](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401)]
@@ -40,6 +40,7 @@
 ## AppDaemon
 * [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/home-assistant-config/blob/master/apps/update_thermostats.py)
 * [Brother printer status sensors](https://github.com/bieniu/home-assistant-config/blob/master/apps/brother_printer_status.py)
+* [DuneHD Activity](https://github.com/bieniu/home-assistant-config/blob/master/apps/dune_activity.py)
 
 ## Screenshots
 
