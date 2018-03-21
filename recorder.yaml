@@ -34,6 +34,8 @@ exclude:
     - light.bulb_salon_1
     - light.bulb_salon_2
     - sensor.ups_status_data
+    - sensor.ups_load
+    - sensor.ups_nominal_real_power
     - sensor.printer_status
 include:
   entities:

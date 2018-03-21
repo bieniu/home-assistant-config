@@ -203,7 +203,7 @@ ups:
     - sensor.ups_status
     - sensor.ups_battery_charge
     - sensor.ups_battery_runtime
-    - sensor.ups_load
+    - sensor.ups_load_custom
     - sensor.ups_battery_voltage
     - sensor.ups_input_voltage
 

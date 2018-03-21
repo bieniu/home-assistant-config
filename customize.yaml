@@ -17,17 +17,20 @@ light.bulbs_salon:
 
 #### UPS ####
 sensor.ups_status:
-  icon: mdi:information-outline
+  icon: mdi:server-security
 sensor.ups_battery_charge:
   friendly_name: Naładowanie baterii
+  icon: mdi:car-battery
 sensor.ups_battery_runtime:
   friendly_name: Czas do rozładowania
 sensor.ups_battery_voltage:
   friendly_name: Napięcie baterii
+  icon: mdi:flash-outline
 sensor.ups_input_voltage:
   friendly_name: Napięcie sieciowe
-sensor.ups_load:
-  friendly_name: Obciążenie
+  icon: mdi:flash-outline
+sensor.ups_load_custom:
+  icon: mdi:chart-line
 
 #### RASPBERRY PI ####
 sensor.processor_use:

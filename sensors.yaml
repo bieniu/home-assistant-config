@@ -5,6 +5,7 @@
   resources:
     - ups.status
     - ups.load
+    - ups.realpower.nominal
     - input.voltage
     - battery.runtime
     - battery.voltage
@@ -986,6 +987,8 @@
          {% if states.sensor.ups_status_data %}
             {% if states.sensor.ups_status_data.state == 'OL' %}
                zasilanie sieciowe
+            {% elif states.sensor.ups_status_data.state == 'OL CHRG' %}
+               ładowanie baterii
             {% elif states.sensor.ups_status_data.state == 'OB DISCHRG' %}
                zasilanie bateryjne
             {% elif states.sensor.ups_status_data.state == 'LB' %}
@@ -994,6 +997,20 @@
                wyłączanie
             {% else %}
                {{ states.sensor.ups_status_data.state }}
+            {% endif %}
+         {% else %}
+            unknown
+         {% endif %}
+
+    ups_load_custom:
+      friendly_name: 'Obciążenie'
+      unit_of_measurement: 'W'
+      value_template: >-
+         {% if states.sensor.ups_load and states.sensor.ups_nominal_real_power %}
+            {% if states.sensor.ups_load.state != 'unknown' and states.sensor.ups_nominal_real_power.state != 'unknown' %}
+               {{ (states.sensor.ups_nominal_real_power.state | int * states.sensor.ups_load.state | int / 100) | round }}
+            {% else %}
+               unknown
             {% endif %}
          {% else %}
             unknown

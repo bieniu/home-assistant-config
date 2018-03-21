@@ -28,9 +28,9 @@ class BrotherPrinterStatus(hass.Hass):
 
     def initialize(self):
 
-        __version__ = '0.1.1'
+        __version__ = '0.1.2'
 
-        self.MAX_IMAGE_HEIGHT = 60
+        self.MAX_IMAGE_HEIGHT = 56
         self.INFO_URL = '/general/information.html'
         self.STATUS_URL = '/general/status.html'
 
@@ -56,11 +56,18 @@ class BrotherPrinterStatus(hass.Hass):
         if self.page is not None:
             soup = BeautifulSoup(self.page.text, 'html.parser')
             tag = soup.find_all('dd')[0]
-            status = tag.string.lower
+            status = tag.string.lower()
             attributes = {"friendly_name": "Status drukarki", "icon": "mdi:printer"}
             self.update_sensor('sensor.printer_status', status, attributes)
             tag = soup.select('img.tonerremain')
             toner = round(int(tag[0]['height']) / self.MAX_IMAGE_HEIGHT * 100)
+            attributes = {"friendly_name": "Pozostały toner", "icon": "mdi:flask-outline", "unit_of_measurement": "%", "custom_ui_state_card": "state-card-custom-ui", "templates": {"theme": "if (state < 10) return \'red\'; else return \'default\';"}}
+            self.update_sensor('sensor.printer_toner', toner, attributes)
+        else:
+            status = 'unknown'
+            attributes = {"friendly_name": "Status drukarki", "icon": "mdi:printer"}
+            self.update_sensor('sensor.printer_status', status, attributes)
+            toner = 'unknown'
             attributes = {"friendly_name": "Pozostały toner", "icon": "mdi:flask-outline", "unit_of_measurement": "%", "custom_ui_state_card": "state-card-custom-ui", "templates": {"theme": "if (state < 10) return \'red\'; else return \'default\';"}}
             self.update_sensor('sensor.printer_toner', toner, attributes)
 
@@ -76,7 +83,13 @@ class BrotherPrinterStatus(hass.Hass):
             drum_usage = 100 - int(tag.string[1:-5])
             attributes = {"friendly_name": "Zużycie bębna", "icon": "mdi:chart-donut", "unit_of_measurement": "%", "custom_ui_state_card": "state-card-custom-ui", "templates": {"theme": "if (state > 90) return \'red\'; else return \'default\';"}}
             self.update_sensor('sensor.printer_drum_usage', drum_usage, attributes)
-
+        else:
+            printed_pages = 'unknown'
+            attributes = {"friendly_name": "Wydrukowano", "icon": "mdi:file-document", "unit_of_measurement": "str"}
+            self.update_sensor('sensor.printer_printed_pages', printed_pages, attributes)
+            drum_usage = 'unknown'
+            attributes = {"friendly_name": "Zużycie bębna", "icon": "mdi:chart-donut", "unit_of_measurement": "%", "custom_ui_state_card": "state-card-custom-ui", "templates": {"theme": "if (state > 90) return \'red\'; else return \'default\';"}}
+            self.update_sensor('sensor.printer_drum_usage', drum_usage, attributes)
     def update_sensor(self, entity, state, attributes):
         try:
             self.set_state(entity, state = state, attributes = attributes)
@@ -88,5 +101,4 @@ class BrotherPrinterStatus(hass.Hass):
         try:
             self.page = get(url)
         except:
-            self.error('Host unreachable!')
             return
