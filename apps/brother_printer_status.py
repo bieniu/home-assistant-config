@@ -28,7 +28,7 @@ class BrotherPrinterStatus(hass.Hass):
 
     def initialize(self):
 
-        __version__ = '0.1.2'
+        __version__ = '0.1.3'
 
         self.MAX_IMAGE_HEIGHT = 56
         self.INFO_URL = '/general/information.html'
@@ -63,13 +63,6 @@ class BrotherPrinterStatus(hass.Hass):
             toner = round(int(tag[0]['height']) / self.MAX_IMAGE_HEIGHT * 100)
             attributes = {"friendly_name": "Pozostały toner", "icon": "mdi:flask-outline", "unit_of_measurement": "%", "custom_ui_state_card": "state-card-custom-ui", "templates": {"theme": "if (state < 10) return \'red\'; else return \'default\';"}}
             self.update_sensor('sensor.printer_toner', toner, attributes)
-        else:
-            status = 'unknown'
-            attributes = {"friendly_name": "Status drukarki", "icon": "mdi:printer"}
-            self.update_sensor('sensor.printer_status', status, attributes)
-            toner = 'unknown'
-            attributes = {"friendly_name": "Pozostały toner", "icon": "mdi:flask-outline", "unit_of_measurement": "%", "custom_ui_state_card": "state-card-custom-ui", "templates": {"theme": "if (state < 10) return \'red\'; else return \'default\';"}}
-            self.update_sensor('sensor.printer_toner', toner, attributes)
 
     def update_printer_info_page(self, kwargs):
         self.download_page('http://{}{}'.format(self.HOST, self.INFO_URL))
@@ -83,13 +76,6 @@ class BrotherPrinterStatus(hass.Hass):
             drum_usage = 100 - int(tag.string[1:-5])
             attributes = {"friendly_name": "Zużycie bębna", "icon": "mdi:chart-donut", "unit_of_measurement": "%", "custom_ui_state_card": "state-card-custom-ui", "templates": {"theme": "if (state > 90) return \'red\'; else return \'default\';"}}
             self.update_sensor('sensor.printer_drum_usage', drum_usage, attributes)
-        else:
-            printed_pages = 'unknown'
-            attributes = {"friendly_name": "Wydrukowano", "icon": "mdi:file-document", "unit_of_measurement": "str"}
-            self.update_sensor('sensor.printer_printed_pages', printed_pages, attributes)
-            drum_usage = 'unknown'
-            attributes = {"friendly_name": "Zużycie bębna", "icon": "mdi:chart-donut", "unit_of_measurement": "%", "custom_ui_state_card": "state-card-custom-ui", "templates": {"theme": "if (state > 90) return \'red\'; else return \'default\';"}}
-            self.update_sensor('sensor.printer_drum_usage', drum_usage, attributes)
     def update_sensor(self, entity, state, attributes):
         try:
             self.set_state(entity, state = state, attributes = attributes)
@@ -99,6 +85,7 @@ class BrotherPrinterStatus(hass.Hass):
     def download_page(self, url):
         self.page = None
         try:
-            self.page = get(url)
+            self.page = get(url, timeout = 2)
         except:
+            self.error('Host {} unreachable!'.format(self.HOST))
             return

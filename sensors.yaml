@@ -128,6 +128,8 @@
                drukowanie
             {% elif 'prosz' in states.sensor.printer_status.state %}
                nagrzewanie
+            {% elif 'gotowa' in states.sensor.printer_status.state %}
+               gotowość
             {% elif 'toneru' in states.sensor.printer_status.state or 'oczekiwanie' in states.sensor.printer_status.state %}
                oczekiwanie
             {% elif 'wymie' in states.sensor.printer_status.state %}
