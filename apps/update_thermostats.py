@@ -98,8 +98,8 @@ class UpdateThermostats(hass.Hass):
         self.log('Ready for action...')
 
     def thermostat_state_changed(self, entity, attribute, old, new, kwargs):
-        for i in range(len(self.args['thermostats'])):
-            if entity == self.args['thermostats'][i]:
+        for i, thermostat in enumerate(self.args['thermostats']):
+            if entity == thermostat:
                 sensor_id = self.args['sensors'][i]
 
         sensor_temp = self.get_state(sensor_id)
@@ -112,8 +112,8 @@ class UpdateThermostats(hass.Hass):
             self.log('No temperature data on the sensor {}.'.format(sensor_id))
 
     def sensor_state_changed(self, entity, attribute, old, new, kwargs):
-        for i in range(len(self.args['sensors'])):
-            if entity == self.args['sensors'][i]:
+        for i, sensor in enumerate(self.args['sensors']):
+            if entity == sensor:
                 thermostat_id = self.args['thermostats'][i]
 
         current_temp = self.get_state(thermostat_id, attribute = "current_temperature")
