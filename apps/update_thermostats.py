@@ -1,19 +1,17 @@
 """
 Update Z-Wave thermostats (e.g. Danfoss 014G0013) state and current temperature from sensor.
 Arguments:
- - thermostat			- thermostat entiti_id (required)
- - sensor				- list of sensors entities (required)
- - heat_state			- name of heating state, default 'heat' (optional)
- - idle_state			- name of idle state, default 'idle' (optional)
+ - rooms           - list of rooms (required)
+ - thermostat			   - thermostat entity_id (required)
+ - sensor				      - temperature sensors entity_id (required)
+ - heat_state			   - name of heating state, default 'heat' (optional)
+ - idle_state			   - name of idle state, default 'idle' (optional)
  - idle_heat_temp		- temperature value between 'idle' and 'heat' states, default 8 (optional)
  - wait_for_zwave		- defines whether the script has to wait for the initialization of the Z-wave component,
-                          default True (optional)
-                          With wait_for_zwave = True script waits for zwave.network_ready event to start. You have
-                          to restart Home Assistant to generate this event.
-The order of thermostats and sensors is important. The first thermostat takes data from the first sensor, the second thermostat from
-the second sensor, etc.
-
-
+                     default True (optional)
+                     With wait_for_zwave = True script waits for zwave.network_ready event to start. You have
+                     to restart Home Assistant to generate this event.
+                          
 Configuration example:
 
 update_thermostats:
