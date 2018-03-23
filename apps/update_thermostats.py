@@ -1,8 +1,8 @@
 """
 Update Z-Wave thermostats (e.g. Danfoss 014G0013) state and current temperature from sensor.
 Arguments:
- - thermostats			- list of thermostats entities (required)
- - sensors				- list of sensors entities (required)
+ - thermostat			- thermostat entiti_id (required)
+ - sensor				- list of sensors entities (required)
  - heat_state			- name of heating state, default 'heat' (optional)
  - idle_state			- name of idle state, default 'idle' (optional)
  - idle_heat_temp		- temperature value between 'idle' and 'heat' states, default 8 (optional)
@@ -29,8 +29,8 @@ update_thermostats:
     bathroom:
       thermostat: climate.thermostat_bathroom
       sensor: sensor.temperature.bathroom
-  heat_state: auto
-  idle_state: off
+  heat_state: 'auto'
+  idle_state: 'off'
   idle_heat_temp: 10
   wait_for_zwave: true
 
@@ -43,14 +43,6 @@ class UpdateThermostats(hass.Hass):
     def initialize(self):
 
         __version__ = '0.2'
-
-        try:
-            if len(self.args['thermostats']) != len(self.args['sensors']):
-                self.error('Wrong arguments! The arguments sensors and thermostats must contain the same number of elements.')
-                return
-        except KeyError:
-            self.error('Wrong arguments! You must supply a valid sensors and thermostats entities.')
-            return
 
         self.zwave_ready_handle = None
 
@@ -86,23 +78,24 @@ class UpdateThermostats(hass.Hass):
         if self.zwave_ready_handle is not None:
             self.cancel_listen_event(self.zwave_ready_handle)
         self.log('Checking thermostats and sensors...')
-        for i in range(len(self.args['thermostats'])):
-            if self.entity_exists(self.args['thermostats'][i]) == False:
+        for room in self.args['rooms']:
+            thermostat = self.args['rooms'][room]['thermostat']
+            sensor = self.args['rooms'][room]['sensor']
+            if self.entity_exists(thermostat) == False or self.entity_exists(sensor) == False: 
                 self.error('Wrong arguments! At least one of the entities does not exist.')
                 return
-            if self.entity_exists(self.args['sensors'][i]) == False:
-                self.error('Wrong arguments! At least one of the entities does not exist.')
-                return
-            self.listen_state(self.thermostat_state_changed, self.args['thermostats'][i], attribute = 'current_temperature', new = None)
-            self.listen_state(self.sensor_state_changed, self.args['sensors'][i])
-            if self.get_state(self.args['thermostats'][i], attribute="current_temperature") == None:
-                self.thermostat_state_changed(self.args['thermostats'][i], attribute = "current_temperature", old = None, new = None, kwargs = None)
+            self.listen_state(self.thermostat_state_changed, thermostat, attribute = 'current_temperature', \
+                              new = None)
+            self.listen_state(self.sensor_state_changed, sensor)
+            if self.get_state(thermostat, attribute="current_temperature") == None:
+                self.thermostat_state_changed(thermostat, attribute = "current_temperature", old = None, \
+                                              new = None, kwargs = None)
         self.log('Ready for action...')
 
     def thermostat_state_changed(self, entity, attribute, old, new, kwargs):
-        for i, thermostat in enumerate(self.args['thermostats']):
-            if entity == thermostat:
-                sensor_id = self.args['sensors'][i]
+        for room self.args['rooms']):
+            if entity == self.args['rooms'][room]['thermostat']:
+                sensor_id = self.args['rooms'][room]['sensor']
 
         sensor_temp = self.get_state(sensor_id)
         target_temp = self.get_state(entity, attribute = "temperature")
@@ -114,9 +107,9 @@ class UpdateThermostats(hass.Hass):
             self.log('No temperature data on the sensor {}.'.format(sensor_id))
 
     def sensor_state_changed(self, entity, attribute, old, new, kwargs):
-        for i, sensor in enumerate(self.args['sensors']):
-            if entity == sensor:
-                thermostat_id = self.args['thermostats'][i]
+        for room in self.args['rooms']):
+            if entity == self.args['rooms'][room]['sensor']:
+                thermostat_id = self.args['rooms'][room]['thermostat']
 
         current_temp = self.get_state(thermostat_id, attribute = "current_temperature")
         target_temp = self.get_state(thermostat_id, attribute = "temperature")
@@ -128,12 +121,12 @@ class UpdateThermostats(hass.Hass):
             self.log('No temperature data on the sensor {}.'.format(entity))
 
     def update_thermostat(self, entity, target_temp, current_temp):
-            self.find_thermostat_state(float(target_temp))
             self.log('Updating state and current temperature for {}...'.format(entity), self.log_level)
-            self.set_state(entity, state = self.state, attributes = {"current_temperature": current_temp})
+            self.set_state(entity, state = self.find_thermostat_state(float(target_temp)), \
+                           attributes = {"current_temperature": current_temp})
 
     def find_thermostat_state(self, target_temp):
         if target_temp > self.idle_heat_temp:
-            self.state = self.heat_state
+            return self.heat_state
         else:
-            self.state = self.idle_state
+            return self.idle_state
