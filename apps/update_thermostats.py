@@ -91,7 +91,7 @@ class UpdateThermostats(hass.Hass):
         self.log('Ready for action...')
 
     def thermostat_state_changed(self, entity, attribute, old, new, kwargs):
-        for room self.args['rooms']):
+        for room in self.args['rooms']:
             if entity == self.args['rooms'][room]['thermostat']:
                 sensor_id = self.args['rooms'][room]['sensor']
 
@@ -105,7 +105,7 @@ class UpdateThermostats(hass.Hass):
             self.log('No temperature data on the sensor {}.'.format(sensor_id))
 
     def sensor_state_changed(self, entity, attribute, old, new, kwargs):
-        for room in self.args['rooms']):
+        for room in self.args['rooms']:
             if entity == self.args['rooms'][room]['sensor']:
                 thermostat_id = self.args['rooms'][room]['thermostat']
 
