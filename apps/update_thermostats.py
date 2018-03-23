@@ -19,14 +19,16 @@ Configuration example:
 update_thermostats:
   module: update_thermostats
   class: UpdateThermostats
-  thermostats:
-    - climate.thermostat_kitchen
-    - climate.thermostat_room
-    - climate.thermostat_bathroom
-  sensors:
-    - sensor.temperature_kitchen
-    - sensor.temperature_room
-    - sensor.temperature_bathroom
+  rooms:
+    kitchen:
+      thermostat: climate.thermostat_kitchen
+      sensor: sensor.temperature_kitchen
+    room:
+      thermostat: climate.thermostat_room
+      sensor: sensor.temperature_room
+    bathroom:
+      thermostat: climate.thermostat_bathroom
+      sensor: sensor.temperature.bathroom
   heat_state: auto
   idle_state: off
   idle_heat_temp: 10
@@ -40,7 +42,7 @@ class UpdateThermostats(hass.Hass):
 
     def initialize(self):
 
-        __version__ = '0.1'
+        __version__ = '0.2'
 
         try:
             if len(self.args['thermostats']) != len(self.args['sensors']):
