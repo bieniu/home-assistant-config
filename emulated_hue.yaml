@@ -1,0 +1,12 @@
+expose_by_default: false
+exposed_domains:
+  - switch
+  - light
+entities:
+  light.leds_salon:
+    hidden: false
+  switch.light_bulbs_salon:
+    hidden: false
+    name: 'Zarowki'
+  light.lamp_salon:
+    hidden: false

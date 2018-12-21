@@ -1,0 +1,44 @@
+- platform: nmap_tracker
+  hosts: !secret lan_ip
+  scan_options: " --privileged -sP "
+  home_interval: 4
+  interval_seconds: 60
+  consider_home: 360
+  new_device_defaults:
+    track_new_devices: false
+    hide_if_away: true
+
+- platform: bluetooth_tracker
+
+- platform: gpslogger
+
+- platform: ping
+  hosts:
+    modem: !secret modem_hostname
+    raspberry: !secret raspberry_hostname
+
+- platform: composite
+  name: 'Maciek'
+  entity_id:
+    - device_tracker.oneplus_6
+    - device_tracker.oneplus_6_bt
+    - device_tracker.oneplus_6_gps
+
+- platform: composite
+  name: 'Edyta'
+  entity_id:
+    - device_tracker.iphone_8_plus
+    - device_tracker.iphone_8_plus_bt
+    - device_tracker.iphone_8_plus_app
+
+- platform: composite
+  name: 'Jerzy'
+  entity_id:
+    - device_tracker.oneplus_one
+    - device_tracker.oneplus_one_bt
+
+- platform: composite
+  name: 'Grazyna'
+  entity_id:
+    - device_tracker.iphone_6s
+    - device_tracker.iphone_6s_bt

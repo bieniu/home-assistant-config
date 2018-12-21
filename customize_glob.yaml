@@ -1,0 +1,71 @@
+#### ZONES ####
+'zone.work_*':
+  friendly_name: 'w pracy'
+
+#### TEMPERATURE SENSORS ####
+'sensor.temperature_*':
+  device_class: temperature
+
+#### HUMIDITY SENSORS ####
+'sensor.humidity_*':
+  device_class: humidity
+
+#### MOTION SENSORS ####
+'binary_sensor.motion_*':
+  icon: mdi:run
+  device_class: motion
+
+#### WINDOW/DOOR SENSORS ####
+'binary_sensor.balcony_door_*':
+  device_class: opening
+  icon: mdi:window-open
+
+'binary_sensor.window_*':
+  device_class: opening
+  icon: mdi:window-open
+
+#### ILLUMINATION SENSORS ####
+'sensor.illumination_*':
+  icon: mdi:lightbulb-on-outline
+  device_class: illuminance
+
+#### CLIMATE ####
+'climate.thermostat*':
+  icon: mdi:radiator
+  max_temp: 28
+  min_temp: 4
+
+#### ENERGY ####
+'sensor.*energy':
+  icon: mdi:flash-outline
+'sensor.*power':
+  icon: mdi:flash-outline
+
+#### SONOFF ####
+'binary_sensor.sonoff_*_status':
+  icon: mdi:light-switch
+
+#### SHELLY ####
+'binary_sensor.shelly*_status':
+  icon: mdi:light-switch
+
+#### LIGHTS ####
+'light.lightstrip_*':
+  friendly_name: 'LEDy'
+  icon: mdi:led-variant-on
+
+#### BATTERY SENSORS ####
+'sensor.battery_*':
+  device_class: battery
+
+#### NETWORK DEVICES ####
+'binary_sensor.yeelight_lightstrip_*_status':
+  icon: mdi:led-variant-outline
+'binary_sensor.yeelight_bulb_*_status':
+  icon: mdi:lightbulb-outline
+'binary_sensor.*_status':
+  device_class: connectivity
+
+#### Z-WAVE ####
+'zwave.thermostat_*':
+  friendly_name: 'Danfoss 014G0013 Thermostat'

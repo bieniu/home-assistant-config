@@ -1,0 +1,22 @@
+default: warning
+logs:
+  homeassistant.components.recorder: info
+  homeassistant.components.automation: info
+  homeassistant.components.zwave: info
+  homeassistant.components.sensor.template: fatal
+  homeassistant.components.sensor.statistics: fatal
+  homeassistant.components.sensor: fatal
+  pychromecast.socket_client: fatal
+  pychromecast: fatal
+  homeassistant.helpers.entity: fatal
+  homeassistant.components.sensor.darksky: fatal
+  homeassistant.components.media_player.spotify: info
+  homeassistant.components.sensor.scrape: info
+  homeassistant.components.camera: debug
+  homeassistant.components.camera.ffmpeg: debug
+  # pyupdate: debug
+  # homeassistant.components.homekit: debug
+  # pyhap.accessory_driver: debug
+  # pyhap.hap_server: debug
+  # homeassistant.components.sensor.xiaomi_aqara: debug
+  # homeassistant.components.xiaomi_aqara: debug

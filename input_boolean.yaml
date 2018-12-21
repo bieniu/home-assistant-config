@@ -1,0 +1,26 @@
+heating_season:
+  name: 'Sezon grzewczy'
+  icon: mdi:weather-snowy-rainy
+heating_salon_kuchnia_night:
+heating_night:
+heating_airing:
+  name: 'Przewietrzanie'
+  icon: mdi:weather-windy
+edyta_far_from_home:
+maciek_far_from_home:
+away_mode:
+  name: 'Poza domem'
+  icon: mdi:home-outline
+antresola_light_motion_on:
+salon_light_motion_on:
+sypialnia_light_motion_on:
+antek_light_motion_on:
+przedpokoj_light_motion_on:
+pracownia_light_motion_on:
+antek_lamp_night:
+salon_light_scene_turn_on:
+harmony_command:
+  initial: 'off'
+guests:
+  name: 'Goście'
+  icon: mdi:account-multiple-outline

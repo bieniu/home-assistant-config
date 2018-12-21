@@ -1,0 +1,126 @@
+- name: 'film'
+  entities:
+    light.bulbs_salon:
+      state: 'on'
+      transition: 5
+      brightness: 190
+      color_temp: 350
+    light.leds_salon:
+      state: 'off'
+    light.lamp_salon:
+      state: 'off'
+    switch.flux:
+      state: 'off'
+
+- name: 'niebieski'
+  entities:
+    light.bulbs_salon:
+      state: 'on'
+      transition: 5
+      brightness: 200
+      rgb_color: [20,20,50]
+    light.leds_salon:
+      state: 'off'
+    light.lamp_salon:
+      state: 'on'
+      transition: 5
+      brightness: 200
+      rgb_color: [20,20,50]
+    switch.flux:
+      state: 'off'
+
+- name: 'romantyczny'
+  entities:
+    light.bulbs_salon:
+      state: 'on'
+      transition: 5
+      brightness: 128
+      rgb_color: [255,102,0]
+    light.leds_salon:
+      state: 'off'
+    light.lamp_salon:
+      state: 'on'
+      transition: 5
+      brightness: 128
+      rgb_color: [255,102,0]
+    switch.flux:
+      state: 'off'
+
+- name: 'fiolet'
+  entities:
+    light.bulbs_salon:
+      state: 'on'
+      transition: 5
+      brightness: 200
+      rgb_color: [255,0,255]
+    light.leds_salon:
+      state: 'off'
+    light.lamp_salon:
+      state: 'on'
+      transition: 5
+      brightness: 200
+      rgb_color: [255,0,255]
+    switch.flux:
+      state: 'off'
+
+- name: 'automatyczny'
+  entities:
+    light.bulbs_salon:
+      state: 'on'
+      transition: 5
+      brightness: 255
+    light.leds_salon:
+      state: 'off'
+    light.lamp_salon:
+      state: 'on'
+      transition: 5
+      brightness: 255
+    switch.flux:
+      state: 'on'
+
+- name: 'czytanie'
+  entities:
+    light.bulbs_salon:
+      state: 'on'
+      transition: 5
+      brightness: 220
+      color_temp: 300
+    light.leds_salon:
+      state: 'off'
+    light.lamp_salon:
+      state: 'on'
+      transition: 5
+      brightness: 220
+      color_temp: 300
+    switch.flux:
+      state: 'off'
+
+- name: 'jasny'
+  entities:
+    light.bulbs_salon:
+      state: 'on'
+      transition: 5
+      brightness: 255
+      color_temp: 260
+    light.leds_salon:
+      state: 'on'
+    light.lamp_salon:
+      state: 'on'
+      transition: 5
+      brightness: 255
+      color_temp: 260
+    switch.flux:
+      state: 'off'
+
+- name: 'dyskoteka'
+  entities:
+    light.leds_salon:
+      state: 'off'
+    light.lamp_salon:
+      state: 'on'
+      effect: 'Disco'
+    light.bulbs_salon:
+      state: 'on'
+      effect: 'Disco'
+    switch.flux:
+      state: 'off'

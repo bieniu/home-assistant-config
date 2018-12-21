@@ -1,0 +1,2 @@
+stacjonarny_off: !secret desktop_turn_off_cmd
+reboot_router: !secret router_reboot_cmd

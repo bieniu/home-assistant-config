@@ -1,0 +1,322 @@
+#### SHELLIES ####
+sensor.shelly1_firmware_version_current:
+  friendly_name: 'Shelly1'
+sensor.shelly2_firmware_version_current:
+  friendly_name: 'Shelly2'
+
+#### LIGHTS ####
+light.gateway_antresola:
+  icon: mdi:spotlight
+light.bulb_salon_1:
+  friendly_name: 'Żarówka salon 1'
+light.bulb_salon_2:
+  friendly_name: 'Żarówka salon 2'
+light.leds_salon:
+  icon: mdi:led-variant-on
+switch.light_bulbs_salon:
+  icon: mdi:lightbulb
+light.bulbs_salon:
+  friendly_name: 'Żarówki'
+light.christmas_balkon_dol:
+  icon: mdi:led-variant-on
+light.christmas_balkon_gora:
+  icon: mdi:led-variant-on
+
+#### UPS ####
+sensor.ups_status:
+  icon: mdi:server-security
+sensor.ups_battery_charge:
+  friendly_name: 'Naładowanie baterii'
+  icon: mdi:car-battery
+sensor.ups_battery_voltage:
+  friendly_name: 'Napięcie baterii'
+  icon: mdi:flash-outline
+sensor.ups_input_voltage:
+  friendly_name: 'Napięcie sieciowe'
+  icon: mdi:flash-outline
+sensor.ups_load:
+  friendly_name: 'Obciążenie'
+
+#### RASPBERRY PI ####
+sensor.processor_use:
+  friendly_name: 'Obciążenie CPU'
+sensor.memory_use_percent:
+  friendly_name: 'Zajęty RAM'
+  icon: mdi:chip
+sensor.disk_use_percent_:
+  friendly_name: 'Zajęte miejsce'
+sensor.last_boot_custom:
+  icon: mdi:clock-outline
+sensor.raspberry_cpu_temp:
+  friendly_name: 'Temperatura CPU'
+  icon: mdi:thermometer
+sensor.ha_database_size:
+  friendly_name: 'Wielkość bazy danych'
+  icon: mdi:database
+sensor.last_ha_restart:
+  friendly_name: 'Ostatni restart HA'
+  icon: mdi:clock-outline
+
+#### SYNOLOGY ####
+binary_sensor.caddy_status:
+  icon: mdi:webpack
+
+#### ZONES ####
+zone.home:
+  icon: mdi:home-outline
+
+#### GROUPS ####
+group.family:
+  order: 7
+group.przedpokoj:
+  order: 8
+group.kuchnia:
+  order: 9
+group.salon:
+  order: 10
+group.pracownia:
+  order: 11
+group.goscinny:
+  order: 12
+group.antresola:
+  order: 13
+group.gabinet:
+  order: 14
+group.pokoj_antek:
+  order: 15
+group.sypialnia:
+  order: 16
+group.lazienka:
+  order: 17
+group.camera:
+  order: 18
+group.denon:
+  order: 19
+group.playstation:
+  order: 20
+group.androidtv:
+  order: 21
+group.internet:
+  order: 22
+group.synology:
+  order: 23
+group.raspberry:
+  order: 24
+group.printer:
+  order: 25
+group.wire_devices:
+  order: 26
+group.wireless_devices:
+  order: 27
+group.iot_devices:
+  order: 28
+group.zwave_devices:
+  order: 29
+group.weather:
+  order: 30
+group.weather_graphs_01:
+  order: 31
+group.weather_graphs_02:
+  order: 32
+group.heating_settings:
+  order: 33
+group.heating_hours:
+  order: 34
+group.heating_temps:
+  order: 35
+group.scripts:
+  order: 36
+group.energy_consumption:
+  order: 37
+group.ups:
+  order: 38
+group.batteries_thermostats:
+  order: 39
+group.batteries_switches:
+  order: 40
+group.batteries_temp_sensors:
+  order: 41
+group.batteries_windows_sensors:
+  order: 42
+group.batteries_motion_sensors:
+  order: 43
+
+#### NETWORK DEVICES ####
+binary_sensor.router_status:
+  icon: mdi:router-wireless
+binary_sensor.synology_status:
+  icon: mdi:nas
+binary_sensor.dune_status:
+  icon: mdi:filmstrip
+binary_sensor.raspberry_status:
+  icon: mdi:raspberrypi
+binary_sensor.switch_status:
+  icon: mdi:switch
+binary_sensor.stacjonarny_status:
+  icon: mdi:desktop-tower
+binary_sensor.xbox_status:
+  icon: mdi:xbox
+binary_sensor.playstation_status:
+  icon: mdi:playstation
+binary_sensor.fingbox_status:
+  icon: mdi:security-network
+binary_sensor.harmonyhub_status:
+  icon: mdi:remote
+binary_sensor.iphone_status:
+  icon: mdi:cellphone-iphone
+binary_sensor.oneplus_status:
+  icon: mdi:cellphone-android
+binary_sensor.denon_status:
+  icon: mdi:audio-video
+binary_sensor.androidtv_status:
+  icon: mdi:cast
+binary_sensor.laptopedyta_status:
+  icon: mdi:laptop
+binary_sensor.laptop_status:
+  icon: mdi:laptop
+binary_sensor.lumia_status:
+  icon: mdi:cellphone
+binary_sensor.ipad_status:
+  icon: mdi:tablet-ipad
+binary_sensor.kindle_status:
+  icon: mdi:tablet-ipad
+binary_sensor.inkbook_status:
+  icon: mdi:tablet-ipad
+binary_sensor.modem_status:
+  icon: mdi:router-wireless
+binary_sensor.migateway_status:
+  icon: mdi:router-wireless
+binary_sensor.brother_status:
+  icon: mdi:printer
+binary_sensor.dafang_status:
+  icon: mdi:cctv
+binary_sensor.wemos_sensor_co2_salon_status:
+  icon: mdi:developer-board
+binary_sensor.mihumidifier_status:
+  icon: mdi:fan
+
+#### FANS ####
+fan.humidifier_salon:
+  friendly_name: 'Nawilżacz'
+
+#### SWITCHES ####
+switch.denon:
+  icon: mdi:audio-video
+switch.playstation:
+  icon: mdi:playstation
+switch.stacjonarny:
+  friendly_name: 'Komputer'
+  icon: mdi:desktop-tower
+
+#### MEDIA PLAYERS ####
+media_player.denon:
+  friendly_name: 'Amplituner'
+
+#### SCRIPTS ####
+script.restart_hass:
+  icon: mdi:refresh
+script.reboot_pi:
+  icon: mdi:refresh
+script.heating_fast_warm_up:
+  icon: mdi:clock-fast
+script.reboot_router:
+  icon: mdi:refresh
+script.shutdown_pi:
+  icon: mdi:power
+
+#### XIAOMI SENSORS ####
+sensor.pressure_outdoor:
+  icon: mdi:gauge
+
+#### XIAOMI SWITCHES ####
+binary_sensor.switch_light_salon_1:
+  friendly_name: 'Światło salon 1'
+  icon: mdi:lamp
+binary_sensor.switch_light_salon_2:
+  friendly_name: 'Światło salon 2'
+  icon: mdi:lamp
+binary_sensor.switch_light_antek:
+  friendly_name: 'LEDy Antek'
+  icon: mdi:led-variant-on
+
+#### XIAOMI MOTION SENSORS ####
+binary_sensor.motion_przedpokoj:
+  location: 'przedpokój'
+binary_sensor.motion_pracownia:
+  location: 'pracownia'
+binary_sensor.motion_antresola:
+  location: 'antresola'
+binary_sensor.motion_salon:
+  location: 'salon'
+binary_sensor.motion_antresola_1:
+  location: 'antresola'
+binary_sensor.motion_antresola_2:
+  location: 'antresola'
+binary_sensor.motion_salon_1:
+  location: 'salon'
+binary_sensor.motion_salon_2:
+  location: 'salon'
+binary_sensor.motion_sypialnia:
+  location: 'sypialnia'
+binary_sensor.motion_antek:
+  location: 'pokój Antka'
+
+#### XIAOMI WINDOW/DOOR SENSORS ####
+binary_sensor.balcony_door_sypialnia:
+  location: 'sypialnia'
+binary_sensor.balcony_door_pracownia:
+  location: 'pracownia'
+binary_sensor.window_kuchnia:
+  location: 'kuchnia'
+binary_sensor.window_antresola:
+  location: 'antresola'
+binary_sensor.window_antek:
+  location: 'pokój Antka'
+
+#### PRINTER ####
+sensor.printer_status_custom:
+  icon: mdi:printer
+sensor.printer_counter:
+  unit_of_measurement: 'str'
+
+#### SONOFF/WEMOS ####
+light.lamp_salon:
+  friendly_name: 'Lampa'
+  icon: mdi:floor-lamp
+light.leds_przedpokoj:
+  icon: mdi:led-variant-on
+light.cabinet_antek:
+  icon: mdi:spotlight
+light.lamp_pracownia:
+  icon: mdi:lamp
+script.sonoffs_upgrade:
+  friendly_name: 'Aktualizacja Sonoff-ów'
+  icon: mdi:download-network
+sensor.co2_salon:
+  icon: mdi:periodic-table-co2
+  unit_of_measurement: 'ppm'
+
+sensor.humidity_indoor:
+  friendly_name: 'Wilgotność wewnętrzna'
+  icon: mdi:water-percent
+sensor.temperature_indoor:
+  friendly_name: 'Temperatura wewnętrzna'
+  icon: mdi:thermometer
+
+#### SSL Sensor ####
+sensor.ssl_certificate_expiry:
+  friendly_name: 'Ważność certyfikatu SSL'
+  unit_of_measurement: 'dni'
+
+#### CAMERA ####
+switch.camera_move_up:
+  icon: mdi:chevron-double-up
+
+switch.camera_move_down:
+  icon: mdi:chevron-double-down
+
+switch.camera_move_left:
+  icon: mdi:chevron-double-left
+
+switch.camera_move_right:
+  icon: mdi:chevron-double-right

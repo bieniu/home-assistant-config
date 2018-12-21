@@ -1,0 +1,333 @@
+reboot_router:
+  alias: 'Restart routera'
+  sequence:
+    service: shell_command.reboot_router
+
+#### TASMOTA ####
+tasmota_check_version:
+  sequence:
+    - service: mqtt.publish
+      data:
+        topic: 'homeassistant/light/sonoffs/cmnd/status'
+        payload: 2
+    - service: mqtt.publish
+      data:
+        topic: 'homeassistant/sensor/sonoffs/cmnd/status'
+        payload: 2
+
+#### XIAOMI GATEWAY ALARM ####
+xiaomi_alarm:
+  sequence:
+    service: xiaomi.play_ringtone
+    data:
+      ringtone_id: 2
+      gw_mac: !secret migateway_mac
+      ringtone_vol: 10
+
+xiaomi_alarm_stop:
+  sequence:
+    service: xiaomi.stop_ringtone
+    data:
+      gw_mac: !secret migateway_mac
+
+night_mode:
+  sequence:
+    - service: script.harmony_tv_off
+    - service: homeassistant.turn_off
+      entity_id:
+        - light.leds_salon
+        - switch.light_bulbs_salon
+        - light.cabinet_antek
+        - light.lamp_pracownia
+
+#### LIGHT ####
+light_away_mode:
+  sequence:
+    - service: homeassistant.turn_off
+      entity_id:
+        - switch.light_bulbs_salon
+        - light.leds_salon
+        - light.lamp_salon
+        - light.leds_przedpokoj
+        - light.gateway_antresola
+        - light.lightstrip_sypialnia
+        - light.lightstrip_antek
+        - light.cabinet_antek
+        - light.lamp_pracownia
+        - input_boolean.antek_lamp_night
+
+#### HEATING ####
+heating_fast_warm_up:
+  alias: 'Szybkie dogrzanie'
+  sequence:
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: 'on'
+    - service: climate.set_temperature
+      entity_id:
+        - climate.thermostat_antresola
+        - climate.thermostat_antek
+        - climate.thermostat_sypialnia
+        - climate.thermostat_kuchnia
+        - climate.thermostat_salon
+        - climate.thermostat_lazienka
+      data:
+        temperature: 24
+    - delay: '01:00:00'
+    - service: script.heating_day
+
+heating_day:
+  sequence:
+    - service: climate.set_temperature
+      entity_id: climate.thermostat_lazienka
+      data_template:
+        temperature: "{{ states('input_select.heating_temp_bathroom_day') }}"
+    - service: climate.set_temperature
+      entity_id:
+        - climate.thermostat_antresola
+        - climate.thermostat_kuchnia
+        - climate.thermostat_salon
+      data_template:
+        temperature: "{{ states('input_select.heating_temp_day') }}"
+    - service: climate.set_temperature
+      entity_id:
+        - climate.thermostat_antek
+        - climate.thermostat_sypialnia
+      data_template:
+        temperature: "{{ states('input_select.heating_temp_bedroom_day') }}"
+    - service: input_boolean.turn_off
+      entity_id:
+        - input_boolean.heating_night
+        - input_boolean.heating_salon_kuchnia_night
+    - condition: numeric_state
+      entity_id: sensor.humidity_salon
+      below: 39
+    - service: fan.turn_on
+      entity_id: fan.humidifier_salon
+
+heating_night:
+  sequence:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.heating_night
+    - service: climate.set_temperature
+      entity_id: climate.thermostat_antresola
+      data_template:
+        temperature: "{{ states('input_select.heating_temp_night') }}"
+    - service: climate.set_temperature
+      entity_id:
+        - climate.thermostat_antek
+        - climate.thermostat_sypialnia
+      data_template:
+        temperature: "{{ states('input_select.heating_temp_bedroom_night') }}"
+    - service: climate.set_temperature
+      entity_id: climate.thermostat_lazienka
+      data_template:
+        temperature: "{{ states('input_select.heating_temp_bathroom_night') }}"
+    - condition: template
+      value_template: "{{ is_state('input_boolean.guests', 'off')
+                          and is_state('media_player.denon', 'off') }}"
+    - service: climate.set_temperature
+      entity_id:
+        - climate.thermostat_kuchnia
+        - climate.thermostat_salon
+      data_template:
+        temperature: "{{ states('input_select.heating_temp_night') }}"
+    - service: fan.turn_off
+      entity_id: fan.humidifier_salon
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.heating_salon_kuchnia_night
+
+heating_eco_mode:
+  sequence:
+    - service: climate.set_temperature
+      entity_id:
+        - climate.thermostat_antresola
+        - climate.thermostat_kuchnia
+        - climate.thermostat_salon
+        - climate.thermostat_antek
+        - climate.thermostat_sypialnia
+        - climate.thermostat_lazienka
+      data_template:
+        temperature: "{{ states('input_select.heating_temp_eco') }}"
+    - service: fan.turn_off
+      entity_id: fan.humidifier_salon
+    - condition: state
+      entity_id: input_boolean.heating_airing
+      state: 'on'
+    - service: script.notify
+      data:
+        notify_edyta: true
+        title: 'Koniec przewietrzania'
+        message: 'Domownicy opóścili mieszkanie. Wyłączono tryb przewietrzania.'
+        tag: 'notification-airing-end'
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.heating_airing
+
+heating_season_end:
+  sequence:
+    service: climate.set_temperature
+    entity_id:
+      - climate.thermostat_antresola
+      - climate.thermostat_kuchnia
+      - climate.thermostat_salon
+      - climate.thermostat_antek
+      - climate.thermostat_sypialnia
+      - climate.thermostat_lazienka
+    data:
+      temperature: 4
+
+heating_airing_begin:
+  sequence:
+    - service: climate.set_temperature
+      entity_id:
+        - climate.thermostat_antresola
+        - climate.thermostat_kuchnia
+        - climate.thermostat_salon
+        - climate.thermostat_antek
+        - climate.thermostat_sypialnia
+        - climate.thermostat_lazienka
+      data:
+        temperature: 8
+    - service: fan.turn_off
+      entity_id: fan.humidifier_salon
+    - condition: state
+      entity_id: input_boolean.heating_airing
+      state: 'off'
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.heating_airing
+
+harmony_playstation:
+  sequence:
+    service: remote.turn_on
+    entity_id: remote.salon
+    data:
+      activity: 'PlayStation'
+
+harmony_xbox:
+  sequence:
+    service: remote.turn_on
+    entity_id: remote.salon
+    data:
+      activity: 'Xbox'
+
+harmony_telewizja:
+  sequence:
+    service: remote.turn_on
+    entity_id: remote.salon
+    data:
+      activity: 'Telewizja'
+
+harmony_radio:
+  sequence:
+    service: remote.turn_on
+    entity_id: remote.salon
+    data:
+      activity: 'Radio'
+
+harmony_spotify:
+  sequence:
+    - service: remote.turn_on
+      entity_id: remote.salon
+      data:
+        activity: 'Spotify'
+
+harmony_filmy:
+  sequence:
+    service: remote.turn_on
+    entity_id: remote.salon
+    data:
+      activity: 'Filmy'
+
+harmony_vod:
+  sequence:
+    - service: remote.turn_on
+      entity_id: remote.salon
+      data:
+        activity: 'VoD'
+
+harmony_tv_off:
+  sequence:
+    service: remote.turn_off
+    entity_id: remote.salon
+
+#### LIGHT ####
+light_turn_off_antek_leds:
+  sequence:
+    - service: input_boolean.turn_off
+      entity_id:
+        - input_boolean.antek_lamp_motion_on
+        - input_boolean.antek_lamp_night
+    - service: light.turn_off
+      entity_id: light.lightstrip_antek
+      data:
+        transition: 10
+
+light_turn_on_antek_leds:
+  sequence:
+    - service: light.turn_on
+      entity_id: light.lightstrip_antek
+      data_template:
+        brightness: 150
+        rgb_color: ['{{ (range(0, 255)|random) }}',
+                    '{{ (range(0, 255)|random) }}',
+                    '{{ (range(0, 255)|random) }}']
+
+notify:
+  sequence:
+    - service: notify.html5_maciek
+      data_template:
+        title: '{{ title }}'
+        message: '{{ message }}'
+        data:
+          tag: '{{ tag }}'
+          url: '{{ url }}'
+    - condition: template
+      value_template: '{{ notify_edyta }}'
+    - service: notify.ios_iphone_8_plus_app
+      data_template:
+        title: '{{ title }}'
+        message: '{{ message }}'
+
+notify_motion:
+  sequence:
+    - service: camera.snapshot
+      entity_id: camera.salon
+      data_template:
+        filename: '/home/homeassistant/.homeassistant/www/snapshots/{{ datetime }}.jpg'
+    - delay:
+        seconds: 1
+    - service: notify.html5_maciek
+      data_template:
+        title: '{{ title }}'
+        message: '{{ message }}'
+        data:
+          tag: '{{ tag }}'
+          image: >-
+            {% if location == 'salon' or location == 'przedpokój' %}
+              {{ snapshot_url }}{{ datetime }}.jpg
+            {% else %}
+              None
+            {% endif %}
+    - condition: template
+      value_template: '{{ notify_edyta }}'
+    - service: notify.ios_iphone_8_plus_app
+      data_template:
+        title: '{{ title }}'
+        message: '{{ message }}'
+        data:
+          attachment:
+            url: >-
+              {% if location == 'salon' or location == 'przedpokój' %}
+                {{ snapshot_url }}{{ datetime }}.jpg
+              {% else %}
+                None
+              {% endif %}
+            content-type: jpg
+            hide-thumbnail: false
+
+camera_move:
+  sequence:
+    service: mqtt.publish
+    data_template:
+      topic: 'homeassistant/camera/salon/motors/{{ orientation }}/set'
+      payload: '{{ direction }}'

@@ -1,0 +1,547 @@
+- platform: mqtt
+  name: 'Sonoff Basic 01 Version'
+  state_topic: 'homeassistant/light/sonoff-1740/stat/STATUS2'
+  value_template: "{{ value_json['StatusFWR'].Version }}"
+
+- platform: mqtt
+  name: 'Sonoff Basic 02 Version'
+  state_topic: 'homeassistant/light/sonoff-7297/stat/STATUS2'
+  value_template: "{{ value_json['StatusFWR'].Version }}"
+
+- platform: mqtt
+  name: 'Sonoff Basic 03 Version'
+  state_topic: 'homeassistant/light/sonoff-7080/stat/STATUS2'
+  value_template: "{{ value_json['StatusFWR'].Version }}"
+
+- platform: mqtt
+  name: 'Sonoff S26 Version'
+  state_topic: 'homeassistant/light/sonoff-1141/stat/STATUS2'
+  value_template: "{{ value_json['StatusFWR'].Version }}"
+
+- platform: mqtt
+  name: 'Wemos D1 mini Version'
+  state_topic: 'homeassistant/sensor/MHZ19B-4586/stat/STATUS2'
+  value_template: "{{ value_json['StatusFWR'].Version }}"
+
+- platform: mqtt
+  name: 'Shelly2 5B2604 Power'
+  state_topic: 'shellies/shellyswitch-5B2604/relay/power'
+  value_template: '{{ (value | float) | round(0) }}'
+  unit_of_measurement: 'W'
+  unique_id: 'shelly2-5B2604-relay-power'
+
+# - platform: mqtt
+#   name: 'Shelly2 5B2604 Energy'
+#   state_topic: 'shellies/shellyswitch-5B2604/relay/energy'
+#   unit_of_measurement: 'kWh'
+#   value_template: '{{ ((value | float) / 100) | float | round(2) }}'
+#   unique_id: 'shelly2-5B2604-relay-energy'
+
+- platform: rest
+  name: 'Tasmota Version Current'
+  resource: 'https://api.github.com/repos/arendst/Sonoff-Tasmota/releases/latest'
+  value_template: "{{ value_json.tag_name | replace('v', '') }}"
+  username: !secret github_username
+  password: !secret github_token_access
+  authentication: basic
+  scan_interval: 7200
+  headers:
+    Accept: application/vnd.github.v3+json
+    Content-Type: application/json
+    User-Agent: Home Assistant REST sensor
+
+- platform: rest
+  resource: !secret shelly1_url
+  name: 'Shelly1 Firmware Version Current'
+  value_template: "{{ (value_json['update'].new_version).split('/')[1].split('@')[0] | replace('v', '') }}"
+  authentication: basic
+  username: !secret shellies_username
+  password: !secret shellies_password
+  scan_interval: 7200
+
+- platform: rest
+  resource: !secret shelly2_url
+  name: 'Shelly2 Firmware Version Current'
+  value_template: "{{ (value_json['update'].new_version).split('/')[1].split('@')[0] | replace('v', '') }}"
+  authentication: basic
+  username: !secret shellies_username
+  password: !secret shellies_password
+  scan_interval: 7200
+
+- platform: nut
+  name: 'UPS'
+  host: !secret ups_host
+  alias: ups
+  resources:
+    - ups.status
+    - ups.load
+    - input.voltage
+    - battery.voltage
+    - battery.charge
+
+- platform: cert_expiry
+  host: !secret http_base_url
+
+- platform: command_line
+  name: 'Raspberry CPU Temp'
+  command: 'cat /sys/class/thermal/thermal_zone0/temp'
+  unit_of_measurement: "°C"
+  value_template: '{{ (value | multiply(0.001)) | round(1) }}'
+  scan_interval: 300
+
+- platform: command_line
+  name: 'Last HA restart'
+  command: "systemctl status home-assistant.service | head -3 | awk '{print $6}' | tail -1"
+  scan_interval: 1800
+
+- platform: command_line
+  command: python3 -c "import requests; print(requests.get('https://pypi.python.org/pypi/homeassistant/json').json()['info']['version'])"
+  name: 'HA Version Current'
+  scan_interval: 1800
+
+- platform: sql
+  db_url: !secret mysql_db_url
+  queries:
+    - name: 'HA Database Size'
+      query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1024 / 1024, 1) "value" FROM information_schema.tables WHERE table_schema="homeassistant_db" GROUP BY table_schema;'
+      column: 'value'
+      unit_of_measurement: 'MB'
+
+- platform: version
+  name: 'HA Version Installed'
+
+- platform: uptime
+  name: 'Home Assistant Uptime'
+  unit_of_measurement: minutes
+
+- platform: google_travel_time
+  name: 'Edyta To Home'
+  api_key: !secret google_api_key
+  origin: device_tracker.edyta
+  destination: zone.home
+
+- platform: google_travel_time
+  name: 'Maciek To Home'
+  api_key: !secret google_api_key
+  origin: device_tracker.maciek
+  destination: zone.home
+
+- platform: systemmonitor
+  resources:
+    - type: disk_use_percent
+      arg: /
+    - type: memory_use_percent
+    - type: processor_use
+    - type: last_boot
+
+- platform: darksky
+  api_key: !secret darksky_api_key
+  update_inverval:
+    minutes: 15
+  language: 'pl'
+  forecast:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+  monitored_conditions:
+      - icon
+      - summary
+      - temperature_high
+      - temperature_low
+      - apparent_temperature
+      - wind_speed
+      - wind_bearing
+      - precip_probability
+      - daily_summary
+      - visibility
+
+- platform: min_max
+  type: mean
+  name: 'Temperature Indoor'
+  entity_ids:
+    - sensor.temperature_salon
+    - sensor.temperature_antresola
+    - sensor.temperature_gabinet
+    - sensor.temperature_antek
+    - sensor.temperature_sypialnia
+    - sensor.temperature_lazienka
+    - sensor.temperature_goscinny
+    - sensor.temperature_pracownia
+  round_digits: 1
+
+- platform: min_max
+  type: mean
+  name: 'Humidity Indoor'
+  entity_ids:
+    - sensor.humidity_salon
+    - sensor.humidity_antresola
+    - sensor.humidity_gabinet
+    - sensor.humidity_antek
+    - sensor.humidity_sypialnia
+    - sensor.humidity_lazienka
+    - sensor.humidity_goscinny
+    - sensor.humidity_pracownia
+  round_digits: 0
+
+- platform: template
+  sensors:
+    last_boot_custom:
+      friendly_name: 'Ostatni reboot'
+      value_template: "{{ states('sensor.last_boot').split('T')[0] }}"
+
+    printer_status_custom:
+      friendly_name: 'Status'
+      value_template: >-
+        {% if is_state('sensor.printer_status', 'drukowanie') %}
+          drukowanie
+        {% elif 'prosz' in states('sensor.printer_status') %}
+          nagrzewanie
+        {% elif is_state('sensor.printer_status', 'gotowa') %}
+          gotowa
+        {% elif 'toneru' in states('sensor.printer_status')
+             or is_state('sensor.printer_status.state', 'oczekiwanie') %}
+          uśpiona
+        {% elif 'wymie' in states('sensor.printer_status') %}
+          brak toneru
+        {% else %}
+          {{ states('sensor.printer_status') }}
+        {% endif %}
+
+    temperature_kuchnia:
+      friendly_name: 'Temperatura'
+      unit_of_measurement: '°C'
+      value_template: >-
+        {% if not is_state('sensor.temperature_salon', 'unknown') %}
+          {{ states('sensor.temperature_salon') | float | round(1) }}
+        {% else %}
+          {{ states('sensor.temperature_kuchnia') }}
+        {% endif %}
+
+    battery_thermostat_antresola:
+      friendly_name: 'antresola'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('zwave.thermostat_antresola', 'battery_level') %}
+          {{ state_attr('zwave.thermostat_antresola', 'battery_level') }}
+        {% else %}
+          {{ states('sensor.battery_thermostat_antresola') }}
+        {% endif %}
+
+    battery_thermostat_lazienka:
+      friendly_name: 'łazienka'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('zwave.thermostat_lazienka', 'battery_level') %}
+          {{ state_attr('zwave.thermostat_lazienka', 'battery_level') }}
+        {% else %}
+          {{ states('sensor.battery_thermostat_lazienka') }}
+        {% endif %}
+
+    battery_thermostat_salon:
+      friendly_name: 'salon'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('zwave.thermostat_salon', 'battery_level') %}
+          {{ state_attr('zwave.thermostat_salon', 'battery_level') }}
+        {% else %}
+          {{ states('sensor.battery_thermostat_salon') }}
+        {% endif %}
+
+    battery_thermostat_kuchnia:
+      friendly_name: 'kuchnia'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('zwave.thermostat_kuchnia', 'battery_level') %}
+          {{ state_attr('zwave.thermostat_kuchnia', 'battery_level') }}
+        {% else %}
+          {{ states('sensor.battery_thermostat_kuchnia') }}
+        {% endif %}
+
+    battery_thermostat_sypialnia:
+      friendly_name: 'sypialnia'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('zwave.thermostat_sypialnia', 'battery_level') %}
+          {{ state_attr('zwave.thermostat_sypialnia', 'battery_level') }}
+        {% else %}
+          {{ states('sensor.battery_thermostat_sypialnia') }}
+        {% endif %}
+
+    battery_thermostat_antek:
+      friendly_name: 'pokój Antka'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('zwave.thermostat_antek', 'battery_level') %}
+          {{ state_attr('zwave.thermostat_antek', 'battery_level') }}
+        {% else %}
+          {{ states('sensor.battery_thermostat_antek') }}
+        {% endif %}
+
+    battery_temp_humi_sensor_outdoor:
+      friendly_name: 'zewnętrzny'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('sensor.temperature_outdoor', 'battery_level') %}
+          {{ state_attr('sensor.temperature_outdoor', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_temp_humi_sensor_outdoor') }}
+        {% endif %}
+
+    battery_temp_humi_sensor_pracownia:
+      friendly_name: 'pracownia'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('sensor.temperature_pracownia', 'battery_level') %}
+          {{ state_attr('sensor.temperature_pracownia', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_temp_humi_sensor_pracownia') }}
+        {% endif %}
+
+    battery_temp_humi_sensor_antek:
+      friendly_name: 'pokój Antka'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('sensor.temperature_antek', 'battery_level') %}
+          {{ state_attr('sensor.temperature_antek', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_temp_humi_sensor_antek') }}
+        {% endif %}
+
+    battery_temp_humi_sensor_salon:
+      friendly_name: 'salon'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('sensor.temperature_salon', 'battery_level') %}
+          {{ state_attr('sensor.temperature_salon', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_temp_humi_sensor_salon') }}
+        {% endif %}
+
+    battery_temp_humi_sensor_goscinny:
+      friendly_name: 'pokój gościnny'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('sensor.temperature_goscinny', 'battery_level') %}
+          {{ state_attr('sensor.temperature_goscinny', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_temp_humi_sensor_goscinny') }}
+        {% endif %}
+
+    battery_temp_humi_sensor_sypialnia:
+      friendly_name: 'sypialnia'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('sensor.temperature_sypialnia', 'battery_level') %}
+          {{ state_attr('sensor.temperature_sypialnia', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_temp_humi_sensor_sypialnia') }}
+        {% endif %}
+
+    battery_temp_humi_sensor_lazienka:
+      friendly_name: 'łazienka'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('sensor.temperature_lazienka', 'battery_level') %}
+          {{ state_attr('sensor.temperature_lazienka', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_temp_humi_sensor_lazienka') }}
+        {% endif %}
+
+    battery_temp_humi_sensor_antresola:
+      friendly_name: 'antresola'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('sensor.temperature_antresola', 'battery_level') %}
+          {{ state_attr('sensor.temperature_antresola', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_temp_humi_sensor_antresola') }}
+        {% endif %}
+
+    battery_temp_humi_sensor_gabinet:
+      friendly_name: 'gabinet'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('sensor.temperature_gabinet', 'battery_level') %}
+          {{ state_attr('sensor.temperature_gabinet', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_temp_humi_sensor_gabinet') }}
+        {% endif %}
+
+    battery_body_sensor_antresola:
+      friendly_name: 'antresola'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.motion_antresola_1', 'battery_level') %}
+          {{ state_attr('binary_sensor.motion_antresola_1', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_body_sensor_atresola') }}
+        {% endif %}
+
+    battery_body_sensor_przedpokoj:
+      friendly_name: 'przedpokój'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.motion_przedpokoj', 'battery_level') %}
+          {{ state_attr('binary_sensor.motion_przedpokoj', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_body_sensor_przedpokoj') }}
+        {% endif %}
+
+    battery_body_sensor_pracownia:
+      friendly_name: 'pracownia'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.motion_pracownia', 'battery_level') %}
+          {{ state_attr('binary_sensor.motion_pracownia', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_body_sensor_pracownia') }}
+        {% endif %}
+
+    battery_body_sensor_schody:
+      friendly_name: 'schody'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.motion_antresola_2', 'battery_level') %}
+          {{ state_attr('binary_sensor.motion_antresola_2', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_body_sensor_schody') }}
+        {% endif %}
+
+    battery_body_sensor_salon_1:
+      friendly_name: 'salon [1]'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.motion_salon_1', 'battery_level') %}
+          {{ state_attr('binary_sensor.motion_salon_1', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_body_sensor_salon_1') }}
+        {% endif %}
+
+    battery_body_sensor_sypialnia:
+      friendly_name: 'sypialnia'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.motion_sypialnia', 'battery_level') %}
+          {{ state_attr('binary_sensor.motion_sypialnia', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_body_sensor_sypialnia') }}
+        {% endif %}
+
+    battery_body_sensor_antek:
+      friendly_name: 'pokój Antka'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.motion_antek', 'battery_level') %}
+          {{ state_attr('binary_sensor.motion_antek', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_body_sensor_antek') }}
+        {% endif %}
+
+    battery_body_sensor_salon_2:
+      friendly_name: 'salon [2]'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.motion_salon_2', 'battery_level') %}
+          {{ state_attr('binary_sensor.motion_salon_2', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_body_sensor_salon_2') }}
+        {% endif %}
+
+    battery_switch_light_salon_1:
+      friendly_name: 'salon [1]'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.switch_light_salon_1', 'battery_level') %}
+          {{ state_attr('binary_sensor.switch_light_salon_1', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_switch_light_salon_1') }}
+        {% endif %}
+
+    battery_switch_light_salon_2:
+      friendly_name: 'salon [2]'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.switch_light_salon_2', 'battery_level') %}
+          {{ state_attr('binary_sensor.switch_light_salon_2', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_switch_light_salon_2') }}
+        {% endif %}
+
+    battery_switch_light_antek:
+      friendly_name: 'pokój Antka'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.switch_light_antek', 'battery_level') %}
+          {{ state_attr('binary_sensor.switch_light_antek', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_switch_light_antek') }}
+        {% endif %}
+
+    battery_window_sensor_kuchnia:
+      friendly_name: 'kuchnia'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.window_kuchnia', 'battery_level') %}
+          {{ state_attr('binary_sensor.window_kuchnia', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_window_sensor_kuchnia') }}
+        {% endif %}
+
+    battery_window_sensor_antek:
+      friendly_name: 'pokój Antka'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.window_antek', 'battery_level') %}
+          {{ state_attr('binary_sensor.window_antek', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_window_sensor_antek') }}
+        {% endif %}
+
+    battery_window_sensor_antresola:
+      friendly_name: 'antresola'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.window_antresola', 'battery_level') %}
+          {{ state_attr('binary_sensor.window_antresola', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_window_sensor_antresola') }}
+        {% endif %}
+
+    battery_door_sensor_sypialnia:
+      friendly_name: 'sypialnia'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.balcony_door_sypialnia', 'battery_level') %}
+          {{ state_attr('binary_sensor.balcony_door_sypialnia', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_door_sensor_sypialnia') }}
+        {% endif %}
+
+    battery_door_sensor_pracownia:
+      friendly_name: 'pracownia'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.balcony_door_pracownia', 'battery_level') %}
+          {{ state_attr('binary_sensor.balcony_door_pracownia', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_door_sensor_pracownia') }}
+        {% endif %}
+
+    ups_status:
+      friendly_name: 'Status'
+      value_template: >-
+        {% if is_state('sensor.ups_status_data', 'OL') %}
+          zasilanie sieciowe
+        {% elif is_state('sensor.ups_status_data', 'OL CHRG') %}
+          ładowanie baterii
+        {% elif is_state('sensor.ups_status_data', 'OB DISCHRG') %}
+          zasilanie bateryjne
+        {% elif is_state('sensor.ups_status_data', 'LB') %}
+          słaba bateria
+        {% elif is_state('sensor.ups_status_data', 'SD') %}
+          wyłączanie
+        {% else %}
+          {{ states('sensor.ups_status_data') }}
+        {% endif %}

@@ -1,0 +1,19 @@
+- platform: denonavr
+  host: !secret denon_hostname
+  name: 'Denon'
+  timeout: 3
+
+- platform: ps4
+  host: !secret playstation_ip
+  name: 'PlayStation'
+  local_store: games
+
+- platform: androidtv
+  host: !secret androidtv_hostname
+  name: MiBox
+  apps:
+    'amazon': 'Amazon Prime Video'
+    'showmax': 'Showmax'
+    'hbogo': 'HBO GO'
+    'vimeo': 'Vimeo'
+    'videostar': 'WP Pilot'

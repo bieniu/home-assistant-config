@@ -1,0 +1,55 @@
+- platform: yeelight
+  devices:
+    192.168.2.249:
+      name: 'bulb salon 1'
+      model: 'color1'
+      <<: &YEELIGHT_PARAMS
+        transition: 500
+        save_on_change: false
+        use_music_mode: false
+    192.168.2.251:
+      name: 'bulb salon 2'
+      model: 'color2'
+      <<: *YEELIGHT_PARAMS
+    192.168.2.250:
+      name: 'lamp salon'
+      model: 'color1'
+      <<: *YEELIGHT_PARAMS
+    192.168.2.253:
+      name: 'lightstrip sypialnia'
+      model: 'strip1'
+      <<: *YEELIGHT_PARAMS
+    192.168.2.254:
+      name: 'lightstrip antek'
+      model: 'strip1'
+      <<: *YEELIGHT_PARAMS
+
+- platform: group
+  name: Bulbs Salon
+  entities:
+    - light.bulb_salon_1
+    - light.bulb_salon_2
+
+- platform: mqtt
+  name: 'Shelly1 328900'
+  state_topic: 'shellies/shelly1-328900/relay/0'
+  command_topic: 'shellies/shelly1-328900/relay/0/command'
+  availability_topic: 'shellies/shelly1-328900/lwt'
+  payload_available: 'online'
+  payload_not_available: 'offline'
+  unique_id: 'shelly1-328900-relay-0'
+  <<: &SHELLY_PARAMS
+    payload_on: 'on'
+    payload_off: 'off'
+    qos: 1
+    retain: true
+
+- platform: mqtt
+  name: 'Shelly2 5B2604 Relay 1'
+  state_topic: 'shellies/shellyswitch-5B2604/relay/1'
+  command_topic: 'shellies/shellyswitch-5B2604/relay/1/command'
+  availability_topic: 'shellies/shellyswitch-5B2604/lwt'
+  payload_available: 'online'
+  payload_not_available: 'offline'
+  unique_id: 'shelly2-5B2604-relay-1'
+  <<: *SHELLY_PARAMS
