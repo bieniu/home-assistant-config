@@ -13,6 +13,7 @@
   name: MiBox
   apps:
     'amazon': 'Amazon Prime Video'
+    'youtube': 'YouTube'
     'showmax': 'Showmax'
     'hbogo': 'HBO GO'
     'vimeo': 'Vimeo'

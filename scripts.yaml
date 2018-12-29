@@ -3,18 +3,6 @@ reboot_router:
   sequence:
     service: shell_command.reboot_router
 
-#### TASMOTA ####
-tasmota_check_version:
-  sequence:
-    - service: mqtt.publish
-      data:
-        topic: 'homeassistant/light/sonoffs/cmnd/status'
-        payload: 2
-    - service: mqtt.publish
-      data:
-        topic: 'homeassistant/sensor/sonoffs/cmnd/status'
-        payload: 2
-
 #### XIAOMI GATEWAY ALARM ####
 xiaomi_alarm:
   sequence:

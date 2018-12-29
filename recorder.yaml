@@ -61,7 +61,6 @@ exclude:
     - sensor.dark_sky_wind_speed_4
     - sensor.dark_sky_wind_speed_5
     - sensor.printer_status
-    - sensor.androidtv_activity
     - sensor.dune_activity
     - binary_sensor.switch_light_salon_1
     - binary_sensor.switch_light_salon_2
@@ -70,28 +69,22 @@ exclude:
     - binary_sensor.motion_antresola_2
     - binary_sensor.motion_salon_1
     - binary_sensor.motion_salon_2
-    - sensor.ha_version_current
-    - sensor.ha_version_installed
     - sensor.home_assistant_uptime
     - light.bulb_salon_1
     - light.bulb_salon_2
     - sensor.ups_status_data
-    - sensor.sonoff_tasmota_version_current
     - binary_sensor.workday_sensor
-    - sensor.sonoff_version_current
-    - sensor.sonoff_basic_01_version
-    - sensor.sonoff_basic_02_version
-    - sensor.sonoff_basic_03_version
-    - sensor.sonoff_s26_version
-    - sensor.wemos_d1_mini_version
-    - light.bulbs_salon_homekit
     - switch.camera_move_up
     - switch.camera_move_down
     - switch.camera_move_right
     - switch.camera_move_left
     - sensor.custom_card_tracker
     - sensor.custom_component_tracker
+    - sensor.ha_version_current
+    - sensor.ha_version_installed
     - sensor.shelly1_firmware_version_current
+    - sensor.shelly2_firmware_version_current
+    - sensor.tasmota_version_current
     - sensor.last_boot
 include:
   entities:

@@ -3,15 +3,15 @@ resources:
     type: js
   - url: /local/lovelace/tracker-card.js?v=0.1.5
     type: js
-  - url: /local/lovelace/mini-media-player-bundle.js?v=0.9.7
+  - url: /local/lovelace/mini-media-player-bundle.js?v=0.9.8
     type: module
   - url: /local/lovelace/layout-card.js?ver=bd7e5a
     type: js
-  - url: /local/lovelace/dark-sky-weather-card.js?ver=0.3.0
+  - url: /local/lovelace/dark-sky-weather-card.js?ver=0.3.3
     type: js
   - url: /local/lovelace/monster-card.js?ver=0.2.3
     type: js
-  - url: /local/lovelace/card-tools.js?v=445b68
+  - url: /local/lovelace/card-tools.js?v=5e7654
     type: js
 
 title: 'Dom'
@@ -23,11 +23,9 @@ views:
     path: home
     panel: true
     cards:
-      - id: 1df7fd2745823cd0ee3a19d048d2da11
-        type: custom:layout-card
+      - type: custom:layout-card
         cards:
-          - id: 093f781b39724fed9dbfbd63747c9f95
-            type: custom:monster-card
+          - type: custom:monster-card
             card:
               type: entities
               title: 'Rodzina'
@@ -46,11 +44,9 @@ views:
                   state: home
                 - entity_id: device_tracker.emil
                   state: home
-          - id: 107b4247df154039920b26ccdf5c43d8
-            type: vertical-stack
+          - type: vertical-stack
             cards:
-              - id: 2714517431f67ce31892cef379b4abed
-                type: entities
+              - type: entities
                 title: 'Przedpokój'
                 show_header_toggle: false
                 entities:
@@ -58,18 +54,15 @@ views:
                   - entity: binary_sensor.motion_przedpokoj
                     secondary_info: last-changed
                   - light.leds_przedpokoj
-              - id: 1840774d8bfd0a2bbf9a181598bed9b9
-                type: entities
+              - type: entities
                 title: 'Kuchnia'
                 show_header_toggle: false
                 entities:
                   - binary_sensor.window_kuchnia
                   - climate.thermostat_kuchnia
-          - id: 8199a7ba843f4b2fa20714a205213599
-            type: custom:vertical-stack-in-card
+          - type: custom:vertical-stack-in-card
             cards:
-              - id: 107ea87f3aecd7dc29f58a43256f7db7
-                type: glance
+              - type: glance
                 title: 'Salon'
                 show_name: false
                 entities:
@@ -77,8 +70,7 @@ views:
                   - sensor.humidity_salon
                   - sensor.co2_salon
                   - sensor.illumination_salon
-              - id: 1a2a1dbcdbc8a5822a5d8200baf72ae4
-                type: entities
+              - type: entities
                 show_header_toggle: false
                 entities:
                   - entity: binary_sensor.motion_salon
@@ -115,19 +107,16 @@ views:
                     scroll_info: true
                     hide_power: true
                     group: true
-          - id: fe6929ae33cc4f839d8b760bed8c02fb
-            type: custom:vertical-stack-in-card
+          - type: custom:vertical-stack-in-card
             title: 'Pracownia'
             cards:
-              - id: 3fb3e69a03c235572087207689faa28a
-                type: glance
+              - type: glance
                 show_name: false
                 entities:
                   - sensor.temperature_pracownia
                   - sensor.humidity_pracownia
                   - sensor.illumination_pracownia
-              - id: f57cb13a93d01286573a5f0245d2a2c4
-                type: entities
+              - type: entities
                 show_header_toggle: false
                 entities:
                   - entity: binary_sensor.motion_pracownia
@@ -135,26 +124,22 @@ views:
                   - binary_sensor.balcony_door_pracownia
                   - light.lamp_pracownia
                   - light.christmas_balkon_dol
-          - id: 7fac9eb54d1e4e6c96ad3e6e49db8a0e
-            type: entities
+          - type: entities
             title: 'Pokój gościnny'
             show_header_toggle: false
             entities:
               - sensor.temperature_goscinny
               - sensor.humidity_goscinny
-          - id: 0a5fdf04305f48c2a7ac0f1613070ea4
-            type: custom:vertical-stack-in-card
+          - type: custom:vertical-stack-in-card
             title: 'Antresola'
             cards:
-              - id: 79275957a8c2a2373043e24db3378399
-                type: glance
+              - type: glance
                 show_name: false
                 entities:
                   - sensor.temperature_antresola
                   - sensor.humidity_antresola
                   - sensor.illumination_antresola
-              - id: 82beae69ab62f8a4a53065090123e576
-                type: entities
+              - type: entities
                 show_header_toggle: false
                 entities:
                   - binary_sensor.window_antresola
@@ -162,27 +147,23 @@ views:
                     secondary_info: last-changed
                   - climate.thermostat_antresola
                   - light.gateway_antresola
-          - id: e7490b8e57ba4edbb6ae7e6bd86f5a66
-            type: entities
+          - type: entities
             title: 'Gabinet'
             show_header_toggle: false
             entities:
               - sensor.temperature_gabinet
               - sensor.humidity_gabinet
               - switch.stacjonarny
-          - id: 71e6d50aaa6d43fdb664a8d0db9f9507
-            type: custom:vertical-stack-in-card
+          - type: custom:vertical-stack-in-card
             title: 'Pokój Antka'
             cards:
-              - id: 6d91e5afe7b1fb814bec3ecb1de07a40
-                type: glance
+              - type: glance
                 show_name: false
                 entities:
                   - sensor.temperature_antek
                   - sensor.humidity_antek
                   - sensor.illumination_antek
-              - id: ff075b112bb15fc4ce33641e6b69327f
-                type: entities
+              - type: entities
                 show_header_toggle: false
                 entities:
                   - binary_sensor.window_antek
@@ -191,19 +172,16 @@ views:
                   - climate.thermostat_antek
                   - light.lightstrip_antek
                   - light.cabinet_antek
-          - id: 8ce06d9db5f94ed6bf275e2a27be1001
-            type: custom:vertical-stack-in-card
+          - type: custom:vertical-stack-in-card
             title: 'Sypialnia'
             cards:
-              - id: d2302d238455427221c6ba42403daafe
-                type: glance
+              - type: glance
                 show_name: false
                 entities:
                   - sensor.temperature_sypialnia
                   - sensor.humidity_sypialnia
                   - sensor.illumination_sypialnia
-              - id: c3462ebe8aa232903f3d8b846df1da60
-                type: entities
+              - type: entities
                 show_header_toggle: false
                 entities:
                   - binary_sensor.balcony_door_sypialnia
@@ -212,16 +190,14 @@ views:
                   - climate.thermostat_sypialnia
                   - light.lightstrip_sypialnia
                   - light.christmas_balkon_gora
-          - id: 838eb961bd414c41897b99d2227ade25
-            type: entities
+          - type: entities
             title: 'Łazienka'
             show_header_toggle: false
             entities:
               - sensor.temperature_lazienka
               - sensor.humidity_lazienka
               - climate.thermostat_lazienka
-          - id: cc1a53e69de8486ab1afd40ad8140648
-            type: picture-glance
+          - type: picture-glance
             title: 'Salon'
             entities:
               - switch.camera_move_left
@@ -236,8 +212,7 @@ views:
     path: map
     panel: true
     cards:
-      - id: 72aef3db11814c6d9e4da0b395ef378c
-        type: map
+      - type: map
         default_zoom: 20
         entities:
           - device_tracker.edyta
@@ -250,14 +225,11 @@ views:
     path: network
     panel: true
     cards:
-      - id: 36ac6349e7d1553fdb0688f82eea6169
-        type: custom:layout-card
+      - type: custom:layout-card
         cards:
-          - id: 1bb7a0cc8a6a4d848afaf46ac7e98701
-            type: vertical-stack
+          - type: vertical-stack
             cards:
-              - id: d7b8c449800d9b7ddcfb9e7bf84e8641
-                type: glance
+              - type: glance
                 title: 'Internet'
                 entities:
                   - entity: sensor.speedtest_download
@@ -265,8 +237,7 @@ views:
                   - entity: sensor.speedtest_upload
                     name: 'Wysyłanie'
                   - sensor.speedtest_ping
-              - id: 01615e88d4cdf45da168c0f3ef33871b
-                type: entities
+              - type: entities
                 title: 'Synology'
                 show_header_toggle: false
                 theme: synology
@@ -274,8 +245,7 @@ views:
                   - sensor.synology_disk_used
                   - binary_sensor.caddy_status
                   - sensor.ssl_certificate_expiry
-              - id: 6eef03c3b106f58e81d17871457bcd69
-                type: entities
+              - type: entities
                 title: 'Raspberry Pi'
                 show_header_toggle: false
                 entities:
@@ -286,11 +256,9 @@ views:
                   - sensor.last_boot_custom
                   - sensor.last_ha_restart
                   - sensor.ha_database_size
-          - id: 1bb2a00c8a694d858afaf76ac7e98701
-            type: vertical-stack
+          - type: vertical-stack
             cards:
-              - id: 7311de10d9b718607a710313c0effe79
-                type: entities
+              - type: entities
                 title: 'Drukarka'
                 show_header_toggle: false
                 entities:
@@ -298,8 +266,7 @@ views:
                   - sensor.printer_counter
                   - sensor.printer_drum_usage
                   - sensor.printer_toner
-              - id: 7d029de89d0193a3ac8a1b46180873e2
-                type: entities
+              - type: entities
                 title: 'Urządzenia Z-Wave'
                 show_header_toggle: false
                 entities:
@@ -311,8 +278,7 @@ views:
                   - zwave.thermostat_antek
                   - zwave.thermostat_sypialnia
                   - zwave.thermostat_lazienka
-          - id: 82de2882a01bf128bae09ff4780eeaaa
-            type: entities
+          - type: entities
             title: 'Urządzenia przewodowe'
             show_header_toggle: false
             theme: network-status
@@ -328,8 +294,7 @@ views:
               - binary_sensor.playstation_status
               - binary_sensor.xbox_status
               - binary_sensor.stacjonarny_status
-          - id: fd059ff95a1cbe7cbd6ff2cb8c944a25
-            type: entities
+          - type: entities
             title: 'Urządzenia bezprzewodowe'
             show_header_toggle: false
             theme: network-status
@@ -348,8 +313,7 @@ views:
               - binary_sensor.ipad_status
               - binary_sensor.kindle_status
               - binary_sensor.inkbook_status
-          - id: e694bd0977011c0b3bb5fa8cbc6a07d3
-            type: entities
+          - type: entities
             title: 'Urządzenia IoT'
             show_header_toggle: false
             theme: network-status
@@ -373,48 +337,39 @@ views:
     path: energy
     panel: true
     cards:
-      - id: 66a9ceb7680141a0af72cf9d8c2e5714
-        type: custom:layout-card
+      - type: custom:layout-card
         cards:
-          # - id: df79e401ec45f007b345140bd35fd96b
-          #   type: entities
+          # - type: entities
           #   title: 'Zużycie energii'
           #   show_header_toggle: false
           #   entities:
           #     - sensor.light_salon_energy
-          - id: 3f3922fa2567cc412b8acd655c82fdd4
-            type: custom:vertical-stack-in-card
+          - type: custom:vertical-stack-in-card
             title: 'Pobór mocy'
             cards:
-              - id: 24fb6faefd22a68a3e6254bcb6dfdd13
-                type: sensor
+              - type: sensor
                 entity: sensor.light_salon_power
                 graph: line
                 theme: sensor-blue
                 icon: mdi:flash-outline
-          - id: 15456312d8253a856d8e0dbdb830f249
-            type: custom:vertical-stack-in-card
+          - type: custom:vertical-stack-in-card
             title: 'UPS'
             cards:
-              - id: b8ae2d1af9baa4c1a08b6e4280777b60
-                type: entities
+              - type: entities
                 show_header_toggle: false
                 entities:
                   - sensor.ups_status
                   - sensor.ups_battery_charge
                   - sensor.ups_load
-              - id: 723ce14648eaa86be3ffbb3d523ecad9
-                type: sensor
+              - type: sensor
                 entity: sensor.ups_input_voltage
                 graph: line
                 theme: sensor-red
-              - id: d18b11ac56965037e94b709b3cfbf643
-                type: sensor
+              - type: sensor
                 entity: sensor.ups_battery_voltage
                 graph: line
                 theme: sensor-cyan
-          - id: c940aff4db118d2cb46758c3a055c65c
-            type: entities
+          - type: entities
             title: 'Baterie termostatów'
             show_header_toggle: false
             entities:
@@ -424,8 +379,7 @@ views:
               - sensor.battery_thermostat_antek
               - sensor.battery_thermostat_sypialnia
               - sensor.battery_thermostat_lazienka
-          - id: 54a30efa757b36b1b79c8ce33f724b20
-            type: entities
+          - type: entities
             title: 'Baterie sensorów temperatury'
             show_header_toggle: false
             entities:
@@ -438,8 +392,7 @@ views:
               - sensor.battery_temp_humi_sensor_sypialnia
               - sensor.battery_temp_humi_sensor_lazienka
               - sensor.battery_temp_humi_sensor_outdoor
-          - id: 5446940779c4510ca79b7b7aa975a479
-            type: entities
+          - type: entities
             title: 'Baterie sensorów ruchu'
             show_header_toggle: false
             entities:
@@ -451,8 +404,7 @@ views:
               - sensor.battery_body_sensor_antresola
               - sensor.battery_body_sensor_antek
               - sensor.battery_body_sensor_sypialnia
-          - id: 3d454e44064a68b7351eda8acc86495b
-            type: entities
+          - type: entities
             title: 'Baterie sensorów okien/drzwi'
             show_header_toggle: false
             entities:
@@ -461,8 +413,7 @@ views:
               - sensor.battery_window_sensor_antresola
               - sensor.battery_window_sensor_antek
               - sensor.battery_door_sensor_sypialnia
-          - id: f7601edb860aad4c2ee80593150ababc
-            type: entities
+          - type: entities
             title: 'Baterie przełączników'
             show_header_toggle: false
             entities:
@@ -476,11 +427,9 @@ views:
     path: climate
     panel: true
     cards:
-      - id: 5e65a26cb311cbb6e95b6891438d128c
-        type: custom:layout-card
+      - type: custom:layout-card
         cards:
-          - id: f24239ce9a084f0ed99c6d9e13344603
-            type: custom:dark-sky-weather-card
+          - type: custom:dark-sky-weather-card
             entity_sun: sun.sun
             entity_daily_summary: sensor.dark_sky_daily_summary
             entity_current_conditions: sensor.dark_sky_icon
@@ -512,37 +461,30 @@ views:
             entity_summary_4: sensor.dark_sky_summary_4
             entity_summary_5: sensor.dark_sky_summary_5
             language: 'pl-PL'
-          - id: 320e3bfe319d676b4f2803e31fd77538
-            type: iframe
+          - type: iframe
             url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates
             aspect_ratio: 75%
-          - id: 9e3d47e9d120e2c6df1f0ba6ac35d78f
-            type: sensor
+          - type: sensor
             entity: sensor.temperature_indoor
             graph: line
             theme: sensor-red
-          - id: b040e9f330a6e2491bb60f2594d7a4cf
-            type: sensor
+          - type: sensor
             entity: sensor.temperature_outdoor
             graph: line
             theme: sensor-red
-          - id: e553764a69b3089b27e429123788a214
-            type: sensor
+          - type: sensor
             entity: sensor.humidity_indoor
             graph: line
             theme: sensor-blue
-          - id: d71282e787d4098c4ccdb4467a03e17b
-            type: sensor
+          - type: sensor
             entity: sensor.humidity_outdoor
             graph: line
             theme: sensor-blue
-          - id: d621c66b47ce504d142526c8126fb752
-            type: sensor
+          - type: sensor
             entity: sensor.co2_salon
             graph: line
             theme: sensor-orange
-          - id: 81faf09e732ad74c1e3284e1d0fc3a1f
-            type: sensor
+          - type: sensor
             entity: sensor.pressure_outdoor
             graph: line
             theme: sensor-cyan
@@ -553,11 +495,9 @@ views:
     path: misc
     panel: true
     cards:
-      - id: dc48f4104f8ceb38615718dea277b95e
-        type: custom:layout-card
+      - type: custom:layout-card
         cards:
-          - id: 4b68e6edbbf332a459b7cb35937e7a4f
-            type: entities
+          - type: entities
             title: 'Ustawienie ogrzewania'
             show_header_toggle: false
             entities:
@@ -566,8 +506,7 @@ views:
               - input_boolean.heating_airing
               - input_boolean.away_mode
               - input_boolean.guests
-          - id: 8e008ff9699a1840840096c7523f7cf2
-            type: entities
+          - type: entities
             title: 'Temperatury ogrzewania'
             show_header_toggle: false
             entities:
@@ -578,8 +517,7 @@ views:
               - input_select.heating_temp_day
               - input_select.heating_temp_night
               - input_select.heating_temp_eco
-          - id: d90960ce7ba1b3e6fb27326fcb15ecb0
-            type: entities
+          - type: entities
             title: 'Godziny ogrzewania'
             show_header_toggle: false
             entities:
@@ -587,15 +525,13 @@ views:
               - input_select.heating_night_end
               - input_select.heating_night_start_weekend
               - input_select.heating_night_end_weekend
-          - id: a9ee9303cc5898ab0c8f6d2a3da143cd
-            type: entities
+          - type: entities
             title: 'Skrypty i ustawienia'
             show_header_toggle: false
             entities:
               - script.reboot_router
               - input_select.log_level
-          - id: ba4ab0cd4e6b37cdec98f6f40a046209
-            type: custom:tracker-card
+          - type: custom:tracker-card
             title: 'Aktualizacje'
             trackers:
               - sensor.custom_card_tracker
