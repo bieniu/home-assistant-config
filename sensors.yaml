@@ -1,7 +1,12 @@
 - platform: mqtt
   name: 'Shelly2 5B2604 Power'
   state_topic: 'shellies/shellyswitch-5B2604/relay/power'
-  value_template: '{{ (value | float) | round(0) }}'
+  value_template: >-
+    {% if value | float < 1.5 %}
+      0
+    {% else %}
+      {{ value | float | round(0) }}
+    {% endif %}
   unit_of_measurement: 'W'
   unique_id: 'shelly2-5B2604-relay-power'
 
@@ -11,21 +16,6 @@
 #   unit_of_measurement: 'kWh'
 #   value_template: '{{ ((value | float) / 100) | float | round(2) }}'
 #   unique_id: 'shelly2-5B2604-relay-energy'
-
-- platform: statistics
-  name: Light Salon Power Stats
-  entity_id: sensor.light_salon_power
-  precision: 0
-  sampling_size: 200
-  max_age:
-    hours: 24
-
-- platform: filter
-  name: Light Salon Power Filtered
-  entity_id: sensor.light_salon_power
-  filters:
-    - filter: lowpass
-      precision: 0
 
 - platform: rest
   name: 'Tasmota Version Current'

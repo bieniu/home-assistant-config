@@ -45,6 +45,10 @@ sensor.memory_use_percent:
   icon: mdi:chip
 sensor.disk_use_percent_:
   friendly_name: 'Zajęte miejsce'
+sensor.last_boot:
+  icon: mdi:clock-outline
+  device_class: timestamp
+  friendly_name: 'Ostatni reboot'
 sensor.last_boot_custom:
   icon: mdi:clock-outline
 sensor.raspberry_cpu_temp:

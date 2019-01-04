@@ -1,5 +1,5 @@
 resources:
-  - url: /local/lovelace/vertical-stack-in-card.js?v=0.0.9
+  - url: /local/lovelace/vertical-stack-in-card.js?v=0.1.0
     type: js
   - url: /local/lovelace/tracker-card.js?v=0.1.5
     type: js
@@ -11,7 +11,7 @@ resources:
     type: js
   - url: /local/lovelace/monster-card.js?ver=0.2.3
     type: js
-  - url: /local/lovelace/card-tools.js?v=5e7654
+  - url: /local/lovelace/card-tools.js?v=0a97d3
     type: js
 
 title: 'Dom'
@@ -254,6 +254,8 @@ views:
                   - sensor.memory_use_percent
                   - sensor.disk_use_percent_
                   - sensor.last_boot_custom
+                  # - entity: sensor.last_boot
+                  #   format: relative
                   - sensor.last_ha_restart
                   - sensor.ha_database_size
           - type: vertical-stack

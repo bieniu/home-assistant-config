@@ -32,3 +32,15 @@ sensor.fibaro_fgs223_relay_2_energy:
   ignored: true
 sensor.fibaro_fgs223_relay_2_power:
   ignored: true
+sensor.fibaro_fgs223_energy:
+  ignored: true
+sensor.fibaro_fgs223_power:
+  ignored: true
+sensor.fibaro_fgs223_energy_2:
+  ignored: true
+sensor.fibaro_fgs223_power_2:
+  ignored: true
+switch.fibaro_fgs223_1:
+  ignored: true
+switch.fibaro_fgs223_2:
+  ignored: true

@@ -26,6 +26,7 @@ custom_updater:
   card_urls:
     - https://raw.githubusercontent.com/custom-cards/information/master/repos.json
     - https://raw.githubusercontent.com/kalkih/mini-media-player/master/tracker.json
+    - https://raw.githubusercontent.com/maykar/custom-lovelace/master/tracker.json
   python_script_urls:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
   component_urls:
@@ -113,6 +114,8 @@ notify:
   - platform: nfandroidtv
     name: androidtv
     host: !secret androidtv_hostname
+  - platform: fcm-android
+    name: android
 
 input_boolean: !include input_boolean.yaml
 
