@@ -79,7 +79,11 @@
 - id: notification_dead_or_unavailable
   alias: 'Notification dead or unavailable'
   trigger:
-    platform: template
+    platform: time
+    minutes: '/10'
+    seconds: 0
+  condition:
+    condition: template
     value_template: >
       {% macro dead_unavailable_entities() %}
         {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
@@ -92,19 +96,6 @@
       {% endmacro %}
       {{ dead_unavailable_entities()  | trim != '' }}
   action:
-    - delay: '00:00:20'
-    - condition: template
-      value_template: >
-        {% macro dead_unavailable_entities() %}
-          {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
-          {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor'] -%}
-          {% for domain in domains -%}
-            {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
-              - {{ item.name }} ({{ item.entity_id }})
-            {%- endfor %}
-          {%- endfor %}
-        {% endmacro %}
-        {{ dead_unavailable_entities()  | trim != '' }}
     - service: script.notify
       data_template:
         notify_edyta: false
@@ -121,6 +112,21 @@
           {% endmacro %}
           Następujące encje mają nieprawidłowe stany: {{ dead_unavailable_entities() }}
         tag: 'notification-dead-unvailable'
+    - service: persistent_notification.create
+      data_template:
+        title: 'Encja z nieprawidłowym stanem'
+        message: >
+          {% macro dead_unavailable_entities() %}
+            {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
+            {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor'] -%}
+            {% for domain in domains -%}
+              {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
+           - {{ item.name }} ({{ item.entity_id }})
+              {%- endfor %}
+            {%- endfor %}
+          {% endmacro %}
+          Następujące encje mają nieprawidłowe stany: {{ dead_unavailable_entities() }}
+        notification_id: 'notification-dead-unvailable'
 
 # powiadomienie o aktualizacji
 - id: notification_custom_update_available

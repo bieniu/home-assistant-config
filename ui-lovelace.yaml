@@ -363,6 +363,13 @@ views:
                   - sensor.ups_status
                   - sensor.ups_battery_charge
                   - sensor.ups_load
+              # - type: gauge
+              #   title: 'Obciążenie'
+              #   entity: sensor.ups_load
+              #   severity:
+              #     green: 0
+              #     yellow: 40
+              #     red: 70
               - type: sensor
                 entity: sensor.ups_input_voltage
                 graph: line
