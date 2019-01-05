@@ -202,6 +202,28 @@
         message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Sonoff-Tasmota.'
         notification_id: 'notification-tasmota-update'
 
+# powiadomienie o aktualizacji Caddy
+- id: notification_caddy_update_available
+  alias: 'Notification Caddy Update Available'
+  trigger:
+    platform: state
+    entity_id: sensor.caddy_version_current
+  condition:
+    condition: template
+    value_template: "{{ trigger.to_state.state != 'unknown' }}"
+  action:
+    - service: script.notify
+      data_template:
+        title: 'Aktualizacja Caddy'
+        message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy.'
+        tag: 'notification-caddy-update'
+        notify_edyta: false
+    - service: persistent_notification.create
+      data_template:
+        title: 'Aktualizacja Caddy'
+        message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy.'
+        notification_id: 'notification-caddy-update'
+
 # powiadomienie o wysokim stężeniu CO2 w salonie
 - id: notification_salon_co2
   alias: 'Notification Salon CO2'
@@ -1995,8 +2017,7 @@
     entity_id: input_boolean.harmony_command
     state: 'off'
   action:
-    service: script.turn_on
-    entity_id: script.harmony_tv_off
+    service: script.harmony_tv_off
 
 - id: hass_starts_telewizja
   alias: 'HASS Starts Telewizja'
@@ -2009,8 +2030,7 @@
     entity_id: input_boolean.harmony_command
     state: 'off'
   action:
-    service: script.turn_on
-    entity_id: script.harmony_telewizja
+    service: script.harmony_telewizja
 
 - id: hass_starts_filmy
   alias: 'HASS Starts Filmy'
@@ -2023,8 +2043,7 @@
     entity_id: input_boolean.harmony_command
     state: 'off'
   action:
-    service: script.turn_on
-    entity_id: script.harmony_filmy
+    service: script.harmony_filmy
 
 - id: hass_starts_radio
   alias: 'HASS Starts Radio'
@@ -2037,8 +2056,7 @@
     entity_id: input_boolean.harmony_command
     state: 'off'
   action:
-    service: script.turn_on
-    entity_id: script.harmony_radio
+    service: script.harmony_radio
 
 - id: hass_starts_spotify
   alias: 'HASS Starts Spotify'
@@ -2051,8 +2069,7 @@
     entity_id: input_boolean.harmony_command
     state: 'off'
   action:
-    service: script.turn_on
-    entity_id: script.harmony_spotify
+    service: script.harmony_spotify
 
 - id: hass_starts_vod
   alias: 'HASS Starts VoD'
@@ -2065,8 +2082,7 @@
     entity_id: input_boolean.harmony_command
     state: 'off'
   action:
-    service: script.turn_on
-    entity_id: script.harmony_vod
+    service: script.harmony_vod
 
 - id: hass_starts_playstation
   alias: 'HASS Starts PlayStation'
@@ -2079,10 +2095,7 @@
     entity_id: input_boolean.harmony_command
     state: 'off'
   action:
-    - service: script.turn_on
-      entity_id: script.harmony_playstation
-    - condition: template
-      value_template: "{{ trigger.from_state.state == 'wyłączony' }}"
+    - service: script.harmony_playstation
     - service: switch.turn_on
       entity_id: switch.playstation
 
@@ -2097,8 +2110,7 @@
     entity_id: input_boolean.harmony_command
     state: 'off'
   action:
-    service: script.turn_on
-    entity_id: script.harmony_xbox
+    service: script.harmony_xbox
 
 ##################################################################################################
 
