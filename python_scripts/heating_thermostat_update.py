@@ -12,6 +12,8 @@ Arguments:
                           compatibility with HomeKit
  - idle_heat_temp		- temperature value between 'idle' and 'heat' states,
                           default 8 (optional)
+ - state_only           - with state_only set to 'true' script will update only
+                          state of the thermostat (optional)
 
 Configuration example:
 
@@ -22,6 +24,7 @@ data:
   heat_stat: 'auto'
   idle_state: 'idle'
   idle_heat_temp: 10
+  state_only: false
 
 Script supports custom_updater component. Add this to your configuration and
 stay up-to-date.
@@ -32,51 +35,60 @@ custom_updater:
   python_script_urls:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
-
-VERSION = '0.2.8'
+VERSION = '0.3.0'
 
 ATTR_THERMOSTAT = 'thermostat'
 ATTR_SENSOR = 'sensor'
-ATTR_HEAT = 'heat_state'
-ATTR_IDLE = 'idle_state'
-ATTR_IDLE_HEAT = 'idle_heat_temp'
+ATTR_HEAT_STATE = 'heat_state'
+ATTR_IDLE_STATE = 'idle_state'
+ATTR_IDLE_HEAT_TEMP = 'idle_heat_temp'
+ATTR_STATE_ONLY = 'state_only'
 ATTR_CURRENT_TEMP = 'current_temperature'
 ATTR_OPERATION_LIST = 'operation_list'
 ATTR_OPERATION_MODE = 'operation_mode'
 ATTR_TEMPERATURE = 'temperature'
 
-ATTR_HEAT_STATE = 'heat'
-ATTR_IDLE_STATE = 'off'
-ATTR_IDLE_HEAT_STATE = 8
+ATTR_HEAT_STATE_DEFAULT = 'heat'
+ATTR_IDLE_STATE_DEFAULT = 'off'
+ATTR_IDLE_HEAT_TEMP_DEFAULT = 8
+ATTR_STATE_ONLY_DEFAULT = False
 
 thermostat_id = data.get(ATTR_THERMOSTAT)
 sensor_id = data.get(ATTR_SENSOR)
-heat_state = data.get(ATTR_HEAT, ATTR_HEAT_STATE)
-idle_state = data.get(ATTR_IDLE, ATTR_IDLE_STATE)
-idle_heat_temp = data.get(ATTR_IDLE_HEAT, ATTR_IDLE_HEAT_STATE)
+heat_state = data.get(ATTR_HEAT_STATE, ATTR_HEAT_STATE_DEFAULT)
+idle_state = data.get(ATTR_IDLE_STATE, ATTR_IDLE_STATE_DEFAULT)
+idle_heat_temp = float(data.get(ATTR_IDLE_HEAT_TEMP, ATTR_IDLE_HEAT_TEMP_DEFAULT))
+state_only = data.get(ATTR_STATE_ONLY, ATTR_STATE_ONLY_DEFAULT)
 
-if thermostat_id and sensor_id:
-    try:
-        temp = float(hass.states.get(sensor_id).state)
-    except (ValueError, TypeError):
-        logger.error("Could not get state of {}.".format(sensor_id))
-    if temp is None:
-        logger.error("Could not get state of {}.".format(sensor_id))
-    else:
-        thermostat = hass.states.get(thermostat_id)
-        if thermostat is None:
-            logger.error("Could not get state of {}.".format(thermostat_id))
-        else:
-            attributes = thermostat.attributes.copy()
-            attributes[ATTR_CURRENT_TEMP] = temp
-            attributes[ATTR_OPERATION_LIST] = [heat_state, idle_state]
-            if float(attributes[ATTR_TEMPERATURE]) > idle_heat_temp:
-                state = heat_state
-                attributes[ATTR_OPERATION_MODE] = heat_state
-            else:
-                state = idle_state
-                attributes[ATTR_OPERATION_MODE] = idle_state
-            hass.states.set(thermostat_id, state, attributes)
+temp = None
+
+if not thermostat_id:
+    logger.error("Expected {} entity_id, got: {}.".format(ATTR_THERMOSTAT,
+                                                          thermostat_id))
 else:
-    logger.error("Expected {} and {} entity_id, got: {} and {}.".format(
-        ATTR_THERMOSTAT, ATTR_SENSOR, thermostat_id, sensor_id))
+    thermostat = hass.states.get(thermostat_id)
+    if thermostat is None:
+        logger.error("Could not get state of {}.".format(thermostat_id))
+    else:
+        attributes = thermostat.attributes.copy()
+        if not state_only:
+            if sensor_id:
+                try:
+                    temp = float(hass.states.get(sensor_id).state)
+                except (ValueError, TypeError):
+                    logger.error("Could not get state of {}.".format(sensor_id))
+                if temp is None:
+                    logger.error("Could not get state of {}.".format(sensor_id))
+                else:
+                    attributes[ATTR_CURRENT_TEMP] = temp
+            else:
+                logger.error("Expected {} entity_id, got: {}.".format(ATTR_SENSOR,
+                                                                      sensor_id))
+        attributes[ATTR_OPERATION_LIST] = [heat_state, idle_state]
+        if float(attributes[ATTR_TEMPERATURE]) > idle_heat_temp:
+            state = heat_state
+            attributes[ATTR_OPERATION_MODE] = heat_state
+        else:
+            state = idle_state
+            attributes[ATTR_OPERATION_MODE] = idle_state
+        hass.states.set(thermostat_id, state, attributes)

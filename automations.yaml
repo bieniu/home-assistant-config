@@ -940,18 +940,12 @@
     data:
       temperature: 23
 
-# uruchamia skrypt aktualizaujący current temp
+# uruchamia skrypt aktualizaujący termostaty
 - id: heating_update_thermostats
   alias: 'Heating Update Thermostats'
   trigger:
     platform: state
     entity_id:
-      - sensor.temperature_antek
-      - sensor.temperature_salon
-      - sensor.temperature_kuchnia
-      - sensor.temperature_antresola
-      - sensor.temperature_sypialnia
-      - sensor.temperature_lazienka
       - climate.thermostat_antek
       - climate.thermostat_kuchnia
       - climate.thermostat_salon
@@ -960,33 +954,16 @@
       - climate.thermostat_lazienka
   condition:
     condition: template
-    value_template: >-
-      {% if 'thermostat' in trigger.entity_id and trigger.to_state.attributes.current_temperature == none %}
-        true
-      {% elif 'sensor' in trigger.entity_id %}
-        true
-      {% else %}
-        false
-      {% endif %}
+    value_template: "{{ trigger.to_state.state == 'unknown' }}"
   action:
     service: python_script.heating_thermostat_update
     data_template:
-      thermostat: >-
-        {% if 'thermostat' in trigger.entity_id %}
-          {{ trigger.entity_id }}
-        {% else %}
-          climate.thermostat_{{ trigger.entity_id | replace('sensor.temperature_', '') }}
-        {% endif %}
-      sensor: >-
-        {% if 'sensor' in trigger.entity_id %}
-          {{ trigger.entity_id }}
-        {% else %}
-          sensor.temperature_{{ (trigger.entity_id | replace('climate.thermostat_', '')) }}
-        {% endif %}
+      thermostat: '{{ trigger.entity_id }}'
+      state_only: true
 
-# uruchamia skrypt aktualizaujący current temp na starcie HA
-- id: heating_update_current_temperature_at_start
-  alias: 'Heating Update Current Temperature At Start'
+# uruchamia skrypt aktualizaujący termostaty na starcie HA
+- id: heating_update_thermostats_at_start
+  alias: 'Heating Update Thermostats At Start'
   trigger:
     platform: event
     event_type: zwave.network_ready
@@ -994,27 +971,27 @@
     - service: python_script.heating_thermostat_update
       data:
         thermostat: climate.thermostat_antek
-        sensor: sensor.temperature_antek
+        state_only: true
     - service: python_script.heating_thermostat_update
       data:
         thermostat: climate.thermostat_kuchnia
-        sensor: sensor.temperature_kuchnia
+        state_only: true
     - service: python_script.heating_thermostat_update
       data:
         thermostat: climate.thermostat_salon
-        sensor: sensor.temperature_salon
+        state_only: true
     - service: python_script.heating_thermostat_update
       data:
         thermostat: climate.thermostat_antresola
-        sensor: sensor.temperature_antresola
+        state_only: true
     - service: python_script.heating_thermostat_update
       data:
         thermostat: climate.thermostat_sypialnia
-        sensor: sensor.temperature_sypialnia
+        state_only: true
     - service: python_script.heating_thermostat_update
       data:
         thermostat: climate.thermostat_lazienka
-        sensor: sensor.temperature_lazienka
+        state_only: true
 
 ##################################################################################################
 
