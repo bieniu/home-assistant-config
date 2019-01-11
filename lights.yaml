@@ -49,5 +49,5 @@
   state_topic: 'shellies/shellyswitch-5B2604/relay/1'
   command_topic: 'shellies/shellyswitch-5B2604/relay/1/command'
   availability_topic: 'shellies/shellyswitch-5B2604/online'
-  unique_id: 'shelly2-5B2604-relay-1'
+  unique_id: 'shellyswitch-5B2604-relay-1'
   <<: *SHELLY_PARAMS

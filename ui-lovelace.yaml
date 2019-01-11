@@ -252,7 +252,7 @@ views:
                   - sensor.processor_use
                   - sensor.raspberry_cpu_temp
                   - sensor.memory_use_percent
-                  - sensor.disk_use_percent_
+                  - sensor.disk_use_percent
                   - sensor.last_boot_custom
                   # - entity: sensor.last_boot
                   #   format: relative

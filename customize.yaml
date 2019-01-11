@@ -43,7 +43,7 @@ sensor.processor_use:
 sensor.memory_use_percent:
   friendly_name: 'Zajęty RAM'
   icon: mdi:chip
-sensor.disk_use_percent_:
+sensor.disk_use_percent:
   friendly_name: 'Zajęte miejsce'
 sensor.last_boot:
   icon: mdi:clock-outline

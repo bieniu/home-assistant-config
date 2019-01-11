@@ -766,7 +766,7 @@
         entity_id: input_boolean.away_mode
         state: 'on'
         for:
-          hours: 6
+          hours: 12
       - condition: state
         entity_id: script.heating_fast_warm_up
         state: 'off'
@@ -2159,6 +2159,17 @@
     data:
       topic: shellies/command
       payload: announce
+
+- id: adb_reconnect
+  alias: 'ADB Reconnect'
+  trigger:
+    platform: state
+    entity_id: media_player.mibox
+    to: 'unavailable'
+    for:
+      minutes: 5
+  action:
+    service: shell_command.adb_reconnect
 
 ## CHRISTMAS LIGHTS ##
 - id: light_turn_on_christmas_lights
