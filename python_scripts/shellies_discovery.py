@@ -1,12 +1,13 @@
 """
-Adds MQTT discovery support for Shellies.
+This script adds MQTT discovery support for Shellies. For now it works only with
+Shelly1 and Shelly2 and without configuration it adds entities to Home Assistant.
 Arguments:
  - discovery_prefix:    - discovery prefix in HA, default 'homeassistant',
                           optional
- - id       			- Shellie ID (required)
- - mac                  - Shellie MAC address (required)
+ - id       			- Shelly ID (required)
+ - mac                  - Shelly MAC address (required)
  - sensor				- sensor entity_id (required)
- - fw_ver               - Shellie firmware version (optional)
+ - fw_ver               - Shelly firmware version (optional)
  - list of shelies relays and components for them
 
 Configuration example:
