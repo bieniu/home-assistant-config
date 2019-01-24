@@ -88,7 +88,6 @@ exclude:
     - sensor.last_boot
 include:
   entities:
-    - group.family
     - device_tracker.maciek
     - device_tracker.edyta
     - device_tracker.grazyna

@@ -1,12 +1,7 @@
 - platform: mqtt
   name: 'Shelly2 5B2604 Power'
   state_topic: 'shellies/shellyswitch-5B2604/relay/power'
-  value_template: >-
-    {% if value | float < 1.5 %}
-      0
-    {% else %}
-      {{ value | float | round(0) }}
-    {% endif %}
+  value_template: '{{ value | round }}'
   unit_of_measurement: 'W'
   unique_id: 'shellyswitch-5B2604-relay-power'
 

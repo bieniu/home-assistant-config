@@ -10,8 +10,6 @@
 
 - platform: bluetooth_tracker
 
-- platform: gpslogger
-
 - platform: ping
   hosts:
     modem: !secret modem_hostname
@@ -19,6 +17,7 @@
 
 - platform: composite
   name: 'Maciek'
+  time_as: 'local'
   entity_id:
     - device_tracker.oneplus_6
     - device_tracker.oneplus_6_bt
@@ -26,6 +25,7 @@
 
 - platform: composite
   name: 'Edyta'
+  time_as: 'local'
   entity_id:
     - device_tracker.iphone_8_plus
     - device_tracker.iphone_8_plus_bt
@@ -33,12 +33,14 @@
 
 - platform: composite
   name: 'Jerzy'
+  time_as: 'local'
   entity_id:
     - device_tracker.oneplus_one
     - device_tracker.oneplus_one_bt
 
 - platform: composite
   name: 'Grazyna'
+  time_as: 'local'
   entity_id:
     - device_tracker.iphone_6s
     - device_tracker.iphone_6s_bt

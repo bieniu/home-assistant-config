@@ -1,17 +1,17 @@
 resources:
-  - url: /local/lovelace/vertical-stack-in-card.js?v=0.1.0
+  - url: /local/lovelace/vertical-stack-in-card.js?v=v0.1.0
     type: js
   - url: /local/lovelace/tracker-card.js?v=0.1.5
     type: js
   - url: /local/lovelace/mini-media-player-bundle.js?v=0.9.8
     type: module
-  - url: /local/lovelace/layout-card.js?ver=bd7e5a
+  - url: /local/lovelace/layout-card.js?v=a97cc8
     type: js
-  - url: /local/lovelace/dark-sky-weather-card.js?ver=0.3.3
-    type: js
+  - url: /local/lovelace/dark-sky-weather-card.js?ver=0.8.2
+    type: module
   - url: /local/lovelace/monster-card.js?ver=0.2.3
     type: js
-  - url: /local/lovelace/card-tools.js?v=0a97d3
+  - url: /local/lovelace/card-tools.js?v=090958
     type: js
 
 title: 'Dom'
@@ -229,14 +229,14 @@ views:
         cards:
           - type: vertical-stack
             cards:
-              - type: glance
-                title: 'Internet'
-                entities:
-                  - entity: sensor.speedtest_download
-                    name: 'Pobieranie'
-                  - entity: sensor.speedtest_upload
-                    name: 'Wysyłanie'
-                  - sensor.speedtest_ping
+              # - type: glance
+              #   title: 'Internet'
+              #   entities:
+              #     - entity: sensor.speedtest_download
+              #       name: 'Pobieranie'
+              #     - entity: sensor.speedtest_upload
+              #       name: 'Wysyłanie'
+              #     - sensor.speedtest_ping
               - type: entities
                 title: 'Synology'
                 show_header_toggle: false
@@ -352,8 +352,21 @@ views:
               - type: sensor
                 entity: sensor.light_salon_power
                 graph: line
+                detail: 2
                 theme: sensor-blue
                 icon: mdi:flash-outline
+          - type: entities
+            title: 'Baterie sensorów ruchu'
+            show_header_toggle: false
+            entities:
+              - sensor.battery_body_sensor_przedpokoj
+              - sensor.battery_body_sensor_salon_1
+              - sensor.battery_body_sensor_salon_2
+              - sensor.battery_body_sensor_pracownia
+              - sensor.battery_body_sensor_schody
+              - sensor.battery_body_sensor_antresola
+              - sensor.battery_body_sensor_antek
+              - sensor.battery_body_sensor_sypialnia
           - type: custom:vertical-stack-in-card
             title: 'UPS'
             cards:
@@ -362,14 +375,13 @@ views:
                 entities:
                   - sensor.ups_status
                   - sensor.ups_battery_charge
-                  - sensor.ups_load
-              # - type: gauge
-              #   title: 'Obciążenie'
-              #   entity: sensor.ups_load
-              #   severity:
-              #     green: 0
-              #     yellow: 40
-              #     red: 70
+              - type: gauge
+                title: 'Obciążenie'
+                entity: sensor.ups_load
+                severity:
+                  green: 0
+                  yellow: 40
+                  red: 70
               - type: sensor
                 entity: sensor.ups_input_voltage
                 graph: line
@@ -402,18 +414,6 @@ views:
               - sensor.battery_temp_humi_sensor_lazienka
               - sensor.battery_temp_humi_sensor_outdoor
           - type: entities
-            title: 'Baterie sensorów ruchu'
-            show_header_toggle: false
-            entities:
-              - sensor.battery_body_sensor_przedpokoj
-              - sensor.battery_body_sensor_salon_1
-              - sensor.battery_body_sensor_salon_2
-              - sensor.battery_body_sensor_pracownia
-              - sensor.battery_body_sensor_schody
-              - sensor.battery_body_sensor_antresola
-              - sensor.battery_body_sensor_antek
-              - sensor.battery_body_sensor_sypialnia
-          - type: entities
             title: 'Baterie sensorów okien/drzwi'
             show_header_toggle: false
             entities:
@@ -445,7 +445,7 @@ views:
             entity_humidity: sensor.humidity_outdoor
             entity_pressure: sensor.pressure_outdoor
             entity_temperature: sensor.temperature_outdoor
-            entity_apparent_temperature: sensor.dark_sky_apparent_temperature
+            # entity_apparent_temp: sensor.dark_sky_apparent_temperature
             entity_visibility: sensor.dark_sky_visibility
             entity_wind_bearing: sensor.dark_sky_wind_bearing
             entity_wind_speed: sensor.dark_sky_wind_speed
@@ -469,7 +469,13 @@ views:
             entity_summary_3: sensor.dark_sky_summary_3
             entity_summary_4: sensor.dark_sky_summary_4
             entity_summary_5: sensor.dark_sky_summary_5
-            language: 'pl-PL'
+            entity_pop_1: sensor.dark_sky_precip_probability_1
+            entity_pop_2: sensor.dark_sky_precip_probability_2
+            entity_pop_3: sensor.dark_sky_precip_probability_3
+            entity_pop_4: sensor.dark_sky_precip_probability_4
+            entity_pop_5: sensor.dark_sky_precip_probability_5
+            time_format: 24
+            locale: pl
           - type: iframe
             url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates
             aspect_ratio: 75%

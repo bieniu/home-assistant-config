@@ -3,9 +3,7 @@
   alias: 'Purge Recorder Database'
   trigger:
     platform: time
-    hours: 3
-    minutes: 0
-    seconds: 0
+    at: '03:00:00'
   condition:
     condition: time
     weekday:
@@ -79,7 +77,7 @@
 - id: notification_dead_or_unavailable
   alias: 'Notification dead or unavailable'
   trigger:
-    platform: time
+    platform: time_pattern
     minutes: '/10'
     seconds: 0
   condition:
@@ -140,7 +138,11 @@
       - condition: template
         value_template: "{{ trigger.to_state.state != 'unknown' }}"
       - condition: template
+        value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+      - condition: template
         value_template: "{{ states('sensor.ha_version_installed') != 'unknown' }}"
+      - condition: template
+        value_template: "{{ states('sensor.ha_version_installed') != 'unavailable' }}"
       - condition: template
         value_template: "{{ trigger.to_state.state != states('sensor.ha_version_installed') }}"
   action:
@@ -165,8 +167,12 @@
     - platform: state
       entity_id: sensor.shelly2_firmware_version_current
   condition:
-    condition: template
-    value_template: "{{ trigger.to_state.state != 'unknown' }}"
+    condition: and
+    conditions:
+      - condition: template
+        value_template: "{{ trigger.to_state.state != 'unknown' }}"
+      - condition: template
+        value_template: "{{ trigger.to_state.state != 'unavailable' }}"
   action:
     - service: script.notify
       data_template:
@@ -187,8 +193,12 @@
     platform: state
     entity_id: sensor.tasmota_version_current
   condition:
-    condition: template
-    value_template: "{{ trigger.to_state.state != 'unknown' }}"
+    condition: and
+    conditions:
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
   action:
     - service: script.notify
       data_template:
@@ -209,8 +219,12 @@
     platform: state
     entity_id: sensor.caddy_version_current
   condition:
-    condition: template
-    value_template: "{{ trigger.to_state.state != 'unknown' }}"
+    condition: and
+    conditions:
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
   action:
     - service: script.notify
       data_template:
@@ -528,7 +542,7 @@
 - id: heating_day
   alias: 'Heating Day'
   trigger:
-    platform: time
+    platform: time_pattern
     minutes: '/1'
     seconds: 0
   condition:
@@ -552,7 +566,7 @@
 - id: heating_night
   alias: 'Heating Night'
   trigger:
-    platform: time
+    platform: time_pattern
     minutes: '/1'
     seconds: 0
   condition:
@@ -576,7 +590,7 @@
 - id: heating_day_weekend
   alias: 'Heating Day Weekend'
   trigger:
-    platform: time
+    platform: time_pattern
     minutes: '/1'
     seconds: 0
   condition:
@@ -600,7 +614,7 @@
 - id: heating_night_weekend
   alias: 'Heating Night Weekend'
   trigger:
-    platform: time
+    platform: time_pattern
     minutes: '/1'
     seconds: 0
   condition:
@@ -658,7 +672,7 @@
     from: 'off'
     to: 'on'
     for:
-      minutes: 10
+      minutes: 15
   condition:
     condition: state
     entity_id: input_boolean.heating_season
@@ -2163,11 +2177,13 @@
 - id: adb_reconnect
   alias: 'ADB Reconnect'
   trigger:
-    platform: state
-    entity_id: media_player.mibox
-    to: 'unavailable'
-    for:
-      minutes: 5
+    - platform: state
+      entity_id: media_player.mibox
+      to: 'unavailable'
+      for:
+        minutes: 5
+    - platform:  homeassistant
+      event: start
   action:
     service: shell_command.adb_reconnect
 
