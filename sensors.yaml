@@ -1,9 +1,9 @@
-- platform: mqtt
-  name: 'Shelly2 5B2604 Power'
-  state_topic: 'shellies/shellyswitch-5B2604/relay/power'
-  value_template: '{{ value | round }}'
-  unit_of_measurement: 'W'
-  unique_id: 'shellyswitch-5B2604-relay-power'
+# - platform: mqtt
+#   name: 'Shelly2 5B2604 Power'
+#   state_topic: 'shellies/shellyswitch-5B2604/relay/power'
+#   value_template: '{{ value | round }}'
+#   unit_of_measurement: 'W'
+#   unique_id: 'shellyswitch-5B2604-relay-power'
 
 # - platform: mqtt
 #   name: 'Shelly2 5B2604 Energy'
