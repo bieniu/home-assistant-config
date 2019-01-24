@@ -11,7 +11,7 @@ resources:
     type: module
   - url: /local/lovelace/monster-card.js?ver=0.2.3
     type: js
-  - url: /local/lovelace/card-tools.js?v=090958
+  - url: /local/lovelace/card-tools.js?v=297fcc
     type: js
 
 title: 'Dom'

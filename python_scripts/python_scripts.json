@@ -14,4 +14,5 @@
       "remote_location": "https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/shellies_discovery.py",
       "visit_repo": "https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/shellies_discovery.py",
       "changelog": "https://github.com/bieniu/home-assistant-config/commits/master/python_scripts/shellies_discovery.py"
+    }
 }
