@@ -53,6 +53,8 @@
 'light.lightstrip_*':
   friendly_name: 'LEDy'
   icon: mdi:led-variant-on
+'light.christmas_tree_*':
+  icon: mdi:pine-tree
 
 #### BATTERY SENSORS ####
 'sensor.battery_*':

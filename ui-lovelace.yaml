@@ -1,13 +1,13 @@
 resources:
   - url: /local/lovelace/vertical-stack-in-card.js?v=v0.1.0
     type: js
-  - url: /local/lovelace/tracker-card.js?v=0.1.5
+  - url: /local/lovelace/tracker-card.js?v=0.3.0
     type: js
-  - url: /local/lovelace/mini-media-player-bundle.js?v=0.9.8
+  - url: /local/lovelace/mini-media-player-bundle.js?v=1.0.0
     type: module
-  - url: /local/lovelace/layout-card.js?v=a97cc8
+  - url: /local/lovelace/layout-card.js?v=a313b7
     type: js
-  - url: /local/lovelace/dark-sky-weather-card.js?ver=0.8.2_1
+  - url: /local/lovelace/dark-sky-weather-card.js?v=0.9.2
     type: module
   - url: /local/lovelace/monster-card.js?ver=0.2.3
     type: js
@@ -86,26 +86,29 @@ views:
                     entity: media_player.denon
                     name: Amplituner
                     icon: mdi:audio-video
-                    hide_controls: true
-                    hide_volume: true
-                    power_color: true
-                    scroll_info: true
+                    hide:
+                      controls: true
+                      volume: true
+                      power_state: false
+                    info: scroll
                     group: true
                   - type: custom:mini-media-player
                     entity: media_player.playstation
                     name: 'PlayStation'
-                    power_color: true
-                    hide_volume: true
-                    scroll_info: true
-                    hide_controls: true
+                    hide:
+                      controls: true
+                      volume: true
+                      power_state: false
+                    info: scroll
                     group: true
                   - type: custom:mini-media-player
                     entity: media_player.mibox
                     name: 'Mi Box'
-                    hide_controls: true
-                    hide_volume: true
-                    scroll_info: true
-                    hide_power: true
+                    hide:
+                      controls: true
+                      volume: true
+                      power: true
+                    info: scroll
                     group: true
           - type: custom:vertical-stack-in-card
             title: 'Pracownia'
@@ -123,7 +126,6 @@ views:
                     secondary_info: last-changed
                   - binary_sensor.balcony_door_pracownia
                   - light.lamp_pracownia
-                  - light.christmas_balkon_dol
           - type: entities
             title: 'Pokój gościnny'
             show_header_toggle: false
@@ -189,7 +191,6 @@ views:
                     secondary_info: last-changed
                   - climate.thermostat_sypialnia
                   - light.lightstrip_sypialnia
-                  - light.christmas_balkon_gora
           - type: entities
             title: 'Łazienka'
             show_header_toggle: false
@@ -229,14 +230,17 @@ views:
         cards:
           - type: vertical-stack
             cards:
-              # - type: glance
-              #   title: 'Internet'
-              #   entities:
-              #     - entity: sensor.speedtest_download
-              #       name: 'Pobieranie'
-              #     - entity: sensor.speedtest_upload
-              #       name: 'Wysyłanie'
-              #     - sensor.speedtest_ping
+              - type: custom:vertical-stack-in-card
+                title: 'Router'
+                cards:
+                  - type: glance
+                    entities:
+                      - sensor.speedtest_download
+                      - sensor.speedtest_upload
+                      - sensor.speedtest_ping
+                  - type: entities
+                    entities:
+                      - sensor.router_last_boot
               - type: entities
                 title: 'Synology'
                 show_header_toggle: false
@@ -245,6 +249,7 @@ views:
                   - sensor.synology_disk_used
                   - binary_sensor.caddy_status
                   - sensor.ssl_certificate_expiry
+                  - sensor.synology_last_boot
               - type: entities
                 title: 'Raspberry Pi'
                 show_header_toggle: false
@@ -254,8 +259,6 @@ views:
                   - sensor.memory_use_percent
                   - sensor.disk_use_percent
                   - sensor.last_boot_custom
-                  # - entity: sensor.last_boot
-                  #   format: relative
                   - sensor.last_ha_restart
                   - sensor.ha_database_size
           - type: vertical-stack
@@ -341,11 +344,6 @@ views:
     cards:
       - type: custom:layout-card
         cards:
-          # - type: entities
-          #   title: 'Zużycie energii'
-          #   show_header_toggle: false
-          #   entities:
-          #     - sensor.light_salon_energy
           - type: custom:vertical-stack-in-card
             title: 'Pobór mocy'
             cards:
@@ -476,21 +474,11 @@ views:
             entity_pop_5: sensor.dark_sky_precip_probability_5
             time_format: 24
             locale: pl
-            temp_top_margin: -20px
-            temp_font_weight: 300
-            temp_font_size: 4em
-            temp_right_pos: 1em
-            temp_uom_top_margin: -14px
-            temp_uom_right_margin: 7px
-            apparent_top_margin: 45px
-            apparent_right_pos: 1em
-            apparent_right_margin: 1em
-            current_text_top_margin: 39px
-            current_text_left_pos: 5em
-            current_text_font_size: 1.5em
-            current_data_top_margin: 5em
-            large_icon_top_margin: -3.5em
-            large_icon_left_position: 0em
+            # tooltips: true
+            # tooltip_width: 100px
+            # tooltip_bg_color: black
+            # tooltip_border_color: black
+            # tooltip_caret_size: 3
           - type: iframe
             url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates
             aspect_ratio: 75%

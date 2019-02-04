@@ -1,17 +1,3 @@
-# - platform: mqtt
-#   name: 'Shelly2 5B2604 Power'
-#   state_topic: 'shellies/shellyswitch-5B2604/relay/power'
-#   value_template: '{{ value | round }}'
-#   unit_of_measurement: 'W'
-#   unique_id: 'shellyswitch-5B2604-relay-power'
-
-# - platform: mqtt
-#   name: 'Shelly2 5B2604 Energy'
-#   state_topic: 'shellies/shellyswitch-5B2604/relay/energy'
-#   unit_of_measurement: 'kWh'
-#   value_template: '{{ ((value | float) / 100) | float | round(2) }}'
-#   unique_id: 'shellyswitch-5B2604-relay-energy'
-
 - platform: rest
   name: 'Tasmota Version Current'
   resource: 'https://api.github.com/repos/arendst/Sonoff-Tasmota/releases/latest'
@@ -176,8 +162,13 @@
 - platform: template
   sensors:
     last_boot_custom:
-      friendly_name: 'Ostatni reboot'
+      friendly_name: 'Ostatni restart'
       value_template: "{{ states('sensor.last_boot').split('T')[0] }}"
+
+    humidifier_water_level:
+      friendly_name: 'Poziom wody'
+      value_template: "{{ (state_attr('fan.humidifier_salon', 'depth') / 1.2) | round }}"
+      unit_of_measurement: '%'
 
     printer_status_custom:
       friendly_name: 'Status'
@@ -195,16 +186,6 @@
           brak toneru
         {% else %}
           {{ states('sensor.printer_status') }}
-        {% endif %}
-
-    temperature_kuchnia:
-      friendly_name: 'Temperatura'
-      unit_of_measurement: '°C'
-      value_template: >-
-        {% if not is_state('sensor.temperature_salon', 'unknown') %}
-          {{ states('sensor.temperature_salon') | float | round(1) }}
-        {% else %}
-          {{ states('sensor.temperature_kuchnia') }}
         {% endif %}
 
     battery_thermostat_antresola:

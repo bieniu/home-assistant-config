@@ -20,19 +20,6 @@
   transition: 30
   interval: 600
 
-# - platform: mqtt
-#   name: 'Shelly2 5B2604 Relay 0'
-#   state_topic: 'shellies/shellyswitch-5B2604/relay/0'
-#   command_topic: 'shellies/shellyswitch-5B2604/relay/0/command'
-#   availability_topic: 'shellies/shellyswitch-5B2604/online'
-#   unique_id: 'shellyswitch-5B2604-relay-0'
-#   payload_on: 'on'
-#   payload_off: 'off'
-#   payload_available: 'true'
-#   payload_not_available: 'false'
-#   qos: 1
-#   retain: true
-
 - platform: template
   switches:
     denon:

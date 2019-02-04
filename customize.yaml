@@ -17,10 +17,6 @@ switch.light_bulbs_salon:
   icon: mdi:lightbulb
 light.bulbs_salon:
   friendly_name: 'Żarówki'
-light.christmas_balkon_dol:
-  icon: mdi:led-variant-on
-light.christmas_balkon_gora:
-  icon: mdi:led-variant-on
 
 #### UPS ####
 sensor.ups_status:
@@ -47,8 +43,8 @@ sensor.disk_use_percent:
   friendly_name: 'Zajęte miejsce'
 sensor.last_boot:
   icon: mdi:clock-outline
-  device_class: timestamp
-  friendly_name: 'Ostatni reboot'
+  # device_class: timestamp
+  friendly_name: 'Ostatni restart'
 sensor.last_boot_custom:
   icon: mdi:clock-outline
 sensor.raspberry_cpu_temp:

@@ -158,6 +158,26 @@
         message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ha_version_current') }} dla Home Assistant'a."
         notification_id: 'notification-hass-update'
 
+# powiadomienie o małej ilości wody w nawilżaczu
+- id: notification_humidifier_low_water
+  alias: 'Notification Humidifier Low Water'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.humidifier_water_level
+    below: 20
+  action:
+    - service: script.notify
+      data_template:
+        title: "Uzupełnij wodę w nawilżaczu"
+        message: "W nawilżaczu pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+        tag: 'notification-humififier-low-water'
+        notify_edyta: true
+    - service: persistent_notification.create
+      data_template:
+        title: "Uzupełnij wodę w nawilżaczu"
+        message: "W nawilżaczu pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+        notification_id: 'notification-humififier-low-water'
+
 # powiadomienie o aktualizacji oprogramowania Shelly
 - id: notification_shelly_update_available
   alias: 'Notification Shelly Update Available'
@@ -698,7 +718,7 @@
         entity_id: input_boolean.heating_season
         state: 'on'
   action:
-      service: script.heating_day
+    service: script.heating_day
 
 - id: heating_peoples_back_night
   alias: 'Heating Peoples Back Night'
@@ -815,7 +835,7 @@
       from: 'off'
       to: 'on'
       for:
-        minutes: 15
+        minutes: 10
   condition:
     condition: and
     conditions:
@@ -2201,27 +2221,3 @@
       event: start
   action:
     service: shell_command.adb_reconnect
-
-## CHRISTMAS LIGHTS ##
-- id: light_turn_on_christmas_lights
-  alias: 'Light Turn On Christmas Lights'
-  trigger:
-    platform: sun
-    event: sunset
-    offset: '-01:00:00'
-  action:
-    service: light.turn_on
-    entity_id:
-      - light.christmas_balkon_dol
-      - light.christmas_balkon_gora
-
-- id: light_turn_off_christmas_lights
-  alias: 'Light Turn Off Christmas Lights'
-  trigger:
-    platform: time
-    at: '23:00:00'
-  action:
-    service: light.turn_off
-    entity_id:
-      - light.christmas_balkon_dol
-      - light.christmas_balkon_gora

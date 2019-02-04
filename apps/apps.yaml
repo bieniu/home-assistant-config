@@ -24,9 +24,6 @@ brother_printer_status:
 #   heat_state: 'auto'
 #   only_state: true
 #   rooms:
-#     kuchnia:
-#       thermostat: climate.thermostat_kuchnia
-#       sensor: sensor.temperature_kuchnia
 #     salon:
 #       thermostat: climate.thermostat_salon
 #       sensor: sensor.temperature_salon
