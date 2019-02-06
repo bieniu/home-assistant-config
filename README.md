@@ -47,7 +47,7 @@
 * Dune BD Prime 3.0 [network media player by AppDaemon script]
 * Synology DS110j [NAS]
 * Brother HL-L2340D [printer]
-* iPhone [iOS [Home Assistant](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401)]
+* iPhone/iPad [iOS [Home Assistant](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401) app]
 * OnePlus 6 [Android phone by [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm)]
 * CyberPower DL650ELCD [UPS]
 * Xiaomi DaFang [camera with [custom firmware](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks)]
