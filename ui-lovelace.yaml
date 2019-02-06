@@ -1,5 +1,5 @@
 resources:
-  - url: /local/lovelace/vertical-stack-in-card.js?v=v0.1.0
+  - url: /local/lovelace/vertical-stack-in-card.js?v=v0.1.1
     type: js
   - url: /local/lovelace/tracker-card.js?v=0.3.0
     type: js
@@ -7,7 +7,7 @@ resources:
     type: module
   - url: /local/lovelace/layout-card.js?v=a313b7
     type: js
-  - url: /local/lovelace/dark-sky-weather-card.js?v=0.9.2
+  - url: /local/lovelace/dark-sky-weather-card.js?v=0.9.3
     type: module
   - url: /local/lovelace/monster-card.js?ver=0.2.3
     type: js

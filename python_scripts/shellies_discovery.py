@@ -1,6 +1,6 @@
 """
-This script adds MQTT discovery support for Shellies. For now it works only with
-Shelly1 and Shelly2 and without configuration it adds entities to Home Assistant.
+This script adds MQTT discovery support for Shellies. Shelly1, Shelly2,
+Shelly4Pro and Shelly Plug are supported.
 Arguments:
  - discovery_prefix:    - discovery prefix in HA, default 'homeassistant',
                           optional
@@ -53,7 +53,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.0.1'
+VERSION = '0.0.2'
 
 ATTR_ID = 'id'
 ATTR_MAC = 'mac'
@@ -74,6 +74,11 @@ else:
     relay_sensors = []
     relay_components = ['switch', 'light', 'fan']
 
+    if 'shelly1' in id:
+        model = 'Shelly1'
+        component = 'switch'
+        relays = 1
+
     if 'shellyswitch' in id:
         model = 'Shelly2'
         component = 'switch'
@@ -82,10 +87,21 @@ else:
         units = ['W']
         templates = ['{{ value | round }}']
 
-    if 'shelly1' in id:
-        model = 'Shelly1'
+    if 'shellyplug' in id:
+        model = 'Shelly Plug'
         component = 'switch'
         relays = 1
+        relay_sensors = ['power']
+        units = ['W']
+        templates = ['{{ value | round }}']
+
+    if 'shelly4pro' in id:
+        model = 'Shelly4Pro'
+        component = 'switch'
+        relays = 4
+        relay_sensors = ['power']
+        units = ['W']
+        templates = ['{{ value | round }}']
 
     for i in range(0, relays):
         device_name = '{} {}'.format(model, id.split('-')[1],)

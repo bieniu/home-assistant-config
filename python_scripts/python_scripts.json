@@ -8,11 +8,11 @@
       "changelog": "https://github.com/bieniu/home-assistant-config/commits/master/python_scripts/heating_thermostat_update.py"
     },
     "shellies_discovery": {
-      "updated_at": "2019-01-24",
-      "version": "0.0.1",
+      "updated_at": "2019-02-06",
+      "version": "0.0.2",
       "local_location": "/python_scripts/shellies_discovery.py",
       "remote_location": "https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/shellies_discovery.py",
       "visit_repo": "https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/shellies_discovery.py",
-      "changelog": "https://github.com/bieniu/home-assistant-config/commits/master/python_scripts/shellies_discovery.py"
+      "changelog": "https://community.home-assistant.io/t/shellies-discovery-script/94048"
     }
 }

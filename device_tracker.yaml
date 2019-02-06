@@ -39,6 +39,13 @@
     - device_tracker.oneplus_one_bt
 
 - platform: composite
+  name: 'Romana'
+  time_as: 'local'
+  entity_id:
+    - device_tracker.romana_bt
+    - device_tracker.samsung_galaxy_trend_3
+
+- platform: composite
   name: 'Grazyna'
   time_as: 'local'
   entity_id:
