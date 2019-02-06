@@ -4,7 +4,7 @@
 
 ## Server
 
-* Raspberry Pi 3 [Raspbian Stretch with Python 3.6.3]
+* Raspberry Pi 3 [Raspbian Stretch with Python 3.6.3 virtual env]
 
 ## Z-Wave Devices
 
@@ -29,8 +29,8 @@
 
 * Sonoff Basic Switches [[Tasmota firmware](https://github.com/arendst/Sonoff-Tasmota)]
 * Sonoff S26 Plug [[Tasmota firmware](https://github.com/arendst/Sonoff-Tasmota)]
-* [Shelly1](https://shelly.cloud/shelly1-open-source/)
-* [Shelly2](https://shelly.cloud/shelly2/)
+* [Shelly1](https://shelly.cloud/shelly1-open-source/) via MQTT
+* [Shelly2](https://shelly.cloud/shelly2/) via MQTT
 
 ## Sensors
 
@@ -43,20 +43,20 @@
 * Denon AVR-X2100W [AV receiver]
 * PlayStation 4 Pro
 * Xiaomi Mi Smart Humidifier CA1
-* Xiaomi Mi Box 4K [AndroidTV box by [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm) and [MQTT Client](https://play.google.com/store/apps/details?id=in.dc297.mqttclpro)]
+* Xiaomi Mi Box 4K [AndroidTV box]
 * Dune BD Prime 3.0 [network media player by AppDaemon script]
 * Synology DS110j [NAS]
-* Brother HL-L2340D
+* Brother HL-L2340D [printer]
 * iPhone [iOS [Home Assistant](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401)]
-* OnePlus 6 [Android phone by [GPSLogger](https://play.google.com/store/apps/details?id=com.mendhak.gpslogger)]
+* OnePlus 6 [Android phone by [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm)]
 * CyberPower DL650ELCD [UPS]
 * Xiaomi DaFang [camera with [custom firmware](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks)]
 
 ## Home Assistant Custom Components
 
-* [PlayStation 4 media_player](https://github.com/hmn/home-assistant-config/blob/master/custom_components/media_player/ps4.py)
+* [PlayStation 4 media_player](https://github.com/home-assistant/home-assistant/pull/19469)
 * [Custom Frontend](https://github.com/home-assistant/home-assistant/pull/10783)
-* [Home Assistant Customizer](https://github.com/andrey-git/home-assistant-customizer/)
+* [AndroidTV](https://github.com/home-assistant/home-assistant/pull/19157)
 * [Custom Updater](https://github.com/custom-components/custom_updater)
 * [Device Tracker Composite](https://github.com/pnbruckner/homeassistant-config)
 
@@ -67,16 +67,21 @@
 ## Lovelace Custom Cards
 
 * [layout-card](https://github.com/thomasloven/lovelace-layout-card)
-* [dark-sky-weather-card](https://community.home-assistant.io/t/custom-dark-sky-animated-weather-card/59816)
+* [dark-sky-weather-card](https://github.com/iammexx/home-assistant-config/tree/master/ui/darksky)
 * [mini-media-player](https://github.com/kalkih/mini-media-player)
 * [tracker-card](https://github.com/custom-cards/tracker-card)
 * [vertical-stack-in-card](https://github.com/custom-cards/vertical-stack-in-card)
 * [monster-card](https://github.com/ciotlosm/custom-lovelace/tree/master/monster-card)
+* [card-tools](https://github.com/thomasloven/lovelace-card-tools)
 
 ## AppDaemon
 * [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/home-assistant-config/blob/master/apps/update_thermostats.py)
 * [Brother printer status sensors](https://github.com/bieniu/home-assistant-config/blob/master/apps/brother_printer_status.py)
 * [DuneHD Activity](https://github.com/bieniu/home-assistant-config/blob/master/apps/dune_activity.py)
+
+## Python Scripts
+* [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/heating_thermostat_update.py)
+* [Shellies Discovery](https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/shellies_discovery.py)
 
 ## Screenshots
 
