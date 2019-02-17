@@ -71,3 +71,7 @@
 #### Z-WAVE ####
 'zwave.thermostat_*':
   friendly_name: 'Danfoss 014G0013 Thermostat'
+
+#### AIRLY ####
+'sensor.airly_pm*':
+  icon: mdi:blur

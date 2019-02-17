@@ -71,7 +71,7 @@
 * [mini-media-player](https://github.com/kalkih/mini-media-player)
 * [tracker-card](https://github.com/custom-cards/tracker-card)
 * [vertical-stack-in-card](https://github.com/custom-cards/vertical-stack-in-card)
-* [monster-card](https://github.com/ciotlosm/custom-lovelace/tree/master/monster-card)
+* [auto-entities](https://github.com/thomasloven/lovelace-auto-entities)
 * [card-tools](https://github.com/thomasloven/lovelace-card-tools)
 
 ## AppDaemon

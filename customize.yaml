@@ -43,7 +43,6 @@ sensor.disk_use_percent:
   friendly_name: 'Zajęte miejsce'
 sensor.last_boot:
   icon: mdi:clock-outline
-  # device_class: timestamp
   friendly_name: 'Ostatni restart'
 sensor.last_boot_custom:
   icon: mdi:clock-outline
@@ -114,7 +113,7 @@ binary_sensor.brother_status:
   icon: mdi:printer
 binary_sensor.dafang_status:
   icon: mdi:cctv
-binary_sensor.wemos_sensor_co2_salon_status:
+wemos_d1_mini_1c91ea_status:
   icon: mdi:developer-board
 binary_sensor.mihumidifier_status:
   icon: mdi:fan
@@ -244,3 +243,15 @@ switch.camera_move_left:
 
 switch.camera_move_right:
   icon: mdi:chevron-double-right
+
+#### ENERGIA ####
+sensor.energy_light_salon_monthly:
+  friendly_name: 'Oświetlenie salonu'
+
+#### AIRLY ####
+sensor.airly_pm10:
+  norma: 50
+sensor.airly_pm25:
+  norma: 25
+sensor.airly_info:
+  icon: mdi:weather-fog

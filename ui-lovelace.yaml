@@ -1,17 +1,17 @@
 resources:
-  - url: /local/lovelace/vertical-stack-in-card.js?v=v0.1.1
+  - url: /local/lovelace/vertical-stack-in-card.js
     type: js
-  - url: /local/lovelace/tracker-card.js?v=0.3.0
+  - url: /local/lovelace/tracker-card.js
     type: js
-  - url: /local/lovelace/mini-media-player-bundle.js?v=1.0.0
+  - url: /local/lovelace/mini-media-player-bundle.js
     type: module
-  - url: /local/lovelace/layout-card.js?v=a313b7
+  - url: /local/lovelace/layout-card.js
     type: js
-  - url: /local/lovelace/dark-sky-weather-card.js?v=0.9.3
+  - url: /local/lovelace/dark-sky-weather-card.js
     type: module
-  - url: /local/lovelace/monster-card.js?ver=0.2.3
+  - url: /local/lovelace/card-tools.js
     type: js
-  - url: /local/lovelace/card-tools.js?v=297fcc
+  - url: /local/lovelace/auto-entities.js
     type: js
 
 title: 'Dom'
@@ -25,24 +25,15 @@ views:
     cards:
       - type: custom:layout-card
         cards:
-          - type: custom:monster-card
+          - type: custom:auto-entities
             card:
               type: entities
               title: 'Rodzina'
               show_header_toggle: false
             filter:
               include:
-                - entity_id: device_tracker.edyta
-                - entity_id: device_tracker.maciek
-                - entity_id: device_tracker.grazyna
-                  state: home
-                - entity_id: device_tracker.romana
-                  state: home
-                - entity_id: device_tracker.jerzy
-                  state: home
-                - entity_id: device_tracker.agnieszka
-                  state: home
-                - entity_id: device_tracker.emil
+                - group: group.household
+                - group: group.family
                   state: home
           - type: vertical-stack
             cards:
@@ -323,13 +314,13 @@ views:
             show_header_toggle: false
             theme: network-status
             entities:
-              - binary_sensor.sonoff_basic_1740_status
-              - binary_sensor.sonoff_basic_7297_status
-              - binary_sensor.sonoff_basic_7080_status
-              - binary_sensor.sonoff_s26_1141_status
+              - binary_sensor.sonoff_basic_a786cc_status
+              - binary_sensor.sonoff_basic_067c81_status
+              - binary_sensor.sonoff_basic_5dfba8_status
+              - binary_sensor.sonoff_s26_182475_status
               - binary_sensor.shelly1_328900_status
               - binary_sensor.shelly2_5b2604_status
-              - binary_sensor.wemos_sensor_co2_salon_status
+              - binary_sensor.wemos_d1_mini_1c91ea_status
               - binary_sensor.yeelight_bulb_salon1_status
               - binary_sensor.yeelight_bulb_salon2_status
               - binary_sensor.yeelight_bulb_salon3_status
@@ -352,6 +343,12 @@ views:
                 graph: line
                 detail: 2
                 theme: sensor-blue
+                icon: mdi:flash-outline
+          - type: custom:vertical-stack-in-card
+            title: 'Zużycie energii'
+            cards:
+              - type: sensor
+                entity: sensor.energy_light_salon_monthly
                 icon: mdi:flash-outline
           - type: entities
             title: 'Baterie sensorów ruchu'
@@ -436,76 +433,98 @@ views:
     cards:
       - type: custom:layout-card
         cards:
-          - type: custom:dark-sky-weather-card
-            entity_sun: sun.sun
-            entity_daily_summary: sensor.dark_sky_daily_summary
-            entity_current_conditions: sensor.dark_sky_icon
-            entity_humidity: sensor.humidity_outdoor
-            entity_pressure: sensor.pressure_outdoor
-            entity_temperature: sensor.temperature_outdoor
-            entity_apparent_temp: sensor.dark_sky_apparent_temperature
-            entity_visibility: sensor.dark_sky_visibility
-            entity_wind_bearing: sensor.dark_sky_wind_bearing
-            entity_wind_speed: sensor.dark_sky_wind_speed
-            entity_forecast_high_temp_1: sensor.dark_sky_daytime_high_temperature_1
-            entity_forecast_high_temp_2: sensor.dark_sky_daytime_high_temperature_2
-            entity_forecast_high_temp_3: sensor.dark_sky_daytime_high_temperature_3
-            entity_forecast_high_temp_4: sensor.dark_sky_daytime_high_temperature_4
-            entity_forecast_high_temp_5: sensor.dark_sky_daytime_high_temperature_5
-            entity_forecast_low_temp_1: sensor.dark_sky_overnight_low_temperature_1
-            entity_forecast_low_temp_2: sensor.dark_sky_overnight_low_temperature_2
-            entity_forecast_low_temp_3: sensor.dark_sky_overnight_low_temperature_3
-            entity_forecast_low_temp_4: sensor.dark_sky_overnight_low_temperature_4
-            entity_forecast_low_temp_5: sensor.dark_sky_overnight_low_temperature_5
-            entity_forecast_icon_1: sensor.dark_sky_icon_1
-            entity_forecast_icon_2: sensor.dark_sky_icon_2
-            entity_forecast_icon_3: sensor.dark_sky_icon_3
-            entity_forecast_icon_4: sensor.dark_sky_icon_4
-            entity_forecast_icon_5: sensor.dark_sky_icon_5
-            entity_summary_1: sensor.dark_sky_summary_1
-            entity_summary_2: sensor.dark_sky_summary_2
-            entity_summary_3: sensor.dark_sky_summary_3
-            entity_summary_4: sensor.dark_sky_summary_4
-            entity_summary_5: sensor.dark_sky_summary_5
-            entity_pop_1: sensor.dark_sky_precip_probability_1
-            entity_pop_2: sensor.dark_sky_precip_probability_2
-            entity_pop_3: sensor.dark_sky_precip_probability_3
-            entity_pop_4: sensor.dark_sky_precip_probability_4
-            entity_pop_5: sensor.dark_sky_precip_probability_5
-            time_format: 24
-            locale: pl
-            # tooltips: true
-            # tooltip_width: 100px
-            # tooltip_bg_color: black
-            # tooltip_border_color: black
-            # tooltip_caret_size: 3
-          - type: iframe
-            url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates
-            aspect_ratio: 75%
-          - type: sensor
-            entity: sensor.temperature_indoor
-            graph: line
-            theme: sensor-red
-          - type: sensor
-            entity: sensor.temperature_outdoor
-            graph: line
-            theme: sensor-red
-          - type: sensor
-            entity: sensor.humidity_indoor
-            graph: line
-            theme: sensor-blue
-          - type: sensor
-            entity: sensor.humidity_outdoor
-            graph: line
-            theme: sensor-blue
-          - type: sensor
-            entity: sensor.co2_salon
-            graph: line
-            theme: sensor-orange
-          - type: sensor
-            entity: sensor.pressure_outdoor
-            graph: line
-            theme: sensor-cyan
+          - type: vertical-stack
+            cards:
+              - type: custom:dark-sky-weather-card
+                entity_sun: sun.sun
+                entity_daily_summary: sensor.dark_sky_daily_summary
+                entity_current_conditions: sensor.dark_sky_icon
+                entity_humidity: sensor.humidity_outdoor
+                entity_pressure: sensor.pressure_outdoor
+                entity_temperature: sensor.temperature_outdoor
+                entity_apparent_temp: sensor.dark_sky_apparent_temperature
+                entity_visibility: sensor.dark_sky_visibility
+                entity_wind_bearing: sensor.dark_sky_wind_bearing
+                entity_wind_speed: sensor.dark_sky_wind_speed
+                entity_forecast_high_temp_1: sensor.dark_sky_daytime_high_temperature_1
+                entity_forecast_high_temp_2: sensor.dark_sky_daytime_high_temperature_2
+                entity_forecast_high_temp_3: sensor.dark_sky_daytime_high_temperature_3
+                entity_forecast_high_temp_4: sensor.dark_sky_daytime_high_temperature_4
+                entity_forecast_high_temp_5: sensor.dark_sky_daytime_high_temperature_5
+                entity_forecast_low_temp_1: sensor.dark_sky_overnight_low_temperature_1
+                entity_forecast_low_temp_2: sensor.dark_sky_overnight_low_temperature_2
+                entity_forecast_low_temp_3: sensor.dark_sky_overnight_low_temperature_3
+                entity_forecast_low_temp_4: sensor.dark_sky_overnight_low_temperature_4
+                entity_forecast_low_temp_5: sensor.dark_sky_overnight_low_temperature_5
+                entity_forecast_icon_1: sensor.dark_sky_icon_1
+                entity_forecast_icon_2: sensor.dark_sky_icon_2
+                entity_forecast_icon_3: sensor.dark_sky_icon_3
+                entity_forecast_icon_4: sensor.dark_sky_icon_4
+                entity_forecast_icon_5: sensor.dark_sky_icon_5
+                entity_summary_1: sensor.dark_sky_summary_1
+                entity_summary_2: sensor.dark_sky_summary_2
+                entity_summary_3: sensor.dark_sky_summary_3
+                entity_summary_4: sensor.dark_sky_summary_4
+                entity_summary_5: sensor.dark_sky_summary_5
+                entity_pop_1: sensor.dark_sky_precip_probability_1
+                entity_pop_2: sensor.dark_sky_precip_probability_2
+                entity_pop_3: sensor.dark_sky_precip_probability_3
+                entity_pop_4: sensor.dark_sky_precip_probability_4
+                entity_pop_5: sensor.dark_sky_precip_probability_5
+                time_format: 24
+                locale: pl
+                # tooltips: true
+                # tooltip_width: 100px
+                # tooltip_bg_color: black
+                # tooltip_border_color: black
+                # tooltip_caret_size: 3
+              - type: iframe
+                url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates
+                aspect_ratio: 60%
+              - type: sensor
+                entity: sensor.airly_info
+          - type: vertical-stack
+            cards:
+              - type: sensor
+                entity: sensor.temperature_outdoor
+                graph: line
+                theme: sensor-red
+              - type: sensor
+                entity: sensor.humidity_outdoor
+                graph: line
+                theme: sensor-blue
+              - type: sensor
+                entity: sensor.pressure_outdoor
+                graph: line
+                theme: sensor-cyan
+          - type: vertical-stack
+            cards:
+              - type: sensor
+                entity: sensor.temperature_indoor
+                graph: line
+                theme: sensor-red
+              - type: sensor
+                entity: sensor.humidity_indoor
+                graph: line
+                theme: sensor-blue
+              - type: sensor
+                entity: sensor.co2_salon
+                graph: line
+                theme: sensor-orange
+          - type: vertical-stack
+            cards:
+              - type: sensor
+                entity: sensor.airly_pm1
+                graph: line
+                theme: sensor-grey
+              - type: sensor
+                entity: sensor.airly_pm25
+                graph: line
+                theme: sensor-grey
+              - type: sensor
+                entity: sensor.airly_pm10
+                graph: line
+                theme: sensor-grey
   - id: misc
     icon: mdi:settings
     title: 'Różne'

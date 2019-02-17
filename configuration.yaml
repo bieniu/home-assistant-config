@@ -57,6 +57,13 @@ logbook:
       - device_tracker.grazyna
       - device_tracker.jerzy
 
+system_health:
+
+utility_meter:
+  energy_light_salon_monthly:
+    source: sensor.energy_light_salon
+    cycle: monthly
+
 sensor: !include sensors.yaml
 binary_sensor: !include binary_sensors.yaml
 group: !include groups.yaml

@@ -86,6 +86,7 @@ exclude:
     - sensor.shelly2_firmware_version_current
     - sensor.tasmota_version_current
     - sensor.last_boot
+    - sensor.airly_data
 include:
   entities:
     - device_tracker.maciek

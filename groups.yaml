@@ -6,3 +6,25 @@ windows:
     - binary_sensor.balcony_door_pracownia
     - binary_sensor.window_antresola
     - binary_sensor.window_antek
+
+household:
+  name: 'Domownicy'
+  entities:
+    - device_tracker.edyta
+    - device_tracker.maciek
+
+family:
+  name: 'Rodzina'
+  entities:
+    - device_tracker.grazyna
+    - device_tracker.romana
+    - device_tracker.jerzy
+    - device_tracker.agnieszka
+    - device_tracker.emil
+
+guests:
+  name: 'Goście'
+  entities:
+    - device_tracker.grazyna
+    - device_tracker.agnieszka
+    - device_tracker.emil

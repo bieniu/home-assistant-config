@@ -5,20 +5,12 @@
   sensors:
     people_at_home:
       value_template: >-
-         {{ is_state('device_tracker.maciek', 'home')
-            or is_state('device_tracker.edyta', 'home')
-            or is_state('device_tracker.grazyna', 'home')
-            or is_state('device_tracker.jerzy', 'home')
-            or is_state('device_tracker.romana', 'home')
-            or is_state('device_tracker.agnieszka', 'home')
-            or is_state('device_tracker.emil', 'home')
+         {{ is_state('group.household', 'home')
+            or is_state('group.family', 'home')
             or is_state('media_player.denon', 'on') }}
 
     guests:
-      value_template: >-
-          {{ is_state('device_tracker.grazyna', 'home')
-            or is_state('device_tracker.agnieszka', 'home')
-            or is_state('device_tracker.emil', 'home') }}
+      value_template: "{{ is_state('group.guests', 'home') }}"
 
     motion_antresola:
       friendly_name: 'Ruch'
@@ -50,7 +42,7 @@
 
     raspberry_status:
       value_template: "{{ is_state('device_tracker.raspberry', 'home') }}"
-      friendly_name: 'Raspberry Pi 3'
+      friendly_name: 'Raspberry Pi 3B'
 
     switch_status:
       value_template: "{{ is_state('device_tracker.switch', 'home') }}"
@@ -132,33 +124,33 @@
       value_template: "{{ is_state('device_tracker.dafang', 'home') }}"
       friendly_name: 'Xiaomi DaFang'
 
-    sonoff_basic_1740_status:
-      friendly_name: 'Sonoff Basic [1]'
-      value_template: "{{ is_state('device_tracker.sonoff_basic_1740', 'home') }}"
+    sonoff_basic_a786cc_status:
+      friendly_name: 'Sonoff Basic A786CC'
+      value_template: "{{ is_state('device_tracker.sonoff_basic_a786cc', 'home') }}"
 
-    sonoff_basic_7297_status:
-      friendly_name: 'Sonoff Basic [2]'
-      value_template: "{{ is_state('device_tracker.sonoff_basic_7297', 'home') }}"
+    sonoff_basic_067c81_status:
+      friendly_name: 'Sonoff Basic 067C81'
+      value_template: "{{ is_state('device_tracker.sonoff_basic_067c81', 'home') }}"
 
-    sonoff_basic_7080_status:
-      friendly_name: 'Sonoff Basic [3]'
-      value_template: "{{ is_state('device_tracker.sonoff_basic_7080', 'home') }}"
+    sonoff_basic_5dfba8_status:
+      friendly_name: 'Sonoff Basic 5DFBA8'
+      value_template: "{{ is_state('device_tracker.sonoff_basic_5dfba8', 'home') }}"
 
-    sonoff_s26_1141_status:
-      friendly_name: 'Sonoff S26'
-      value_template: "{{ is_state('device_tracker.sonoff_s26_1141', 'home') }}"
+    sonoff_s26_182475_status:
+      friendly_name: 'Sonoff S26 182475'
+      value_template: "{{ is_state('device_tracker.sonoff_s26_182475', 'home') }}"
 
     shelly1_328900_status:
-      friendly_name: 'Shelly1'
+      friendly_name: 'Shelly1 328900'
       value_template: "{{ is_state('device_tracker.shelly1_328900', 'home') }}"
 
     shelly2_5b2604_status:
-      friendly_name: 'Shelly2'
+      friendly_name: 'Shelly2 5B2604'
       value_template: "{{ is_state('device_tracker.shelly2_5b2604', 'home') }}"
 
-    wemos_sensor_co2_salon_status:
-      friendly_name: 'Wemos D1 mini'
-      value_template: "{{ is_state('device_tracker.wemos_sensor_co2', 'home') }}"
+    wemos_d1_mini_1c91ea_status:
+      friendly_name: 'Wemos D1 mini 1C91EA'
+      value_template: "{{ is_state('device_tracker.wemos_d1_mini_1c91ea', 'home') }}"
 
     yeelight_bulb_salon1_status:
       friendly_name: 'Yeelight Bulb YLDP02YL [1]'
