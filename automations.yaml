@@ -162,21 +162,27 @@
 - id: notification_humidifier_low_water
   alias: 'Notification Humidifier Low Water'
   trigger:
-    platform: numeric_state
-    entity_id: sensor.humidifier_water_level
-    below: 20
+    - platform: numeric_state
+      entity_id: sensor.humidifier_water_level
+      below: 10
+    - platform: numeric_state
+      entity_id: sensor.humidifier_water_level
+      below: 20
+    - platform: numeric_state
+      entity_id: sensor.humidifier_water_level
+      below: 40
   action:
     - service: script.notify
       data_template:
         title: "Uzupełnij wodę w nawilżaczu"
-        message: "W nawilżaczu pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        tag: 'notification-humififier-low-water'
+        message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+        tag: 'notification-humidifier-low-water'
         notify_edyta: true
     - service: persistent_notification.create
       data_template:
         title: "Uzupełnij wodę w nawilżaczu"
-        message: "W nawilżaczu pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        notification_id: 'notification-humififier-low-water'
+        message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+        notification_id: 'notification-humidifier-low-water'
 
 # powiadomienie o aktualizacji oprogramowania Shelly
 - id: notification_shelly_update_available
@@ -816,9 +822,10 @@
         title: 'Włączono szybkie dogrzanie'
         message: 'Włączono szybie dogrzanie pomieszczeń po długiej nieobecności domowników.'
         tag: 'notification-heating-fat-warm-up'
-    - condition: numeric_state
-      entity_id: sensor.humidity_salon
-      below: 39
+    - condition: template
+      value_template: >-
+        {{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float
+           and states('sensor.humidifier_water_level') | int > 5 }}
     - service: fan.turn_on
       entity_id: fan.humidifier_salon
 
@@ -1397,11 +1404,6 @@
   trigger:
     - platform: template
       value_template: "{{ state_attr('media_player.mibox', 'app_name') == 'Homescreen' }}"
-    - platform: state
-      entity_id: sensor.androidtv_activity
-      to: 'Uruchom ponownie'
-      for:
-        seconds: 10
     - platform: state
       entity_id: sensor.dune_activity
       from: 'file_playback'
@@ -2130,12 +2132,14 @@
 - id: humidification_start
   alias: 'Humidification Start'
   trigger:
-    platform: numeric_state
-    entity_id: sensor.humidity_salon
-    below: 39
+    platform: template
+    value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float }}"
   condition:
     condition: and
     conditions:
+      - condition: numeric_state
+        entity_id: sensor.humidifier_water_level
+        above: 5
       - condition: state
         entity_id: input_boolean.heating_season
         state: 'on'
@@ -2152,13 +2156,15 @@
     service: fan.turn_on
     entity_id: fan.humidifier_salon
 
-# wyłączenie nawilżacza jak wilgotność powyżej 41% i sezon grzewczy
+# wyłączenie nawilżacza jak sezon grzewczy i wilgotność powyżej 41% lub w zbiorniku mniej niż 6%
 - id: humidification_stop
   alias: 'Humidification Stop'
   trigger:
-    platform: numeric_state
-    entity_id: sensor.humidity_salon
-    above: 41
+    - platform: template
+      value_template: "{{ states('sensor.humidity_salon') | float > states('input_select.target_humidity') | float + 1 }}"
+    - platform: numeric_state
+      entity_id: sensor.humidifier_water_level
+      below: 6
   condition:
     - condition: state
       entity_id: input_boolean.heating_season
@@ -2167,8 +2173,22 @@
       entity_id: fan.humidifier_salon
       state: 'on'
   action:
-    service: fan.turn_off
-    entity_id: fan.humidifier_salon
+    - service: fan.turn_off
+      entity_id: fan.humidifier_salon
+    - condition: numeric_state
+      entity_id: sensor.humidifier_water_level
+      below: 6
+    - service: script.notify
+      data_template:
+        title: "Uzupełnij wodę w nawilżaczu"
+        message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+        tag: 'notification-humidifier-low-water'
+        notify_edyta: true
+    - service: persistent_notification.create
+      data_template:
+        title: "Uzupełnij wodę w nawilżaczu"
+        message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+        notification_id: 'notification-humidifier-low-water'
 
 ##################################################################################################
 

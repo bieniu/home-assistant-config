@@ -36,9 +36,9 @@
   min_temp: 4
 
 #### ENERGY ####
-'sensor.*energy':
+'sensor.*energy*':
   icon: mdi:flash-outline
-'sensor.*power':
+'sensor.*power*':
   icon: mdi:flash-outline
 
 #### SONOFF ####

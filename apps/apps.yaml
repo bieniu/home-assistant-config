@@ -18,6 +18,13 @@ brother_printer_status:
   mac: !secret brother_mac
   retain: true
 
+# airly:
+#   module: WIP_airly
+#   class: Airly
+#   airly_apikey: !secret airly_apikey
+#   latitude: !secret home_latitude
+#   longitude: !secret home_longitude
+
 # heating_thermostats_update:
 #   module: heating_thermostats_update
 #   class: HeatingThermostatsUpdate

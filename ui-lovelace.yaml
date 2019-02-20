@@ -11,8 +11,12 @@ resources:
     type: module
   - url: /local/lovelace/card-tools.js
     type: js
-  - url: /local/lovelace/auto-entities.js
+  - url: /local/lovelace/monster-card.js
     type: js
+  - url: /local/lovelace/secondaryinfo-entity-row.js
+    type: module
+  - url: /local/lovelace/mini-graph-card-bundle.js
+    type: module
 
 title: 'Dom'
 views:
@@ -25,15 +29,24 @@ views:
     cards:
       - type: custom:layout-card
         cards:
-          - type: custom:auto-entities
+          - type: custom:monster-card
             card:
-              type: entities
+              type: glance
               title: 'Rodzina'
-              show_header_toggle: false
+              show_name: false
             filter:
               include:
-                - group: group.household
-                - group: group.family
+                - entity_id: device_tracker.edyta
+                - entity_id: device_tracker.maciek
+                - entity_id: device_tracker.grazyna
+                  state: home
+                - entity_id: device_tracker.romana
+                  state: home
+                - entity_id: device_tracker.jerzy
+                  state: home
+                - entity_id: device_tracker.agnieszka
+                  state: home
+                - entity_id: device_tracker.emil
                   state: home
           - type: vertical-stack
             cards:
@@ -67,7 +80,9 @@ views:
                   - entity: binary_sensor.motion_salon
                     secondary_info: last-changed
                   - climate.thermostat_salon
-                  - fan.humidifier_salon
+                  - type: custom:secondaryinfo-entity-row
+                    entity: fan.humidifier_salon
+                    secondary_info: "poziom wody: [[ sensor.humidifier_water_level.state ]] %"
                   - switch.light_bulbs_salon
                   - light.leds_salon
                   - light.lamp_salon
@@ -338,30 +353,28 @@ views:
           - type: custom:vertical-stack-in-card
             title: 'Pobór mocy'
             cards:
-              - type: sensor
-                entity: sensor.light_salon_power
-                graph: line
-                detail: 2
-                theme: sensor-blue
-                icon: mdi:flash-outline
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 0
+                points_per_hour: 1
+                show:
+                  icon: false
+                  graph: bar
+                entities:
+                  - sensor.light_salon_power
+                line_color: '#36a2eb'
           - type: custom:vertical-stack-in-card
             title: 'Zużycie energii'
             cards:
-              - type: sensor
-                entity: sensor.energy_light_salon_monthly
-                icon: mdi:flash-outline
-          - type: entities
-            title: 'Baterie sensorów ruchu'
-            show_header_toggle: false
-            entities:
-              - sensor.battery_body_sensor_przedpokoj
-              - sensor.battery_body_sensor_salon_1
-              - sensor.battery_body_sensor_salon_2
-              - sensor.battery_body_sensor_pracownia
-              - sensor.battery_body_sensor_schody
-              - sensor.battery_body_sensor_antresola
-              - sensor.battery_body_sensor_antek
-              - sensor.battery_body_sensor_sypialnia
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 2
+                lower_bound: 0
+                show:
+                  icon: false
+                  graph: false
+                entities:
+                  - sensor.energy_light_salon_monthly
           - type: custom:vertical-stack-in-card
             title: 'UPS'
             cards:
@@ -370,21 +383,45 @@ views:
                 entities:
                   - sensor.ups_status
                   - sensor.ups_battery_charge
-              - type: gauge
-                title: 'Obciążenie'
-                entity: sensor.ups_load
-                severity:
-                  green: 0
-                  yellow: 40
-                  red: 70
-              - type: sensor
-                entity: sensor.ups_input_voltage
-                graph: line
-                theme: sensor-red
-              - type: sensor
-                entity: sensor.ups_battery_voltage
-                graph: line
-                theme: sensor-cyan
+                  - sensor.ups_load
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 0
+                show:
+                  icon: false
+                entities:
+                  - sensor.ups_input_voltage
+                line_color: '#ff6384'
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 1
+                lower_bound: 0
+                show:
+                  icon: false
+                entities:
+                  - sensor.ups_battery_voltage
+                line_color: '#4bc0c0'
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: 'Baterie sensorów ruchu'
+                show_header_toggle: false
+                entities:
+                  - sensor.battery_body_sensor_przedpokoj
+                  - sensor.battery_body_sensor_salon_1
+                  - sensor.battery_body_sensor_salon_2
+                  - sensor.battery_body_sensor_pracownia
+                  - sensor.battery_body_sensor_schody
+                  - sensor.battery_body_sensor_antresola
+                  - sensor.battery_body_sensor_antek
+                  - sensor.battery_body_sensor_sypialnia
+              - type: entities
+                title: 'Baterie przełączników'
+                show_header_toggle: false
+                entities:
+                  - sensor.battery_switch_light_salon_1
+                  - sensor.battery_switch_light_salon_2
+                  - sensor.battery_switch_light_antek
           - type: entities
             title: 'Baterie termostatów'
             show_header_toggle: false
@@ -417,13 +454,6 @@ views:
               - sensor.battery_window_sensor_antresola
               - sensor.battery_window_sensor_antek
               - sensor.battery_door_sensor_sypialnia
-          - type: entities
-            title: 'Baterie przełączników'
-            show_header_toggle: false
-            entities:
-              - sensor.battery_switch_light_salon_1
-              - sensor.battery_switch_light_salon_2
-              - sensor.battery_switch_light_antek
   - id: climate
     icon: mdi:cloud
     title: 'Klimat'
@@ -480,51 +510,69 @@ views:
                 # tooltip_caret_size: 3
               - type: iframe
                 url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates
-                aspect_ratio: 60%
+                aspect_ratio: 56%
               - type: sensor
                 entity: sensor.airly_info
           - type: vertical-stack
             cards:
-              - type: sensor
-                entity: sensor.temperature_outdoor
-                graph: line
-                theme: sensor-red
-              - type: sensor
-                entity: sensor.humidity_outdoor
-                graph: line
-                theme: sensor-blue
-              - type: sensor
-                entity: sensor.pressure_outdoor
-                graph: line
-                theme: sensor-cyan
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 1
+                entities:
+                  - sensor.temperature_outdoor
+                line_color: '#ff6384'
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 1
+                entities:
+                  - sensor.humidity_outdoor
+                line_color: '#36a2eb'
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 0
+                entities:
+                  - sensor.pressure_outdoor
+                line_color: '#4bc0c0'
           - type: vertical-stack
             cards:
-              - type: sensor
-                entity: sensor.temperature_indoor
-                graph: line
-                theme: sensor-red
-              - type: sensor
-                entity: sensor.humidity_indoor
-                graph: line
-                theme: sensor-blue
-              - type: sensor
-                entity: sensor.co2_salon
-                graph: line
-                theme: sensor-orange
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 1
+                entities:
+                  - sensor.temperature_indoor
+                line_color: '#ff6384'
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 1
+                entities:
+                  - sensor.humidity_indoor
+                line_color: '#36a2eb'
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 0
+                entities:
+                  - sensor.co2_salon
+                line_color: '#ffce57'
           - type: vertical-stack
             cards:
-              - type: sensor
-                entity: sensor.airly_pm1
-                graph: line
-                theme: sensor-grey
-              - type: sensor
-                entity: sensor.airly_pm25
-                graph: line
-                theme: sensor-grey
-              - type: sensor
-                entity: sensor.airly_pm10
-                graph: line
-                theme: sensor-grey
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 0
+                entities:
+                  - sensor.airly_pm1
+                line_color: '#78909c'
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 0
+                entities:
+                  - sensor.airly_pm25
+                line_color: '#78909c'
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 0
+                entities:
+                  - sensor.airly_pm10
+                line_color: '#78909c'
   - id: misc
     icon: mdi:settings
     title: 'Różne'
@@ -533,6 +581,7 @@ views:
     panel: true
     cards:
       - type: custom:layout-card
+        max_columns: 4
         cards:
           - type: entities
             title: 'Ustawienie ogrzewania'
@@ -554,14 +603,21 @@ views:
               - input_select.heating_temp_day
               - input_select.heating_temp_night
               - input_select.heating_temp_eco
-          - type: entities
-            title: 'Godziny ogrzewania'
-            show_header_toggle: false
-            entities:
-              - input_select.heating_night_start
-              - input_select.heating_night_end
-              - input_select.heating_night_start_weekend
-              - input_select.heating_night_end_weekend
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: 'Godziny ogrzewania'
+                show_header_toggle: false
+                entities:
+                  - input_select.heating_night_start
+                  - input_select.heating_night_end
+                  - input_select.heating_night_start_weekend
+                  - input_select.heating_night_end_weekend
+              - type: entities
+                title: 'Nawilżanie'
+                show_header_toggle: false
+                entities:
+                  - input_select.target_humidity
           - type: entities
             title: 'Skrypty i ustawienia'
             show_header_toggle: false

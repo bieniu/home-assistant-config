@@ -87,9 +87,10 @@ heating_day:
       entity_id:
         - input_boolean.heating_night
         - input_boolean.heating_salon_kuchnia_night
-    - condition: numeric_state
-      entity_id: sensor.humidity_salon
-      below: 39
+    - condition: template
+      value_template: >-
+        {{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float
+           and states('sensor.humidifier_water_level') | int > 5 }}
     - service: fan.turn_on
       entity_id: fan.humidifier_salon
 

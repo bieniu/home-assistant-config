@@ -113,7 +113,7 @@ binary_sensor.brother_status:
   icon: mdi:printer
 binary_sensor.dafang_status:
   icon: mdi:cctv
-wemos_d1_mini_1c91ea_status:
+binary_sensor.wemos_d1_mini_1c91ea_status:
   icon: mdi:developer-board
 binary_sensor.mihumidifier_status:
   icon: mdi:fan

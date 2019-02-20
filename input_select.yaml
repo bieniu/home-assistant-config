@@ -35,7 +35,7 @@ heating_night_start_weekend:
   icon: mdi:clock-start
 
 heating_night_end_weekend:
-  name: 'Koniec nocnego obiżenia temperatury w weekendy'
+  name: 'Koniec nocnego obniżenia temperatury w weekendy'
   options:
     - '05:00'
     - '05:30'
@@ -127,6 +127,16 @@ heating_temp_eco:
     - '19'
     - '20'
   icon: mdi:temperature-celsius
+
+target_humidity:
+  name: 'Docelowa wilgotność'
+  options:
+    - '40'
+    - '45'
+    - '50'
+    - '55'
+    - '60'
+  icon: mdi:percent
 
 light_scenes_salon:
   name: 'Tryb oświetlenia'
