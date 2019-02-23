@@ -123,10 +123,6 @@ fan.humidifier_salon:
   friendly_name: 'Nawilżacz'
 
 #### SWITCHES ####
-switch.denon:
-  icon: mdi:audio-video
-switch.playstation:
-  icon: mdi:playstation
 switch.stacjonarny:
   friendly_name: 'Komputer'
   icon: mdi:desktop-tower

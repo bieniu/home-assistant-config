@@ -54,7 +54,6 @@
 
 ## Home Assistant Custom Components
 
-* [PlayStation 4 media_player](https://github.com/home-assistant/home-assistant/pull/19469)
 * [Custom Frontend](https://github.com/home-assistant/home-assistant/pull/10783)
 * [AndroidTV](https://github.com/home-assistant/home-assistant/pull/19157)
 * [Custom Updater](https://github.com/custom-components/custom_updater)
@@ -71,15 +70,18 @@
 * [mini-media-player](https://github.com/kalkih/mini-media-player)
 * [tracker-card](https://github.com/custom-cards/tracker-card)
 * [vertical-stack-in-card](https://github.com/custom-cards/vertical-stack-in-card)
-* [auto-entities](https://github.com/thomasloven/lovelace-auto-entities)
+* [monster-card](https://community.home-assistant.io/t/lovelace-bringing-back-entity-filter-monster-card/58701)
 * [card-tools](https://github.com/thomasloven/lovelace-card-tools)
+* [secondaryinfo-entity-row](https://github.com/MizterB/lovelace-secondaryinfo-entity-row)
 
 ## AppDaemon
+
 * [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/home-assistant-config/blob/master/apps/update_thermostats.py)
 * [Brother printer status sensors](https://github.com/bieniu/home-assistant-config/blob/master/apps/brother_printer_status.py)
 * [DuneHD Activity](https://github.com/bieniu/home-assistant-config/blob/master/apps/dune_activity.py)
 
 ## Python Scripts
+
 * [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/heating_thermostat_update.py)
 * [Shellies Discovery](https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/shellies_discovery.py)
 

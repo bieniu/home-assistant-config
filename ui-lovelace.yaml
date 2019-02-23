@@ -361,7 +361,7 @@ views:
                   icon: false
                   graph: bar
                 entities:
-                  - sensor.light_salon_power
+                  - sensor.power_light_salon
                 line_color: '#36a2eb'
           - type: custom:vertical-stack-in-card
             title: 'Zużycie energii'
@@ -626,6 +626,11 @@ views:
               - input_select.log_level
           - type: custom:tracker-card
             title: 'Aktualizacje'
+            name_text: 'Nazwa'
+            current_text: 'Obecna'
+            available_text: 'Dostępna'
+            check_text: 'Sprawdź'
+            update_all_text: 'Aktualizuj'
             trackers:
               - sensor.custom_card_tracker
               - sensor.custom_python_script_tracker

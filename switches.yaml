@@ -21,43 +21,7 @@
   interval: 600
 
 - platform: template
-  switches:
-    denon:
-      friendly_name: 'Amplituner'
-      value_template: >-
-        {% if is_state('media_player.denon', 'on')
-           or is_state('media_player.denon', 'playing') %}
-          on
-        {% elif is_state('media_player.denon', 'off') %}
-          off
-        {% else %}
-          unknown
-        {% endif %}
-      turn_on:
-        service: media_player.turn_on
-        entity_id: media_player.denon
-      turn_off:
-        service: media_player.turn_off
-        entity_id: media_player.denon
-    playstation:
-      friendly_name: 'PlayStation'
-      value_template: >-
-        {% if is_state('media_player.playstation', 'on')
-           or is_state('media_player.playstation', 'playing')
-           or is_state('media_player.playstation', 'idle') %}
-          on
-        {% elif is_state('media_player.playstation', 'off') %}
-          off
-        {% else %}
-          unknown
-        {% endif %}
-      turn_on:
-        service: media_player.turn_on
-        entity_id: media_player.playstation
-      turn_off:
-        service: media_player.turn_off
-        entity_id: media_player.playstation
-
+  switches:    
     camera_move_up:
       friendly_name: 'w górę'
       value_template: 'on'

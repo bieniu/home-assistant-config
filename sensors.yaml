@@ -1,5 +1,5 @@
 - platform: integration
-  source: sensor.light_salon_power
+  source: sensor.power_light_salon
   name: 'Energy Light Salon'
   unit_prefix: k
   round: 2
@@ -126,7 +126,7 @@
 
 - platform: darksky
   api_key: !secret darksky_api_key
-  update_inverval:
+  scan_interval:
     minutes: 15
   language: 'pl'
   forecast:
@@ -177,6 +177,13 @@
 
 - platform: template
   sensors:
+    power_light_salon:
+      friendly_name: 'Oświetlenie salonu'
+      unit_of_measurement: 'W'
+      value_template: >-
+        {{ states('sensor.light_salon_power') | int +
+           states('sensor.lamp_salon_power') | int }}
+
     airly_pm1:
       friendly_name: 'PM1'
       unit_of_measurement: 'µg/m³'

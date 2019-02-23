@@ -3,11 +3,6 @@
   name: 'Denon'
   timeout: 3
 
-- platform: ps4
-  host: !secret playstation_ip
-  name: 'PlayStation'
-  local_store: games
-
 - platform: androidtv
   host: !secret androidtv_hostname
   adb_server_ip: 127.0.0.1

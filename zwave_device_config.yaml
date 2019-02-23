@@ -1,46 +1,30 @@
-# sensor.fibaro_fgs223_alarm_level:
-#   ignored: true
-# sensor.fibaro_fgs223_alarm_type:
-#   ignored: true
-# sensor.fibaro_fgs223_exporting:
-#   ignored: true
-# sensor.fibaro_fgs223_exporting_2:
-#   ignored: true
-# sensor.fibaro_fgs223_heat:
-#   ignored: true
-# sensor.fibaro_fgs223_power_management:
-#   ignored: true
-# sensor.fibaro_fgs223_sourcenodeid:
-#   ignored: true
-# switch.fibaro_fgs223_relay_1:
-#   ignored: true
-# switch.fibaro_fgs223_relay_2:
-#   ignored: true
-# sensor.fibaro_fgs223_interval:
-#   ignored: true
-# sensor.fibaro_fgs223_interval_2:
-#   ignored: true
-# sensor.fibaro_fgs223_previous_reading:
-#   ignored: true
-# sensor.fibaro_fgs223_previous_reading_2:
-#   ignored: true
-# sensor.fibaro_fgs223_relay_1_energy:
-#   ignored: true
-# sensor.fibaro_fgs223_relay_1_power:
-#   ignored: true
-# sensor.fibaro_fgs223_relay_2_energy:
-#   ignored: true
-# sensor.fibaro_fgs223_relay_2_power:
-#   ignored: true
-# sensor.fibaro_fgs223_energy:
-#   ignored: true
-# sensor.fibaro_fgs223_power:
-#   ignored: true
-# sensor.fibaro_fgs223_energy_2:
-#   ignored: true
-# sensor.fibaro_fgs223_power_2:
-#   ignored: true
-# switch.fibaro_fgs223_1:
-#   ignored: true
-# switch.fibaro_fgs223_2:
-#   ignored: true
+sensor.fibaro_fgs223_alarm_level:
+  ignored: true
+sensor.fibaro_fgs223_alarm_type:
+  ignored: true
+sensor.fibaro_fgs223_energy_1:
+  ignored: true
+sensor.fibaro_fgs223_energy_2:
+  ignored: true
+sensor.fibaro_fgs223_exporting_1:
+  ignored: true
+sensor.fibaro_fgs223_exporting_2:
+  ignored: true
+sensor.fibaro_fgs223_heat:
+  ignored: true
+sensor.fibaro_fgs223_interval_1:
+  ignored: true
+sensor.fibaro_fgs223_interval_2:
+  ignored: true
+sensor.fibaro_fgs223_power_2:
+  ignored: true
+sensor.fibaro_fgs223_power_management:
+  ignored: true
+sensor.fibaro_fgs223_previous_reading_1:
+  ignored: true
+sensor.fibaro_fgs223_previous_reading_2:
+  ignored: true
+switch.fibaro_fgs223_relay_2:
+ ignored: true
+sensor.fibaro_fgs223_sourcenodeid:
+  ignored: true

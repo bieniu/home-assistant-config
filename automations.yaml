@@ -1063,6 +1063,20 @@
     service: script.light_away_mode
 
 ## SALON ##
+# włączanie przekaźnika lampy w salonie
+- id: light_turn_lamp_salon_relay
+  alias: 'Light Turn On Lamp Salon Relay'
+  trigger:
+    - platform: state
+      entity_id: switch.lamp_salon
+      to: 'off'
+    - platform: state
+      entity_id: light.lamp_salon
+      to: 'unavailable'
+  action:
+    service: switch.turn_on
+    entity_id: switch.lamp_salon
+
 # wyłączenie świateł w salonie jeśli nie ma ruchu przez godzinę i jest po północy
 - id: light_turn_off_in_salon_when_no_motion_and_after_midnight
   alias: 'Light Turn Off In Salon When No Motion And After Midnight'
@@ -1998,8 +2012,8 @@
         option: 'PlayStation'
     - service: input_boolean.turn_off
       entity_id: input_boolean.harmony_command
-    - service: switch.turn_on
-      entity_id: switch.playstation
+    - service: media_player.turn_on
+      entity_id: media_player.playstation
 
 - id: harmony_starts_xbox
   alias: 'Harmony Starts Xbox'
@@ -2109,8 +2123,8 @@
     state: 'off'
   action:
     - service: script.harmony_playstation
-    - service: switch.turn_on
-      entity_id: switch.playstation
+    - service: media_player.turn_on
+      entity_id: media_player.playstation
 
 - id: hass_starts_xbox
   alias: 'HASS Starts Xbox'
