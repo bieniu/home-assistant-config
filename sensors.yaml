@@ -48,15 +48,15 @@
   password: !secret shellies_password
   scan_interval: 7200
 
-- platform: rest
-  name: Airly_data
-  resource: !secret airly_url
-  value_template: "{{ value_json['current']['values'][0]['value'] | round }} {{ value_json['current']['values'][1]['value'] | round }} {{ value_json['current']['values'][2]['value'] | round }} {{ value_json['current']['indexes'][0]['value'] | round }}"
-  scan_interval: 300
-  headers:
-    Accept: application/json
-    Accept-Language: pl
-    apikey: !secret airly_apikey
+# - platform: rest
+#   name: Airly_data
+#   resource: !secret airly_url
+#   value_template: "{{ value_json['current']['values'][0]['value'] | round }} {{ value_json['current']['values'][1]['value'] | round }} {{ value_json['current']['values'][2]['value'] | round }} {{ value_json['current']['indexes'][0]['value'] | round }}"
+#   scan_interval: 300
+#   headers:
+#     Accept: application/json
+#     Accept-Language: pl
+#     apikey: !secret airly_apikey
 
 - platform: nut
   name: 'UPS'
@@ -184,33 +184,33 @@
         {{ states('sensor.light_salon_power') | int +
            states('sensor.lamp_salon_power') | int }}
 
-    airly_pm1:
-      friendly_name: 'PM1'
-      unit_of_measurement: 'µg/m³'
-      value_template: "{{ states('sensor.airly_data').split(' ')[0] }}"
-
-    airly_pm25:
-      friendly_name: 'PM2.5'
-      unit_of_measurement: 'µg/m³'
-      value_template: "{{ states('sensor.airly_data').split(' ')[1] }}"
-
-    airly_pm10:
-      friendly_name: 'PM10'
-      unit_of_measurement: 'µg/m³'
-      value_template: "{{ states('sensor.airly_data').split(' ')[2] }}"
+    # airly_pm1:
+    #   friendly_name: 'PM1'
+    #   unit_of_measurement: 'µg/m³'
+    #   value_template: "{{ states('sensor.airly_data').split(' ')[0] }}"
+    #
+    # airly_pm25:
+    #   friendly_name: 'PM2.5'
+    #   unit_of_measurement: 'µg/m³'
+    #   value_template: "{{ states('sensor.airly_data').split(' ')[1] }}"
+    #
+    # airly_pm10:
+    #   friendly_name: 'PM10'
+    #   unit_of_measurement: 'µg/m³'
+    #   value_template: "{{ states('sensor.airly_data').split(' ')[2] }}"
 
     airly_info:
       friendly_name: 'Jakość powietrza'
       value_template: >-
-        {% if states('sensor.airly_data').split(' ')[3] | int <= 25 %}
+        {% if states('sensor.airly_caqi') | int <= 25 %}
           bardzo dobra
-        {% elif states('sensor.airly_data').split(' ')[3] | int <= 50 %}
+        {% elif states('sensor.airly_caqi') | int <= 50 %}
           dobra
-        {% elif states('sensor.airly_data').split(' ')[3] | int <= 75 %}
+        {% elif states('sensor.airly_caqi') | int <= 75 %}
           średnia
-        {% elif states('sensor.airly_data').split(' ')[3] | int <= 100 %}
+        {% elif states('sensor.airly_caqi') | int <= 100 %}
           zła
-        {% elif states('sensor.airly_data').split(' ')[3] | int > 100 %}
+        {% elif states('sensor.airly_caqi') | int > 100 %}
           bardzo zła
         {% else %}
           unknown

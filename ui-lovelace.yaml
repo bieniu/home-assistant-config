@@ -518,18 +518,24 @@ views:
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 1
+                align_header: left
+                align_icon: left
                 entities:
                   - sensor.temperature_outdoor
                 line_color: '#ff6384'
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 1
+                align_header: left
+                align_icon: left
                 entities:
                   - sensor.humidity_outdoor
                 line_color: '#36a2eb'
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 0
+                align_header: left
+                align_icon: left
                 entities:
                   - sensor.pressure_outdoor
                 line_color: '#4bc0c0'
@@ -538,18 +544,24 @@ views:
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 1
+                align_header: left
+                align_icon: left
                 entities:
                   - sensor.temperature_indoor
                 line_color: '#ff6384'
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 1
+                align_header: left
+                align_icon: left
                 entities:
                   - sensor.humidity_indoor
                 line_color: '#36a2eb'
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 0
+                align_header: left
+                align_icon: left
                 entities:
                   - sensor.co2_salon
                 line_color: '#ffce57'
@@ -558,18 +570,24 @@ views:
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 0
+                align_header: left
+                align_icon: left
                 entities:
                   - sensor.airly_pm1
                 line_color: '#78909c'
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 0
+                align_header: left
+                align_icon: left
                 entities:
                   - sensor.airly_pm25
                 line_color: '#78909c'
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 0
+                align_header: left
+                align_icon: left
                 entities:
                   - sensor.airly_pm10
                 line_color: '#78909c'

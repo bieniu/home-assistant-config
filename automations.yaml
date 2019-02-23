@@ -1372,22 +1372,13 @@
     - service: input_boolean.turn_off
       entity_id: input_boolean.salon_light_motion_on
 
-# Scena oświetlenia salonu film po włączeniu Netflix/Youtube/Dune/gry na PS
+# Scena oświetlenia salonu film po włączeniu filmy/gry
 - id: light_scene_film
   alias: 'Light Scene Film'
   trigger:
-    - platform: template
-      value_template: "{{ state_attr('media_player.mibox', 'app_name') == 'Netflix' }}"
-    - platform: template
-      value_template: "{{ state_attr('media_player.mibox', 'app_name') == 'Showmax' }}"
-    - platform: template
-      value_template: "{{ state_attr('media_player.mibox', 'app_name') == 'YouTube' }}"
-    - platform: template
-      value_template: "{{ state_attr('media_player.mibox', 'app_name') == 'Vimeo' }}"
-    - platform: template
-      value_template: "{{ state_attr('media_player.mibox', 'app_name') == 'HBO GO' }}"
-    - platform: template
-      value_template: "{{ state_attr('media_player.mibox', 'app_name') == 'Amazon Prime Video' }}"
+    - platform: state
+      entity_id: media_player.mibox
+      to: 'playing'
     - platform: state
       entity_id: sensor.dune_activity
       to: 'file_playback'
@@ -1412,12 +1403,13 @@
       entity_id: input_select.light_scenes_salon
       option: 'film'
 
-# Scena oświetlenia salonu auto po wyłączeniu filmu
+# Scena oświetlenia salonu auto po wyłączeniu filmu/gry
 - id: light_scene_auto_after_film
   alias: 'Light Scene Auto After Film'
   trigger:
-    - platform: template
-      value_template: "{{ state_attr('media_player.mibox', 'app_name') == 'Homescreen' }}"
+    - platform: state
+      entity_id: media_player.mibox
+      to: 'paused'
     - platform: state
       entity_id: sensor.dune_activity
       from: 'file_playback'

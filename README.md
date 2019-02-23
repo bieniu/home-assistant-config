@@ -9,7 +9,7 @@
 ## Z-Wave Devices
 
 * Aeotec ZW090 Z-Stick Gen5
-* Danfoss Z-Wave Thermostats [014G0013]
+* Danfoss 014G0013 Thermostats
 * Fibaro FGS223 Double Relay
 
 ## Xiaomi ZigBee Devices

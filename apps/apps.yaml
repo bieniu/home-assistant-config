@@ -19,11 +19,12 @@ brother_printer_status:
   retain: true
 
 # airly:
-#   module: WIP_airly
+#   module: airly
 #   class: Airly
 #   airly_apikey: !secret airly_apikey
 #   latitude: !secret home_latitude
 #   longitude: !secret home_longitude
+#   retain: true
 
 # heating_thermostats_update:
 #   module: heating_thermostats_update
