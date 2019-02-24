@@ -38,6 +38,8 @@ views:
               include:
                 - entity_id: device_tracker.edyta
                 - entity_id: device_tracker.maciek
+                - entity_id: device_tracker.antek
+                  state: home
                 - entity_id: device_tracker.grazyna
                   state: home
                 - entity_id: device_tracker.romana

@@ -38,7 +38,7 @@ class Airly(hass.Hass):
 
     def initialize(self):
 
-        __version__ = '0.0.4'
+        __version__ = '0.0.5'
 
         ATTR_DISCOVERY_PREFIX = 'discovery_prefix'
         ATTR_AIRLY_APIKEY = 'airly_apikey'
@@ -72,21 +72,21 @@ class Airly(hass.Hass):
         except KeyError:
             self.error("Wrong arguments! You must supply a valid Airly API "
                        "key.")
-            exit()
+            return
         try:
             if self.args[ATTR_LATITUDE]:
                 self.latitude = float(self.args[ATTR_LATITUDE])
         except (KeyError, ValueError):
             self.error("Wrong arguments! You must supply a valid latitude as "
                        "float.")
-            exit()
+            return
         try:
             if self.args[ATTR_LONGITUDE]:
                 self.longitude = float(self.args[ATTR_LONGITUDE])
         except (KeyError, ValueError):
             self.error("Wrong arguments! You must supply a valid longitude as "
                        "float.")
-            exit()
+            return
         if ATTR_DISCOVERY_PREFIX in self.args:
             discovery_prefix = self.args[ATTR_DISCOVERY_PREFIX]
         if ATTR_RETAIN in self.args:
@@ -94,20 +94,20 @@ class Airly(hass.Hass):
                 self.retain = self.args[ATTR_RETAIN]
             else:
                 self.error("Wrong arguments! retain has to be boolean.")
-                exit()
+                return
         if ATTR_INTERVAL in self.args:
             try:
                 interval = int(self.args[ATTR_INTERVAL])
             except ValueError:
                 self.error("Wrong arguments! Scan_update has to be an "
                            "integer.")
-                exit()
+                return
         if ATTR_SENSORS in self.args:
             for sensor in self.args[ATTR_SENSORS]:
                 if not sensor in AVAILABLE_SENSORS:
                     self.error("Wrong arguments! {} is not an available "
                                "sensor.".format(sensor))
-                    exit()
+                    return
             self.sensors = self.args[ATTR_SENSORS]
         self.url = ('https://airapi.airly.eu/v2/measurements/point?lat={}&lng='
                     '{}&maxDistanceKM=5'.format(self.latitude, self.longitude))
@@ -121,14 +121,14 @@ class Airly(hass.Hass):
             if request.json()['errorCode']:
                 self.error("Wrong arguments! Airly error code "
                            "{}.".format(request.json()['errorCode']))
-                exit()
+                return
         except KeyError:
             pass
         try:
             if (request.json()['current']['indexes'][0]['description'] ==
                ATTR_NO_SENSOR_AVAILABLE):
                self.error(ATTR_NO_SENSOR_AVAILABLE)
-               exit()
+               return
         except KeyError:
             pass
 

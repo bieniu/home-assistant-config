@@ -33,7 +33,7 @@ class DuneActivity(hass.Hass):
 
     def initialize(self):
 
-        __version__ = '0.2.2'
+        __version__ = '0.2.3'
 
         self.URL_FORMAT = "http://{}/cgi-bin/do"
         self.ENTITY = 'sensor.dune_activity'
