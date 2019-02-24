@@ -24,7 +24,6 @@ airly:
   airly_apikey: !secret airly_apikey
   latitude: !secret home_latitude
   longitude: !secret home_longitude
-  retain: true
 
 # thermostats_update:
 #   module: thermostats_update
