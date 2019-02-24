@@ -1,5 +1,5 @@
 {
-    "heating_thermostat_update": {
+    "thermostat_update": {
       "updated_at": "2019-02-24",
       "version": "0.3.1",
       "local_location": "/python_scripts/thermostat_update.py",

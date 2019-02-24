@@ -3,6 +3,7 @@ include:
     - input_boolean.away_mode
     - device_tracker.edyta
     - device_tracker.maciek
+    - device_tracker.antek
     - device_tracker.grazyna
     - device_tracker.jerzy
     - device_tracker.romana
