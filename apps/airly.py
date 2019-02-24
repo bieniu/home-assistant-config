@@ -1,5 +1,5 @@
 """
-Adds to HA sensors with data from Airly.
+Adds to HA sensors with data from Airly via MQTT Discovery.
  - airly_apikey - Airly API key (required)
  - latitude     - latitude (required)
  - longitude    - longitude (required)
@@ -49,9 +49,6 @@ class Airly(hass.Hass):
         ATTR_SENSORS = 'sensors'
         ATTR_NO_SENSOR_AVAILABLE = ("There are no Airly sensors in this area "
                                    "yet.")
-        AVAILABLE_SENSORS = [self.ATTR_PM1, self.ATTR_PM25, self.ATTR_PM10,
-                             self.ATTR_CAQI, self.ATTR_TEMPERATURE,
-                             self.ATTR_HUMIDITY, self.ATTR_PRESSURE]
         self.ATTR_PM1 = 'pm1'
         self.ATTR_PM25 = 'pm25'
         self.ATTR_PM10 = 'pm10'
@@ -59,6 +56,9 @@ class Airly(hass.Hass):
         self.ATTR_TEMPERATURE = 'temperature'
         self.ATTR_HUMIDITY = 'humidity'
         self.ATTR_PRESSURE = 'pressure'
+        AVAILABLE_SENSORS = [self.ATTR_PM1, self.ATTR_PM25, self.ATTR_PM10,
+                             self.ATTR_CAQI, self.ATTR_TEMPERATURE,
+                             self.ATTR_HUMIDITY, self.ATTR_PRESSURE]
 
         discovery_prefix = 'homeassistant'
         self.retain = False
@@ -109,7 +109,8 @@ class Airly(hass.Hass):
             self.sensors = self.args[ATTR_SENSORS]
         self.url = ('https://airapi.airly.eu/v2/measurements/point?lat={}&lng='
                     '{}&maxDistanceKM=5'.format(self.latitude, self.longitude))
-        self.unique = '{}-{}'.format(self.latitude, self.longitude)
+        self.unique = '{}-{}'.format(str(self.latitude).replace('.', ''),
+                      str(self.longitude).replace('.', ''))
         self.headers = {'Accept': 'application/json',
                         'apikey': self.apikey}
 
@@ -134,7 +135,7 @@ class Airly(hass.Hass):
             icon = None
             device_class = None
             attr_topic = None
-            topic = '{}/sensor/airly/{}/{}/config'.format(discovery_prefix,
+            topic = '{}/sensor/airly/{}-{}/config'.format(discovery_prefix,
                                                           self.unique, sensor)
             state_topic = "airly/{}/{}/state".format(self.unique, sensor)
             unique_id = "airly-{}-{}".format(self.unique, sensor)
