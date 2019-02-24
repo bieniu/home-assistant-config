@@ -17,7 +17,7 @@ Arguments:
 
 Configuration example:
 
-service: python_script.heating_thermostat_update
+service: python_script.thermostat_update
 data:
   thermostat: climate.thermostat_kitchen
   sensor: sensor.temperature_kitchen
@@ -35,7 +35,7 @@ custom_updater:
   python_script_urls:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
-VERSION = '0.3.0'
+VERSION = '0.3.1'
 
 ATTR_THERMOSTAT = 'thermostat'
 ATTR_SENSOR = 'sensor'

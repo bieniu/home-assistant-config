@@ -997,7 +997,7 @@
     condition: template
     value_template: "{{ trigger.to_state.state == 'unknown' }}"
   action:
-    service: python_script.heating_thermostat_update
+    service: python_script.thermostat_update
     data_template:
       thermostat: '{{ trigger.entity_id }}'
       state_only: true
@@ -1009,27 +1009,27 @@
     platform: event
     event_type: zwave.network_ready
   action:
-    - service: python_script.heating_thermostat_update
+    - service: python_script.thermostat_update
       data:
         thermostat: climate.thermostat_antek
         state_only: true
-    - service: python_script.heating_thermostat_update
+    - service: python_script.thermostat_update
       data:
         thermostat: climate.thermostat_kuchnia
         state_only: true
-    - service: python_script.heating_thermostat_update
+    - service: python_script.thermostat_update
       data:
         thermostat: climate.thermostat_salon
         state_only: true
-    - service: python_script.heating_thermostat_update
+    - service: python_script.thermostat_update
       data:
         thermostat: climate.thermostat_antresola
         state_only: true
-    - service: python_script.heating_thermostat_update
+    - service: python_script.thermostat_update
       data:
         thermostat: climate.thermostat_sypialnia
         state_only: true
-    - service: python_script.heating_thermostat_update
+    - service: python_script.thermostat_update
       data:
         thermostat: climate.thermostat_lazienka
         state_only: true

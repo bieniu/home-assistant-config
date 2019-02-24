@@ -38,7 +38,7 @@ class Airly(hass.Hass):
 
     def initialize(self):
 
-        __version__ = '0.0.1'
+        __version__ = '0.0.2'
 
         ATTR_DISCOVERY_PREFIX = 'discovery_prefix'
         ATTR_AIRLY_APIKEY = 'airly_apikey'
@@ -47,6 +47,11 @@ class Airly(hass.Hass):
         ATTR_RETAIN = 'retain'
         ATTR_INTERVAL = 'interval'
         ATTR_SENSORS = 'sensors'
+        ATTR_NO_SENSOR_AVAILABLE = ("There are no Airly sensors in this area "
+                                   "yet.")
+        AVAILABLE_SENSORS = [self.ATTR_PM1, self.ATTR_PM25, self.ATTR_PM10,
+                             self.ATTR_CAQI, self.ATTR_TEMPERATURE,
+                             self.ATTR_HUMIDITY, self.ATTR_PRESSURE]
         self.ATTR_PM1 = 'pm1'
         self.ATTR_PM25 = 'pm25'
         self.ATTR_PM10 = 'pm10'
@@ -54,11 +59,6 @@ class Airly(hass.Hass):
         self.ATTR_TEMPERATURE = 'temperature'
         self.ATTR_HUMIDITY = 'humidity'
         self.ATTR_PRESSURE = 'pressure'
-        ATTR_NO_SENSOR_AVAILABLE = ("There are no Airly sensors in this area "
-                                   "yet.")
-        AVAILABLE_SENSORS = [self.ATTR_PM1, self.ATTR_PM25, self.ATTR_PM10,
-                             self.ATTR_CAQI, self.ATTR_TEMPERATURE,
-                             self.ATTR_HUMIDITY, self.ATTR_PRESSURE]
 
         discovery_prefix = 'homeassistant'
         self.retain = False
@@ -85,38 +85,28 @@ class Airly(hass.Hass):
         except KeyError:
             self.error("Wrong arguments! You must supply a valid longitude.")
             return
-        try:
-            if self.args[ATTR_DISCOVERY_PREFIX]:
-                discovery_prefix = self.args[ATTR_DISCOVERY_PREFIX]
-        except KeyError:
-            pass
-        try:
-            if self.args[ATTR_RETAIN]:
-                if isinstance(self.args[ATTR_RETAIN], bool):
-                    self.retain = self.args[ATTR_RETAIN]
-                else:
-                    self.error("Wrong arguments! retain has to be boolean.")
-                    return
-        except KeyError:
-            pass
-        try:
-            if self.args[ATTR_INTERVAL]:
+        if ATTR_DISCOVERY_PREFIX in self.args:
+            discovery_prefix = self.args[ATTR_DISCOVERY_PREFIX]
+        if ATTR_RETAIN in self.args:
+            if isinstance(self.args[ATTR_RETAIN], bool):
+                self.retain = self.args[ATTR_RETAIN]
+            else:
+                self.error("Wrong arguments! retain has to be boolean.")
+                return
+        if ATTR_INTERVAL in self.args:
+            try:
                 interval = int(self.args[ATTR_INTERVAL])
-        except KeyError:
-            pass
-        except ValueError:
-            self.error("Wrong arguments! Scan_update has to be an integer.")
-            return
-        try:
-            if self.args[ATTR_SENSORS]:
-                for sensor in self.args[ATTR_SENSORS]:
-                    if not sensor in AVAILABLE_SENSORS:
-                        self.error("Wrong arguments! {} is not an available "
-                                   "sensor.".format(sensor))
-                        return
-                    self.sensors = self.args[ATTR_SENSORS]
-        except KeyError:
-            pass
+            except ValueError:
+                self.error("Wrong arguments! Scan_update has to be an "
+                           "integer.")
+                return
+        if ATTR_SENSORS in self.args:
+            for sensor in self.args[ATTR_SENSORS]:
+                if not sensor in AVAILABLE_SENSORS:
+                    self.error("Wrong arguments! {} is not an available "
+                               "sensor.".format(sensor))
+                    return
+            self.sensors = self.args[ATTR_SENSORS]
         self.url = ('https://airapi.airly.eu/v2/measurements/point?lat={}&lng='
                     '{}&maxDistanceKM=5'.format(self.latitude, self.longitude))
         self.unique = '{}-{}'.format(self.latitude, self.longitude)
@@ -126,8 +116,8 @@ class Airly(hass.Hass):
         request = requests.get(self.url, headers=self.headers)
         try:
             if request.json()['errorCode']:
-                self.error("Wrong arguments! Airly error "
-                           "code {}.".format(request.json()['errorCode']))
+                self.error("Wrong arguments! Airly error code "
+                           "{}.".format(request.json()['errorCode']))
                 return
         except KeyError:
             pass
@@ -229,7 +219,7 @@ class Airly(hass.Hass):
                     }
 
             self.call_service("mqtt/publish", topic=topic,
-                              payload=json.dumps(payload), qos=0, retain=False) # docelowo zmienić retain na True
+                              payload=json.dumps(payload), qos=0, retain=True)
         self.run_every(self.update, datetime.now(), interval * 60)
 
     def update(self, kwargs):

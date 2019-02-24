@@ -15,7 +15,7 @@ Arguments:
 
 Configuration example:
 
-heating_thermostats_update:
+thermostats_update:
   module: heating_thermostats_update
   class: HeatingThermostatsUpdate
   rooms:
@@ -38,11 +38,11 @@ heating_thermostats_update:
 import appdaemon.plugins.hass.hassapi as hass
 
 
-class HeatingThermostatsUpdate(hass.Hass):
+class ThermostatsUpdate(hass.Hass):
 
     def initialize(self):
 
-        __version__ = '0.2.6'
+        __version__ = '0.2.7'
 
         self.zwave_handle = None
 

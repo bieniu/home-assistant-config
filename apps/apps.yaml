@@ -26,9 +26,9 @@ brother_printer_status:
 #   longitude: !secret home_longitude
 #   retain: true
 
-# heating_thermostats_update:
-#   module: heating_thermostats_update
-#   class: HeatingThermostatsUpdate
+# thermostats_update:
+#   module: thermostats_update
+#   class: ThermostatsUpdate
 #   heat_state: 'auto'
 #   only_state: true
 #   rooms:
