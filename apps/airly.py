@@ -1,10 +1,10 @@
 """
 Adds to HA sensors with data from Airly via MQTT Discovery.
- - airly_apikey - Airly API key (required)
- - latitude     - latitude (required)
- - longitude    - longitude (required)
- - retain       - retain true or false for MQTT, default false (optional)
- - interval     - update interval, default 5 min. (optional)
+ - airly_apikey - Airly API key, string (required)
+ - latitude     - latitude, float (required)
+ - longitude    - longitude, float (required)
+ - retain       - retain true or false for MQTT, boolean, default false (optional)
+ - interval     - update interval, integer, default 5 min. (optional)
  - sensors      - dictionary of sensors to add, default pm1, pm25, pm10, caqi
                   (optional), available sensors: pm1, pm25, pm10, caqi,
                   temperature, humidity, pressure
@@ -38,7 +38,7 @@ class Airly(hass.Hass):
 
     def initialize(self):
 
-        __version__ = '0.0.2'
+        __version__ = '0.0.3'
 
         ATTR_DISCOVERY_PREFIX = 'discovery_prefix'
         ATTR_AIRLY_APIKEY = 'airly_apikey'
@@ -72,19 +72,21 @@ class Airly(hass.Hass):
         except KeyError:
             self.error("Wrong arguments! You must supply a valid Airly API "
                        "key.")
-            return
+            exit()
         try:
             if self.args[ATTR_LATITUDE]:
-                self.latitude = self.args[ATTR_LATITUDE]
-        except KeyError:
-            self.error("Wrong arguments! You must supply a valid latitude.")
-            return
+                self.latitude = float(self.args[ATTR_LATITUDE])
+        except (KeyError, ValueError):
+            self.error("Wrong arguments! You must supply a valid latitude as "
+                       "float.")
+            exit()
         try:
             if self.args[ATTR_LONGITUDE]:
-                self.longitude = self.args[ATTR_LONGITUDE]
-        except KeyError:
-            self.error("Wrong arguments! You must supply a valid longitude.")
-            return
+                self.longitude = float(self.args[ATTR_LONGITUDE])
+        except (KeyError, ValueError):
+            self.error("Wrong arguments! You must supply a valid longitude as "
+                       "float.")
+            exit()
         if ATTR_DISCOVERY_PREFIX in self.args:
             discovery_prefix = self.args[ATTR_DISCOVERY_PREFIX]
         if ATTR_RETAIN in self.args:
@@ -92,20 +94,20 @@ class Airly(hass.Hass):
                 self.retain = self.args[ATTR_RETAIN]
             else:
                 self.error("Wrong arguments! retain has to be boolean.")
-                return
+                exit()
         if ATTR_INTERVAL in self.args:
             try:
                 interval = int(self.args[ATTR_INTERVAL])
             except ValueError:
                 self.error("Wrong arguments! Scan_update has to be an "
                            "integer.")
-                return
+                exit()
         if ATTR_SENSORS in self.args:
             for sensor in self.args[ATTR_SENSORS]:
                 if not sensor in AVAILABLE_SENSORS:
                     self.error("Wrong arguments! {} is not an available "
                                "sensor.".format(sensor))
-                    return
+                    exit()
             self.sensors = self.args[ATTR_SENSORS]
         self.url = ('https://airapi.airly.eu/v2/measurements/point?lat={}&lng='
                     '{}&maxDistanceKM=5'.format(self.latitude, self.longitude))
@@ -119,14 +121,14 @@ class Airly(hass.Hass):
             if request.json()['errorCode']:
                 self.error("Wrong arguments! Airly error code "
                            "{}.".format(request.json()['errorCode']))
-                return
+                exit()
         except KeyError:
             pass
         try:
             if (request.json()['current']['indexes'][0]['description'] ==
                ATTR_NO_SENSOR_AVAILABLE):
                self.error(ATTR_NO_SENSOR_AVAILABLE)
-               return
+               exit()
         except KeyError:
             pass
 
@@ -153,7 +155,7 @@ class Airly(hass.Hass):
             elif sensor == self.ATTR_PM25:
                 unit = 'ug/m3'
                 icon = 'mdi:blur'
-                name = "Airly {}".format(sensor.upper())
+                name = "Airly PM2.5"
                 attr_topic = "airly/{}/{}/attr".format(self.unique, sensor)
                 payload = {
                     "name": name,

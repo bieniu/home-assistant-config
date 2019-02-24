@@ -70,4 +70,4 @@
 
 #### AIRLY ####
 'sensor.airly_pm*':
-  icon: mdi:blur
+  unit_of_measurement: 'µg/m³'

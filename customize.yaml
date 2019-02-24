@@ -245,9 +245,5 @@ sensor.energy_light_salon_monthly:
   friendly_name: 'Oświetlenie salonu'
 
 #### AIRLY ####
-sensor.airly_pm10:
-  norma: 50
-sensor.airly_pm25:
-  norma: 25
 sensor.airly_info:
   icon: mdi:weather-fog
