@@ -1,11 +1,11 @@
 {
     "heating_thermostat_update": {
-      "updated_at": "2019-01-06",
-      "version": "0.3.0",
-      "local_location": "/python_scripts/heating_thermostat_update.py",
-      "remote_location": "https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/heating_thermostat_update.py",
-      "visit_repo": "https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/heating_thermostat_update.py",
-      "changelog": "https://github.com/bieniu/home-assistant-config/commits/master/python_scripts/heating_thermostat_update.py"
+      "updated_at": "2019-02-24",
+      "version": "0.3.1",
+      "local_location": "/python_scripts/thermostat_update.py",
+      "remote_location": "https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/thermostat_update.py",
+      "visit_repo": "https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/thermostat_update.py",
+      "changelog": "https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/thermostat_update.py"
     },
     "shellies_discovery": {
       "updated_at": "2019-02-06",
