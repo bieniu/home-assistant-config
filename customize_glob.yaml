@@ -67,7 +67,3 @@
   icon: mdi:lightbulb-outline
 'binary_sensor.*_status':
   device_class: connectivity
-
-#### AIRLY ####
-'sensor.airly_pm*':
-  unit_of_measurement: 'µg/m³'

@@ -171,6 +171,10 @@
     - platform: numeric_state
       entity_id: sensor.humidifier_water_level
       below: 40
+  condition:
+    condition: state
+    entity_id: input_boolean.away_mode
+    state: 'off'
   action:
     - service: script.notify
       data_template:

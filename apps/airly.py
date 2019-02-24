@@ -38,7 +38,7 @@ class Airly(hass.Hass):
 
     def initialize(self):
 
-        __version__ = '0.0.3'
+        __version__ = '0.0.4'
 
         ATTR_DISCOVERY_PREFIX = 'discovery_prefix'
         ATTR_AIRLY_APIKEY = 'airly_apikey'
@@ -142,7 +142,7 @@ class Airly(hass.Hass):
             state_topic = "airly/{}/{}/state".format(self.unique, sensor)
             unique_id = "airly-{}-{}".format(self.unique, sensor)
             if sensor == self.ATTR_PM1:
-                unit = 'ug/m3'
+                unit = 'μg/m³'
                 icon = 'mdi:blur'
                 name = "Airly {}".format(sensor.upper())
                 payload = {
@@ -153,7 +153,7 @@ class Airly(hass.Hass):
                     "icon": icon
                     }
             elif sensor == self.ATTR_PM25:
-                unit = 'ug/m3'
+                unit = 'μg/m³'
                 icon = 'mdi:blur'
                 name = "Airly PM2.5"
                 attr_topic = "airly/{}/{}/attr".format(self.unique, sensor)
@@ -166,7 +166,7 @@ class Airly(hass.Hass):
                     "json_attributes_topic": attr_topic
                     }
             elif sensor == self.ATTR_PM10:
-                unit = 'ug/m3'
+                unit = 'μg/m³'
                 icon = 'mdi:blur'
                 name = "Airly {}".format(sensor.upper())
                 attr_topic = "airly/{}/{}/attr".format(self.unique, sensor)
