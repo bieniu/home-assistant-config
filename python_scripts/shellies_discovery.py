@@ -38,6 +38,10 @@ Automations:
       shelly1-328900-relay-0: 'light'
       shellyswitch-5B2604-relay-0: 'switch'
       shellyswitch-5B2604-relay-1: 'light'
+      shelly4pro-122656-relay-0: 'switch'
+      shelly4pro-122656-relay-1: 'fan'
+      shelly4pro-122656-relay-2: 'switch'
+      shelly4pro-122656-relay-3: 'switch'
 
 Argument 'shellyswitch-5B2604-relay-1: light' means that relay 1 of
 shellyswitch-5B2604 will be the light in Home Assistant. You can use switch,
@@ -53,12 +57,17 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.0.2'
+VERSION = '0.1.0'
+
+ATTR_DEVELOP = 'develop'
 
 ATTR_ID = 'id'
 ATTR_MAC = 'mac'
 ATTR_FW_VER = 'fw_ver'
 ATTR_DISCOVERY_PREFIX = 'discovery_prefix'
+
+develop = False
+retain = True
 
 id = data.get(ATTR_ID)
 mac = data.get(ATTR_MAC)
@@ -66,6 +75,12 @@ fw_ver = data.get(ATTR_FW_VER)
 disc_prefix = 'homeassistant'
 if data.get(ATTR_DISCOVERY_PREFIX) is not None:
     disc_prefix = data.get(ATTR_DISCOVERY_PREFIX)
+
+if data.get(ATTR_DEVELOP) is not None:
+    develop = data.get(ATTR_DEVELOP)
+if develop:
+    disc_prefix = 'develop'
+    retain = False
 
 if id is None or mac is None:
     logger.error("Expected id and mac as arguments.")
@@ -99,9 +114,9 @@ else:
         model = 'Shelly4Pro'
         component = 'switch'
         relays = 4
-        relay_sensors = ['power']
-        units = ['W']
-        templates = ['{{ value | round }}']
+        relay_sensors = ['power', 'energy']
+        units = ['W', 'kWh']
+        templates = ['{{ value | round }}', '{{ (value / 10000) | round(2) }}']
 
     for i in range(0, relays):
         device_name = '{} {}'.format(model, id.split('-')[1],)
@@ -115,7 +130,7 @@ else:
             component = data.get(unique_id)
             if component in relay_components:
                 config_topic = '{}/{}/{}-relay-{}/config'.format(disc_prefix,
-                                                              component, id, i)
+                                                               component, id, i)
                 payload = '{\"name\":\"' + relay_name + '\",' \
                           '\"cmd_t\":\"' + command_topic + '\",' \
                           '\"stat_t\":\"' + state_topic +'\",' \
@@ -134,18 +149,48 @@ else:
                 service_data = {
                     'topic': config_topic,
                     'payload': payload,
-                    'retain': True,
+                    'retain': retain,
                     'qos': 0
                 }
                 hass.services.call('mqtt', 'publish', service_data, False)
-        if i == relays-1:
+        if model == 'Shelly2':
+            if i == relays-1:
+                for l in range(0, len(relay_sensors)):
+                    unique_id = '{}-relay-{}'.format(id, relay_sensors[l])
+                    config_topic = '{}/sensor/{}-{}/config'.format(disc_prefix,
+                                                           id, relay_sensors[l])
+                    sensor_name = '{} {}'.format(device_name,
+                                                 relay_sensors[l].capitalize())
+                    state_topic =  '~relay/{}'.format(relay_sensors[l])
+                    payload = '{\"name\":\"' + sensor_name + '\",' \
+                              '\"stat_t\":\"' + state_topic + '\",' \
+                              '\"unit_of_meas\":\"' + units[l] + '\",' \
+                              '\"val_tpl\":\"' + templates[l] + '\",' \
+                              '\"avty_t\":\"' + availability_topic + '\",' \
+                              '\"pl_avail\":\"true\",' \
+                              '\"pl_not_avail\":\"false\",' \
+                              '\"uniq_id\":\"' + unique_id + '\",' \
+                              '\"device\": {\"identifiers\": [\"' + mac + '\"],' \
+                              '\"name\":\"' + device_name + '\",' \
+                              '\"model\":\"' + model + '\",' \
+                              '\"sw_version\":\"' + fw_ver + '\",' \
+                              '\"manufacturer\":\"Shelly\"},' \
+                              '\"~\":\"' + default_topic + '\"}'
+                    service_data = {
+                        'topic': config_topic,
+                        'payload': payload,
+                        'retain': retain,
+                        'qos': 0
+                    }
+                    hass.services.call('mqtt', 'publish', service_data, False)
+        else:
             for l in range(0, len(relay_sensors)):
-                unique_id = '{}-relay-{}'.format(id, relay_sensors[l])
-                config_topic = '{}/sensor/{}-{}/config'.format(disc_prefix, id,
-                                                              relay_sensors[l])
-                sensor_name = '{} {}'.format(device_name,
-                                             relay_sensors[l].capitalize())
-                state_topic =  '~relay/{}'.format(relay_sensors[l])
+                unique_id = '{}-relay-{}-{}'.format(id, relay_sensors[l], i)
+                config_topic = '{}/sensor/{}-{}-{}/config'.format(disc_prefix,
+                                                        id, relay_sensors[l], i)
+                sensor_name = '{} {} {}'.format(device_name,
+                                             relay_sensors[l].capitalize(), i)
+                state_topic =  '~relay/{}/{}'.format(i, relay_sensors[l])
                 payload = '{\"name\":\"' + sensor_name + '\",' \
                           '\"stat_t\":\"' + state_topic + '\",' \
                           '\"unit_of_meas\":\"' + units[l] + '\",' \
@@ -163,7 +208,7 @@ else:
                 service_data = {
                     'topic': config_topic,
                     'payload': payload,
-                    'retain': True,
+                    'retain': retain,
                     'qos': 0
                 }
                 hass.services.call('mqtt', 'publish', service_data, False)

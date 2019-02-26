@@ -511,7 +511,7 @@ views:
                 # tooltip_border_color: black
                 # tooltip_caret_size: 3
               - type: iframe
-                url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates
+                url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates&metricWind=m%2Fs
                 aspect_ratio: 56%
               - type: sensor
                 entity: sensor.airly_info
@@ -604,7 +604,7 @@ views:
         max_columns: 4
         cards:
           - type: entities
-            title: 'Ustawienie ogrzewania'
+            title: 'Ustawienia ogrzewania'
             show_header_toggle: false
             entities:
               - input_boolean.heating_season
@@ -638,6 +638,12 @@ views:
                 show_header_toggle: false
                 entities:
                   - input_select.target_humidity
+          # - type: entities
+          #   title: 'Ustawienia oświetlenia'
+          #   show_header_toggle: false
+          #   entities:
+          #     - input_boolean.light_auto_turn_salon
+          #     - input_boolean.light_auto_turn_pracownia
           - type: entities
             title: 'Skrypty i ustawienia'
             show_header_toggle: false

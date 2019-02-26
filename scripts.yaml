@@ -321,3 +321,16 @@ camera_move:
     data_template:
       topic: 'homeassistant/camera/salon/motors/{{ orientation }}/set'
       payload: '{{ direction }}'
+
+shellies_develop:
+  sequence:
+    service: python_script.shellies_discovery
+    data:
+      develop: true
+      id: 'shelly4pro-1122AA'
+      mac: '1122AA445566'
+      fw_ver: '9.99'
+      shelly4pro-1122AA-relay-0: 'switch'
+      shelly4pro-1122AA-relay-1: 'light'
+      shelly4pro-1122AA-relay-2: 'fan'
+      shelly4pro-1122AA-relay-3: 'switch'
