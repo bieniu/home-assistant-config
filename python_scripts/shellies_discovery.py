@@ -60,7 +60,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.2.0'
+VERSION = '0.2.1'
 
 ATTR_DEVELOP = 'develop'
 
@@ -117,7 +117,7 @@ else:
         relays = 1
         relay_sensors = ['power', 'energy']
         units = ['W', 'kWh']
-        templates = ['{{ value | round }}', '{{ (value | float / 10000) | round(2) }}']
+        templates = ['{{ value | round }}', '{{ (value | float / 100) | round(2) }}']
 
     if 'shelly4pro' in id:
         model = 'Shelly4Pro'
@@ -125,7 +125,7 @@ else:
         relays = 4
         relay_sensors = ['power', 'energy']
         units = ['W', 'kWh']
-        templates = ['{{ value | round }}', '{{ (value / 10000) | round(2) }}']
+        templates = ['{{ value | round }}', '{{ (value / 100) | round(2) }}']
 
     if 'shellyht' in id:
         model = 'ShellyH&T'
