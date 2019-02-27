@@ -76,13 +76,13 @@
 
 ## AppDaemon
 
-* [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/home-assistant-config/blob/master/apps/update_thermostats.py)
+* [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/home-assistant-config/blob/master/apps/thermostats_update.py)
 * [Brother printer status sensors](https://github.com/bieniu/home-assistant-config/blob/master/apps/brother_printer_status.py)
 * [DuneHD Activity](https://github.com/bieniu/home-assistant-config/blob/master/apps/dune_activity.py)
 
 ## Python Scripts
 
-* [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/heating_thermostat_update.py)
+* [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/thermostat_update.py)
 * [Shellies Discovery](https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/shellies_discovery.py)
 
 ## Screenshots
