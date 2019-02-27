@@ -1,21 +1,21 @@
 resources:
-  - url: /local/lovelace/vertical-stack-in-card.js
+  - url: /customcards/vertical-stack-in-card.js
     type: js
-  - url: /local/lovelace/tracker-card.js
+  - url: /customcards/tracker-card.js
     type: js
-  - url: /local/lovelace/mini-media-player-bundle.js
+  - url: /customcards/mini-media-player-bundle.js
     type: module
-  - url: /local/lovelace/layout-card.js
+  - url: /customcards/layout-card.js
     type: js
-  - url: /local/lovelace/dark-sky-weather-card.js
+  - url: /customcards/dark-sky-weather-card.js
     type: module
-  - url: /local/lovelace/card-tools.js
+  - url: /customcards/card-tools.js
     type: js
-  - url: /local/lovelace/monster-card.js
+  - url: /customcards/monster-card.js
     type: js
-  - url: /local/lovelace/secondaryinfo-entity-row.js
+  - url: /customcards/secondaryinfo-entity-row.js
     type: module
-  - url: /local/lovelace/mini-graph-card-bundle.js
+  - url: /customcards/mini-graph-card-bundle.js
     type: module
 
 title: 'Dom'
@@ -38,8 +38,8 @@ views:
               include:
                 - entity_id: device_tracker.edyta
                 - entity_id: device_tracker.maciek
-                - entity_id: device_tracker.antek
-                  state: home
+                # - entity_id: device_tracker.antek
+                #   state: home
                 - entity_id: device_tracker.grazyna
                   state: home
                 - entity_id: device_tracker.romana
@@ -603,15 +603,25 @@ views:
       - type: custom:layout-card
         max_columns: 4
         cards:
-          - type: entities
-            title: 'Ustawienia ogrzewania'
-            show_header_toggle: false
-            entities:
-              - input_boolean.heating_season
-              - script.heating_fast_warm_up
-              - input_boolean.heating_airing
-              - input_boolean.away_mode
-              - input_boolean.guests
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: 'Ustawienia ogrzewania'
+                show_header_toggle: false
+                entities:
+                  - input_boolean.heating_season
+                  - script.heating_fast_warm_up
+                  - input_boolean.heating_airing
+                  - input_boolean.away_mode
+                  - input_boolean.guests
+              - type: entities
+                title: 'Godziny ogrzewania'
+                show_header_toggle: false
+                entities:
+                  - input_select.heating_night_start
+                  - input_select.heating_night_end
+                  - input_select.heating_night_start_weekend
+                  - input_select.heating_night_end_weekend
           - type: entities
             title: 'Temperatury ogrzewania'
             show_header_toggle: false
@@ -623,27 +633,17 @@ views:
               - input_select.heating_temp_day
               - input_select.heating_temp_night
               - input_select.heating_temp_eco
-          - type: vertical-stack
-            cards:
-              - type: entities
-                title: 'Godziny ogrzewania'
-                show_header_toggle: false
-                entities:
-                  - input_select.heating_night_start
-                  - input_select.heating_night_end
-                  - input_select.heating_night_start_weekend
-                  - input_select.heating_night_end_weekend
-              - type: entities
-                title: 'Nawilżanie'
-                show_header_toggle: false
-                entities:
-                  - input_select.target_humidity
-          # - type: entities
-          #   title: 'Ustawienia oświetlenia'
-          #   show_header_toggle: false
-          #   entities:
-          #     - input_boolean.light_auto_turn_salon
-          #     - input_boolean.light_auto_turn_pracownia
+          - type: entities
+            title: 'Nawilżanie'
+            show_header_toggle: false
+            entities:
+              - input_select.target_humidity
+          - type: entities
+            title: 'Ustawienia oświetlenia'
+            show_header_toggle: false
+            entities:
+              - input_boolean.light_auto_turn_salon
+              - input_boolean.light_auto_turn_pracownia
           - type: entities
             title: 'Skrypty i ustawienia'
             show_header_toggle: false

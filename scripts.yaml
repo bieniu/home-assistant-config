@@ -327,10 +327,10 @@ shellies_develop:
     service: python_script.shellies_discovery
     data:
       develop: true
-      id: 'shelly4pro-1122AA'
+      id: 'shellyplug-999999'
       mac: '1122AA445566'
       fw_ver: '9.99'
-      shelly4pro-1122AA-relay-0: 'switch'
-      shelly4pro-1122AA-relay-1: 'light'
-      shelly4pro-1122AA-relay-2: 'fan'
-      shelly4pro-1122AA-relay-3: 'switch'
+      shellyplug-999999-relay-0: 'switch'
+      # shelly4pro-1122AA-relay-1: 'light'
+      # shelly4pro-1122AA-relay-2: 'fan'
+      # shelly4pro-1122AA-relay-3: 'switch'

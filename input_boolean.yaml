@@ -25,8 +25,8 @@ guests:
   name: 'Goście'
   icon: mdi:account-multiple-outline
 light_auto_turn_salon:
-  name: 'Automatyczne oświetlenie w salonie'
-  icon: 'mdi:flash-auto'
+  name: 'Oświetlenie salonu załączane ruchem'
+  icon: 'mdi:lightbulb-on-outline'
 light_auto_turn_pracownia:
-  name: 'Automatyczne oświetlenie w pracowni'
-  icon: 'mdi:flash-auto'
+  name: 'Oświetlenie pracowni załączane ruchem'
+  icon: 'mdi:lightbulb-on-outline'

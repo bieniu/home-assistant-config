@@ -57,7 +57,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 
 ATTR_DEVELOP = 'develop'
 
@@ -106,9 +106,9 @@ else:
         model = 'Shelly Plug'
         component = 'switch'
         relays = 1
-        relay_sensors = ['power']
-        units = ['W']
-        templates = ['{{ value | round }}']
+        relay_sensors = ['power', 'energy']
+        units = ['W', 'kWh']
+        templates = ['{{ value | round }}', '{{ (value / 10000) | round(2) }}']
 
     if 'shelly4pro' in id:
         model = 'Shelly4Pro'
@@ -118,19 +118,23 @@ else:
         units = ['W', 'kWh']
         templates = ['{{ value | round }}', '{{ (value / 10000) | round(2) }}']
 
-    for i in range(0, relays):
+    if 'shellyht' in id:
+        model = 'ShellyH&T'
+        sensors = ['temperature', 'humidity', 'battery']
+
+    for relay_id in range(0, relays):
         device_name = '{} {}'.format(model, id.split('-')[1],)
-        relay_name = '{} Relay {}'.format(device_name, i)
+        relay_name = '{} Relay {}'.format(device_name, relay_id)
         default_topic = 'shellies/{}/'.format(id)
-        state_topic = '~relay/{}'.format(i)
+        state_topic = '~relay/{}'.format(relay_id)
         command_topic =  '{}/command'.format(state_topic)
         availability_topic = '~online'
-        unique_id = '{}-relay-{}'.format(id, i)
+        unique_id = '{}-relay-{}'.format(id, relay_id)
         if data.get(unique_id):
             component = data.get(unique_id)
             if component in relay_components:
                 config_topic = '{}/{}/{}-relay-{}/config'.format(disc_prefix,
-                                                               component, id, i)
+                                                        component, id, relay_id)
                 payload = '{\"name\":\"' + relay_name + '\",' \
                           '\"cmd_t\":\"' + command_topic + '\",' \
                           '\"stat_t\":\"' + state_topic +'\",' \
@@ -154,18 +158,19 @@ else:
                 }
                 hass.services.call('mqtt', 'publish', service_data, False)
         if model == 'Shelly2':
-            if i == relays-1:
-                for l in range(0, len(relay_sensors)):
-                    unique_id = '{}-relay-{}'.format(id, relay_sensors[l])
+            if relay_id == relays-1:
+                for sensor_id in range(0, len(relay_sensors)):
+                    unique_id = '{}-relay-{}'.format(id,
+                                                     relay_sensors[sensor_id])
                     config_topic = '{}/sensor/{}-{}/config'.format(disc_prefix,
-                                                           id, relay_sensors[l])
+                                                   id, relay_sensors[sensor_id])
                     sensor_name = '{} {}'.format(device_name,
-                                                 relay_sensors[l].capitalize())
-                    state_topic =  '~relay/{}'.format(relay_sensors[l])
+                                          relay_sensors[sensor_id].capitalize())
+                    state_topic =  '~relay/{}'.format(relay_sensors[sensor_id])
                     payload = '{\"name\":\"' + sensor_name + '\",' \
                               '\"stat_t\":\"' + state_topic + '\",' \
-                              '\"unit_of_meas\":\"' + units[l] + '\",' \
-                              '\"val_tpl\":\"' + templates[l] + '\",' \
+                              '\"unit_of_meas\":\"' + units[sensor_id] + '\",' \
+                              '\"val_tpl\":\"' + templates[sensor_id] + '\",' \
                               '\"avty_t\":\"' + availability_topic + '\",' \
                               '\"pl_avail\":\"true\",' \
                               '\"pl_not_avail\":\"false\",' \
@@ -184,17 +189,19 @@ else:
                     }
                     hass.services.call('mqtt', 'publish', service_data, False)
         else:
-            for l in range(0, len(relay_sensors)):
-                unique_id = '{}-relay-{}-{}'.format(id, relay_sensors[l], i)
+            for sensor_id in range(0, len(relay_sensors)):
+                unique_id = '{}-relay-{}-{}'.format(id,
+                                             relay_sensors[sensor_id], relay_id)
                 config_topic = '{}/sensor/{}-{}-{}/config'.format(disc_prefix,
-                                                        id, relay_sensors[l], i)
+                                         id, relay_sensors[sensor_id], relay_id)
                 sensor_name = '{} {} {}'.format(device_name,
-                                             relay_sensors[l].capitalize(), i)
-                state_topic =  '~relay/{}/{}'.format(i, relay_sensors[l])
+                                relay_sensors[sensor_id].capitalize(), relay_id)
+                state_topic =  '~relay/{}/{}'.format(relay_id,
+                                                       relay_sensors[sensor_id])
                 payload = '{\"name\":\"' + sensor_name + '\",' \
                           '\"stat_t\":\"' + state_topic + '\",' \
-                          '\"unit_of_meas\":\"' + units[l] + '\",' \
-                          '\"val_tpl\":\"' + templates[l] + '\",' \
+                          '\"unit_of_meas\":\"' + units[sensor_id] + '\",' \
+                          '\"val_tpl\":\"' + templates[sensor_id] + '\",' \
                           '\"avty_t\":\"' + availability_topic + '\",' \
                           '\"pl_avail\":\"true\",' \
                           '\"pl_not_avail\":\"false\",' \
