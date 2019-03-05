@@ -112,6 +112,8 @@ heating_night:
       entity_id: climate.thermostat_lazienka
       data_template:
         temperature: "{{ states('input_select.heating_temp_bathroom_night') }}"
+    - service: fan.turn_off
+      entity_id: fan.humidifier_salon
     - condition: template
       value_template: "{{ is_state('input_boolean.guests', 'off')
                           and is_state('media_player.denon', 'off') }}"
@@ -121,8 +123,6 @@ heating_night:
         - climate.thermostat_salon
       data_template:
         temperature: "{{ states('input_select.heating_temp_night') }}"
-    - service: fan.turn_off
-      entity_id: fan.humidifier_salon
     - service: input_boolean.turn_on
       entity_id: input_boolean.heating_salon_kuchnia_night
 

@@ -23,35 +23,30 @@ views:
   - id: home
     icon: mdi:home
     title: 'Pomieszczenia'
-    background: '#e5e5e5'
+    # background: '#e5e5e5'
+    background: center / cover no-repeat url("/local/pictures/bg.jpg") fixed
     path: home
     panel: true
     cards:
       - type: custom:layout-card
         cards:
-          - type: custom:monster-card
-            card:
-              type: glance
-              title: 'Rodzina'
-              show_name: false
-            filter:
-              include:
-                - entity_id: device_tracker.edyta
-                - entity_id: device_tracker.maciek
-                # - entity_id: device_tracker.antek
-                #   state: home
-                - entity_id: device_tracker.grazyna
-                  state: home
-                - entity_id: device_tracker.romana
-                  state: home
-                - entity_id: device_tracker.jerzy
-                  state: home
-                - entity_id: device_tracker.agnieszka
-                  state: home
-                - entity_id: device_tracker.emil
-                  state: home
           - type: vertical-stack
             cards:
+              - type: custom:monster-card
+                card:
+                  type: glance
+                  title: 'Rodzina'
+                  show_name: false
+                filter:
+                  include:
+                    - entity_id: device_tracker.edyta
+                    - entity_id: device_tracker.maciek
+                    - entity_id: device_tracker.grazyna
+                      state: home
+                    - entity_id: device_tracker.romana
+                      state: home
+                    - entity_id: device_tracker.jerzy
+                      state: home
               - type: entities
                 title: 'Przedpokój'
                 show_header_toggle: false
@@ -217,7 +212,8 @@ views:
   - id: map
     icon: mdi:map
     title: 'Mapa'
-    background: '#e5e5e5'
+    # background: '#e5e5e5'
+    background: center / cover no-repeat url("/local/pictures/bg.jpg") fixed
     path: map
     panel: true
     cards:
@@ -230,7 +226,8 @@ views:
   - id: network
     icon: mdi:ethernet
     title: 'Sieć'
-    background: '#e5e5e5'
+    # background: '#e5e5e5'
+    background: center / cover no-repeat url("/local/pictures/bg.jpg") fixed
     path: network
     panel: true
     cards:
@@ -346,7 +343,8 @@ views:
   - id: energy
     icon: mdi:power-plug
     title: 'Energia'
-    background: '#e5e5e5'
+    # background: '#e5e5e5'
+    background: center / cover no-repeat url("/local/pictures/bg.jpg") fixed
     path: energy
     panel: true
     cards:
@@ -357,7 +355,7 @@ views:
             cards:
               - type: custom:mini-graph-card
                 hour24: true
-                decimals: 0
+                decimals: 1
                 points_per_hour: 1
                 show:
                   icon: false
@@ -459,7 +457,8 @@ views:
   - id: climate
     icon: mdi:cloud
     title: 'Klimat'
-    background: '#e5e5e5'
+    # background: '#e5e5e5'
+    background: center / cover no-repeat url("/local/pictures/bg.jpg") fixed
     path: climate
     panel: true
     cards:
@@ -596,7 +595,8 @@ views:
   - id: misc
     icon: mdi:settings
     title: 'Różne'
-    background: '#e5e5e5'
+    # background: '#e5e5e5'
+    background: center / cover no-repeat url("/local/pictures/bg.jpg") fixed
     path: misc
     panel: true
     cards:

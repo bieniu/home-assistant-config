@@ -450,28 +450,6 @@
 ##################################################################################################
 
 #### OBECNOŚĆ ####################################################################################
-# Goście w domu
-- id: guests_at_home
-  alias: 'Guests At Home'
-  trigger:
-    platform: state
-    entity_id: binary_sensor.guests
-    to: 'on'
-  action:
-    service: input_boolean.turn_on
-    entity_id: input_boolean.guests
-
-# Gościa poza domem
-- id: no_guests_at_home
-  alias: 'No Guests At Home'
-  trigger:
-    platform: state
-    entity_id: binary_sensor.guests
-    to: 'off'
-  action:
-    service: input_boolean.turn_off
-    entity_id: input_boolean.guests
-
 # Edyta 40 minut od domu
 - id: presence_edyta_far_from_home
   alias: 'Presence Edyta Far From Home'
@@ -684,14 +662,17 @@
         entity_id: input_boolean.heating_salon_kuchnia_night
         state: 'off'
   action:
+    - service: fan.turn_off
+      entity_id: fan.humidifier_salon
+    - condition: state
+      entity_id: input_boolean.guests
+      state: 'off'
     - service: climate.set_temperature
       entity_id:
         - climate.thermostat_kuchnia
         - climate.thermostat_salon
       data_template:
         temperature: "{{ states('input_select.heating_temp_night') }}"
-    - service: fan.turn_off
-      entity_id: fan.humidifier_salon
 
 # zmniejszenie temperatury gdy domownicy wychodzą i jest sezon grzewczy
 - id: heating_eco_mode

@@ -7,10 +7,8 @@
       value_template: >-
          {{ is_state('group.household', 'home')
             or is_state('group.family', 'home')
-            or is_state('media_player.denon', 'on') }}
-
-    guests:
-      value_template: "{{ is_state('group.guests', 'home') }}"
+            or is_state('media_player.denon', 'on')
+            or is_state('input_boolean.guests', 'on') }}
 
     motion_antresola:
       friendly_name: 'Ruch'

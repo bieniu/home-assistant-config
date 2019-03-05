@@ -109,7 +109,7 @@ else:
         relays = 2
         relay_sensors = ['power']
         units = ['W']
-        templates = ['{{ value | round }}']
+        templates = ['{{ value | round(1) }}']
 
     if 'shellyplug' in id:
         model = 'Shelly Plug'
@@ -117,7 +117,7 @@ else:
         relays = 1
         relay_sensors = ['power', 'energy']
         units = ['W', 'kWh']
-        templates = ['{{ value | round }}', '{{ (value | float / 100) | round(2) }}']
+        templates = ['{{ value | round(1) }}', '{{ (value | float / 100) | round(2) }}']
 
     if 'shelly4pro' in id:
         model = 'Shelly4Pro'
@@ -125,7 +125,7 @@ else:
         relays = 4
         relay_sensors = ['power', 'energy']
         units = ['W', 'kWh']
-        templates = ['{{ value | round }}', '{{ (value / 100) | round(2) }}']
+        templates = ['{{ value | round(1) }}', '{{ (value / 100) | round(2) }}']
 
     if 'shellyht' in id:
         model = 'ShellyH&T'

@@ -171,8 +171,8 @@
       friendly_name: 'Oświetlenie salonu'
       unit_of_measurement: 'W'
       value_template: >-
-        {{ states('sensor.light_salon_power') | int +
-           states('sensor.lamp_salon_power') | int }}
+        {{ (states('sensor.light_salon_power') | float +
+           states('sensor.lamp_salon_power') | float) | round(1) }}
 
     airly_info:
       friendly_name: 'Jakość powietrza'
