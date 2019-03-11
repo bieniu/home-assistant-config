@@ -93,15 +93,10 @@ exclude:
     - sensor.mhz19b_temperature
     - sensor.light_salon_power
 include:
+  domains:
+    - person
   entities:
-    - device_tracker.maciek
-    - device_tracker.edyta
-    - device_tracker.antek
-    - device_tracker.grazyna
-    - device_tracker.jerzy
-    - device_tracker.romana
-    - device_tracker.emil
-    - device_tracker.agnieszka
+    - person.agnieszka
     - input_boolean.heating_season
     - input_boolean.heating_airing
     - input_boolean.away_mode

@@ -39,13 +39,19 @@ views:
                   show_name: false
                 filter:
                   include:
-                    - entity_id: device_tracker.edyta
-                    - entity_id: device_tracker.maciek
-                    - entity_id: device_tracker.grazyna
+                    - entity_id: person.edyta
+                    - entity_id: person.maciek
+                    - entity_id: person.grazyna
                       state: home
-                    - entity_id: device_tracker.romana
+                    - entity_id: person.romana
                       state: home
-                    - entity_id: device_tracker.jerzy
+                    - entity_id: person.jerzy
+                      state: home
+                    - entity_id: person.emil
+                      state: home
+                    - entity_id: person.agnieszka
+                      state: home
+                    - entity_id: person.antek
                       state: home
               - type: entities
                 title: 'Przedpokój'
@@ -350,31 +356,33 @@ views:
     cards:
       - type: custom:layout-card
         cards:
-          - type: custom:vertical-stack-in-card
-            title: 'Pobór mocy'
+          - type: vertical-stack
             cards:
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 1
-                points_per_hour: 1
-                show:
-                  icon: false
-                  graph: bar
-                entities:
-                  - sensor.power_light_salon
-                line_color: '#36a2eb'
-          - type: custom:vertical-stack-in-card
-            title: 'Zużycie energii'
-            cards:
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 2
-                lower_bound: 0
-                show:
-                  icon: false
-                  graph: false
-                entities:
-                  - sensor.energy_light_salon_monthly
+              - type: custom:vertical-stack-in-card
+                title: 'Pobór mocy'
+                cards:
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 1
+                    points_per_hour: 1
+                    show:
+                      icon: false
+                      graph: bar
+                    entities:
+                      - sensor.power_light_salon
+                    line_color: '#36a2eb'
+              - type: custom:vertical-stack-in-card
+                title: 'Zużycie energii'
+                cards:
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 2
+                    lower_bound: 0
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.energy_light_salon_monthly
           - type: custom:vertical-stack-in-card
             title: 'UPS'
             cards:

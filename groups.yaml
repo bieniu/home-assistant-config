@@ -10,12 +10,14 @@ windows:
 household:
   name: 'Domownicy'
   entities:
-    - device_tracker.edyta
-    - device_tracker.maciek
+    - person.edyta
+    - person.maciek
 
 family:
   name: 'Rodzina'
   entities:
-    - device_tracker.grazyna
-    - device_tracker.romana
-    - device_tracker.jerzy
+    - person.grazyna
+    - person.romana
+    - person.jerzy
+    - person.emil
+    - person.agnieszka

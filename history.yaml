@@ -1,14 +1,14 @@
 include:
   entities:
     - input_boolean.away_mode
-    - device_tracker.edyta
-    - device_tracker.maciek
-    - device_tracker.antek
-    - device_tracker.grazyna
-    - device_tracker.jerzy
-    - device_tracker.romana
-    - device_tracker.agnieszka
-    - device_tracker.emil
+    - person.edyta
+    - person.maciek
+    - person.antek
+    - person.grazyna
+    - person.jerzy
+    - person.romana
+    - person.agnieszka
+    - person.emil
     - sensor.dark_sky_precip_probability
     - sensor.humidity_outdoor
     - sensor.pressure_outdoor

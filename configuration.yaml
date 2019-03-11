@@ -53,12 +53,13 @@ history: !include history.yaml
 logbook:
   include:
     entities:
-      - device_tracker.edyta
-      - device_tracker.maciek
-      - device_tracker.agnieszka
-      - device_tracker.emil
-      - device_tracker.grazyna
-      - device_tracker.jerzy
+      - person.edyta
+      - person.maciek
+      - person.agnieszka
+      - person.emil
+      - person.grazyna
+      - person.jerzy
+      - person.antek
 
 system_health:
 

@@ -171,22 +171,44 @@
     - platform: numeric_state
       entity_id: sensor.humidifier_water_level
       below: 40
-  condition:
-    condition: state
-    entity_id: input_boolean.away_mode
-    state: 'off'
   action:
-    - service: script.notify
-      data_template:
-        title: "Uzupełnij wodę w nawilżaczu"
-        message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        tag: 'notification-humidifier-low-water'
-        notify_edyta: true
     - service: persistent_notification.create
       data_template:
         title: "Uzupełnij wodę w nawilżaczu"
         message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
         notification_id: 'notification-humidifier-low-water'
+    - condition: state
+      entity_id: person.maciek
+      state: 'home'
+    - service: script.notify
+      data_template:
+        title: "Uzupełnij wodę w nawilżaczu"
+        message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+        tag: 'notification-humidifier-low-water'
+        notify_edyta: false
+
+# powiadomienie o małej ilości wody w nawilżaczu Edyta
+- id: notification_humidifier_low_water_edyta
+  alias: 'Notification Humidifier Low Water_edyta'
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.humidifier_water_level
+      below: 10
+    - platform: numeric_state
+      entity_id: sensor.humidifier_water_level
+      below: 20
+    - platform: numeric_state
+      entity_id: sensor.humidifier_water_level
+      below: 40
+  condition:
+    condition: state
+    entity_id: person.edyta
+    state: 'home'
+  action:
+    service: notify.ios_iphone_8_plus_app
+    data_template:
+      title: "Uzupełnij wodę w nawilżaczu"
+      message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
 
 # powiadomienie o aktualizacji oprogramowania Shelly
 - id: notification_shelly_update_available
@@ -485,7 +507,7 @@
   alias: 'Presence Maciek Come Back Home'
   trigger:
     platform: state
-    entity_id: device_tracker.maciek
+    entity_id: person.maciek
     to: 'home'
   condition:
     condition: state
@@ -500,7 +522,7 @@
   alias: 'Presence Edyta Come Back Home'
   trigger:
     platform: state
-    entity_id: device_tracker.edyta
+    entity_id: person.edyta
     to: 'home'
   condition:
     condition: state
@@ -1396,18 +1418,18 @@
     - platform: state
       entity_id: media_player.mibox
       to: 'paused'
+      for:
+        seconds: 20
     - platform: state
       entity_id: sensor.dune_activity
-      from: 'file_playback'
       to: 'navigator'
       for:
-        seconds: 10
+        seconds: 20
     - platform: state
       entity_id: media_player.playstation
-      from: 'playing'
       to: 'idle'
       for:
-        seconds: 10
+        seconds: 20
   condition:
     condition: and
     conditions:
@@ -2184,6 +2206,38 @@
         title: "Uzupełnij wodę w nawilżaczu"
         message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
         notification_id: 'notification-humidifier-low-water'
+
+- id: humidification_outdoor_temp_above_10
+  alias: 'Humidification Outdoor Temp Above 10'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.temperature_outdoor
+    above: 10
+  condition:
+    condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.target_humidity
+      option: '45'
+
+- id: humidification_outdoor_temp_below_10
+  alias: 'Humidification Outdoor Temp Below 10'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.temperature_outdoor
+    below: 10
+  condition:
+    condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  action:
+    service: input_select.select_option
+    data:
+      entity_id: input_select.target_humidity
+      option: '40'
 
 ##################################################################################################
 

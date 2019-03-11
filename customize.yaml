@@ -1,3 +1,21 @@
+#### PERSONS #####
+person.edyta:
+  entity_picture: /local/pictures/edyta.jpg
+person.maciek:
+  entity_picture: /local/pictures/maciek.jpg
+person.antek:
+  entity_picture: /local/pictures/antek.jpg
+person.jerzy:
+  entity_picture: /local/pictures/jerzy.jpg
+person.grazyna:
+  entity_picture: /local/pictures/grazyna.jpg
+person.romana:
+  entity_picture: /local/pictures/romana.jpg
+person.emil:
+  entity_picture: /local/pictures/emil.jpg
+person.agnieszka:
+  entity_picture: /local/pictures/agnieszka.jpg
+
 #### SHELLIES ####
 sensor.shelly1_firmware_version_current:
   friendly_name: 'Shelly1'
