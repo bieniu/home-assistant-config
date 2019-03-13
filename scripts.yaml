@@ -268,7 +268,7 @@ notify:
         title: '{{ title }}'
         message: '{{ message }}'
         data:
-          message_type: notification
+          priority: high
           tag: '{{ tag }}'
     - condition: template
       value_template: '{{ notify_edyta }}'
@@ -290,7 +290,7 @@ notify_motion:
         title: '{{ title }}'
         message: '{{ message }}'
         data:
-          message_type: notification
+          priority: high
           tag: '{{ tag }}'
           image: >-
             {% if location == 'salon' or location == 'przedpokój' %}

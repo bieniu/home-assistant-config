@@ -93,10 +93,7 @@ exclude:
     - sensor.mhz19b_temperature
     - sensor.light_salon_power
 include:
-  domains:
-    - person
   entities:
-    - person.agnieszka
     - input_boolean.heating_season
     - input_boolean.heating_airing
     - input_boolean.away_mode

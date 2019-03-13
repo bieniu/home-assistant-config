@@ -23,8 +23,7 @@ views:
   - id: home
     icon: mdi:home
     title: 'Pomieszczenia'
-    # background: '#e5e5e5'
-    background: center / cover no-repeat url("/local/pictures/bg.jpg") fixed
+    background: '#e5e5e5 / center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: home
     panel: true
     cards:
@@ -51,8 +50,8 @@ views:
                       state: home
                     - entity_id: person.agnieszka
                       state: home
-                    - entity_id: person.antek
-                      state: home
+                    # - entity_id: person.antek
+                    #   state: home
               - type: entities
                 title: 'Przedpokój'
                 show_header_toggle: false
@@ -218,22 +217,20 @@ views:
   - id: map
     icon: mdi:map
     title: 'Mapa'
-    # background: '#e5e5e5'
-    background: center / cover no-repeat url("/local/pictures/bg.jpg") fixed
+    background: '#e5e5e5 / center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: map
     panel: true
     cards:
       - type: map
         default_zoom: 20
         entities:
-          - device_tracker.edyta
-          - device_tracker.maciek
+          - person.edyta
+          - person.maciek
           - zone.home
   - id: network
     icon: mdi:ethernet
     title: 'Sieć'
-    # background: '#e5e5e5'
-    background: center / cover no-repeat url("/local/pictures/bg.jpg") fixed
+    background: '#e5e5e5 / center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: network
     panel: true
     cards:
@@ -349,8 +346,7 @@ views:
   - id: energy
     icon: mdi:power-plug
     title: 'Energia'
-    # background: '#e5e5e5'
-    background: center / cover no-repeat url("/local/pictures/bg.jpg") fixed
+    background: '#e5e5e5 / center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: energy
     panel: true
     cards:
@@ -465,8 +461,7 @@ views:
   - id: climate
     icon: mdi:cloud
     title: 'Klimat'
-    # background: '#e5e5e5'
-    background: center / cover no-repeat url("/local/pictures/bg.jpg") fixed
+    background: '#e5e5e5 / center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: climate
     panel: true
     cards:
@@ -603,8 +598,7 @@ views:
   - id: misc
     icon: mdi:settings
     title: 'Różne'
-    # background: '#e5e5e5'
-    background: center / cover no-repeat url("/local/pictures/bg.jpg") fixed
+    background: '#e5e5e5 / center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: misc
     panel: true
     cards:
