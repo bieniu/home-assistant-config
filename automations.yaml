@@ -17,17 +17,6 @@
 ################################################################################
 
 #### NOTIFICATIONS #############################################################
-# zamknięcie powiadomienia w panelu WWW po zamknięciu powiadomienia w telefonie
-- id: persistant_notification_close_via_html5_notification_callback
-  alias: 'Persistant Notification Close Via HTML5 Notification Callback'
-  trigger:
-    platform: event
-    event_type: html5_notification.closed
-  action:
-    service: persistent_notification.dismiss
-    data_template:
-      notification_id: '{{ trigger.event.data.tag }}'
-
 # powiadomienie o wygasającym certyfikacie SSL
 - id: notification_ssl_cert_expiry
   alias: 'Notification SSL Cert Expiry'
@@ -40,12 +29,12 @@
         notify_edyta: false
         title: 'Wygasa certyfikat SSL'
         message: "Za {{ states('sensor.ssl_certificate_expiry') }} dni wygaśnie certyfikat SSL serwera WWW."
-        tag: 'notification-ssl-cert'
+        tag: 11111
     - service: persistent_notification.create
       data_template:
         title: 'Wygasa certyfikat SSL'
         message: "Za {{ states('sensor.ssl_certificate_expiry') }} dni wygaśnie certyfikat SSL serwera WWW."
-        notification_id: 'notification-ssl-cert'
+        notification_id: 11111
 
 # powiadomienie z Custom Updatera
 - id: notification_from_custom_updater
@@ -66,12 +55,12 @@
         notify_edyta: false
         title: 'Aktualizacja karty/skryptu/komponentu'
         message: "Dostępna jest aktualizacja karty, skryptu lub komponentu Home Assistant'a."
-        tag: 'notification-custom-updater-update'
+        tag: 22222
     - service: persistent_notification.create
       data_template:
         title: 'Aktualizacja karty/skryptu/komponentu'
         message: "Dostępna jest aktualizacja karty, skryptu lub komponentu Home Assistant'a."
-        notification_id: 'notification-custom-updater-update'
+        notification_id: 22222
 
 # powiadomienie o encji ze stanem dead lub unavailable
 - id: notification_dead_or_unavailable
@@ -109,7 +98,7 @@
             {%- endfor %}
           {% endmacro %}
           Następujące encje mają nieprawidłowe stany: {{ dead_unavailable_entities() }}
-        tag: 'notification-dead-unvailable'
+        tag: 33333
     - service: persistent_notification.create
       data_template:
         title: 'Encja z nieprawidłowym stanem'
@@ -124,7 +113,7 @@
             {%- endfor %}
           {% endmacro %}
           Następujące encje mają nieprawidłowe stany: {{ dead_unavailable_entities() }}
-        notification_id: 'notification-dead-unvailable'
+        notification_id: 33333
 
 # powiadomienie o aktualizacji
 - id: notification_custom_update_available
@@ -150,13 +139,13 @@
       data_template:
         title: "Aktualizacja Home Assistant'a"
         message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ha_version_current') }} dla Home Assistant'a."
-        tag: 'notification-hass-update'
+        tag: 44444
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
         title: "Aktualizacja Home Assistant'a"
         message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ha_version_current') }} dla Home Assistant'a."
-        notification_id: 'notification-hass-update'
+        notification_id: 44444
 
 # powiadomienie o małej ilości wody w nawilżaczu
 - id: notification_humidifier_low_water
@@ -176,7 +165,7 @@
       data_template:
         title: "Uzupełnij wodę w nawilżaczu"
         message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        notification_id: 'notification-humidifier-low-water'
+        notification_id: 55555
     - condition: state
       entity_id: person.maciek
       state: 'home'
@@ -184,7 +173,7 @@
       data_template:
         title: "Uzupełnij wodę w nawilżaczu"
         message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        tag: 'notification-humidifier-low-water'
+        tag: 55555
         notify_edyta: false
 
 # powiadomienie o małej ilości wody w nawilżaczu Edyta
@@ -230,13 +219,13 @@
       data_template:
         title: 'Aktualizacja oprogramowania Shelly'
         message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} oprogramowania dla {{ trigger.to_state.attributes.friendly_name }}.'
-        tag: 'notification-shelly-update'
+        tag: 66666
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
         title: 'Aktualizacja oprogramowania Shelly'
         message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} oprogramowania dla {{ trigger.to_state.attributes.friendly_name }}.'
-        notification_id: 'notification-shelly-update'
+        notification_id: 66666
 
 # powiadomienie o aktualizacji Tasmota
 - id: notification_tasmota_update_available
@@ -256,13 +245,13 @@
       data_template:
         title: 'Aktualizacja Sonoff-Tasmota'
         message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Sonoff-Tasmota.'
-        tag: 'notification-tasmota-update'
+        tag: 77777
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
         title: 'Aktualizacja Sonoff-Tasmota'
         message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Sonoff-Tasmota.'
-        notification_id: 'notification-tasmota-update'
+        notification_id: 77777
 
 # powiadomienie o aktualizacji Caddy
 - id: notification_caddy_update_available
@@ -282,13 +271,13 @@
       data_template:
         title: 'Aktualizacja Caddy'
         message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy.'
-        tag: 'notification-caddy-update'
+        tag: 88888
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
         title: 'Aktualizacja Caddy'
         message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy.'
-        notification_id: 'notification-caddy-update'
+        notification_id: 88888
 
 # powiadomienie o wysokim stężeniu CO2 w salonie
 - id: notification_salon_co2
@@ -308,7 +297,7 @@
     data_template:
       title: 'Wysokie stężenie dwutlenku węgla'
       message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
-      tag: 'notification-salon-co2'
+      tag: 99999
       notify_edyta: true
 
 # powiadomienie jak jest ruch i nikogo w domu
@@ -336,7 +325,7 @@
     data_template:
       title: 'Wykryto ruch w pustym mieszkaniu'
       message: "Pomieszczenie: {{ trigger.to_state.attributes.location }}, godzina {{ now().strftime('%H:%M') }}."
-      tag: 'notification-hass-motion'
+      tag: 21111
       datetime: "{{ now().strftime('%Y%m%d%H%M%S') }}"
       snapshot_url: !secret snapshot_url
       location: '{{ trigger.to_state.attributes.location }}'
@@ -367,7 +356,7 @@
       notify_edyta: true
       title: 'Wykryto otwarcie okna w pustym mieszkaniu'
       message: "Pomieszczenie: {{ trigger.to_state.attributes.location }}, godzina {{ now().strftime('%H:%M') }}."
-      tag: 'notification-hass-window-opened'
+      tag: 22222
 
 # powiadomienia o małej ilości miejsca na Synology
 - id: notification_low_disk_space_on_synology
@@ -381,13 +370,13 @@
       data_template:
         title: 'Mało miejsca na dysku Synology'
         message: 'Dysk Synology jest zapełniony w {{ trigger.to_state.state }}%.'
-        tag: 'notification-synology-low-disk'
+        tag: 23333
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
         title: 'Mało miejsca na dysku Synology'
         message: 'Dysk Synology jest zapełniony w {{ trigger.to_state.state }}%.'
-        notification_id: 'notification-synology-low-disk'
+        notification_id: 23333
 
 # powiadomienie o wykryciu nowego urządzenia
 - id: notification_new_device
@@ -401,12 +390,12 @@
         notify_edyta: false
         title: 'Nowe urządzenie'
         message: 'Wykryto nowe urządzenie o nazwie {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}}).'
-        tag: 'notification-new-device'
+        tag: 24444
     - service: persistent_notification.create
       data_template:
         title: 'Nowe urządzenie'
         message: 'Wykryto nowe urządzenie o nazwie {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}}).'
-        notification_id: 'notification-new-device'
+        notification_id: 24444
 
 # powiadomienie o niskim poziomie naładowania baterii
 - id: notification_low_battery
@@ -449,7 +438,7 @@
             {%- endfor %}
           {% endmacro %}
           W następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level() }}
-        tag: 'notification-low-battery'
+        tag: 25555
     - service: persistent_notification.create
       data_template:
         title: 'Niski poziom naładowania baterii'
@@ -467,7 +456,7 @@
             {%- endfor %}
           {% endmacro %}
           W następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level() }}
-        notification_id: 'notification-low-battery'
+        notification_id: 25555
 
 ##################################################################################################
 
@@ -553,7 +542,7 @@
         notify_edyta: true
         title: 'Otwarte okna'
         message: "Okna w mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów wynosi {{ states('sensor.dark_sky_precip_probability') }}%."
-        tag: 'notification-opened-window'
+        tag: 26666
 
 # domownicy w domu
 - id: presence_peoples_back
@@ -828,7 +817,7 @@
         notify_edyta: true
         title: 'Włączono szybkie dogrzanie'
         message: 'Włączono szybie dogrzanie pomieszczeń po długiej nieobecności domowników.'
-        tag: 'notification-heating-fat-warm-up'
+        tag: 27777
     - condition: template
       value_template: >-
         {{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float
@@ -897,7 +886,7 @@
         notify_edyta: true
         title: 'Koniec przewietrzania'
         message: 'Wyłączono tryb przewietrzania. Proszę zamknąć okna!'
-        tag: 'notification-airing-end'
+        tag: 28888
 
 # koniec przewietrzania o zachodzie słońca
 - id: heating_airing_end_at_sunset
@@ -2199,13 +2188,13 @@
       data_template:
         title: "Uzupełnij wodę w nawilżaczu"
         message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        tag: 'notification-humidifier-low-water'
+        tag: 55555
         notify_edyta: true
     - service: persistent_notification.create
       data_template:
         title: "Uzupełnij wodę w nawilżaczu"
         message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        notification_id: 'notification-humidifier-low-water'
+        notification_id: 55555
 
 - id: humidification_outdoor_temp_above_10
   alias: 'Humidification Outdoor Temp Above 10'

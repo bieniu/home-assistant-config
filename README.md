@@ -55,7 +55,6 @@
 ## Home Assistant Custom Components
 
 * [Custom Frontend](https://github.com/home-assistant/home-assistant/pull/10783)
-* [AndroidTV](https://github.com/home-assistant/home-assistant/pull/19157)
 * [Custom Updater](https://github.com/custom-components/custom_updater)
 
 ## Custom Panels

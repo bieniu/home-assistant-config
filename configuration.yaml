@@ -123,9 +123,8 @@ notify:
     vapid_pub_key: !secret vapid_pub_key
     vapid_prv_key: !secret vapid_prv_key
     vapid_email: !secret vapid_email
-  - platform: nfandroidtv
-    name: androidtv
-    host: !secret androidtv_hostname
+  - platform: fcm-android
+    name: android
 
 input_boolean: !include input_boolean.yaml
 
