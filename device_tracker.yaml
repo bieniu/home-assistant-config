@@ -14,33 +14,3 @@
   hosts:
     modem: !secret modem_hostname
     raspberry: !secret raspberry_hostname
-
-# - platform: composite
-#   name: 'Maciek'
-#   time_as: 'local'
-#   entity_id:
-#     - device_tracker.oneplus_6
-#     - device_tracker.oneplus_6_bt
-#     - device_tracker.oneplus_6_gps
-#
-# - platform: composite
-#   name: 'Edyta'
-#   time_as: 'local'
-#   entity_id:
-#     - device_tracker.iphone_8_plus
-#     - device_tracker.iphone_8_plus_bt
-#     - device_tracker.iphone_8_plus_app
-#
-# - platform: composite
-#   name: 'Jerzy'
-#   time_as: 'local'
-#   entity_id:
-#     - device_tracker.oneplus_one
-#     - device_tracker.oneplus_one_bt
-#
-# - platform: composite
-#   name: 'Grazyna'
-#   time_as: 'local'
-#   entity_id:
-#     - device_tracker.iphone_6s
-#     - device_tracker.iphone_6s_bt

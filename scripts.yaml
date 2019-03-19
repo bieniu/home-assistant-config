@@ -270,11 +270,6 @@ notify:
         data:
           tag: '{{ tag }}'
           icon: !secret notification_icon
-          actions:
-            - action: open
-              title: 'Otwórz'
-            - action: dismiss
-              title: 'Odrzuć'
     - condition: template
       value_template: '{{ notify_edyta }}'
     - service: notify.ios_iphone_8_plus_app

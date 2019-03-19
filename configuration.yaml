@@ -50,17 +50,6 @@ logger: !include logger.yaml
 
 history: !include history.yaml
 
-logbook:
-  include:
-    entities:
-      - person.edyta
-      - person.maciek
-      - person.agnieszka
-      - person.emil
-      - person.grazyna
-      - person.jerzy
-      - person.antek
-
 system_health:
 
 utility_meter:
@@ -127,6 +116,12 @@ notify:
     name: android
 
 input_boolean: !include input_boolean.yaml
+
+panel_iframe:
+  configurator:
+    title: Konfigurator
+    icon: mdi:wrench
+    url: !secret configurator_url
 
 panel_custom:
   - name: zwavegraph

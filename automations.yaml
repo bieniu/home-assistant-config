@@ -129,6 +129,10 @@
       - condition: template
         value_template: "{{ trigger.to_state.state != 'unavailable' }}"
       - condition: template
+        value_template: "{{ trigger.from_state.state != 'unknown' }}"
+      - condition: template
+        value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+      - condition: template
         value_template: "{{ states('sensor.ha_version_installed') != 'unknown' }}"
       - condition: template
         value_template: "{{ states('sensor.ha_version_installed') != 'unavailable' }}"
@@ -178,7 +182,7 @@
 
 # powiadomienie o małej ilości wody w nawilżaczu Edyta
 - id: notification_humidifier_low_water_edyta
-  alias: 'Notification Humidifier Low Water_edyta'
+  alias: 'Notification Humidifier Low Water Edyta'
   trigger:
     - platform: numeric_state
       entity_id: sensor.humidifier_water_level
@@ -214,6 +218,10 @@
         value_template: "{{ trigger.to_state.state != 'unknown' }}"
       - condition: template
         value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+      - condition: template
+        value_template: "{{ trigger.from_state.state != 'unknown' }}"
+      - condition: template
+        value_template: "{{ trigger.from_state.state != 'unavailable' }}"
   action:
     - service: script.notify
       data_template:
@@ -240,6 +248,10 @@
       value_template: "{{ trigger.to_state.state != 'unknown' }}"
     - condition: template
       value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
   action:
     - service: script.notify
       data_template:
@@ -266,6 +278,10 @@
       value_template: "{{ trigger.to_state.state != 'unknown' }}"
     - condition: template
       value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
   action:
     - service: script.notify
       data_template:
@@ -2266,16 +2282,3 @@
       shelly1-328900-relay-0: 'light'
       shellyswitch-5B2604-relay-0: 'switch'
       shellyswitch-5B2604-relay-1: 'light'
-
-- id: adb_reconnect
-  alias: 'ADB Reconnect'
-  trigger:
-    - platform: state
-      entity_id: media_player.mibox
-      to: 'unavailable'
-      for:
-        minutes: 1
-    - platform:  homeassistant
-      event: start
-  action:
-    service: shell_command.adb_reconnect

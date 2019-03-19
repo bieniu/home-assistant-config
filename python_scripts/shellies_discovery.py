@@ -9,8 +9,9 @@ Arguments:
  - sensor				- sensor entity_id (required)
  - fw_ver               - Shelly firmware version (optional)
  - temp_unit            - C for Celsius, F for Farenhait, default C (optional)
- - list of shelies relays and components for them, this is required only for
-                        devices with relays
+ - list of shelies relays and components for them, only for devices with relays
+                          (optional), by default all relays are added as
+                          switches.
 
 Configuration example:
 Automations:
@@ -60,7 +61,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.2.1'
+VERSION = '0.3.0'
 
 ATTR_DEVELOP = 'develop'
 
@@ -97,15 +98,14 @@ else:
     relay_sensors = []
     relay_components = ['switch', 'light', 'fan']
     sensors = []
+    config_component = 'switch'
 
     if 'shelly1' in id:
         model = 'Shelly1'
-        component = 'switch'
         relays = 1
 
     if 'shellyswitch' in id:
         model = 'Shelly2'
-        component = 'switch'
         relays = 2
         relay_sensors = ['power']
         units = ['W']
@@ -113,25 +113,27 @@ else:
 
     if 'shellyplug' in id:
         model = 'Shelly Plug'
-        component = 'switch'
         relays = 1
         relay_sensors = ['power', 'energy']
         units = ['W', 'kWh']
-        templates = ['{{ value | round(1) }}', '{{ (value | float / 100) | round(2) }}']
+        templates = ['{{ value | round(1) }}',
+                     '{{ (value | float / 100) | round(2) }}']
 
     if 'shelly4pro' in id:
         model = 'Shelly4Pro'
-        component = 'switch'
         relays = 4
         relay_sensors = ['power', 'energy']
         units = ['W', 'kWh']
-        templates = ['{{ value | round(1) }}', '{{ (value / 100) | round(2) }}']
+        templates = ['{{ value | round(1) }}',
+                     '{{ (value / 100) | round(2) }}']
 
     if 'shellyht' in id:
         model = 'ShellyH&T'
         sensors = ['temperature', 'humidity', 'battery']
         units = [temp_unit, '%', '%']
-        templates = ['{{ value | round(1) }}', '{{ value | round(1) }}', '{{ value | round }}']
+        templates = ['{{ value | round(1) }}',
+                     '{{ value | round(1) }}',
+                     '{{ value | round }}']
 
     for relay_id in range(0, relays):
         device_name = '{} {}'.format(model, id.split('-')[1],)
@@ -142,10 +144,11 @@ else:
         availability_topic = '~online'
         unique_id = '{}-relay-{}'.format(id, relay_id)
         if data.get(unique_id):
-            component = data.get(unique_id)
-            if component in relay_components:
-                config_topic = '{}/{}/{}-relay-{}/config'.format(disc_prefix,
-                                                        component, id, relay_id)
+            config_component = data.get(unique_id)
+        for component in relay_components:
+            config_topic = '{}/{}/{}-relay-{}/config'.format(disc_prefix,
+                                                    component, id, relay_id)
+            if component == config_component:
                 payload = '{\"name\":\"' + relay_name + '\",' \
                           '\"cmd_t\":\"' + command_topic + '\",' \
                           '\"stat_t\":\"' + state_topic +'\",' \
@@ -161,13 +164,16 @@ else:
                           '\"sw_version\":\"' + fw_ver + '\",' \
                           '\"manufacturer\":\"Shelly\"},' \
                           '\"~\":\"' + default_topic + '\"}'
-                service_data = {
-                    'topic': config_topic,
-                    'payload': payload,
-                    'retain': retain,
-                    'qos': 0
-                }
-                hass.services.call('mqtt', 'publish', service_data, False)
+            else:
+                payload = ''
+            service_data = {
+                'topic': config_topic,
+                'payload': payload,
+                'retain': retain,
+                'qos': 0
+            }
+            logger.error('{} {}'.format(component, payload))
+            hass.services.call('mqtt', 'publish', service_data, False)
         if model == 'Shelly2':
             if relay_id == relays-1:
                 for sensor_id in range(0, len(relay_sensors)):
