@@ -226,6 +226,8 @@ light.cabinet_antek:
   icon: mdi:spotlight
 light.lamp_pracownia:
   icon: mdi:lamp
+light.lamp_goscinny:
+  icon: mdi:lamp
 script.sonoffs_upgrade:
   friendly_name: 'Aktualizacja Sonoff-ów'
   icon: mdi:download-network

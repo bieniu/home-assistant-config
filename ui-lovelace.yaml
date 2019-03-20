@@ -15,8 +15,6 @@ resources:
     type: js
   - url: /customcards/secondaryinfo-entity-row.js
     type: module
-  - url: /customcards/mini-graph-card-bundle.js
-    type: module
 
 title: 'Dom'
 views:
@@ -28,6 +26,7 @@ views:
     panel: true
     cards:
       - type: custom:layout-card
+        column_width: 320
         cards:
           - type: vertical-stack
             cards:
@@ -140,6 +139,7 @@ views:
             entities:
               - sensor.temperature_goscinny
               - sensor.humidity_goscinny
+              - light.lamp_goscinny
           - type: custom:vertical-stack-in-card
             title: 'Antresola'
             cards:
@@ -235,6 +235,7 @@ views:
     panel: true
     cards:
       - type: custom:layout-card
+        column_width: 320
         cards:
           - type: vertical-stack
             cards:
@@ -259,19 +260,6 @@ views:
                   - sensor.ssl_certificate_expiry
                   - sensor.synology_last_boot
               - type: entities
-                title: 'Raspberry Pi'
-                show_header_toggle: false
-                entities:
-                  - sensor.processor_use
-                  - sensor.raspberry_cpu_temp
-                  - sensor.memory_use_percent
-                  - sensor.disk_use_percent
-                  - sensor.last_boot_custom
-                  - sensor.last_ha_restart
-                  - sensor.ha_database_size
-          - type: vertical-stack
-            cards:
-              - type: entities
                 title: 'Drukarka'
                 show_header_toggle: false
                 entities:
@@ -279,6 +267,27 @@ views:
                   - sensor.printer_counter
                   - sensor.printer_drum_usage
                   - sensor.printer_toner
+
+          - type: vertical-stack
+            cards:
+              - type: custom:vertical-stack-in-card
+                title: 'Raspberry Pi'
+                cards:
+                  - type: glance
+                    entities:
+                      - entity: sensor.processor_use
+                        name: 'CPU'
+                      - entity: sensor.memory_use_percent
+                        name: 'RAM'
+                      - entity: sensor.disk_use_percent
+                        name: 'Dysk'
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                      - sensor.raspberry_cpu_temp
+                      - sensor.last_boot_custom
+                      - sensor.last_ha_restart
+                      - sensor.ha_database_size
               - type: entities
                 title: 'Urządzenia Z-Wave'
                 show_header_toggle: false
@@ -338,9 +347,9 @@ views:
               - binary_sensor.shelly1_328900_status
               - binary_sensor.shelly2_5b2604_status
               - binary_sensor.wemos_d1_mini_1c91ea_status
+              - binary_sensor.yeelight_bulb_salon3_status
               - binary_sensor.yeelight_bulb_salon1_status
               - binary_sensor.yeelight_bulb_salon2_status
-              - binary_sensor.yeelight_bulb_salon3_status
               - binary_sensor.yeelight_lightstrip_sypialnia_status
               - binary_sensor.yeelight_lightstrip_antek_status
   - id: energy
@@ -351,6 +360,7 @@ views:
     panel: true
     cards:
       - type: custom:layout-card
+        column_width: 320
         cards:
           - type: vertical-stack
             cards:
@@ -507,14 +517,9 @@ views:
                 entity_pop_5: sensor.dark_sky_precip_probability_5
                 time_format: 24
                 locale: pl
-                # tooltips: true
-                # tooltip_width: 100px
-                # tooltip_bg_color: black
-                # tooltip_border_color: black
-                # tooltip_caret_size: 3
               - type: iframe
                 url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates&metricWind=m%2Fs
-                aspect_ratio: 56%
+                aspect_ratio: 60%
               - type: sensor
                 entity: sensor.airly_info
           - type: vertical-stack
