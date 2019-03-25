@@ -17,6 +17,23 @@
 ################################################################################
 
 #### NOTIFICATIONS #############################################################
+# odrzucenie powiadomienia w telefonie poprzez odrzucenie we frontendzie
+- id: notification_dismiss_android_via_persistant
+  alias: 'Notification Dismiss Android Via Persistant'
+  trigger:
+    platform: event
+    event_type: 'call_service'
+    event_data:
+      domain: 'persistent_notification'
+      service: 'dismiss'
+  action:
+    service: notify.android_oneplus_6_ariela
+    data_template:
+        message: 'dismiss'
+        data:
+          tag: '{{ trigger.event.data.service_data.notification_id }}'
+          dismiss: true
+
 # powiadomienie o wygasającym certyfikacie SSL
 - id: notification_ssl_cert_expiry
   alias: 'Notification SSL Cert Expiry'

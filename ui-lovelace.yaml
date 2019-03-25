@@ -15,18 +15,21 @@ resources:
     type: js
   - url: /customcards/secondaryinfo-entity-row.js
     type: module
+  - url: /customcards/mini-graph-card-bundle.js
+    type: module
 
 title: 'Dom'
 views:
   - id: home
     icon: mdi:home
     title: 'Pomieszczenia'
-    background: '#e5e5e5 / center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
+    # background: '#e5e5e5'
+    background: 'center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: home
     panel: true
     cards:
       - type: custom:layout-card
-        column_width: 320
+        column_width: 310
         cards:
           - type: vertical-stack
             cards:
@@ -217,7 +220,8 @@ views:
   - id: map
     icon: mdi:map
     title: 'Mapa'
-    background: '#e5e5e5 / center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
+    # background: '#e5e5e5'
+    background: 'center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: map
     panel: true
     cards:
@@ -230,12 +234,13 @@ views:
   - id: network
     icon: mdi:ethernet
     title: 'Sieć'
-    background: '#e5e5e5 / center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
+    # background: '#e5e5e5'
+    background: 'center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: network
     panel: true
     cards:
       - type: custom:layout-card
-        column_width: 320
+        column_width: 310
         cards:
           - type: vertical-stack
             cards:
@@ -355,12 +360,13 @@ views:
   - id: energy
     icon: mdi:power-plug
     title: 'Energia'
-    background: '#e5e5e5 / center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
+    # background: '#e5e5e5'
+    background: 'center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: energy
     panel: true
     cards:
       - type: custom:layout-card
-        column_width: 320
+        column_width: 310
         cards:
           - type: vertical-stack
             cards:
@@ -471,7 +477,8 @@ views:
   - id: climate
     icon: mdi:cloud
     title: 'Klimat'
-    background: '#e5e5e5 / center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
+    # background: '#e5e5e5'
+    background: 'center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: climate
     panel: true
     cards:
@@ -519,7 +526,7 @@ views:
                 locale: pl
               - type: iframe
                 url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates&metricWind=m%2Fs
-                aspect_ratio: 60%
+                aspect_ratio: 56%
               - type: sensor
                 entity: sensor.airly_info
           - type: vertical-stack
@@ -603,7 +610,8 @@ views:
   - id: misc
     icon: mdi:settings
     title: 'Różne'
-    background: '#e5e5e5 / center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
+    # background: '#e5e5e5'
+    background: 'center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: misc
     panel: true
     cards:

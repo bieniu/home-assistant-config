@@ -4,7 +4,7 @@
 
 ## Server
 
-* Raspberry Pi 3 [Raspbian Stretch with Python 3.6.3 virtual env]
+* Raspberry Pi 3 [Raspbian Stretch with Python 3.7.2 virtual env]
 
 ## Z-Wave Devices
 
@@ -56,6 +56,7 @@
 
 * [Custom Frontend](https://github.com/home-assistant/home-assistant/pull/10783)
 * [Custom Updater](https://github.com/custom-components/custom_updater)
+* [HANotify](https://github.com/MCrissDev/HANotify)
 
 ## Custom Panels
 
