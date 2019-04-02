@@ -171,8 +171,7 @@ else:
                 'payload': payload,
                 'retain': retain,
                 'qos': 0
-            }
-            logger.error('{} {}'.format(component, payload))
+            }            
             hass.services.call('mqtt', 'publish', service_data, False)
         if model == 'Shelly2':
             if relay_id == relays-1:

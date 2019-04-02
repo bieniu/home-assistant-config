@@ -12,6 +12,7 @@ household:
   entities:
     - person.edyta
     - person.maciek
+    # - person.antek
 
 family:
   name: 'Rodzina'

@@ -197,6 +197,8 @@ binary_sensor.motion_sypialnia:
   location: 'sypialnia'
 binary_sensor.motion_antek:
   location: 'pokój Antka'
+binary_sensor.motion_goscinny:
+  location: 'pokój gościnny'
 
 #### XIAOMI WINDOW/DOOR SENSORS ####
 binary_sensor.balcony_door_sypialnia:

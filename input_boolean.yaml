@@ -17,6 +17,7 @@ sypialnia_light_motion_on:
 antek_light_motion_on:
 przedpokoj_light_motion_on:
 pracownia_light_motion_on:
+goscinny_light_motion_on:
 antek_lamp_night:
 salon_light_scene_turn_on:
 harmony_command:
@@ -29,4 +30,7 @@ light_auto_turn_salon:
   icon: 'mdi:lightbulb-on-outline'
 light_auto_turn_pracownia:
   name: 'Oświetlenie pracowni załączane ruchem'
+  icon: 'mdi:lightbulb-on-outline'
+light_auto_turn_goscinny:
+  name: 'Oświetlenie pokoju gościnnego załączane ruchem'
   icon: 'mdi:lightbulb-on-outline'

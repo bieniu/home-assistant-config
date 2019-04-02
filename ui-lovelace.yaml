@@ -136,13 +136,21 @@ views:
                     secondary_info: last-changed
                   - binary_sensor.balcony_door_pracownia
                   - light.lamp_pracownia
-          - type: entities
+          - type: custom:vertical-stack-in-card
             title: 'Pokój gościnny'
-            show_header_toggle: false
-            entities:
-              - sensor.temperature_goscinny
-              - sensor.humidity_goscinny
-              - light.lamp_goscinny
+            cards:
+              - type: glance
+                show_name: false
+                entities:
+                  - sensor.temperature_goscinny
+                  - sensor.humidity_goscinny
+                  - sensor.illumination_goscinny
+              - type: entities
+                show_header_toggle: false
+                entities:                  
+                  - entity: binary_sensor.motion_goscinny
+                    secondary_info: last-changed
+                  - light.lamp_goscinny
           - type: custom:vertical-stack-in-card
             title: 'Antresola'
             cards:
@@ -427,14 +435,15 @@ views:
                 title: 'Baterie sensorów ruchu'
                 show_header_toggle: false
                 entities:
-                  - sensor.battery_body_sensor_przedpokoj
-                  - sensor.battery_body_sensor_salon_1
-                  - sensor.battery_body_sensor_salon_2
-                  - sensor.battery_body_sensor_pracownia
-                  - sensor.battery_body_sensor_schody
-                  - sensor.battery_body_sensor_antresola
-                  - sensor.battery_body_sensor_antek
-                  - sensor.battery_body_sensor_sypialnia
+                  - sensor.battery_motion_sensor_przedpokoj
+                  - sensor.battery_motion_sensor_salon_1
+                  - sensor.battery_motion_sensor_salon_2
+                  - sensor.battery_motion_sensor_pracownia
+                  - sensor.battery_motion_sensor_goscinny
+                  - sensor.battery_motion_sensor_schody
+                  - sensor.battery_motion_sensor_antresola
+                  - sensor.battery_motion_sensor_antek
+                  - sensor.battery_motion_sensor_sypialnia
               - type: entities
                 title: 'Baterie przełączników'
                 show_header_toggle: false
@@ -659,6 +668,7 @@ views:
             entities:
               - input_boolean.light_auto_turn_salon
               - input_boolean.light_auto_turn_pracownia
+              - input_boolean.light_auto_turn_goscinny
           - type: entities
             title: 'Skrypty i ustawienia'
             show_header_toggle: false

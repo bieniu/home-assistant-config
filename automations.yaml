@@ -18,8 +18,8 @@
 
 #### NOTIFICATIONS #############################################################
 # odrzucenie powiadomienia w telefonie poprzez odrzucenie we frontendzie
-- id: notification_dismiss_android_via_persistant
-  alias: 'Notification Dismiss Android Via Persistant'
+- id: notification_dismiss_html5_via_persistant
+  alias: 'Notification Dismiss HTML5 Via Persistant'
   trigger:
     platform: event
     event_type: 'call_service'
@@ -27,12 +27,22 @@
       domain: 'persistent_notification'
       service: 'dismiss'
   action:
-    service: notify.android_oneplus_6_ariela
+    service: notify.html5_dismiss
     data_template:
-        message: 'dismiss'
-        data:
-          tag: '{{ trigger.event.data.service_data.notification_id }}'
-          dismiss: true
+      target: 'maciek'
+      data:
+        tag: '{{ trigger.event.data.service_data.notification_id }}'
+
+# odrzucenie powiadomienia we frontendzie poprzez odrzucenie wtelefonie
+- id: notification_dismiss_persistant_via_html5
+  alias: 'Notification Dismiss Persistant Via HTML5'
+  trigger:
+    platform: event
+    event_type: 'html5_notification.closed'
+  action:
+    service: persistent_notification.dismiss
+    data_template:
+      notification_id: '{{ trigger.event.data.tag }}'
 
 # powiadomienie o wygasającym certyfikacie SSL
 - id: notification_ssl_cert_expiry
@@ -46,12 +56,12 @@
         notify_edyta: false
         title: 'Wygasa certyfikat SSL'
         message: "Za {{ states('sensor.ssl_certificate_expiry') }} dni wygaśnie certyfikat SSL serwera WWW."
-        tag: 11111
+        tag: 'notification-ssl'
     - service: persistent_notification.create
       data_template:
         title: 'Wygasa certyfikat SSL'
         message: "Za {{ states('sensor.ssl_certificate_expiry') }} dni wygaśnie certyfikat SSL serwera WWW."
-        notification_id: 11111
+        notification_id: 'notification-ssl'
 
 # powiadomienie z Custom Updatera
 - id: notification_from_custom_updater
@@ -72,12 +82,12 @@
         notify_edyta: false
         title: 'Aktualizacja karty/skryptu/komponentu'
         message: "Dostępna jest aktualizacja karty, skryptu lub komponentu Home Assistant'a."
-        tag: 22222
+        tag: 'notification-custom-updater'
     - service: persistent_notification.create
       data_template:
         title: 'Aktualizacja karty/skryptu/komponentu'
         message: "Dostępna jest aktualizacja karty, skryptu lub komponentu Home Assistant'a."
-        notification_id: 22222
+        notification_id: 'notification-custom-updater'
 
 # powiadomienie o encji ze stanem dead lub unavailable
 - id: notification_dead_or_unavailable
@@ -115,7 +125,7 @@
             {%- endfor %}
           {% endmacro %}
           Następujące encje mają nieprawidłowe stany: {{ dead_unavailable_entities() }}
-        tag: 33333
+        tag: 'notification-dead-unavailable'
     - service: persistent_notification.create
       data_template:
         title: 'Encja z nieprawidłowym stanem'
@@ -130,7 +140,7 @@
             {%- endfor %}
           {% endmacro %}
           Następujące encje mają nieprawidłowe stany: {{ dead_unavailable_entities() }}
-        notification_id: 33333
+        notification_id: 'notification-dead-unavailable'
 
 # powiadomienie o aktualizacji
 - id: notification_custom_update_available
@@ -160,13 +170,13 @@
       data_template:
         title: "Aktualizacja Home Assistant'a"
         message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ha_version_current') }} dla Home Assistant'a."
-        tag: 44444
+        tag: 'notification-ha-update'
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
         title: "Aktualizacja Home Assistant'a"
         message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ha_version_current') }} dla Home Assistant'a."
-        notification_id: 44444
+        notification_id: 'notification-ha-update'
 
 # powiadomienie o małej ilości wody w nawilżaczu
 - id: notification_humidifier_low_water
@@ -186,7 +196,7 @@
       data_template:
         title: "Uzupełnij wodę w nawilżaczu"
         message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        notification_id: 55555
+        notification_id: 'notification-humidifier'
     - condition: state
       entity_id: person.maciek
       state: 'home'
@@ -194,7 +204,7 @@
       data_template:
         title: "Uzupełnij wodę w nawilżaczu"
         message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        tag: 55555
+        tag: 'notification-humidifier'
         notify_edyta: false
 
 # powiadomienie o małej ilości wody w nawilżaczu Edyta
@@ -244,13 +254,13 @@
       data_template:
         title: 'Aktualizacja oprogramowania Shelly'
         message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} oprogramowania dla {{ trigger.to_state.attributes.friendly_name }}.'
-        tag: 66666
+        tag: 'notification-shelly-update'
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
         title: 'Aktualizacja oprogramowania Shelly'
         message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} oprogramowania dla {{ trigger.to_state.attributes.friendly_name }}.'
-        notification_id: 66666
+        notification_id: 'notification-shelly-update'
 
 # powiadomienie o aktualizacji Tasmota
 - id: notification_tasmota_update_available
@@ -274,13 +284,13 @@
       data_template:
         title: 'Aktualizacja Sonoff-Tasmota'
         message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Sonoff-Tasmota.'
-        tag: 77777
+        tag: 'notification-tasmota-update'
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
         title: 'Aktualizacja Sonoff-Tasmota'
         message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Sonoff-Tasmota.'
-        notification_id: 77777
+        notification_id: 'notification-tasmota-update'
 
 # powiadomienie o aktualizacji Caddy
 - id: notification_caddy_update_available
@@ -304,13 +314,13 @@
       data_template:
         title: 'Aktualizacja Caddy'
         message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy.'
-        tag: 88888
+        tag: 'notification-caddy-update'
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
         title: 'Aktualizacja Caddy'
         message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy.'
-        notification_id: 88888
+        notification_id: 'notification-caddy-update'
 
 # powiadomienie o wysokim stężeniu CO2 w salonie
 - id: notification_salon_co2
@@ -330,7 +340,7 @@
     data_template:
       title: 'Wysokie stężenie dwutlenku węgla'
       message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
-      tag: 99999
+      tag: 'notification-high-co2'
       notify_edyta: true
 
 # powiadomienie jak jest ruch i nikogo w domu
@@ -345,6 +355,7 @@
         - binary_sensor.motion_antek
         - binary_sensor.motion_przedpokoj
         - binary_sensor.motion_pracownia
+        - binary_sensor.motion_goscinny
       from: 'off'
       to: 'on'
   condition:
@@ -358,7 +369,7 @@
     data_template:
       title: 'Wykryto ruch w pustym mieszkaniu'
       message: "Pomieszczenie: {{ trigger.to_state.attributes.location }}, godzina {{ now().strftime('%H:%M') }}."
-      tag: 21111
+      tag: 'notification-motion'
       datetime: "{{ now().strftime('%Y%m%d%H%M%S') }}"
       snapshot_url: !secret snapshot_url
       location: '{{ trigger.to_state.attributes.location }}'
@@ -389,7 +400,7 @@
       notify_edyta: true
       title: 'Wykryto otwarcie okna w pustym mieszkaniu'
       message: "Pomieszczenie: {{ trigger.to_state.attributes.location }}, godzina {{ now().strftime('%H:%M') }}."
-      tag: 22222
+      tag: 'notification-window-opened'
 
 # powiadomienia o małej ilości miejsca na Synology
 - id: notification_low_disk_space_on_synology
@@ -403,13 +414,13 @@
       data_template:
         title: 'Mało miejsca na dysku Synology'
         message: 'Dysk Synology jest zapełniony w {{ trigger.to_state.state }}%.'
-        tag: 23333
+        tag: 'notification-synology-low-space'
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
         title: 'Mało miejsca na dysku Synology'
         message: 'Dysk Synology jest zapełniony w {{ trigger.to_state.state }}%.'
-        notification_id: 23333
+        notification_id: 'notification-synology-low-space'
 
 # powiadomienie o wykryciu nowego urządzenia
 - id: notification_new_device
@@ -423,12 +434,12 @@
         notify_edyta: false
         title: 'Nowe urządzenie'
         message: 'Wykryto nowe urządzenie o nazwie {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}}).'
-        tag: 24444
+        tag: 'notification-new-device'
     - service: persistent_notification.create
       data_template:
         title: 'Nowe urządzenie'
         message: 'Wykryto nowe urządzenie o nazwie {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}}).'
-        notification_id: 24444
+        notification_id: 'notification-new-device'
 
 # powiadomienie o niskim poziomie naładowania baterii
 - id: notification_low_battery
@@ -471,7 +482,7 @@
             {%- endfor %}
           {% endmacro %}
           W następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level() }}
-        tag: 25555
+        tag: 'notification-low-battery'
     - service: persistent_notification.create
       data_template:
         title: 'Niski poziom naładowania baterii'
@@ -489,7 +500,7 @@
             {%- endfor %}
           {% endmacro %}
           W następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level() }}
-        notification_id: 25555
+        notification_id: 'notification-low-battery'
 
 ##################################################################################################
 
@@ -575,7 +586,7 @@
         notify_edyta: true
         title: 'Otwarte okna'
         message: "Okna w mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów wynosi {{ states('sensor.dark_sky_precip_probability') }}%."
-        tag: 26666
+        tag: '26666'
 
 # domownicy w domu
 - id: presence_peoples_back
@@ -611,6 +622,9 @@
       - condition: state
         entity_id: input_boolean.away_mode
         state: 'off'
+      - condition: state
+        entity_id: group.windows
+        state: 'off'
   action:
     service: script.heating_day
 
@@ -634,6 +648,9 @@
         state: 'on'
       - condition: state
         entity_id: input_boolean.away_mode
+        state: 'off'
+      - condition: state
+        entity_id: group.windows
         state: 'off'
   action:
     service: script.heating_night
@@ -659,6 +676,9 @@
       - condition: state
         entity_id: input_boolean.away_mode
         state: 'off'
+      - condition: state
+        entity_id: group.windows
+        state: 'off'
   action:
     service: script.heating_day
 
@@ -683,6 +703,9 @@
       - condition: state
         entity_id: input_boolean.away_mode
         state: 'off'
+      - condition: state
+        entity_id: group.windows
+        state: 'off'
   action:
     service: script.heating_night
 
@@ -705,6 +728,9 @@
       - condition: state
         entity_id: input_boolean.heating_salon_kuchnia_night
         state: 'off'
+      - condition: state
+        entity_id: group.windows
+        state: 'off'        
   action:
     - service: fan.turn_off
       entity_id: fan.humidifier_salon
@@ -729,9 +755,14 @@
     for:
       minutes: 15
   condition:
-    condition: state
-    entity_id: input_boolean.heating_season
-    state: 'on'
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: 'on'
+      - condition: state
+        entity_id: group.windows
+        state: 'off'
   action:
     service: script.heating_eco_mode
 
@@ -747,11 +778,14 @@
     condition: and
     conditions:
       - condition: time
-        after: '05:30:00'
+        after: '05:00:00'
         before: '22:00:00'
       - condition: state
         entity_id: input_boolean.heating_season
         state: 'on'
+      - condition: state
+        entity_id: group.windows
+        state: 'off'
   action:
     service: script.heating_day
 
@@ -767,10 +801,13 @@
     conditions:
       - condition: time
         after: '22:00:00'
-        before: '05:30:00'
+        before: '05:00:00'
       - condition: state
         entity_id: input_boolean.heating_season
         state: 'on'
+      - condition: state
+        entity_id: group.windows
+        state: 'off'
   action:
     service: script.heating_night
 
@@ -801,6 +838,9 @@
         state: 'on'
       - condition: state
         entity_id: script.heating_fast_warm_up
+        state: 'off'
+      - condition: state
+        entity_id: group.windows
         state: 'off'
   action:
     - service: script.heating_day
@@ -839,6 +879,9 @@
       - condition: state
         entity_id: script.heating_fast_warm_up
         state: 'off'
+      - condition: state
+        entity_id: group.windows
+        state: 'off'
   action:
     - service: script.heating_fast_warm_up
     - service: input_boolean.turn_off
@@ -858,59 +901,76 @@
     - service: fan.turn_on
       entity_id: fan.humidifier_salon
 
+# otwarcie okien uruchamia przewietrzanie
+- id: windows_opened_for_airing
+  alias: 'Windows Opened For Airing'
+  trigger:
+    platform: state
+    entity_id: group.windows
+    from: 'off'
+    to: 'on'
+    for:
+      minutes: 10
+  condition:
+    condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  action:
+    service: input_boolean.turn_on
+    entity_id: input_boolean.heating_airing
+
+# zamknięcie okien kończy przewietrzanie
+- id: windows_closed
+  alias: 'Windows Closed'
+  trigger:
+    platform: state
+    entity_id: group.windows
+    from: 'on'
+    to: 'off'
+    for:
+      minutes: 5
+  condition:
+    condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  action:
+    service: input_boolean.turn_off
+    entity_id: input_boolean.heating_airing
+
 # początek przewietrzania
 - id: heating_airing_begin
   alias: 'Heating Airing Begin'
   trigger:
-    - platform: state
-      entity_id: input_boolean.heating_airing
-      from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: group.windows
-      from: 'off'
-      to: 'on'
-      for:
-        minutes: 10
+    platform: state
+    entity_id: input_boolean.heating_airing
+    from: 'off'
+    to: 'on'
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: 'on'
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: 'off'
+      condition: state
+      entity_id: input_boolean.heating_season
+      state: 'on'
   action:
     service: script.heating_airing_begin
 
-# koniec przewietrzania
+# koniec przewietrzania w dzień
 - id: heating_airing_end
-  alias: 'Heating Airing End'
+  alias: 'Heating Airing'
   trigger:
-    - platform: state
-      entity_id: input_boolean.heating_airing
-      from: 'on'
-      to: 'off'
-    - platform: state
-      entity_id: group.windows
-      from: 'on'
-      to: 'off'
-      for:
-        minutes: 10
+    platform: state
+    entity_id: input_boolean.heating_airing
+    from: 'on'
+    to: 'off'
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: input_boolean.heating_season
         state: 'on'
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: 'off'
+      - condition: time
+        after: '05:00:00'
+        before: '22:00:00'
   action:
     - service: script.heating_day
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.heating_airing
     - condition: state
       entity_id: group.windows
       state: 'on'
@@ -921,24 +981,34 @@
         message: 'Wyłączono tryb przewietrzania. Proszę zamknąć okna!'
         tag: 28888
 
-# koniec przewietrzania o zachodzie słońca
-- id: heating_airing_end_at_sunset
-  alias: 'Heating Airing End At Sunset'
+# koniec przewietrzania w nocy
+- id: heating_airing_end
+  alias: 'Heating Airing'
   trigger:
-    platform: sun
-    event: sunset
+    platform: state
+    entity_id: input_boolean.heating_airing
+    from: 'on'
+    to: 'off'
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: input_boolean.heating_season
         state: 'on'
-      - condition: state
-        entity_id: input_boolean.heating_airing
-        state: 'on'
+      - condition: time
+        after: '22:00:00'
+        before: '05:00:00'
   action:
-    service: input_boolean.turn_off
-    entity_id: input_boolean.heating_airing
+    - service: script.heating_day
+    - condition: state
+      entity_id: group.windows
+      state: 'on'
+    - service: script.notify
+      data:
+        notify_edyta: true
+        title: 'Koniec przewietrzania'
+        message: 'Wyłączono tryb przewietrzania. Proszę zamknąć okna!'
+        tag: 28888
 
 # początek sezonu grzewczego
 - id: heating_season_begin
@@ -1887,6 +1957,66 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.pracownia_light_motion_on
 
+#### POKÓJ GOŚCINNY ####
+# wyłączanie lampki w pokoju gościnnym jak brak ruchu
+- id: light_turn_off_goscinny_lamp
+  alias: 'Light Turn Off Goscinny Lamp'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_goscinny
+    from: 'on'
+    to: 'off'
+  condition:
+    condition: state
+    entity_id: input_boolean.goscinny_light_motion_on
+    state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.goscinny_light_motion_on
+    - service: light.turn_off
+      entity_id: light.lamp_goscinny
+
+# włączanie lampki w pokoju gościnnym jak ruch i ciemno
+- id: light_turn_on_goscinny_lamp_when_dark_and_motion
+  alias: 'Light Turn On Goscinny Lamp When Dark And Motion'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_goscinny
+      from: 'off'
+      to: 'on'
+    - platform: numeric_state
+      entity_id: sensor.illumination_goscinny
+      below: 9
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.away_mode
+        state: 'off'
+      - condition: state
+        entity_id: light.lamp_goscinny
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.illumination_goscinny
+        below: 9
+      - condition: state
+        entity_id: binary_sensor.motion_goscinny
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.light_auto_turn_goscinny
+        state: 'on'
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+          - condition: sun
+            before: sunrise
+  action:
+    - service: light.turn_on
+      entity_id: light.lamp_goscinny
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.goscinny_light_motion_on
+
 # wyłączanie lampki w pracowni jak brak ruchu
 - id: light_turn_off_pracownia_lamp
   alias: 'Light Turn Off Pracownia Lamp'
@@ -2221,13 +2351,13 @@
       data_template:
         title: "Uzupełnij wodę w nawilżaczu"
         message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        tag: 55555
+        tag: 'notification-humidifier'
         notify_edyta: true
     - service: persistent_notification.create
       data_template:
         title: "Uzupełnij wodę w nawilżaczu"
         message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        notification_id: 55555
+        notification_id: 'notification-humidifier'
 
 - id: humidification_outdoor_temp_above_10
   alias: 'Humidification Outdoor Temp Above 10'
@@ -2274,22 +2404,26 @@
     data_template:
       homeassistant.components: '{{ trigger.to_state.state }}'
 
-- id: shellies_announce
-  alias: 'Shellies Announce'
+- id: mqtt_devices_announce
+  alias: 'MQTT Devices Announce'
   trigger:
     - platform: homeassistant
       event: start
   action:
-    service: mqtt.publish
-    data:
-      topic: shellies/command
-      payload: announce
+    - service: mqtt.publish
+      data:
+        topic: 'shellies/command'
+        payload: 'announce'
+    - service: mqtt.publish
+      data:
+        topic: 'sonoffs/cmnd/state'
+        payload: '' 
 
-- id: 'shellies_discovery'
+- id: shellies_discovery
   alias: 'Shellies Discovery'
   trigger:
   - platform: mqtt
-    topic: shellies/announce
+    topic: 'shellies/announce'
   action:
     service: python_script.shellies_discovery
     data_template:
@@ -2299,3 +2433,11 @@
       shelly1-328900-relay-0: 'light'
       shellyswitch-5B2604-relay-0: 'switch'
       shellyswitch-5B2604-relay-1: 'light'
+
+- id: adb_reconnect
+  alias: 'ADB Reconnect'
+  trigger:
+    - platform: homeassistant
+      event: start
+  action:
+    service: shell_command.adb_reconnect

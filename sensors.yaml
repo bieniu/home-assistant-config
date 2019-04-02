@@ -187,8 +187,6 @@
           zła
         {% elif states('sensor.airly_caqi') | int > 100 %}
           bardzo zła
-        {% else %}
-          unknown
         {% endif %}
 
     last_boot_custom:
@@ -197,8 +195,11 @@
 
     humidifier_water_level:
       friendly_name: 'Poziom wody'
-      value_template: "{{ (state_attr('fan.humidifier_salon', 'depth') * 0.89 - 11.6 ) | round | min(100) | max(0) }}"
       unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('fan.humidifier_salon', 'depth') < 127 %}
+          {{ (state_attr('fan.humidifier_salon', 'depth') * 0.89 - 11.6) | round | min(100) | max(0) }}
+        {% endif %}
 
     printer_status_custom:
       friendly_name: 'Status'
@@ -368,84 +369,94 @@
           {{ states('sensor.battery_temp_humi_sensor_gabinet') }}
         {% endif %}
 
-    battery_body_sensor_antresola:
+    battery_motion_sensor_antresola:
       friendly_name: 'antresola'
       unit_of_measurement: '%'
       value_template: >-
         {% if state_attr('binary_sensor.motion_antresola_1', 'battery_level') %}
           {{ state_attr('binary_sensor.motion_antresola_1', 'battery_level') | round }}
         {% else %}
-          {{ states('sensor.battery_body_sensor_atresola') }}
+          {{ states('sensor.battery_motion_sensor_atresola') }}
         {% endif %}
 
-    battery_body_sensor_przedpokoj:
+    battery_motion_sensor_przedpokoj:
       friendly_name: 'przedpokój'
       unit_of_measurement: '%'
       value_template: >-
         {% if state_attr('binary_sensor.motion_przedpokoj', 'battery_level') %}
           {{ state_attr('binary_sensor.motion_przedpokoj', 'battery_level') | round }}
         {% else %}
-          {{ states('sensor.battery_body_sensor_przedpokoj') }}
+          {{ states('sensor.battery_motion_sensor_przedpokoj') }}
         {% endif %}
 
-    battery_body_sensor_pracownia:
+    battery_motion_sensor_pracownia:
       friendly_name: 'pracownia'
       unit_of_measurement: '%'
       value_template: >-
         {% if state_attr('binary_sensor.motion_pracownia', 'battery_level') %}
           {{ state_attr('binary_sensor.motion_pracownia', 'battery_level') | round }}
         {% else %}
-          {{ states('sensor.battery_body_sensor_pracownia') }}
+          {{ states('sensor.battery_motion_sensor_pracownia') }}
         {% endif %}
 
-    battery_body_sensor_schody:
+    battery_motion_sensor_schody:
       friendly_name: 'schody'
       unit_of_measurement: '%'
       value_template: >-
         {% if state_attr('binary_sensor.motion_antresola_2', 'battery_level') %}
           {{ state_attr('binary_sensor.motion_antresola_2', 'battery_level') | round }}
         {% else %}
-          {{ states('sensor.battery_body_sensor_schody') }}
+          {{ states('sensor.battery_motion_sensor_schody') }}
         {% endif %}
 
-    battery_body_sensor_salon_1:
+    battery_motion_sensor_salon_1:
       friendly_name: 'salon [1]'
       unit_of_measurement: '%'
       value_template: >-
         {% if state_attr('binary_sensor.motion_salon_1', 'battery_level') %}
           {{ state_attr('binary_sensor.motion_salon_1', 'battery_level') | round }}
         {% else %}
-          {{ states('sensor.battery_body_sensor_salon_1') }}
+          {{ states('sensor.battery_motion_sensor_salon_1') }}
         {% endif %}
 
-    battery_body_sensor_sypialnia:
+    battery_motion_sensor_sypialnia:
       friendly_name: 'sypialnia'
       unit_of_measurement: '%'
       value_template: >-
         {% if state_attr('binary_sensor.motion_sypialnia', 'battery_level') %}
           {{ state_attr('binary_sensor.motion_sypialnia', 'battery_level') | round }}
         {% else %}
-          {{ states('sensor.battery_body_sensor_sypialnia') }}
+          {{ states('sensor.battery_motion_sensor_sypialnia') }}
         {% endif %}
 
-    battery_body_sensor_antek:
+    battery_motion_sensor_antek:
       friendly_name: 'pokój Antka'
       unit_of_measurement: '%'
       value_template: >-
         {% if state_attr('binary_sensor.motion_antek', 'battery_level') %}
           {{ state_attr('binary_sensor.motion_antek', 'battery_level') | round }}
         {% else %}
-          {{ states('sensor.battery_body_sensor_antek') }}
+          {{ states('sensor.battery_motion_sensor_antek') }}
+        {% endif %}
+    
+    battery_motion_sensor_goscinny:
+      friendly_name: 'pokój gościnny'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.motion_goscinny', 'battery_level') %}
+          {{ state_attr('binary_sensor.motion_goscinny', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_motion_sensor_goscinny') }}
         {% endif %}
 
-    battery_body_sensor_salon_2:
+    battery_motion_sensor_salon_2:
       friendly_name: 'salon [2]'
       unit_of_measurement: '%'
       value_template: >-
         {% if state_attr('binary_sensor.motion_salon_2', 'battery_level') %}
           {{ state_attr('binary_sensor.motion_salon_2', 'battery_level') | round }}
         {% else %}
-          {{ states('sensor.battery_body_sensor_salon_2') }}
+          {{ states('sensor.battery_motion_sensor_salon_2') }}
         {% endif %}
 
     battery_switch_light_salon_1:

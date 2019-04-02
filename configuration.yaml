@@ -52,6 +52,8 @@ history: !include history.yaml
 
 system_health:
 
+mobile_app:
+
 utility_meter:
   energy_light_salon_monthly:
     source: sensor.energy_light_salon
@@ -112,16 +114,8 @@ notify:
     vapid_pub_key: !secret vapid_pub_key
     vapid_prv_key: !secret vapid_prv_key
     vapid_email: !secret vapid_email
-  - platform: fcm-android
-    name: android
-
+    
 input_boolean: !include input_boolean.yaml
-
-panel_iframe:
-  configurator:
-    title: Konfigurator
-    icon: mdi:wrench
-    url: !secret configurator_url
 
 panel_custom:
   - name: zwavegraph
@@ -137,3 +131,4 @@ remote:
 python_script:
 
 emulated_hue: !include emulated_hue.yaml
+

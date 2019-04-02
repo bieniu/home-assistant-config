@@ -27,6 +27,7 @@ night_mode:
         - switch.light_bulbs_salon
         - light.cabinet_antek
         - light.lamp_pracownia
+        - light.lamp_goscinny
 
 #### LIGHT ####
 light_away_mode:
@@ -42,6 +43,7 @@ light_away_mode:
         - light.lightstrip_antek
         - light.cabinet_antek
         - light.lamp_pracownia
+        - light.lamp_goscinny
         - input_boolean.antek_lamp_night
 
 #### HEATING ####
@@ -148,7 +150,7 @@ heating_eco_mode:
         notify_edyta: true
         title: 'Koniec przewietrzania'
         message: 'Domownicy opóścili mieszkanie. Wyłączono tryb przewietrzania.'
-        tag: 28888
+        tag: '28888'
     - service: input_boolean.turn_off
       entity_id: input_boolean.heating_airing
 
@@ -263,13 +265,13 @@ light_turn_on_antek_leds:
 
 notify:
   sequence:
-    - service: notify.android_oneplus_6_ariela
+    - service: notify.html5_maciek
       data_template:
         title: '{{ title }}'
         message: '{{ message }}'
         data:
           tag: '{{ tag }}'
-          icon: !secret notification_icon
+          # icon: !secret notification_icon
     - condition: template
       value_template: '{{ notify_edyta }}'
     - service: notify.ios_iphone_8_plus_app
@@ -285,19 +287,19 @@ notify_motion:
         filename: '/home/homeassistant/.homeassistant/www/snapshots/{{ datetime }}.jpg'
     - delay:
         seconds: 1
-    - service: notify.android_oneplus_6_ariela
+    - service: notify.html5_maciek
       data_template:
         title: '{{ title }}'
         message: '{{ message }}'
         data:
           tag: '{{ tag }}'
-          icon: !secret notification_icon
+          # icon: !secret notification_icon
           image: >-
             {% if location == 'salon' or location == 'przedpokój' %}
               {{ snapshot_url }}{{ datetime }}.jpg
             {% else %}
               None
-            {% endif %}
+            {% endif %}          
     - condition: template
       value_template: '{{ notify_edyta }}'
     - service: notify.ios_iphone_8_plus_app
