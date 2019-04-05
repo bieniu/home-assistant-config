@@ -1,29 +1,3 @@
-- platform: yeelight
-  devices:
-    192.168.2.249:
-      name: 'bulb salon 1'
-      model: 'color1'
-      <<: &YEELIGHT_PARAMS
-        transition: 500
-        save_on_change: false
-        use_music_mode: false
-    192.168.2.251:
-      name: 'bulb salon 2'
-      model: 'color2'
-      <<: *YEELIGHT_PARAMS
-    192.168.2.250:
-      name: 'lamp salon'
-      model: 'color1'
-      <<: *YEELIGHT_PARAMS
-    192.168.2.253:
-      name: 'lightstrip sypialnia'
-      model: 'strip1'
-      <<: *YEELIGHT_PARAMS
-    192.168.2.254:
-      name: 'lightstrip antek'
-      model: 'strip1'
-      <<: *YEELIGHT_PARAMS
-
 - platform: group
   name: Bulbs Salon
   entities:

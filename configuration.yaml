@@ -93,6 +93,8 @@ discovery:
 
 zeroconf:
 
+stream:
+
 zwave:
   device_config: !include zwave_device_config.yaml
   debug: true
@@ -103,10 +105,15 @@ xiaomi_aqara:
     key: !secret migateway_key
 
 camera:
-  - platform: ffmpeg
+  - platform: generic
     name: 'Salon'
-    input: !secret dafang_ffmpeg_input
-    extra_arguments: '-vf scale=800:450 -pred 1 -q:v 2'
+    still_image_url: !secret dafang_still_mage_url
+    stream_source: !secret dafang_rtsp_url
+    scan_interval: 5
+  # - platform: ffmpeg
+  #   name: 'Salon'
+  #   input: !secret dafang_ffmpeg_input
+  #   extra_arguments: '-vf scale=800:450 -pred 1 -q:v 2'
 
 notify:
   - platform: html5
@@ -132,3 +139,28 @@ python_script:
 
 emulated_hue: !include emulated_hue.yaml
 
+yeelight:
+  devices:
+    192.168.2.249:
+      name: 'bulb salon 1'
+      model: 'color1'
+      <<: &YEELIGHT_PARAMS
+        transition: 500
+        save_on_change: false
+        use_music_mode: false
+    192.168.2.251:
+      name: 'bulb salon 2'
+      model: 'color2'
+      <<: *YEELIGHT_PARAMS
+    192.168.2.250:
+      name: 'lamp salon'
+      model: 'color1'
+      <<: *YEELIGHT_PARAMS
+    192.168.2.253:
+      name: 'lightstrip sypialnia'
+      model: 'strip1'
+      <<: *YEELIGHT_PARAMS
+    192.168.2.254:
+      name: 'lightstrip antek'
+      model: 'strip1'
+      <<: *YEELIGHT_PARAMS

@@ -17,6 +17,8 @@ resources:
     type: module
   - url: /customcards/mini-graph-card-bundle.js
     type: module
+  - url: /customcards/popup-card.js
+    type: js
 
 title: 'Dom'
 views:
@@ -27,6 +29,31 @@ views:
     background: 'center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: home
     panel: true
+    popup_cards:
+      person.edyta:
+        title: 'Edyta'
+        card:
+          type: custom:vertical-stack-in-card
+          cards:
+            - type: history-graph
+              entities:
+              - person.edyta
+            - type: map
+              entities:
+                - person.edyta
+                - zone.home
+      person.maciek:
+        title: 'Maciek'
+        card:
+          type: custom:vertical-stack-in-card
+          cards:
+            - type: history-graph
+              entities:
+              - person.maciek
+            - type: map
+              entities:
+                - person.maciek
+                - zone.home
     cards:
       - type: custom:layout-card
         column_width: 310
@@ -506,31 +533,31 @@ views:
                 entity_visibility: sensor.dark_sky_visibility
                 entity_wind_bearing: sensor.dark_sky_wind_bearing
                 entity_wind_speed: sensor.dark_sky_wind_speed
-                entity_forecast_high_temp_1: sensor.dark_sky_daytime_high_temperature_1
-                entity_forecast_high_temp_2: sensor.dark_sky_daytime_high_temperature_2
-                entity_forecast_high_temp_3: sensor.dark_sky_daytime_high_temperature_3
-                entity_forecast_high_temp_4: sensor.dark_sky_daytime_high_temperature_4
-                entity_forecast_high_temp_5: sensor.dark_sky_daytime_high_temperature_5
-                entity_forecast_low_temp_1: sensor.dark_sky_overnight_low_temperature_1
-                entity_forecast_low_temp_2: sensor.dark_sky_overnight_low_temperature_2
-                entity_forecast_low_temp_3: sensor.dark_sky_overnight_low_temperature_3
-                entity_forecast_low_temp_4: sensor.dark_sky_overnight_low_temperature_4
-                entity_forecast_low_temp_5: sensor.dark_sky_overnight_low_temperature_5
-                entity_forecast_icon_1: sensor.dark_sky_icon_1
-                entity_forecast_icon_2: sensor.dark_sky_icon_2
-                entity_forecast_icon_3: sensor.dark_sky_icon_3
-                entity_forecast_icon_4: sensor.dark_sky_icon_4
-                entity_forecast_icon_5: sensor.dark_sky_icon_5
-                entity_summary_1: sensor.dark_sky_summary_1
-                entity_summary_2: sensor.dark_sky_summary_2
-                entity_summary_3: sensor.dark_sky_summary_3
-                entity_summary_4: sensor.dark_sky_summary_4
-                entity_summary_5: sensor.dark_sky_summary_5
-                entity_pop_1: sensor.dark_sky_precip_probability_1
-                entity_pop_2: sensor.dark_sky_precip_probability_2
-                entity_pop_3: sensor.dark_sky_precip_probability_3
-                entity_pop_4: sensor.dark_sky_precip_probability_4
-                entity_pop_5: sensor.dark_sky_precip_probability_5
+                entity_forecast_high_temp_1: sensor.dark_sky_daytime_high_temperature_1d
+                entity_forecast_high_temp_2: sensor.dark_sky_daytime_high_temperature_2d
+                entity_forecast_high_temp_3: sensor.dark_sky_daytime_high_temperature_3d
+                entity_forecast_high_temp_4: sensor.dark_sky_daytime_high_temperature_4d
+                entity_forecast_high_temp_5: sensor.dark_sky_daytime_high_temperature_5d
+                entity_forecast_low_temp_1: sensor.dark_sky_overnight_low_temperature_1d
+                entity_forecast_low_temp_2: sensor.dark_sky_overnight_low_temperature_2d
+                entity_forecast_low_temp_3: sensor.dark_sky_overnight_low_temperature_3d
+                entity_forecast_low_temp_4: sensor.dark_sky_overnight_low_temperature_4d
+                entity_forecast_low_temp_5: sensor.dark_sky_overnight_low_temperature_5d
+                entity_forecast_icon_1: sensor.dark_sky_icon_1d
+                entity_forecast_icon_2: sensor.dark_sky_icon_2d
+                entity_forecast_icon_3: sensor.dark_sky_icon_3d
+                entity_forecast_icon_4: sensor.dark_sky_icon_4d
+                entity_forecast_icon_5: sensor.dark_sky_icon_5d
+                entity_summary_1: sensor.dark_sky_summary_1d
+                entity_summary_2: sensor.dark_sky_summary_2d
+                entity_summary_3: sensor.dark_sky_summary_3d
+                entity_summary_4: sensor.dark_sky_summary_4d
+                entity_summary_5: sensor.dark_sky_summary_5d
+                entity_pop_1: sensor.dark_sky_precip_probability_1d
+                entity_pop_2: sensor.dark_sky_precip_probability_2d
+                entity_pop_3: sensor.dark_sky_precip_probability_3d
+                entity_pop_4: sensor.dark_sky_precip_probability_4d
+                entity_pop_5: sensor.dark_sky_precip_probability_5d
                 time_format: 24
                 locale: pl
               - type: iframe
