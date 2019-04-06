@@ -46,10 +46,13 @@ Automations:
       shelly4pro-122656-relay-1: 'fan'
       shelly4pro-122656-relay-2: 'switch'
       shelly4pro-122656-relay-3: 'switch'
+      shellyswitch-5B1200-roller-0: 'cover'
 
 Argument 'shellyswitch-5B2604-relay-1: light' means that relay 1 of
 shellyswitch-5B2604 will be the light in Home Assistant. You can use switch,
 light or fan.
+Argument shellyswitch-5B1200-roller-0: 'cover' means that Shelly2 works in
+roller mode and use cover component in Home Assistant.
 
 Script supports custom_updater component. Add this to your configuration and
 stay up-to-date.
@@ -61,7 +64,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.3.0'
+VERSION = '0.4.0'
 
 ATTR_DEVELOP = 'develop'
 
@@ -73,6 +76,7 @@ ATTR_TEMP_UNIT = 'temp_unit'
 
 develop = False
 retain = True
+roller_mode = False
 
 id = data.get(ATTR_ID)
 mac = data.get(ATTR_MAC)
@@ -90,11 +94,13 @@ if data.get(ATTR_DEVELOP) is not None:
 if develop:
     disc_prefix = 'develop'
     retain = False
+    logger.error("DEVELOP MODE !!!")
 
 if id is None or mac is None:
     logger.error("Expected id and mac as arguments.")
 else:
     relays = 0
+    rollers = 0
     relay_sensors = []
     relay_components = ['switch', 'light', 'fan']
     sensors = []
@@ -107,9 +113,10 @@ else:
     if 'shellyswitch' in id:
         model = 'Shelly2'
         relays = 2
+        rollers = 1
         relay_sensors = ['power']
         units = ['W']
-        templates = ['{{ value | round(1) }}']
+        templates = ['{{ value | round(1) }}']        
 
     if 'shellyplug' in id:
         model = 'Shelly Plug'
@@ -134,6 +141,48 @@ else:
         templates = ['{{ value | round(1) }}',
                      '{{ value | round(1) }}',
                      '{{ value | round }}']
+                     
+    for roller_id in range(0, rollers):
+        device_name = '{} {}'.format(model, id.split('-')[1],)
+        roller_name = '{} Roller {}'.format(device_name, roller_id)
+        default_topic = 'shellies/{}/'.format(id)
+        state_topic = '~roller/{}'.format(roller_id)
+        command_topic =  '{}/command'.format(state_topic)
+        availability_topic = '~online'
+        unique_id = '{}-roller-{}'.format(id, roller_id)
+        if data.get(unique_id):
+            config_component = data.get(unique_id)
+        component = 'cover'      
+        config_topic = '{}/{}/{}-roller-{}/config'.format(disc_prefix,
+                                                    component, id, roller_id)
+        if config_component == component:
+            roller_mode = True
+            payload = '{\"name\":\"' + roller_name + '\",' \
+                      '\"cmd_t\":\"' + command_topic + '\",' \
+                      '\"stat_t\":\"' + state_topic +'\",' \
+                      '\"pl_open\":\"open\",' \
+                      '\"pl_cls\":\"close\",' \
+                      '\"pl_stop\":\"stop\",' \
+                      '\"opt\":\"false\",' \
+                      '\"avty_t\":\"' + availability_topic + '\",' \
+                      '\"pl_avail\":\"true\",' \
+                      '\"pl_not_avail\":\"false\",' \
+                      '\"uniq_id\":\"' + unique_id + '\",' \
+                      '\"device\": {\"ids\": [\"' + mac + '\"],' \
+                      '\"name\":\"' + device_name + '\",' \
+                      '\"mdl\":\"' + model + '\",' \
+                      '\"sw\":\"' + fw_ver + '\",' \
+                      '\"mf\":\"Shelly\"},' \
+                      '\"~\":\"' + default_topic + '\"}'
+        else:
+            payload = ''    
+        service_data = {
+                'topic': config_topic,
+                'payload': payload,
+                'retain': retain,
+                'qos': 0
+            }            
+        hass.services.call('mqtt', 'publish', service_data, False)
 
     for relay_id in range(0, relays):
         device_name = '{} {}'.format(model, id.split('-')[1],)
@@ -148,7 +197,7 @@ else:
         for component in relay_components:
             config_topic = '{}/{}/{}-relay-{}/config'.format(disc_prefix,
                                                     component, id, relay_id)
-            if component == config_component:
+            if component == config_component and not roller_mode:
                 payload = '{\"name\":\"' + relay_name + '\",' \
                           '\"cmd_t\":\"' + command_topic + '\",' \
                           '\"stat_t\":\"' + state_topic +'\",' \
@@ -158,11 +207,11 @@ else:
                           '\"pl_avail\":\"true\",' \
                           '\"pl_not_avail\":\"false\",' \
                           '\"uniq_id\":\"' + unique_id + '\",' \
-                          '\"device\": {\"identifiers\": [\"' + mac + '\"],' \
+                          '\"device\": {\"ids\": [\"' + mac + '\"],' \
                           '\"name\":\"' + device_name + '\",' \
-                          '\"model\":\"' + model + '\",' \
-                          '\"sw_version\":\"' + fw_ver + '\",' \
-                          '\"manufacturer\":\"Shelly\"},' \
+                          '\"mdl\":\"' + model + '\",' \
+                          '\"sw\":\"' + fw_ver + '\",' \
+                          '\"mf\":\"Shelly\"},' \
                           '\"~\":\"' + default_topic + '\"}'
             else:
                 payload = ''
@@ -173,6 +222,7 @@ else:
                 'qos': 0
             }            
             hass.services.call('mqtt', 'publish', service_data, False)
+
         if model == 'Shelly2':
             if relay_id == relays-1:
                 for sensor_id in range(0, len(relay_sensors)):
@@ -191,11 +241,11 @@ else:
                               '\"pl_avail\":\"true\",' \
                               '\"pl_not_avail\":\"false\",' \
                               '\"uniq_id\":\"' + unique_id + '\",' \
-                              '\"device\": {\"identifiers\": [\"' + mac + '\"],' \
+                              '\"device\": {\"ids\": [\"' + mac + '\"],' \
                               '\"name\":\"' + device_name + '\",' \
-                              '\"model\":\"' + model + '\",' \
-                              '\"sw_version\":\"' + fw_ver + '\",' \
-                              '\"manufacturer\":\"Shelly\"},' \
+                              '\"mdl\":\"' + model + '\",' \
+                              '\"sw\":\"' + fw_ver + '\",' \
+                              '\"mf\":\"Shelly\"},' \
                               '\"~\":\"' + default_topic + '\"}'
                     service_data = {
                         'topic': config_topic,
@@ -222,11 +272,11 @@ else:
                           '\"pl_avail\":\"true\",' \
                           '\"pl_not_avail\":\"false\",' \
                           '\"uniq_id\":\"' + unique_id + '\",' \
-                          '\"device\": {\"identifiers\": [\"' + mac + '\"],' \
+                          '\"device\": {\"ids\": [\"' + mac + '\"],' \
                           '\"name\":\"' + device_name + '\",' \
-                          '\"model\":\"' + model + '\",' \
-                          '\"sw_version\":\"' + fw_ver + '\",' \
-                          '\"manufacturer\":\"Shelly\"},' \
+                          '\"mdl\":\"' + model + '\",' \
+                          '\"sw\":\"' + fw_ver + '\",' \
+                          '\"mf\":\"Shelly\"},' \
                           '\"~\":\"' + default_topic + '\"}'
                 service_data = {
                     'topic': config_topic,
@@ -235,6 +285,7 @@ else:
                     'qos': 0
                 }
                 hass.services.call('mqtt', 'publish', service_data, False)
+
     for sensor_id in range(0, len(sensors)):
         device_name = '{} {}'.format(model, id.split('-')[1],)
         unique_id = '{}-{}'.format(id, sensors[sensor_id])
@@ -254,11 +305,11 @@ else:
                   '\"pl_avail\":\"true\",' \
                   '\"pl_not_avail\":\"false\",' \
                   '\"uniq_id\":\"' + unique_id + '\",' \
-                  '\"device\": {\"identifiers\": [\"' + mac + '\"],' \
+                  '\"device\": {\"ids\": [\"' + mac + '\"],' \
                   '\"name\":\"' + device_name + '\",' \
-                  '\"model\":\"' + model + '\",' \
-                  '\"sw_version\":\"' + fw_ver + '\",' \
-                  '\"manufacturer\":\"Shelly\"},' \
+                  '\"mdl\":\"' + model + '\",' \
+                  '\"sw\":\"' + fw_ver + '\",' \
+                  '\"mf\":\"Shelly\"},' \
                   '\"~\":\"' + default_topic + '\"}'
         service_data = {
             'topic': config_topic,
