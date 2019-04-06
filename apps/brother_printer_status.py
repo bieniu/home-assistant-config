@@ -38,13 +38,13 @@ class BrotherPrinterStatus(hass.Hass):
 
     def initialize(self):
 
-        __version__ = '0.3.1'
+        __version__ = '0.3.2'
 
         # max value of the height of the black image on the printer's webpage
         self.MAX_IMAGE_HEIGHT = 56
         self.INFO_URL = "/general/information.html"
         self.STATUS_URL = "/general/status.html"
-        self.TOPIC = "homeassistant/sensor/printer/{}/"
+        self.TOPIC = "printer/{}/"
         self.SENSOR_PREFIX = "sensor.printer_{}"
         self.MANUFACTURER = 'Brother'
         self.use_mqtt = False
@@ -107,16 +107,16 @@ class BrotherPrinterStatus(hass.Hass):
                         model = self.printer_model(page)
                         payload = {
                             "name": "Printer " + sensor,
-                            "unique_id": self.mac_simple + "-" + sensor,
-                            "device": {
-                                "identifiers": self.mac_simple,
-                                "connections": [["mac", self.mac]],
-                                "manufacturer": self.MANUFACTURER,
-                                "model": model,
+                            "uniq_id": self.mac_simple + "-" + sensor,
+                            "dev": {
+                                "ids": self.mac_simple,
+                                "cns": [["mac", self.mac]],
+                                "mf": self.MANUFACTURER,
+                                "mdl": model,
                                 "name": self.MANUFACTURER + ' ' + model
                             },
-                            "icon": "mdi:printer",
-                            "state_topic": topic + "state"
+                            "ic": "mdi:printer",
+                            "stat_t": topic + "state"
                         }
                         self.mqtt_publish(topic, payload, entity, sensor,
                                           status)
@@ -140,17 +140,17 @@ class BrotherPrinterStatus(hass.Hass):
                         model = self.printer_model(page)
                         payload = {
                             "name": "Printer " + sensor,
-                            "unique_id": self.mac_simple + "-" + sensor,
-                            "device": {
-                                "identifiers": self.mac_simple,
-                                "connections": [["mac", self.mac]],
-                                "manufacturer": self.MANUFACTURER,
-                                "model": model,
+                            "uniq_id": self.mac_simple + "-" + sensor,
+                            "dev": {
+                                "ids": self.mac_simple,
+                                "cns": [["mac", self.mac]],
+                                "mf": self.MANUFACTURER,
+                                "mdl": model,
                                 "name": self.MANUFACTURER + ' ' + model
                             },
-                            "icon": "mdi:flask-outline",
-                            "unit_of_measurement": "%",
-                            "state_topic": topic + "state"
+                            "ic": "mdi:flask-outline",
+                            "unit_of_meas": "%",
+                            "stat_t": topic + "state"
                         }
                         self.mqtt_publish(topic, payload, entity, sensor,
                                           toner)
@@ -179,17 +179,17 @@ class BrotherPrinterStatus(hass.Hass):
                         model = self.printer_model(page)
                         payload = {
                             "name": "Printer " + sensor,
-                            "unique_id": self.mac_simple + "-" + sensor,
-                            "device": {
-                                "identifiers": self.mac_simple,
-                                "connections": [["mac", self.mac]],
-                                "manufacturer": self.MANUFACTURER,
-                                "model": model,
+                            "uniq_id": self.mac_simple + "-" + sensor,
+                            "dev": {
+                                "ids": self.mac_simple,
+                                "cns": [["mac", self.mac]],
+                                "mf": self.MANUFACTURER,
+                                "mdl": model,
                                 "name": self.MANUFACTURER + ' ' + model
                             },
-                            "icon": "mdi:file-document",
-                            "unit_of_measurement": "p",
-                            "state_topic": topic + "state"
+                            "ic": "mdi:file-document",
+                            "unit_of_meas": "p",
+                            "stat_t": topic + "state"
                         }
                         self.mqtt_publish(topic, payload, entity, sensor,
                                           counter)
@@ -213,17 +213,17 @@ class BrotherPrinterStatus(hass.Hass):
                         model = self.printer_model(page)
                         payload = {
                             "name": "Printer " + sensor.replace('-', ' '),
-                            "unique_id": self.mac_simple + "-" + sensor,
-                            "device": {
-                                "identifiers": self.mac_simple,
-                                "connections": [["mac", self.mac]],
-                                "manufacturer": self.MANUFACTURER,
-                                "model": model,
+                            "uniq_id": self.mac_simple + "-" + sensor,
+                            "dev": {
+                                "ids": self.mac_simple,
+                                "cns": [["mac", self.mac]],
+                                "mf": self.MANUFACTURER,
+                                "mdl": model,
                                 "name": self.MANUFACTURER + ' ' + model
                             },
-                            "icon": "mdi:chart-donut",
-                            "unit_of_measurement": "%",
-                            "state_topic": topic + "state"
+                            "ic": "mdi:chart-donut",
+                            "unit_of_meas": "%",
+                            "stat_t": topic + "state"
                         }
                         self.mqtt_publish(topic, payload, entity, sensor,
                                           drum_usage)
@@ -253,9 +253,10 @@ class BrotherPrinterStatus(hass.Hass):
 
     def mqtt_publish(self, topic, payload, entity, sensor, new_state):
         if self.mac_simple and not self.entity_exists(entity):
-            self.call_service("mqtt/publish",  topic=topic+"config",
+            self.call_service("mqtt/publish", topic="homeassistant/sensor/"+
+                                                    topic+"config",
                               payload=json.dumps(payload), qos=0,
-                              retain=self.retain)
+                              retain=True)
         old_state = self.get_state(entity)
         if old_state and str(old_state) != str(new_state):
             self.call_service("mqtt/publish", topic=topic+"state",

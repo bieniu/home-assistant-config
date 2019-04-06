@@ -210,7 +210,7 @@ else:
                           '\"pl_avail\":\"true\",' \
                           '\"pl_not_avail\":\"false\",' \
                           '\"uniq_id\":\"' + unique_id + '\",' \
-                          '\"device\": {\"ids\": [\"' + mac + '\"],' \
+                          '\"dev\": {\"ids\": [\"' + mac + '\"],' \
                           '\"name\":\"' + device_name + '\",' \
                           '\"mdl\":\"' + model + '\",' \
                           '\"sw\":\"' + fw_ver + '\",' \
@@ -244,7 +244,7 @@ else:
                               '\"pl_avail\":\"true\",' \
                               '\"pl_not_avail\":\"false\",' \
                               '\"uniq_id\":\"' + unique_id + '\",' \
-                              '\"device\": {\"ids\": [\"' + mac + '\"],' \
+                              '\"dev\": {\"ids\": [\"' + mac + '\"],' \
                               '\"name\":\"' + device_name + '\",' \
                               '\"mdl\":\"' + model + '\",' \
                               '\"sw\":\"' + fw_ver + '\",' \
@@ -275,7 +275,7 @@ else:
                           '\"pl_avail\":\"true\",' \
                           '\"pl_not_avail\":\"false\",' \
                           '\"uniq_id\":\"' + unique_id + '\",' \
-                          '\"device\": {\"ids\": [\"' + mac + '\"],' \
+                          '\"dev\": {\"ids\": [\"' + mac + '\"],' \
                           '\"name\":\"' + device_name + '\",' \
                           '\"mdl\":\"' + model + '\",' \
                           '\"sw\":\"' + fw_ver + '\",' \
@@ -302,13 +302,13 @@ else:
         payload = '{\"name\":\"' + sensor_name + '\",' \
                   '\"stat_t\":\"' + state_topic + '\",' \
                   '\"unit_of_meas\":\"' + units[sensor_id] + '\",' \
-                  '\"device_class\":\"' + sensors[sensor_id] + '\",' \
+                  '\"dev_cla\":\"' + sensors[sensor_id] + '\",' \
                   '\"val_tpl\":\"' + templates[sensor_id] + '\",' \
                   '\"avty_t\":\"' + availability_topic + '\",' \
                   '\"pl_avail\":\"true\",' \
                   '\"pl_not_avail\":\"false\",' \
                   '\"uniq_id\":\"' + unique_id + '\",' \
-                  '\"device\": {\"ids\": [\"' + mac + '\"],' \
+                  '\"dev\": {\"ids\": [\"' + mac + '\"],' \
                   '\"name\":\"' + device_name + '\",' \
                   '\"mdl\":\"' + model + '\",' \
                   '\"sw\":\"' + fw_ver + '\",' \

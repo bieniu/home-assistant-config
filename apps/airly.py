@@ -38,7 +38,7 @@ class Airly(hass.Hass):
 
     def initialize(self):
 
-        __version__ = '0.0.5'
+        __version__ = '0.0.6'
 
         ATTR_DISCOVERY_PREFIX = 'discovery_prefix'
         ATTR_AIRLY_APIKEY = 'airly_apikey'
@@ -147,10 +147,10 @@ class Airly(hass.Hass):
                 name = "Airly {}".format(sensor.upper())
                 payload = {
                     "name": name,
-                    "unique_id": unique_id,
-                    "state_topic": state_topic,
-                    "unit_of_measurement": unit,
-                    "icon": icon
+                    "uniq_id": unique_id,
+                    "stat_t": state_topic,
+                    "unit_of_meas": unit,
+                    "ic": icon
                     }
             elif sensor == self.ATTR_PM25:
                 unit = 'μg/m³'
@@ -159,11 +159,11 @@ class Airly(hass.Hass):
                 attr_topic = "airly/{}/{}/attr".format(self.unique, sensor)
                 payload = {
                     "name": name,
-                    "unique_id": unique_id,
-                    "state_topic": state_topic,
-                    "unit_of_measurement": unit,
-                    "icon": icon,
-                    "json_attributes_topic": attr_topic
+                    "uniq_id": unique_id,
+                    "stat_t": state_topic,
+                    "unit_of_meas": unit,
+                    "ic": icon,
+                    "json_attr_t": attr_topic
                     }
             elif sensor == self.ATTR_PM10:
                 unit = 'μg/m³'
@@ -172,20 +172,20 @@ class Airly(hass.Hass):
                 attr_topic = "airly/{}/{}/attr".format(self.unique, sensor)
                 payload = {
                     "name": name,
-                    "unique_id": unique_id,
-                    "state_topic": state_topic,
-                    "unit_of_measurement": unit,
-                    "icon": icon,
-                    "json_attributes_topic": attr_topic
+                    "uniq_id": unique_id,
+                    "stat_t": state_topic,
+                    "unit_of_meas": unit,
+                    "ic": icon,
+                    "json_attr_t": attr_topic
                     }
             elif sensor == self.ATTR_CAQI:
                 name = "Airly {}".format(sensor.upper())
                 attr_topic = "airly/{}/{}/attr".format(self.unique, sensor)
                 payload = {
                     "name": name,
-                    "unique_id": unique_id,
-                    "state_topic": state_topic,
-                    "json_attributes_topic": attr_topic
+                    "uniq_id": unique_id,
+                    "stat_t": state_topic,
+                    "json_attr_t": attr_topic
                     }
             elif sensor == self.ATTR_TEMPERATURE:
                 unit = 'C'
@@ -193,10 +193,10 @@ class Airly(hass.Hass):
                 name = "Airly {}".format(sensor.capitalize())
                 payload = {
                     "name": name,
-                    "unique_id": unique_id,
-                    "state_topic": state_topic,
-                    "unit_of_measurement": unit,
-                    "device_class": device_class,
+                    "uniq_id": unique_id,
+                    "stat_t": state_topic,
+                    "unit_of_meas": unit,
+                    "dev_cla": device_class,
                     }
             elif sensor == self.ATTR_HUMIDITY:
                 unit = '%'
@@ -204,10 +204,10 @@ class Airly(hass.Hass):
                 name = "Airly {}".format(sensor.capitalize())
                 payload = {
                     "name": name,
-                    "unique_id": unique_id,
-                    "state_topic": state_topic,
-                    "unit_of_measurement": unit,
-                    "device_class": device_class,
+                    "uniq_id": unique_id,
+                    "stat_t": state_topic,
+                    "unit_of_meas": unit,
+                    "dev_cla": device_class,
                     }
             elif sensor == self.ATTR_PRESSURE:
                 unit = 'hPa'
@@ -215,10 +215,10 @@ class Airly(hass.Hass):
                 name = "Airly {}".format(sensor.capitalize())
                 payload = {
                     "name": name,
-                    "unique_id": unique_id,
-                    "state_topic": state_topic,
-                    "unit_of_measurement": unit,
-                    "device_class": device_class,
+                    "uniq_id": unique_id,
+                    "stat_t": state_topic,
+                    "unit_of_meas": unit,
+                    "dev_cla": device_class,
                     }
 
             self.call_service("mqtt/publish", topic=topic,

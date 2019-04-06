@@ -1163,17 +1163,26 @@
 
 ## SALON ##
 # włączanie przekaźnika lampy w salonie
-- id: light_turn_lamp_salon_relay
+- id: light_turn_on_lamp_salon_relay
   alias: 'Light Turn On Lamp Salon Relay'
   trigger:
-    - platform: state
-      entity_id: switch.lamp_salon
-      to: 'off'
-    - platform: state
-      entity_id: light.lamp_salon
-      to: 'unavailable'
+    platform: state
+    entity_id: switch.lamp_salon
+    to: 'off'
   action:
-    service: switch.turn_on
+    - delay: '00:00:05'
+    - service: switch.turn_on
+      entity_id: switch.lamp_salon
+
+# wyłączanie przekaźnika lampy w salonie gdy lampa niedostępna
+- id: light_turn_off_lamp_salon_relay_when_unavailable
+  alias: 'Light Turn Off Lamp Salon Relay When Unavailable'
+  trigger:
+    platform: state
+    entity_id: light.lamp_salon
+    to: 'unavailable'
+  action:    
+    service: switch.turn_off
     entity_id: switch.lamp_salon
 
 # wyłączenie świateł w salonie jeśli nie ma ruchu przez godzinę i jest po północy

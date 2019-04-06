@@ -33,11 +33,11 @@ class DuneActivity(hass.Hass):
 
     def initialize(self):
 
-        __version__ = '0.2.3'
+        __version__ = '0.2.4'
 
         self.URL_FORMAT = "http://{}/cgi-bin/do"
         self.ENTITY = 'sensor.dune_activity'
-        self.TOPIC = "homeassistant/sensor/dune/activity/{}"
+        self.TOPIC = "dune/activity/{}"
         self.MANUFACTURER = 'Dune'
         self.model = 'Network Player'
         self.use_mqtt = False
@@ -93,20 +93,21 @@ class DuneActivity(hass.Hass):
             if self.mac_simple and not self.entity_exists(self.ENTITY):
                 payload = {
                     "name": "Dune Activity",
-                    "unique_id": self.mac_simple + '-activity',
-                    "state_topic": self.TOPIC.format('state'),
-                    "device": {
-                        "identifiers": self.mac_simple,
-                        "connections": [["mac", self.mac]],
-                        "manufacturer": self.MANUFACTURER,
-                        "model": self.model,
+                    "uniq_id": self.mac_simple + '-activity',
+                    "stat_t": self.TOPIC.format('state'),
+                    "dev": {
+                        "ids": self.mac_simple,
+                        "cns": [["mac", self.mac]],
+                        "mf": self.MANUFACTURER,
+                        "mdl": self.model,
                         "name": self.MANUFACTURER + ' ' + self.model
                     }
                 }
                 self.call_service("mqtt/publish",
-                                  topic=self.TOPIC.format('config'),
+                                  topic='homeassistant/sensor/'+
+                                        self.TOPIC.format('config'),
                                   payload=json.dumps(payload), qos=0,
-                                  retain=self.retain)
+                                  retain=True)
             old_state = self.get_state(self.ENTITY)
             if old_state and old_state != state:
                 self.call_service("mqtt/publish",

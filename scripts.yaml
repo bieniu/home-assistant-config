@@ -321,19 +321,6 @@ camera_move:
   sequence:
     service: mqtt.publish
     data_template:
-      topic: 'homeassistant/camera/salon/motors/{{ orientation }}/set'
+      topic: 'camera/salon/motors/{{ orientation }}/set'
       payload: '{{ direction }}'
 
-shellies_develop:
-  sequence:
-    service: python_script.shellies_discovery
-    data:
-      develop: true
-      id: 'shellyht-999999'
-      mac: '1122AA445566'
-      fw_ver: '9.99'
-      temp_unit: 'F'
-      # shellyplug-999999-relay-0: 'switch'
-      # shelly4pro-1122AA-relay-1: 'light'
-      # shelly4pro-1122AA-relay-2: 'fan'
-      # shelly4pro-1122AA-relay-3: 'switch'
