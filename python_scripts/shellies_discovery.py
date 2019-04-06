@@ -64,7 +64,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.4.0'
+VERSION = '0.4.1'
 
 ATTR_DEVELOP = 'develop'
 
@@ -146,9 +146,11 @@ else:
         device_name = '{} {}'.format(model, id.split('-')[1],)
         roller_name = '{} Roller {}'.format(device_name, roller_id)
         default_topic = 'shellies/{}/'.format(id)
-        state_topic = '~roller/{}'.format(roller_id)
+        state_topic = '{}roller/{}'.format(default_topic, roller_id)
         command_topic =  '{}/command'.format(state_topic)
-        availability_topic = '~online'
+        position_topic =  '{}/pos'.format(state_topic)
+        set_position_topic =  '{}/command/pos'.format(state_topic)
+        availability_topic = '{}online'.format(default_topic)
         unique_id = '{}-roller-{}'.format(id, roller_id)
         if data.get(unique_id):
             config_component = data.get(unique_id)
@@ -158,21 +160,22 @@ else:
         if config_component == component:
             roller_mode = True
             payload = '{\"name\":\"' + roller_name + '\",' \
-                      '\"cmd_t\":\"' + command_topic + '\",' \
-                      '\"stat_t\":\"' + state_topic +'\",' \
-                      '\"pl_open\":\"open\",' \
-                      '\"pl_cls\":\"close\",' \
-                      '\"pl_stop\":\"stop\",' \
-                      '\"opt\":\"false\",' \
-                      '\"avty_t\":\"' + availability_topic + '\",' \
-                      '\"pl_avail\":\"true\",' \
-                      '\"pl_not_avail\":\"false\",' \
-                      '\"uniq_id\":\"' + unique_id + '\",' \
+                      '\"command_topic\":\"' + command_topic + '\",' \
+                      '\"position_topic\":\"' + position_topic + '\",' \
+                      '\"set_position_topic\":\"' + set_position_topic + '\",' \
+                      '\"payload_open\":\"open\",' \
+                      '\"payload_close\":\"close\",' \
+                      '\"payload_stop\":\"stop\",' \
+                      '\"optimistic\":\"false\",' \
+                      '\"availability_topic\":\"' + availability_topic + '\",' \
+                      '\"payload_available\":\"true\",' \
+                      '\"payload_not_available\":\"false\",' \
+                      '\"unique_id\":\"' + unique_id + '\",' \
                       '\"device\": {\"ids\": [\"' + mac + '\"],' \
                       '\"name\":\"' + device_name + '\",' \
-                      '\"mdl\":\"' + model + '\",' \
-                      '\"sw\":\"' + fw_ver + '\",' \
-                      '\"mf\":\"Shelly\"},' \
+                      '\"model\":\"' + model + '\",' \
+                      '\"sw_version\":\"' + fw_ver + '\",' \
+                      '\"manufacturer\":\"Shelly\"},' \
                       '\"~\":\"' + default_topic + '\"}'
         else:
             payload = ''    
