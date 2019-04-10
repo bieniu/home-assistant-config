@@ -4,9 +4,9 @@ Shelly4Pro, Shelly Plug and Shelly Plug are supported.
 Arguments:
  - discovery_prefix:    - discovery prefix in HA, default 'homeassistant',
                           optional
- - id       			- Shelly ID (required)
+ - id                   - Shelly ID (required)
  - mac                  - Shelly MAC address (required)
- - sensor				- sensor entity_id (required)
+ - sensor               - sensor entity_id (required)
  - fw_ver               - Shelly firmware version (optional)
  - temp_unit            - C for Celsius, F for Farenhait, default C (optional)
  - list of shelies relays and components for them, only for devices with relays
@@ -64,7 +64,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.4.1'
+VERSION = '0.4.2'
 
 ATTR_DEVELOP = 'develop'
 
@@ -96,7 +96,7 @@ if develop:
     retain = False
     logger.error("DEVELOP MODE !!!")
 
-if id is None or mac is None:
+if id == '' or mac == '':
     logger.error("Expected id and mac as arguments.")
 else:
     relays = 0
@@ -114,16 +114,17 @@ else:
         model = 'Shelly2'
         relays = 2
         rollers = 1
-        relay_sensors = ['power']
-        units = ['W']
-        templates = ['{{ value | round(1) }}']        
+        relay_sensors = ['power', 'energy']
+        units = ['W', 'kWh']
+        templates = ['{{ value | float | round(1) }}',
+                     '{{ (value | float / 100) | round(2) }}']        
 
     if 'shellyplug' in id:
         model = 'Shelly Plug'
         relays = 1
         relay_sensors = ['power', 'energy']
         units = ['W', 'kWh']
-        templates = ['{{ value | round(1) }}',
+        templates = ['{{ value | float | round(1) }}',
                      '{{ (value | float / 100) | round(2) }}']
 
     if 'shelly4pro' in id:
@@ -131,16 +132,16 @@ else:
         relays = 4
         relay_sensors = ['power', 'energy']
         units = ['W', 'kWh']
-        templates = ['{{ value | round(1) }}',
-                     '{{ (value / 100) | round(2) }}']
+        templates = ['{{ value | float | round(1) }}',
+                     '{{ (value | float / 100) | round(2) }}']
 
     if 'shellyht' in id:
         model = 'ShellyH&T'
         sensors = ['temperature', 'humidity', 'battery']
         units = [temp_unit, '%', '%']
-        templates = ['{{ value | round(1) }}',
-                     '{{ value | round(1) }}',
-                     '{{ value | round }}']
+        templates = ['{{ value | float | round(1) }}',
+                     '{{ value | float | round(1) }}',
+                     '{{ value | float | round }}']
                      
     for roller_id in range(0, rollers):
         device_name = '{} {}'.format(model, id.split('-')[1],)

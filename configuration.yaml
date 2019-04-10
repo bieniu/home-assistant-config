@@ -93,8 +93,6 @@ discovery:
 
 zeroconf:
 
-stream:
-
 zwave:
   device_config: !include zwave_device_config.yaml
   debug: true
@@ -105,11 +103,17 @@ xiaomi_aqara:
     key: !secret migateway_key
 
 camera:
-  - platform: generic
+  - platform: ffmpeg
     name: 'Salon'
-    still_image_url: !secret dafang_still_mage_url
-    stream_source: !secret dafang_rtsp_url
-    scan_interval: 5
+    input: !secret dafang_ffmpeg_input
+    extra_arguments: '-vf scale=800:450 -pred 1 -q:v 2'
+#   - platform: generic
+#     name: 'Salon'
+#     still_image_url: !secret dafang_still_mage_url
+#     stream_source: !secret dafang_rtsp_url
+#     scan_interval: 5
+
+# stream:
 
 notify:
   - platform: html5
