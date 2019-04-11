@@ -449,6 +449,16 @@
           {{ states('sensor.battery_motion_sensor_goscinny') }}
         {% endif %}
 
+    battery_motion_sensor_gabinet:
+      friendly_name: 'gabinet'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.motion_gabinet', 'battery_level') %}
+          {{ state_attr('binary_sensor.motion_gabinet', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_motion_sensor_gabinet') }}
+        {% endif %}
+
     battery_motion_sensor_salon_2:
       friendly_name: 'salon [2]'
       unit_of_measurement: '%'

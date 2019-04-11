@@ -90,7 +90,7 @@ binary_sensor.synology_status:
 binary_sensor.dune_status:
   icon: mdi:filmstrip
 binary_sensor.raspberry_status:
-  icon: mdi:raspberrypi
+  icon: mdi:raspberry-pi
 binary_sensor.switch_status:
   icon: mdi:switch
 binary_sensor.stacjonarny_status:
@@ -199,6 +199,8 @@ binary_sensor.motion_antek:
   location: 'pokój Antka'
 binary_sensor.motion_goscinny:
   location: 'pokój gościnny'
+binary_sensor.motion_gabinet:
+  location: 'gabinet'
 
 #### XIAOMI WINDOW/DOOR SENSORS ####
 binary_sensor.balcony_door_sypialnia:
@@ -229,6 +231,8 @@ light.cabinet_antek:
 light.lamp_pracownia:
   icon: mdi:lamp
 light.lamp_goscinny:
+  icon: mdi:lamp
+light.lamp_gabinet:
   icon: mdi:lamp
 script.sonoffs_upgrade:
   friendly_name: 'Aktualizacja Sonoff-ów'

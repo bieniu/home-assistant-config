@@ -356,6 +356,7 @@
         - binary_sensor.motion_przedpokoj
         - binary_sensor.motion_pracownia
         - binary_sensor.motion_goscinny
+        - binary_sensor.motion_gabinet
       from: 'off'
       to: 'on'
   condition:
@@ -1967,6 +1968,24 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.pracownia_light_motion_on
 
+# wyłączanie lampki w pracowni jak brak ruchu
+- id: light_turn_off_pracownia_lamp
+  alias: 'Light Turn Off Pracownia Lamp'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_pracownia
+    from: 'on'
+    to: 'off'
+  condition:
+    condition: state
+    entity_id: input_boolean.pracownia_light_motion_on
+    state: 'on'
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.pracownia_light_motion_on
+    - service: light.turn_off
+      entity_id: light.lamp_pracownia
+
 #### POKÓJ GOŚCINNY ####
 # wyłączanie lampki w pokoju gościnnym jak brak ruchu
 - id: light_turn_off_goscinny_lamp
@@ -2027,23 +2046,65 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.goscinny_light_motion_on
 
-# wyłączanie lampki w pracowni jak brak ruchu
-- id: light_turn_off_pracownia_lamp
-  alias: 'Light Turn Off Pracownia Lamp'
+#### GABINET ####
+# wyłączanie lampki w gabinecie jak brak ruchu
+- id: light_turn_off_gabinet_lamp
+  alias: 'Light Turn Off Gabinet Lamp'
   trigger:
     platform: state
-    entity_id: binary_sensor.motion_pracownia
+    entity_id: binary_sensor.motion_gabinet
     from: 'on'
     to: 'off'
   condition:
     condition: state
-    entity_id: input_boolean.pracownia_light_motion_on
+    entity_id: input_boolean.gabinet_light_motion_on
     state: 'on'
   action:
     - service: input_boolean.turn_off
-      entity_id: input_boolean.pracownia_light_motion_on
+      entity_id: input_boolean.gabinet_light_motion_on
     - service: light.turn_off
-      entity_id: light.lamp_pracownia
+      entity_id: light.lamp_gabinet
+
+# włączanie lampki w gabinecie jak ruch i ciemno
+- id: light_turn_on_gabinet_lamp_when_dark_and_motion
+  alias: 'Light Turn On Gabinet Lamp When Dark And Motion'
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_gabinet
+      from: 'off'
+      to: 'on'
+    - platform: numeric_state
+      entity_id: sensor.illumination_gabinet
+      below: 9
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: input_boolean.away_mode
+        state: 'off'
+      - condition: state
+        entity_id: light.lamp_gabinet
+        state: 'off'
+      - condition: numeric_state
+        entity_id: sensor.illumination_gabinet
+        below: 9
+      - condition: state
+        entity_id: binary_sensor.motion_gabinet
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.light_auto_turn_gabinet
+        state: 'on'
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+          - condition: sun
+            before: sunrise
+  action:
+    - service: light.turn_on
+      entity_id: light.lamp_gabinet
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.gabinet_light_motion_on
 
 ##################################################################################################
 
