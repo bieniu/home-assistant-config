@@ -99,6 +99,8 @@ binary_sensor.xbox_status:
   icon: mdi:xbox
 binary_sensor.playstation_status:
   icon: mdi:playstation
+binary_sensor.bravia_status:
+  icon: mdi:television
 binary_sensor.fingbox_status:
   icon: mdi:security-network
 binary_sensor.harmonyhub_status:

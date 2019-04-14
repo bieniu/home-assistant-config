@@ -3,19 +3,19 @@
   name: 'Denon'
   timeout: 3
 
-- platform: androidtv
-  host: !secret androidtv_hostname
-  adb_server_ip: 127.0.0.1
-  name: MiBox
-  apps:
-    com.amazon.amazonvideo.livingroom: 'Amazon Prime Video'
-    com.google..android.youtube.tv: 'YouTube'
-    eu.hbogo.androidtv.production: 'HBO GO'
-    com.vimeo.android.videoapp: 'Vimeo'
-    pl.videostar: 'WP Pilot'
-    com.google.android.tvlauncher: 'Ekran domowy'
-    com.spotify.tv.android: 'Spotify'
-    org.videolan.vlc: 'VLC'
-    pl.solidexplorer2: 'Solid Explorer'
-    com.android.vending: 'Sklep Play'
-    com.android.tv.settings: 'Ustawienia'
+# - platform: androidtv
+#   host: !secret androidtv_hostname
+#   adb_server_ip: 127.0.0.1
+#   name: MiBox
+#   apps:
+#     com.amazon.amazonvideo.livingroom: 'Amazon Prime Video'
+#     com.google..android.youtube.tv: 'YouTube'
+#     eu.hbogo.androidtv.production: 'HBO GO'
+#     com.vimeo.android.videoapp: 'Vimeo'
+#     pl.videostar: 'WP Pilot'
+#     com.google.android.tvlauncher: 'Ekran domowy'
+#     com.spotify.tv.android: 'Spotify'
+#     org.videolan.vlc: 'VLC'
+#     pl.solidexplorer2: 'Solid Explorer'
+#     com.android.vending: 'Sklep Play'
+#     com.android.tv.settings: 'Ustawienia'

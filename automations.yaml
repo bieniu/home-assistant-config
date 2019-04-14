@@ -744,6 +744,8 @@
         - climate.thermostat_salon
       data_template:
         temperature: "{{ states('input_select.heating_temp_night') }}"
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.heating_salon_kuchnia_night
 
 # zmniejszenie temperatury gdy domownicy wychodzą i jest sezon grzewczy
 - id: heating_eco_mode
@@ -2075,7 +2077,7 @@
       to: 'on'
     - platform: numeric_state
       entity_id: sensor.illumination_gabinet
-      below: 9
+      below: 7
   condition:
     condition: and
     conditions:
@@ -2084,6 +2086,9 @@
         state: 'off'
       - condition: state
         entity_id: light.lamp_gabinet
+        state: 'off'
+      - condition: state
+        entity_id: switch.stacjonarny
         state: 'off'
       - condition: numeric_state
         entity_id: sensor.illumination_gabinet

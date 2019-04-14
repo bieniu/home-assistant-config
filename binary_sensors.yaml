@@ -38,6 +38,10 @@
       value_template: "{{ is_state('device_tracker.dune', 'home') }}"
       friendly_name: 'Dune BD Prime 3.0'
 
+    bravia_status:
+      value_template: "{{ is_state('device_tracker.bravia', 'home') }}"
+      friendly_name: 'Sony KD-55XF8596'
+
     raspberry_status:
       value_template: "{{ is_state('device_tracker.raspberry', 'home') }}"
       friendly_name: 'Raspberry Pi 3B'

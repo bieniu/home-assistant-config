@@ -20,13 +20,17 @@ resources:
   - url: /customcards/popup-card.js
     type: js
 
+background: >-
+  center / cover no-repeat
+  url("/local/pictures/bg.jpg")
+  fixed
+# background: '#e5e5e5'
+
 title: 'Dom'
 views:
   - id: home
     icon: mdi:home
-    title: 'Pomieszczenia'
-    # background: '#e5e5e5'
-    background: 'center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
+    title: 'Pomieszczenia'    
     path: home
     panel: true
     popup_cards:
@@ -79,8 +83,8 @@ views:
                       state: home
                     - entity_id: person.agnieszka
                       state: home
-                    # - entity_id: person.antek
-                    #   state: home
+                    - entity_id: person.antek
+                      state: home
               - type: entities
                 title: 'Przedpokój'
                 show_header_toggle: false
@@ -96,9 +100,9 @@ views:
                   - binary_sensor.window_kuchnia
                   - climate.thermostat_kuchnia
           - type: custom:vertical-stack-in-card
+            title: 'Salon'
             cards:
-              - type: glance
-                title: 'Salon'
+              - type: glance                
                 show_name: false
                 entities:
                   - sensor.temperature_salon
@@ -138,19 +142,19 @@ views:
                       power_state: false
                     info: scroll
                     group: true
-                  - type: custom:mini-media-player
-                    entity: media_player.mibox
-                    name: 'Mi Box'
-                    hide:
-                      controls: true
-                      volume: true
-                      power: true
-                    info: scroll
-                    group: true
+                  # - type: custom:mini-media-player
+                  #   entity: media_player.mibox
+                  #   name: 'Mi Box'
+                  #   hide:
+                  #     controls: true
+                  #     volume: true
+                  #     power: true
+                  #   info: scroll
+                  #   group: true
           - type: custom:vertical-stack-in-card
             title: 'Pracownia'
             cards:
-              - type: glance
+              - type: glance                
                 show_name: false
                 entities:
                   - sensor.temperature_pracownia
@@ -166,7 +170,7 @@ views:
           - type: custom:vertical-stack-in-card
             title: 'Pokój gościnny'
             cards:
-              - type: glance
+              - type: glance         
                 show_name: false
                 entities:
                   - sensor.temperature_goscinny
@@ -181,7 +185,7 @@ views:
           - type: custom:vertical-stack-in-card
             title: 'Antresola'
             cards:
-              - type: glance
+              - type: glance                
                 show_name: false
                 entities:
                   - sensor.temperature_antresola
@@ -198,7 +202,7 @@ views:
           - type: custom:vertical-stack-in-card
             title: 'Gabinet'
             cards:
-              - type: glance
+              - type: glance                
                 show_name: false
                 entities:
                   - sensor.temperature_gabinet
@@ -214,7 +218,7 @@ views:
           - type: custom:vertical-stack-in-card
             title: 'Pokój Antka'
             cards:
-              - type: glance
+              - type: glance                
                 show_name: false
                 entities:
                   - sensor.temperature_antek
@@ -232,7 +236,7 @@ views:
           - type: custom:vertical-stack-in-card
             title: 'Sypialnia'
             cards:
-              - type: glance
+              - type: glance                
                 show_name: false
                 entities:
                   - sensor.temperature_sypialnia
@@ -264,8 +268,6 @@ views:
   - id: map
     icon: mdi:map
     title: 'Mapa'
-    # background: '#e5e5e5'
-    background: 'center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: map
     panel: true
     cards:
@@ -278,8 +280,6 @@ views:
   - id: network
     icon: mdi:ethernet
     title: 'Sieć'
-    # background: '#e5e5e5'
-    background: 'center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: network
     panel: true
     cards:
@@ -291,7 +291,7 @@ views:
               - type: custom:vertical-stack-in-card
                 title: 'Router'
                 cards:
-                  - type: glance
+                  - type: glance                    
                     entities:
                       - sensor.speedtest_download
                       - sensor.speedtest_upload
@@ -322,7 +322,7 @@ views:
               - type: custom:vertical-stack-in-card
                 title: 'Raspberry Pi'
                 cards:
-                  - type: glance
+                  - type: glance                    
                     entities:
                       - entity: sensor.processor_use
                         name: 'CPU'
@@ -360,6 +360,7 @@ views:
               - binary_sensor.fingbox_status
               - binary_sensor.synology_status
               - binary_sensor.raspberry_status
+              - binary_sensor.bravia_status
               - binary_sensor.denon_status
               - binary_sensor.dune_status
               - binary_sensor.playstation_status
@@ -404,8 +405,6 @@ views:
   - id: energy
     icon: mdi:power-plug
     title: 'Energia'
-    # background: '#e5e5e5'
-    background: 'center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: energy
     panel: true
     cards:
@@ -442,7 +441,7 @@ views:
           - type: custom:vertical-stack-in-card
             title: 'UPS'
             cards:
-              - type: entities
+              - type: entities                
                 show_header_toggle: false
                 entities:
                   - sensor.ups_status
@@ -523,8 +522,6 @@ views:
   - id: climate
     icon: mdi:cloud
     title: 'Klimat'
-    # background: '#e5e5e5'
-    background: 'center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: climate
     panel: true
     cards:
@@ -656,8 +653,6 @@ views:
   - id: misc
     icon: mdi:settings
     title: 'Różne'
-    # background: '#e5e5e5'
-    background: 'center / cover no-repeat url("/local/pictures/bg.jpg") fixed'
     path: misc
     panel: true
     cards:

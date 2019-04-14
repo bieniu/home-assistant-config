@@ -1,6 +1,6 @@
 """
 This script adds MQTT discovery support for Shellies. Shelly1, Shelly2,
-Shelly4Pro, Shelly Plug and Shelly Plug are supported.
+Shely2.5, Shelly4Pro, Shelly Plug and ShellyH&T are supported.
 Arguments:
  - discovery_prefix:    - discovery prefix in HA, default 'homeassistant',
                           optional
@@ -64,7 +64,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.4.4'
+VERSION = '0.5.0'
 
 ATTR_DEVELOP = 'develop'
 
@@ -110,14 +110,24 @@ else:
         model = 'Shelly1'
         relays = 1
 
-    if 'shellyswitch' in id:
+    if 'shellyswitch-' in id:
         model = 'Shelly2'
         relays = 2
         rollers = 1
         relay_sensors = ['power', 'energy']
         units = ['W', 'kWh']
         templates = ['{{ value | float | round(1) }}',
-                     '{{ (value | float / 10000) | round(2) }}']        
+                     '{{ (value | float / 10000) | round(2) }}']
+
+    if 'shellyswitch25' in id:
+        model = 'Shelly2.5'
+        relays = 2
+        rollers = 1
+        relay_sensors = ['power', 'energy', 'temperature']
+        units = ['W', 'kWh', 'temp_unit']
+        templates = ['{{ value | float | round(1) }}',
+                     '{{ (value | float / 10000) | round(2) }}',
+                     '{{ value | float | round(1) }}']
 
     if 'shellyplug' in id:
         model = 'Shelly Plug'
@@ -227,7 +237,7 @@ else:
             }            
             hass.services.call('mqtt', 'publish', service_data, False)
 
-        if model == 'Shelly2':
+        if model == 'Shelly2' or model == 'Shelly2.5':
             if relay_id == relays-1:
                 for sensor_id in range(0, len(relay_sensors)):
                     unique_id = '{}-relay-{}'.format(id,
