@@ -124,9 +124,15 @@ views:
                   - input_select.light_scenes_salon
                   - input_select.salon_harmony
                   - type: custom:mini-media-player
-                    entity: media_player.denon
-                    name: Amplituner
-                    icon: mdi:audio-video
+                    entity: media_player.bravia
+                    hide:
+                      controls: true
+                      volume: true
+                      power_state: false
+                    info: scroll
+                    group: true
+                  - type: custom:mini-media-player
+                    entity: media_player.denon                    
                     hide:
                       controls: true
                       volume: true
@@ -135,7 +141,6 @@ views:
                     group: true
                   - type: custom:mini-media-player
                     entity: media_player.playstation
-                    name: 'PlayStation'
                     hide:
                       controls: true
                       volume: true

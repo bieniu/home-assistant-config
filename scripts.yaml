@@ -142,17 +142,6 @@ heating_eco_mode:
         temperature: "{{ states('input_select.heating_temp_eco') }}"
     - service: fan.turn_off
       entity_id: fan.humidifier_salon
-    - condition: state
-      entity_id: input_boolean.heating_airing
-      state: 'on'
-    - service: script.notify
-      data:
-        notify_edyta: true
-        title: 'Koniec przewietrzania'
-        message: 'Domownicy opóścili mieszkanie. Wyłączono tryb przewietrzania.'
-        tag: '28888'
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.heating_airing
 
 heating_season_end:
   sequence:
@@ -270,8 +259,7 @@ notify:
         title: '{{ title }}'
         message: '{{ message }}'
         data:
-          tag: '{{ tag }}'
-          # icon: !secret notification_icon
+          tag: '{{ tag }}'          
     - condition: template
       value_template: '{{ notify_edyta }}'
     - service: notify.ios_iphone_8_plus_app
@@ -293,7 +281,6 @@ notify_motion:
         message: '{{ message }}'
         data:
           tag: '{{ tag }}'
-          # icon: !secret notification_icon
           image: >-
             {% if location == 'salon' or location == 'przedpokój' %}
               {{ snapshot_url }}{{ datetime }}.jpg

@@ -64,7 +64,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.5.0'
+VERSION = '0.5.1'
 
 ATTR_DEVELOP = 'develop'
 
@@ -117,7 +117,7 @@ else:
         relay_sensors = ['power', 'energy']
         units = ['W', 'kWh']
         templates = ['{{ value | float | round(1) }}',
-                     '{{ (value | float / 10000) | round(2) }}']
+                     '{{ (value | float / 60 / 1000) | round(2) }}']
 
     if 'shellyswitch25' in id:
         model = 'Shelly2.5'
@@ -126,7 +126,7 @@ else:
         relay_sensors = ['power', 'energy', 'temperature']
         units = ['W', 'kWh', 'temp_unit']
         templates = ['{{ value | float | round(1) }}',
-                     '{{ (value | float / 10000) | round(2) }}',
+                     '{{ (value | float / 60 / 1000) | round(2) }}',
                      '{{ value | float | round(1) }}']
 
     if 'shellyplug' in id:
@@ -135,7 +135,7 @@ else:
         relay_sensors = ['power', 'energy']
         units = ['W', 'kWh']
         templates = ['{{ value | float | round(1) }}',
-                     '{{ (value | float / 10000) | round(2) }}']
+                     '{{ (value | float / 60 / 1000) | round(2) }}']
 
     if 'shelly4pro' in id:
         model = 'Shelly4Pro'
@@ -143,7 +143,7 @@ else:
         relay_sensors = ['power', 'energy']
         units = ['W', 'kWh']
         templates = ['{{ value | float | round(1) }}',
-                     '{{ (value | float / 10000) | round(2) }}']
+                     '{{ (value | float / 60 / 1000) | round(2) }}']
 
     if 'shellyht' in id:
         model = 'ShellyH&T'

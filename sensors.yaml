@@ -199,6 +199,8 @@
       value_template: >-
         {% if state_attr('fan.humidifier_salon', 'depth') < 127 %}
           {{ (state_attr('fan.humidifier_salon', 'depth') * 0.89 - 11.6) | round | min(100) | max(0) }}
+        {% else %}
+          {{ states('sensor.humidifier_water_level') }}
         {% endif %}
 
     printer_status_custom:

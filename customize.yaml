@@ -150,6 +150,11 @@ switch.stacjonarny:
 #### MEDIA PLAYERS ####
 media_player.denon:
   friendly_name: 'Amplituner'
+  icon: mdi:audio-video
+
+media_player.bravia:
+  friendly_name: 'Telewizor'
+  icon: mdi:television
 
 #### SCRIPTS ####
 script.restart_hass:

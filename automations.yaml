@@ -1490,9 +1490,6 @@
   alias: 'Light Scene Film'
   trigger:
     - platform: state
-      entity_id: media_player.mibox
-      to: 'playing'
-    - platform: state
       entity_id: sensor.dune_activity
       to: 'file_playback'
     - platform: state
@@ -1520,11 +1517,6 @@
 - id: light_scene_auto_after_film
   alias: 'Light Scene Auto After Film'
   trigger:
-    - platform: state
-      entity_id: media_player.mibox
-      to: 'paused'
-      for:
-        seconds: 20
     - platform: state
       entity_id: sensor.dune_activity
       to: 'navigator'

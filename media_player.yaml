@@ -19,3 +19,10 @@
 #     pl.solidexplorer2: 'Solid Explorer'
 #     com.android.vending: 'Sklep Play'
 #     com.android.tv.settings: 'Ustawienia'
+
+- platform: braviatv_psk
+  host: !secret bravia_hostname
+  psk: !secret bravia_psk
+  mac: !secret bravia_mac
+  amp: true
+  android: true
