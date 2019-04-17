@@ -64,7 +64,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.5.1'
+VERSION = '0.5.2'
 
 ATTR_DEVELOP = 'develop'
 
@@ -237,7 +237,7 @@ else:
             }            
             hass.services.call('mqtt', 'publish', service_data, False)
 
-        if model == 'Shelly2' or model == 'Shelly2.5':
+        if model == 'Shelly2':
             if relay_id == relays-1:
                 for sensor_id in range(0, len(relay_sensors)):
                     unique_id = '{}-relay-{}'.format(id,

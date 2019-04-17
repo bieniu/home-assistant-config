@@ -5,8 +5,7 @@
 
 - platform: androidtv
   host: !secret mibox_hostname
-#   adb_server_ip: 127.0.0.1
-  adbkey: '/home/homeassistant/.android/adbkey'
+  adb_server_ip: 127.0.0.1
   name: MiBox
   apps:
     com.amazon.amazonvideo.livingroom: 'Amazon Prime Video'

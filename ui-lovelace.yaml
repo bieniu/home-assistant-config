@@ -184,6 +184,7 @@ views:
                     hide:
                       controls: true
                       volume: true
+                      power: true
                     info: scroll
                     group: true
           - type: custom:vertical-stack-in-card
@@ -466,7 +467,7 @@ views:
                   icon: false
                 entities:
                   - sensor.ups_battery_voltage
-                line_color: '#4bc0c0'          
+                line_color: '#4bc0c0'
           - type: entities
             title: 'Baterie sensorów ruchu'
             show_header_toggle: false
@@ -482,23 +483,6 @@ views:
               - sensor.battery_motion_sensor_antek
               - sensor.battery_motion_sensor_sypialnia
           - type: entities
-            title: 'Baterie przełączników'
-            show_header_toggle: false
-            entities:
-              - sensor.battery_switch_light_salon_1
-              - sensor.battery_switch_light_salon_2
-              - sensor.battery_switch_light_antek
-          - type: entities
-            title: 'Baterie termostatów'
-            show_header_toggle: false
-            entities:
-              - sensor.battery_thermostat_salon
-              - sensor.battery_thermostat_kuchnia
-              - sensor.battery_thermostat_antresola
-              - sensor.battery_thermostat_antek
-              - sensor.battery_thermostat_sypialnia
-              - sensor.battery_thermostat_lazienka
-          - type: entities
             title: 'Baterie sensorów temperatury'
             show_header_toggle: false
             entities:
@@ -510,7 +494,26 @@ views:
               - sensor.battery_temp_humi_sensor_antek
               - sensor.battery_temp_humi_sensor_sypialnia
               - sensor.battery_temp_humi_sensor_lazienka
-              - sensor.battery_temp_humi_sensor_outdoor
+              - sensor.battery_temp_humi_sensor_outdoor          
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: 'Baterie przełączników'
+                show_header_toggle: false
+                entities:
+                  - sensor.battery_switch_light_salon_1
+                  - sensor.battery_switch_light_salon_2
+                  - sensor.battery_switch_light_antek
+              - type: entities
+                title: 'Baterie termostatów'
+                show_header_toggle: false
+                entities:
+                  - sensor.battery_thermostat_salon
+                  - sensor.battery_thermostat_kuchnia
+                  - sensor.battery_thermostat_antresola
+                  - sensor.battery_thermostat_antek
+                  - sensor.battery_thermostat_sypialnia
+                  - sensor.battery_thermostat_lazienka
           - type: entities
             title: 'Baterie sensorów okien/drzwi'
             show_header_toggle: false
