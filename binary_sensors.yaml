@@ -7,7 +7,7 @@
       value_template: >-
          {{ is_state('group.household', 'home')
             or is_state('group.family', 'home')
-            or is_state('media_player.denon', 'on')
+            or is_state('media_player.bravia', 'on')
             or is_state('input_boolean.guests', 'on') }}
 
     motion_antresola:
@@ -94,8 +94,8 @@
       value_template: "{{ is_state('device_tracker.modem', 'home') }}"
       friendly_name: 'ZTE GPON F660'
 
-    androidtv_status:
-      value_template: "{{ is_state('device_tracker.androidtv', 'home') }}"
+    mibox_status:
+      value_template: "{{ is_state('device_tracker.mibox', 'home') }}"
       friendly_name: 'Xiaomi Mi Box 3'
 
     laptopedyta_status:

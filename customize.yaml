@@ -111,7 +111,7 @@ binary_sensor.oneplus_status:
   icon: mdi:cellphone-android
 binary_sensor.denon_status:
   icon: mdi:audio-video
-binary_sensor.androidtv_status:
+binary_sensor.mibox_status:
   icon: mdi:cast
 binary_sensor.laptopedyta_status:
   icon: mdi:laptop

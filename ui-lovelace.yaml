@@ -73,6 +73,8 @@ views:
                   include:
                     - entity_id: person.edyta
                     - entity_id: person.maciek
+                    - entity_id: person.antek
+                      state: home
                     - entity_id: person.grazyna
                       state: home
                     - entity_id: person.romana
@@ -82,9 +84,7 @@ views:
                     - entity_id: person.emil
                       state: home
                     - entity_id: person.agnieszka
-                      state: home
-                    - entity_id: person.antek
-                      state: home
+                      state: home                    
               - type: entities
                 title: 'Przedpokój'
                 show_header_toggle: false
@@ -146,16 +146,7 @@ views:
                       volume: true
                       power_state: false
                     info: scroll
-                    group: true
-                  # - type: custom:mini-media-player
-                  #   entity: media_player.mibox
-                  #   name: 'Mi Box'
-                  #   hide:
-                  #     controls: true
-                  #     volume: true
-                  #     power: true
-                  #   info: scroll
-                  #   group: true
+                    group: true                  
           - type: custom:vertical-stack-in-card
             title: 'Pracownia'
             cards:
@@ -187,6 +178,14 @@ views:
                   - entity: binary_sensor.motion_goscinny
                     secondary_info: last-changed
                   - light.lamp_goscinny
+                  - type: custom:mini-media-player
+                    entity: media_player.mibox
+                    name: 'Mi Box'
+                    hide:
+                      controls: true
+                      volume: true
+                    info: scroll
+                    group: true
           - type: custom:vertical-stack-in-card
             title: 'Antresola'
             cards:
@@ -321,7 +320,6 @@ views:
                   - sensor.printer_counter
                   - sensor.printer_drum_usage
                   - sensor.printer_toner
-
           - type: vertical-stack
             cards:
               - type: custom:vertical-stack-in-card
@@ -379,7 +377,7 @@ views:
               - binary_sensor.migateway_status
               - binary_sensor.harmonyhub_status
               - binary_sensor.brother_status
-              - binary_sensor.androidtv_status
+              - binary_sensor.mibox_status
               - binary_sensor.dafang_status
               - binary_sensor.mihumidifier_status
               - binary_sensor.laptop_status
@@ -468,30 +466,28 @@ views:
                   icon: false
                 entities:
                   - sensor.ups_battery_voltage
-                line_color: '#4bc0c0'
-          - type: vertical-stack
-            cards:
-              - type: entities
-                title: 'Baterie sensorów ruchu'
-                show_header_toggle: false
-                entities:
-                  - sensor.battery_motion_sensor_przedpokoj
-                  - sensor.battery_motion_sensor_salon_1
-                  - sensor.battery_motion_sensor_salon_2
-                  - sensor.battery_motion_sensor_pracownia
-                  - sensor.battery_motion_sensor_goscinny
-                  - sensor.battery_motion_sensor_schody
-                  - sensor.battery_motion_sensor_antresola
-                  - sensor.battery_motion_sensor_gabinet
-                  - sensor.battery_motion_sensor_antek
-                  - sensor.battery_motion_sensor_sypialnia
-              - type: entities
-                title: 'Baterie przełączników'
-                show_header_toggle: false
-                entities:
-                  - sensor.battery_switch_light_salon_1
-                  - sensor.battery_switch_light_salon_2
-                  - sensor.battery_switch_light_antek
+                line_color: '#4bc0c0'          
+          - type: entities
+            title: 'Baterie sensorów ruchu'
+            show_header_toggle: false
+            entities:
+              - sensor.battery_motion_sensor_przedpokoj
+              - sensor.battery_motion_sensor_salon_1
+              - sensor.battery_motion_sensor_salon_2
+              - sensor.battery_motion_sensor_pracownia
+              - sensor.battery_motion_sensor_goscinny
+              - sensor.battery_motion_sensor_schody
+              - sensor.battery_motion_sensor_antresola
+              - sensor.battery_motion_sensor_gabinet
+              - sensor.battery_motion_sensor_antek
+              - sensor.battery_motion_sensor_sypialnia
+          - type: entities
+            title: 'Baterie przełączników'
+            show_header_toggle: false
+            entities:
+              - sensor.battery_switch_light_salon_1
+              - sensor.battery_switch_light_salon_2
+              - sensor.battery_switch_light_antek
           - type: entities
             title: 'Baterie termostatów'
             show_header_toggle: false
@@ -694,33 +690,37 @@ views:
               - input_select.heating_temp_day
               - input_select.heating_temp_night
               - input_select.heating_temp_eco
-          - type: entities
-            title: 'Nawilżanie'
-            show_header_toggle: false
-            entities:
-              - input_select.target_humidity
-          - type: entities
-            title: 'Ustawienia oświetlenia'
-            show_header_toggle: false
-            entities:
-              - input_boolean.light_auto_turn_salon
-              - input_boolean.light_auto_turn_pracownia
-              - input_boolean.light_auto_turn_goscinny
-              - input_boolean.light_auto_turn_gabinet
-          - type: entities
-            title: 'Skrypty i ustawienia'
-            show_header_toggle: false
-            entities:
-              - script.reboot_router
-              - input_select.log_level
-          - type: custom:tracker-card
-            title: 'Aktualizacje'
-            name_text: 'Nazwa'
-            current_text: 'Obecna'
-            available_text: 'Dostępna'
-            check_text: 'Sprawdź'
-            update_all_text: 'Aktualizuj'
-            trackers:
-              - sensor.custom_card_tracker
-              - sensor.custom_python_script_tracker
-              - sensor.custom_component_tracker
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: 'Nawilżanie'
+                show_header_toggle: false
+                entities:
+                  - input_select.target_humidity
+              - type: entities
+                title: 'Ustawienia oświetlenia'
+                show_header_toggle: false
+                entities:
+                  - input_boolean.light_auto_turn_salon
+                  - input_boolean.light_auto_turn_pracownia
+                  - input_boolean.light_auto_turn_goscinny
+                  - input_boolean.light_auto_turn_gabinet
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: 'Skrypty i ustawienia'
+                show_header_toggle: false
+                entities:
+                  - script.reboot_router
+                  - input_select.log_level
+              - type: custom:tracker-card
+                title: 'Aktualizacje'
+                name_text: 'Nazwa'
+                current_text: 'Obecna'
+                available_text: 'Dostępna'
+                check_text: 'Sprawdź'
+                update_all_text: 'Aktualizuj'
+                trackers:
+                  - sensor.custom_card_tracker
+                  - sensor.custom_python_script_tracker
+                  - sensor.custom_component_tracker

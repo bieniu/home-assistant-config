@@ -51,12 +51,13 @@
 * OnePlus 6 [Android phone by [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm)]
 * CyberPower DL650ELCD [UPS]
 * Xiaomi DaFang [camera with [custom firmware](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks)]
+* Sony Bravia TV (Android TV) 
 
 ## Home Assistant Custom Components
 
 * [Custom Frontend](https://github.com/home-assistant/home-assistant/pull/10783)
 * [Custom Updater](https://github.com/custom-components/custom_updater)
-* [HANotify](https://github.com/MCrissDev/HANotify)
+* [Sony Bravia TV PSK](https://github.com/custom-components/media_player.braviatv_psk)
 
 ## Custom Panels
 
@@ -72,6 +73,7 @@
 * [monster-card](https://community.home-assistant.io/t/lovelace-bringing-back-entity-filter-monster-card/58701)
 * [card-tools](https://github.com/thomasloven/lovelace-card-tools)
 * [secondaryinfo-entity-row](https://github.com/MizterB/lovelace-secondaryinfo-entity-row)
+* [popup-card](https://github.com/thomasloven/lovelace-popup-card)
 
 ## AppDaemon
 

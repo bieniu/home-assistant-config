@@ -169,9 +169,8 @@ salon_harmony:
     options:
       - 'wyłączony'
       - 'telewizja'
+      - 'Smart TV'
       - 'filmy'
-      - 'VoD'
-      - 'Spotify'
       - 'radio'
       - 'PlayStation'
       - 'Xbox'
