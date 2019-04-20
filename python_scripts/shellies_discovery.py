@@ -7,7 +7,6 @@ Arguments:
                           optional
  - id                   - Shelly ID (required)
  - mac                  - Shelly MAC address (required)
- - sensor               - sensor entity_id (required)
  - fw_ver               - Shelly firmware version (optional)
  - temp_unit            - C for Celsius, F for Farenhait, default C (optional)
  - list of shelies relays and components for them, only for devices with relays
