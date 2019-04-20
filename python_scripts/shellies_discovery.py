@@ -1,6 +1,7 @@
 """
 This script adds MQTT discovery support for Shellies. Shelly1, Shelly2,
-Shely2.5, Shelly4Pro, Shelly Plug and ShellyH&T are supported.
+Shely2.5, Shelly4Pro, Shelly Plug, Shelly H&T, Shelly Smoke and Shelly Sense
+are supported.
 Arguments:
  - discovery_prefix:    - discovery prefix in HA, default 'homeassistant',
                           optional
@@ -64,7 +65,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.5.2'
+VERSION = '0.6.0'
 
 ATTR_DEVELOP = 'develop'
 
@@ -104,6 +105,10 @@ else:
     relay_sensors = []
     relay_components = ['switch', 'light', 'fan']
     sensors = []
+    sensors_classes = []
+    bin_sensors = []    
+    bin_sensors_classes = []
+    battery_powered = False
     config_component = 'switch'
 
     if 'shelly1' in id:
@@ -146,12 +151,38 @@ else:
                      '{{ (value | float / 60 / 1000) | round(2) }}']
 
     if 'shellyht' in id:
-        model = 'ShellyH&T'
+        model = 'Shelly H&T'
         sensors = ['temperature', 'humidity', 'battery']
+        sensors_classes = sensors
         units = [temp_unit, '%', '%']
         templates = ['{{ value | float | round(1) }}',
                      '{{ value | float | round(1) }}',
                      '{{ value | float | round }}']
+        battery_powered = True
+    
+    if 'shellysmoke' in id:
+        model = 'Shelly Smoke'
+        sensors = ['temperature', 'battery']
+        sensors_classes = sensors
+        units = [temp_unit, '%']
+        templates = ['{{ value | float | round(1) }}',                     
+                     '{{ value | float | round }}']
+        bin_sensors = ['smoke']
+        bin_sensors_classes = bin_sensors
+        battery_powered = True
+
+    if 'shellysense' in id:
+        model = 'Shelly Sense'
+        sensors = ['temperature', 'humidity', 'lux', 'battery']
+        sensors_classes = ['temperature', 'humidity', 'illuminance', 'battery']
+        units = [temp_unit, '%', 'lx', '%']
+        templates = ['{{ value | float | round(1) }}',
+                     '{{ value | float | round(1) }}',
+                     '{{ value | float | round }}',                     
+                     '{{ value | float | round }}']
+        bin_sensors = ['motion', 'charger']
+        bin_sensors_classes = ['motion', 'power']
+        battery_powered = True
                      
     for roller_id in range(0, rollers):
         device_name = '{} {}'.format(model, id.split('-')[1],)
@@ -171,31 +202,31 @@ else:
         if config_component == component:
             roller_mode = True
             payload = '{\"name\":\"' + roller_name + '\",' \
-                      '\"command_topic\":\"' + command_topic + '\",' \
-                      '\"position_topic\":\"' + position_topic + '\",' \
-                      '\"set_position_topic\":\"' + set_position_topic + '\",' \
-                      '\"payload_open\":\"open\",' \
-                      '\"payload_close\":\"close\",' \
-                      '\"payload_stop\":\"stop\",' \
-                      '\"optimistic\":\"false\",' \
-                      '\"availability_topic\":\"' + availability_topic + '\",' \
-                      '\"payload_available\":\"true\",' \
-                      '\"payload_not_available\":\"false\",' \
-                      '\"unique_id\":\"' + unique_id + '\",' \
-                      '\"device\": {\"ids\": [\"' + mac + '\"],' \
-                      '\"name\":\"' + device_name + '\",' \
-                      '\"model\":\"' + model + '\",' \
-                      '\"sw_version\":\"' + fw_ver + '\",' \
-                      '\"manufacturer\":\"Shelly\"},' \
-                      '\"~\":\"' + default_topic + '\"}'
+                '\"command_topic\":\"' + command_topic + '\",' \
+                '\"position_topic\":\"' + position_topic + '\",' \
+                '\"set_position_topic\":\"' + set_position_topic + '\",' \
+                '\"payload_open\":\"open\",' \
+                '\"payload_close\":\"close\",' \
+                '\"payload_stop\":\"stop\",' \
+                '\"optimistic\":\"false\",' \
+                '\"availability_topic\":\"' + availability_topic + '\",' \
+                '\"payload_available\":\"true\",' \
+                '\"payload_not_available\":\"false\",' \
+                '\"unique_id\":\"' + unique_id + '\",' \
+                '\"device\": {\"ids\": [\"' + mac + '\"],' \
+                '\"name\":\"' + device_name + '\",' \
+                '\"model\":\"' + model + '\",' \
+                '\"sw_version\":\"' + fw_ver + '\",' \
+                '\"manufacturer\":\"Shelly\"},' \
+                '\"~\":\"' + default_topic + '\"}'
         else:
             payload = ''    
         service_data = {
-                'topic': config_topic,
-                'payload': payload,
-                'retain': retain,
-                'qos': 0
-            }            
+            'topic': config_topic,
+            'payload': payload,
+            'retain': retain,
+            'qos': 0
+        }            
         hass.services.call('mqtt', 'publish', service_data, False)
 
     for relay_id in range(0, relays):
@@ -213,20 +244,20 @@ else:
                                                     component, id, relay_id)
             if component == config_component and not roller_mode:
                 payload = '{\"name\":\"' + relay_name + '\",' \
-                          '\"cmd_t\":\"' + command_topic + '\",' \
-                          '\"stat_t\":\"' + state_topic +'\",' \
-                          '\"pl_off\":\"off\",' \
-                          '\"pl_on\":\"on\",' \
-                          '\"avty_t\":\"' + availability_topic + '\",' \
-                          '\"pl_avail\":\"true\",' \
-                          '\"pl_not_avail\":\"false\",' \
-                          '\"uniq_id\":\"' + unique_id + '\",' \
-                          '\"dev\": {\"ids\": [\"' + mac + '\"],' \
-                          '\"name\":\"' + device_name + '\",' \
-                          '\"mdl\":\"' + model + '\",' \
-                          '\"sw\":\"' + fw_ver + '\",' \
-                          '\"mf\":\"Shelly\"},' \
-                          '\"~\":\"' + default_topic + '\"}'
+                    '\"cmd_t\":\"' + command_topic + '\",' \
+                    '\"stat_t\":\"' + state_topic +'\",' \
+                    '\"pl_off\":\"off\",' \
+                    '\"pl_on\":\"on\",' \
+                    '\"avty_t\":\"' + availability_topic + '\",' \
+                    '\"pl_avail\":\"true\",' \
+                    '\"pl_not_avail\":\"false\",' \
+                    '\"uniq_id\":\"' + unique_id + '\",' \
+                    '\"dev\": {\"ids\": [\"' + mac + '\"],' \
+                    '\"name\":\"' + device_name + '\",' \
+                    '\"mdl\":\"' + model + '\",' \
+                    '\"sw\":\"' + fw_ver + '\",' \
+                    '\"mf\":\"Shelly\"},' \
+                    '\"~\":\"' + default_topic + '\"}'
             else:
                 payload = ''
             service_data = {
@@ -248,26 +279,19 @@ else:
                                          relay_sensors[sensor_id].capitalize())
                     state_topic =  '~relay/{}'.format(relay_sensors[sensor_id])
                     payload = '{\"name\":\"' + sensor_name + '\",' \
-                              '\"stat_t\":\"' + state_topic + '\",' \
-                              '\"unit_of_meas\":\"' + units[sensor_id] + '\",' \
-                              '\"val_tpl\":\"' + templates[sensor_id] + '\",' \
-                              '\"avty_t\":\"' + availability_topic + '\",' \
-                              '\"pl_avail\":\"true\",' \
-                              '\"pl_not_avail\":\"false\",' \
-                              '\"uniq_id\":\"' + unique_id + '\",' \
-                              '\"dev\": {\"ids\": [\"' + mac + '\"],' \
-                              '\"name\":\"' + device_name + '\",' \
-                              '\"mdl\":\"' + model + '\",' \
-                              '\"sw\":\"' + fw_ver + '\",' \
-                              '\"mf\":\"Shelly\"},' \
-                              '\"~\":\"' + default_topic + '\"}'
-                    service_data = {
-                        'topic': config_topic,
-                        'payload': payload,
-                        'retain': retain,
-                        'qos': 0
-                    }
-                    hass.services.call('mqtt', 'publish', service_data, False)
+                        '\"stat_t\":\"' + state_topic + '\",' \
+                        '\"unit_of_meas\":\"' + units[sensor_id] + '\",' \
+                        '\"val_tpl\":\"' + templates[sensor_id] + '\",' \
+                        '\"avty_t\":\"' + availability_topic + '\",' \
+                        '\"pl_avail\":\"true\",' \
+                        '\"pl_not_avail\":\"false\",' \
+                        '\"uniq_id\":\"' + unique_id + '\",' \
+                        '\"dev\": {\"ids\": [\"' + mac + '\"],' \
+                        '\"name\":\"' + device_name + '\",' \
+                        '\"mdl\":\"' + model + '\",' \
+                        '\"sw\":\"' + fw_ver + '\",' \
+                        '\"mf\":\"Shelly\"},' \
+                        '\"~\":\"' + default_topic + '\"}'        
         else:
             for sensor_id in range(0, len(relay_sensors)):
                 unique_id = '{}-relay-{}-{}'.format(id,
@@ -279,26 +303,26 @@ else:
                 state_topic =  '~relay/{}/{}'.format(relay_id,
                                                       relay_sensors[sensor_id])
                 payload = '{\"name\":\"' + sensor_name + '\",' \
-                          '\"stat_t\":\"' + state_topic + '\",' \
-                          '\"unit_of_meas\":\"' + units[sensor_id] + '\",' \
-                          '\"val_tpl\":\"' + templates[sensor_id] + '\",' \
-                          '\"avty_t\":\"' + availability_topic + '\",' \
-                          '\"pl_avail\":\"true\",' \
-                          '\"pl_not_avail\":\"false\",' \
-                          '\"uniq_id\":\"' + unique_id + '\",' \
-                          '\"dev\": {\"ids\": [\"' + mac + '\"],' \
-                          '\"name\":\"' + device_name + '\",' \
-                          '\"mdl\":\"' + model + '\",' \
-                          '\"sw\":\"' + fw_ver + '\",' \
-                          '\"mf\":\"Shelly\"},' \
-                          '\"~\":\"' + default_topic + '\"}'
-                service_data = {
-                    'topic': config_topic,
-                    'payload': payload,
-                    'retain': retain,
-                    'qos': 0
-                }
-                hass.services.call('mqtt', 'publish', service_data, False)
+                    '\"stat_t\":\"' + state_topic + '\",' \
+                    '\"unit_of_meas\":\"' + units[sensor_id] + '\",' \
+                    '\"val_tpl\":\"' + templates[sensor_id] + '\",' \
+                    '\"avty_t\":\"' + availability_topic + '\",' \
+                    '\"pl_avail\":\"true\",' \
+                    '\"pl_not_avail\":\"false\",' \
+                    '\"uniq_id\":\"' + unique_id + '\",' \
+                    '\"dev\": {\"ids\": [\"' + mac + '\"],' \
+                    '\"name\":\"' + device_name + '\",' \
+                    '\"mdl\":\"' + model + '\",' \
+                    '\"sw\":\"' + fw_ver + '\",' \
+                    '\"mf\":\"Shelly\"},' \
+                    '\"~\":\"' + default_topic + '\"}'
+        service_data = {
+            'topic': config_topic,
+            'payload': payload,
+            'retain': retain,
+            'qos': 0
+        }
+        hass.services.call('mqtt', 'publish', service_data, False)
 
     for sensor_id in range(0, len(sensors)):
         device_name = '{} {}'.format(model, id.split('-')[1],)
@@ -310,18 +334,82 @@ else:
         sensor_name = '{} {}'.format(device_name,
                                      sensors[sensor_id].capitalize())
         state_topic =  '~sensor/{}'.format(sensors[sensor_id])
-        payload = '{\"name\":\"' + sensor_name + '\",' \
-                  '\"stat_t\":\"' + state_topic + '\",' \
-                  '\"unit_of_meas\":\"' + units[sensor_id] + '\",' \
-                  '\"dev_cla\":\"' + sensors[sensor_id] + '\",' \
-                  '\"val_tpl\":\"' + templates[sensor_id] + '\",' \
-                  '\"uniq_id\":\"' + unique_id + '\",' \
-                  '\"dev\": {\"ids\": [\"' + mac + '\"],' \
-                  '\"name\":\"' + device_name + '\",' \
-                  '\"mdl\":\"' + model + '\",' \
-                  '\"sw\":\"' + fw_ver + '\",' \
-                  '\"mf\":\"Shelly\"},' \
-                  '\"~\":\"' + default_topic + '\"}'
+        if battery_powered:
+            payload = '{\"name\":\"' + sensor_name + '\",' \
+                '\"stat_t\":\"' + state_topic + '\",' \
+                '\"unit_of_meas\":\"' + units[sensor_id] + '\",' \
+                '\"dev_cla\":\"' + sensors_classes[sensor_id] + '\",' \
+                '\"val_tpl\":\"' + templates[sensor_id] + '\",' \
+                '\"uniq_id\":\"' + unique_id + '\",' \
+                '\"dev\": {\"ids\": [\"' + mac + '\"],' \
+                '\"name\":\"' + device_name + '\",' \
+                '\"mdl\":\"' + model + '\",' \
+                '\"sw\":\"' + fw_ver + '\",' \
+                '\"mf\":\"Shelly\"},' \
+                '\"~\":\"' + default_topic + '\"}'
+        else:
+            payload = '{\"name\":\"' + sensor_name + '\",' \
+                '\"stat_t\":\"' + state_topic + '\",' \
+                '\"unit_of_meas\":\"' + units[sensor_id] + '\",' \
+                '\"dev_cla\":\"' + sensors_classes[sensor_id] + '\",' \
+                '\"val_tpl\":\"' + templates[sensor_id] + '\",' \
+                '\"avty_t\":\"' + availability_topic + '\",' \
+                '\"pl_avail\":\"true\",' \
+                '\"pl_not_avail\":\"false\",' \
+                '\"uniq_id\":\"' + unique_id + '\",' \
+                '\"dev\": {\"ids\": [\"' + mac + '\"],' \
+                '\"name\":\"' + device_name + '\",' \
+                '\"mdl\":\"' + model + '\",' \
+                '\"sw\":\"' + fw_ver + '\",' \
+                '\"mf\":\"Shelly\"},' \
+                '\"~\":\"' + default_topic + '\"}'
+        service_data = {
+            'topic': config_topic,
+            'payload': payload,
+            'retain': retain,
+            'qos': 0
+        }
+        hass.services.call('mqtt', 'publish', service_data, False)
+
+    for bin_sensor_id in range(0, len(bin_sensors)):
+        device_name = '{} {}'.format(model, id.split('-')[1],)
+        unique_id = '{}-{}'.format(id, bin_sensors[bin_sensor_id])
+        config_topic = '{}/binary_sensor/{}-{}/config'.format(disc_prefix, id,
+                                               bin_sensors[bin_sensor_id])
+        default_topic = 'shellies/{}/'.format(id)
+        availability_topic = '~online'
+        sensor_name = '{} {}'.format(device_name,
+                                  bin_sensors[bin_sensor_id].capitalize())
+        state_topic =  '~sensor/{}'.format(bin_sensors[bin_sensor_id])
+        if battery_powered:
+            payload = '{\"name\":\"' + sensor_name + '\",' \
+                '\"stat_t\":\"' + state_topic + '\",' \
+                '\"pl_on\":\"true\",' \
+                '\"pl_off\":\"false\",' \
+                '\"dev_cla\":\"' + bin_sensors_classes[bin_sensor_id] + '\",' \
+                '\"uniq_id\":\"' + unique_id + '\",' \
+                '\"dev\": {\"ids\": [\"' + mac + '\"],' \
+                '\"name\":\"' + device_name + '\",' \
+                '\"mdl\":\"' + model + '\",' \
+                '\"sw\":\"' + fw_ver + '\",' \
+                '\"mf\":\"Shelly\"},' \
+                '\"~\":\"' + default_topic + '\"}'
+        else:            
+            payload = '{\"name\":\"' + sensor_name + '\",' \
+                '\"stat_t\":\"' + state_topic + '\",' \
+                '\"pl_on\":\"true\",' \
+                '\"pl_off\":\"false\",' \
+                '\"avty_t\":\"' + availability_topic + '\",' \
+                '\"pl_avail\":\"true\",' \
+                '\"pl_not_avail\":\"false\",' \
+                '\"dev_cla\":\"' + bin_sensors_classes[bin_sensor_id] + '\",' \
+                '\"uniq_id\":\"' + unique_id + '\",' \
+                '\"dev\": {\"ids\": [\"' + mac + '\"],' \
+                '\"name\":\"' + device_name + '\",' \
+                '\"mdl\":\"' + model + '\",' \
+                '\"sw\":\"' + fw_ver + '\",' \
+                '\"mf\":\"Shelly\"},' \
+                '\"~\":\"' + default_topic + '\"}'
         service_data = {
             'topic': config_topic,
             'payload': payload,

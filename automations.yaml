@@ -1495,6 +1495,8 @@
     - platform: state
       entity_id: media_player.playstation
       to: 'playing'
+    - platform: template
+      value_template: is_state_attr('media_player.bravia', 'media_series_title', 'Aplikacja')
   condition:
     condition: and
     conditions:
@@ -1527,6 +1529,8 @@
       to: 'idle'
       for:
         seconds: 20
+    - platform: template
+      value_template: state_attr('media_player.bravia', 'media_series_title') != 'Aplikacja'
   condition:
     condition: and
     conditions:
@@ -2470,17 +2474,3 @@
       shelly1-328900-relay-0: 'light'
       shellyswitch-5B2604-relay-0: 'switch'
       shellyswitch-5B2604-relay-1: 'light'
-
-# - id: adb_reconnect
-#   alias: 'ADB Reconnect'
-#   trigger:
-#     - platform: homeassistant
-#       event: start
-#     - platform: homeassistant
-#       event: shutdown
-#     - platform: state
-#       entity_id: media_player.mibox
-#       to: 'unavailable'
-#       for: '00:03:00'
-#   action:
-#     service: shell_command.adb_reconnect
