@@ -9,7 +9,7 @@
   name: MiBox
   apps:
     com.amazon.amazonvideo.livingroom: 'Amazon Prime Video'
-    com.google..android.youtube.tv: 'YouTube'
+    com.google.android.youtube.tv: 'YouTube'
     eu.hbogo.androidtv.production: 'HBO GO'
     com.vimeo.android.videoapp: 'Vimeo'
     pl.videostar: 'WP Pilot'
