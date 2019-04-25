@@ -74,7 +74,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.8.0'
+VERSION = '0.8.1'
 
 ATTR_DEVELOP = 'develop'
 
@@ -396,7 +396,10 @@ else:
         availability_topic = '~online'
         sensor_name = '{} {}'.format(device_name,
             sensors[sensor_id].capitalize())
-        state_topic =  '~sensor/{}'.format(sensors[sensor_id])
+        if relays != 0:
+            state_topic = '~{}'.format(sensors[sensor_id])
+        else:
+            state_topic =  '~sensor/{}'.format(sensors[sensor_id])
         if battery_powered:
             payload = '{\"name\":\"' + sensor_name + '\",' \
                 '\"stat_t\":\"' + state_topic + '\",' \
