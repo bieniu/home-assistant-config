@@ -1,7 +1,7 @@
 """
-This script adds MQTT discovery support for Shellies. Shelly1, Shelly2,
-Shely2.5, Shelly4Pro, Shelly Plug, Shelly RGBW2, Shelly H&T, Shelly Smoke and
-Shelly Sense are supported.
+This script adds MQTT discovery support for Shellies. Shelly1, Shelly1PM,
+Shelly2, Shely2.5, Shelly4Pro, Shelly Plug, Shelly RGBW2, Shelly H&T, Shelly
+Smoke and Shelly Sense are supported.
 
 Arguments:
  - discovery_prefix:    - discovery prefix in HA, default 'homeassistant',
@@ -74,7 +74,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.7.0'
+VERSION = '0.8.0'
 
 ATTR_DEVELOP = 'develop'
 
@@ -83,6 +83,13 @@ ATTR_MAC = 'mac'
 ATTR_FW_VER = 'fw_ver'
 ATTR_DISCOVERY_PREFIX = 'discovery_prefix'
 ATTR_TEMP_UNIT = 'temp_unit'
+
+ATTR_TEMPLATE_TEMPERATURE = '{{ value | float | round(1) }}'
+ATTR_TEMPLATE_HUMIDITY = '{{ value | float | round(1) }}'
+ATTR_TEMPLATE_LUX = '{{ value | float | round }}'
+ATTR_TEMPLATE_POWER = '{{ value | float | round(1) }}'
+ATTR_TEMPLATE_ENERGY = '{{ (value | float / 60 / 1000) | round(2) }}'
+ATTR_TEMPLATE_BATTERY = '{{ value | float | round }}'
 
 develop = False
 retain = True
@@ -125,9 +132,23 @@ else:
     rgbw_lights = 0
     battery_powered = False
 
-    if 'shelly1' in id:
+    if 'shelly1-' in id:
         model = 'Shelly1'
         relays = 1
+
+    if 'shelly1pm-' in id:
+        model = 'Shelly1PM'
+        relays = 1
+        relays_sensors = ['power', 'energy']
+        relays_sensors_units = ['W', 'kWh']
+        relays_sensors_templates = [
+            ATTR_TEMPLATE_POWER,
+            ATTR_TEMPLATE_ENERGY
+        ]
+        sensors = ['temperature']
+        sensors_classes = sensors
+        sensors_units = [temp_unit]
+        sensors_templates = [ATTR_TEMPLATE_TEMPERATURE]
 
     if 'shellyswitch-' in id:
         model = 'Shelly2'
@@ -136,86 +157,86 @@ else:
         relays_sensors = ['power', 'energy']
         relays_sensors_units = ['W', 'kWh']
         relays_sensors_templates = [
-            '{{ value | float | round(1) }}',
-            '{{ (value | float / 60 / 1000) | round(2) }}'
+            ATTR_TEMPLATE_POWER,
+            ATTR_TEMPLATE_ENERGY
         ]
 
-    if 'shellyswitch25' in id:
+    if 'shellyswitch25-' in id:
         model = 'Shelly2.5'
         relays = 2
         rollers = 1
         relays_sensors = ['power', 'energy']
         relays_sensors_units = ['W', 'kWh']
         relays_sensors_templates = [
-            '{{ value | float | round(1) }}',
-            '{{ (value | float / 60 / 1000) | round(2) }}'
+            ATTR_TEMPLATE_POWER,
+            ATTR_TEMPLATE_ENERGY
         ]
         sensors = ['temperature']
         sensors_classes = sensors
         sensors_units = [temp_unit]
-        sensors_templates = ['{{ value | float | round(1) }}']
+        sensors_templates = [ATTR_TEMPLATE_TEMPERATURE]
 
-    if 'shellyplug' in id:
+    if 'shellyplug-' in id:
         model = 'Shelly Plug'
         relays = 1
         relays_sensors = ['power', 'energy']
         relays_sensors_units = ['W', 'kWh']
         relays_sensors_templates = [
-            '{{ value | float | round(1) }}',
-            '{{ (value | float / 60 / 1000) | round(2) }}'
+            ATTR_TEMPLATE_POWER,
+            ATTR_TEMPLATE_ENERGY
         ]
 
-    if 'shelly4pro' in id:
+    if 'shelly4pro-' in id:
         model = 'Shelly4Pro'
         relays = 4
         relays_sensors = ['power', 'energy']
         relays_sensors_units = ['W', 'kWh']
         relays_sensors_templates = [
-            '{{ value | float | round(1) }}',
-            '{{ (value | float / 60 / 1000) | round(2) }}'
+            ATTR_TEMPLATE_POWER,
+            ATTR_TEMPLATE_ENERGY
         ]
 
-    if 'shellyht' in id:
+    if 'shellyht-' in id:
         model = 'Shelly H&T'
         sensors = ['temperature', 'humidity', 'battery']
         sensors_classes = sensors
         sensors_units = [temp_unit, '%', '%']
         sensors_templates = [
-            '{{ value | float | round(1) }}',
-            '{{ value | float | round(1) }}',
-            '{{ value | float | round }}'
+            ATTR_TEMPLATE_TEMPERATURE,
+            ATTR_TEMPLATE_HUMIDITY,
+            ATTR_TEMPLATE_BATTERY
         ]
         battery_powered = True
 
-    if 'shellysmoke' in id:
+    if 'shellysmoke-' in id:
         model = 'Shelly Smoke'
         sensors = ['temperature', 'battery']
         sensors_classes = sensors
         sensors_units = [temp_unit, '%']
         sensors_templates = [
-            '{{ value | float | round(1) }}',                     
-            '{{ value | float | round }}'
+            ATTR_TEMPLATE_TEMPERATURE,                     
+            ATTR_TEMPLATE_BATTERY
         ]
         bin_sensors = ['smoke']
         bin_sensors_classes = bin_sensors
         battery_powered = True
 
-    if 'shellysense' in id:
+    if 'shellysense-' in id:
         model = 'Shelly Sense'
         sensors = ['temperature', 'humidity', 'lux', 'battery']
         sensors_classes = ['temperature', 'humidity', 'illuminance', 'battery']
         sensors_units = [temp_unit, '%', 'lx', '%']
         sensors_templates = [
-            '{{ value | float | round(1) }}',
-            '{{ value | float | round(1) }}',
-            '{{ value | float | round }}',                     
-            '{{ value | float | round }}'
+            ATTR_TEMPLATE_TEMPERATURE,
+            ATTR_TEMPLATE_HUMIDITY,
+            ATTR_TEMPLATE_LUX,                     
+            ATTR_TEMPLATE_BATTERY
         ]
         bin_sensors = ['motion', 'charger']
         bin_sensors_classes = ['motion', 'power']
         battery_powered = True
 
-    if 'shellyrgbw2' in id:
+    if 'shellyrgbw2-' in id:
         model = 'Shelly RGBW2'
         rgbw_lights = 1
                      
