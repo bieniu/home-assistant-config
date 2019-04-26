@@ -67,3 +67,17 @@
   icon: mdi:lightbulb-outline
 'binary_sensor.*_status':
   device_class: connectivity
+
+'sensor.sonoff_*_status':
+  device_class: signal_strength
+  unit_of_measurement: '%'
+
+'sensor.wemos_*_status':
+  device_class: signal_strength
+  unit_of_measurement: '%'
+
+'sensor.*_power':
+  device_class: power
+
+'sensor.*_energy':
+  device_class: power

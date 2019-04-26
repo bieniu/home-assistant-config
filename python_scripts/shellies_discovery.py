@@ -74,7 +74,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.8.1'
+VERSION = '0.8.2'
 
 ATTR_DEVELOP = 'develop'
 
@@ -123,6 +123,7 @@ else:
     relays_sensors = []
     relays_sensors_units = []
     relays_sensors_templates = []
+    relays_sensors_classes = []
     sensors = []
     sensors_units = []
     sensors_templates = []
@@ -141,6 +142,7 @@ else:
         relays = 1
         relays_sensors = ['power', 'energy']
         relays_sensors_units = ['W', 'kWh']
+        relays_sensors_classes = ['power', 'power']
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
@@ -156,6 +158,7 @@ else:
         rollers = 1
         relays_sensors = ['power', 'energy']
         relays_sensors_units = ['W', 'kWh']
+        relays_sensors_classes = ['power', 'power']
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
@@ -167,6 +170,7 @@ else:
         rollers = 1
         relays_sensors = ['power', 'energy']
         relays_sensors_units = ['W', 'kWh']
+        relays_sensors_classes = ['power', 'power']
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
@@ -181,6 +185,7 @@ else:
         relays = 1
         relays_sensors = ['power', 'energy']
         relays_sensors_units = ['W', 'kWh']
+        relays_sensors_classes = ['power', 'power']
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
@@ -191,6 +196,7 @@ else:
         relays = 4
         relays_sensors = ['power', 'energy']
         relays_sensors_units = ['W', 'kWh']
+        relays_sensors_classes = ['power', 'power']
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
@@ -337,6 +343,7 @@ else:
                     payload = '{\"name\":\"' + sensor_name + '\",' \
                         '\"stat_t\":\"' + state_topic + '\",' \
                         '\"unit_of_meas\":\"' + relays_sensors_units[sensor_id] + '\",' \
+                        '\"dev_cla\":\"' + relays_sensors_classes[sensor_id] + '\",' \
                         '\"val_tpl\":\"' + relays_sensors_templates[sensor_id] + '\",' \
                         '\"avty_t\":\"' + availability_topic + '\",' \
                         '\"pl_avail\":\"true\",' \
@@ -368,6 +375,7 @@ else:
                 payload = '{\"name\":\"' + sensor_name + '\",' \
                     '\"stat_t\":\"' + state_topic + '\",' \
                     '\"unit_of_meas\":\"' + relays_sensors_units[sensor_id] + '\",' \
+                    '\"dev_cla\":\"' + relays_sensors_classes[sensor_id] + '\",' \
                     '\"val_tpl\":\"' + relays_sensors_templates[sensor_id] + '\",' \
                     '\"avty_t\":\"' + availability_topic + '\",' \
                     '\"pl_avail\":\"true\",' \
