@@ -529,6 +529,8 @@ views:
     panel: true
     cards:
       - type: custom:layout-card
+        max_columns: 4
+        column_width: 310
         cards:
           - type: vertical-stack
             cards:
@@ -667,6 +669,7 @@ views:
     cards:
       - type: custom:layout-card
         max_columns: 4
+        column_width: 310
         cards:
           - type: vertical-stack
             cards:

@@ -74,7 +74,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.8.2'
+VERSION = '0.8.3'
 
 ATTR_DEVELOP = 'develop'
 
@@ -90,6 +90,24 @@ ATTR_TEMPLATE_LUX = '{{ value | float | round }}'
 ATTR_TEMPLATE_POWER = '{{ value | float | round(1) }}'
 ATTR_TEMPLATE_ENERGY = '{{ (value | float / 60 / 1000) | round(2) }}'
 ATTR_TEMPLATE_BATTERY = '{{ value | float | round }}'
+
+ATTR_MODEL_SHELLY1 = 'Shelly1'
+ATTR_MODEL_SHELLY1PM = 'Shelly1PM'
+ATTR_MODEL_SHELLY2 = 'Shelly2'
+ATTR_MODEL_SHELLY25 = 'Shelly2.5'
+ATTR_MODEL_SHELLYPLUG = 'Shelly Plug'
+ATTR_MODEL_SHELLY4PRO = 'Shelly4Pro'
+ATTR_MODEL_SHELLYHT = 'Shelly H&T'
+ATTR_MODEL_SHELLYSMOKE = 'Shelly Smoke'
+ATTR_MODEL_SHELLYSENSE = 'Shelly Sense'
+ATTR_MODEL_SHELLYRGBW2 = 'Shelly RGBW2'
+ATTR_TEMPERATURE = 'temperature'
+ATTR_HUMIDITY = 'humidity'
+ATTR_BATTERY = 'battery'
+ATTR_LUX = 'lux'
+ATTR_ILLUMINANCE = 'illuminance'
+ATTR_POWER = 'power'
+ATTR_ENERGY = 'energy'
 
 develop = False
 retain = True
@@ -134,77 +152,77 @@ else:
     battery_powered = False
 
     if 'shelly1-' in id:
-        model = 'Shelly1'
+        model = ATTR_MODEL_SHELLY1
         relays = 1
 
     if 'shelly1pm-' in id:
-        model = 'Shelly1PM'
+        model = ATTR_MODEL_SHELLY1PM
         relays = 1
-        relays_sensors = ['power', 'energy']
+        relays_sensors = [ATTR_POWER, ATTR_ENERGY]
         relays_sensors_units = ['W', 'kWh']
-        relays_sensors_classes = ['power', 'power']
+        relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
         ]
-        sensors = ['temperature']
+        sensors = [ATTR_TEMPERATURE]
         sensors_classes = sensors
         sensors_units = [temp_unit]
         sensors_templates = [ATTR_TEMPLATE_TEMPERATURE]
 
     if 'shellyswitch-' in id:
-        model = 'Shelly2'
+        model = ATTR_MODEL_SHELLY2
         relays = 2
         rollers = 1
-        relays_sensors = ['power', 'energy']
+        relays_sensors = [ATTR_POWER, ATTR_ENERGY]
         relays_sensors_units = ['W', 'kWh']
-        relays_sensors_classes = ['power', 'power']
+        relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
         ]
 
     if 'shellyswitch25-' in id:
-        model = 'Shelly2.5'
+        model = ATTR_MODEL_SHELLY25
         relays = 2
         rollers = 1
-        relays_sensors = ['power', 'energy']
+        relays_sensors = [ATTR_POWER, ATTR_ENERGY]
         relays_sensors_units = ['W', 'kWh']
-        relays_sensors_classes = ['power', 'power']
+        relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
         ]
-        sensors = ['temperature']
+        sensors = [ATTR_TEMPERATURE]
         sensors_classes = sensors
         sensors_units = [temp_unit]
         sensors_templates = [ATTR_TEMPLATE_TEMPERATURE]
 
     if 'shellyplug-' in id:
-        model = 'Shelly Plug'
+        model = ATTR_MODEL_SHELLYPLUG
         relays = 1
-        relays_sensors = ['power', 'energy']
+        relays_sensors = [ATTR_POWER, ATTR_ENERGY]
         relays_sensors_units = ['W', 'kWh']
-        relays_sensors_classes = ['power', 'power']
+        relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
         ]
 
     if 'shelly4pro-' in id:
-        model = 'Shelly4Pro'
+        model = ATTR_MODEL_SHELLY4PRO
         relays = 4
-        relays_sensors = ['power', 'energy']
+        relays_sensors = [ATTR_POWER, ATTR_ENERGY]
         relays_sensors_units = ['W', 'kWh']
-        relays_sensors_classes = ['power', 'power']
+        relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
         ]
 
     if 'shellyht-' in id:
-        model = 'Shelly H&T'
-        sensors = ['temperature', 'humidity', 'battery']
+        model = ATTR_MODEL_SHELLYHT
+        sensors = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_BATTERY]
         sensors_classes = sensors
         sensors_units = [temp_unit, '%', '%']
         sensors_templates = [
@@ -215,8 +233,8 @@ else:
         battery_powered = True
 
     if 'shellysmoke-' in id:
-        model = 'Shelly Smoke'
-        sensors = ['temperature', 'battery']
+        model = ATTR_MODEL_SHELLYSMOKE
+        sensors = [ATTR_TEMPERATURE, ATTR_BATTERY]
         sensors_classes = sensors
         sensors_units = [temp_unit, '%']
         sensors_templates = [
@@ -228,9 +246,9 @@ else:
         battery_powered = True
 
     if 'shellysense-' in id:
-        model = 'Shelly Sense'
-        sensors = ['temperature', 'humidity', 'lux', 'battery']
-        sensors_classes = ['temperature', 'humidity', 'illuminance', 'battery']
+        model = ATTR_MODEL_SHELLYSENSE
+        sensors = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_LUX, ATTR_BATTERY]
+        sensors_classes = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_ILLUMINANCE, ATTR_BATTERY]
         sensors_units = [temp_unit, '%', 'lx', '%']
         sensors_templates = [
             ATTR_TEMPLATE_TEMPERATURE,
@@ -239,11 +257,11 @@ else:
             ATTR_TEMPLATE_BATTERY
         ]
         bin_sensors = ['motion', 'charger']
-        bin_sensors_classes = ['motion', 'power']
+        bin_sensors_classes = ['motion', ATTR_POWER]
         battery_powered = True
 
     if 'shellyrgbw2-' in id:
-        model = 'Shelly RGBW2'
+        model = ATTR_MODEL_SHELLYRGBW2
         rgbw_lights = 1
                      
     for roller_id in range(0, rollers):
@@ -330,7 +348,7 @@ else:
             }            
             hass.services.call('mqtt', 'publish', service_data, False)
 
-        if model == 'Shelly2':
+        if model == ATTR_MODEL_SHELLY2:
             if relay_id == relays-1:
                 for sensor_id in range(0, len(relays_sensors)):
                     unique_id = '{}-relay-{}'.format(id,
@@ -497,7 +515,7 @@ else:
         light_name = '{} Light'.format(device_name)
         default_topic = 'shellies/{}/'.format(id)
         state_topic = '~color/{}/status'.format(light_id)
-        command_topic =  '{}/command'.format(state_topic)
+        command_topic =  '~color/{}/set'.format(light_id)
         availability_topic = '~online'
         unique_id = '{}-light-{}'.format(id, light_id)
         config_topic = '{}/light/{}-{}/config'.format(disc_prefix, id, light_id)
