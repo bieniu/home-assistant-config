@@ -107,7 +107,7 @@ views:
                 entities:
                   - sensor.temperature_salon
                   - sensor.humidity_salon
-                  - sensor.co2_salon
+                  # - sensor.co2_salon
                   - sensor.illumination_salon
               - type: entities
                 show_header_toggle: false
@@ -362,7 +362,8 @@ views:
               - binary_sensor.switch_status
               - binary_sensor.fingbox_status
               - binary_sensor.synology_status
-              - binary_sensor.raspberry_status              
+              - binary_sensor.raspberry_status
+              - binary_sensor.bravia_status              
               - binary_sensor.denon_status
               - binary_sensor.dune_status
               - binary_sensor.playstation_status
@@ -375,8 +376,7 @@ views:
             entities:
               - binary_sensor.migateway_status
               - binary_sensor.harmonyhub_status
-              - binary_sensor.brother_status
-              - binary_sensor.bravia_status
+              - binary_sensor.brother_status              
               - binary_sensor.mibox_status
               - binary_sensor.dafang_status
               - binary_sensor.mihumidifier_status

@@ -89,8 +89,6 @@ exclude:
     - sensor.airly_data
     - switch.lamp_salon
     - sensor.lamp_salon_power
-    - sensor.mhz19b_model
-    - sensor.mhz19b_temperature
     - sensor.light_salon_power
 include:
   entities:

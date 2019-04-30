@@ -254,13 +254,13 @@
       data_template:
         title: 'Aktualizacja oprogramowania Shelly'
         message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} oprogramowania dla {{ trigger.to_state.attributes.friendly_name }}.'
-        tag: 'notification-shelly-update'
+        tag: "notification-{{ trigger.to_state.attributes.friendly_name | lower | replace(' ', '_') }}-update"
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
         title: 'Aktualizacja oprogramowania Shelly'
         message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} oprogramowania dla {{ trigger.to_state.attributes.friendly_name }}.'
-        notification_id: 'notification-shelly-update'
+        notification_id: "notification-{{ trigger.to_state.attributes.friendly_name | lower | replace(' ', '_') }}-update"
 
 # powiadomienie o aktualizacji Tasmota
 - id: notification_tasmota_update_available
@@ -321,27 +321,6 @@
         title: 'Aktualizacja Caddy'
         message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy.'
         notification_id: 'notification-caddy-update'
-
-# powiadomienie o wysokim stężeniu CO2 w salonie
-- id: notification_salon_co2
-  alias: 'Notification Salon CO2'
-  trigger:
-    platform: numeric_state
-    entity_id: sensor.co2_salon
-    above: 1000
-    for:
-      minutes: 5
-  condition:
-    condition: state
-    entity_id: input_boolean.away_mode
-    state: 'off'
-  action:
-    service: script.notify
-    data_template:
-      title: 'Wysokie stężenie dwutlenku węgla'
-      message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
-      tag: 'notification-high-co2'
-      notify_edyta: true
 
 # powiadomienie jak jest ruch i nikogo w domu
 - id: notification_motion_when_away_mode
@@ -2171,21 +2150,21 @@
     - service: input_boolean.turn_off
       entity_id: input_boolean.harmony_command
 
-- id: harmony_starts_radio
-  alias: 'Harmony Starts Radio'
+- id: harmony_starts_muzyka
+  alias: 'Harmony Starts Muzyka'
   trigger:
     platform: state
     entity_id: remote.salon
   condition:
     condition: template
-    value_template: "{{ trigger.to_state.attributes.current_activity == 'Radio' }}"
+    value_template: "{{ trigger.to_state.attributes.current_activity == 'Muzyka' }}"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
     - service: input_select.select_option
       entity_id: input_select.salon_harmony
       data:
-        option: 'radio'
+        option: 'muzyka'
     - service: input_boolean.turn_off
       entity_id: input_boolean.harmony_command
 
@@ -2284,18 +2263,18 @@
   action:
     service: script.harmony_filmy
 
-- id: hass_starts_radio
-  alias: 'HASS Starts Radio'
+- id: hass_starts_muzyka
+  alias: 'HASS Starts Muzyka'
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
-    to: 'radio'
+    to: 'muzyka'
   condition:
     condition: state
     entity_id: input_boolean.harmony_command
     state: 'off'
   action:
-    service: script.harmony_radio
+    service: script.harmony_muzyka
 
 - id: hass_starts_smart_tv
   alias: 'HASS Starts Smart TV'

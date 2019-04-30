@@ -204,12 +204,12 @@ harmony_telewizja:
     data:
       activity: 'Telewizja'
 
-harmony_radio:
+harmony_muzyka:
   sequence:
     service: remote.turn_on
     entity_id: remote.salon
     data:
-      activity: 'Radio'
+      activity: 'Muzyka'
 
 harmony_filmy:
   sequence:

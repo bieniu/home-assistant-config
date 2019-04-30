@@ -108,6 +108,15 @@ ATTR_LUX = 'lux'
 ATTR_ILLUMINANCE = 'illuminance'
 ATTR_POWER = 'power'
 ATTR_ENERGY = 'energy'
+ATTR_SWITCH = 'switch'
+ATTR_LIGHT = 'light'
+ATTR_FAN = 'fan'
+ATTR_UNIT_W = 'W'
+ATTR_UNIT_KWH = 'kWh'
+ATTR_UNIT_PERCENT = '%'
+ATTR_UNIT_LUX = 'lx'
+ATTR_UNIT_CELSIUS = '°C'
+ATTR_UNIT_FARENHEIT = '°F'
 
 develop = False
 retain = True
@@ -116,10 +125,10 @@ roller_mode = False
 id = data.get(ATTR_ID)
 mac = data.get(ATTR_MAC)
 fw_ver = data.get(ATTR_FW_VER)
-temp_unit = '°C'
+temp_unit = ATTR_UNIT_CELSIUS
 if data.get(ATTR_TEMP_UNIT) is not None:
     if data.get(ATTR_TEMP_UNIT) == 'F':
-        temp_unit = '°F'
+        temp_unit = ATTR_UNIT_FARENHEIT
 disc_prefix = 'homeassistant'
 if data.get(ATTR_DISCOVERY_PREFIX) is not None:
     disc_prefix = data.get(ATTR_DISCOVERY_PREFIX)
@@ -136,8 +145,8 @@ if id == '' or mac == '':
 else:
     relays = 0
     rollers = 0    
-    relay_components = ['switch', 'light', 'fan']
-    config_component = 'switch'
+    relay_components = [ATTR_SWITCH, ATTR_LIGHT, ATTR_FAN]
+    config_component = ATTR_SWITCH
     relays_sensors = []
     relays_sensors_units = []
     relays_sensors_templates = []
@@ -159,7 +168,7 @@ else:
         model = ATTR_MODEL_SHELLY1PM
         relays = 1
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-        relays_sensors_units = ['W', 'kWh']
+        relays_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_KWH]
         relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
@@ -175,7 +184,7 @@ else:
         relays = 2
         rollers = 1
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-        relays_sensors_units = ['W', 'kWh']
+        relays_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_KWH]
         relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
@@ -187,7 +196,7 @@ else:
         relays = 2
         rollers = 1
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-        relays_sensors_units = ['W', 'kWh']
+        relays_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_KWH]
         relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
@@ -202,7 +211,7 @@ else:
         model = ATTR_MODEL_SHELLYPLUG
         relays = 1
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-        relays_sensors_units = ['W', 'kWh']
+        relays_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_KWH]
         relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
@@ -213,7 +222,7 @@ else:
         model = ATTR_MODEL_SHELLY4PRO
         relays = 4
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
-        relays_sensors_units = ['W', 'kWh']
+        relays_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_KWH]
         relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
         relays_sensors_templates = [
             ATTR_TEMPLATE_POWER,
@@ -224,7 +233,7 @@ else:
         model = ATTR_MODEL_SHELLYHT
         sensors = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_BATTERY]
         sensors_classes = sensors
-        sensors_units = [temp_unit, '%', '%']
+        sensors_units = [temp_unit, ATTR_UNIT_PERCENT, ATTR_UNIT_PERCENT]
         sensors_templates = [
             ATTR_TEMPLATE_TEMPERATURE,
             ATTR_TEMPLATE_HUMIDITY,
@@ -236,7 +245,7 @@ else:
         model = ATTR_MODEL_SHELLYSMOKE
         sensors = [ATTR_TEMPERATURE, ATTR_BATTERY]
         sensors_classes = sensors
-        sensors_units = [temp_unit, '%']
+        sensors_units = [temp_unit, ATTR_UNIT_PERCENT]
         sensors_templates = [
             ATTR_TEMPLATE_TEMPERATURE,                     
             ATTR_TEMPLATE_BATTERY
@@ -248,8 +257,10 @@ else:
     if 'shellysense-' in id:
         model = ATTR_MODEL_SHELLYSENSE
         sensors = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_LUX, ATTR_BATTERY]
-        sensors_classes = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_ILLUMINANCE, ATTR_BATTERY]
-        sensors_units = [temp_unit, '%', 'lx', '%']
+        sensors_classes = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_ILLUMINANCE,
+                           ATTR_BATTERY]
+        sensors_units = [temp_unit, ATTR_UNIT_PERCENT, ATTR_UNIT_LUX,
+            ATTR_UNIT_PERCENT]
         sensors_templates = [
             ATTR_TEMPLATE_TEMPERATURE,
             ATTR_TEMPLATE_HUMIDITY,
