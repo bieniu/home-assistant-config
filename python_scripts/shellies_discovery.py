@@ -61,7 +61,7 @@ For example:
 Argument shelly1-001122-relay-0: 'light' means that relay 0 of
 shelly1-001122 will use light component in Home Assistant. You can use switch,
 light or fan.
-Argument shellyswitch-334455-relay-0: 'cover' means that Shelly2 works in
+Argument shellyswitch-334455-roller-0: 'cover' means that Shelly2 works in
 roller mode and use cover component in Home Assistant.
 
 Script supports custom_updater component. Add this to your configuration and
@@ -74,7 +74,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.8.3'
+VERSION = '0.8.4'
 
 ATTR_DEVELOP = 'develop'
 

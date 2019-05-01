@@ -44,6 +44,44 @@
     data_template:
       notification_id: '{{ trigger.event.data.tag }}'
 
+# powiadomienie o włączonym komputerze
+- id: notification_desktop_computer_turned_on
+  alias: 'Notification Desktop Computer Turned On'
+  trigger:
+    - platform: time
+      at: '22:45:00'
+    - platform: state
+      entity_id: person.maciek
+      to: not_home
+      for:
+        minutes: 5
+  condition:
+    condition: state
+    entity_id: switch.stacjonarny
+    state: 'on'
+  action:
+    service: notify.html5_maciek
+    data:
+      title: 'Komputer stacjonarny włączony'
+      message: 'Komputer stacjonarny jest włączony. Czy chcesz go wyłączyć?'
+      data:
+        tag: 'notification-desktop-computer'
+        actions:
+          - action: turn_off_desktop_computer
+            title: 'Wyłącz'
+
+# wyłączenie komputera z powiadomienia
+- id: notification_turn_off_desktop_computer
+  alias: 'Notification Turn Off Desktop Computer'
+  trigger:
+    platform: event
+    event_type: html5_notification.clicked
+    event_data:
+      action: turn_off_desktop_computer
+  action:
+    service: switch.turn_off
+    entity_id: switch.stacjonarny
+
 # powiadomienie o wygasającym certyfikacie SSL
 - id: notification_ssl_cert_expiry
   alias: 'Notification SSL Cert Expiry'
