@@ -90,6 +90,8 @@ exclude:
     - switch.lamp_salon
     - sensor.lamp_salon_power
     - sensor.light_salon_power
+    - sensor.mhz19b_model
+    - sensor.mhz19b_temperature
 include:
   entities:
     - input_boolean.heating_season

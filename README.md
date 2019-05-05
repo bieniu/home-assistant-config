@@ -32,6 +32,10 @@
 * [Shelly1](https://shelly.cloud/shelly1-open-source/) via MQTT
 * [Shelly2](https://shelly.cloud/shelly2/) via MQTT
 
+## Sensors
+
+* Wemos D1 mini + MH-Z19B [[Tasmota firmware](https://github.com/arendst/Sonoff-Tasmota)]
+
 ## Other Integrated Devices
 
 * ASUS RT-AC86U [router]

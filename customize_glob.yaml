@@ -81,3 +81,7 @@
 
 'sensor.*_energy':
   device_class: power
+
+'sensor.co2_*':
+  icon: mdi:periodic-table-co2
+  unit_of_measurement: 'ppm'

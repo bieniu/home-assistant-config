@@ -268,6 +268,27 @@
       title: "Uzupełnij wodę w nawilżaczu"
       message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
 
+# powiadomienie o wysokim stężeniu CO2 w salonie
+- id: notification_salon_co2
+  alias: 'Notification Salon CO2'
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.co2_salon
+    above: 1000
+    for:
+      minutes: 5
+  condition:
+    condition: state
+    entity_id: input_boolean.away_mode
+    state: 'off'
+  action:
+    service: script.notify
+    data_template:
+      title: 'Wysokie stężenie dwutlenku węgla'
+      message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
+      tag: 'notification-high-co2'
+      notify_edyta: true
+
 # powiadomienie o aktualizacji oprogramowania Shelly
 - id: notification_shelly_update_available
   alias: 'Notification Shelly Update Available'
