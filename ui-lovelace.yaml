@@ -613,32 +613,6 @@ views:
             cards:
               - type: custom:mini-graph-card
                 hour24: true
-                decimals: 1
-                align_header: left
-                align_icon: left
-                entities:
-                  - sensor.temperature_indoor
-                line_color: '#ff6384'
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 1
-                align_header: left
-                align_icon: left
-                entities:
-                  - sensor.humidity_indoor
-                line_color: '#36a2eb'
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 0
-                align_header: left
-                align_icon: left
-                entities:
-                  - sensor.co2_salon
-                line_color: '#ffce57'
-          - type: vertical-stack
-            cards:
-              - type: custom:mini-graph-card
-                hour24: true
                 decimals: 0
                 align_header: left
                 align_icon: left
@@ -661,6 +635,24 @@ views:
                 entities:
                   - sensor.airly_pm10
                 line_color: '#78909c'
+          - type: vertical-stack
+            cards:
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 1
+                align_header: left
+                align_icon: left
+                entities:
+                  - sensor.temperature_indoor
+                line_color: '#ff6384'
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 1
+                align_header: left
+                align_icon: left
+                entities:
+                  - sensor.humidity_indoor
+                line_color: '#36a2eb'
   - id: misc
     icon: mdi:settings
     title: 'Różne'

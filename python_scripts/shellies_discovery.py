@@ -74,7 +74,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.8.4'
+VERSION = '0.8.5'
 
 ATTR_DEVELOP = 'develop'
 
@@ -111,6 +111,9 @@ ATTR_ENERGY = 'energy'
 ATTR_SWITCH = 'switch'
 ATTR_LIGHT = 'light'
 ATTR_FAN = 'fan'
+ATTR_SMOKE = 'smoke'
+ATTR_MOTION = 'motion'
+ATTR_CHARGER = 'charger'
 ATTR_UNIT_W = 'W'
 ATTR_UNIT_KWH = 'kWh'
 ATTR_UNIT_PERCENT = '%'
@@ -250,7 +253,7 @@ else:
             ATTR_TEMPLATE_TEMPERATURE,                     
             ATTR_TEMPLATE_BATTERY
         ]
-        bin_sensors = ['smoke']
+        bin_sensors = [ATTR_SMOKE]
         bin_sensors_classes = bin_sensors
         battery_powered = True
 
@@ -267,8 +270,8 @@ else:
             ATTR_TEMPLATE_LUX,                     
             ATTR_TEMPLATE_BATTERY
         ]
-        bin_sensors = ['motion', 'charger']
-        bin_sensors_classes = ['motion', ATTR_POWER]
+        bin_sensors = [ATTR_MOTION, ATTR_CHARGER]
+        bin_sensors_classes = [ATTR_MOTION, ATTR_POWER]
         battery_powered = True
 
     if 'shellyrgbw2-' in id:
@@ -286,8 +289,8 @@ else:
         availability_topic = '~online'
         unique_id = '{}-roller-{}'.format(id, roller_id)
         if data.get(unique_id):
-            config_component = data.get(unique_id)
-        component = 'cover'      
+            config_component = data.get(unique_id)                    
+        component = 'cover'
         config_topic = '{}/{}/{}-roller-{}/config'.format(disc_prefix,
             component, id, roller_id)
         if config_component == component:
@@ -358,17 +361,17 @@ else:
                 'qos': 0
             }            
             hass.services.call('mqtt', 'publish', service_data, False)
-
-        if model == ATTR_MODEL_SHELLY2:
-            if relay_id == relays-1:
-                for sensor_id in range(0, len(relays_sensors)):
-                    unique_id = '{}-relay-{}'.format(id,
-                        relays_sensors[sensor_id])
-                    config_topic = '{}/sensor/{}-{}/config'.format(disc_prefix,
-                        id, relays_sensors[sensor_id])
-                    sensor_name = '{} {}'.format(device_name,
-                        relays_sensors[sensor_id].capitalize())
-                    state_topic =  '~relay/{}'.format(relays_sensors[sensor_id])
+        
+        if relay_id == relays-1:
+            for sensor_id in range(0, len(relays_sensors)):
+                unique_id = '{}-relay-{}'.format(id,
+                    relays_sensors[sensor_id])
+                config_topic = '{}/sensor/{}-{}/config'.format(disc_prefix,
+                    id, relays_sensors[sensor_id])
+                sensor_name = '{} {}'.format(device_name,
+                    relays_sensors[sensor_id].capitalize())
+                state_topic =  '~relay/{}'.format(relays_sensors[sensor_id])
+                if model == ATTR_MODEL_SHELLY2 or roller_mode:
                     payload = '{\"name\":\"' + sensor_name + '\",' \
                         '\"stat_t\":\"' + state_topic + '\",' \
                         '\"unit_of_meas\":\"' + relays_sensors_units[sensor_id] + '\",' \
@@ -384,23 +387,25 @@ else:
                         '\"sw\":\"' + fw_ver + '\",' \
                         '\"mf\":\"Shelly\"},' \
                         '\"~\":\"' + default_topic + '\"}'
-                    service_data = {
-                        'topic': config_topic,
-                        'payload': payload,
-                        'retain': retain,
-                        'qos': 0
-                    }
-                    hass.services.call('mqtt', 'publish', service_data, False)
-        else:
-            for sensor_id in range(0, len(relays_sensors)):
-                unique_id = '{}-relay-{}-{}'.format(id,
-                    relays_sensors[sensor_id], relay_id)
-                config_topic = '{}/sensor/{}-{}-{}/config'.format(disc_prefix,
-                    id, relays_sensors[sensor_id], relay_id)
-                sensor_name = '{} {} {}'.format(device_name,
-                    relays_sensors[sensor_id].capitalize(), relay_id)
-                state_topic =  '~relay/{}/{}'.format(relay_id,
-                    relays_sensors[sensor_id])
+                else:
+                    payload = ''
+                service_data = {
+                    'topic': config_topic,
+                    'payload': payload,
+                    'retain': retain,
+                    'qos': 0
+                }
+                hass.services.call('mqtt', 'publish', service_data, False)
+        for sensor_id in range(0, len(relays_sensors)):
+            unique_id = '{}-relay-{}-{}'.format(id,
+                relays_sensors[sensor_id], relay_id)
+            config_topic = '{}/sensor/{}-{}-{}/config'.format(disc_prefix,
+                id, relays_sensors[sensor_id], relay_id)
+            sensor_name = '{} {} {}'.format(device_name,
+                relays_sensors[sensor_id].capitalize(), relay_id)
+            state_topic =  '~relay/{}/{}'.format(relay_id,
+                relays_sensors[sensor_id])
+            if model != ATTR_MODEL_SHELLY2 and not roller_mode:
                 payload = '{\"name\":\"' + sensor_name + '\",' \
                     '\"stat_t\":\"' + state_topic + '\",' \
                     '\"unit_of_meas\":\"' + relays_sensors_units[sensor_id] + '\",' \
@@ -416,13 +421,15 @@ else:
                     '\"sw\":\"' + fw_ver + '\",' \
                     '\"mf\":\"Shelly\"},' \
                     '\"~\":\"' + default_topic + '\"}'
-                service_data = {
-                    'topic': config_topic,
-                    'payload': payload,
-                    'retain': retain,
-                    'qos': 0
-                }
-                hass.services.call('mqtt', 'publish', service_data, False)
+            else:
+                payload = ''
+            service_data = {
+                'topic': config_topic,
+                'payload': payload,
+                'retain': retain,
+                'qos': 0
+            }
+            hass.services.call('mqtt', 'publish', service_data, False)
 
     for sensor_id in range(0, len(sensors)):
         device_name = '{} {}'.format(model, id.split('-')[1])
