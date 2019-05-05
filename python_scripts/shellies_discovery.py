@@ -74,7 +74,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.8.5'
+VERSION = '0.8.6'
 
 ATTR_DEVELOP = 'develop'
 
@@ -114,6 +114,8 @@ ATTR_FAN = 'fan'
 ATTR_SMOKE = 'smoke'
 ATTR_MOTION = 'motion'
 ATTR_CHARGER = 'charger'
+ATTR_OVERTEMPERATURE = 'overtemperature'
+ATTR_HEAT = 'heat'
 ATTR_COVER = 'cover'
 ATTR_UNIT_W = 'W'
 ATTR_UNIT_KWH = 'kWh'
@@ -121,6 +123,10 @@ ATTR_UNIT_PERCENT = '%'
 ATTR_UNIT_LUX = 'lx'
 ATTR_UNIT_CELSIUS = '°C'
 ATTR_UNIT_FARENHEIT = '°F'
+ATTR_ON = 'on'
+ATTR_OFF = 'off'
+ATTR_TRUE_FALSE_PAYLOAD = {ATTR_ON: 'true', ATTR_OFF: 'false'}
+ATTR_1_0_PAYLOAD = {ATTR_ON: '1', ATTR_OFF: '0'}
 
 develop = False
 retain = True
@@ -182,6 +188,9 @@ else:
         sensors_classes = sensors
         sensors_units = [temp_unit]
         sensors_templates = [ATTR_TEMPLATE_TEMPERATURE]
+        bin_sensors = [ATTR_OVERTEMPERATURE]
+        bin_sensors_classes = [ATTR_HEAT]
+        bin_sensors_payload = [ATTR_1_0_PAYLOAD]
 
     if 'shellyswitch-' in id:
         model = ATTR_MODEL_SHELLY2
@@ -210,6 +219,9 @@ else:
         sensors_classes = sensors
         sensors_units = [temp_unit]
         sensors_templates = [ATTR_TEMPLATE_TEMPERATURE]
+        bin_sensors = [ATTR_OVERTEMPERATURE]
+        bin_sensors_classes = [ATTR_HEAT]
+        bin_sensors_payload = [ATTR_1_0_PAYLOAD]
 
     if 'shellyplug-' in id:
         model = ATTR_MODEL_SHELLYPLUG
@@ -256,6 +268,7 @@ else:
         ]
         bin_sensors = [ATTR_SMOKE]
         bin_sensors_classes = bin_sensors
+        bin_sensors_payload = [ATTR_TRUE_FALSE_PAYLOAD]
         battery_powered = True
 
     if 'shellysense-' in id:
@@ -273,6 +286,10 @@ else:
         ]
         bin_sensors = [ATTR_MOTION, ATTR_CHARGER]
         bin_sensors_classes = [ATTR_MOTION, ATTR_POWER]
+        bin_sensors_payload = [
+            ATTR_TRUE_FALSE_PAYLOAD,
+            ATTR_TRUE_FALSE_PAYLOAD
+        ]
         battery_powered = True
 
     if 'shellyrgbw2-' in id:
@@ -495,8 +512,8 @@ else:
         if battery_powered:
             payload = '{\"name\":\"' + sensor_name + '\",' \
                 '\"stat_t\":\"' + state_topic + '\",' \
-                '\"pl_on\":\"true\",' \
-                '\"pl_off\":\"false\",' \
+                '\"pl_on\":\"' + bin_sensors_payload[bin_sensor_id][ATTR_ON] + '\",' \
+                '\"pl_off\":\"' + bin_sensors_payload[bin_sensor_id][ATTR_OFF] + '\",' \
                 '\"dev_cla\":\"' + bin_sensors_classes[bin_sensor_id] + '\",' \
                 '\"uniq_id\":\"' + unique_id + '\",' \
                 '\"dev\": {\"ids\": [\"' + mac + '\"],' \
@@ -508,8 +525,8 @@ else:
         else:            
             payload = '{\"name\":\"' + sensor_name + '\",' \
                 '\"stat_t\":\"' + state_topic + '\",' \
-                '\"pl_on\":\"true\",' \
-                '\"pl_off\":\"false\",' \
+                '\"pl_on\":\"' + bin_sensors_payload[bin_sensor_id][ATTR_ON] + '\",' \
+                '\"pl_off\":\"' + bin_sensors_payload[bin_sensor_id][ATTR_OFF] + '\",' \
                 '\"avty_t\":\"' + availability_topic + '\",' \
                 '\"pl_avail\":\"true\",' \
                 '\"pl_not_avail\":\"false\",' \
