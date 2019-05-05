@@ -104,14 +104,14 @@ class DuneActivity(hass.Hass):
                     }
                 }
                 self.call_service("mqtt/publish",
-                                  topic='homeassistant/sensor/'+
+                                  topic='homeassistant/sensor/' +
                                         self.TOPIC.format('config'),
                                   payload=json.dumps(payload), qos=0,
                                   retain=True)
             old_state = self.get_state(self.ENTITY)
             if old_state and old_state != state:
                 self.call_service("mqtt/publish",
-                              topic=self.TOPIC.format('state'),
-                              payload=state, qos=0, retain=self.retain)
+                                  topic=self.TOPIC.format('state'),
+                                  payload=state, qos=0, retain=self.retain)
         else:
             self.set_state(self.ENTITY, state=state)

@@ -769,7 +769,7 @@
         state: 'off'
       - condition: state
         entity_id: group.windows
-        state: 'off'        
+        state: 'off'
   action:
     - service: fan.turn_off
       entity_id: fan.humidifier_salon
@@ -1224,7 +1224,7 @@
     to: 'unavailable'
     for:
       seconds: 30
-  action:    
+  action:
     service: switch.turn_off
     entity_id: switch.lamp_salon
 
@@ -2065,8 +2065,8 @@
         entity_id: light.lamp_goscinny
         state: 'off'
       - condition: template
-        value_template: >- 
-          {{ is_state('media_player.mibox', 'off') 
+        value_template: >-
+          {{ is_state('media_player.mibox', 'off')
              or is_state('media_player.mibox', 'unavailable') }}
       - condition: numeric_state
         entity_id: sensor.illumination_goscinny
@@ -2499,7 +2499,7 @@
     - service: mqtt.publish
       data:
         topic: 'sonoffs/cmnd/state'
-        payload: '' 
+        payload: ''
 
 - id: shellies_discovery
   alias: 'Shellies Discovery'

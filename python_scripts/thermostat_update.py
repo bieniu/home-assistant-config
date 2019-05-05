@@ -57,7 +57,8 @@ thermostat_id = data.get(ATTR_THERMOSTAT)
 sensor_id = data.get(ATTR_SENSOR)
 heat_state = data.get(ATTR_HEAT_STATE, ATTR_HEAT_STATE_DEFAULT)
 idle_state = data.get(ATTR_IDLE_STATE, ATTR_IDLE_STATE_DEFAULT)
-idle_heat_temp = float(data.get(ATTR_IDLE_HEAT_TEMP, ATTR_IDLE_HEAT_TEMP_DEFAULT))
+idle_heat_temp = float(
+    data.get(ATTR_IDLE_HEAT_TEMP, ATTR_IDLE_HEAT_TEMP_DEFAULT))
 state_only = data.get(ATTR_STATE_ONLY, ATTR_STATE_ONLY_DEFAULT)
 
 temp = None
@@ -76,14 +77,17 @@ else:
                 try:
                     temp = float(hass.states.get(sensor_id).state)
                 except (ValueError, TypeError):
-                    logger.error("Could not get state of {}.".format(sensor_id))
+                    logger.error(
+                        "Could not get state of {}.".format(sensor_id))
                 if temp is None:
-                    logger.error("Could not get state of {}.".format(sensor_id))
+                    logger.error(
+                        "Could not get state of {}.".format(sensor_id))
                 else:
                     attributes[ATTR_CURRENT_TEMP] = temp
             else:
-                logger.error("Expected {} entity_id, got: {}.".format(ATTR_SENSOR,
-                                                                      sensor_id))
+                logger.error(
+                    "Expected {} entity_id, got: {}.".format(ATTR_SENSOR,
+                                                             sensor_id))
         attributes[ATTR_OPERATION_LIST] = [heat_state, idle_state]
         if float(attributes[ATTR_TEMPERATURE]) > idle_heat_temp:
             state = heat_state

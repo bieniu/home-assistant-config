@@ -113,7 +113,7 @@ heating_night:
     - service: climate.set_temperature
       entity_id: climate.thermostat_lazienka
       data_template:
-        temperature: "{{ states('input_select.heating_temp_bathroom_night') }}"    
+        temperature: "{{ states('input_select.heating_temp_bathroom_night') }}"
     - condition: template
       value_template: "{{ is_state('input_boolean.guests', 'off')
                           and is_state('media_player.bravia', 'off') }}"
@@ -252,7 +252,7 @@ notify:
         title: '{{ title }}'
         message: '{{ message }}'
         data:
-          tag: '{{ tag }}'          
+          tag: '{{ tag }}'
     - condition: template
       value_template: '{{ notify_edyta }}'
     - service: notify.ios_iphone_8_plus_app
@@ -279,7 +279,7 @@ notify_motion:
               {{ snapshot_url }}{{ datetime }}.jpg
             {% else %}
               None
-            {% endif %}          
+            {% endif %}
     - condition: template
       value_template: '{{ notify_edyta }}'
     - service: notify.ios_iphone_8_plus_app

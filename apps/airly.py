@@ -34,6 +34,7 @@ import requests
 import json
 from datetime import datetime
 
+
 class Airly(hass.Hass):
 
     def initialize(self):
@@ -48,7 +49,7 @@ class Airly(hass.Hass):
         ATTR_INTERVAL = 'interval'
         ATTR_SENSORS = 'sensors'
         ATTR_NO_SENSOR_AVAILABLE = ("There are no Airly sensors in this area "
-                                   "yet.")
+                                    "yet.")
         self.ATTR_PM1 = 'pm1'
         self.ATTR_PM25 = 'pm25'
         self.ATTR_PM10 = 'pm10'
@@ -112,7 +113,7 @@ class Airly(hass.Hass):
         self.url = ('https://airapi.airly.eu/v2/measurements/point?lat={}&lng='
                     '{}&maxDistanceKM=5'.format(self.latitude, self.longitude))
         self.unique = '{}-{}'.format(str(self.latitude).replace('.', ''),
-                      str(self.longitude).replace('.', ''))
+                                     str(self.longitude).replace('.', ''))
         self.headers = {'Accept': 'application/json',
                         'apikey': self.apikey}
 
@@ -126,9 +127,9 @@ class Airly(hass.Hass):
             pass
         try:
             if (request.json()['current']['indexes'][0]['description'] ==
-               ATTR_NO_SENSOR_AVAILABLE):
-               self.error(ATTR_NO_SENSOR_AVAILABLE)
-               return
+                    ATTR_NO_SENSOR_AVAILABLE):
+                self.error(ATTR_NO_SENSOR_AVAILABLE)
+                return
         except KeyError:
             pass
 
@@ -151,7 +152,7 @@ class Airly(hass.Hass):
                     "stat_t": state_topic,
                     "unit_of_meas": unit,
                     "ic": icon
-                    }
+                }
             elif sensor == self.ATTR_PM25:
                 unit = 'μg/m³'
                 icon = 'mdi:blur'
@@ -164,7 +165,7 @@ class Airly(hass.Hass):
                     "unit_of_meas": unit,
                     "ic": icon,
                     "json_attr_t": attr_topic
-                    }
+                }
             elif sensor == self.ATTR_PM10:
                 unit = 'μg/m³'
                 icon = 'mdi:blur'
@@ -177,7 +178,7 @@ class Airly(hass.Hass):
                     "unit_of_meas": unit,
                     "ic": icon,
                     "json_attr_t": attr_topic
-                    }
+                }
             elif sensor == self.ATTR_CAQI:
                 name = "Airly {}".format(sensor.upper())
                 attr_topic = "airly/{}/{}/attr".format(self.unique, sensor)
@@ -186,7 +187,7 @@ class Airly(hass.Hass):
                     "uniq_id": unique_id,
                     "stat_t": state_topic,
                     "json_attr_t": attr_topic
-                    }
+                }
             elif sensor == self.ATTR_TEMPERATURE:
                 unit = 'C'
                 device_class = sensor
@@ -197,7 +198,7 @@ class Airly(hass.Hass):
                     "stat_t": state_topic,
                     "unit_of_meas": unit,
                     "dev_cla": device_class,
-                    }
+                }
             elif sensor == self.ATTR_HUMIDITY:
                 unit = '%'
                 device_class = sensor
@@ -208,7 +209,7 @@ class Airly(hass.Hass):
                     "stat_t": state_topic,
                     "unit_of_meas": unit,
                     "dev_cla": device_class,
-                    }
+                }
             elif sensor == self.ATTR_PRESSURE:
                 unit = 'hPa'
                 device_class = sensor
@@ -219,7 +220,7 @@ class Airly(hass.Hass):
                     "stat_t": state_topic,
                     "unit_of_meas": unit,
                     "dev_cla": device_class,
-                    }
+                }
 
             self.call_service("mqtt/publish", topic=topic,
                               payload=json.dumps(payload), qos=0, retain=True)
@@ -237,47 +238,49 @@ class Airly(hass.Hass):
             topic = 'airly/{}/{}/{}'
             if sensor == self.ATTR_PM1:
                 payload = (round(request.json()['current']['values'][0]
-                           ['value']))
+                                 ['value']))
             elif sensor == self.ATTR_PM25:
                 payload = (round(request.json()['current']['values'][1]
-                           ['value']))
+                                 ['value']))
                 attr_payload = {
                     "limit": (round(request.json()['current']['standards'][0]
-                              ['limit'])),
+                                    ['limit'])),
                     "percent": (round(request.json()['current']['standards'][0]
-                                ['percent']))
-                    }
+                                      ['percent']))
+                }
             elif sensor == self.ATTR_PM10:
                 payload = (round(request.json()['current']['values'][2]
-                           ['value']))
+                                 ['value']))
                 attr_payload = {
                     "limit": (round(request.json()['current']['standards'][1]
-                              ['limit'])),
+                                    ['limit'])),
                     "percent": (round(request.json()['current']['standards'][1]
-                                ['percent']))
-                    }
+                                      ['percent']))
+                }
             elif sensor == self.ATTR_CAQI:
                 payload = (round(request.json()['current']['indexes'][0]
-                           ['value']))
+                                 ['value']))
                 attr_payload = {
                     "level": (request.json()['current']['indexes'][0]
                               ['level'].lower())
-                    }
+                }
             elif sensor == self.ATTR_TEMPERATURE:
                 payload = (round(request.json()['current']['values'][5]
-                           ['value'], 1))
+                                 ['value'], 1))
             elif sensor == self.ATTR_HUMIDITY:
                 payload = (round(request.json()['current']['values'][4]
-                           ['value'], 1))
+                                 ['value'], 1))
             elif sensor == self.ATTR_PRESSURE:
                 payload = (round(request.json()['current']['values'][3]
-                           ['value']))
+                                 ['value']))
 
             self.call_service("mqtt/publish", topic=topic.format(self.unique,
-                              sensor, 'state'), payload=payload, qos=0,
-                              retain=self.retain)
+                                                                 sensor,
+                                                                 'state'),
+                              payload=payload, qos=0, retain=self.retain)
             if attr_payload:
                 self.call_service("mqtt/publish",
                                   topic=topic.format(self.unique, sensor,
-                                  'attr'), payload=json.dumps(attr_payload),
-                                  qos=0, retain=self.retain)
+                                                     'attr'),
+                                  payload=json.dumps(attr_payload), qos=0,
+                                  retain=self.retain)

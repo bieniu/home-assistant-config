@@ -30,7 +30,7 @@ title: 'Dom'
 views:
   - id: home
     icon: mdi:home
-    title: 'Pomieszczenia'    
+    title: 'Pomieszczenia'
     path: home
     panel: true
     popup_cards:
@@ -84,7 +84,7 @@ views:
                     - entity_id: person.emil
                       state: home
                     - entity_id: person.agnieszka
-                      state: home                    
+                      state: home
               - type: entities
                 title: 'Przedpokój'
                 show_header_toggle: false
@@ -102,7 +102,7 @@ views:
           - type: custom:vertical-stack-in-card
             title: 'Salon'
             cards:
-              - type: glance                
+              - type: glance
                 show_name: false
                 entities:
                   - sensor.temperature_salon
@@ -132,7 +132,7 @@ views:
                     info: scroll
                     group: true
                   - type: custom:mini-media-player
-                    entity: media_player.denon                    
+                    entity: media_player.denon
                     hide:
                       controls: true
                       volume: true
@@ -146,11 +146,11 @@ views:
                       volume: true
                       power_state: false
                     info: scroll
-                    group: true                  
+                    group: true
           - type: custom:vertical-stack-in-card
             title: 'Pracownia'
             cards:
-              - type: glance                
+              - type: glance
                 show_name: false
                 entities:
                   - sensor.temperature_pracownia
@@ -166,7 +166,7 @@ views:
           - type: custom:vertical-stack-in-card
             title: 'Pokój gościnny'
             cards:
-              - type: glance         
+              - type: glance
                 show_name: false
                 entities:
                   - sensor.temperature_goscinny
@@ -174,7 +174,7 @@ views:
                   - sensor.illumination_goscinny
               - type: entities
                 show_header_toggle: false
-                entities:                  
+                entities:
                   - entity: binary_sensor.motion_goscinny
                     secondary_info: last-changed
                   - light.lamp_goscinny
@@ -189,7 +189,7 @@ views:
           - type: custom:vertical-stack-in-card
             title: 'Antresola'
             cards:
-              - type: glance                
+              - type: glance
                 show_name: false
                 entities:
                   - sensor.temperature_antresola
@@ -206,23 +206,23 @@ views:
           - type: custom:vertical-stack-in-card
             title: 'Gabinet'
             cards:
-              - type: glance                
+              - type: glance
                 show_name: false
                 entities:
                   - sensor.temperature_gabinet
                   - sensor.humidity_gabinet
                   - sensor.illumination_gabinet
-              - type: entities            
+              - type: entities
                 show_header_toggle: false
                 entities:
                   - entity: binary_sensor.motion_gabinet
-                    secondary_info: last-changed                  
+                    secondary_info: last-changed
                   - light.lamp_gabinet
                   - switch.stacjonarny
           - type: custom:vertical-stack-in-card
             title: 'Pokój Antka'
             cards:
-              - type: glance                
+              - type: glance
                 show_name: false
                 entities:
                   - sensor.temperature_antek
@@ -240,7 +240,7 @@ views:
           - type: custom:vertical-stack-in-card
             title: 'Sypialnia'
             cards:
-              - type: glance                
+              - type: glance
                 show_name: false
                 entities:
                   - sensor.temperature_sypialnia
@@ -295,7 +295,7 @@ views:
               - type: custom:vertical-stack-in-card
                 title: 'Router'
                 cards:
-                  - type: glance                    
+                  - type: glance
                     entities:
                       - sensor.speedtest_download
                       - sensor.speedtest_upload
@@ -325,7 +325,7 @@ views:
               - type: custom:vertical-stack-in-card
                 title: 'Raspberry Pi'
                 cards:
-                  - type: glance                    
+                  - type: glance
                     entities:
                       - entity: sensor.processor_use
                         name: 'CPU'
@@ -363,7 +363,7 @@ views:
               - binary_sensor.fingbox_status
               - binary_sensor.synology_status
               - binary_sensor.raspberry_status
-              - binary_sensor.bravia_status              
+              - binary_sensor.bravia_status
               - binary_sensor.denon_status
               - binary_sensor.dune_status
               - binary_sensor.playstation_status
@@ -376,7 +376,7 @@ views:
             entities:
               - binary_sensor.migateway_status
               - binary_sensor.harmonyhub_status
-              - binary_sensor.brother_status              
+              - binary_sensor.brother_status
               - binary_sensor.mibox_status
               - binary_sensor.dafang_status
               - binary_sensor.mihumidifier_status
@@ -444,7 +444,7 @@ views:
           - type: custom:vertical-stack-in-card
             title: 'UPS'
             cards:
-              - type: entities                
+              - type: entities
                 show_header_toggle: false
                 entities:
                   - sensor.ups_status
@@ -493,7 +493,7 @@ views:
               - sensor.battery_temp_humi_sensor_antek
               - sensor.battery_temp_humi_sensor_sypialnia
               - sensor.battery_temp_humi_sensor_lazienka
-              - sensor.battery_temp_humi_sensor_outdoor          
+              - sensor.battery_temp_humi_sensor_outdoor
           - type: vertical-stack
             cards:
               - type: entities

@@ -98,9 +98,9 @@ class ThermostatsUpdate(hass.Hass):
                 if self.get_state(thermostat,
                                   attribute='current_temperature') is None:
                     self.thermostat_state_changed(
-                                               thermostat,
-                                               attribute='current_temperature',
-                                               old=None, new=None, kwargs=None)
+                        thermostat,
+                        attribute='current_temperature',
+                        old=None, new=None, kwargs=None)
             self.log("Ready for action...")
         except KeyError:
             self.error("Wrong arguments! You must supply a valid sensors and "
@@ -138,12 +138,12 @@ class ThermostatsUpdate(hass.Hass):
             self.log("No temperature data on the sensor {}.".format(entity))
 
     def update_thermostat(self, entity, target_temp, current_temp):
-            self.log("Updating state and current "
-                     "temperature for {}...".format(entity), self.log_level)
-            self.set_state(
-                          entity,
-                          state=self.find_thermostat_state(float(target_temp)),
-                          attributes={"current_temperature": current_temp})
+        self.log("Updating state and current "
+                 "temperature for {}...".format(entity), self.log_level)
+        self.set_state(
+            entity,
+            state=self.find_thermostat_state(float(target_temp)),
+            attributes={"current_temperature": current_temp})
 
     def find_thermostat_state(self, target_temp):
         if target_temp > self.idle_heat_temp:

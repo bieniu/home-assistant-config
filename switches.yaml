@@ -21,7 +21,7 @@
   interval: 600
 
 - platform: template
-  switches:    
+  switches:
     camera_move_up:
       friendly_name: 'w górę'
       value_template: 'on'

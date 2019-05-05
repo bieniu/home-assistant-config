@@ -207,7 +207,8 @@ class BrotherPrinterStatus(hass.Hass):
                     return
                 if drum_usage:
                     sensor = 'drum-usage'
-                    entity = self.SENSOR_PREFIX.format(sensor.replace('-', '_'))
+                    entity = self.SENSOR_PREFIX.format(
+                        sensor.replace('-', '_'))
                     if self.use_mqtt:
                         topic = self.TOPIC.format(sensor)
                         model = self.printer_model(page)
@@ -229,7 +230,8 @@ class BrotherPrinterStatus(hass.Hass):
                                           drum_usage)
                     else:
                         attributes = {"friendly_name": "Printer " +
-                                                       sensor.replace('-', ' '),
+                                                       sensor.replace(
+                                                           '-', ' '),
                                       "icon": "mdi:chart-donut",
                                       "unit_of_measurement": "%"}
                         self.set_state(entity, state=drum_usage,
@@ -253,7 +255,7 @@ class BrotherPrinterStatus(hass.Hass):
 
     def mqtt_publish(self, topic, payload, entity, sensor, new_state):
         if self.mac_simple and not self.entity_exists(entity):
-            self.call_service("mqtt/publish", topic="homeassistant/sensor/"+
+            self.call_service("mqtt/publish", topic="homeassistant/sensor/" +
                                                     topic+"config",
                               payload=json.dumps(payload), qos=0,
                               retain=True)
