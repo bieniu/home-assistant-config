@@ -114,6 +114,7 @@ ATTR_FAN = 'fan'
 ATTR_SMOKE = 'smoke'
 ATTR_MOTION = 'motion'
 ATTR_CHARGER = 'charger'
+ATTR_COVER = 'cover'
 ATTR_UNIT_W = 'W'
 ATTR_UNIT_KWH = 'kWh'
 ATTR_UNIT_PERCENT = '%'
@@ -290,7 +291,7 @@ else:
         unique_id = '{}-roller-{}'.format(id, roller_id)
         if data.get(unique_id):
             config_component = data.get(unique_id)                    
-        component = 'cover'
+        component = ATTR_COVER
         config_topic = '{}/{}/{}-roller-{}/config'.format(disc_prefix,
             component, id, roller_id)
         if config_component == component:
