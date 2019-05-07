@@ -74,7 +74,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.8.6'
+VERSION = '0.8.7'
 
 ATTR_DEVELOP = 'develop'
 
@@ -101,6 +101,7 @@ ATTR_MODEL_SHELLYHT = 'Shelly H&T'
 ATTR_MODEL_SHELLYSMOKE = 'Shelly Smoke'
 ATTR_MODEL_SHELLYSENSE = 'Shelly Sense'
 ATTR_MODEL_SHELLYRGBW2 = 'Shelly RGBW2'
+ATTR_SHELLY = 'Shelly'
 ATTR_TEMPERATURE = 'temperature'
 ATTR_HUMIDITY = 'humidity'
 ATTR_BATTERY = 'battery'
@@ -315,22 +316,22 @@ else:
         if config_component == component:
             roller_mode = True
             payload = '{\"name\":\"' + roller_name + '\",' \
-                '\"command_topic\":\"' + command_topic + '\",' \
+                '\"cmd_t\":\"' + command_topic + '\",' \
                 '\"position_topic\":\"' + position_topic + '\",' \
-                '\"set_position_topic\":\"' + set_position_topic + '\",' \
-                '\"payload_open\":\"open\",' \
-                '\"payload_close\":\"close\",' \
-                '\"payload_stop\":\"stop\",' \
-                '\"optimistic\":\"false\",' \
-                '\"availability_topic\":\"' + availability_topic + '\",' \
-                '\"payload_available\":\"true\",' \
-                '\"payload_not_available\":\"false\",' \
-                '\"unique_id\":\"' + unique_id + '\",' \
-                '\"device\": {\"ids\": [\"' + mac + '\"],' \
+                '\"set_pos_t\":\"' + set_position_topic + '\",' \
+                '\"pl_open\":\"open\",' \
+                '\"pl_cls\":\"close\",' \
+                '\"pl_stop\":\"stop\",' \
+                '\"opt\":\"false\",' \
+                '\"avty_t\":\"' + availability_topic + '\",' \
+                '\"pl_avail\":\"true\",' \
+                '\"pl_not_avail\":\"false\",' \
+                '\"uniq_id\":\"' + unique_id + '\",' \
+                '\"dev\": {\"ids\": [\"' + mac + '\"],' \
                 '\"name\":\"' + device_name + '\",' \
-                '\"model\":\"' + model + '\",' \
-                '\"sw_version\":\"' + fw_ver + '\",' \
-                '\"manufacturer\":\"Shelly\"},' \
+                '\"mdl\":\"' + model + '\",' \
+                '\"sw\":\"' + fw_ver + '\",' \
+                '\"mf\":\"' + ATTR_SHELLY + '\"},' \
                 '\"~\":\"' + default_topic + '\"}'
         else:
             payload = ''
@@ -370,7 +371,7 @@ else:
                     '\"name\":\"' + device_name + '\",' \
                     '\"mdl\":\"' + model + '\",' \
                     '\"sw\":\"' + fw_ver + '\",' \
-                    '\"mf\":\"Shelly\"},' \
+                    '\"mf\":\"' + ATTR_SHELLY + '\"},' \
                     '\"~\":\"' + default_topic + '\"}'
             else:
                 payload = ''
@@ -405,7 +406,7 @@ else:
                         '\"name\":\"' + device_name + '\",' \
                         '\"mdl\":\"' + model + '\",' \
                         '\"sw\":\"' + fw_ver + '\",' \
-                        '\"mf\":\"Shelly\"},' \
+                        '\"mf\":\"' + ATTR_SHELLY + '\"},' \
                         '\"~\":\"' + default_topic + '\"}'
                 else:
                     payload = ''
@@ -442,7 +443,7 @@ else:
                     '\"name\":\"' + device_name + '\",' \
                     '\"mdl\":\"' + model + '\",' \
                     '\"sw\":\"' + fw_ver + '\",' \
-                    '\"mf\":\"Shelly\"},' \
+                    '\"mf\":\"' + ATTR_SHELLY + '\"},' \
                     '\"~\":\"' + default_topic + '\"}'
             else:
                 payload = ''
@@ -478,7 +479,7 @@ else:
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
                 '\"sw\":\"' + fw_ver + '\",' \
-                '\"mf\":\"Shelly\"},' \
+                '\"mf\":\"' + ATTR_SHELLY + '\"},' \
                 '\"~\":\"' + default_topic + '\"}'
         else:
             payload = '{\"name\":\"' + sensor_name + '\",' \
@@ -494,7 +495,7 @@ else:
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
                 '\"sw\":\"' + fw_ver + '\",' \
-                '\"mf\":\"Shelly\"},' \
+                '\"mf\":\"' + ATTR_SHELLY + '\"},' \
                 '\"~\":\"' + default_topic + '\"}'
         service_data = {
             'topic': config_topic,
@@ -525,7 +526,7 @@ else:
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
                 '\"sw\":\"' + fw_ver + '\",' \
-                '\"mf\":\"Shelly\"},' \
+                '\"mf\":\"' + ATTR_SHELLY + '\"},' \
                 '\"~\":\"' + default_topic + '\"}'
         else:
             payload = '{\"name\":\"' + sensor_name + '\",' \
@@ -541,7 +542,7 @@ else:
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
                 '\"sw\":\"' + fw_ver + '\",' \
-                '\"mf\":\"Shelly\"},' \
+                '\"mf\":\"' + ATTR_SHELLY + '\"},' \
                 '\"~\":\"' + default_topic + '\"}'
         service_data = {
             'topic': config_topic,
@@ -572,18 +573,18 @@ else:
             '\"command_on_template\":\"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"gain\\":{{ brightness | float | multiply(0.3922) | round(0) }}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %},\\"effect\\":{{ effect }}{% endif %}}\",' \
             '\"command_off_template\":\"{\\"turn\\":\\"off\\"}\",' \
             '\"state_template\":\"{% if value_json.ison %}on{% else %}off{% endif %}\",' \
-            '\"brightness_template\":\"{{ value_json.gain | float | multiply(2.55) | round(0) }}\",' \
+            '\"bri_val_tpl\":\"{{ value_json.gain | float | multiply(2.55) | round(0) }}\",' \
             '\"red_template\":\"{{ value_json.red }}\",' \
             '\"green_template\":\"{{ value_json.green }}\",' \
             '\"blue_template\":\"{{ value_json.blue }}\",' \
-            '\"white_value_template\":\"{{ value_json.white }}\",' \
-            '\"effect_template\":\"{{ value_json.effect }}\",' \
+            '\"whit_val_tpl\":\"{{ value_json.white }}\",' \
+            '\"fx_val_tpl\":\"{{ value_json.effect }}\",' \
             '\"uniq_id\":\"' + unique_id + '\",' \
             '\"dev\": {\"ids\": [\"' + mac + '\"],' \
             '\"name\":\"' + device_name + '\",' \
             '\"mdl\":\"' + model + '\",' \
             '\"sw\":\"' + fw_ver + '\",' \
-            '\"mf\":\"Shelly\"},' \
+            '\"mf\":\"' + ATTR_SHELLY + '\"},' \
             '\"~\":\"' + default_topic + '\"}'
         service_data = {
             'topic': config_topic,

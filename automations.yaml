@@ -1223,10 +1223,15 @@
     entity_id: light.lamp_salon
     to: 'unavailable'
     for:
-      seconds: 30
+      minutes: 2
   action:
-    service: switch.turn_off
-    entity_id: switch.lamp_salon
+    - service: switch.turn_off
+      entity_id: switch.lamp_salon
+    - condition: template
+      value_template: "{{ trigger.from_state.state == 'off' }}"
+    - delay: '00:02:00'
+    - service: light.turn_off
+      entity_id: light.lamp_salon
 
 # wyłączenie świateł w salonie jeśli nie ma ruchu przez godzinę i jest po północy
 - id: light_turn_off_in_salon_when_no_motion_and_after_midnight
