@@ -74,7 +74,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.8.8'
+VERSION = '0.8.9'
 
 ATTR_DEVELOP = 'develop'
 
@@ -309,6 +309,8 @@ else:
         unique_id = '{}-roller-{}'.format(id, roller_id)
         if data.get(unique_id):
             config_component = data.get(unique_id)
+        elif data.get(unique_id.lower()):
+            config_component = data.get(unique_id.lower())
         component = ATTR_COVER
         config_topic = '{}/{}/{}-roller-{}/config'.format(disc_prefix,
                                                           component, id,
@@ -353,6 +355,8 @@ else:
         unique_id = '{}-relay-{}'.format(id, relay_id)
         if data.get(unique_id):
             config_component = data.get(unique_id)
+        elif data.get(unique_id.lower()):
+            config_component = data.get(unique_id.lower())
         for component in relay_components:
             config_topic = '{}/{}/{}-relay-{}/config'.format(disc_prefix,
                                                              component, id,
