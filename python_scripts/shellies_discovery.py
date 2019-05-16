@@ -74,7 +74,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.8.10'
+VERSION = '0.9.0'
 
 ATTR_DEVELOP = 'develop'
 
@@ -96,6 +96,7 @@ ATTR_MODEL_SHELLY1PM = 'Shelly1PM'
 ATTR_MODEL_SHELLY2 = 'Shelly2'
 ATTR_MODEL_SHELLY25 = 'Shelly2.5'
 ATTR_MODEL_SHELLYPLUG = 'Shelly Plug'
+ATTR_MODEL_SHELLYPLUG_S = 'Shelly Plug S'
 ATTR_MODEL_SHELLY4PRO = 'Shelly4Pro'
 ATTR_MODEL_SHELLYHT = 'Shelly H&T'
 ATTR_MODEL_SHELLYSMOKE = 'Shelly Smoke'
@@ -224,8 +225,19 @@ else:
         bin_sensors_classes = [ATTR_HEAT]
         bin_sensors_payload = [ATTR_1_0_PAYLOAD]
 
-    if 'shellyplug-' in id:
+    if 'shellyplug-' in id and not 'shellyplug-s-' in id:
         model = ATTR_MODEL_SHELLYPLUG
+        relays = 1
+        relays_sensors = [ATTR_POWER, ATTR_ENERGY]
+        relays_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_KWH]
+        relays_sensors_classes = [ATTR_POWER, ATTR_POWER]
+        relays_sensors_templates = [
+            ATTR_TEMPLATE_POWER,
+            ATTR_TEMPLATE_ENERGY
+        ]
+
+    if 'shellyplug-s-' in id:
+        model = ATTR_MODEL_SHELLYPLUG_S
         relays = 1
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
         relays_sensors_units = [ATTR_UNIT_W, ATTR_UNIT_KWH]
