@@ -172,11 +172,11 @@ else:
     rgbw_lights = 0
     battery_powered = False
 
-    if 'shelly1-' in id:
+    if 'shelly1' == id[:-7]:
         model = ATTR_MODEL_SHELLY1
         relays = 1
 
-    if 'shelly1pm-' in id:
+    if 'shelly1pm' == id[:-7]:
         model = ATTR_MODEL_SHELLY1PM
         relays = 1
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
@@ -194,7 +194,7 @@ else:
         bin_sensors_classes = [ATTR_HEAT]
         bin_sensors_payload = [ATTR_1_0_PAYLOAD]
 
-    if 'shellyswitch-' in id:
+    if 'shellyswitch' == id[:-7]:
         model = ATTR_MODEL_SHELLY2
         relays = 2
         rollers = 1
@@ -206,7 +206,7 @@ else:
             ATTR_TEMPLATE_ENERGY
         ]
 
-    if 'shellyswitch25-' in id:
+    if 'shellyswitch25' == id[:-7]:
         model = ATTR_MODEL_SHELLY25
         relays = 2
         rollers = 1
@@ -225,7 +225,7 @@ else:
         bin_sensors_classes = [ATTR_HEAT]
         bin_sensors_payload = [ATTR_1_0_PAYLOAD]
 
-    if 'shellyplug-' in id and not 'shellyplug-s-' in id:
+    if 'shellyplug' == id[:-7]:
         model = ATTR_MODEL_SHELLYPLUG
         relays = 1
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
@@ -236,7 +236,7 @@ else:
             ATTR_TEMPLATE_ENERGY
         ]
 
-    if 'shellyplug-s-' in id:
+    if 'shellyplug-s' == id[:-7]:
         model = ATTR_MODEL_SHELLYPLUG_S
         relays = 1
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
@@ -247,7 +247,7 @@ else:
             ATTR_TEMPLATE_ENERGY
         ]
 
-    if 'shelly4pro-' in id:
+    if 'shelly4pro' == id[:-7]:
         model = ATTR_MODEL_SHELLY4PRO
         relays = 4
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
@@ -258,7 +258,7 @@ else:
             ATTR_TEMPLATE_ENERGY
         ]
 
-    if 'shellyht-' in id:
+    if 'shellyht' == id[:-7]:
         model = ATTR_MODEL_SHELLYHT
         sensors = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_BATTERY]
         sensors_classes = sensors
@@ -270,7 +270,7 @@ else:
         ]
         battery_powered = True
 
-    if 'shellysmoke-' in id:
+    if 'shellysmoke' == id[:-7]:
         model = ATTR_MODEL_SHELLYSMOKE
         sensors = [ATTR_TEMPERATURE, ATTR_BATTERY]
         sensors_classes = sensors
@@ -284,7 +284,7 @@ else:
         bin_sensors_payload = [ATTR_TRUE_FALSE_PAYLOAD]
         battery_powered = True
 
-    if 'shellysense-' in id:
+    if 'shellysense' == id[:-7]:
         model = ATTR_MODEL_SHELLYSENSE
         sensors = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_LUX, ATTR_BATTERY]
         sensors_classes = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_ILLUMINANCE,
@@ -305,12 +305,12 @@ else:
         ]
         battery_powered = True
 
-    if 'shellyrgbw2-' in id:
+    if 'shellyrgbw2-' == id[:-7]:
         model = ATTR_MODEL_SHELLYRGBW2
         rgbw_lights = 1
 
     for roller_id in range(0, rollers):
-        device_name = '{} {}'.format(model, id.split('-')[1])
+        device_name = '{} {}'.format(model, id.split('-')[-1])
         roller_name = '{} Roller {}'.format(device_name, roller_id)
         default_topic = 'shellies/{}/'.format(id)
         state_topic = '~roller/{}'.format(roller_id)
@@ -358,7 +358,7 @@ else:
         hass.services.call('mqtt', 'publish', service_data, False)
 
     for relay_id in range(0, relays):
-        device_name = '{} {}'.format(model, id.split('-')[1])
+        device_name = '{} {}'.format(model, id.split('-')[-1])
         relay_name = '{} Relay {}'.format(device_name, relay_id)
         default_topic = 'shellies/{}/'.format(id)
         state_topic = '~relay/{}'.format(relay_id)
@@ -472,7 +472,7 @@ else:
             hass.services.call('mqtt', 'publish', service_data, False)
 
     for sensor_id in range(0, len(sensors)):
-        device_name = '{} {}'.format(model, id.split('-')[1])
+        device_name = '{} {}'.format(model, id.split('-')[-1])
         unique_id = '{}-{}'.format(id, sensors[sensor_id])
         config_topic = '{}/sensor/{}-{}/config'.format(disc_prefix, id,
                                                        sensors[sensor_id])
@@ -522,7 +522,7 @@ else:
         hass.services.call('mqtt', 'publish', service_data, False)
 
     for bin_sensor_id in range(0, len(bin_sensors)):
-        device_name = '{} {}'.format(model, id.split('-')[1])
+        device_name = '{} {}'.format(model, id.split('-')[-1])
         unique_id = '{}-{}'.format(id, bin_sensors[bin_sensor_id])
         config_topic = '{}/binary_sensor/{}-{}/config'.format(disc_prefix, id,
                                                               bin_sensors[bin_sensor_id])
@@ -569,7 +569,7 @@ else:
         hass.services.call('mqtt', 'publish', service_data, False)
 
     for light_id in range(0, rgbw_lights):
-        device_name = '{} {}'.format(model, id.split('-')[1])
+        device_name = '{} {}'.format(model, id.split('-')[-1])
         light_name = '{} Light'.format(device_name)
         default_topic = 'shellies/{}/'.format(id)
         state_topic = '~color/{}/status'.format(light_id)
