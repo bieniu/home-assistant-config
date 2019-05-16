@@ -1,7 +1,7 @@
 """
 This script adds MQTT discovery support for Shellies. Shelly1, Shelly1PM,
-Shelly2, Shely2.5, Shelly4Pro, Shelly Plug, Shelly RGBW2, Shelly H&T, Shelly
-Smoke and Shelly Sense are supported.
+Shelly2, Shely2.5, Shelly4Pro, Shelly Plug, Shelly Plug S, Shelly RGBW2, Shelly
+H&T, Shelly Smoke and Shelly Sense are supported.
 
 Arguments:
  - discovery_prefix:    - discovery prefix in HA, default 'homeassistant',
