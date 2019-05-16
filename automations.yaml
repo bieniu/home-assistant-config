@@ -1203,18 +1203,6 @@
     service: script.light_away_mode
 
 ## SALON ##
-# włączanie przekaźnika lampy w salonie
-- id: light_turn_on_lamp_salon_relay
-  alias: 'Light Turn On Lamp Salon Relay'
-  trigger:
-    platform: state
-    entity_id: switch.lamp_salon
-    to: 'off'
-  action:
-    - delay: '00:00:05'
-    - service: switch.turn_on
-      entity_id: switch.lamp_salon
-
 # wyłączanie przekaźnika lampy w salonie gdy lampa niedostępna
 - id: light_turn_off_lamp_salon_relay_when_unavailable
   alias: 'Light Turn Off Lamp Salon Relay When Unavailable'
@@ -1227,9 +1215,12 @@
   action:
     - service: switch.turn_off
       entity_id: switch.lamp_salon
+    - delay: '00:00:05'
+    - service: switch.turn_on
+      entity_id: switch.lamp_salon
     - condition: template
       value_template: "{{ trigger.from_state.state == 'off' }}"
-    - delay: '00:02:00'
+    - delay: '00:01:00'
     - service: light.turn_off
       entity_id: light.lamp_salon
 
