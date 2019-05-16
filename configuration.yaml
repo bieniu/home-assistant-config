@@ -10,7 +10,6 @@ homeassistant:
   whitelist_external_dirs: '/home/homeassistant/.homeassistant/www/snapshots'
 
 frontend:
-  javascript_version: auto
   themes: !include_dir_merge_named themes
 
 lovelace:

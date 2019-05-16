@@ -74,7 +74,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.8.9'
+VERSION = '0.8.10'
 
 ATTR_DEVELOP = 'develop'
 
@@ -319,7 +319,7 @@ else:
             roller_mode = True
             payload = '{\"name\":\"' + roller_name + '\",' \
                 '\"cmd_t\":\"' + command_topic + '\",' \
-                '\"position_topic\":\"' + position_topic + '\",' \
+                '\"pos_t\":\"' + position_topic + '\",' \
                 '\"set_pos_t\":\"' + set_position_topic + '\",' \
                 '\"pl_open\":\"open\",' \
                 '\"pl_cls\":\"close\",' \
