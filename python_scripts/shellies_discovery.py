@@ -1,7 +1,7 @@
 """
 This script adds MQTT discovery support for Shellies. Shelly1, Shelly1PM,
-Shelly2, Shely2.5, Shelly4Pro, Shelly Plug, Shelly Plug S, Shelly RGBW2, Shelly
-H&T, Shelly Smoke and Shelly Sense are supported.
+Shelly2, Shely2.5, Shelly4Pro, Shelly Plug, Shelly Plug S, Shelly RGBW2 (color
+and white mode), Shelly H&T, Shelly Smoke and Shelly Sense are supported.
 
 Arguments:
  - discovery_prefix:    - discovery prefix in HA, default 'homeassistant',
@@ -55,14 +55,22 @@ For example:
       id: '{{ trigger.payload_json.id }}'
       mac: '{{ trigger.payload_json.mac }}'
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
-      shellyswitch-334455-relay-0: 'cover'
       shelly1-001122-relay-0: 'light'
+      shellyswitch-334455: 'cover'
+      shellyrgbw2-AABB22: 'white'
+      shellyrgbw2-CC2211: 'rgbw'
 
-Argument shelly1-001122-relay-0: 'light' means that relay 0 of
-shelly1-001122 will use light component in Home Assistant. You can use switch,
-light or fan.
-Argument shellyswitch-334455-roller-0: 'cover' means that Shelly2 works in
-roller mode and use cover component in Home Assistant.
+
+shelly1-001122-relay-0: 'light' - means that relay 0 of shelly1-001122 will use
+light component in Home Assistant. You can use switch, light or fan.
+
+shellyswitch-334455: 'cover' - means that Shelly2 works in roller mode and use
+cover component in Home Assistant.
+
+shellyrgbw2-AABB22: 'white' - means that Shelly RGBW2 works in white-mode
+
+shellyrgbw2-CC2211: 'rgbw' - means that Shelly RGBW2 works in color-mode
+(default)
 
 Script supports custom_updater component. Add this to your configuration and
 stay up-to-date.
@@ -74,7 +82,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.9.0'
+VERSION = '0.9.1'
 
 ATTR_DEVELOP = 'develop'
 
@@ -112,6 +120,8 @@ ATTR_POWER = 'power'
 ATTR_ENERGY = 'energy'
 ATTR_SWITCH = 'switch'
 ATTR_LIGHT = 'light'
+ATTR_RGBW = 'rgbw'
+ATTR_WHITE = 'white'
 ATTR_FAN = 'fan'
 ATTR_SMOKE = 'smoke'
 ATTR_MOTION = 'motion'
@@ -159,6 +169,7 @@ else:
     rollers = 0
     relay_components = [ATTR_SWITCH, ATTR_LIGHT, ATTR_FAN]
     config_component = ATTR_SWITCH
+    config_light = ATTR_RGBW
     relays_sensors = []
     relays_sensors_units = []
     relays_sensors_templates = []
@@ -172,11 +183,11 @@ else:
     rgbw_lights = 0
     battery_powered = False
 
-    if 'shelly1' == id[:-7]:
+    if id[:-7] == 'shelly1':
         model = ATTR_MODEL_SHELLY1
         relays = 1
 
-    if 'shelly1pm' == id[:-7]:
+    if id[:-7] == 'shelly1pm':
         model = ATTR_MODEL_SHELLY1PM
         relays = 1
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
@@ -194,7 +205,7 @@ else:
         bin_sensors_classes = [ATTR_HEAT]
         bin_sensors_payload = [ATTR_1_0_PAYLOAD]
 
-    if 'shellyswitch' == id[:-7]:
+    if id[:-7] == 'shellyswitch':
         model = ATTR_MODEL_SHELLY2
         relays = 2
         rollers = 1
@@ -206,7 +217,7 @@ else:
             ATTR_TEMPLATE_ENERGY
         ]
 
-    if 'shellyswitch25' == id[:-7]:
+    if id[:-7] == 'shellyswitch25':
         model = ATTR_MODEL_SHELLY25
         relays = 2
         rollers = 1
@@ -225,7 +236,7 @@ else:
         bin_sensors_classes = [ATTR_HEAT]
         bin_sensors_payload = [ATTR_1_0_PAYLOAD]
 
-    if 'shellyplug' == id[:-7]:
+    if id[:-7] == 'shellyplug':
         model = ATTR_MODEL_SHELLYPLUG
         relays = 1
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
@@ -236,7 +247,7 @@ else:
             ATTR_TEMPLATE_ENERGY
         ]
 
-    if 'shellyplug-s' == id[:-7]:
+    if id[:-7] == 'shellyplug-s':
         model = ATTR_MODEL_SHELLYPLUG_S
         relays = 1
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
@@ -247,7 +258,7 @@ else:
             ATTR_TEMPLATE_ENERGY
         ]
 
-    if 'shelly4pro' == id[:-7]:
+    if id[:-7] == 'shelly4pro':
         model = ATTR_MODEL_SHELLY4PRO
         relays = 4
         relays_sensors = [ATTR_POWER, ATTR_ENERGY]
@@ -258,7 +269,7 @@ else:
             ATTR_TEMPLATE_ENERGY
         ]
 
-    if 'shellyht' == id[:-7]:
+    if id[:-7] == 'shellyht':
         model = ATTR_MODEL_SHELLYHT
         sensors = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_BATTERY]
         sensors_classes = sensors
@@ -270,7 +281,7 @@ else:
         ]
         battery_powered = True
 
-    if 'shellysmoke' == id[:-7]:
+    if id[:-7] == 'shellysmoke':
         model = ATTR_MODEL_SHELLYSMOKE
         sensors = [ATTR_TEMPERATURE, ATTR_BATTERY]
         sensors_classes = sensors
@@ -284,7 +295,7 @@ else:
         bin_sensors_payload = [ATTR_TRUE_FALSE_PAYLOAD]
         battery_powered = True
 
-    if 'shellysense' == id[:-7]:
+    if id[:-7] == 'shellysense':
         model = ATTR_MODEL_SHELLYSENSE
         sensors = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_LUX, ATTR_BATTERY]
         sensors_classes = [ATTR_TEMPERATURE, ATTR_HUMIDITY, ATTR_ILLUMINANCE,
@@ -305,9 +316,10 @@ else:
         ]
         battery_powered = True
 
-    if 'shellyrgbw2-' == id[:-7]:
+    if id[:-7] == 'shellyrgbw2':
         model = ATTR_MODEL_SHELLYRGBW2
         rgbw_lights = 1
+        white_lights = 4
 
     for roller_id in range(0, rollers):
         device_name = '{} {}'.format(model, id.split('-')[-1])
@@ -319,10 +331,10 @@ else:
         set_position_topic = '{}/command/pos'.format(state_topic)
         availability_topic = '~online'
         unique_id = '{}-roller-{}'.format(id, roller_id)
-        if data.get(unique_id):
-            config_component = data.get(unique_id)
-        elif data.get(unique_id.lower()):
-            config_component = data.get(unique_id.lower())
+        if data.get(id):
+            config_component = data.get(id)
+        elif data.get(id.lower()):
+            config_component = data.get(id.lower())
         component = ATTR_COVER
         config_topic = '{}/{}/{}-roller-{}/config'.format(disc_prefix,
                                                           component, id,
@@ -570,7 +582,7 @@ else:
 
     for light_id in range(0, rgbw_lights):
         device_name = '{} {}'.format(model, id.split('-')[-1])
-        light_name = '{} Light'.format(device_name)
+        light_name = '{} Light {}'.format(device_name, light_id)
         default_topic = 'shellies/{}/'.format(id)
         state_topic = '~color/{}/status'.format(light_id)
         command_topic = '~color/{}/set'.format(light_id)
@@ -578,30 +590,80 @@ else:
         unique_id = '{}-light-{}'.format(id, light_id)
         config_topic = '{}/light/{}-{}/config'.format(
             disc_prefix, id, light_id)
-        payload = '{\"schema\":\"template\",' \
-            '\"name\":\"' + light_name + '\",' \
-            '\"cmd_t\":\"' + command_topic + '\",' \
-            '\"stat_t\":\"' + state_topic + '\",' \
-            '\"avty_t\":\"' + availability_topic + '\",' \
-            '\"pl_avail\":\"true\",' \
-            '\"pl_not_avail\":\"false\",' \
-            '\"fx_list\":[0, 1, 2, 3, 4, 5, 5],' \
-            '\"command_on_template\":\"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"gain\\":{{ brightness | float | multiply(0.3922) | round(0) }}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %},\\"effect\\":{{ effect }}{% endif %}}\",' \
-            '\"command_off_template\":\"{\\"turn\\":\\"off\\"}\",' \
-            '\"state_template\":\"{% if value_json.ison %}on{% else %}off{% endif %}\",' \
-            '\"brightness_template\":\"{{ value_json.gain | float | multiply(2.55) | round(0) }}\",' \
-            '\"red_template\":\"{{ value_json.red }}\",' \
-            '\"green_template\":\"{{ value_json.green }}\",' \
-            '\"blue_template\":\"{{ value_json.blue }}\",' \
-            '\"whit_val_tpl\":\"{{ value_json.white }}\",' \
-            '\"effect_template\":\"{{ value_json.effect }}\",' \
-            '\"uniq_id\":\"' + unique_id + '\",' \
-            '\"dev\": {\"ids\": [\"' + mac + '\"],' \
-            '\"name\":\"' + device_name + '\",' \
-            '\"mdl\":\"' + model + '\",' \
-            '\"sw\":\"' + fw_ver + '\",' \
-            '\"mf\":\"' + ATTR_SHELLY + '\"},' \
-            '\"~\":\"' + default_topic + '\"}'
+        if data.get(id):
+            config_light = data.get(id)
+        elif data.get(id.lower()):
+            config_light = data.get(id.lower())
+        if config_light == ATTR_RGBW:
+            payload = '{\"schema\":\"template\",' \
+                '\"name\":\"' + light_name + '\",' \
+                '\"cmd_t\":\"' + command_topic + '\",' \
+                '\"stat_t\":\"' + state_topic + '\",' \
+                '\"avty_t\":\"' + availability_topic + '\",' \
+                '\"pl_avail\":\"true\",' \
+                '\"pl_not_avail\":\"false\",' \
+                '\"fx_list\":[0, 1, 2, 3, 4, 5, 5],' \
+                '\"command_on_template\":\"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"gain\\":{{ brightness | float | multiply(0.3922) | round(0) }}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %},\\"effect\\":{{ effect }}{% endif %}}\",' \
+                '\"command_off_template\":\"{\\"turn\\":\\"off\\"}\",' \
+                '\"state_template\":\"{% if value_json.ison %}on{% else %}off{% endif %}\",' \
+                '\"brightness_template\":\"{{ value_json.gain | float | multiply(2.55) | round(0) }}\",' \
+                '\"red_template\":\"{{ value_json.red }}\",' \
+                '\"green_template\":\"{{ value_json.green }}\",' \
+                '\"blue_template\":\"{{ value_json.blue }}\",' \
+                '\"whit_val_tpl\":\"{{ value_json.white }}\",' \
+                '\"effect_template\":\"{{ value_json.effect }}\",' \
+                '\"uniq_id\":\"' + unique_id + '\",' \
+                '\"dev\": {\"ids\": [\"' + mac + '\"],' \
+                '\"name\":\"' + device_name + '\",' \
+                '\"mdl\":\"' + model + '\",' \
+                '\"sw\":\"' + fw_ver + '\",' \
+                '\"mf\":\"' + ATTR_SHELLY + '\"},' \
+                '\"~\":\"' + default_topic + '\"}'
+        else:
+            payload = ''
+        service_data = {
+            'topic': config_topic,
+            'payload': payload,
+            'retain': retain,
+            'qos': 0
+        }
+        hass.services.call('mqtt', 'publish', service_data, False)
+
+    for light_id in range(0, white_lights):
+        device_name = '{} {}'.format(model, id.split('-')[-1])
+        light_name = '{} Light {}'.format(device_name, light_id)
+        default_topic = 'shellies/{}/'.format(id)
+        state_topic = '~white/{}/status'.format(light_id)
+        command_topic = '~white/{}/set'.format(light_id)
+        availability_topic = '~online'
+        unique_id = '{}-light-white-{}'.format(id, light_id)
+        config_topic = '{}/light/{}-white-{}/config'.format(
+            disc_prefix, id, light_id)
+        if data.get(id):
+            config_light = data.get(id)
+        elif data.get(id.lower()):
+            config_light = data.get(id.lower())
+        if config_light == ATTR_WHITE:
+            payload = '{\"schema\":\"template\",' \
+                '\"name\":\"' + light_name + '\",' \
+                '\"cmd_t\":\"' + command_topic + '\",' \
+                '\"stat_t\":\"' + state_topic + '\",' \
+                '\"avty_t\":\"' + availability_topic + '\",' \
+                '\"pl_avail\":\"true\",' \
+                '\"pl_not_avail\":\"false\",' \
+                '\"command_on_template\":\"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness | float | multiply(0.3922) | round(0)}}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %},\\"effect\\":{{ effect }}{% endif %}}\",' \
+                '\"command_off_template\":\"{\\"turn\\":\\"off\\"}\",' \
+                '\"state_template\":\"{% if value_json.ison %}on{% else %}off{% endif %}\",' \
+                '\"brightness_template\":\"{{ value_json.brightness | float | multiply(2.55) | round(0) }}\",' \
+                '\"uniq_id\":\"' + unique_id + '\",' \
+                '\"dev\": {\"ids\": [\"' + mac + '\"],' \
+                '\"name\":\"' + device_name + '\",' \
+                '\"mdl\":\"' + model + '\",' \
+                '\"sw\":\"' + fw_ver + '\",' \
+                '\"mf\":\"' + ATTR_SHELLY + '\"},' \
+                '\"~\":\"' + default_topic + '\"}'
+        else:
+            payload = ''
         service_data = {
             'topic': config_topic,
             'payload': payload,
