@@ -55,11 +55,14 @@ For example:
       id: '{{ trigger.payload_json.id }}'
       mac: '{{ trigger.payload_json.mac }}'
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
+      qos: 2
       shelly1-001122-relay-0: 'light'
       shellyswitch-334455: 'cover'
       shellyrgbw2-AABB22: 'white'
       shellyrgbw2-CC2211: 'rgbw'
 
+qos - maximum QoS level of the topics, this is optional argument, default is 0
+      (integer)
 
 shelly1-001122-relay-0: 'light' - means that relay 0 of shelly1-001122 will use
 light component in Home Assistant. You can use switch, light or fan.
@@ -82,7 +85,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.9.1'
+VERSION = '0.9.2'
 
 ATTR_DEVELOP = 'develop'
 
@@ -91,6 +94,7 @@ ATTR_MAC = 'mac'
 ATTR_FW_VER = 'fw_ver'
 ATTR_DISCOVERY_PREFIX = 'discovery_prefix'
 ATTR_TEMP_UNIT = 'temp_unit'
+ATTR_QOS = 'qos'
 
 ATTR_TEMPLATE_TEMPERATURE = '{{ value | float | round(1) }}'
 ATTR_TEMPLATE_HUMIDITY = '{{ value | float | round(1) }}'
@@ -142,11 +146,21 @@ ATTR_1_0_PAYLOAD = {ATTR_ON: '1', ATTR_OFF: '0'}
 
 develop = False
 retain = True
+qos = 0
 roller_mode = False
 
 id = data.get(ATTR_ID)
 mac = data.get(ATTR_MAC)
 fw_ver = data.get(ATTR_FW_VER)
+try:
+    if data.get(ATTR_QOS):
+        if int(data.get(ATTR_QOS)) in [0, 1, 2]:
+            qos = int(data.get(ATTR_QOS))
+        else:
+            raise ValueError
+except ValueError:
+    logger.error("Wrong qos argument! Should be 0, 1 or 2. The default \
+                        value 0 was used.")
 temp_unit = ATTR_UNIT_CELSIUS
 if data.get(ATTR_TEMP_UNIT) is not None:
     if data.get(ATTR_TEMP_UNIT) == 'F':
@@ -181,6 +195,7 @@ else:
     bin_sensors = []
     bin_sensors_classes = []
     rgbw_lights = 0
+    white_lights = 0
     battery_powered = False
 
     if id[:-7] == 'shelly1':
@@ -353,6 +368,7 @@ else:
                 '\"pl_avail\":\"true\",' \
                 '\"pl_not_avail\":\"false\",' \
                 '\"uniq_id\":\"' + unique_id + '\",' \
+                '\"qos\":\"' + str(qos) + '\",' \
                 '\"dev\": {\"ids\": [\"' + mac + '\"],' \
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
@@ -365,7 +381,7 @@ else:
             'topic': config_topic,
             'payload': payload,
             'retain': retain,
-            'qos': 0
+            'qos': qos
         }
         hass.services.call('mqtt', 'publish', service_data, False)
 
@@ -395,6 +411,7 @@ else:
                     '\"pl_avail\":\"true\",' \
                     '\"pl_not_avail\":\"false\",' \
                     '\"uniq_id\":\"' + unique_id + '\",' \
+                    '\"qos\":\"' + str(qos) + '\",' \
                     '\"dev\": {\"ids\": [\"' + mac + '\"],' \
                     '\"name\":\"' + device_name + '\",' \
                     '\"mdl\":\"' + model + '\",' \
@@ -407,7 +424,7 @@ else:
                 'topic': config_topic,
                 'payload': payload,
                 'retain': retain,
-                'qos': 0
+                'qos': qos
             }
             hass.services.call('mqtt', 'publish', service_data, False)
 
@@ -430,6 +447,7 @@ else:
                         '\"pl_avail\":\"true\",' \
                         '\"pl_not_avail\":\"false\",' \
                         '\"uniq_id\":\"' + unique_id + '\",' \
+                        '\"qos\":\"' + str(qos) + '\",' \
                         '\"dev\": {\"ids\": [\"' + mac + '\"],' \
                         '\"name\":\"' + device_name + '\",' \
                         '\"mdl\":\"' + model + '\",' \
@@ -442,7 +460,7 @@ else:
                     'topic': config_topic,
                     'payload': payload,
                     'retain': retain,
-                    'qos': 0
+                    'qos': qos
                 }
                 hass.services.call('mqtt', 'publish', service_data, False)
         for sensor_id in range(0, len(relays_sensors)):
@@ -467,6 +485,7 @@ else:
                     '\"pl_avail\":\"true\",' \
                     '\"pl_not_avail\":\"false\",' \
                     '\"uniq_id\":\"' + unique_id + '\",' \
+                    '\"qos\":\"' + str(qos) + '\",' \
                     '\"dev\": {\"ids\": [\"' + mac + '\"],' \
                     '\"name\":\"' + device_name + '\",' \
                     '\"mdl\":\"' + model + '\",' \
@@ -479,7 +498,7 @@ else:
                 'topic': config_topic,
                 'payload': payload,
                 'retain': retain,
-                'qos': 0
+                'qos': qos
             }
             hass.services.call('mqtt', 'publish', service_data, False)
 
@@ -503,6 +522,7 @@ else:
                 '\"dev_cla\":\"' + sensors_classes[sensor_id] + '\",' \
                 '\"val_tpl\":\"' + sensors_templates[sensor_id] + '\",' \
                 '\"uniq_id\":\"' + unique_id + '\",' \
+                '\"qos\":\"' + str(qos) + '\",' \
                 '\"dev\": {\"ids\": [\"' + mac + '\"],' \
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
@@ -519,6 +539,7 @@ else:
                 '\"pl_avail\":\"true\",' \
                 '\"pl_not_avail\":\"false\",' \
                 '\"uniq_id\":\"' + unique_id + '\",' \
+                '\"qos\":\"' + str(qos) + '\",' \
                 '\"dev\": {\"ids\": [\"' + mac + '\"],' \
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
@@ -529,7 +550,7 @@ else:
             'topic': config_topic,
             'payload': payload,
             'retain': retain,
-            'qos': 0
+            'qos': qos
         }
         hass.services.call('mqtt', 'publish', service_data, False)
 
@@ -550,6 +571,7 @@ else:
                 '\"pl_off\":\"' + bin_sensors_payload[bin_sensor_id][ATTR_OFF] + '\",' \
                 '\"dev_cla\":\"' + bin_sensors_classes[bin_sensor_id] + '\",' \
                 '\"uniq_id\":\"' + unique_id + '\",' \
+                '\"qos\":\"' + str(qos) + '\",' \
                 '\"dev\": {\"ids\": [\"' + mac + '\"],' \
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
@@ -566,6 +588,7 @@ else:
                 '\"pl_not_avail\":\"false\",' \
                 '\"dev_cla\":\"' + bin_sensors_classes[bin_sensor_id] + '\",' \
                 '\"uniq_id\":\"' + unique_id + '\",' \
+                '\"qos\":\"' + str(qos) + '\",' \
                 '\"dev\": {\"ids\": [\"' + mac + '\"],' \
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
@@ -576,7 +599,7 @@ else:
             'topic': config_topic,
             'payload': payload,
             'retain': retain,
-            'qos': 0
+            'qos': qos
         }
         hass.services.call('mqtt', 'publish', service_data, False)
 
@@ -613,6 +636,7 @@ else:
                 '\"whit_val_tpl\":\"{{ value_json.white }}\",' \
                 '\"effect_template\":\"{{ value_json.effect }}\",' \
                 '\"uniq_id\":\"' + unique_id + '\",' \
+                '\"qos\":\"' + str(qos) + '\",' \
                 '\"dev\": {\"ids\": [\"' + mac + '\"],' \
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
@@ -625,7 +649,7 @@ else:
             'topic': config_topic,
             'payload': payload,
             'retain': retain,
-            'qos': 0
+            'qos': qos
         }
         hass.services.call('mqtt', 'publish', service_data, False)
 
@@ -656,6 +680,7 @@ else:
                 '\"state_template\":\"{% if value_json.ison %}on{% else %}off{% endif %}\",' \
                 '\"brightness_template\":\"{{ value_json.brightness | float | multiply(2.55) | round(0) }}\",' \
                 '\"uniq_id\":\"' + unique_id + '\",' \
+                '\"qos\":\"' + str(qos) + '\",' \
                 '\"dev\": {\"ids\": [\"' + mac + '\"],' \
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
@@ -668,6 +693,6 @@ else:
             'topic': config_topic,
             'payload': payload,
             'retain': retain,
-            'qos': 0
+            'qos': qos
         }
         hass.services.call('mqtt', 'publish', service_data, False)
