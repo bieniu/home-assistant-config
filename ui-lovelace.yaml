@@ -20,10 +20,10 @@ resources:
   - url: /customcards/popup-card.js
     type: js
 
-background: >-
-  center / cover no-repeat
-  url("/local/pictures/bg.jpg")
-  fixed
+# background: >-
+#   center / cover no-repeat
+#   url("/local/pictures/bg.jpg")
+#   fixed
 # background: '#e5e5e5'
 
 title: 'Dom'
