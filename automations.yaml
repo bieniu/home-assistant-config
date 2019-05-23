@@ -2485,8 +2485,8 @@
 - id: mqtt_devices_announce
   alias: 'MQTT Devices Announce'
   trigger:
-    - platform: homeassistant
-      event: start
+    platform: homeassistant
+    event: start
   action:
     - service: mqtt.publish
       data:
@@ -2500,7 +2500,7 @@
 - id: shellies_discovery
   alias: 'Shellies Discovery'
   trigger:
-  - platform: mqtt
+    platform: mqtt
     topic: 'shellies/announce'
   action:
     service: python_script.shellies_discovery
@@ -2512,3 +2512,13 @@
       shelly1-328900-relay-0: 'light'
       shellyswitch-5B2604-relay-0: 'switch'
       shellyswitch-5B2604-relay-1: 'light'
+
+- id: frontend_set_theme
+  alias: 'Frontend Set Theme'
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+    service: frontend.set_theme
+    data:
+      name: blue-mix

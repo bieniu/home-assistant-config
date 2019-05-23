@@ -28,11 +28,8 @@ secrets.yaml
 travis_secrets.yaml
 known_devices.yaml
 WIP*.py
-themes/
-panels/
 panels
-zwavegraph.html
-panels/zwavegraph.html
-!/python_scripts/*.json
-!/tasker/*.xml
-!/.gitignore
+themes
+!python_scripts/*.json
+!.gitignore
+!themes/blue_mix.yaml
