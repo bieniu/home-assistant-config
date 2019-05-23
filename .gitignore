@@ -29,7 +29,8 @@ travis_secrets.yaml
 known_devices.yaml
 WIP*.py
 panels
-themes
 !python_scripts/*.json
-!.gitignore
+themes/*.yaml
 !themes/blue_mix.yaml
+!.gitignore
+

@@ -273,6 +273,7 @@ views:
     icon: mdi:map
     title: 'Mapa'
     path: map
+    theme: default
     panel: true
     cards:
       - type: map
