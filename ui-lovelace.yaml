@@ -24,7 +24,7 @@ resources:
 #   center / cover no-repeat
 #   url("/local/pictures/bg.jpg")
 #   fixed
-# background: '#e5e5e5'
+background: '#e5e5e5'
 
 title: 'Dom'
 views:
@@ -184,6 +184,7 @@ views:
                     hide:
                       controls: true
                       volume: true
+                      power: true
                     info: scroll
                     group: true
           - type: custom:vertical-stack-in-card

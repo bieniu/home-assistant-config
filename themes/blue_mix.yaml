@@ -5,18 +5,18 @@ blue-mix:
   # disabled-text-color: '#bdbdbd'
 
   primary-color: '#5294e2'
-  # dark-primary-color: '#0288d1'
-  # light-primary-color: '#b3e5fC'
+  dark-primary-color: '#0067b0'
+  light-primary-color: '#89c4ff'
   accent-color: '#ffb750'
   # divider-color: 'rgba(0, 0, 0, .12)'
 
-  state-icon-color: '#0067b0'
+  state-icon-color: 'var(--dark-primary-color)'
   state-icon-active-color: '#ffb750'
   # state-icon-unavailable-color: 'var(--disabled-text-color)'
 
   # card-background-color: '#ffffff'
-  primary-background-color: '#e1e2e1'
-  secondary-background-color: '#e1e2e1'
+  # primary-background-color: '#e5e5e5'
+  # secondary-background-color: '#d6d6d6'
 
   # sidebar-text-color: 'var(--primary-text-color)'
   # sidebar-background-color: 'var(--paper-listbox-background-color)'
@@ -64,8 +64,8 @@ blue-mix:
   # paper-listbox-background-color: 'var(--card-background-color)'
   # paper-item-icon-color: 'var(--state-icon-color)'
   # paper-item-icon-active-color: 'var(--state-icon-active-color)'
-  table-row-background-color: '#adadad'
-  table-row-alternative-background-color: '#ededed'
+  # table-row-background-color: '#c9c9c9'
+  # table-row-alternative-background-color: '#efefef'
 
   # paper-toggle-button-checked-ink-color: 'var(--toggle-button-color)'
   # paper-toggle-button-checked-button-color: 'var(--toggle-button-color)'
@@ -82,3 +82,5 @@ blue-mix:
   # ha-paper-slider-pin-font-size: '15px'
 
   # mdc-theme-primary: 'var(--primary-color)'
+
+  ha-card-border-radius: '10px'
