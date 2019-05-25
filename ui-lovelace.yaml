@@ -64,27 +64,50 @@ views:
         cards:
           - type: vertical-stack
             cards:
-              - type: custom:monster-card
-                card:
-                  type: glance
-                  title: 'Rodzina'
-                  show_name: false
-                filter:
-                  include:
-                    - entity_id: person.edyta
-                    - entity_id: person.maciek
-                    - entity_id: person.antek
-                      state: home
-                    - entity_id: person.grazyna
-                      state: home
-                    - entity_id: person.romana
-                      state: home
-                    - entity_id: person.jerzy
-                      state: home
-                    - entity_id: person.emil
-                      state: home
-                    - entity_id: person.agnieszka
-                      state: home
+              - type: horizontal-stack
+                cards:
+                  - type: picture-entity
+                    entity: person.maciek
+                    state_image:
+                      'home': '/local/pictures/maciek_big.jpg'
+                      'not_home': /local/pictures/maciek_big_bw.jpg
+                    show_name: false
+                    aspect_ratio: 1
+                  - type: picture-entity
+                    entity: person.edyta
+                    state_image:
+                      'home': '/local/pictures/edyta_big.jpg'
+                      'not_home': /local/pictures/edyta_big_bw.jpg
+                    show_name: false
+                    aspect_ratio: 1
+                  - type: picture-entity
+                    entity: person.antek
+                    state_image:
+                      'home': '/local/pictures/antek_big.jpg'
+                      'not_home': /local/pictures/antek_big_bw.jpg
+                    show_name: false
+                    aspect_ratio: 1
+              # - type: custom:monster-card
+              #   card:
+              #     type: glance
+              #     title: 'Rodzina'
+              #     show_name: false
+              #   filter:
+              #     include:
+              #       - entity_id: person.maciek
+              #       - entity_id: person.edyta
+              #       - entity_id: person.antek
+              #         state: home
+              #       - entity_id: person.grazyna
+              #         state: home
+              #       - entity_id: person.romana
+              #         state: home
+              #       - entity_id: person.jerzy
+              #         state: home
+              #       - entity_id: person.emil
+              #         state: home
+              #       - entity_id: person.agnieszka
+              #         state: home
               - type: entities
                 title: 'Przedpokój'
                 show_header_toggle: false
