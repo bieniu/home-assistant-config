@@ -1,6 +1,12 @@
 - platform: workday
   country: 'PL'
 
+- platform: meteoalarm
+  country: 'PL'
+  province: 'Łowicki'
+  language: 'PL'
+  scan_interval: 1800
+
 - platform: template
   sensors:
     people_at_home:

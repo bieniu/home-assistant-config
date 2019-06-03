@@ -541,6 +541,21 @@
           W następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level() }}
         notification_id: 'notification-low-battery'
 
+# powiadomienie o zagrożeniach pogodowych
+- id: notification_meteoalarm
+  alias: 'Notification MeteoAlarm'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.meteoalarm
+    to: 'on'
+  action:
+    service: script.notify
+    data_template:
+      notify_edyta: true
+      title: "{{ trigger.to_state.attributes.headline }}"
+      message: "{{ trigger.to_state.attributes.description }}"
+      tag: 'notification-meteoalarm'
+
 ##################################################################################################
 
 #### OBECNOŚĆ ####################################################################################
@@ -2151,6 +2166,52 @@
 ##################################################################################################
 
 #### HARMONY #####################################################################################
+# wyłączenie telewizora jeśli Harmony przejdzie do aktywności PowerOff
+- id: harmony_turn_off_television
+  alias: 'Harmony Turn Off Television'
+  trigger:
+    platform: state
+    entity_id: remote.salon
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: "{{ trigger.to_state.attributes.current_activity == 'PowerOff' }}"
+      - condition: state
+        entity_id: media_player.bravia
+        state: 'on'
+  action:
+    - delay: '00:00:03'
+    - condition: state
+      entity_id: media_player.bravia
+      state: 'on'
+    - service: media_player.turn_off
+      entity_id: media_player.bravia
+
+# wyłączenie PlayStation jeśli Harmony przejdzie do aktywności innej niż PlayStation
+- id: harmony_turn_off_playstation
+  alias: 'Harmony Turn Off PlayStation'
+  trigger:
+    platform: state
+    entity_id: remote.salon
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: "{{ trigger.from_state.attributes.current_activity == 'PlayStation' }}"
+      - condition: template
+        value_template: "{{ trigger.to_state.attributes.current_activity != 'PlayStation' }}"
+      - condition: state
+        entity_id: media_player.playstation
+        state: 'idle'
+  action:
+    - delay: '00:00:10'
+    - condition: state
+      entity_id: media_player.playstation
+      state: 'idle'
+    - service: media_player.turn_off
+      entity_id: media_player.playstation
+
 - id: harmony_turn_off_tv
   alias: 'Harmony Turn Off TV'
   trigger:
