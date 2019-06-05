@@ -1,10 +1,4 @@
 homeassistant:
-  name: 'Dom'
-  latitude: !secret home_latitude
-  longitude: !secret home_longitude
-  elevation: 97
-  unit_system: metric
-  time_zone: Europe/Warsaw
   customize: !include customize.yaml
   customize_glob: !include customize_glob.yaml
   whitelist_external_dirs: '/home/homeassistant/.homeassistant/www/snapshots'
@@ -105,17 +99,11 @@ xiaomi_aqara:
     key: !secret migateway_key
 
 camera:
-  # - platform: ffmpeg
-  #   name: 'Salon'
-  #   input: !secret dafang_ffmpeg_input
-  #   extra_arguments: '-vf scale=800:450 -pred 1 -q:v 2'
   - platform: generic
     name: 'Salon'
     still_image_url: !secret dafang_still_mage_url
     stream_source: !secret dafang_rtsp_url
     scan_interval: 5
-
-# stream:
 
 notify:
   - platform: html5

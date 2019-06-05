@@ -5,5 +5,5 @@ logs:
   homeassistant.components.zwave: info
   homeassistant.components.generic.camera: debug
   homeassistant.components.stream: debug
-  homeassistant.components.media_player.androidtv: error
+  homeassistant.components.media_player: error
   homeassistant.components.binary_sensor.meteoalarm: debug
