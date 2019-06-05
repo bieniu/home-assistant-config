@@ -19,11 +19,9 @@ resources:
     type: module
   - url: /customcards/popup-card.js
     type: js
+  - url: /customcards/light-entity-card.js
+    type: js
 
-# background: >-
-#   center / cover no-repeat
-#   url("/local/pictures/bg.jpg")
-#   fixed
 background: '#e5e5e5'
 
 title: 'Dom'
@@ -65,7 +63,13 @@ views:
           cards:
             - type: history-graph
               entities:
-                - person.edyta
+                - person.antek
+      switch.light_bulbs_salon:
+        title: 'Żarówki'
+        card:
+          type: custom:light-entity-card
+          entity: light.bulbs_salon
+          header: false
     cards:
       - type: custom:layout-card
         column_width: 310

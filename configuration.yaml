@@ -30,6 +30,7 @@ custom_updater:
     - https://raw.githubusercontent.com/iammexx/home-assistant-config/master/ui/darksky/version.json
     - https://raw.githubusercontent.com/kalkih/mini-graph-card/master/tracker.json
     - https://raw.githubusercontent.com/MizterB/lovelace-secondaryinfo-entity-row/master/custom_cards.json
+    - https://raw.githubusercontent.com/ljmerza/light-entity-card/master/custom_updater.json
   python_script_urls:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
   component_urls:
@@ -89,6 +90,8 @@ discovery:
     - yeelight
     - philips_hue
     - google_cast
+
+ssdp:
 
 zeroconf:
 
