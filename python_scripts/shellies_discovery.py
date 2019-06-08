@@ -103,6 +103,7 @@ ATTR_TEMPLATE_POWER = '{{ value | float | round(1) }}'
 ATTR_TEMPLATE_ENERGY = '{{ (value | float / 60 / 1000) | round(2) }}'
 ATTR_TEMPLATE_BATTERY = '{{ value | float | round }}'
 
+ATTR_MANUFACTURER = 'Allterco Robotics'
 ATTR_MODEL_SHELLY1 = 'Shelly1'
 ATTR_MODEL_SHELLY1PM = 'Shelly1PM'
 ATTR_MODEL_SHELLY2 = 'Shelly2'
@@ -373,7 +374,7 @@ else:
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
                 '\"sw\":\"' + fw_ver + '\",' \
-                '\"mf\":\"' + ATTR_SHELLY + '\"},' \
+                '\"mf\":\"' + ATTR_MANUFACTURER + '\"},' \
                 '\"~\":\"' + default_topic + '\"}'
         else:
             payload = ''
@@ -416,7 +417,7 @@ else:
                     '\"name\":\"' + device_name + '\",' \
                     '\"mdl\":\"' + model + '\",' \
                     '\"sw\":\"' + fw_ver + '\",' \
-                    '\"mf\":\"' + ATTR_SHELLY + '\"},' \
+                    '\"mf\":\"' + ATTR_MANUFACTURER + '\"},' \
                     '\"~\":\"' + default_topic + '\"}'
             else:
                 payload = ''
@@ -452,7 +453,7 @@ else:
                         '\"name\":\"' + device_name + '\",' \
                         '\"mdl\":\"' + model + '\",' \
                         '\"sw\":\"' + fw_ver + '\",' \
-                        '\"mf\":\"' + ATTR_SHELLY + '\"},' \
+                        '\"mf\":\"' + ATTR_MANUFACTURER + '\"},' \
                         '\"~\":\"' + default_topic + '\"}'
                 else:
                     payload = ''
@@ -490,7 +491,7 @@ else:
                     '\"name\":\"' + device_name + '\",' \
                     '\"mdl\":\"' + model + '\",' \
                     '\"sw\":\"' + fw_ver + '\",' \
-                    '\"mf\":\"' + ATTR_SHELLY + '\"},' \
+                    '\"mf\":\"' + ATTR_MANUFACTURER + '\"},' \
                     '\"~\":\"' + default_topic + '\"}'
             else:
                 payload = ''
@@ -527,7 +528,7 @@ else:
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
                 '\"sw\":\"' + fw_ver + '\",' \
-                '\"mf\":\"' + ATTR_SHELLY + '\"},' \
+                '\"mf\":\"' + ATTR_MANUFACTURER + '\"},' \
                 '\"~\":\"' + default_topic + '\"}'
         else:
             payload = '{\"name\":\"' + sensor_name + '\",' \
@@ -544,7 +545,7 @@ else:
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
                 '\"sw\":\"' + fw_ver + '\",' \
-                '\"mf\":\"' + ATTR_SHELLY + '\"},' \
+                '\"mf\":\"' + ATTR_MANUFACTURER + '\"},' \
                 '\"~\":\"' + default_topic + '\"}'
         service_data = {
             'topic': config_topic,
@@ -576,7 +577,7 @@ else:
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
                 '\"sw\":\"' + fw_ver + '\",' \
-                '\"mf\":\"' + ATTR_SHELLY + '\"},' \
+                '\"mf\":\"' + ATTR_MANUFACTURER + '\"},' \
                 '\"~\":\"' + default_topic + '\"}'
         else:
             payload = '{\"name\":\"' + sensor_name + '\",' \
@@ -593,7 +594,7 @@ else:
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
                 '\"sw\":\"' + fw_ver + '\",' \
-                '\"mf\":\"' + ATTR_SHELLY + '\"},' \
+                '\"mf\":\"' + ATTR_MANUFACTURER + '\"},' \
                 '\"~\":\"' + default_topic + '\"}'
         service_data = {
             'topic': config_topic,
@@ -641,7 +642,7 @@ else:
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
                 '\"sw\":\"' + fw_ver + '\",' \
-                '\"mf\":\"' + ATTR_SHELLY + '\"},' \
+                '\"mf\":\"' + ATTR_MANUFACTURER + '\"},' \
                 '\"~\":\"' + default_topic + '\"}'
         else:
             payload = ''
@@ -685,7 +686,7 @@ else:
                 '\"name\":\"' + device_name + '\",' \
                 '\"mdl\":\"' + model + '\",' \
                 '\"sw\":\"' + fw_ver + '\",' \
-                '\"mf\":\"' + ATTR_SHELLY + '\"},' \
+                '\"mf\":\"' + ATTR_MANUFACTURER + '\"},' \
                 '\"~\":\"' + default_topic + '\"}'
         else:
             payload = ''
