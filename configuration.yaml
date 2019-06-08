@@ -1,7 +1,8 @@
 homeassistant:
   customize: !include customize.yaml
   customize_glob: !include customize_glob.yaml
-  whitelist_external_dirs: '/home/homeassistant/.homeassistant/www/snapshots'
+  whitelist_external_dirs:
+    - /home/homeassistant/.homeassistant/www/snapshots
 
 frontend:
   themes: !include_dir_merge_named themes
