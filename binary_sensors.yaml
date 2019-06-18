@@ -1,11 +1,10 @@
 - platform: workday
   country: 'PL'
 
-- platform: meteoalarm
-  country: 'PL'
-  province: 'Łowicki'
-  language: 'PL'
-  scan_interval: 1800
+# - platform: meteoalarm
+#   country: 'PL'
+#   province: 'Łowicki'
+#   language: 'PL'
 
 - platform: template
   sensors:
