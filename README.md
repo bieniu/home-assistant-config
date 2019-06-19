@@ -27,14 +27,16 @@
 
 ## Switches
 
-* Sonoff Basic Switches [[Tasmota firmware](https://github.com/arendst/Sonoff-Tasmota)]
+* Sonoff Basic Switches [[Tasmota](https://github.com/arendst/Sonoff-Tasmota) and [ESPHome](https://esphome.io) firmware]
 * Sonoff S26 Plug [[Tasmota firmware](https://github.com/arendst/Sonoff-Tasmota)]
 * [Shelly1](https://shelly.cloud/shelly1-open-source/) via MQTT
 * [Shelly2](https://shelly.cloud/shelly2/) via MQTT
+* [Shelly Plug S](https://shelly.cloud/shelly-plug-s/) via MQTT
 
 ## Sensors
 
 * Wemos D1 mini + MH-Z19B [[Tasmota firmware](https://github.com/arendst/Sonoff-Tasmota)]
+* [Shelly H&T](https://shelly.cloud/shelly-humidity-and-temperature/)
 
 ## Other Integrated Devices
 
@@ -51,7 +53,7 @@
 * OnePlus 6 [Android phone by [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm)]
 * CyberPower DL650ELCD [UPS]
 * Xiaomi DaFang [camera with [custom firmware](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks)]
-* Sony Bravia TV (Android TV) 
+* Sony Bravia TV (Android TV)
 
 ## Home Assistant Custom Components
 

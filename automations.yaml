@@ -297,6 +297,8 @@
       entity_id: sensor.shelly1_firmware_version_current
     - platform: state
       entity_id: sensor.shelly2_firmware_version_current
+    - platform: state
+      entity_id: sensor.shelly_plug_s_firmware_version_current
   condition:
     condition: and
     conditions:

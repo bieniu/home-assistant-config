@@ -48,6 +48,15 @@
   password: !secret shellies_password
   scan_interval: 7200
 
+- platform: rest
+  resource: !secret shelly_plug_s_url
+  name: 'Shelly Plug S Firmware Version Current'
+  value_template: "{{ (value_json['update'].new_version).split('/')[1].split('@')[0] | replace('v', '') }}"
+  authentication: basic
+  username: !secret shellies_username
+  password: !secret shellies_password
+  scan_interval: 7200
+
 - platform: nut
   name: 'UPS'
   host: !secret ups_host
@@ -167,6 +176,15 @@
 
 - platform: template
   sensors:
+    dishwasher_kuchnia:
+      friendly_name: 'Zmywarka'
+      value_template: >-
+        {% if states('sensor.dishwasher_power') | int > 1 %}
+          zmywanie
+        {% else %}
+          wyłączona
+        {% endif %}
+
     power_light_salon:
       friendly_name: 'Oświetlenie salonu'
       unit_of_measurement: 'W'

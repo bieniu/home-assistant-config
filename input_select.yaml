@@ -165,13 +165,13 @@ log_level:
   initial: 'warning'
 
 salon_harmony:
-    name: 'Telewizor'
-    options:
-      - 'wyłączony'
-      - 'telewizja'
-      - 'Smart TV'
-      - 'filmy'
-      - 'muzyka'
-      - 'PlayStation'
-      - 'Xbox'
-    icon: mdi:television
+  name: 'Telewizor'
+  options:
+    - 'wyłączony'
+    - 'telewizja'
+    - 'Smart TV'
+    - 'filmy'
+    - 'muzyka'
+    - 'PlayStation'
+    - 'Xbox'
+  icon: mdi:television

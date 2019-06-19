@@ -42,12 +42,20 @@
   icon: mdi:flash-outline
 
 #### SONOFF ####
-'binary_sensor.sonoff_*_status':
+'binary_sensor.sonoff*_status':
   icon: mdi:light-switch
+'sensor.sonoff*_uptime':
+  unit_of_measurement: 'dni'
 
 #### SHELLY ####
-'binary_sensor.shelly*_status':
+'binary_sensor.shelly1*_status':
   icon: mdi:light-switch
+'binary_sensor.shelly2*_status':
+  icon: mdi:light-switch
+'binary_sensor.shelly_plug*_status':
+  icon: mdi:light-switch
+'binary_sensor.shelly_ht*_status':
+  icon: mdi:thermometer-lines
 
 #### LIGHTS ####
 'light.lightstrip_*':

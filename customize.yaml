@@ -21,6 +21,8 @@ sensor.shelly1_firmware_version_current:
   friendly_name: 'Shelly1'
 sensor.shelly2_firmware_version_current:
   friendly_name: 'Shelly2'
+sensor.shelly_plug_s_firmware_version_current:
+  friendly_name: 'Shelly Plug S'
 
 #### LIGHTS ####
 light.gateway_antresola:
@@ -277,3 +279,7 @@ sensor.energy_light_salon_monthly:
 #### AIRLY ####
 sensor.airly_info:
   icon: mdi:weather-fog
+
+#### DISHWASHER ####
+sensor.dishweasher_kuchnia:
+  icon: mdi:dishwasher
