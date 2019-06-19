@@ -85,7 +85,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.9.3'
+VERSION = '0.9.4'
 
 ATTR_DEVELOP = 'develop'
 
@@ -273,6 +273,13 @@ else:
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
         ]
+        sensors = [ATTR_TEMPERATURE]
+        sensors_classes = sensors
+        sensors_units = [temp_unit]
+        sensors_templates = [ATTR_TEMPLATE_TEMPERATURE]
+        bin_sensors = [ATTR_OVERTEMPERATURE]
+        bin_sensors_classes = [ATTR_HEAT]
+        bin_sensors_payload = [ATTR_1_0_PAYLOAD]
 
     if id[:-7] == 'shelly4pro':
         model = ATTR_MODEL_SHELLY4PRO
