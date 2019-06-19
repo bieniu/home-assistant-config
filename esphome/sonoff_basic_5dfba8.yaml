@@ -61,10 +61,10 @@ status_led:
 sensor:
   - platform: uptime
     name: '$device_name Uptime'
-    unit_of_measurement: min
+    unit_of_measurement: days
     update_interval: 300s
     filters:
-      - multiply: 0.016666667
+      - multiply: 0.000011574
 
   - platform: wifi_signal
     name: '$device_name WiFi Signal'
