@@ -1,0 +1,71 @@
+substitutions:
+  device_name: 'Sonoff Basic 067C81'
+  device_name_lower: 'sonoff_basic_067c81'
+  device_hostname: 'sonoff-basic-067c81'
+
+esphome:
+  name: $device_name_lower
+  platform: ESP8266
+  board: esp01_1m
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  use_address: $device_hostname
+  domain: !secret local_domain
+  fast_connect: true
+
+logger:
+
+api:
+  password: !secret esphome_password
+
+ota:
+  password: !secret esphome_password
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+    timezone: Europe/Warsaw
+
+web_server:
+  port: 80
+
+binary_sensor:
+  - platform: gpio
+    id: button
+    internal: true
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: true
+    on_press:
+      - light.toggle: relay_light
+
+output:
+  - platform: gpio
+    id: relay
+    pin: GPIO12
+
+light:
+  - platform: binary
+    id: relay_light
+    name: '$device_name Relay'
+    output: relay
+
+status_led:
+  pin:
+    number: GPIO13
+    inverted: true
+
+sensor:
+  - platform: uptime
+    name: '$device_name Uptime'
+    unit_of_measurement: days
+    update_interval: 300s
+    filters:
+      - multiply: 0.000011574
+
+  - platform: wifi_signal
+    name: '$device_name WiFi Signal'
+    update_interval: 300s
