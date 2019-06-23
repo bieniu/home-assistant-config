@@ -281,5 +281,5 @@ sensor.airly_info:
   icon: mdi:weather-fog
 
 #### DISHWASHER ####
-sensor.dishweasher_kuchnia:
+sensor.dishwasher_kuchnia:
   icon: mdi:dishwasher
