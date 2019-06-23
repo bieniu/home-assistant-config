@@ -23,11 +23,6 @@ api:
 ota:
   password: !secret esphome_password
 
-time:
-  - platform: homeassistant
-    id: homeassistant_time
-    timezone: Europe/Warsaw
-
 web_server:
   port: 80
 

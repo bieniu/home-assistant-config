@@ -44,6 +44,22 @@
     data_template:
       notification_id: '{{ trigger.event.data.tag }}'
 
+# powiadomienie o końcu zmywania
+- id: notification_dishwasher_end
+  alias: 'Notification Dishwasher End'
+  trigger:
+    - platform: state
+      entity_id: sensor.dishwasher_kuchnia
+      from: 'zmywanie'
+      to: 'wyłączona'
+  action:
+    service: script.notify
+    data_template:
+      title: 'Koniec zmywania'
+      message: "Zmywarka zakończyła zmywanie naczyń."
+      tag: 'notification-dishwasher'
+      notify_edyta: true
+
 # powiadomienie o włączonym komputerze
 - id: notification_desktop_computer_turned_on
   alias: 'Notification Desktop Computer Turned On'
@@ -139,7 +155,7 @@
     value_template: >
       {% macro dead_unavailable_entities() %}
         {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
-        {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor'] -%}
+        {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
         {% for domain in domains -%}
           {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
             - {{ item.name }} ({{ item.entity_id }})
@@ -155,7 +171,7 @@
         message: >
           {% macro dead_unavailable_entities() %}
             {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
-            {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor'] -%}
+            {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
             {% for domain in domains -%}
               {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
            - {{ item.name }} ({{ item.entity_id }})
@@ -170,7 +186,7 @@
         message: >
           {% macro dead_unavailable_entities() %}
             {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
-            {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor'] -%}
+            {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
             {% for domain in domains -%}
               {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
            - {{ item.name }} ({{ item.entity_id }})

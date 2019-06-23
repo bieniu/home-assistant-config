@@ -1,6 +1,12 @@
 - platform: integration
-  source: sensor.power_light_salon
-  name: 'Energy Light Salon'
+  source: sensor.light_salon_power_sum
+  name: 'Light Salon Energy'
+  unit_prefix: k
+  round: 2
+
+- platform: integration
+  source: sensor.dishwasher_kuchnia_power
+  name: 'Dishwasher Kuchnia Energy'
   unit_prefix: k
   round: 2
 
@@ -150,6 +156,7 @@
   type: mean
   name: 'Temperature Indoor'
   entity_ids:
+    - sensor.temperature_kuchnia
     - sensor.temperature_salon
     - sensor.temperature_antresola
     - sensor.temperature_gabinet
@@ -164,6 +171,7 @@
   type: mean
   name: 'Humidity Indoor'
   entity_ids:
+    - sensor.humidity_kuchnia
     - sensor.humidity_salon
     - sensor.humidity_antresola
     - sensor.humidity_gabinet
@@ -179,13 +187,13 @@
     dishwasher_kuchnia:
       friendly_name: 'Zmywarka'
       value_template: >-
-        {% if states('sensor.dishwasher_power') | int > 1 %}
+        {% if states('sensor.dishwasher_kuchnia_power') | int > 1 %}
           zmywanie
         {% else %}
           wyłączona
         {% endif %}
 
-    power_light_salon:
+    light_salon_power_sum:
       friendly_name: 'Oświetlenie salonu'
       unit_of_measurement: 'W'
       value_template: >-

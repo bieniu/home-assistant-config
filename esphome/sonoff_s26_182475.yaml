@@ -1,7 +1,7 @@
 substitutions:
-  device_name: 'Sonoff Basic A786CC'
-  device_name_lower: 'sonoff_basic_a786cc'
-  device_hostname: 'sonoff-basic-a786cc'
+  device_name: 'Sonoff S26 182475'
+  device_name_lower: 'sonoff_s26_182475'
+  device_hostname: 'sonoff-s26-182475'
 
 esphome:
   name: $device_name_lower
@@ -42,16 +42,16 @@ output:
     id: relay
     pin: GPIO12
 
+status_led:
+  pin:
+    number: GPIO13
+    inverted: true
+
 light:
   - platform: binary
     id: relay_light
     name: '$device_name Relay'
     output: relay
-
-status_led:
-  pin:
-    number: GPIO13
-    inverted: true
 
 sensor:
   - platform: uptime

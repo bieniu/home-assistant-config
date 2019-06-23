@@ -273,8 +273,10 @@ switch.camera_move_right:
   icon: mdi:chevron-double-right
 
 #### ENERGIA ####
-sensor.energy_light_salon_monthly:
+sensor.light_salon_energy_monthly:
   friendly_name: 'Oświetlenie salonu'
+sensor.dishwasher_kuchnia_energy_monthly:
+  friendly_name: 'Zmywarka'
 
 #### AIRLY ####
 sensor.airly_info:

@@ -50,8 +50,11 @@ system_health:
 mobile_app:
 
 utility_meter:
-  energy_light_salon_monthly:
-    source: sensor.energy_light_salon
+  light_salon_energy_monthly:
+    source: sensor.light_salon_energy
+    cycle: monthly
+  dishwasher_kuchnia_energy_monthly:
+    source: sensor.dishwasher_kuchnia_energy
     cycle: monthly
 
 sensor: !include sensors.yaml

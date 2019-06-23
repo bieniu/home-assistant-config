@@ -27,8 +27,8 @@
 
 ## Switches
 
-* Sonoff Basic Switches [[Tasmota](https://github.com/arendst/Sonoff-Tasmota) and [ESPHome](https://esphome.io) firmware]
-* Sonoff S26 Plug [[Tasmota firmware](https://github.com/arendst/Sonoff-Tasmota)]
+* Sonoff Basic Switches [[ESPHome](https://esphome.io) firmware]
+* Sonoff S26 Plug [[ESPHome](https://esphome.io) firmware]
 * [Shelly1](https://shelly.cloud/shelly1-open-source/) via MQTT
 * [Shelly2](https://shelly.cloud/shelly2/) via MQTT
 * [Shelly Plug S](https://shelly.cloud/shelly-plug-s/) via MQTT

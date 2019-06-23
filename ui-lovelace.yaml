@@ -110,29 +110,6 @@ views:
         cards:
           - type: vertical-stack
             cards:
-              # - type: horizontal-stack
-              #   cards:
-              #     - type: picture-entity
-              #       entity: person.maciek
-              #       state_image:
-              #         'home': '/local/pictures/maciek.jpg'
-              #         'not_home': '/local/pictures/maciek_bw.jpg'
-              #       show_name: false
-              #       aspect_ratio: 1
-              #     - type: picture-entity
-              #       entity: person.edyta
-              #       state_image:
-              #         'home': '/local/pictures/edyta.jpg'
-              #         'not_home': '/local/pictures/edyta_bw.jpg'
-              #       show_name: false
-              #       aspect_ratio: 1
-              #     - type: picture-entity
-              #       entity: person.antek
-              #       state_image:
-              #         'home': '/local/pictures/antek.jpg'
-              #         'not_home': '/local/pictures/antek_bw.jpg'
-              #       show_name: false
-              #       aspect_ratio: 1
               - type: custom:monster-card
                 card:
                   type: glance
@@ -154,17 +131,24 @@ views:
                 title: 'Przedpokój'
                 show_header_toggle: false
                 entities:
-                  - sensor.illumination_przedpokoj
+                  # - sensor.illumination_przedpokoj
                   - entity: binary_sensor.motion_przedpokoj
                     secondary_info: last-changed
                   - light.leds_przedpokoj
-              - type: entities
+              - type: custom:vertical-stack-in-card
                 title: 'Kuchnia'
-                show_header_toggle: false
-                entities:
-                  - binary_sensor.window_kuchnia
-                  - climate.thermostat_kuchnia
-                  - sensor.dishwasher_kuchnia
+                cards:
+                  - type: glance
+                    show_name: false
+                    entities:
+                      - sensor.temperature_kuchnia
+                      - sensor.humidity_kuchnia
+                  - type: entities
+                    show_header_toggle: false
+                    entities:
+                      - binary_sensor.window_kuchnia
+                      - climate.thermostat_kuchnia
+                      - sensor.dishwasher_kuchnia
           - type: custom:vertical-stack-in-card
             title: 'Salon'
             cards:
@@ -321,13 +305,18 @@ views:
                     secondary_info: last-changed
                   - climate.thermostat_sypialnia
                   - light.lightstrip_sypialnia
-          - type: entities
+          - type: custom:vertical-stack-in-card
             title: 'Łazienka'
-            show_header_toggle: false
-            entities:
-              - sensor.temperature_lazienka
-              - sensor.humidity_lazienka
-              - climate.thermostat_lazienka
+            cards:
+              - type: glance
+                show_name: false
+                entities:
+                  - sensor.temperature_lazienka
+                  - sensor.humidity_lazienka
+              - type: entities
+                show_header_toggle: false
+                entities:
+                  - climate.thermostat_lazienka
           - type: picture-glance
             title: 'Salon'
             entities:
@@ -489,6 +478,20 @@ views:
               - type: custom:vertical-stack-in-card
                 title: 'Pobór mocy'
                 cards:
+                  - type: custom:card-modder
+                    style:
+                      border-radius: 0px
+                    card:
+                      type: custom:mini-graph-card
+                      hour24: true
+                      decimals: 1
+                      points_per_hour: 1
+                      show:
+                        icon: false
+                        graph: bar
+                      entities:
+                        - sensor.light_salon_power_sum
+                      line_color: '#36a2eb'
                   - type: custom:mini-graph-card
                     hour24: true
                     decimals: 1
@@ -497,7 +500,7 @@ views:
                       icon: false
                       graph: bar
                     entities:
-                      - sensor.power_light_salon
+                      - sensor.dishwasher_kuchnia_power
                     line_color: '#36a2eb'
               - type: custom:vertical-stack-in-card
                 title: 'Zużycie energii'
@@ -510,7 +513,16 @@ views:
                       icon: false
                       graph: false
                     entities:
-                      - sensor.energy_light_salon_monthly
+                      - sensor.light_salon_energy_monthly
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 2
+                    lower_bound: 0
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.dishwasher_kuchnia_energy_monthly
           - type: custom:vertical-stack-in-card
             title: 'UPS'
             cards:
@@ -520,14 +532,18 @@ views:
                   - sensor.ups_status
                   - sensor.ups_battery_charge
                   - sensor.ups_load
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 0
-                show:
-                  icon: false
-                entities:
-                  - sensor.ups_input_voltage
-                line_color: '#ff6384'
+              - type: custom:card-modder
+                style:
+                  border-radius: 0px
+                card:
+                  type: custom:mini-graph-card
+                  hour24: true
+                  decimals: 0
+                  show:
+                    icon: false
+                  entities:
+                    - sensor.ups_input_voltage
+                  line_color: '#ff6384'
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 1
@@ -555,6 +571,7 @@ views:
             title: 'Baterie sensorów temperatury'
             show_header_toggle: false
             entities:
+              - sensor.battery_temp_humi_sensor_kuchnia
               - sensor.battery_temp_humi_sensor_salon
               - sensor.battery_temp_humi_sensor_pracownia
               - sensor.battery_temp_humi_sensor_goscinny
@@ -564,25 +581,16 @@ views:
               - sensor.battery_temp_humi_sensor_sypialnia
               - sensor.battery_temp_humi_sensor_lazienka
               - sensor.battery_temp_humi_sensor_outdoor
-          - type: vertical-stack
-            cards:
-              - type: entities
-                title: 'Baterie przełączników'
-                show_header_toggle: false
-                entities:
-                  - sensor.battery_switch_light_salon_1
-                  - sensor.battery_switch_light_salon_2
-                  - sensor.battery_switch_light_antek
-              - type: entities
-                title: 'Baterie termostatów'
-                show_header_toggle: false
-                entities:
-                  - sensor.battery_thermostat_salon
-                  - sensor.battery_thermostat_kuchnia
-                  - sensor.battery_thermostat_antresola
-                  - sensor.battery_thermostat_antek
-                  - sensor.battery_thermostat_sypialnia
-                  - sensor.battery_thermostat_lazienka
+          - type: entities
+            title: 'Baterie termostatów'
+            show_header_toggle: false
+            entities:
+              - sensor.battery_thermostat_salon
+              - sensor.battery_thermostat_kuchnia
+              - sensor.battery_thermostat_antresola
+              - sensor.battery_thermostat_antek
+              - sensor.battery_thermostat_sypialnia
+              - sensor.battery_thermostat_lazienka
           - type: entities
             title: 'Baterie sensorów okien/drzwi'
             show_header_toggle: false
@@ -592,6 +600,13 @@ views:
               - sensor.battery_window_sensor_antresola
               - sensor.battery_window_sensor_antek
               - sensor.battery_door_sensor_sypialnia
+          - type: entities
+            title: 'Baterie przełączników'
+            show_header_toggle: false
+            entities:
+              - sensor.battery_switch_light_salon_1
+              - sensor.battery_switch_light_salon_2
+              - sensor.battery_switch_light_antek
   - id: climate
     icon: mdi:cloud
     title: 'Klimat'
@@ -786,22 +801,20 @@ views:
                   - input_boolean.light_auto_turn_pracownia
                   - input_boolean.light_auto_turn_goscinny
                   - input_boolean.light_auto_turn_gabinet
-          - type: vertical-stack
-            cards:
               - type: entities
                 title: 'Skrypty i ustawienia'
                 show_header_toggle: false
                 entities:
                   - script.reboot_router
                   - input_select.log_level
-              - type: custom:tracker-card
-                title: 'Aktualizacje'
-                name_text: 'Nazwa'
-                current_text: 'Obecna'
-                available_text: 'Dostępna'
-                check_text: 'Sprawdź'
-                update_all_text: 'Aktualizuj'
-                trackers:
-                  - sensor.custom_card_tracker
-                  - sensor.custom_python_script_tracker
-                  - sensor.custom_component_tracker
+          - type: custom:tracker-card
+            title: 'Aktualizacje'
+            name_text: 'Nazwa'
+            current_text: 'Obecna'
+            available_text: 'Dostępna'
+            check_text: 'Sprawdź'
+            update_all_text: 'Aktualizuj'
+            trackers:
+              - sensor.custom_card_tracker
+              - sensor.custom_python_script_tracker
+              - sensor.custom_component_tracker
