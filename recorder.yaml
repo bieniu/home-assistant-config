@@ -82,8 +82,6 @@ exclude:
     - sensor.custom_component_tracker
     - sensor.ha_version_current
     - sensor.ha_version_installed
-    - sensor.shelly1_firmware_version_current
-    - sensor.shelly2_firmware_version_current
     - sensor.tasmota_version_current
     - sensor.last_boot
     - sensor.airly_data
@@ -92,6 +90,16 @@ exclude:
     - sensor.light_salon_power
     - sensor.mhz19b_model
     - sensor.mhz19b_temperature
+    - sensor.shelly1_firmware_version_current
+    - sensor.shelly2_firmware_version_current
+    - sensor.shelly_plug_s_firmware_version_current
+    - binary_sensor.shelly1_328900_input_0
+    - binary_sensor.shelly2_5b2604_input_0
+    - binary_sensor.shelly2_5b2604_input_1
+    - sensor.shelly2_5b2604_energy
+    - sensor.shelly_plug_s_7aecf4_energy
+    - sensor.shelly_plug_s_7aecf4_temperature
+    - binary_sensor.shelly_plug_s_7aecf4_overtemperature
 include:
   entities:
     - input_boolean.heating_season
