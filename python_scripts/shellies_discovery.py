@@ -85,7 +85,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.9.4'
+VERSION = '0.9.5'
 
 ATTR_DEVELOP = 'develop'
 
@@ -131,6 +131,7 @@ ATTR_FAN = 'fan'
 ATTR_SMOKE = 'smoke'
 ATTR_MOTION = 'motion'
 ATTR_CHARGER = 'charger'
+ATTR_INPUT = 'input'
 ATTR_OVERTEMPERATURE = 'overtemperature'
 ATTR_HEAT = 'heat'
 ATTR_COVER = 'cover'
@@ -189,6 +190,8 @@ else:
     relays_sensors_units = []
     relays_sensors_templates = []
     relays_sensors_classes = []
+    relays_bin_sensors = []
+    relays_bin_sensors_payload = []
     sensors = []
     sensors_units = []
     sensors_templates = []
@@ -202,6 +205,8 @@ else:
     if id[:-7] == 'shelly1':
         model = ATTR_MODEL_SHELLY1
         relays = 1
+        relays_bin_sensors = [ATTR_INPUT]
+        relays_bin_sensors_payload = [ATTR_1_0_PAYLOAD]
 
     if id[:-7] == 'shelly1pm':
         model = ATTR_MODEL_SHELLY1PM
@@ -213,6 +218,8 @@ else:
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
         ]
+        relays_bin_sensors = [ATTR_INPUT]
+        relays_bin_sensors_payload = [ATTR_1_0_PAYLOAD]
         sensors = [ATTR_TEMPERATURE]
         sensors_classes = sensors
         sensors_units = [temp_unit]
@@ -232,6 +239,8 @@ else:
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
         ]
+        relays_bin_sensors = [ATTR_INPUT]
+        relays_bin_sensors_payload = [ATTR_1_0_PAYLOAD]
 
     if id[:-7] == 'shellyswitch25':
         model = ATTR_MODEL_SHELLY25
@@ -244,6 +253,8 @@ else:
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
         ]
+        relays_bin_sensors = [ATTR_INPUT]
+        relays_bin_sensors_payload = [ATTR_1_0_PAYLOAD]
         sensors = [ATTR_TEMPERATURE]
         sensors_classes = sensors
         sensors_units = [temp_unit]
@@ -489,6 +500,44 @@ else:
                     '\"unit_of_meas\":\"' + relays_sensors_units[sensor_id] + '\",' \
                     '\"dev_cla\":\"' + relays_sensors_classes[sensor_id] + '\",' \
                     '\"val_tpl\":\"' + relays_sensors_templates[sensor_id] + '\",' \
+                    '\"avty_t\":\"' + availability_topic + '\",' \
+                    '\"pl_avail\":\"true\",' \
+                    '\"pl_not_avail\":\"false\",' \
+                    '\"uniq_id\":\"' + unique_id + '\",' \
+                    '\"qos\":\"' + str(qos) + '\",' \
+                    '\"dev\": {\"ids\": [\"' + mac + '\"],' \
+                    '\"name\":\"' + device_name + '\",' \
+                    '\"mdl\":\"' + model + '\",' \
+                    '\"sw\":\"' + fw_ver + '\",' \
+                    '\"mf\":\"' + ATTR_MANUFACTURER + '\"},' \
+                    '\"~\":\"' + default_topic + '\"}'
+            else:
+                payload = ''
+            service_data = {
+                'topic': config_topic,
+                'payload': payload,
+                'retain': retain,
+                'qos': qos
+            }
+            hass.services.call('mqtt', 'publish', service_data, False)
+
+        for bin_sensor_id in range(0, len(relays_bin_sensors)):
+            unique_id = '{}-{}-{}'.format(id, relays_bin_sensors[bin_sensor_id],
+                                          relay_id)
+            config_topic = '{}/binary_sensor/{}-{}-{}/config'.format(disc_prefix,
+                                            id,
+                                            relays_bin_sensors[bin_sensor_id],
+                                            relay_id)
+            sensor_name = '{} {} {}'.format(device_name,
+                                relays_bin_sensors[bin_sensor_id].capitalize(),
+                                relay_id)
+            state_topic = '~{}/{}'.format(relays_bin_sensors[bin_sensor_id],
+                                          relay_id)
+            if not roller_mode:
+                payload = '{\"name\":\"' + sensor_name + '\",' \
+                    '\"stat_t\":\"' + state_topic + '\",' \
+                    '\"pl_on\":\"' + relays_bin_sensors_payload[bin_sensor_id][ATTR_ON] + '\",' \
+                    '\"pl_off\":\"' + relays_bin_sensors_payload[bin_sensor_id][ATTR_OFF] + '\",' \
                     '\"avty_t\":\"' + availability_topic + '\",' \
                     '\"pl_avail\":\"true\",' \
                     '\"pl_not_avail\":\"false\",' \
