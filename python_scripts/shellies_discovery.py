@@ -85,7 +85,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.9.5'
+VERSION = '0.9.6'
 
 ATTR_DEVELOP = 'develop'
 
@@ -132,6 +132,7 @@ ATTR_SMOKE = 'smoke'
 ATTR_MOTION = 'motion'
 ATTR_CHARGER = 'charger'
 ATTR_INPUT = 'input'
+ATTR_LONGPUSH = 'longpush'
 ATTR_OVERTEMPERATURE = 'overtemperature'
 ATTR_HEAT = 'heat'
 ATTR_COVER = 'cover'
@@ -145,6 +146,7 @@ ATTR_ON = 'on'
 ATTR_OFF = 'off'
 ATTR_TRUE_FALSE_PAYLOAD = {ATTR_ON: 'true', ATTR_OFF: 'false'}
 ATTR_1_0_PAYLOAD = {ATTR_ON: '1', ATTR_OFF: '0'}
+ATTR_EXPIRE_AFTER = 7200
 
 develop = False
 retain = True
@@ -205,8 +207,8 @@ else:
     if id[:-7] == 'shelly1':
         model = ATTR_MODEL_SHELLY1
         relays = 1
-        relays_bin_sensors = [ATTR_INPUT]
-        relays_bin_sensors_payload = [ATTR_1_0_PAYLOAD]
+        relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
+        relays_bin_sensors_payload = [ATTR_1_0_PAYLOAD, ATTR_1_0_PAYLOAD]
 
     if id[:-7] == 'shelly1pm':
         model = ATTR_MODEL_SHELLY1PM
@@ -218,8 +220,8 @@ else:
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
         ]
-        relays_bin_sensors = [ATTR_INPUT]
-        relays_bin_sensors_payload = [ATTR_1_0_PAYLOAD]
+        relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
+        relays_bin_sensors_payload = [ATTR_1_0_PAYLOAD, ATTR_1_0_PAYLOAD]
         sensors = [ATTR_TEMPERATURE]
         sensors_classes = sensors
         sensors_units = [temp_unit]
@@ -239,8 +241,8 @@ else:
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
         ]
-        relays_bin_sensors = [ATTR_INPUT]
-        relays_bin_sensors_payload = [ATTR_1_0_PAYLOAD]
+        relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
+        relays_bin_sensors_payload = [ATTR_1_0_PAYLOAD, ATTR_1_0_PAYLOAD]
 
     if id[:-7] == 'shellyswitch25':
         model = ATTR_MODEL_SHELLY25
@@ -253,8 +255,8 @@ else:
             ATTR_TEMPLATE_POWER,
             ATTR_TEMPLATE_ENERGY
         ]
-        relays_bin_sensors = [ATTR_INPUT]
-        relays_bin_sensors_payload = [ATTR_1_0_PAYLOAD]
+        relays_bin_sensors = [ATTR_INPUT, ATTR_LONGPUSH]
+        relays_bin_sensors_payload = [ATTR_1_0_PAYLOAD, ATTR_1_0_PAYLOAD]
         sensors = [ATTR_TEMPERATURE]
         sensors_classes = sensors
         sensors_units = [temp_unit]
@@ -578,6 +580,7 @@ else:
                 '\"unit_of_meas\":\"' + sensors_units[sensor_id] + '\",' \
                 '\"dev_cla\":\"' + sensors_classes[sensor_id] + '\",' \
                 '\"val_tpl\":\"' + sensors_templates[sensor_id] + '\",' \
+                '\"exp_aft\":\"' + ATTR_EXPIRE_AFTER + '\",' \
                 '\"uniq_id\":\"' + unique_id + '\",' \
                 '\"qos\":\"' + str(qos) + '\",' \
                 '\"dev\": {\"ids\": [\"' + mac + '\"],' \
@@ -630,6 +633,7 @@ else:
                 '\"pl_on\":\"' + bin_sensors_payload[bin_sensor_id][ATTR_ON] + '\",' \
                 '\"pl_off\":\"' + bin_sensors_payload[bin_sensor_id][ATTR_OFF] + '\",' \
                 '\"dev_cla\":\"' + bin_sensors_classes[bin_sensor_id] + '\",' \
+                '\"exp_aft\":\"' + ATTR_EXPIRE_AFTER + '\",' \
                 '\"uniq_id\":\"' + unique_id + '\",' \
                 '\"qos\":\"' + str(qos) + '\",' \
                 '\"dev\": {\"ids\": [\"' + mac + '\"],' \
