@@ -146,7 +146,7 @@ ATTR_ON = 'on'
 ATTR_OFF = 'off'
 ATTR_TRUE_FALSE_PAYLOAD = {ATTR_ON: 'true', ATTR_OFF: 'false'}
 ATTR_1_0_PAYLOAD = {ATTR_ON: '1', ATTR_OFF: '0'}
-ATTR_EXPIRE_AFTER = 7200
+ATTR_EXPIRE_AFTER = '7200'
 
 develop = False
 retain = True
