@@ -85,7 +85,7 @@ custom_updater:
     - https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/python_scripts.json
 """
 
-VERSION = '0.9.6'
+VERSION = '0.9.7'
 
 ATTR_DEVELOP = 'develop'
 
@@ -690,15 +690,15 @@ else:
                 '\"pl_avail\":\"true\",' \
                 '\"pl_not_avail\":\"false\",' \
                 '\"fx_list\":[0, 1, 2, 3, 4, 5, 5],' \
-                '\"command_on_template\":\"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"gain\\":{{ brightness | float | multiply(0.3922) | round(0) }}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %},\\"effect\\":{{ effect }}{% endif %}}\",' \
-                '\"command_off_template\":\"{\\"turn\\":\\"off\\"}\",' \
-                '\"state_template\":\"{% if value_json.ison %}on{% else %}off{% endif %}\",' \
-                '\"brightness_template\":\"{{ value_json.gain | float | multiply(2.55) | round(0) }}\",' \
-                '\"red_template\":\"{{ value_json.red }}\",' \
-                '\"green_template\":\"{{ value_json.green }}\",' \
-                '\"blue_template\":\"{{ value_json.blue }}\",' \
+                '\"cmd_on_tpl\":\"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"gain\\":{{ brightness | float | multiply(0.3922) | round(0) }}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %},\\"effect\\":{{ effect }}{% endif %}}\",' \
+                '\"cmd_off_tpl\":\"{\\"turn\\":\\"off\\"}\",' \
+                '\"stat_tpl\":\"{% if value_json.ison %}on{% else %}off{% endif %}\",' \
+                '\"bri_tpl\":\"{{ value_json.gain | float | multiply(2.55) | round(0) }}\",' \
+                '\"r_tpl\":\"{{ value_json.red }}\",' \
+                '\"g_tpl\":\"{{ value_json.green }}\",' \
+                '\"b_tpl\":\"{{ value_json.blue }}\",' \
                 '\"whit_val_tpl\":\"{{ value_json.white }}\",' \
-                '\"effect_template\":\"{{ value_json.effect }}\",' \
+                '\"fx_tpl\":\"{{ value_json.effect }}\",' \
                 '\"uniq_id\":\"' + unique_id + '\",' \
                 '\"qos\":\"' + str(qos) + '\",' \
                 '\"dev\": {\"ids\": [\"' + mac + '\"],' \
@@ -739,10 +739,10 @@ else:
                 '\"avty_t\":\"' + availability_topic + '\",' \
                 '\"pl_avail\":\"true\",' \
                 '\"pl_not_avail\":\"false\",' \
-                '\"command_on_template\":\"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness | float | multiply(0.3922) | round(0)}}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %},\\"effect\\":{{ effect }}{% endif %}}\",' \
-                '\"command_off_template\":\"{\\"turn\\":\\"off\\"}\",' \
-                '\"state_template\":\"{% if value_json.ison %}on{% else %}off{% endif %}\",' \
-                '\"brightness_template\":\"{{ value_json.brightness | float | multiply(2.55) | round(0) }}\",' \
+                '\"cmd_on_tpl\":\"{\\"turn\\":\\"on\\"{% if brightness is defined %},\\"brightness\\":{{brightness | float | multiply(0.3922) | round(0)}}{% endif %}{% if red is defined and green is defined and blue is defined %},\\"red\\":{{ red }},\\"green\\":{{ green }},\\"blue\\":{{ blue }}{% endif %}{% if white_value is defined %},\\"white\\":{{ white_value }}{% endif %}{% if effect is defined %},\\"effect\\":{{ effect }}{% endif %}}\",' \
+                '\"cmd_off_tpl\":\"{\\"turn\\":\\"off\\"}\",' \
+                '\"stat_tpl\":\"{% if value_json.ison %}on{% else %}off{% endif %}\",' \
+                '\"bri_tpl\":\"{{ value_json.brightness | float | multiply(2.55) | round(0) }}\",' \
                 '\"uniq_id\":\"' + unique_id + '\",' \
                 '\"qos\":\"' + str(qos) + '\",' \
                 '\"dev\": {\"ids\": [\"' + mac + '\"],' \
