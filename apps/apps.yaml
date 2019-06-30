@@ -25,24 +25,21 @@ airly:
   latitude: !secret home_latitude
   longitude: !secret home_longitude
 
-# thermostats_update:
-#   module: thermostats_update
-#   class: ThermostatsUpdate
-#   heat_state: 'auto'
-#   only_state: true
-#   rooms:
-#     salon:
-#       thermostat: climate.thermostat_salon
-#       sensor: sensor.temperature_salon
-#     antresola:
-#       thermostat: climate.thermostat_antresola
-#       sensor: sensor.temperature_antresola
-#     sypialnia:
-#       thermostat: climate.thermostat_sypialnia
-#       sensor: sensor.temperature_sypialnia
-#     lazienka:
-#       thermostat: climate.thermostat_lazienka
-#       sensor: sensor.temperature_lazienka
-#     antek:
-#       thermostat: climate.thermostat_antek
-#       sensor: sensor.temperature_antek
+thermostats_update:
+  module: thermostats_update
+  class: ThermostatsUpdate
+  heat_state: 'auto'
+  state_only: true
+  rooms:
+    salon:
+      thermostat: climate.thermostat_salon
+    kuchnia:
+      thermostat: climate.thermostat_kuchnia
+    antresola:
+      thermostat: climate.thermostat_antresola
+    sypialnia:
+      thermostat: climate.thermostat_sypialnia
+    lazienka:
+      thermostat: climate.thermostat_lazienka
+    antek:
+      thermostat: climate.thermostat_antek

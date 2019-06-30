@@ -21,8 +21,8 @@ resources:
     type: js
   - url: /customcards/light-entity-card.js
     type: js
-  - url: /customcards/card-modder.js
-    type: js
+  - url: /customcards/card-mod.js
+    type: module
 
 background: '#e5e5e5'
 
@@ -39,64 +39,64 @@ views:
         card:
           type: custom:vertical-stack-in-card
           cards:
-            - type: custom:card-modder
-              style:
-                border-radius: 0px
-              card:
-                type: history-graph
-                entities:
-                  - person.maciek
-            - type: custom:card-modder
-              style:
-                border-radius: 0px
-              card:
-                type: map
-                entities:
-                  - person.maciek
-                  - zone.home
+            - type: history-graph
+              style: |
+                ha-card {
+                  border-radius: 0px
+                }
+              entities:
+                - person.maciek
+            - type: map
+              style: |
+                ha-card {
+                  border-radius: 0px
+                }
+              entities:
+                - person.maciek
+                - zone.home
       person.edyta:
         title: 'Edyta'
         card:
           type: custom:vertical-stack-in-card
           cards:
-            - type: custom:card-modder
-              style:
-                border-radius: 0px
-              card:
-                type: history-graph
-                entities:
-                  - person.edyta
-            - type: custom:card-modder
-              style:
-                border-radius: 0px
-              card:
-                type: map
-                entities:
-                  - person.edyta
-                  - zone.home
+            - type: history-graph
+              style: |
+                ha-card {
+                  border-radius: 0px
+                }
+              entities:
+                - person.edyta
+            - type: map
+              style: |
+                ha-card {
+                  border-radius: 0px
+                }
+              entities:
+                - person.edyta
+                - zone.home
       person.antek:
         title: 'Antek'
         card:
-          type: custom:card-modder
-          style:
-            border-radius: 0px
-          card:
-            type: history-graph
-            entities:
-              - person.antek
+          type: history-graph
+          style: |
+            ha-card {
+              border-radius: 0px
+            }
+          entities:
+            - person.antek
       switch.light_bulbs_salon:
         title: 'Żarówki'
         card:
           type: custom:vertical-stack-in-card
           cards:
-            - type: custom:card-modder
+            - type: custom:card-mod
               style:
                 border-radius: 0px
               card:
                 type: history-graph
                 entities:
                   - switch.light_bulbs_salon
-            - type: custom:card-modder
+            - type: custom:card-mod
               style:
                 border-radius: 0px
               card:
@@ -478,20 +478,20 @@ views:
               - type: custom:vertical-stack-in-card
                 title: 'Pobór mocy'
                 cards:
-                  - type: custom:card-modder
-                    style:
-                      border-radius: 0px
-                    card:
-                      type: custom:mini-graph-card
-                      hour24: true
-                      decimals: 1
-                      points_per_hour: 1
-                      show:
-                        icon: false
-                        graph: bar
-                      entities:
-                        - sensor.light_salon_power_sum
-                      line_color: '#36a2eb'
+                  - type: custom:mini-graph-card
+                    style: |
+                      ha-card {
+                        border-radius: 0px
+                      }
+                    hour24: true
+                    decimals: 1
+                    points_per_hour: 1
+                    show:
+                      icon: false
+                      graph: bar
+                    entities:
+                      - sensor.light_salon_power_sum
+                    line_color: '#36a2eb'
                   - type: custom:mini-graph-card
                     hour24: true
                     decimals: 1
@@ -532,18 +532,18 @@ views:
                   - sensor.ups_status
                   - sensor.ups_battery_charge
                   - sensor.ups_load
-              - type: custom:card-modder
-                style:
-                  border-radius: 0px
-                card:
-                  type: custom:mini-graph-card
-                  hour24: true
-                  decimals: 0
-                  show:
-                    icon: false
-                  entities:
-                    - sensor.ups_input_voltage
-                  line_color: '#ff6384'
+              - type: custom:mini-graph-card
+                style: |
+                  ha-card {
+                    border-radius: 0px
+                  }
+                hour24: true
+                decimals: 0
+                show:
+                  icon: false
+                entities:
+                  - sensor.ups_input_voltage
+                line_color: '#ff6384'
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 1

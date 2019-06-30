@@ -90,8 +90,13 @@
   scan_interval: 1800
 
 - platform: command_line
-  command: python3 -c "import requests; print(requests.get('https://pypi.python.org/pypi/homeassistant/json').json()['info']['version'])"
+  command: python3 -c "import requests; print(requests.get('https://pypi.org/pypi/homeassistant/json').json()['info']['version'])"
   name: 'HA Version Current'
+  scan_interval: 1800
+
+- platform: command_line
+  command: python3 -c "import requests; print(requests.get('https://pypi.org/pypi/appdaemon/json').json()['info']['version'])"
+  name: 'AD Version Current'
   scan_interval: 1800
 
 - platform: sql
