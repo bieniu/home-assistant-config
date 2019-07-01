@@ -36,7 +36,7 @@
 ## Sensors
 
 * Wemos D1 mini + MH-Z19B [[Tasmota firmware](https://github.com/arendst/Sonoff-Tasmota)]
-* [Shelly H&T](https://shelly.cloud/shelly-humidity-and-temperature/)
+* [Shelly H&T](https://shelly.cloud/shelly-humidity-and-temperature/) via MQTT
 
 ## Other Integrated Devices
 
@@ -67,26 +67,29 @@
 
 ## Lovelace Custom Cards
 
+* [card-mod](https://github.com/thomasloven/lovelace-card-mod)
+* [card-tools](https://github.com/thomasloven/lovelace-card-tools)
 * [layout-card](https://github.com/thomasloven/lovelace-layout-card)
-* [dark-sky-weather-card](https://github.com/iammexx/home-assistant-config/tree/master/ui/darksky)
-* [mini-media-player](https://github.com/kalkih/mini-media-player)
+* [monster-card](https://github.com/ciotlosm/custom-lovelace/tree/master/monster-card)
+* [popup-card](https://github.com/thomasloven/lovelace-popup-card)
+* [secondaryinfo-entity-row](https://github.com/MizterB/lovelace-secondaryinfo-entity-row)
 * [tracker-card](https://github.com/custom-cards/tracker-card)
 * [vertical-stack-in-card](https://github.com/custom-cards/vertical-stack-in-card)
-* [monster-card](https://community.home-assistant.io/t/lovelace-bringing-back-entity-filter-monster-card/58701)
-* [card-tools](https://github.com/thomasloven/lovelace-card-tools)
-* [secondaryinfo-entity-row](https://github.com/MizterB/lovelace-secondaryinfo-entity-row)
-* [popup-card](https://github.com/thomasloven/lovelace-popup-card)
+* [mini-media-player](https://github.com/kalkih/mini-media-player)
+* [dark-sky-weather-card](https://github.com/iammexx/home-assistant-config/tree/master/ui/darksky)
+* [mini-graph-card](https://github.com/kalkih/mini-graph-card)
 
 ## AppDaemon
 
-* [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/home-assistant-config/blob/master/apps/thermostats_update.py)
+* [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/ha-thermostats-update)
 * [Brother printer status sensors](https://github.com/bieniu/home-assistant-config/blob/master/apps/brother_printer_status.py)
 * [DuneHD Activity](https://github.com/bieniu/home-assistant-config/blob/master/apps/dune_activity.py)
+* [Airly](https://github.com/bieniu/ha-airly)
 
 ## Python Scripts
 
-* [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/thermostat_update.py)
-* [Shellies Discovery](https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/shellies_discovery.py)
+* [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/ha-thermostat-update)
+* [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 
 ## Screenshots
 
