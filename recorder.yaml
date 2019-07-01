@@ -82,7 +82,9 @@ exclude:
     - sensor.custom_component_tracker
     - sensor.ha_version_current
     - sensor.ha_version_installed
+    - sensor.ad_version_current
     - sensor.tasmota_version_current
+    - sensor.caddy_version_current
     - sensor.last_boot
     - sensor.airly_data
     - switch.lamp_salon
