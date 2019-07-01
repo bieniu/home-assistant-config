@@ -196,9 +196,9 @@
           Następujące encje mają nieprawidłowe stany: {{ dead_unavailable_entities() }}
         notification_id: 'notification-dead-unavailable'
 
-# powiadomienie o aktualizacji
-- id: notification_custom_update_available
-  alias: 'Notification Custom Update Available'
+# powiadomienie o aktualizacji HA
+- id: notification_home_assistant_update_available
+  alias: 'Notification Home Assistant Update Available'
   trigger:
     platform: state
     entity_id: sensor.ha_version_current
@@ -231,6 +231,36 @@
         title: "Aktualizacja Home Assistant'a"
         message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ha_version_current') }} dla Home Assistant'a."
         notification_id: 'notification-ha-update'
+
+# powiadomienie o aktualizacji AD
+- id: notification_appdaemon_update_available
+  alias: 'Notification AppDaemon Update Available'
+  trigger:
+    platform: state
+    entity_id: sensor.ad_version_current
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: "{{ trigger.to_state.state != 'unknown' }}"
+      - condition: template
+        value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+      - condition: template
+        value_template: "{{ trigger.from_state.state != 'unknown' }}"
+      - condition: template
+        value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+  action:
+    - service: script.notify
+      data_template:
+        title: "Aktualizacja AppDaemon'a"
+        message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ad_version_current') }} dla AppDaemon'a."
+        tag: 'notification-ad-update'
+        notify_edyta: false
+    - service: persistent_notification.create
+      data_template:
+        title: "Aktualizacja AppDaemon'a"
+        message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ad_version_current') }} dla AppDaemon'a."
+        notification_id: 'notification-ad-update'
 
 # powiadomienie o małej ilości wody w nawilżaczu
 - id: notification_humidifier_low_water
@@ -360,13 +390,13 @@
     - service: script.notify
       data_template:
         title: 'Aktualizacja Sonoff-Tasmota'
-        message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Sonoff-Tasmota.'
+        message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Tasmota.'
         tag: 'notification-tasmota-update'
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
         title: 'Aktualizacja Sonoff-Tasmota'
-        message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Sonoff-Tasmota.'
+        message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Tasmota.'
         notification_id: 'notification-tasmota-update'
 
 # powiadomienie o aktualizacji Caddy
