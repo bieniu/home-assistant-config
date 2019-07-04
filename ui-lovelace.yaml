@@ -366,19 +366,7 @@ views:
                 theme: synology
                 entities:
                   - sensor.synology_disk_used
-                  - binary_sensor.caddy_status
-                  - sensor.ssl_certificate_expiry
                   - sensor.synology_last_boot
-              - type: entities
-                title: 'Drukarka'
-                show_header_toggle: false
-                entities:
-                  - sensor.printer_status_custom
-                  - sensor.printer_counter
-                  - sensor.printer_drum_usage
-                  - sensor.printer_toner
-          - type: vertical-stack
-            cards:
               - type: custom:vertical-stack-in-card
                 title: 'Raspberry Pi'
                 cards:
@@ -397,6 +385,17 @@ views:
                       - sensor.last_boot_custom
                       - sensor.last_ha_restart
                       - sensor.ha_database_size
+                      - sensor.ssl_certificate_expiry
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: 'Drukarka'
+                show_header_toggle: false
+                entities:
+                  - sensor.printer_status_custom
+                  - sensor.printer_counter
+                  - sensor.printer_drum_usage
+                  - sensor.printer_toner
               - type: entities
                 title: 'Urządzenia Z-Wave'
                 show_header_toggle: false
@@ -675,6 +674,8 @@ views:
                 decimals: 1
                 align_header: left
                 align_icon: left
+                hours_to_show: 48
+                points_per_hour: 0.5
                 entities:
                   - sensor.temperature_outdoor
                 line_color: '#ff6384'
@@ -683,6 +684,8 @@ views:
                 decimals: 1
                 align_header: left
                 align_icon: left
+                hours_to_show: 48
+                points_per_hour: 0.5
                 entities:
                   - sensor.humidity_outdoor
                 line_color: '#36a2eb'
@@ -691,6 +694,8 @@ views:
                 decimals: 0
                 align_header: left
                 align_icon: left
+                hours_to_show: 48
+                points_per_hour: 0.5
                 entities:
                   - sensor.pressure_outdoor
                 line_color: '#4bc0c0'
@@ -701,6 +706,8 @@ views:
                 decimals: 1
                 align_header: left
                 align_icon: left
+                hours_to_show: 48
+                points_per_hour: 0.5
                 entities:
                   - sensor.temperature_indoor
                 line_color: '#ff6384'
@@ -709,6 +716,8 @@ views:
                 decimals: 1
                 align_header: left
                 align_icon: left
+                hours_to_show: 48
+                points_per_hour: 0.5
                 entities:
                   - sensor.humidity_indoor
                 line_color: '#36a2eb'
@@ -717,6 +726,8 @@ views:
                 decimals: 0
                 align_header: left
                 align_icon: left
+                hours_to_show: 48
+                points_per_hour: 0.5
                 entities:
                   - sensor.co2_salon
                 line_color: '#ffce57'
@@ -727,6 +738,8 @@ views:
                 decimals: 0
                 align_header: left
                 align_icon: left
+                hours_to_show: 48
+                points_per_hour: 0.5
                 entities:
                   - sensor.airly_pm1
                 line_color: '#78909c'
@@ -735,6 +748,8 @@ views:
                 decimals: 0
                 align_header: left
                 align_icon: left
+                hours_to_show: 48
+                points_per_hour: 0.5
                 entities:
                   - sensor.airly_pm25
                 line_color: '#78909c'
@@ -743,6 +758,8 @@ views:
                 decimals: 0
                 align_header: left
                 align_icon: left
+                hours_to_show: 48
+                points_per_hour: 0.5
                 entities:
                   - sensor.airly_pm10
                 line_color: '#78909c'

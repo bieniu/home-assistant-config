@@ -31,6 +31,7 @@ custom_updater:
   component_urls:
     - https://raw.githubusercontent.com/custom-components/information/master/repos.json
     - https://raw.githubusercontent.com/pnbruckner/homeassistant-config/master/custom_components.json
+    - https://raw.githubusercontent.com/bieniu/ha-airly/master/airly.json
 
 http:
   ip_ban_enabled: true

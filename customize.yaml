@@ -76,10 +76,6 @@ sensor.last_ha_restart:
   friendly_name: 'Ostatni restart HA'
   icon: mdi:clock-outline
 
-#### SYNOLOGY ####
-binary_sensor.caddy_status:
-  icon: mdi:webpack
-
 #### ZONES ####
 zone.home:
   icon: mdi:home-outline
