@@ -1,3 +1,11 @@
+- platform: airly
+  api_key: !secret airly_apikey
+  monitored_conditions:
+    - pm1
+    - pm25
+    - pm10
+    - caqi
+
 - platform: integration
   source: sensor.light_salon_power_sum
   name: 'Light Salon Energy'

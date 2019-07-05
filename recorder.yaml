@@ -86,7 +86,7 @@ exclude:
     - sensor.tasmota_version_current
     - sensor.caddy_version_current
     - sensor.last_boot
-    - sensor.airly_data
+    - sensor.airly_caqi
     - switch.lamp_salon
     - sensor.lamp_salon_power
     - sensor.light_salon_power
