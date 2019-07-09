@@ -117,18 +117,12 @@
         message: "Za {{ states('sensor.ssl_certificate_expiry') }} dni wygaśnie certyfikat SSL serwera WWW."
         notification_id: 'notification-ssl'
 
-# powiadomienie z Custom Updatera
-- id: notification_from_custom_updater
-  alias: 'Notification From Custom Updater'
+# powiadomienie z HACS
+- id: notification_from_hacs
+  alias: 'Notification From HACS'
   trigger:
     - platform: numeric_state
-      entity_id: sensor.custom_card_tracker
-      above: 0
-    - platform: numeric_state
-      entity_id: sensor.custom_python_script_tracker
-      above: 0
-    - platform: numeric_state
-      entity_id: sensor.custom_component_tracker
+      entity_id: sensor.hacs
       above: 0
   action:
     - service: script.notify
@@ -136,12 +130,12 @@
         notify_edyta: false
         title: 'Aktualizacja karty/skryptu/komponentu'
         message: "Dostępna jest aktualizacja karty, skryptu lub komponentu Home Assistant'a."
-        tag: 'notification-custom-updater'
+        tag: 'notification-hacs'
     - service: persistent_notification.create
       data_template:
         title: 'Aktualizacja karty/skryptu/komponentu'
         message: "Dostępna jest aktualizacja karty, skryptu lub komponentu Home Assistant'a."
-        notification_id: 'notification-custom-updater'
+        notification_id: 'notification-hacs'
 
 # powiadomienie o encji ze stanem dead lub unavailable
 - id: notification_dead_or_unavailable

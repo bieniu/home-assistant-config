@@ -1,27 +1,25 @@
 resources:
-  - url: /customcards/vertical-stack-in-card.js
+  - url: /community_plugin/vertical-stack-in-card/vertical-stack-in-card.js
     type: js
-  - url: /customcards/tracker-card.js
-    type: js
-  - url: /customcards/mini-media-player-bundle.js
+  - url: /community_plugin/mini-media-player/mini-media-player.js
     type: module
-  - url: /customcards/layout-card.js
+  - url: /local/lovelace/layout-card.js?v=83e2b1
     type: js
-  - url: /customcards/dark-sky-weather-card.js
+  - url: /local/lovelace/dark-sky-weather-card.js?v=0.10.2
     type: module
-  - url: /customcards/card-tools.js
+  - url: /local/lovelace/card-tools.js?v=0efed8
     type: js
-  - url: /customcards/monster-card.js
+  - url: /community_plugin/monster-card/monster-card.js
     type: js
-  - url: /customcards/secondaryinfo-entity-row.js
+  - url: /community_plugin/secondaryinfo-entity-row/secondaryinfo-entity-row.js
+    type: js
+  - url: /community_plugin/mini-graph-card/mini-graph-card.js
     type: module
-  - url: /customcards/mini-graph-card-bundle.js
-    type: module
-  - url: /customcards/popup-card.js
+  - url: /local/lovelace/popup-card.js?v=78d39a
     type: js
-  - url: /customcards/light-entity-card.js
+  - url: /community_plugin/light-entity-card/light-entity-card.js
     type: js
-  - url: /customcards/card-mod.js
+  - url: /community_plugin/lovelace-card-mod/card-mod.js
     type: module
 
 background: '#e5e5e5'
@@ -89,21 +87,21 @@ views:
         card:
           type: custom:vertical-stack-in-card
           cards:
-            - type: custom:card-mod
-              style:
-                border-radius: 0px
-              card:
-                type: history-graph
-                entities:
-                  - switch.light_bulbs_salon
-            - type: custom:card-mod
-              style:
-                border-radius: 0px
-              card:
-                type: custom:light-entity-card
-                entity: light.bulbs_salon
-                header: false
-                group: true
+            - type: history-graph
+              style: |
+                ha-card {
+                  border-radius: 0px
+                }
+              entities:
+                - switch.light_bulbs_salon
+            - type: custom:light-entity-card
+              style: |
+                ha-card {
+                  border-radius: 0px
+                }
+              entity: light.bulbs_salon
+              header: false
+              group: true
     cards:
       - type: custom:layout-card
         column_width: 310
@@ -806,7 +804,7 @@ views:
           - type: vertical-stack
             cards:
               - type: entities
-                title: 'Nawilżanie'
+                title: 'Ustawienie nawilżania'
                 show_header_toggle: false
                 entities:
                   - input_select.target_humidity
@@ -824,14 +822,3 @@ views:
                 entities:
                   - script.reboot_router
                   - input_select.log_level
-          - type: custom:tracker-card
-            title: 'Aktualizacje'
-            name_text: 'Nazwa'
-            current_text: 'Obecna'
-            available_text: 'Dostępna'
-            check_text: 'Sprawdź'
-            update_all_text: 'Aktualizuj'
-            trackers:
-              - sensor.custom_card_tracker
-              - sensor.custom_python_script_tracker
-              - sensor.custom_component_tracker
