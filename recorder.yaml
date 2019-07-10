@@ -102,6 +102,9 @@ exclude:
     - sensor.shelly_plug_s_7aecf4_energy
     - sensor.shelly_plug_s_7aecf4_temperature
     - binary_sensor.shelly_plug_s_7aecf4_overtemperature
+    - sensor.blitzwolf_bw_shp6_2ad05a_current
+    - sensor.blitzwolf_bw_shp6_2ad05a_power
+    - sensor.blitzwolf_bw_shp6_2ad05a_voltage
 include:
   entities:
     - input_boolean.heating_season

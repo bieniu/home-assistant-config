@@ -1,5 +1,6 @@
 - platform: nmap_tracker
   hosts: !secret lan_ip
+  exclude: !secret nmap_exclude
   scan_options: " --privileged -sP "
   home_interval: 4
   interval_seconds: 60

@@ -4,14 +4,14 @@ substitutions:
   device_hostname: 'sonoff-s26-182475'
 
 esphome:
-  name: $device_name_lower
+  name: ${device_name_lower}
   platform: ESP8266
   board: esp01_1m
 
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
-  use_address: $device_hostname
+  use_address: ${device_hostname}
   domain: !secret local_domain
   fast_connect: true
 
@@ -35,32 +35,28 @@ binary_sensor:
       mode: INPUT_PULLUP
       inverted: true
     on_press:
-      - light.toggle: relay_light
-
-output:
-  - platform: gpio
-    id: relay
-    pin: GPIO12
+      - switch.toggle: relay
 
 status_led:
   pin:
     number: GPIO13
     inverted: true
 
-light:
-  - platform: binary
-    id: relay_light
-    name: '$device_name Relay'
-    output: relay
+switch:
+  - platform: gpio
+    id: relay
+    pin: GPIO12
+    icon: mdi:power-plug
+    name: '${device_name} Relay'
 
 sensor:
   - platform: uptime
-    name: '$device_name Uptime'
+    name: '${device_name} Uptime'
     unit_of_measurement: days
     update_interval: 300s
     filters:
       - multiply: 0.000011574
 
   - platform: wifi_signal
-    name: '$device_name WiFi Signal'
+    name: '${device_name} WiFi Signal'
     update_interval: 300s

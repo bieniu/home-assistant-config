@@ -1302,7 +1302,7 @@
       - condition: or
         conditions:
           - condition: state
-            entity_id: switch.light_bulbs_salon
+            entity_id: switch.bulbs_salon
             state: 'on'
           - condition: state
             entity_id: light.leds_salon
@@ -1313,7 +1313,7 @@
   action:
     service: homeassistant.turn_off
     entity_id:
-      - switch.light_bulbs_salon
+      - switch.bulbs_salon
       - light.leds_salon
       - light.lamp_salon
 
@@ -1329,11 +1329,11 @@
       new_state: 'off'
   condition:
     condition: state
-    entity_id: switch.light_bulbs_salon
+    entity_id: switch.bulbs_salon
     state: 'on'
   action:
     service: switch.turn_off
-    entity_id: switch.light_bulbs_salon
+    entity_id: switch.bulbs_salon
 
 # automatyczna scena oświetlenia w salonie
 - id: light_scene_salon_auto
@@ -1392,7 +1392,7 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.salon_light_scene_turn_on
     - service: switch.turn_on
-      entity_id: switch.light_bulbs_salon
+      entity_id: switch.bulbs_salon
 
 # wybór sceny auto oświetlenia w salonie gdy żarówki wyłączone
 - id: light_scene_salon_auto_when_bulbs_off
@@ -1409,7 +1409,7 @@
         value_template: "{{ is_state('light.bulbs_salon', 'off') or is_state('light.bulbs_salon', 'unavailable') }}"
   action:
     service: switch.turn_on
-    entity_id: switch.light_bulbs_salon
+    entity_id: switch.bulbs_salon
 
 # scena gdy żarówki połączą się z siecią
 - id: light_scene_salon_when_bulbs_are_turning_on
@@ -1463,7 +1463,7 @@
         click_type: double
   action:
     service: switch.toggle
-    entity_id: switch.light_bulbs_salon
+    entity_id: switch.bulbs_salon
 
 # włączenie/wyłączenie LEDów w salonie
 - id: light_toggle_power_salon_leds
@@ -1501,7 +1501,7 @@
       from: 'on'
       to: 'off'
     - platform: state
-      entity_id: switch.light_bulbs_salon
+      entity_id: switch.bulbs_salon
       from: 'on'
       to: 'off'
     - platform: state
@@ -1521,7 +1521,7 @@
         entity_id: light.leds_salon
         state: 'off'
       - condition: state
-        entity_id: switch.light_bulbs_salon
+        entity_id: switch.bulbs_salon
         state: 'off'
       - condition: state
         entity_id: light.lamp_salon
@@ -1563,7 +1563,7 @@
       from: 'off'
       to: 'on'
     - platform: state
-      entity_id: switch.light_bulbs_salon
+      entity_id: switch.bulbs_salon
       from: 'off'
       to: 'on'
   condition:
@@ -1597,7 +1597,7 @@
       - condition: sun
         after: sunset
       - condition: template
-        value_template: "{{ is_state('light.leds_salon', 'on') or is_state('switch.light_bulbs_salon', 'on') or is_state('light.lamp_salon', 'on') }}"
+        value_template: "{{ is_state('light.leds_salon', 'on') or is_state('switch.bulbs_salon', 'on') or is_state('light.lamp_salon', 'on') }}"
       - condition: time
         after: '20:10:00'
       - condition: state
@@ -1629,7 +1629,7 @@
     condition: and
     conditions:
       - condition: template
-        value_template: "{{ is_state('light.leds_salon', 'on') or is_state('switch.light_bulbs_salon', 'on') or is_state('light.lamp_salon', 'on') }}"
+        value_template: "{{ is_state('light.leds_salon', 'on') or is_state('switch.bulbs_salon', 'on') or is_state('light.lamp_salon', 'on') }}"
       - condition: state
         entity_id: input_select.light_scenes_salon
         state: 'film'
@@ -1780,7 +1780,7 @@
         entity_id: binary_sensor.motion_przedpokoj
         state: 'on'
       - condition: state
-        entity_id: switch.light_bulbs_salon
+        entity_id: switch.bulbs_salon
         state: 'off'
       - condition: state
         entity_id: light.leds_salon
@@ -1853,8 +1853,8 @@
             before: sunrise
   action:
     - service: script.light_turn_on_antek_leds
-    - service: light.turn_on
-      entity_id: light.cabinet_antek
+    - service: switch.turn_on
+      entity_id: switch.cabinet_antek
     - service: input_boolean.turn_on
       entity_id: input_boolean.antek_light_motion_on
 
@@ -1874,8 +1874,8 @@
         state: 'on'
   action:
     - service: script.light_turn_off_antek_leds
-    - service: light.turn_off
-      entity_id: light.cabinet_antek
+    - service: switch.turn_off
+      entity_id: switch.cabinet_antek
 
 # włączanie LEDów w pokoju Antka w tryb nocny
 - id: light_turn_on_antek_leds_night
@@ -1997,8 +1997,8 @@
         entity_id: binary_sensor.switch_light_antek
         click_type: double
   action:
-    service: light.toggle
-    entity_id: light.cabinet_antek
+    service: switch.toggle
+    entity_id: switch.cabinet_antek
 
 # wyłączanie oświetlenia gabloty w pokoju Antka o 22, 23, 00
 - id: light_turn_off_antek_cabinet_at_night
@@ -2012,11 +2012,11 @@
       at: '00:00:00'
   condition:
     condition: state
-    entity_id: light.cabinet_antek
+    entity_id: switch.cabinet_antek
     state: 'on'
   action:
-    service: light.turn_off
-    entity_id: light.cabinet_antek
+    service: switch.turn_off
+    entity_id: switch.cabinet_antek
 
 #### PRACOWNIA ####
 # włączanie lampki w pracowni jak ruch i ciemno
@@ -2037,7 +2037,7 @@
         entity_id: input_boolean.away_mode
         state: 'off'
       - condition: state
-        entity_id: light.lamp_pracownia
+        entity_id: switch.lamp_pracownia
         state: 'off'
       - condition: numeric_state
         entity_id: sensor.illumination_pracownia
@@ -2055,8 +2055,8 @@
           - condition: sun
             before: sunrise
   action:
-    - service: light.turn_on
-      entity_id: light.lamp_pracownia
+    - service: switch.turn_on
+      entity_id: switch.lamp_pracownia
     - service: input_boolean.turn_on
       entity_id: input_boolean.pracownia_light_motion_on
 
@@ -2075,8 +2075,8 @@
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.pracownia_light_motion_on
-    - service: light.turn_off
-      entity_id: light.lamp_pracownia
+    - service: switch.turn_off
+      entity_id: switch.lamp_pracownia
 
 #### POKÓJ GOŚCINNY ####
 # wyłączanie lampki w pokoju gościnnym jak brak ruchu
@@ -2094,8 +2094,8 @@
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.goscinny_light_motion_on
-    - service: light.turn_off
-      entity_id: light.lamp_goscinny
+    - service: switch.turn_off
+      entity_id: switch.lamp_goscinny
 
 # włączanie lampki w pokoju gościnnym jak ruch i ciemno
 - id: light_turn_on_goscinny_lamp_when_dark_and_motion
@@ -2115,7 +2115,7 @@
         entity_id: input_boolean.away_mode
         state: 'off'
       - condition: state
-        entity_id: light.lamp_goscinny
+        entity_id: switch.lamp_goscinny
         state: 'off'
       - condition: template
         value_template: >-
@@ -2137,8 +2137,8 @@
           - condition: sun
             before: sunrise
   action:
-    - service: light.turn_on
-      entity_id: light.lamp_goscinny
+    - service: switch.turn_on
+      entity_id: switch.lamp_goscinny
     - service: input_boolean.turn_on
       entity_id: input_boolean.goscinny_light_motion_on
 
@@ -2158,8 +2158,8 @@
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.gabinet_light_motion_on
-    - service: light.turn_off
-      entity_id: light.lamp_gabinet
+    - service: switch.turn_off
+      entity_id: switch.lamp_gabinet
 
 # włączanie lampki w gabinecie jak ruch i ciemno
 - id: light_turn_on_gabinet_lamp_when_dark_and_motion
@@ -2179,7 +2179,7 @@
         entity_id: input_boolean.away_mode
         state: 'off'
       - condition: state
-        entity_id: light.lamp_gabinet
+        entity_id: switch.lamp_gabinet
         state: 'off'
       - condition: state
         entity_id: switch.stacjonarny
@@ -2200,8 +2200,8 @@
           - condition: sun
             before: sunrise
   action:
-    - service: light.turn_on
-      entity_id: light.lamp_gabinet
+    - service: switch.turn_on
+      entity_id: switch.lamp_gabinet
     - service: input_boolean.turn_on
       entity_id: input_boolean.gabinet_light_motion_on
 

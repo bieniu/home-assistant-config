@@ -1,5 +1,5 @@
 dune_activity:
-  module: dune_activity
+  module: dune-activity
   class: DuneActivity
   host: !secret dune_hostname
   interval: 10
@@ -9,7 +9,7 @@ dune_activity:
   retain: true
 
 brother_printer_status:
-  module: brother_printer_status
+  module: brother-printer-status
   class: BrotherPrinterStatus
   host: !secret brother_hostname
   status_interval: 10
@@ -18,15 +18,8 @@ brother_printer_status:
   mac: !secret brother_mac
   retain: true
 
-# airly:
-#   module: airly
-#   class: Airly
-#   airly_apikey: !secret airly_apikey
-#   latitude: !secret home_latitude
-#   longitude: !secret home_longitude
-
 thermostats_update:
-  module: thermostats_update
+  module: thermostats-update
   class: ThermostatsUpdate
   heat_state: 'auto'
   state_only: true

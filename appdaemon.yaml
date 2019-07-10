@@ -5,6 +5,7 @@ log:
   log_generations: 0
 appdaemon:
   threads: 10
+  app_dir: '/home/homeassistant/.homeassistant/appdaemon/apps'
   plugins:
     HASS:
       type: hass

@@ -82,7 +82,7 @@ views:
             }
           entities:
             - person.antek
-      switch.light_bulbs_salon:
+      switch.bulbs_salon:
         title: 'Żarówki'
         card:
           type: custom:vertical-stack-in-card
@@ -93,7 +93,7 @@ views:
                   border-radius: 0px
                 }
               entities:
-                - switch.light_bulbs_salon
+                - switch.bulbs_salon
             - type: custom:light-entity-card
               style: |
                 ha-card {
@@ -166,7 +166,7 @@ views:
                   - type: custom:secondaryinfo-entity-row
                     entity: fan.humidifier_salon
                     secondary_info: "poziom wody: [[ sensor.humidifier_water_level.state ]] %"
-                  - switch.light_bulbs_salon
+                  - switch.bulbs_salon
                   - light.leds_salon
                   - light.lamp_salon
                   - input_select.light_scenes_salon
@@ -210,7 +210,7 @@ views:
                   - entity: binary_sensor.motion_pracownia
                     secondary_info: last-changed
                   - binary_sensor.balcony_door_pracownia
-                  - light.lamp_pracownia
+                  - switch.lamp_pracownia
           - type: custom:vertical-stack-in-card
             title: 'Pokój gościnny'
             cards:
@@ -225,7 +225,7 @@ views:
                 entities:
                   - entity: binary_sensor.motion_goscinny
                     secondary_info: last-changed
-                  - light.lamp_goscinny
+                  - switch.lamp_goscinny
                   - type: custom:mini-media-player
                     entity: media_player.mibox
                     name: 'Mi Box'
@@ -266,7 +266,7 @@ views:
                 entities:
                   - entity: binary_sensor.motion_gabinet
                     secondary_info: last-changed
-                  - light.lamp_gabinet
+                  - switch.lamp_gabinet
                   - switch.stacjonarny
           - type: custom:vertical-stack-in-card
             title: 'Pokój Antka'
@@ -285,7 +285,7 @@ views:
                     secondary_info: last-changed
                   - climate.thermostat_antek
                   - light.lightstrip_antek
-                  - light.cabinet_antek
+                  - switch.cabinet_antek
           - type: custom:vertical-stack-in-card
             title: 'Sypialnia'
             cards:
@@ -451,6 +451,7 @@ views:
               - binary_sensor.sonoff_basic_067c81_status
               - binary_sensor.sonoff_basic_5dfba8_status
               - binary_sensor.sonoff_s26_182475_status
+              - binary_sensor.blitzwolf_bw_shp6_2ad05a_status
               - binary_sensor.shelly1_328900_status
               - binary_sensor.shelly2_5b2604_status
               - binary_sensor.shelly_plug_s_7aecf4_status

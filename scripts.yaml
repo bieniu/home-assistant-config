@@ -24,26 +24,26 @@ night_mode:
     - service: homeassistant.turn_off
       entity_id:
         - light.leds_salon
-        - switch.light_bulbs_salon
-        - light.cabinet_antek
-        - light.lamp_pracownia
-        - light.lamp_goscinny
+        - switch.bulbs_salon
+        - light.lamp_salon
+        - switch.cabinet_antek
 
 #### LIGHT ####
 light_away_mode:
   sequence:
     - service: homeassistant.turn_off
       entity_id:
-        - switch.light_bulbs_salon
+        - switch.bulbs_salon
         - light.leds_salon
         - light.lamp_salon
         - light.leds_przedpokoj
         - light.gateway_antresola
         - light.lightstrip_sypialnia
         - light.lightstrip_antek
-        - light.cabinet_antek
-        - light.lamp_pracownia
-        - light.lamp_goscinny
+        - switch.cabinet_antek
+        - switch.lamp_pracownia
+        - switch.lamp_goscinny
+        - switch.lamp_gabinet
         - input_boolean.antek_lamp_night
 
 #### HEATING ####
