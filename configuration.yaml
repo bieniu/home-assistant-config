@@ -105,6 +105,7 @@ panel_custom:
     sidebar_title: Z-Wave
     sidebar_icon: mdi:z-wave
     url_path: zwave
+    require_admin: true
 
 remote:
   - platform: harmony

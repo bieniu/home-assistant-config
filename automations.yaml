@@ -52,6 +52,8 @@
       entity_id: sensor.dishwasher_kuchnia
       from: 'zmywanie'
       to: 'wyłączona'
+      for:
+        minutes: 1
   action:
     service: script.notify
     data_template:
@@ -124,6 +126,8 @@
     - platform: numeric_state
       entity_id: sensor.hacs
       above: 0
+      for:
+        minutes: 10
   action:
     - service: script.notify
       data:

@@ -2,20 +2,20 @@
 'zone.work_*':
   friendly_name: 'w pracy'
 
-#### TEMPERATURE SENSORS ####
+#### SENSORS ####
 'sensor.temperature_*':
   device_class: temperature
 
-#### HUMIDITY SENSORS ####
 'sensor.humidity_*':
   device_class: humidity
 
-#### MOTION SENSORS ####
+'sensor.pressure_*':
+  device_class: pressure
+
 'binary_sensor.motion_*':
   icon: mdi:run
   device_class: motion
 
-#### WINDOW/DOOR SENSORS ####
 'binary_sensor.balcony_door_*':
   device_class: opening
   icon: mdi:window-open
@@ -24,71 +24,71 @@
   device_class: opening
   icon: mdi:window-open
 
-#### ILLUMINATION SENSORS ####
 'sensor.illumination_*':
   icon: mdi:lightbulb-on-outline
   device_class: illuminance
 
+'sensor.*power*':
+  device_class: power
+  icon: mdi:flash-outline
+
+'sensor.*energy*':
+  device_class: power
+  icon: mdi:flash-outline
+
+'sensor.battery_*':
+  device_class: battery
+
 #### CLIMATE ####
-'climate.thermostat*':
+'climate.thermostat_*':
   icon: mdi:radiator
   max_temp: 28
   min_temp: 4
 
-#### ENERGY ####
-'sensor.*energy*':
-  icon: mdi:flash-outline
-'sensor.*power*':
-  icon: mdi:flash-outline
-
-#### SONOFF ####
-'binary_sensor.sonoff*_status':
+#### ESPHOME ####
+'binary_sensor.sonoff_*_status':
   icon: mdi:light-switch
-'sensor.sonoff*_uptime':
+'binary_sensor.blitzwolf_*_status':
+  icon: mdi:light-switch
+'sensor.sonoff_*_uptime':
+  unit_of_measurement: 'dni'
+'sensor.blitzwolf_*_uptime':
   unit_of_measurement: 'dni'
 
 #### SHELLY ####
-'binary_sensor.shelly1*_status':
+'binary_sensor.shelly1_*_status':
   icon: mdi:light-switch
-'binary_sensor.shelly2*_status':
+'binary_sensor.shelly2_*_status':
   icon: mdi:light-switch
-'binary_sensor.shelly_plug*_status':
+'binary_sensor.shelly_plug_*_status':
   icon: mdi:light-switch
-'binary_sensor.shelly_ht*_status':
+'binary_sensor.shelly_ht_*_status':
   icon: mdi:thermometer-lines
 
 #### LIGHTS ####
-'light.lightstrip_*':
+'light.lightstrip*':
   friendly_name: 'LEDy'
   icon: mdi:led-variant-on
-'light.christmas_tree_*':
-  icon: mdi:pine-tree
 
-#### BATTERY SENSORS ####
-'sensor.battery_*':
-  device_class: battery
+'light.christmas_tree*':
+  icon: mdi:pine-tree
 
 #### NETWORK DEVICES ####
 'binary_sensor.yeelight_lightstrip_*_status':
   icon: mdi:led-variant-outline
+
 'binary_sensor.yeelight_bulb_*_status':
   icon: mdi:lightbulb-outline
+
+'sensor.wemos*_status':
+  device_class: signal_strength
+  unit_of_measurement: '%'
+
 'binary_sensor.*_status':
   device_class: connectivity
 
-'sensor.sonoff_*_status':
+'sensor.*_wifi_signal':
   device_class: signal_strength
-  unit_of_measurement: '%'
-
-'sensor.wemos_*_status':
-  device_class: signal_strength
-  unit_of_measurement: '%'
-
-'sensor.*_power':
-  device_class: power
-
-'sensor.*_energy':
-  device_class: power
 
 'sensor.co2_*':
   icon: mdi:periodic-table-co2
