@@ -111,4 +111,3 @@ include:
     - input_boolean.heating_airing
     - input_boolean.away_mode
     - input_boolean.guests
-    - device_tracker.oneplus_6_ariela

@@ -10,6 +10,7 @@
   apps:
     com.amazon.amazonvideo.livingroom: 'Amazon Prime Video'
     com.google.android.youtube.tv: 'YouTube'
+    com.google.android.youtube.tvkids: 'YouTube Kids'
     eu.hbogo.androidtv.production: 'HBO GO'
     com.vimeo.android.videoapp: 'Vimeo'
     pl.videostar: 'WP Pilot'

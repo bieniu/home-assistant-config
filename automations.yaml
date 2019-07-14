@@ -127,7 +127,7 @@
       entity_id: sensor.hacs
       above: 0
       for:
-        minutes: 10
+        minutes: 20
   action:
     - service: script.notify
       data:
@@ -2212,6 +2212,33 @@
 ##################################################################################################
 
 #### HARMONY #####################################################################################
+# poprawianie przełączania wejść amplitunera
+- id: harmony_denon_input_switch_helper
+  alias: 'Harmony Denon Input Switch Helper'
+  trigger:
+    platform: state
+    entity_id: remote.salon
+  action:
+    - delay: '00:00:02'
+    - service: remote.send_command
+      entity_id: remote.salon
+      data_template:
+        device: 'Amplituner'
+        command: >-
+          {% if trigger.to_state.attributes.current_activity == 'Telewizja' %}
+            InputCbl/Sat
+          {% elif trigger.to_state.attributes.current_activity == 'Filmy' %}
+            InputBlu-ray
+          {% elif trigger.to_state.attributes.current_activity == 'PlayStation' %}
+            InputTvAudio
+          {% elif trigger.to_state.attributes.current_activity == 'Xbox' %}
+            InputAux2
+          {% elif trigger.to_state.attributes.current_activity == 'Muzyka' %}
+            InputOnlineMusic
+          {% elif trigger.to_state.attributes.current_activity == 'Smart TV' %}
+            InputTvAudio
+          {% endif %}
+
 # wyłączenie telewizora jeśli Harmony przejdzie do aktywności PowerOff
 - id: harmony_turn_off_television
   alias: 'Harmony Turn Off Television'

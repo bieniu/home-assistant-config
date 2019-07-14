@@ -80,7 +80,7 @@
       friendly_name: 'iPhone 8 Plus'
 
     ipad_status:
-      value_template: "{{ is_state('device_tracker.ipad', 'home') }}"
+      value_template: "{{ is_state('device_tracker.ipad_air', 'home') }}"
       friendly_name: 'iPad Air'
 
     kindle_status:

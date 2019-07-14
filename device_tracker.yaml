@@ -15,3 +15,8 @@
   hosts:
     modem: !secret modem_hostname
     raspberry: !secret raspberry_hostname
+
+- platform: iphonedetect
+  hosts:
+    ipad_air: !secret ipad_air_ip
+    iphone_8_plus: !secret iphone_8_plus_ip
