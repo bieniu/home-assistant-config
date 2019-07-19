@@ -1201,59 +1201,6 @@
     data:
       temperature: 23
 
-# uruchamia skrypt aktualizaujący termostaty
-- id: heating_update_thermostats
-  alias: 'Heating Update Thermostats'
-  trigger:
-    platform: state
-    entity_id:
-      - climate.thermostat_antek
-      - climate.thermostat_kuchnia
-      - climate.thermostat_salon
-      - climate.thermostat_antresola
-      - climate.thermostat_sypialnia
-      - climate.thermostat_lazienka
-  condition:
-    condition: template
-    value_template: "{{ trigger.to_state.state == 'unknown' }}"
-  action:
-    service: python_script.thermostat_update
-    data_template:
-      thermostat: '{{ trigger.entity_id }}'
-      state_only: true
-
-# uruchamia skrypt aktualizaujący termostaty na starcie HA
-- id: heating_update_thermostats_at_start
-  alias: 'Heating Update Thermostats At Start'
-  trigger:
-    platform: event
-    event_type: zwave.network_ready
-  action:
-    - service: python_script.thermostat_update
-      data:
-        thermostat: climate.thermostat_antek
-        state_only: true
-    - service: python_script.thermostat_update
-      data:
-        thermostat: climate.thermostat_kuchnia
-        state_only: true
-    - service: python_script.thermostat_update
-      data:
-        thermostat: climate.thermostat_salon
-        state_only: true
-    - service: python_script.thermostat_update
-      data:
-        thermostat: climate.thermostat_antresola
-        state_only: true
-    - service: python_script.thermostat_update
-      data:
-        thermostat: climate.thermostat_sypialnia
-        state_only: true
-    - service: python_script.thermostat_update
-      data:
-        thermostat: climate.thermostat_lazienka
-        state_only: true
-
 ##################################################################################################
 
 #### LIGHT #######################################################################################

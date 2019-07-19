@@ -1,7 +1,7 @@
 {
     "thermostat_update": {
-        "updated_at": "2019-02-24",
-        "version": "0.3.1",
+        "updated_at": "2019-07-19",
+        "version": "0.3.2",
         "local_location": "/python_scripts/thermostat_update.py",
         "remote_location": "https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/thermostat_update.py",
         "visit_repo": "https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/thermostat_update.py",
