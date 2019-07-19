@@ -33,8 +33,8 @@ light.bulb_salon_2:
   friendly_name: 'Żarówka salon 2'
 light.leds_salon:
   icon: mdi:led-variant-on
-switch.bulbs_salon:
-  icon: mdi:lightbulb
+# switch.bulbs_salon:
+#   icon: mdi:lightbulb
 light.bulbs_salon:
   friendly_name: 'Żarówki'
 

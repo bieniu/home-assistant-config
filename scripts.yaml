@@ -24,7 +24,7 @@ night_mode:
     - service: homeassistant.turn_off
       entity_id:
         - light.leds_salon
-        - switch.bulbs_salon
+        - light.bulbs_salon
         - light.lamp_salon
         - switch.cabinet_antek
 
@@ -33,7 +33,7 @@ light_away_mode:
   sequence:
     - service: homeassistant.turn_off
       entity_id:
-        - switch.bulbs_salon
+        - light.bulbs_salon
         - light.leds_salon
         - light.lamp_salon
         - light.leds_przedpokoj

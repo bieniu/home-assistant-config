@@ -17,8 +17,8 @@ resources:
     type: module
   - url: /local/lovelace/popup-card.js?v=78d39a
     type: js
-  - url: /community_plugin/light-entity-card/light-entity-card.js
-    type: js
+  # - url: /community_plugin/light-entity-card/light-entity-card.js
+  #   type: js
   - url: /community_plugin/lovelace-card-mod/card-mod.js
     type: module
 
@@ -82,29 +82,29 @@ views:
             }
           entities:
             - person.antek
-      switch.bulbs_salon:
-        title: 'Żarówki'
-        card:
-          type: custom:vertical-stack-in-card
-          cards:
-            - type: history-graph
-              style: |
-                ha-card {
-                  border-radius: 0px
-                }
-              entities:
-                - switch.bulbs_salon
-            - type: custom:light-entity-card
-              style: |
-                ha-card {
-                  border-radius: 0px
-                }
-              entity: light.bulbs_salon
-              header: false
-              group: true
+      # switch.bulbs_salon:
+      #   title: 'Żarówki'
+      #   card:
+      #     type: custom:vertical-stack-in-card
+      #     cards:
+      #       - type: history-graph
+      #         style: |
+      #           ha-card {
+      #             border-radius: 0px
+      #           }
+      #         entities:
+      #           - switch.bulbs_salon
+      #       - type: custom:light-entity-card
+      #         style: |
+      #           ha-card {
+      #             border-radius: 0px
+      #           }
+      #         entity: light.bulbs_salon
+      #         header: false
+      #         group: true
     cards:
       - type: custom:layout-card
-        column_width: 310
+        column_width: 290
         cards:
           - type: vertical-stack
             cards:
@@ -166,7 +166,7 @@ views:
                   - type: custom:secondaryinfo-entity-row
                     entity: fan.humidifier_salon
                     secondary_info: "poziom wody: [[ sensor.humidifier_water_level.state ]] %"
-                  - switch.bulbs_salon
+                  - light.bulbs_salon
                   - light.leds_salon
                   - light.lamp_salon
                   - input_select.light_scenes_salon
@@ -343,7 +343,7 @@ views:
     panel: true
     cards:
       - type: custom:layout-card
-        column_width: 310
+        column_width: 290
         cards:
           - type: vertical-stack
             cards:
@@ -469,7 +469,7 @@ views:
     panel: true
     cards:
       - type: custom:layout-card
-        column_width: 310
+        column_width: 290
         cards:
           - type: vertical-stack
             cards:
@@ -617,7 +617,7 @@ views:
     cards:
       - type: custom:layout-card
         max_columns: 4
-        column_width: 310
+        column_width: 290
         cards:
           - type: vertical-stack
             cards:
@@ -783,7 +783,7 @@ views:
     cards:
       - type: custom:layout-card
         max_columns: 4
-        column_width: 310
+        column_width: 290
         cards:
           - type: vertical-stack
             cards:

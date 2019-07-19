@@ -5,7 +5,7 @@ exposed_domains:
 entities:
   light.leds_salon:
     hidden: false
-  switch.bulbs_salon:
+  light.bulbs_salon:
     hidden: false
     name: 'Zarowki'
   light.lamp_salon:

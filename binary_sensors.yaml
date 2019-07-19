@@ -1,10 +1,10 @@
 - platform: workday
   country: 'PL'
 
-# - platform: meteoalarm
-#   country: 'PL'
-#   province: 'Łowicki'
-#   language: 'PL'
+- platform: meteoalarm
+  country: 'PL'
+  province: 'Łowicki'
+  language: 'PL'
 
 - platform: template
   sensors:
@@ -105,7 +105,7 @@
 
     laptopedyta_status:
       value_template: "{{ is_state('device_tracker.laptopedyta', 'home') }}"
-      friendly_name: 'HP EliteBook 820 G3'
+      friendly_name: 'Dell Latitude 7290'
 
     denon_status:
       value_template: "{{ is_state('device_tracker.denon', 'home') }}"

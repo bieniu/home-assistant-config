@@ -17,22 +17,3 @@ brother_printer_status:
   use_mqtt: true
   mac: !secret brother_mac
   retain: true
-
-thermostats_update:
-  module: thermostats-update
-  class: ThermostatsUpdate
-  heat_state: 'auto'
-  state_only: true
-  rooms:
-    salon:
-      thermostat: climate.thermostat_salon
-    kuchnia:
-      thermostat: climate.thermostat_kuchnia
-    antresola:
-      thermostat: climate.thermostat_antresola
-    sypialnia:
-      thermostat: climate.thermostat_sypialnia
-    lazienka:
-      thermostat: climate.thermostat_lazienka
-    antek:
-      thermostat: climate.thermostat_antek
