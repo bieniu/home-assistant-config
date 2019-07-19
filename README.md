@@ -29,6 +29,7 @@
 
 * Sonoff Basic Switches [[ESPHome](https://esphome.io) firmware]
 * Sonoff S26 Plug [[ESPHome](https://esphome.io) firmware]
+* BlitzWolf BW-SHP6 [[ESPHome](https://esphome.io) firmware]
 * [Shelly1](https://shelly.cloud/shelly1-open-source/) via MQTT
 * [Shelly2](https://shelly.cloud/shelly2/) via MQTT
 * [Shelly Plug S](https://shelly.cloud/shelly-plug-s/) via MQTT
@@ -58,8 +59,11 @@
 ## Home Assistant Custom Components
 
 * [Custom Frontend](https://github.com/home-assistant/home-assistant/pull/10783)
-* [Custom Updater](https://github.com/custom-components/custom_updater)
+* [HACS](https://github.com/custom-components/hacs)
 * [Sony Bravia TV PSK](https://github.com/custom-components/media_player.braviatv_psk)
+* [Airly](https://github.com/bieniu/ha-airly)
+* [GIOS](https://github.com/bieniu/ha-gios)
+* [iPhone Detect](https://github.com/mudape/iphonedetect)
 
 ## Custom Panels
 
@@ -73,7 +77,6 @@
 * [monster-card](https://github.com/ciotlosm/custom-lovelace/tree/master/monster-card)
 * [popup-card](https://github.com/thomasloven/lovelace-popup-card)
 * [secondaryinfo-entity-row](https://github.com/MizterB/lovelace-secondaryinfo-entity-row)
-* [tracker-card](https://github.com/custom-cards/tracker-card)
 * [vertical-stack-in-card](https://github.com/custom-cards/vertical-stack-in-card)
 * [mini-media-player](https://github.com/kalkih/mini-media-player)
 * [dark-sky-weather-card](https://github.com/iammexx/home-assistant-config/tree/master/ui/darksky)
@@ -81,10 +84,10 @@
 
 ## AppDaemon
 
-* [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/ha-thermostats-update)
+* [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/ha-ad-thermostats-update)
 * [Brother printer status sensors](https://github.com/bieniu/home-assistant-config/blob/master/apps/brother_printer_status.py)
 * [DuneHD Activity](https://github.com/bieniu/home-assistant-config/blob/master/apps/dune_activity.py)
-* [Airly](https://github.com/bieniu/ha-airly)
+* [Airly](https://github.com/bieniu/ha-ad-airly)
 
 ## Python Scripts
 

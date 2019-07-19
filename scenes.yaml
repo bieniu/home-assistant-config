@@ -72,9 +72,7 @@
     light.leds_salon:
       state: 'off'
     light.lamp_salon:
-      state: 'on'
-      transition: 5
-      brightness: 255
+      state: 'off'
     switch.flux:
       state: 'on'
 

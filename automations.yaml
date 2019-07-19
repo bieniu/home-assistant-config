@@ -155,7 +155,7 @@
         {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
         {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
         {% for domain in domains -%}
-          {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
+          {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb_' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
             - {{ item.name }} ({{ item.entity_id }})
           {%- endfor %}
         {%- endfor %}
@@ -171,7 +171,7 @@
             {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
             {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
             {% for domain in domains -%}
-              {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
+              {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb_' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
            - {{ item.name }} ({{ item.entity_id }})
               {%- endfor %}
             {%- endfor %}
@@ -186,7 +186,7 @@
             {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
             {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
             {% for domain in domains -%}
-              {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
+              {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb_' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
            - {{ item.name }} ({{ item.entity_id }})
               {%- endfor %}
             {%- endfor %}
@@ -1287,41 +1287,14 @@
       - light.leds_salon
       - light.lamp_salon
 
-# wyłączenie switcha od żarówek w salonie gdy żarówki wyłączone jasnością
-# - id: light_turn_off_salon_bulbs_when_brightness_0
-#   alias: 'Light Turn Off Salon Bulbs When Brightness 0'
-#   trigger:
-#     platform: event
-#     event_type: state_changed
-#     event_data:
-#       entity_id: light.bulbs_salon
-#       old_state: 'on'
-#       new_state: 'off'
-#   condition:
-#     condition: state
-#     entity_id: switch.bulbs_salon
-#     state: 'on'
-#   action:
-#     service: switch.turn_off
-#     entity_id: switch.bulbs_salon
-
 # automatyczna scena oświetlenia w salonie
 - id: light_scene_salon_auto_when_bulbs_turn_on
   alias: 'Light Scene Salon Auto When Bulbs Turn On'
   trigger:
-    # - platform: state
-    #   entity_id: input_select.light_scenes_salon
-    #   to: 'automatyczny'
     platform: state
     entity_id: light.bulbs_salon
     to: 'on'
-  # condition:
-  #   condition: state
-  #   entity_id: input_boolean.salon_light_scene_turn_on
-  #   state: 'off'
   action:
-    # - service: switch.turn_on
-    #   entity_id: switch.flux
     service: input_select.select_option
     data:
       entity_id: input_select.light_scenes_salon
@@ -1333,72 +1306,10 @@
   trigger:
     platform: state
     entity_id: input_select.light_scenes_salon
-  # condition:
-  #   condition: and
-  #   conditions:
-  #     - condition: template
-  #       value_template: "{{ trigger.to_state.state != 'automatyczny' }}"
-  #     - condition: template
-  #       value_template: "{{ is_state('light.bulb_salon_1', 'on') and is_state('light.bulb_salon_2', 'on') }}"
   action:
     service: scene.turn_on
     data_template:
       entity_id: scene.{{ trigger.to_state.state }}
-
-# wybór sceny oświetlenia w salonie gdy żarówki wyłączone
-# - id: light_scene_salon_when_bulbs_off
-#   alias: 'Light Scene Salon When Bulbs Off'
-#   trigger:
-#     platform: state
-#     entity_id: input_select.light_scenes_salon
-#   condition:
-#     condition: and
-#     conditions:
-#       - condition: template
-#         value_template: "{{ trigger.to_state.state != 'automatyczny' }}"
-#       - condition: state
-#         entity_id: light.bulbs_salon
-#         state: 'off'
-#   action:
-#     - service: input_boolean.turn_on
-#       entity_id: input_boolean.salon_light_scene_turn_on
-#     - service: switch.turn_on
-#       entity_id: switch.bulbs_salon
-
-# wybór sceny auto oświetlenia w salonie gdy żarówki wyłączone
-# - id: light_scene_salon_auto_when_bulbs_off
-#   alias: 'Light Scene Salon Auto When Bulbs Off'
-#   trigger:
-#     platform: state
-#     entity_id: input_select.light_scenes_salon
-#   condition:
-#     condition: and
-#     conditions:
-#       - condition: template
-#         value_template: "{{ trigger.to_state.state == 'automatyczny' }}"
-#       - condition: template
-#         value_template: "{{ is_state('light.bulbs_salon', 'off') or is_state('light.bulbs_salon', 'unavailable') }}"
-#   action:
-#     service: switch.turn_on
-#     entity_id: switch.bulbs_salon
-
-# scena gdy żarówki połączą się z siecią
-# - id: light_scene_salon_when_bulbs_are_turning_on
-#   alias: 'Light Scene Salon When Bulbs Are Turning On'
-#   trigger:
-#     platform: state
-#     entity_id: light.bulbs_salon
-#     to: 'on'
-#   condition:
-#     condition: state
-#     entity_id: input_boolean.salon_light_scene_turn_on
-#     state: 'on'
-#   action:
-#     - service: scene.turn_on
-#       data_template:
-#         entity_id: scene.{{ states('input_select.light_scenes_salon') }}
-#     - service: input_boolean.turn_off
-#       entity_id: input_boolean.salon_light_scene_turn_on
 
 # włączenie/wyłączenie lampy w salonie
 - id: light_toggle_power_salon_lamp
