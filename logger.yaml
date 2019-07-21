@@ -6,4 +6,4 @@ logs:
   homeassistant.components.generic.camera: debug
   homeassistant.components.stream: debug
   homeassistant.components.media_player: error
-  homeassistant.components.binary_sensor.meteoalarm: debug
+  custom_components.hacs: debug
