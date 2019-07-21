@@ -8,7 +8,7 @@ exclude:
     - script
     - group
     - mqtt
-    # - device_tracker
+    - device_tracker
     - input_boolean
     - history_graph
   entities:

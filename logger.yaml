@@ -7,4 +7,3 @@ logs:
   homeassistant.components.stream: debug
   homeassistant.components.media_player: error
   homeassistant.components.binary_sensor.meteoalarm: debug
-  homeassistant.components.bluetooth_tracker.device_tracker: debug

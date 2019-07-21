@@ -2102,6 +2102,8 @@
     entity_id: remote.salon
   action:
     - delay: '00:00:02'
+    - condition: template
+      value_template: "{{ trigger.to_state.attributes.current_activity != 'PowerOff' }}"
     - service: remote.send_command
       entity_id: remote.salon
       data_template:
@@ -2136,7 +2138,7 @@
         entity_id: media_player.bravia
         state: 'on'
   action:
-    - delay: '00:00:03'
+    - delay: '00:00:02'
     - condition: state
       entity_id: media_player.bravia
       state: 'on'
