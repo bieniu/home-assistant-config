@@ -85,8 +85,8 @@
 ## AppDaemon
 
 * [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/ha-ad-thermostats-update)
-* [Brother printer status sensors](https://github.com/bieniu/home-assistant-config/blob/master/apps/brother_printer_status.py)
-* [DuneHD Activity](https://github.com/bieniu/home-assistant-config/blob/master/apps/dune_activity.py)
+* [Brother printer status sensors](https://github.com/bieniu/home-assistant-config/blob/master/appdaemon/apps/brother-printer-status/brother-printer-status.py)
+* [DuneHD Activity](https://github.com/bieniu/home-assistant-config/blob/master/appdaemon/apps/dune-activity/dune-activity.py)
 * [Airly](https://github.com/bieniu/ha-ad-airly)
 
 ## Python Scripts
