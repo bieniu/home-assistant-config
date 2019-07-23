@@ -121,6 +121,10 @@ views:
                       - sensor.humidity_kuchnia
                   - type: entities
                     show_header_toggle: false
+                    style: |
+                      #states div:nth-of-type(3) {
+                        --paper-item-icon-color: [[ if(sensor.dishwasher_kuchnia == "zmywanie", "var(--state-icon-active-color)", "var(--state-icon-color)") ]];
+                      }
                     entities:
                       - binary_sensor.window_kuchnia
                       - climate.thermostat_kuchnia
