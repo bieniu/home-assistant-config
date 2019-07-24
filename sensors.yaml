@@ -1,3 +1,11 @@
+- platform: fitbit
+  monitored_resources:
+    - activities/steps
+    - activities/distance
+    - activities/floors
+    - activities/calories
+    - sleep/minutesAsleep
+
 - platform: airly
   api_key: !secret airly_apikey
   monitored_conditions:
@@ -83,7 +91,7 @@
     - battery.charge
 
 - platform: cert_expiry
-  host: !secret http_base_url
+  host: !secret ha_domain
 
 - platform: command_line
   name: 'Raspberry CPU Temp'

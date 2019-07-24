@@ -6,4 +6,3 @@ logs:
   homeassistant.components.generic.camera: debug
   homeassistant.components.stream: debug
   homeassistant.components.media_player: error
-  custom_components.hacs: debug

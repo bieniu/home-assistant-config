@@ -1,11 +1,6 @@
 - platform: workday
   country: 'PL'
 
-- platform: meteoalarm
-  country: 'PL'
-  province: 'Łowicki'
-  language: 'PL'
-
 - platform: template
   sensors:
     people_at_home:

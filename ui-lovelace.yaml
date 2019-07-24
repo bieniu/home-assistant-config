@@ -50,6 +50,18 @@ views:
               entities:
                 - person.maciek
                 - zone.home
+            - type: glance
+              style: |
+                ha-card {
+                  border-radius: 0px
+                }
+              show_name: false
+              entities:
+                - sensor.steps
+                - sensor.distance
+                - sensor.floors
+                - sensor.calories
+                - sensor.sleep_minutes_asleep
       person.edyta:
         title: 'Edyta'
         card:

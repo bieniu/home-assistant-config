@@ -606,21 +606,6 @@
           W następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level() }}
         notification_id: 'notification-low-battery'
 
-# powiadomienie o zagrożeniach pogodowych
-- id: notification_meteoalarm
-  alias: 'Notification MeteoAlarm'
-  trigger:
-    platform: state
-    entity_id: binary_sensor.meteoalarm
-    to: 'on'
-  action:
-    service: script.notify
-    data_template:
-      notify_edyta: true
-      title: "{{ trigger.to_state.attributes.headline }}"
-      message: "{{ trigger.to_state.attributes.description }}"
-      tag: 'notification-meteoalarm'
-
 ##################################################################################################
 
 #### OBECNOŚĆ ####################################################################################

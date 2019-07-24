@@ -33,10 +33,27 @@ light.bulb_salon_2:
   friendly_name: 'Żarówka salon 2'
 light.leds_salon:
   icon: mdi:led-variant-on
-# switch.bulbs_salon:
-#   icon: mdi:lightbulb
 light.bulbs_salon:
   friendly_name: 'Żarówki'
+
+#### FITBIT ####
+sensor.steps:
+  friendly_name: 'Kroki'
+  unit_of_measurement: ''
+sensor.calories:
+  friendly_name: 'Kalorie'
+  unit_of_measurement: 'cal'
+sensor.distance:
+  friendly_name: 'Dystans'
+  unit_of_measurement: 'km'
+sensor.floors:
+  friendly_name: 'Piętra'
+  icon: mdi:stairs
+  unit_of_measurement: ''
+sensor.sleep_minutes_asleep:
+ friendly_name: 'Sen'
+ unit_of_measurement: 'min'
+ icon: mdi:hotel
 
 #### UPS ####
 sensor.ups_status:
