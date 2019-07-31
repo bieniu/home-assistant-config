@@ -157,9 +157,10 @@ views:
                   - entity: binary_sensor.motion_salon
                     secondary_info: last-changed
                   - climate.thermostat_salon
-                  - type: custom:secondaryinfo-entity-row
-                    entity: fan.humidifier_salon
-                    secondary_info: "poziom wody: [[ sensor.humidifier_water_level.state ]] %"
+                  # - type: custom:secondaryinfo-entity-row
+                  #   entity: fan.humidifier_salon
+                  #   secondary_info: "poziom wody: [[ sensor.humidifier_water_level.state ]] %"
+                  - fan.salon
                   - light.bulbs_salon
                   - light.leds_salon
                   - light.lamp_salon
@@ -260,6 +261,7 @@ views:
                 entities:
                   - entity: binary_sensor.motion_gabinet
                     secondary_info: last-changed
+                  - climate.thermostat_gabinet
                   - switch.lamp_gabinet
                   - switch.stacjonarny
           - type: custom:vertical-stack-in-card
@@ -397,6 +399,7 @@ views:
                   - zwave.thermostat_salon
                   - zwave.thermostat_kuchnia
                   - zwave.thermostat_antresola
+                  - zwave.thermostat_gabinet
                   - zwave.thermostat_antek
                   - zwave.thermostat_sypialnia
                   - zwave.thermostat_lazienka
@@ -428,6 +431,7 @@ views:
               - binary_sensor.mibox_status
               - binary_sensor.dafang_status
               - binary_sensor.mihumidifier_status
+              - binary_sensor.mifan_status
               - binary_sensor.laptop_status
               - binary_sensor.laptopedyta_status
               - binary_sensor.oneplus_status
@@ -584,6 +588,7 @@ views:
               - sensor.battery_thermostat_salon
               - sensor.battery_thermostat_kuchnia
               - sensor.battery_thermostat_antresola
+              - sensor.battery_thermostat_gabinet
               - sensor.battery_thermostat_antek
               - sensor.battery_thermostat_sypialnia
               - sensor.battery_thermostat_lazienka

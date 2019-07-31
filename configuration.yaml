@@ -18,7 +18,7 @@ http:
   ip_ban_enabled: true
   login_attempts_threshold: 5
   use_x_forwarded_for: true
-  trusted_proxies: !secret synology_ip
+  trusted_proxies: !secret http_trusted_proxies
   base_url: !secret http_base_url
 
 recorder: !include recorder.yaml
@@ -58,6 +58,9 @@ fan:
     model: zhimi.humidifier.ca1
     host: !secret humidifier_hostname
     token: !secret humidifier_token
+  - platform: xiaomi_miio_fan
+    host: !secret fan_hostname
+    token: !secret fan_token
 
 sun:
 

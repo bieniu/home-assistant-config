@@ -679,6 +679,8 @@
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.away_mode
+    - service: fan.turn_off
+      entity_id: fan.salon
     - condition: state
       entity_id: group.windows
       state: 'on'
@@ -700,8 +702,19 @@
     entity_id: binary_sensor.people_at_home
     to: 'on'
   action:
-    service: input_boolean.turn_off
-    entity_id: input_boolean.away_mode
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.away_mode
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.heating_season
+          state: 'off'
+        - condition: numeric_state
+          entity_id: sensor.temperature_salon
+          above: 27
+    - service: fan.turn_on
+      entity_id: fan.salon
+
 ##################################################################################################
 
 #### HEATING #####################################################################################
@@ -849,6 +862,21 @@
         temperature: "{{ states('input_select.heating_temp_night') }}"
     - service: input_boolean.turn_on
       entity_id: input_boolean.heating_salon_kuchnia_night
+
+# wyłączenie wentylatora po wyłączeniu telewizora
+- id: climate_turn_off_fan
+  alias: 'Climate Turn Off Fan'
+  trigger:
+    platform: state
+    entity_id: media_player.bravia
+    to: 'off'
+  condition:
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: 'off'
+  action:
+    service: fan.turn_off
+    entity_id: fan.salon
 
 # zmniejszenie temperatury gdy domownicy wychodzą i jest sezon grzewczy
 - id: heating_eco_mode

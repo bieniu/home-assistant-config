@@ -1,3 +1,15 @@
+- platform: ping
+  host: !secret modem_hostname
+  name: modem_status
+  count: 2
+  scan_interval: 180
+
+- platform: ping
+  host: !secret raspberry_hostname
+  name: raspberry_status
+  count: 2
+  scan_interval: 180
+
 - platform: workday
   country: 'PL'
 
@@ -41,10 +53,6 @@
     bravia_status:
       value_template: "{{ is_state('device_tracker.bravia', 'home') }}"
       friendly_name: 'Sony KD-55XF8596'
-
-    raspberry_status:
-      value_template: "{{ is_state('device_tracker.raspberry', 'home') }}"
-      friendly_name: 'Raspberry Pi 3B'
 
     switch_status:
       value_template: "{{ is_state('device_tracker.switch', 'home') }}"
@@ -90,10 +98,6 @@
       value_template: "{{ is_state('device_tracker.lumia', 'home') }}"
       friendly_name: 'Lumia 640'
 
-    modem_status:
-      value_template: "{{ is_state('device_tracker.modem', 'home') }}"
-      friendly_name: 'ZTE GPON F660'
-
     mibox_status:
       value_template: "{{ is_state('device_tracker.mibox', 'home') }}"
       friendly_name: 'Xiaomi Mi Box 3'
@@ -112,11 +116,15 @@
 
     migateway_status:
       value_template: "{{ is_state('device_tracker.migateway', 'home') }}"
-      friendly_name: 'Xiaomi Mi Smart Home Gateway'
+      friendly_name: 'Xiaomi Mi Home Gateway 2'
 
     mihumidifier_status:
       value_template: "{{ is_state('device_tracker.mihumidifier', 'home') }}"
-      friendly_name: 'Xiaomi Mi Smart Humidifier CA1'
+      friendly_name: 'Xiaomi Mi Humidifier CA1'
+
+    mifan_status:
+      value_template: "{{ is_state('device_tracker.mifan', 'home') }}"
+      friendly_name: 'Xiaomi Mi Pedestal Fan 1X'
 
     brother_status:
       value_template: "{{ is_state('device_tracker.brother', 'home') }}"

@@ -56,6 +56,7 @@ heating_fast_warm_up:
     - service: climate.set_temperature
       entity_id:
         - climate.thermostat_antresola
+        - climate.thermostat_gabinet
         - climate.thermostat_antek
         - climate.thermostat_sypialnia
         - climate.thermostat_kuchnia
@@ -77,6 +78,7 @@ heating_day:
         - climate.thermostat_antresola
         - climate.thermostat_kuchnia
         - climate.thermostat_salon
+        - climate.thermostat_gabinet
       data_template:
         temperature: "{{ states('input_select.heating_temp_day') }}"
     - service: climate.set_temperature
@@ -101,7 +103,9 @@ heating_night:
     - service: input_boolean.turn_on
       entity_id: input_boolean.heating_night
     - service: climate.set_temperature
-      entity_id: climate.thermostat_antresola
+      entity_id:
+        - climate.thermostat_antresola
+        - climate.thermostat_gabinet
       data_template:
         temperature: "{{ states('input_select.heating_temp_night') }}"
     - service: climate.set_temperature
@@ -133,6 +137,7 @@ heating_eco_mode:
     - service: climate.set_temperature
       entity_id:
         - climate.thermostat_antresola
+        - climate.thermostat_gabinet
         - climate.thermostat_kuchnia
         - climate.thermostat_salon
         - climate.thermostat_antek
@@ -148,6 +153,7 @@ heating_season_end:
     service: climate.set_temperature
     entity_id:
       - climate.thermostat_antresola
+      - climate.thermostat_gabinet
       - climate.thermostat_kuchnia
       - climate.thermostat_salon
       - climate.thermostat_antek
@@ -161,6 +167,7 @@ heating_airing_begin:
     - service: climate.set_temperature
       entity_id:
         - climate.thermostat_antresola
+        - climate.thermostat_gabinet
         - climate.thermostat_kuchnia
         - climate.thermostat_salon
         - climate.thermostat_antek

@@ -11,11 +11,6 @@
 
 - platform: bluetooth_tracker
 
-- platform: ping
-  hosts:
-    modem: !secret modem_hostname
-    raspberry: !secret raspberry_hostname
-
 - platform: iphonedetect
   hosts:
     ipad_air: !secret ipad_air_ip

@@ -105,6 +105,7 @@ binary_sensor.synology_status:
 binary_sensor.dune_status:
   icon: mdi:filmstrip
 binary_sensor.raspberry_status:
+  friendly_name: 'Raspberry Pi 3B'
   icon: mdi:raspberry-pi
 binary_sensor.switch_status:
   icon: mdi:switch
@@ -141,6 +142,7 @@ binary_sensor.kindle_status:
 binary_sensor.inkbook_status:
   icon: mdi:tablet-ipad
 binary_sensor.modem_status:
+  friendly_name: 'ZTE GPON F660'
   icon: mdi:router-wireless
 binary_sensor.migateway_status:
   icon: mdi:router-wireless
@@ -151,6 +153,8 @@ binary_sensor.dafang_status:
 binary_sensor.wemos_d1_mini_1c91ea_status:
   icon: mdi:developer-board
 binary_sensor.mihumidifier_status:
+  icon: mdi:fan
+binary_sensor.mifan_status:
   icon: mdi:fan
 
 #### FANS ####

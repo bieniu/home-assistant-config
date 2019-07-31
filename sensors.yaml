@@ -1,3 +1,6 @@
+- platform: authenticated
+  enable_notification: false
+
 - platform: fitbit
   monitored_resources:
     - activities/steps
@@ -276,6 +279,16 @@
           {{ state_attr('zwave.thermostat_antresola', 'battery_level') }}
         {% else %}
           {{ states('sensor.battery_thermostat_antresola') }}
+        {% endif %}
+
+    battery_thermostat_gabinet:
+      friendly_name: 'gabinet'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('zwave.thermostat_gabinet', 'battery_level') %}
+          {{ state_attr('zwave.thermostat_gabinet', 'battery_level') }}
+        {% else %}
+          {{ states('sensor.battery_thermostat_gabinet') }}
         {% endif %}
 
     battery_thermostat_lazienka:
