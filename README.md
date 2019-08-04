@@ -55,6 +55,7 @@
 * CyberPower DL650ELCD [UPS]
 * Xiaomi DaFang [camera with [custom firmware](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks)]
 * Sony Bravia TV (Android TV)
+* Amazon Echo Plus
 
 ## Home Assistant Custom Components
 

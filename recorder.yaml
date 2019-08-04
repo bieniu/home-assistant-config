@@ -87,6 +87,10 @@ exclude:
     - sensor.caddy_version_current
     - sensor.last_boot
     - sensor.airly_caqi
+    - sensor.airly_description
+    - sensor.airly_temperature
+    - sensor.airly_humidity
+    - sensor.airly_pressure
     - switch.lamp_salon
     - sensor.lamp_salon_power
     - sensor.light_salon_power

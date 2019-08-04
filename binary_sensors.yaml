@@ -90,6 +90,14 @@
       value_template: "{{ is_state('device_tracker.kindle', 'home') }}"
       friendly_name: 'Kindle Keyboard 3G'
 
+    kindle_8_status:
+      value_template: "{{ is_state('device_tracker.kindle_8', 'home') }}"
+      friendly_name: 'Kindle 8'
+
+    echo_plus_status:
+      value_template: "{{ is_state('device_tracker.echo_plus', 'home') }}"
+      friendly_name: 'Amazon Echo Plus'
+
     inkbook_status:
       value_template: "{{ is_state('device_tracker.inkbook', 'home') }}"
       friendly_name: 'inkBook Classic 2'

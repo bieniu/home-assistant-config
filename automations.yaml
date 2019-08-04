@@ -871,9 +871,16 @@
     entity_id: media_player.bravia
     to: 'off'
   condition:
-    - condition: state
-      entity_id: input_boolean.heating_season
-      state: 'off'
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: fan.salon
+        state: 'on'
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: 'off'
+      - condition: time
+        after: '22:00:00'
   action:
     service: fan.turn_off
     entity_id: fan.salon

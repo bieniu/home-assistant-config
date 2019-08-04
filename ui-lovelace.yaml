@@ -439,12 +439,14 @@ views:
               - binary_sensor.lumia_status
               - binary_sensor.ipad_status
               - binary_sensor.kindle_status
+              - binary_sensor.kindle_8_status
               - binary_sensor.inkbook_status
           - type: entities
             title: 'Urządzenia IoT'
             show_header_toggle: false
             theme: network-status
             entities:
+              - binary_sensor.echo_plus_status
               - binary_sensor.sonoff_basic_a786cc_status
               - binary_sensor.sonoff_basic_067c81_status
               - binary_sensor.sonoff_basic_5dfba8_status

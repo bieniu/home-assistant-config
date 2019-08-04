@@ -138,9 +138,11 @@ binary_sensor.lumia_status:
 binary_sensor.ipad_status:
   icon: mdi:tablet-ipad
 binary_sensor.kindle_status:
-  icon: mdi:tablet-ipad
+  icon: mdi:cellphone-text
+binary_sensor.kindle_8_status:
+  icon: mdi:cellphone-text
 binary_sensor.inkbook_status:
-  icon: mdi:tablet-ipad
+  icon: mdi:cellphone-text
 binary_sensor.modem_status:
   friendly_name: 'ZTE GPON F660'
   icon: mdi:router-wireless
@@ -156,6 +158,9 @@ binary_sensor.mihumidifier_status:
   icon: mdi:fan
 binary_sensor.mifan_status:
   icon: mdi:fan
+binary_sensor.echo_plus_status:
+  icon: mdi:amazon-alexa
+
 
 #### FANS ####
 fan.humidifier_salon:
