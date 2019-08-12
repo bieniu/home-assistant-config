@@ -763,7 +763,7 @@ views:
                 show:
                   labels: true
                 entities:
-                  - sensor.airly_pm25
+                  - sensor.airly_pm2_5
                 line_color: '#78909c'
               - type: custom:mini-graph-card
                 hour24: true

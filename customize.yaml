@@ -165,6 +165,7 @@ binary_sensor.echo_plus_status:
 #### FANS ####
 fan.humidifier_salon:
   friendly_name: 'Nawilżacz'
+  # icon: mdi:air-humidifier
 
 #### SWITCHES ####
 switch.stacjonarny:

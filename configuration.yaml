@@ -119,11 +119,6 @@ remote:
 
 python_script:
 
-hacs:
-  token: !secret github_token_access
-  appdaemon: true
-  python_script: true
-
 emulated_hue: !include emulated_hue.yaml
 
 yeelight:
