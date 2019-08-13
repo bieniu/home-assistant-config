@@ -3,16 +3,16 @@
         "updated_at": "2019-07-19",
         "version": "0.3.2",
         "local_location": "/python_scripts/thermostat_update.py",
-        "remote_location": "https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/thermostat_update.py",
-        "visit_repo": "https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/thermostat_update.py",
+        "remote_location": "https://raw.githubusercontent.com/bieniu/ha-thermostat-update/master/python_scripts/thermostat_update.py",
+        "visit_repo": "https://github.com/bieniu/ha-thermostat-update",
         "changelog": "https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/thermostat_update.py"
     },
     "shellies_discovery": {
-        "updated_at": "2019-08-11",
-        "version": "0.10.3",
+        "updated_at": "2019-08-13",
+        "version": "0.10.4",
         "local_location": "/python_scripts/shellies_discovery.py",
-        "remote_location": "https://raw.githubusercontent.com/bieniu/home-assistant-config/master/python_scripts/shellies_discovery.py",
-        "visit_repo": "https://github.com/bieniu/home-assistant-config/blob/master/python_scripts/shellies_discovery.py",
-        "changelog": "https://community.home-assistant.io/t/shellies-discovery-script/94048/262"
+        "remote_location": "https://raw.githubusercontent.com/bieniu/ha-shellies-discovery/master/python_scripts/shellies_discovery.py",
+        "visit_repo": "https://github.com/bieniu/ha-shellies-discovery",
+        "changelog": "https://community.home-assistant.io/t/shellies-discovery-script/94048/263"
     }
 }
