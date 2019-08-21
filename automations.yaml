@@ -467,10 +467,12 @@
     - platform: state
       entity_id:
         - binary_sensor.balcony_door_sypialnia
+        - binary_sensor.window_sypialnia
         - binary_sensor.window_kuchnia
         - binary_sensor.balcony_door_pracownia
         - binary_sensor.window_antresola
         - binary_sensor.window_antek
+        - binary_sensor.window_sypialnia
       from: 'off'
       to: 'on'
   condition:

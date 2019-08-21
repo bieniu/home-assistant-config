@@ -311,3 +311,17 @@ camera_move:
       topic: 'camera/salon/motors/{{ orientation }}/set'
       payload: '{{ direction }}'
 
+## ALEXA
+alexa_netflix:
+  sequence:
+    - service: remote.turn_on
+      entity_id: remote.salon
+      data:
+        activity: 'Smart TV'
+    - delay:
+        seconds: 2
+    - service: remote.send_command
+      entity_id: remote.salon
+      data:
+        device: 'Telewizor'
+        command: 'Netflix'

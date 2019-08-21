@@ -245,6 +245,10 @@ binary_sensor.window_antresola:
   location: 'antresola'
 binary_sensor.window_antek:
   location: 'pokój Antka'
+binary_sensor.window_sypialnia:
+  location: 'sypialnia'
+binary_sensor.window_gabinet:
+  location: 'gabinet'
 
 #### PRINTER ####
 sensor.printer_status_custom:

@@ -259,6 +259,7 @@ views:
               - type: entities
                 show_header_toggle: false
                 entities:
+                  - binary_sensor.window_gabinet
                   - entity: binary_sensor.motion_gabinet
                     secondary_info: last-changed
                   - climate.thermostat_gabinet
@@ -294,6 +295,7 @@ views:
               - type: entities
                 show_header_toggle: false
                 entities:
+                  - binary_sensor.window_sypialnia
                   - binary_sensor.balcony_door_sypialnia
                   - entity: binary_sensor.motion_sypialnia
                     secondary_info: last-changed
@@ -601,7 +603,9 @@ views:
               - sensor.battery_window_sensor_kuchnia
               - sensor.battery_door_sensor_pracownia
               - sensor.battery_window_sensor_antresola
+              - sensor.battery_window_sensor_gabinet
               - sensor.battery_window_sensor_antek
+              - sensor.battery_window_sensor_sypialnia
               - sensor.battery_door_sensor_sypialnia
           - type: entities
             title: 'Baterie przełączników'

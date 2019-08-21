@@ -560,6 +560,16 @@
           {{ states('sensor.battery_window_sensor_kuchnia') }}
         {% endif %}
 
+    battery_window_sensor_gabinet:
+      friendly_name: 'gabinet'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.window_gabinet', 'battery_level') %}
+          {{ state_attr('binary_sensor.window_gabinet', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_window_sensor_gabinet') }}
+        {% endif %}
+
     battery_window_sensor_antek:
       friendly_name: 'pokój Antka'
       unit_of_measurement: '%'
@@ -580,8 +590,18 @@
           {{ states('sensor.battery_window_sensor_antresola') }}
         {% endif %}
 
+    battery_window_sensor_sypialnia:
+      friendly_name: 'sypialnia [okno]'
+      unit_of_measurement: '%'
+      value_template: >-
+        {% if state_attr('binary_sensor.window_sypialnia', 'battery_level') %}
+          {{ state_attr('binary_sensor.window_sypialnia', 'battery_level') | round }}
+        {% else %}
+          {{ states('sensor.battery_window_sensor_sypialnia') }}
+        {% endif %}
+
     battery_door_sensor_sypialnia:
-      friendly_name: 'sypialnia'
+      friendly_name: 'sypialnia [drzwi]'
       unit_of_measurement: '%'
       value_template: >-
         {% if state_attr('binary_sensor.balcony_door_sypialnia', 'battery_level') %}

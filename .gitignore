@@ -29,8 +29,8 @@ travis_secrets.yaml
 known_devices.yaml
 WIP*.py
 panels
-!python_scripts/*.json
+python_scripts
 themes/*.yaml
 !themes/blue_mix.yaml
 !.gitignore
-
+alexa_media.*

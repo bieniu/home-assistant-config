@@ -96,6 +96,15 @@ camera:
     stream_source: !secret dafang_rtsp_url
     scan_interval: 5
 
+alexa_media:
+  accounts:
+    - email: !secret amazon_user
+      password: !secret amazon_password
+      url: amazon.com
+      exclude_devices:
+        - "Maciej's Alexa Apps"
+        - "This Device"
+
 notify:
   - platform: html5
     name: html5
