@@ -641,7 +641,7 @@
     service: input_boolean.turn_on
     entity_id: input_boolean.maciek_far_from_home
 
-# Maciek wrócił do domu
+# Maciek wrócił do domu po dalekiej podróży
 - id: presence_maciek_come_back_home
   alias: 'Presence Maciek Come Back Home'
   trigger:
@@ -656,7 +656,7 @@
     service: input_boolean.turn_off
     entity_id: input_boolean.maciek_far_from_home
 
-# Edyta wróciła do domu
+# Edyta wróciła do domu po dalekiej podróży
 - id: presence_edyta_come_back_home
   alias: 'Presence Edyta Come Back Home'
   trigger:
@@ -671,7 +671,7 @@
     service: input_boolean.turn_off
     entity_id: input_boolean.edyta_far_from_home
 
-# domownicy poza domem
+# ludzie poza domem
 - id: presence_peoples_away
   alias: 'Presence Peoples Away'
   trigger:
@@ -696,7 +696,7 @@
         message: "Okna w mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów wynosi {{ states('sensor.dark_sky_precip_probability') }}%."
         tag: 'notification-windows-weather'
 
-# domownicy w domu
+# ludzie w domu
 - id: presence_peoples_back
   alias: 'Presence Peoples Back'
   trigger:
@@ -716,6 +716,54 @@
           above: 27
     - service: fan.turn_on
       entity_id: fan.salon
+
+# domownicy w domu
+- id: presence_household_come_back_home
+  alias: 'Presence Household Come Back Home'
+  trigger:
+    platform: state
+    entity_id: group.household
+    from: 'not_home'
+    to: 'home'
+  action:
+    service: media_player.play_media
+    entity_id: media_player.echo_plus
+    data:
+      media_content_type: 'sequence'
+      media_content_id: 'Alexa.ImHome.Play'
+
+# pierwszy domownik się obudził
+- id: presence_alexa_good_morning
+  alias: 'Presence Alexa Good Morning'
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_salon_2
+    from: 'off'
+    to: 'on'
+  condition:
+    condition: and
+    conditions:
+      - condition: time
+        after: '05:00:00'
+      - condition: state
+        entity_id: binary_sensor.motion_salon_1
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.motion_antresola_1
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.motion_antresola_2
+        state: 'on'
+      - condition: template
+        value_template: >-
+          {% set last = state_attr('automation.presence_alexa_good_morning', 'last_triggered') %}
+          {{ last is none or as_timestamp(last) | timestamp_custom('%j') | int != now().strftime('%j') | int }}
+  action:
+    service: media_player.play_media
+    entity_id: media_player.echo_plus
+    data:
+      media_content_type: 'sequence'
+      media_content_id: 'Alexa.GoodMorning.Play'
 
 ##################################################################################################
 
@@ -1401,9 +1449,6 @@
         - binary_sensor.motion_antresola_2
       from: 'off'
       to: 'on'
-    - platform: numeric_state
-      entity_id: sensor.illumination_salon
-      below: 10
     - platform: state
       entity_id: light.leds_salon
       from: 'on'
@@ -1432,9 +1477,6 @@
         entity_id: light.bulbs_salon
         state: 'off'
       - condition: state
-        entity_id: light.lamp_salon
-        state: 'off'
-      - condition: state
         entity_id: media_player.bravia
         state: 'off'
       - condition: state
@@ -1457,6 +1499,16 @@
         color_temp: 330
     - service: input_boolean.turn_on
       entity_id: input_boolean.salon_light_motion_on
+    - condition: template
+      value_template: >-
+        {{ trigger.entity_id == 'media_player.bravia' or
+          trigger.entity_id == 'light.bulbs_salon' or
+          trigger.entity_id == 'light.leds_salon' }}
+    - service: media_player.play_media
+      entity_id: media_player.echo_plus
+      data:
+        media_content_type: 'sequence'
+        media_content_id: 'Alexa.GoodNight.Play'
 
 # wyłączenie lampy w salonie jak zniknie ruch lub włączy się światła
 - id: light_turn_off_salon_lamp
@@ -1537,7 +1589,10 @@
     condition: and
     conditions:
       - condition: template
-        value_template: "{{ is_state('light.leds_salon', 'on') or is_state('light.bulbs_salon', 'on') or is_state('light.lamp_salon', 'on') }}"
+        value_template: >-
+          {{ is_state('light.leds_salon', 'on') or
+            is_state('light.bulbs_salon', 'on') or
+            is_state('light.lamp_salon', 'on') }}
       - condition: state
         entity_id: input_select.light_scenes_salon
         state: 'film'

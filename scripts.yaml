@@ -325,3 +325,11 @@ alexa_netflix:
       data:
         device: 'Telewizor'
         command: 'Netflix'
+
+alexa_tts:
+  sequence:
+    service: notify.alexa_media_echo_plus
+    data_template:
+      message: '{{ message }}'
+      data:
+        type: 'tts'

@@ -172,6 +172,7 @@ views:
                       controls: true
                       volume: true
                       power_state: false
+                      progress: true
                     info: scroll
                     group: true
                   - type: custom:mini-media-player
@@ -180,6 +181,7 @@ views:
                       controls: true
                       volume: true
                       power_state: false
+                      progress: true
                     info: scroll
                     group: true
                   - type: custom:mini-media-player
@@ -188,6 +190,17 @@ views:
                       controls: true
                       volume: true
                       power_state: false
+                      progress: true
+                    info: scroll
+                    group: true
+                  - type: custom:mini-media-player
+                    entity: media_player.echo_plus
+                    hide:
+                      controls: true
+                      volume: true
+                      power: true
+                      source: true
+                      progress: true
                     info: scroll
                     group: true
           - type: custom:vertical-stack-in-card

@@ -181,6 +181,9 @@ media_player.bravia:
   friendly_name: 'Telewizor'
   icon: mdi:television
 
+media_player.echo_plus:
+  icon: mdi:amazon-alexa
+
 #### SCRIPTS ####
 script.restart_hass:
   icon: mdi:refresh
