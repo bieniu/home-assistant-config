@@ -627,6 +627,8 @@
           zasilanie sieciowe
         {% elif is_state('sensor.ups_status_data', 'OL CHRG') %}
           ładowanie baterii
+        {% elif is_state('sensor.ups_status_data', 'OL DISCHRG') %}
+          zasilanie bateryjne
         {% elif is_state('sensor.ups_status_data', 'OB DISCHRG') %}
           zasilanie bateryjne
         {% elif is_state('sensor.ups_status_data', 'LB') %}
