@@ -155,7 +155,7 @@ binary_sensor.dafang_status:
 binary_sensor.wemos_d1_mini_1c91ea_status:
   icon: mdi:developer-board
 binary_sensor.mihumidifier_status:
-  icon: mdi:fan
+  icon: mdi:air-humidifier
 binary_sensor.mifan_status:
   icon: mdi:fan
 binary_sensor.echo_plus_status:
@@ -165,7 +165,7 @@ binary_sensor.echo_plus_status:
 #### FANS ####
 fan.humidifier_salon:
   friendly_name: 'Nawilżacz'
-  # icon: mdi:air-humidifier
+  icon: mdi:air-humidifier
 
 #### SWITCHES ####
 switch.stacjonarny:

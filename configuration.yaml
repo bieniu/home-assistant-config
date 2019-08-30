@@ -81,7 +81,6 @@ ssdp:
 zeroconf:
 
 zwave:
-  device_config: !include zwave_device_config.yaml
   debug: true
 
 xiaomi_aqara:
