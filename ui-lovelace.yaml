@@ -690,7 +690,7 @@ views:
                 tooltip_left_offset: -14
               - type: iframe
                 url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates&metricWind=m%2Fs
-                aspect_ratio: 56%
+                aspect_ratio: 55%
               - type: sensor
                 entity: sensor.airly_info
           - type: vertical-stack

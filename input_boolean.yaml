@@ -20,7 +20,6 @@ pracownia_light_motion_on:
 goscinny_light_motion_on:
 gabinet_light_motion_on:
 antek_lamp_night:
-alexa_goodnight:
 alexa_welcome:
 harmony_command:
   initial: 'off'

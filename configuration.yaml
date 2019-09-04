@@ -100,9 +100,8 @@ alexa_media:
     - email: !secret amazon_user
       password: !secret amazon_password
       url: amazon.com
-      exclude_devices:
-        - "Maciej's Alexa Apps"
-        - "This Device"
+      include_devices:
+        - "Echo Plus"
 
 notify:
   - platform: html5
