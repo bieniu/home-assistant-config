@@ -1,95 +1,95 @@
 #### ZONES ####
-'zone.work_*':
-  friendly_name: 'w pracy'
+"zone.work_*":
+  friendly_name: "w pracy"
 
 #### SENSORS ####
-'sensor.temperature_*':
+"sensor.temperature_*":
   device_class: temperature
 
-'sensor.humidity_*':
+"sensor.humidity_*":
   device_class: humidity
 
-'sensor.pressure_*':
+"sensor.pressure_*":
   device_class: pressure
 
-'binary_sensor.motion_*':
+"binary_sensor.motion_*":
   icon: mdi:run
   device_class: motion
 
-'binary_sensor.balcony_door_*':
+"binary_sensor.balcony_door_*":
   device_class: opening
   icon: mdi:window-open
 
-'binary_sensor.window_*':
+"binary_sensor.window_*":
   device_class: opening
   icon: mdi:window-open
 
-'sensor.illumination_*':
+"sensor.illumination_*":
   icon: mdi:lightbulb-on-outline
   device_class: illuminance
 
-'sensor.*power*':
+"sensor.*power*":
   device_class: power
   icon: mdi:flash-outline
 
-'sensor.*energy*':
+"sensor.*energy*":
   device_class: power
   icon: mdi:flash-outline
 
-'sensor.battery_*':
+"sensor.battery_*":
   device_class: battery
 
 #### CLIMATE ####
-'climate.thermostat_*':
+"climate.thermostat_*":
   icon: mdi:radiator
   max_temp: 28
   min_temp: 4
 
 #### ESPHOME ####
-'binary_sensor.sonoff_*_status':
+"binary_sensor.sonoff_*_status":
   icon: mdi:light-switch
-'binary_sensor.blitzwolf_*_status':
+"binary_sensor.blitzwolf_*_status":
   icon: mdi:light-switch
-'sensor.sonoff_*_uptime':
-  unit_of_measurement: 'dni'
-'sensor.blitzwolf_*_uptime':
-  unit_of_measurement: 'dni'
+"sensor.sonoff_*_uptime":
+  unit_of_measurement: "dni"
+"sensor.blitzwolf_*_uptime":
+  unit_of_measurement: "dni"
 
 #### SHELLY ####
-'binary_sensor.shelly1_*_status':
+"binary_sensor.shelly1_*_status":
   icon: mdi:light-switch
-'binary_sensor.shelly2_*_status':
+"binary_sensor.shelly2_*_status":
   icon: mdi:light-switch
-'binary_sensor.shelly_plug_*_status':
+"binary_sensor.shelly_plug_*_status":
   icon: mdi:light-switch
-'binary_sensor.shelly_ht_*_status':
+"binary_sensor.shelly_ht_*_status":
   icon: mdi:thermometer-lines
 
 #### LIGHTS ####
-'light.lightstrip*':
-  friendly_name: 'LEDy'
+"light.lightstrip*":
+  friendly_name: "LEDy"
   icon: mdi:led-variant-on
 
-'light.christmas_tree*':
+"light.christmas_tree*":
   icon: mdi:pine-tree
 
 #### NETWORK DEVICES ####
-'binary_sensor.yeelight_lightstrip_*_status':
+"binary_sensor.yeelight_lightstrip_*_status":
   icon: mdi:led-variant-outline
 
-'binary_sensor.yeelight_bulb_*_status':
+"binary_sensor.yeelight_bulb_*_status":
   icon: mdi:lightbulb-outline
 
-'sensor.wemos*_status':
+"sensor.wemos*_status":
   device_class: signal_strength
-  unit_of_measurement: '%'
+  unit_of_measurement: "%"
 
-'binary_sensor.*_status':
+"binary_sensor.*_status":
   device_class: connectivity
 
-'sensor.*_wifi_signal':
+"sensor.*_wifi_signal":
   device_class: signal_strength
 
-'sensor.co2_*':
+"sensor.co2_*":
   icon: mdi:periodic-table-co2
-  unit_of_measurement: 'ppm'
+  unit_of_measurement: "ppm"

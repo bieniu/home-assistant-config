@@ -1,5 +1,5 @@
 windows:
-  name: 'Okna'
+  name: "Okna"
   entities:
     - binary_sensor.balcony_door_sypialnia
     - binary_sensor.window_kuchnia
@@ -10,14 +10,14 @@ windows:
     - binary_sensor.window_gabinet
 
 household:
-  name: 'Domownicy'
+  name: "Domownicy"
   entities:
     - person.edyta
     - person.maciek
     # - person.antek
 
 family:
-  name: 'Rodzina'
+  name: "Rodzina"
   entities:
     - person.grazyna
     - person.romana

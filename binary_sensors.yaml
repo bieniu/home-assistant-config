@@ -11,193 +11,193 @@
   scan_interval: 180
 
 - platform: workday
-  country: 'PL'
+  country: "PL"
 
 - platform: template
   sensors:
     people_at_home:
       value_template: >-
-         {{ is_state('group.household', 'home')
-            or is_state('group.family', 'home')
-            or is_state('media_player.bravia', 'on')
-            or is_state('input_boolean.guests', 'on') }}
+        {{ is_state('group.household', 'home')
+           or is_state('group.family', 'home')
+           or is_state('media_player.bravia', 'on')
+           or is_state('input_boolean.guests', 'on') }}
 
     motion_antresola:
-      friendly_name: 'Ruch'
+      friendly_name: "Ruch"
       value_template: >-
-         {{ is_state('binary_sensor.motion_antresola_2', 'on')
-            or is_state('binary_sensor.motion_antresola_1', 'on') }}
+        {{ is_state('binary_sensor.motion_antresola_2', 'on')
+           or is_state('binary_sensor.motion_antresola_1', 'on') }}
 
     motion_salon:
-      friendly_name: 'Ruch'
+      friendly_name: "Ruch"
       value_template: >-
-         {{ is_state('binary_sensor.motion_salon_1', 'on')
-            or is_state('binary_sensor.motion_salon_2', 'on') }}
+        {{ is_state('binary_sensor.motion_salon_1', 'on')
+           or is_state('binary_sensor.motion_salon_2', 'on') }}
 
     router_status:
       value_template: "{{ is_state('device_tracker.router', 'home') }}"
-      friendly_name: 'ASUS RT-AC86U'
+      friendly_name: "ASUS RT-AC86U"
 
     synology_status:
       value_template: "{{ is_state('device_tracker.synology', 'home') }}"
-      friendly_name: 'Synology DS110j'
+      friendly_name: "Synology DS110j"
 
     stacjonarny_status:
       value_template: "{{ is_state('device_tracker.stacjonarny', 'home') }}"
-      friendly_name: 'Komputer'
+      friendly_name: "Komputer"
 
     dune_status:
       value_template: "{{ is_state('device_tracker.dune', 'home') }}"
-      friendly_name: 'Dune BD Prime 3.0'
+      friendly_name: "Dune BD Prime 3.0"
 
     bravia_status:
       value_template: "{{ is_state('device_tracker.bravia', 'home') }}"
-      friendly_name: 'Sony KD-55XF8596'
+      friendly_name: "Sony KD-55XF8596"
 
     switch_status:
       value_template: "{{ is_state('device_tracker.switch', 'home') }}"
-      friendly_name: 'TP-Link TL-WDR4300'
+      friendly_name: "TP-Link TL-WDR4300"
 
     xbox_status:
       value_template: "{{ is_state('device_tracker.xbox', 'home') }}"
-      friendly_name: 'Xbox360'
+      friendly_name: "Xbox360"
 
     playstation_status:
       value_template: "{{ is_state('device_tracker.playstation', 'home') }}"
-      friendly_name: 'PlayStation 4 Pro'
+      friendly_name: "PlayStation 4 Pro"
 
     fingbox_status:
       value_template: "{{ is_state('device_tracker.fingbox', 'home') }}"
-      friendly_name: 'Fingbox'
+      friendly_name: "Fingbox"
 
     harmonyhub_status:
       value_template: "{{ is_state('device_tracker.harmonyhub', 'home') }}"
-      friendly_name: 'Logitech Harmony Hub'
+      friendly_name: "Logitech Harmony Hub"
 
     oneplus_status:
       value_template: "{{ is_state('device_tracker.oneplus_6', 'home') }}"
-      friendly_name: 'OnePlus 6'
+      friendly_name: "OnePlus 6"
 
     iphone_status:
       value_template: "{{ is_state('device_tracker.iphone_8_plus', 'home') }}"
-      friendly_name: 'iPhone 8 Plus'
+      friendly_name: "iPhone 8 Plus"
 
     ipad_status:
       value_template: "{{ is_state('device_tracker.ipad_air', 'home') }}"
-      friendly_name: 'iPad Air'
+      friendly_name: "iPad Air"
 
     kindle_status:
       value_template: "{{ is_state('device_tracker.kindle', 'home') }}"
-      friendly_name: 'Kindle Keyboard 3G'
+      friendly_name: "Kindle Keyboard 3G"
 
     kindle_8_status:
       value_template: "{{ is_state('device_tracker.kindle_8', 'home') }}"
-      friendly_name: 'Kindle 8'
+      friendly_name: "Kindle 8"
 
     echo_plus_status:
       value_template: "{{ is_state('device_tracker.echo_plus', 'home') }}"
-      friendly_name: 'Amazon Echo Plus'
+      friendly_name: "Amazon Echo Plus"
 
     inkbook_status:
       value_template: "{{ is_state('device_tracker.inkbook', 'home') }}"
-      friendly_name: 'inkBook Classic 2'
+      friendly_name: "inkBook Classic 2"
 
     lumia_status:
       value_template: "{{ is_state('device_tracker.lumia', 'home') }}"
-      friendly_name: 'Lumia 640'
+      friendly_name: "Lumia 640"
 
     mibox_status:
       value_template: "{{ is_state('device_tracker.mibox', 'home') }}"
-      friendly_name: 'Xiaomi Mi Box 3'
+      friendly_name: "Xiaomi Mi Box 3"
 
     laptopedyta_status:
       value_template: "{{ is_state('device_tracker.laptopedyta', 'home') }}"
-      friendly_name: 'Dell Latitude 7290'
+      friendly_name: "Dell Latitude 7290"
 
     denon_status:
       value_template: "{{ is_state('device_tracker.denon', 'home') }}"
-      friendly_name: 'Denon AVR-X2100W'
+      friendly_name: "Denon AVR-X2100W"
 
     laptop_status:
       value_template: "{{ is_state('device_tracker.laptop', 'home') }}"
-      friendly_name: 'Lenovo IdeaPad Z510'
+      friendly_name: "Lenovo IdeaPad Z510"
 
     migateway_status:
       value_template: "{{ is_state('device_tracker.migateway', 'home') }}"
-      friendly_name: 'Xiaomi Mi Home Gateway 2'
+      friendly_name: "Xiaomi Mi Home Gateway 2"
 
     mihumidifier_status:
       value_template: "{{ is_state('device_tracker.mihumidifier', 'home') }}"
-      friendly_name: 'Xiaomi Mi Humidifier CA1'
+      friendly_name: "Xiaomi Mi Humidifier CA1"
 
     mifan_status:
       value_template: "{{ is_state('device_tracker.mifan', 'home') }}"
-      friendly_name: 'Xiaomi Mi Pedestal Fan 1X'
+      friendly_name: "Xiaomi Mi Pedestal Fan 1X"
 
     brother_status:
       value_template: "{{ is_state('device_tracker.brother', 'home') }}"
-      friendly_name: 'Brother HL-L2340DW'
+      friendly_name: "Brother HL-L2340DW"
 
     dafang_status:
       value_template: "{{ is_state('device_tracker.dafang', 'home') }}"
-      friendly_name: 'Xiaomi DaFang'
+      friendly_name: "Xiaomi DaFang"
 
     sonoff_basic_a786cc_status:
-      friendly_name: 'Sonoff Basic A786CC'
+      friendly_name: "Sonoff Basic A786CC"
       value_template: "{{ is_state('device_tracker.sonoff_basic_a786cc', 'home') }}"
 
     sonoff_basic_067c81_status:
-      friendly_name: 'Sonoff Basic 067C81'
+      friendly_name: "Sonoff Basic 067C81"
       value_template: "{{ is_state('device_tracker.sonoff_basic_067c81', 'home') }}"
 
     sonoff_basic_5dfba8_status:
-      friendly_name: 'Sonoff Basic 5DFBA8'
+      friendly_name: "Sonoff Basic 5DFBA8"
       value_template: "{{ is_state('device_tracker.sonoff_basic_5dfba8', 'home') }}"
 
     sonoff_s26_182475_status:
-      friendly_name: 'Sonoff S26 182475'
+      friendly_name: "Sonoff S26 182475"
       value_template: "{{ is_state('device_tracker.sonoff_s26_182475', 'home') }}"
 
     blitzwolf_bw_shp6_2ad05a_status:
-      friendly_name: 'BlitzWolf BW-SHP6 2AD05A'
+      friendly_name: "BlitzWolf BW-SHP6 2AD05A"
       value_template: "{{ is_state('device_tracker.blitzwolf_bw_shp6_2ad05a', 'home') }}"
 
     shelly1_328900_status:
-      friendly_name: 'Shelly1 328900'
+      friendly_name: "Shelly1 328900"
       value_template: "{{ is_state('device_tracker.shelly1_328900', 'home') }}"
 
     shelly2_5b2604_status:
-      friendly_name: 'Shelly2 5B2604'
+      friendly_name: "Shelly2 5B2604"
       value_template: "{{ is_state('device_tracker.shelly2_5b2604', 'home') }}"
 
     shelly_plug_s_7aecf4_status:
-      friendly_name: 'Shelly Plug S 7AECF4'
+      friendly_name: "Shelly Plug S 7AECF4"
       value_template: "{{ is_state('device_tracker.shelly_plug_s_7aecf4', 'home') }}"
 
     shelly_ht_e00abd_status:
-      friendly_name: 'Shelly H&T E00ABD'
+      friendly_name: "Shelly H&T E00ABD"
       value_template: "{{ is_state('device_tracker.shelly_ht_e00abd', 'home') }}"
 
     wemos_d1_mini_1c91ea_status:
-      friendly_name: 'Wemos D1 mini 1C91EA'
+      friendly_name: "Wemos D1 mini 1C91EA"
       value_template: "{{ is_state('device_tracker.wemos_d1_mini_1c91ea', 'home') }}"
 
     yeelight_bulb_salon1_status:
-      friendly_name: 'Yeelight Bulb YLDP02YL [1]'
+      friendly_name: "Yeelight Bulb YLDP02YL [1]"
       value_template: "{{ is_state('device_tracker.yeelight_bulb_salon1', 'home') }}"
 
     yeelight_bulb_salon2_status:
-      friendly_name: 'Yeelight Bulb YLDP02YL [2]'
+      friendly_name: "Yeelight Bulb YLDP02YL [2]"
       value_template: "{{ is_state('device_tracker.yeelight_bulb_salon2', 'home') }}"
 
     yeelight_bulb_salon3_status:
-      friendly_name: 'Yeelight Bulb YLDP06YL'
+      friendly_name: "Yeelight Bulb YLDP06YL"
       value_template: "{{ is_state('device_tracker.yeelight_bulb_salon3', 'home') }}"
 
     yeelight_lightstrip_sypialnia_status:
-      friendly_name: 'Yeelight Lightstrip YLDD01YL [1]'
+      friendly_name: "Yeelight Lightstrip YLDD01YL [1]"
       value_template: "{{ is_state('device_tracker.yeelight_lightstrip_sypialnia', 'home') }}"
 
     yeelight_lightstrip_antek_status:
-      friendly_name: 'Yeelight Lightstrip YLDD01YL [2]'
+      friendly_name: "Yeelight Lightstrip YLDD01YL [2]"
       value_template: "{{ is_state('device_tracker.yeelight_lightstrip_antek', 'home') }}"

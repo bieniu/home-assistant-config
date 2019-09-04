@@ -1,9 +1,9 @@
 substitutions:
-  device_name: 'BlitzWolf BW-SHP6 2AD05A'
-  device_name_lower: 'blitzwolf_bw_shp6_2ad05a'
-  device_hostname: 'blitzwolf-bw-shp6-2ad05a'
-  current_res: '0.00290'
-  voltage_div: '940'
+  device_name: "BlitzWolf BW-SHP6 2AD05A"
+  device_name_lower: "blitzwolf_bw_shp6_2ad05a"
+  device_hostname: "blitzwolf-bw-shp6-2ad05a"
+  current_res: "0.00290"
+  voltage_div: "940"
 
 esphome:
   name: ${device_name_lower}
@@ -48,7 +48,7 @@ switch:
     pin: GPIO15
     id: relay
     icon: mdi:power-plug
-    name: '${device_name} Relay'
+    name: "${device_name} Relay"
     on_turn_on:
       - output.turn_on: led
     on_turn_off:
@@ -61,14 +61,14 @@ status_led:
 
 sensor:
   - platform: uptime
-    name: '${device_name} Uptime'
+    name: "${device_name} Uptime"
     unit_of_measurement: days
     update_interval: 300s
     filters:
       - multiply: 0.000011574
 
   - platform: wifi_signal
-    name: '${device_name} WiFi Signal'
+    name: "${device_name} WiFi Signal"
     update_interval: 300s
 
   - platform: hlw8012
@@ -80,17 +80,17 @@ sensor:
     current_resistor: ${current_res}
     voltage_divider: ${voltage_div}
     current:
-      name: '${device_name} Current'
-      unit_of_measurement: 'A'
+      name: "${device_name} Current"
+      unit_of_measurement: "A"
       accuracy_decimals: 3
       icon: mdi:flash-outline
     voltage:
-      name: '${device_name} Voltage'
-      unit_of_measurement: 'V'
+      name: "${device_name} Voltage"
+      unit_of_measurement: "V"
       icon: mdi:flash-outline
     power:
-      name: '${device_name} Power'
-      unit_of_measurement: 'W'
+      name: "${device_name} Power"
+      unit_of_measurement: "W"
       icon: mdi:flash-outline
     change_mode_every: 4
     update_interval: 10s

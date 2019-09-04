@@ -5,7 +5,7 @@ dune_activity:
   interval: 10
   use_mqtt: true
   mac: !secret dune_mac
-  model: 'BD Prime 3.0'
+  model: "BD Prime 3.0"
   retain: true
 
 brother_printer_status:

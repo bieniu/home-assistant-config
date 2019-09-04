@@ -1,17 +1,16 @@
 - platform: wake_on_lan
-  name: 'stacjonarny'
+  name: "stacjonarny"
   host: !secret desktop_hostname
   mac_address: !secret desktop_mac_address
   broadcast_address: 255.255.255.255
   turn_off:
-    service:
-      shell_command.stacjonarny_off
+    service: shell_command.stacjonarny_off
 
 - platform: flux
   lights:
     - light.bulbs_salon
     - light.lamp_salon
-  name: 'Flux'
+  name: "Flux"
   start_colortemp: 4400
   sunset_colortemp: 3850
   stop_colortemp: 3300
@@ -23,57 +22,57 @@
 - platform: template
   switches:
     camera_move_up:
-      friendly_name: 'w górę'
-      value_template: 'on'
+      friendly_name: "w górę"
+      value_template: "on"
       turn_on:
         service: script.camera_move
         data:
-          orientation: 'horizontal'
-          direction: 'up'
+          orientation: "horizontal"
+          direction: "up"
       turn_off:
         service: script.camera_move
         data:
-          orientation: 'vertical'
-          direction: 'up'
+          orientation: "vertical"
+          direction: "up"
 
     camera_move_down:
-      friendly_name: 'w dół'
-      value_template: 'on'
+      friendly_name: "w dół"
+      value_template: "on"
       turn_on:
         service: script.camera_move
         data:
-          orientation: 'horizontal'
-          direction: 'down'
+          orientation: "horizontal"
+          direction: "down"
       turn_off:
         service: script.camera_move
         data:
-          orientation: 'vertical'
-          direction: 'down'
+          orientation: "vertical"
+          direction: "down"
 
     camera_move_left:
-      friendly_name: 'w lewo'
-      value_template: 'on'
+      friendly_name: "w lewo"
+      value_template: "on"
       turn_on:
         service: script.camera_move
         data:
-          orientation: 'horizontal'
-          direction: 'left'
+          orientation: "horizontal"
+          direction: "left"
       turn_off:
         service: script.camera_move
         data:
-          orientation: 'horizontal'
-          direction: 'left'
+          orientation: "horizontal"
+          direction: "left"
 
     camera_move_right:
-      friendly_name: 'w prawo'
-      value_template: 'on'
+      friendly_name: "w prawo"
+      value_template: "on"
       turn_on:
         service: script.camera_move
         data:
-          orientation: 'horizontal'
-          direction: 'right'
+          orientation: "horizontal"
+          direction: "right"
       turn_off:
         service: script.camera_move
         data:
-          orientation: 'horizontal'
-          direction: 'right'
+          orientation: "horizontal"
+          direction: "right"

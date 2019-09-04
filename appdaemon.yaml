@@ -1,11 +1,11 @@
 log:
-  logfile: '/home/homeassistant/.homeassistant/appdaemon.log'
-  errorfile: '/home/homeassistant/.homeassistant/appdaemon.log'
+  logfile: "/home/homeassistant/.homeassistant/appdaemon.log"
+  errorfile: "/home/homeassistant/.homeassistant/appdaemon.log"
   logsize: 102400
   log_generations: 0
 appdaemon:
   threads: 10
-  app_dir: '/home/homeassistant/.homeassistant/appdaemon/apps'
+  app_dir: "/home/homeassistant/.homeassistant/appdaemon/apps"
   plugins:
     HASS:
       type: hass

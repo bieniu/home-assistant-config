@@ -20,18 +20,18 @@ resources:
   - url: /community_plugin/lovelace-card-mod/card-mod.js
     type: module
 
-background: '#e5e5e5'
+background: "#e5e5e5"
 
-title: 'Dom'
+title: "Dom"
 views:
   - id: home
     icon: mdi:home
-    title: 'Pomieszczenia'
+    title: "Pomieszczenia"
     path: home
     panel: true
     popup_cards:
       person.maciek:
-        title: 'Maciek'
+        title: "Maciek"
         card:
           type: custom:vertical-stack-in-card
           cards:
@@ -63,7 +63,7 @@ views:
                 - sensor.calories
                 - sensor.sleep_minutes_asleep
       person.edyta:
-        title: 'Edyta'
+        title: "Edyta"
         card:
           type: custom:vertical-stack-in-card
           cards:
@@ -83,7 +83,7 @@ views:
                 - person.edyta
                 - zone.home
       person.antek:
-        title: 'Antek'
+        title: "Antek"
         card:
           type: history-graph
           style: |
@@ -101,7 +101,7 @@ views:
               - type: custom:monster-card
                 card:
                   type: glance
-                  title: 'Rodzina'
+                  title: "Rodzina"
                   show_name: false
                 filter:
                   include:
@@ -116,7 +116,7 @@ views:
                     - entity_id: person.jerzy
                       state: home
               - type: entities
-                title: 'Przedpokój'
+                title: "Przedpokój"
                 show_header_toggle: false
                 entities:
                   # - sensor.illumination_przedpokoj
@@ -124,7 +124,7 @@ views:
                     secondary_info: last-changed
                   - light.leds_przedpokoj
               - type: custom:vertical-stack-in-card
-                title: 'Kuchnia'
+                title: "Kuchnia"
                 cards:
                   - type: glance
                     show_name: false
@@ -147,7 +147,7 @@ views:
                               {% endif %}
                           }
           - type: custom:vertical-stack-in-card
-            title: 'Salon'
+            title: "Salon"
             cards:
               - type: glance
                 show_name: false
@@ -209,7 +209,7 @@ views:
                     info: scroll
                     group: true
           - type: custom:vertical-stack-in-card
-            title: 'Pracownia'
+            title: "Pracownia"
             cards:
               - type: glance
                 show_name: false
@@ -225,7 +225,7 @@ views:
                   - binary_sensor.balcony_door_pracownia
                   - switch.lamp_pracownia
           - type: custom:vertical-stack-in-card
-            title: 'Pokój gościnny'
+            title: "Pokój gościnny"
             cards:
               - type: glance
                 show_name: false
@@ -241,7 +241,7 @@ views:
                   - switch.lamp_goscinny
                   - type: custom:mini-media-player
                     entity: media_player.mibox
-                    name: 'Mi Box'
+                    name: "Mi Box"
                     hide:
                       controls: true
                       volume: true
@@ -249,7 +249,7 @@ views:
                     info: scroll
                     group: true
           - type: custom:vertical-stack-in-card
-            title: 'Antresola'
+            title: "Antresola"
             cards:
               - type: glance
                 show_name: false
@@ -266,7 +266,7 @@ views:
                   - climate.thermostat_antresola
                   - light.gateway_antresola
           - type: custom:vertical-stack-in-card
-            title: 'Gabinet'
+            title: "Gabinet"
             cards:
               - type: glance
                 show_name: false
@@ -284,7 +284,7 @@ views:
                   - switch.lamp_gabinet
                   - switch.stacjonarny
           - type: custom:vertical-stack-in-card
-            title: 'Pokój Antka'
+            title: "Pokój Antka"
             cards:
               - type: glance
                 show_name: false
@@ -302,7 +302,7 @@ views:
                   - light.lightstrip_antek
                   - switch.cabinet_antek
           - type: custom:vertical-stack-in-card
-            title: 'Sypialnia'
+            title: "Sypialnia"
             cards:
               - type: glance
                 show_name: false
@@ -320,7 +320,7 @@ views:
                   - climate.thermostat_sypialnia
                   - light.lightstrip_sypialnia
           - type: custom:vertical-stack-in-card
-            title: 'Łazienka'
+            title: "Łazienka"
             cards:
               - type: glance
                 show_name: false
@@ -332,7 +332,7 @@ views:
                 entities:
                   - climate.thermostat_lazienka
           - type: picture-glance
-            title: 'Salon'
+            title: "Salon"
             entities:
               - switch.camera_move_left
               - switch.camera_move_right
@@ -341,7 +341,7 @@ views:
             camera_image: camera.salon
   - id: map
     icon: mdi:map
-    title: 'Mapa'
+    title: "Mapa"
     path: map
     theme: default
     panel: true
@@ -354,7 +354,7 @@ views:
           - zone.home
   - id: network
     icon: mdi:ethernet
-    title: 'Sieć'
+    title: "Sieć"
     path: network
     panel: true
     cards:
@@ -364,7 +364,7 @@ views:
           - type: vertical-stack
             cards:
               - type: custom:vertical-stack-in-card
-                title: 'Router'
+                title: "Router"
                 cards:
                   - type: glance
                     entities:
@@ -375,23 +375,23 @@ views:
                     entities:
                       - sensor.router_last_boot
               - type: entities
-                title: 'Synology'
+                title: "Synology"
                 show_header_toggle: false
                 theme: synology
                 entities:
                   - sensor.synology_disk_used
                   - sensor.synology_last_boot
               - type: custom:vertical-stack-in-card
-                title: 'Raspberry Pi'
+                title: "Raspberry Pi"
                 cards:
                   - type: glance
                     entities:
                       - entity: sensor.processor_use
-                        name: 'CPU'
+                        name: "CPU"
                       - entity: sensor.memory_use_percent
-                        name: 'RAM'
+                        name: "RAM"
                       - entity: sensor.disk_use_percent
-                        name: 'Dysk'
+                        name: "Dysk"
                   - type: entities
                     show_header_toggle: false
                     entities:
@@ -403,7 +403,7 @@ views:
           - type: vertical-stack
             cards:
               - type: entities
-                title: 'Drukarka'
+                title: "Drukarka"
                 show_header_toggle: false
                 entities:
                   - sensor.printer_status_custom
@@ -411,7 +411,7 @@ views:
                   - sensor.printer_drum_usage
                   - sensor.printer_toner
               - type: entities
-                title: 'Urządzenia Z-Wave'
+                title: "Urządzenia Z-Wave"
                 show_header_toggle: false
                 entities:
                   - zwave.aeotec_zw090_zstick_gen5
@@ -424,7 +424,7 @@ views:
                   - zwave.thermostat_sypialnia
                   - zwave.thermostat_lazienka
           - type: entities
-            title: 'Urządzenia przewodowe'
+            title: "Urządzenia przewodowe"
             show_header_toggle: false
             theme: network-status
             entities:
@@ -441,7 +441,7 @@ views:
               - binary_sensor.xbox_status
               - binary_sensor.stacjonarny_status
           - type: entities
-            title: 'Urządzenia bezprzewodowe'
+            title: "Urządzenia bezprzewodowe"
             show_header_toggle: false
             theme: network-status
             entities:
@@ -462,7 +462,7 @@ views:
               - binary_sensor.kindle_8_status
               - binary_sensor.inkbook_status
           - type: entities
-            title: 'Urządzenia IoT'
+            title: "Urządzenia IoT"
             show_header_toggle: false
             theme: network-status
             entities:
@@ -484,7 +484,7 @@ views:
               - binary_sensor.yeelight_lightstrip_antek_status
   - id: energy
     icon: mdi:power-plug
-    title: 'Energia'
+    title: "Energia"
     path: energy
     panel: true
     cards:
@@ -494,7 +494,7 @@ views:
           - type: vertical-stack
             cards:
               - type: custom:vertical-stack-in-card
-                title: 'Pobór mocy'
+                title: "Pobór mocy"
                 cards:
                   - type: custom:mini-graph-card
                     style: |
@@ -510,7 +510,7 @@ views:
                       labels: true
                     entities:
                       - sensor.light_salon_power_sum
-                    line_color: '#36a2eb'
+                    line_color: "#36a2eb"
                   - type: custom:mini-graph-card
                     hour24: true
                     decimals: 1
@@ -521,9 +521,9 @@ views:
                       labels: true
                     entities:
                       - sensor.dishwasher_kuchnia_power
-                    line_color: '#36a2eb'
+                    line_color: "#36a2eb"
               - type: custom:vertical-stack-in-card
-                title: 'Zużycie energii'
+                title: "Zużycie energii"
                 cards:
                   - type: custom:mini-graph-card
                     hour24: true
@@ -544,7 +544,7 @@ views:
                     entities:
                       - sensor.dishwasher_kuchnia_energy_monthly
           - type: custom:vertical-stack-in-card
-            title: 'UPS'
+            title: "UPS"
             cards:
               - type: entities
                 show_header_toggle: false
@@ -564,7 +564,7 @@ views:
                   labels: true
                 entities:
                   - sensor.ups_input_voltage
-                line_color: '#ff6384'
+                line_color: "#ff6384"
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 1
@@ -574,9 +574,9 @@ views:
                   labels: true
                 entities:
                   - sensor.ups_battery_voltage
-                line_color: '#4bc0c0'
+                line_color: "#4bc0c0"
           - type: entities
-            title: 'Baterie sensorów ruchu'
+            title: "Baterie sensorów ruchu"
             show_header_toggle: false
             entities:
               - sensor.battery_motion_sensor_przedpokoj
@@ -590,7 +590,7 @@ views:
               - sensor.battery_motion_sensor_antek
               - sensor.battery_motion_sensor_sypialnia
           - type: entities
-            title: 'Baterie sensorów temperatury'
+            title: "Baterie sensorów temperatury"
             show_header_toggle: false
             entities:
               - sensor.battery_temp_humi_sensor_kuchnia
@@ -604,7 +604,7 @@ views:
               - sensor.battery_temp_humi_sensor_lazienka
               - sensor.battery_temp_humi_sensor_outdoor
           - type: entities
-            title: 'Baterie termostatów'
+            title: "Baterie termostatów"
             show_header_toggle: false
             entities:
               - sensor.battery_thermostat_salon
@@ -615,7 +615,7 @@ views:
               - sensor.battery_thermostat_sypialnia
               - sensor.battery_thermostat_lazienka
           - type: entities
-            title: 'Baterie sensorów okien/drzwi'
+            title: "Baterie sensorów okien/drzwi"
             show_header_toggle: false
             entities:
               - sensor.battery_window_sensor_kuchnia
@@ -626,7 +626,7 @@ views:
               - sensor.battery_window_sensor_sypialnia
               - sensor.battery_door_sensor_sypialnia
           - type: entities
-            title: 'Baterie przełączników'
+            title: "Baterie przełączników"
             show_header_toggle: false
             entities:
               - sensor.battery_switch_light_salon_1
@@ -634,7 +634,7 @@ views:
               - sensor.battery_switch_light_antek
   - id: climate
     icon: mdi:cloud
-    title: 'Klimat'
+    title: "Klimat"
     path: climate
     panel: true
     cards:
@@ -684,9 +684,9 @@ views:
                 locale: pl
                 tooltips: true
                 tooltip_width: 100
-                tooltip_bg_color: '#FAFAFA'
-                tooltip_fg_color: '#212121'
-                tooltip_border_color: '#D9D9D9'
+                tooltip_bg_color: "#FAFAFA"
+                tooltip_fg_color: "#212121"
+                tooltip_border_color: "#D9D9D9"
                 tooltip_left_offset: -14
               - type: iframe
                 url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates&metricWind=m%2Fs
@@ -705,7 +705,7 @@ views:
                   labels: true
                 entities:
                   - sensor.temperature_outdoor
-                line_color: '#ff6384'
+                line_color: "#ff6384"
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 1
@@ -716,7 +716,7 @@ views:
                   labels: true
                 entities:
                   - sensor.humidity_outdoor
-                line_color: '#36a2eb'
+                line_color: "#36a2eb"
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 0
@@ -727,7 +727,7 @@ views:
                   labels: true
                 entities:
                   - sensor.pressure_outdoor
-                line_color: '#4bc0c0'
+                line_color: "#4bc0c0"
           - type: vertical-stack
             cards:
               - type: custom:mini-graph-card
@@ -740,7 +740,7 @@ views:
                   labels: true
                 entities:
                   - sensor.temperature_indoor
-                line_color: '#ff6384'
+                line_color: "#ff6384"
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 1
@@ -751,7 +751,7 @@ views:
                   labels: true
                 entities:
                   - sensor.humidity_indoor
-                line_color: '#36a2eb'
+                line_color: "#36a2eb"
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 0
@@ -762,7 +762,7 @@ views:
                   labels: true
                 entities:
                   - sensor.co2_salon
-                line_color: '#ffce57'
+                line_color: "#ffce57"
           - type: vertical-stack
             cards:
               - type: custom:mini-graph-card
@@ -775,7 +775,7 @@ views:
                   labels: true
                 entities:
                   - sensor.airly_pm1
-                line_color: '#78909c'
+                line_color: "#78909c"
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 0
@@ -786,7 +786,7 @@ views:
                   labels: true
                 entities:
                   - sensor.airly_pm2_5
-                line_color: '#78909c'
+                line_color: "#78909c"
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 0
@@ -797,10 +797,10 @@ views:
                   labels: true
                 entities:
                   - sensor.airly_pm10
-                line_color: '#78909c'
+                line_color: "#78909c"
   - id: misc
     icon: mdi:settings
-    title: 'Różne'
+    title: "Różne"
     path: misc
     panel: true
     cards:
@@ -811,7 +811,7 @@ views:
           - type: vertical-stack
             cards:
               - type: entities
-                title: 'Ustawienia ogrzewania'
+                title: "Ustawienia ogrzewania"
                 show_header_toggle: false
                 entities:
                   - input_boolean.heating_season
@@ -820,7 +820,7 @@ views:
                   - input_boolean.away_mode
                   - input_boolean.guests
               - type: entities
-                title: 'Godziny ogrzewania'
+                title: "Godziny ogrzewania"
                 show_header_toggle: false
                 entities:
                   - input_select.heating_night_start
@@ -828,7 +828,7 @@ views:
                   - input_select.heating_night_start_weekend
                   - input_select.heating_night_end_weekend
           - type: entities
-            title: 'Temperatury ogrzewania'
+            title: "Temperatury ogrzewania"
             show_header_toggle: false
             entities:
               - input_select.heating_temp_bedroom_day
@@ -841,12 +841,12 @@ views:
           - type: vertical-stack
             cards:
               - type: entities
-                title: 'Ustawienie nawilżania'
+                title: "Ustawienie nawilżania"
                 show_header_toggle: false
                 entities:
                   - input_select.target_humidity
               - type: entities
-                title: 'Ustawienia oświetlenia'
+                title: "Ustawienia oświetlenia"
                 show_header_toggle: false
                 entities:
                   - input_boolean.light_auto_turn_salon
@@ -854,7 +854,7 @@ views:
                   - input_boolean.light_auto_turn_goscinny
                   - input_boolean.light_auto_turn_gabinet
               - type: entities
-                title: 'Skrypty i ustawienia'
+                title: "Skrypty i ustawienia"
                 show_header_toggle: false
                 entities:
                   - script.reboot_router

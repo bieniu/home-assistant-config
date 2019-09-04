@@ -1,7 +1,7 @@
 substitutions:
-  device_name: 'Sonoff S26 182475'
-  device_name_lower: 'sonoff_s26_182475'
-  device_hostname: 'sonoff-s26-182475'
+  device_name: "Sonoff S26 182475"
+  device_name_lower: "sonoff_s26_182475"
+  device_hostname: "sonoff-s26-182475"
 
 esphome:
   name: ${device_name_lower}
@@ -47,16 +47,16 @@ switch:
     id: relay
     pin: GPIO12
     icon: mdi:power-plug
-    name: '${device_name} Relay'
+    name: "${device_name} Relay"
 
 sensor:
   - platform: uptime
-    name: '${device_name} Uptime'
+    name: "${device_name} Uptime"
     unit_of_measurement: days
     update_interval: 300s
     filters:
       - multiply: 0.000011574
 
   - platform: wifi_signal
-    name: '${device_name} WiFi Signal'
+    name: "${device_name} WiFi Signal"
     update_interval: 300s

@@ -7,6 +7,6 @@ entities:
     hidden: false
   light.bulbs_salon:
     hidden: false
-    name: 'Zarowki'
+    name: "Zarowki"
   light.lamp_salon:
     hidden: false

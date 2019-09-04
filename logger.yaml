@@ -5,3 +5,4 @@ logs:
   homeassistant.components.zwave: info
   homeassistant.components.stream: debug
   homeassistant.components.media_player: error
+  homeassistant.helpers.entity: error

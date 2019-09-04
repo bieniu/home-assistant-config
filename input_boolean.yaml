@@ -1,15 +1,15 @@
 heating_season:
-  name: 'Sezon grzewczy'
+  name: "Sezon grzewczy"
   icon: mdi:weather-snowy-rainy
 heating_salon_kuchnia_night:
 heating_night:
 heating_airing:
-  name: 'Przewietrzanie'
+  name: "Przewietrzanie"
   icon: mdi:weather-windy
 edyta_far_from_home:
 maciek_far_from_home:
 away_mode:
-  name: 'Poza domem'
+  name: "Poza domem"
   icon: mdi:home-outline
 antresola_light_motion_on:
 salon_light_motion_on:
@@ -22,19 +22,19 @@ gabinet_light_motion_on:
 antek_lamp_night:
 alexa_welcome:
 harmony_command:
-  initial: 'off'
+  initial: "off"
 guests:
-  name: 'Goście'
+  name: "Goście"
   icon: mdi:account-multiple-outline
 light_auto_turn_salon:
-  name: 'Oświetlenie salonu załączane ruchem'
-  icon: 'mdi:lightbulb-on-outline'
+  name: "Oświetlenie salonu załączane ruchem"
+  icon: "mdi:lightbulb-on-outline"
 light_auto_turn_pracownia:
-  name: 'Oświetlenie pracowni załączane ruchem'
-  icon: 'mdi:lightbulb-on-outline'
+  name: "Oświetlenie pracowni załączane ruchem"
+  icon: "mdi:lightbulb-on-outline"
 light_auto_turn_goscinny:
-  name: 'Oświetlenie pokoju gościnnego załączane ruchem'
-  icon: 'mdi:lightbulb-on-outline'
+  name: "Oświetlenie pokoju gościnnego załączane ruchem"
+  icon: "mdi:lightbulb-on-outline"
 light_auto_turn_gabinet:
-  name: 'Oświetlenie gabinetu załączane ruchem'
-  icon: 'mdi:lightbulb-on-outline'
+  name: "Oświetlenie gabinetu załączane ruchem"
+  icon: "mdi:lightbulb-on-outline"

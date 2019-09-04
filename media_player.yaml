@@ -1,6 +1,6 @@
 - platform: denonavr
   host: !secret denon_hostname
-  name: 'Denon'
+  name: "Denon"
   timeout: 3
 
 - platform: androidtv
@@ -8,18 +8,18 @@
   adb_server_ip: 127.0.0.1
   name: MiBox
   apps:
-    com.amazon.amazonvideo.livingroom: 'Amazon Prime Video'
-    com.google.android.youtube.tv: 'YouTube'
-    com.google.android.youtube.tvkids: 'YouTube Kids'
-    eu.hbogo.androidtv.production: 'HBO GO'
-    com.vimeo.android.videoapp: 'Vimeo'
-    pl.videostar: 'WP Pilot'
-    com.google.android.tvlauncher: 'Ekran domowy'
-    com.spotify.tv.android: 'Spotify'
-    org.xbmc.kodi: 'Kodi'
-    pl.solidexplorer2: 'Solid Explorer'
-    com.android.vending: 'Sklep Play'
-    com.android.tv.settings: 'Ustawienia'
+    com.amazon.amazonvideo.livingroom: "Amazon Prime Video"
+    com.google.android.youtube.tv: "YouTube"
+    com.google.android.youtube.tvkids: "YouTube Kids"
+    eu.hbogo.androidtv.production: "HBO GO"
+    com.vimeo.android.videoapp: "Vimeo"
+    pl.videostar: "WP Pilot"
+    com.google.android.tvlauncher: "Ekran domowy"
+    com.spotify.tv.android: "Spotify"
+    org.xbmc.kodi: "Kodi"
+    pl.solidexplorer2: "Solid Explorer"
+    com.android.vending: "Sklep Play"
+    com.android.tv.settings: "Ustawienia"
 
 - platform: braviatv_psk
   host: !secret bravia_hostname

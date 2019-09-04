@@ -1,15 +1,15 @@
 #### PURGE RECORDER DATABASE ###################################################
 - id: purge_recorder_database
-  alias: 'Purge Recorder Database'
+  alias: "Purge Recorder Database"
   trigger:
     platform: time
-    at: '03:00:00'
+    at: "03:00:00"
   condition:
     condition: time
     weekday:
-    - mon
-    - wed
-    - fri
+      - mon
+      - wed
+      - fri
   action:
     service: recorder.purge
     data:
@@ -19,55 +19,55 @@
 #### NOTIFICATIONS #############################################################
 # odrzucenie powiadomienia w telefonie poprzez odrzucenie we frontendzie
 - id: notification_dismiss_html5_via_persistant
-  alias: 'Notification Dismiss HTML5 Via Persistant'
+  alias: "Notification Dismiss HTML5 Via Persistant"
   trigger:
     platform: event
-    event_type: 'call_service'
+    event_type: "call_service"
     event_data:
-      domain: 'persistent_notification'
-      service: 'dismiss'
+      domain: "persistent_notification"
+      service: "dismiss"
   action:
     service: notify.html5_dismiss
     data_template:
-      target: 'maciek'
+      target: "maciek"
       data:
-        tag: '{{ trigger.event.data.service_data.notification_id }}'
+        tag: "{{ trigger.event.data.service_data.notification_id }}"
 
 # odrzucenie powiadomienia we frontendzie poprzez odrzucenie wtelefonie
 - id: notification_dismiss_persistant_via_html5
-  alias: 'Notification Dismiss Persistant Via HTML5'
+  alias: "Notification Dismiss Persistant Via HTML5"
   trigger:
     platform: event
-    event_type: 'html5_notification.closed'
+    event_type: "html5_notification.closed"
   action:
     service: persistent_notification.dismiss
     data_template:
-      notification_id: '{{ trigger.event.data.tag }}'
+      notification_id: "{{ trigger.event.data.tag }}"
 
 # powiadomienie o końcu zmywania
 - id: notification_dishwasher_end
-  alias: 'Notification Dishwasher End'
+  alias: "Notification Dishwasher End"
   trigger:
     - platform: state
       entity_id: sensor.dishwasher_kuchnia
-      from: 'zmywanie'
-      to: 'wyłączona'
+      from: "zmywanie"
+      to: "wyłączona"
       for:
         minutes: 1
   action:
     service: script.notify
     data_template:
-      title: 'Koniec zmywania'
+      title: "Koniec zmywania"
       message: "Zmywarka zakończyła zmywanie naczyń."
-      tag: 'notification-dishwasher'
+      tag: "notification-dishwasher"
       notify_edyta: true
 
 # powiadomienie o włączonym komputerze
 - id: notification_desktop_computer_turned_on
-  alias: 'Notification Desktop Computer Turned On'
+  alias: "Notification Desktop Computer Turned On"
   trigger:
     - platform: time
-      at: '22:45:00'
+      at: "22:45:00"
     - platform: state
       entity_id: person.maciek
       to: not_home
@@ -76,21 +76,21 @@
   condition:
     condition: state
     entity_id: switch.stacjonarny
-    state: 'on'
+    state: "on"
   action:
     service: notify.html5_maciek
     data:
-      title: 'Komputer stacjonarny włączony'
-      message: 'Komputer stacjonarny jest włączony. Czy chcesz go wyłączyć?'
+      title: "Komputer stacjonarny włączony"
+      message: "Komputer stacjonarny jest włączony. Czy chcesz go wyłączyć?"
       data:
-        tag: 'notification-desktop-computer'
+        tag: "notification-desktop-computer"
         actions:
           - action: turn_off_desktop_computer
-            title: 'Wyłącz'
+            title: "Wyłącz"
 
 # wyłączenie komputera z powiadomienia
 - id: notification_turn_off_desktop_computer
-  alias: 'Notification Turn Off Desktop Computer'
+  alias: "Notification Turn Off Desktop Computer"
   trigger:
     platform: event
     event_type: html5_notification.clicked
@@ -102,7 +102,7 @@
 
 # powiadomienie o wygasającym certyfikacie SSL
 - id: notification_ssl_cert_expiry
-  alias: 'Notification SSL Cert Expiry'
+  alias: "Notification SSL Cert Expiry"
   trigger:
     platform: template
     value_template: "{{ states('sensor.ssl_certificate_expiry') | int < 11 }}"
@@ -110,18 +110,18 @@
     - service: script.notify
       data_template:
         notify_edyta: false
-        title: 'Wygasa certyfikat SSL'
+        title: "Wygasa certyfikat SSL"
         message: "Za {{ states('sensor.ssl_certificate_expiry') }} dni wygaśnie certyfikat SSL serwera WWW."
-        tag: 'notification-ssl'
+        tag: "notification-ssl"
     - service: persistent_notification.create
       data_template:
-        title: 'Wygasa certyfikat SSL'
+        title: "Wygasa certyfikat SSL"
         message: "Za {{ states('sensor.ssl_certificate_expiry') }} dni wygaśnie certyfikat SSL serwera WWW."
-        notification_id: 'notification-ssl'
+        notification_id: "notification-ssl"
 
 # powiadomienie z HACS
 - id: notification_from_hacs
-  alias: 'Notification From HACS'
+  alias: "Notification From HACS"
   trigger:
     - platform: numeric_state
       entity_id: sensor.hacs
@@ -132,21 +132,21 @@
     - service: script.notify
       data:
         notify_edyta: false
-        title: 'Aktualizacja dodatku'
-        message: 'Dostępna jest aktualizacja dodatku z HACS.'
-        tag: 'notification-hacs'
+        title: "Aktualizacja dodatku"
+        message: "Dostępna jest aktualizacja dodatku z HACS."
+        tag: "notification-hacs"
     - service: persistent_notification.create
       data_template:
-        title: 'Aktualizacja dodatku'
-        message: 'Dostępna jest aktualizacja dodatku z HACS.'
-        notification_id: 'notification-hacs'
+        title: "Aktualizacja dodatku"
+        message: "Dostępna jest aktualizacja dodatku z HACS."
+        notification_id: "notification-hacs"
 
 # powiadomienie o encji ze stanem dead lub unavailable
 - id: notification_dead_or_unavailable
-  alias: 'Notification dead or unavailable'
+  alias: "Notification dead or unavailable"
   trigger:
     platform: time_pattern
-    minutes: '/10'
+    minutes: "/10"
     seconds: 0
   condition:
     condition: template
@@ -165,7 +165,7 @@
     - service: script.notify
       data_template:
         notify_edyta: false
-        title: 'Encja z nieprawidłowym stanem'
+        title: "Encja z nieprawidłowym stanem"
         message: >
           {% macro dead_unavailable_entities() %}
             {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
@@ -177,10 +177,10 @@
             {%- endfor %}
           {% endmacro %}
           Następujące encje mają nieprawidłowe stany: {{ dead_unavailable_entities() }}
-        tag: 'notification-dead-unavailable'
+        tag: "notification-dead-unavailable"
     - service: persistent_notification.create
       data_template:
-        title: 'Encja z nieprawidłowym stanem'
+        title: "Encja z nieprawidłowym stanem"
         message: >
           {% macro dead_unavailable_entities() %}
             {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
@@ -192,11 +192,11 @@
             {%- endfor %}
           {% endmacro %}
           Następujące encje mają nieprawidłowe stany: {{ dead_unavailable_entities() }}
-        notification_id: 'notification-dead-unavailable'
+        notification_id: "notification-dead-unavailable"
 
 # powiadomienie o aktualizacji HA
 - id: notification_home_assistant_update_available
-  alias: 'Notification Home Assistant Update Available'
+  alias: "Notification Home Assistant Update Available"
   trigger:
     platform: state
     entity_id: sensor.ha_version_current
@@ -222,17 +222,17 @@
       data_template:
         title: "Aktualizacja Home Assistant'a"
         message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ha_version_current') }} dla Home Assistant'a."
-        tag: 'notification-ha-update'
+        tag: "notification-ha-update"
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
         title: "Aktualizacja Home Assistant'a"
         message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ha_version_current') }} dla Home Assistant'a."
-        notification_id: 'notification-ha-update'
+        notification_id: "notification-ha-update"
 
 # powiadomienie o aktualizacji AD
 - id: notification_appdaemon_update_available
-  alias: 'Notification AppDaemon Update Available'
+  alias: "Notification AppDaemon Update Available"
   trigger:
     platform: state
     entity_id: sensor.ad_version_current
@@ -252,17 +252,17 @@
       data_template:
         title: "Aktualizacja AppDaemon'a"
         message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ad_version_current') }} dla AppDaemon'a."
-        tag: 'notification-ad-update'
+        tag: "notification-ad-update"
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
         title: "Aktualizacja AppDaemon'a"
         message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ad_version_current') }} dla AppDaemon'a."
-        notification_id: 'notification-ad-update'
+        notification_id: "notification-ad-update"
 
 # powiadomienie o małej ilości wody w nawilżaczu
 - id: notification_humidifier_low_water
-  alias: 'Notification Humidifier Low Water'
+  alias: "Notification Humidifier Low Water"
   trigger:
     - platform: numeric_state
       entity_id: sensor.humidifier_water_level
@@ -278,20 +278,20 @@
       data_template:
         title: "Uzupełnij wodę w nawilżaczu"
         message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        notification_id: 'notification-humidifier'
+        notification_id: "notification-humidifier"
     - condition: state
       entity_id: person.maciek
-      state: 'home'
+      state: "home"
     - service: script.notify
       data_template:
         title: "Uzupełnij wodę w nawilżaczu"
         message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        tag: 'notification-humidifier'
+        tag: "notification-humidifier"
         notify_edyta: false
 
 # powiadomienie o małej ilości wody w nawilżaczu Edyta
 - id: notification_humidifier_low_water_edyta
-  alias: 'Notification Humidifier Low Water Edyta'
+  alias: "Notification Humidifier Low Water Edyta"
   trigger:
     - platform: numeric_state
       entity_id: sensor.humidifier_water_level
@@ -305,7 +305,7 @@
   condition:
     condition: state
     entity_id: person.edyta
-    state: 'home'
+    state: "home"
   action:
     service: notify.ios_iphone_8_plus_app
     data_template:
@@ -314,7 +314,7 @@
 
 # powiadomienie o wysokim stężeniu CO2 w salonie
 - id: notification_salon_co2
-  alias: 'Notification Salon CO2'
+  alias: "Notification Salon CO2"
   trigger:
     platform: numeric_state
     entity_id: sensor.co2_salon
@@ -324,18 +324,18 @@
   condition:
     condition: state
     entity_id: input_boolean.away_mode
-    state: 'off'
+    state: "off"
   action:
     service: script.notify
     data_template:
-      title: 'Wysokie stężenie dwutlenku węgla'
+      title: "Wysokie stężenie dwutlenku węgla"
       message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
-      tag: 'notification-high-co2'
+      tag: "notification-high-co2"
       notify_edyta: true
 
 # powiadomienie o aktualizacji oprogramowania Shelly
 - id: notification_shelly_update_available
-  alias: 'Notification Shelly Update Available'
+  alias: "Notification Shelly Update Available"
   trigger:
     - platform: state
       entity_id: sensor.shelly1_firmware_version_current
@@ -357,79 +357,79 @@
   action:
     - service: script.notify
       data_template:
-        title: 'Aktualizacja oprogramowania Shelly'
-        message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} oprogramowania dla {{ trigger.to_state.attributes.friendly_name }}.'
+        title: "Aktualizacja oprogramowania Shelly"
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} oprogramowania dla {{ trigger.to_state.attributes.friendly_name }}."
         tag: "notification-{{ trigger.to_state.attributes.friendly_name | lower | replace(' ', '_') }}-update"
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
-        title: 'Aktualizacja oprogramowania Shelly'
-        message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} oprogramowania dla {{ trigger.to_state.attributes.friendly_name }}.'
+        title: "Aktualizacja oprogramowania Shelly"
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} oprogramowania dla {{ trigger.to_state.attributes.friendly_name }}."
         notification_id: "notification-{{ trigger.to_state.attributes.friendly_name | lower | replace(' ', '_') }}-update"
 
 # powiadomienie o aktualizacji Tasmota
 - id: notification_tasmota_update_available
-  alias: 'Notification Tasmota Update Available'
+  alias: "Notification Tasmota Update Available"
   trigger:
     platform: state
     entity_id: sensor.tasmota_version_current
   condition:
     condition: and
     conditions:
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+      - condition: template
+        value_template: "{{ trigger.to_state.state != 'unknown' }}"
+      - condition: template
+        value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+      - condition: template
+        value_template: "{{ trigger.from_state.state != 'unknown' }}"
+      - condition: template
+        value_template: "{{ trigger.from_state.state != 'unavailable' }}"
   action:
     - service: script.notify
       data_template:
-        title: 'Aktualizacja Sonoff-Tasmota'
-        message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Tasmota.'
-        tag: 'notification-tasmota-update'
+        title: "Aktualizacja Sonoff-Tasmota"
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Tasmota."
+        tag: "notification-tasmota-update"
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
-        title: 'Aktualizacja Sonoff-Tasmota'
-        message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Tasmota.'
-        notification_id: 'notification-tasmota-update'
+        title: "Aktualizacja Sonoff-Tasmota"
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Tasmota."
+        notification_id: "notification-tasmota-update"
 
 # powiadomienie o aktualizacji Caddy
 - id: notification_caddy_update_available
-  alias: 'Notification Caddy Update Available'
+  alias: "Notification Caddy Update Available"
   trigger:
     platform: state
     entity_id: sensor.caddy_version_current
   condition:
     condition: and
     conditions:
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+      - condition: template
+        value_template: "{{ trigger.to_state.state != 'unknown' }}"
+      - condition: template
+        value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+      - condition: template
+        value_template: "{{ trigger.from_state.state != 'unknown' }}"
+      - condition: template
+        value_template: "{{ trigger.from_state.state != 'unavailable' }}"
   action:
     - service: script.notify
       data_template:
-        title: 'Aktualizacja Caddy'
-        message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy.'
-        tag: 'notification-caddy-update'
+        title: "Aktualizacja Caddy"
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy."
+        tag: "notification-caddy-update"
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
-        title: 'Aktualizacja Caddy'
-        message: 'Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy.'
-        notification_id: 'notification-caddy-update'
+        title: "Aktualizacja Caddy"
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy."
+        notification_id: "notification-caddy-update"
 
 # powiadomienie jak jest ruch i nikogo w domu
 - id: notification_motion_when_away_mode
-  alias: 'Notification Motion When Away Mode'
+  alias: "Notification Motion When Away Mode"
   trigger:
     - platform: state
       entity_id:
@@ -441,28 +441,28 @@
         - binary_sensor.motion_pracownia
         - binary_sensor.motion_goscinny
         - binary_sensor.motion_gabinet
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
   condition:
     condition: state
     entity_id: input_boolean.away_mode
-    state: 'on'
+    state: "on"
     for:
       minutes: 10
   action:
     service: script.notify_motion
     data_template:
-      title: 'Wykryto ruch w pustym mieszkaniu'
+      title: "Wykryto ruch w pustym mieszkaniu"
       message: "Pomieszczenie: {{ trigger.to_state.attributes.location }}, godzina {{ now().strftime('%H:%M') }}."
-      tag: 'notification-motion'
+      tag: "notification-motion"
       datetime: "{{ now().strftime('%Y%m%d%H%M%S') }}"
       snapshot_url: !secret snapshot_url
-      location: '{{ trigger.to_state.attributes.location }}'
+      location: "{{ trigger.to_state.attributes.location }}"
       notify_edyta: true
 
 # powiadomienie jak otworzy się okno i nikogo w domu
 - id: notification_window_opened_when_away_mode
-  alias: 'Notification Window Opened When Away Mode'
+  alias: "Notification Window Opened When Away Mode"
   trigger:
     - platform: state
       entity_id:
@@ -473,44 +473,44 @@
         - binary_sensor.window_antresola
         - binary_sensor.window_antek
         - binary_sensor.window_sypialnia
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
   condition:
     condition: state
     entity_id: input_boolean.away_mode
-    state: 'on'
+    state: "on"
     for:
       minutes: 10
   action:
     service: script.notify
     data_template:
       notify_edyta: true
-      title: 'Wykryto otwarcie okna w pustym mieszkaniu'
+      title: "Wykryto otwarcie okna w pustym mieszkaniu"
       message: "Pomieszczenie: {{ trigger.to_state.attributes.location }}, godzina {{ now().strftime('%H:%M') }}."
-      tag: 'notification-window-opened'
+      tag: "notification-window-opened"
 
 # powiadomienie o otwartych drzwiach balkonowych w pracowni po wyjściu z domu
 - id: notification_balcony_door_pracownia_opened
-  alias: 'Notification Balcony Door Pracownia Opened'
+  alias: "Notification Balcony Door Pracownia Opened"
   trigger:
     platform: state
     entity_id: binary_sensor.people_at_home
-    to: 'off'
+    to: "off"
   condition:
     condition: state
     entity_id: binary_sensor.balcony_door_pracownia
-    state: 'on'
+    state: "on"
   action:
     service: script.notify
     data:
       notify_edyta: true
-      title: 'Otwarte drzwi balkonowe'
+      title: "Otwarte drzwi balkonowe"
       message: "Domownicy opuścili mieszkanie, a drzwi balkonowe w pracowni nie są zamknięte."
-      tag: 'notification-balcony-door-pracownia'
+      tag: "notification-balcony-door-pracownia"
 
 # powiadomienia o małej ilości miejsca na Synology
 - id: notification_low_disk_space_on_synology
-  alias: 'Notification Low Disk Space On Synology'
+  alias: "Notification Low Disk Space On Synology"
   trigger:
     platform: numeric_state
     entity_id: sensor.synology_disk_used
@@ -518,19 +518,19 @@
   action:
     - service: script.notify
       data_template:
-        title: 'Mało miejsca na dysku Synology'
-        message: 'Dysk Synology jest zapełniony w {{ trigger.to_state.state }}%.'
-        tag: 'notification-synology-low-space'
+        title: "Mało miejsca na dysku Synology"
+        message: "Dysk Synology jest zapełniony w {{ trigger.to_state.state }}%."
+        tag: "notification-synology-low-space"
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
-        title: 'Mało miejsca na dysku Synology'
-        message: 'Dysk Synology jest zapełniony w {{ trigger.to_state.state }}%.'
-        notification_id: 'notification-synology-low-space'
+        title: "Mało miejsca na dysku Synology"
+        message: "Dysk Synology jest zapełniony w {{ trigger.to_state.state }}%."
+        notification_id: "notification-synology-low-space"
 
 # powiadomienie o wykryciu nowego urządzenia
 - id: notification_new_device
-  alias: 'Notification New Device'
+  alias: "Notification New Device"
   trigger:
     platform: event
     event_type: device_tracker_new_device
@@ -538,21 +538,21 @@
     - service: script.notify
       data_template:
         notify_edyta: false
-        title: 'Nowe urządzenie'
-        message: 'Wykryto nowe urządzenie o nazwie {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}}).'
-        tag: 'notification-new-device'
+        title: "Nowe urządzenie"
+        message: "Wykryto nowe urządzenie o nazwie {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}})."
+        tag: "notification-new-device"
     - service: persistent_notification.create
       data_template:
-        title: 'Nowe urządzenie'
-        message: 'Wykryto nowe urządzenie o nazwie {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}}).'
-        notification_id: 'notification-new-device'
+        title: "Nowe urządzenie"
+        message: "Wykryto nowe urządzenie o nazwie {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}})."
+        notification_id: "notification-new-device"
 
 # powiadomienie o niskim poziomie naładowania baterii
 - id: notification_low_battery
-  alias: 'Notification Low Battery'
+  alias: "Notification Low Battery"
   trigger:
     platform: time
-    at: '18:00:00'
+    at: "18:00:00"
   condition:
     condition: template
     value_template: >
@@ -573,7 +573,7 @@
     - service: script.notify
       data_template:
         notify_edyta: false
-        title: 'Niski poziom naładowania baterii'
+        title: "Niski poziom naładowania baterii"
         message: >
           {% macro battery_level() %}
             {%- set threshold = 10 -%}
@@ -588,10 +588,10 @@
             {%- endfor %}
           {% endmacro %}
           W następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level() }}
-        tag: 'notification-low-battery'
+        tag: "notification-low-battery"
     - service: persistent_notification.create
       data_template:
-        title: 'Niski poziom naładowania baterii'
+        title: "Niski poziom naładowania baterii"
         message: >
           {% macro battery_level() %}
             {%- set threshold = 10 -%}
@@ -606,14 +606,14 @@
             {%- endfor %}
           {% endmacro %}
           W następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level() }}
-        notification_id: 'notification-low-battery'
+        notification_id: "notification-low-battery"
 
 ##################################################################################################
 
 #### OBECNOŚĆ ####################################################################################
 # Edyta 40 minut od domu
 - id: presence_edyta_far_from_home
-  alias: 'Presence Edyta Far From Home'
+  alias: "Presence Edyta Far From Home"
   trigger:
     platform: numeric_state
     entity_id: sensor.edyta_to_home
@@ -621,14 +621,14 @@
   condition:
     condition: state
     entity_id: input_boolean.edyta_far_from_home
-    state: 'off'
+    state: "off"
   action:
     service: input_boolean.turn_on
     entity_id: input_boolean.edyta_far_from_home
 
 # Maciek 40 minut od domu
 - id: presence_maciek_far_from_home
-  alias: 'Presence Maciek Far From Home'
+  alias: "Presence Maciek Far From Home"
   trigger:
     platform: numeric_state
     entity_id: sensor.maciek_to_home
@@ -636,48 +636,48 @@
   condition:
     condition: state
     entity_id: input_boolean.maciek_far_from_home
-    state: 'off'
+    state: "off"
   action:
     service: input_boolean.turn_on
     entity_id: input_boolean.maciek_far_from_home
 
 # Maciek wrócił do domu po dalekiej podróży
 - id: presence_maciek_come_back_home
-  alias: 'Presence Maciek Come Back Home'
+  alias: "Presence Maciek Come Back Home"
   trigger:
     platform: state
     entity_id: person.maciek
-    to: 'home'
+    to: "home"
   condition:
     condition: state
     entity_id: input_boolean.maciek_far_from_home
-    state: 'on'
+    state: "on"
   action:
     service: input_boolean.turn_off
     entity_id: input_boolean.maciek_far_from_home
 
 # Edyta wróciła do domu po dalekiej podróży
 - id: presence_edyta_come_back_home
-  alias: 'Presence Edyta Come Back Home'
+  alias: "Presence Edyta Come Back Home"
   trigger:
     platform: state
     entity_id: person.edyta
-    to: 'home'
+    to: "home"
   condition:
     condition: state
     entity_id: input_boolean.edyta_far_from_home
-    state: 'on'
+    state: "on"
   action:
     service: input_boolean.turn_off
     entity_id: input_boolean.edyta_far_from_home
 
 # ludzie poza domem
 - id: presence_peoples_away
-  alias: 'Presence Peoples Away'
+  alias: "Presence Peoples Away"
   trigger:
     platform: state
     entity_id: binary_sensor.people_at_home
-    to: 'off'
+    to: "off"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.away_mode
@@ -685,24 +685,24 @@
       entity_id: fan.salon
     - condition: state
       entity_id: group.windows
-      state: 'on'
+      state: "on"
     - condition: numeric_state
       entity_id: sensor.dark_sky_precip_probability
       above: 20
     - service: script.notify
       data_template:
         notify_edyta: true
-        title: 'Otwarte okna'
+        title: "Otwarte okna"
         message: "Okna w pustym mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów wynosi {{ states('sensor.dark_sky_precip_probability') }}%."
-        tag: 'notification-windows-weather'
+        tag: "notification-windows-weather"
 
 # ludzie w domu
 - id: presence_peoples_back
-  alias: 'Presence Peoples Back'
+  alias: "Presence Peoples Back"
   trigger:
     platform: state
     entity_id: binary_sensor.people_at_home
-    to: 'on'
+    to: "on"
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.away_mode
@@ -710,7 +710,7 @@
       conditions:
         - condition: state
           entity_id: input_boolean.heating_season
-          state: 'off'
+          state: "off"
         - condition: numeric_state
           entity_id: sensor.temperature_salon
           above: 27
@@ -719,77 +719,77 @@
 
 # domownicy w domu
 - id: presence_household_come_back_home
-  alias: 'Presence Household Come Back Home'
+  alias: "Presence Household Come Back Home"
   trigger:
     platform: state
     entity_id: group.household
-    from: 'not_home'
-    to: 'home'
+    from: "not_home"
+    to: "home"
   action:
     service: input_boolean.turn_on
     entity_id: input_boolean.alexa_welcome
 
 # Alexa Welcome
 - id: alexa_welcome
-  alias: 'Alexa Welcome'
+  alias: "Alexa Welcome"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_salon_2
   condition:
     condition: state
     entity_id: input_boolean.alexa_welcome
-    state: 'on'
+    state: "on"
   action:
     - service: media_player.play_media
       entity_id: media_player.echo_plus
       data:
-        media_content_type: 'sequence'
-        media_content_id: 'Alexa.ImHome.Play'
+        media_content_type: "sequence"
+        media_content_id: "Alexa.ImHome.Play"
     - service: input_boolean.turn_off
       entity_id: input_boolean.alexa_welcome
 
 # Alexa Good Morning
 - id: alexa_good_morning
-  alias: 'Alexa Good Morning'
+  alias: "Alexa Good Morning"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_salon_2
-    from: 'off'
-    to: 'on'
+    from: "off"
+    to: "on"
   condition:
     condition: and
     conditions:
       - condition: time
-        after: '05:00:00'
+        after: "05:00:00"
       - condition: state
         entity_id: binary_sensor.motion_salon_1
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: binary_sensor.motion_antresola_1
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: binary_sensor.motion_antresola_2
-        state: 'on'
+        state: "on"
       - condition: template
         value_template: >-
-          {% set last = state_attr('automation.presence_alexa_good_morning', 'last_triggered') %}
+          {% set last = state_attr('automation.alexa_good_morning', 'last_triggered') %}
           {{ last is none or as_timestamp(last) | timestamp_custom('%j') | int != now().strftime('%j') | int }}
   action:
     service: media_player.play_media
     entity_id: media_player.echo_plus
     data:
-      media_content_type: 'sequence'
-      media_content_id: 'Alexa.GoodMorning.Play'
+      media_content_type: "sequence"
+      media_content_id: "Alexa.GoodMorning.Play"
 
 ##################################################################################################
 
 #### HEATING #####################################################################################
 # zwiększenie temperatury rano w tygodniu jeśli ktoś jest w domu i trwa sezon grzewczy
 - id: heating_day
-  alias: 'Heating Day'
+  alias: "Heating Day"
   trigger:
     platform: time_pattern
-    minutes: '/1'
+    minutes: "/1"
     seconds: 0
   condition:
     condition: and
@@ -798,25 +798,25 @@
         value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_end') }}"
       - condition: state
         entity_id: binary_sensor.workday_sensor
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.heating_season
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: group.windows
-        state: 'off'
+        state: "off"
   action:
     service: script.heating_day
 
 # zmniejszenie temperatury na noc w tygodniu jeśli trwa sezon grzewczy
 - id: heating_night
-  alias: 'Heating Night'
+  alias: "Heating Night"
   trigger:
     platform: time_pattern
-    minutes: '/1'
+    minutes: "/1"
     seconds: 0
   condition:
     condition: and
@@ -825,25 +825,25 @@
         value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_start') }}"
       - condition: state
         entity_id: binary_sensor.workday_sensor
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.heating_season
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: group.windows
-        state: 'off'
+        state: "off"
   action:
     service: script.heating_night
 
 # zwiększenie temperatury rano w weekendy jeśli ktoś jest w domu i trwa sezon grzewczy
 - id: heating_day_weekend
-  alias: 'Heating Day Weekend'
+  alias: "Heating Day Weekend"
   trigger:
     platform: time_pattern
-    minutes: '/1'
+    minutes: "/1"
     seconds: 0
   condition:
     condition: and
@@ -852,25 +852,25 @@
         value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_end_weekend') }}"
       - condition: state
         entity_id: binary_sensor.workday_sensor
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: input_boolean.heating_season
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: group.windows
-        state: 'off'
+        state: "off"
   action:
     service: script.heating_day
 
 # zmniejszenie temperatury na noc w weekendy jeśli trwa sezon grzewczy
 - id: heating_night_weekend
-  alias: 'Heating Night Weekend'
+  alias: "Heating Night Weekend"
   trigger:
     platform: time_pattern
-    minutes: '/1'
+    minutes: "/1"
     seconds: 0
   condition:
     condition: and
@@ -879,47 +879,47 @@
         value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_start_weekend') }}"
       - condition: state
         entity_id: binary_sensor.workday_sensor
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: input_boolean.heating_season
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: group.windows
-        state: 'off'
+        state: "off"
   action:
     service: script.heating_night
 
 # zmniejszenie temperatury na noc w salonie i kuchni po wyłączeniu TV
 - id: heating_night_salon_and_kuchnia
-  alias: 'Heating Night Salon and Kuchnia'
+  alias: "Heating Night Salon and Kuchnia"
   trigger:
     platform: state
     entity_id: media_player.bravia
-    to: 'off'
+    to: "off"
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: input_boolean.heating_season
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.heating_night
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.heating_salon_kuchnia_night
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: group.windows
-        state: 'off'
+        state: "off"
   action:
     - service: fan.turn_off
       entity_id: fan.humidifier_salon
     - condition: state
       entity_id: input_boolean.guests
-      state: 'off'
+      state: "off"
     - service: climate.set_temperature
       entity_id:
         - climate.thermostat_kuchnia
@@ -931,34 +931,34 @@
 
 # wyłączenie wentylatora po wyłączeniu telewizora
 - id: climate_turn_off_fan
-  alias: 'Climate Turn Off Fan'
+  alias: "Climate Turn Off Fan"
   trigger:
     platform: state
     entity_id: media_player.bravia
-    to: 'off'
+    to: "off"
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: fan.salon
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.heating_season
-        state: 'off'
+        state: "off"
       - condition: time
-        after: '22:00:00'
+        after: "22:00:00"
   action:
     service: fan.turn_off
     entity_id: fan.salon
 
 # zmniejszenie temperatury gdy domownicy wychodzą i jest sezon grzewczy
 - id: heating_eco_mode
-  alias: 'Heating Eco Mode'
+  alias: "Heating Eco Mode"
   trigger:
     platform: state
     entity_id: input_boolean.away_mode
-    from: 'off'
-    to: 'on'
+    from: "off"
+    to: "on"
     for:
       minutes: 15
   condition:
@@ -966,61 +966,61 @@
     conditions:
       - condition: state
         entity_id: input_boolean.heating_season
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: group.windows
-        state: 'off'
+        state: "off"
   action:
     service: script.heating_eco_mode
 
 # zwiększenie temperatury gdy domownicy wracają i jest sezon grzewczy
 - id: heating_peoples_back
-  alias: 'Heating Peoples Back'
+  alias: "Heating Peoples Back"
   trigger:
     platform: state
     entity_id: input_boolean.away_mode
-    from: 'on'
-    to: 'off'
+    from: "on"
+    to: "off"
   condition:
     condition: and
     conditions:
       - condition: time
-        after: '05:00:00'
-        before: '22:00:00'
+        after: "05:00:00"
+        before: "22:00:00"
       - condition: state
         entity_id: input_boolean.heating_season
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: group.windows
-        state: 'off'
+        state: "off"
   action:
     service: script.heating_day
 
 - id: heating_peoples_back_night
-  alias: 'Heating Peoples Back Night'
+  alias: "Heating Peoples Back Night"
   trigger:
     platform: state
     entity_id: input_boolean.away_mode
-    from: 'on'
-    to: 'off'
+    from: "on"
+    to: "off"
   condition:
     condition: and
     conditions:
       - condition: time
-        after: '22:00:00'
-        before: '05:00:00'
+        after: "22:00:00"
+        before: "05:00:00"
       - condition: state
         entity_id: input_boolean.heating_season
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: group.windows
-        state: 'off'
+        state: "off"
   action:
     service: script.heating_night
 
 # włączenie ogrzewania 30 minut przed powrotem do domu w dzień gdy jest sezon grzewczy
 - id: heating_turn_on_before_return_to_home
-  alias: 'Heating Turn On Before Return To Home'
+  alias: "Heating Turn On Before Return To Home"
   trigger:
     - platform: numeric_state
       entity_id: sensor.maciek_to_home
@@ -1033,32 +1033,32 @@
     conditions:
       - condition: state
         entity_id: input_boolean.edyta_far_from_home
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.maciek_far_from_home
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.heating_season
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: script.heating_fast_warm_up
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: group.windows
-        state: 'off'
+        state: "off"
   action:
     - service: script.heating_day
     - service: input_boolean.turn_off
       entity_id:
         - input_boolean.edyta_far_from_home
-        -  input_boolean.maciek_far_from_home
+        - input_boolean.maciek_far_from_home
 
 # włączenie szybkiego dogrzewania 60 minut przed powrotem do domu w dzień gdy jest sezon grzewczy gdy nieobecność domowników dłuższa niż 10 godzin
 - id: heating_heating_fast_warm_up_before_return_to_home
-  alias: 'Heating Fast Warm Up Before Return To Home'
+  alias: "Heating Fast Warm Up Before Return To Home"
   trigger:
     - platform: numeric_state
       entity_id: sensor.maciek_to_home
@@ -1071,24 +1071,24 @@
     conditions:
       - condition: state
         entity_id: input_boolean.edyta_far_from_home
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.maciek_far_from_home
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.heating_season
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'on'
+        state: "on"
         for:
           hours: 12
       - condition: state
         entity_id: script.heating_fast_warm_up
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: group.windows
-        state: 'off'
+        state: "off"
   action:
     - service: script.heating_fast_warm_up
     - service: input_boolean.turn_off
@@ -1098,8 +1098,8 @@
     - service: script.notify
       data:
         notify_edyta: true
-        title: 'Włączono szybkie dogrzanie'
-        message: 'Włączono szybie dogrzanie pomieszczeń po długiej nieobecności domowników.'
+        title: "Włączono szybkie dogrzanie"
+        message: "Włączono szybie dogrzanie pomieszczeń po długiej nieobecności domowników."
         tag: 27777
     - condition: template
       value_template: >-
@@ -1110,138 +1110,138 @@
 
 # otwarcie okien uruchamia przewietrzanie
 - id: windows_opened_for_airing
-  alias: 'Windows Opened For Airing'
+  alias: "Windows Opened For Airing"
   trigger:
     platform: state
     entity_id: group.windows
-    from: 'off'
-    to: 'on'
+    from: "off"
+    to: "on"
     for:
       minutes: 10
   condition:
     condition: state
     entity_id: input_boolean.heating_season
-    state: 'on'
+    state: "on"
   action:
     service: input_boolean.turn_on
     entity_id: input_boolean.heating_airing
 
 # zamknięcie okien kończy przewietrzanie
 - id: windows_closed
-  alias: 'Windows Closed'
+  alias: "Windows Closed"
   trigger:
     platform: state
     entity_id: group.windows
-    from: 'on'
-    to: 'off'
+    from: "on"
+    to: "off"
     for:
       minutes: 5
   condition:
     condition: state
     entity_id: input_boolean.heating_season
-    state: 'on'
+    state: "on"
   action:
     service: input_boolean.turn_off
     entity_id: input_boolean.heating_airing
 
 # początek przewietrzania
 - id: heating_airing_begin
-  alias: 'Heating Airing Begin'
+  alias: "Heating Airing Begin"
   trigger:
     platform: state
     entity_id: input_boolean.heating_airing
-    from: 'off'
-    to: 'on'
+    from: "off"
+    to: "on"
   condition:
-      condition: state
-      entity_id: input_boolean.heating_season
-      state: 'on'
+    condition: state
+    entity_id: input_boolean.heating_season
+    state: "on"
   action:
     service: script.heating_airing_begin
 
 # koniec przewietrzania w dzień
 - id: heating_airing_end
-  alias: 'Heating Airing'
+  alias: "Heating Airing"
   trigger:
     platform: state
     entity_id: input_boolean.heating_airing
-    from: 'on'
-    to: 'off'
+    from: "on"
+    to: "off"
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: input_boolean.heating_season
-        state: 'on'
+        state: "on"
       - condition: time
-        after: '05:00:00'
-        before: '22:00:00'
+        after: "05:00:00"
+        before: "22:00:00"
   action:
     - service: script.heating_day
     - condition: state
       entity_id: group.windows
-      state: 'on'
+      state: "on"
     - service: script.notify
       data:
         notify_edyta: true
-        title: 'Koniec przewietrzania'
-        message: 'Wyłączono tryb przewietrzania. Proszę zamknąć okna!'
+        title: "Koniec przewietrzania"
+        message: "Wyłączono tryb przewietrzania. Proszę zamknąć okna!"
         tag: 28888
 
 # koniec przewietrzania w nocy
 - id: heating_airing_end
-  alias: 'Heating Airing'
+  alias: "Heating Airing"
   trigger:
     platform: state
     entity_id: input_boolean.heating_airing
-    from: 'on'
-    to: 'off'
+    from: "on"
+    to: "off"
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: input_boolean.heating_season
-        state: 'on'
+        state: "on"
       - condition: time
-        after: '22:00:00'
-        before: '05:00:00'
+        after: "22:00:00"
+        before: "05:00:00"
   action:
     - service: script.heating_day
     - condition: state
       entity_id: group.windows
-      state: 'on'
+      state: "on"
     - service: script.notify
       data:
         notify_edyta: true
-        title: 'Koniec przewietrzania'
-        message: 'Wyłączono tryb przewietrzania. Proszę zamknąć okna!'
+        title: "Koniec przewietrzania"
+        message: "Wyłączono tryb przewietrzania. Proszę zamknąć okna!"
         tag: 28888
 
 # początek sezonu grzewczego
 - id: heating_season_begin
-  alias: 'Heating Season Begin'
+  alias: "Heating Season Begin"
   trigger:
     platform: state
     entity_id: input_boolean.heating_season
-    from: 'off'
-    to: 'on'
+    from: "off"
+    to: "on"
   action:
     service: script.heating_day
 
 # koniec sezonu grzewczego
 - id: heating_season_end
-  alias: 'Heating Season End'
+  alias: "Heating Season End"
   trigger:
     platform: state
     entity_id: input_boolean.heating_season
-    from: 'on'
-    to: 'off'
+    from: "on"
+    to: "off"
   action:
     service: script.heating_season_end
 
 # zmniejszanie nastawy termostatu do 22 stopni gdy temperatura w łazience przekroczy 22.8 stopnie
 - id: heating_lazienka_target_temp_down
-  alias: 'Heating Lazienka Target Temp Down'
+  alias: "Heating Lazienka Target Temp Down"
   trigger:
     platform: numeric_state
     entity_id: sensor.temperature_lazienka
@@ -1253,10 +1253,10 @@
         value_template: "{{ state_attr('climate.thermostat_lazienka', 'temperature') | float > 22 }}"
       - condition: state
         entity_id: input_boolean.heating_season
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.heating_airing
-        state: 'off'
+        state: "off"
   action:
     service: climate.set_temperature
     entity_id: climate.thermostat_lazienka
@@ -1265,7 +1265,7 @@
 
 # zwiekszenie nastawy termostatu do 23 stopni gdy temperatura w łazience poniżej 22 stopni
 - id: heating_lazienka_target_temp_up
-  alias: 'Heating Lazienka Target Temp Up'
+  alias: "Heating Lazienka Target Temp Up"
   trigger:
     platform: numeric_state
     entity_id: sensor.temperature_lazienka
@@ -1277,10 +1277,10 @@
         value_template: "{{ state_attr('climate.thermostat_lazienka', 'temperature') | float < 23 and state_attr('climate.thermostat_lazienka', 'temperature') | float > 20 }}"
       - condition: state
         entity_id: input_boolean.heating_season
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.heating_airing
-        state: 'off'
+        state: "off"
   action:
     service: climate.set_temperature
     entity_id: climate.thermostat_lazienka
@@ -1292,80 +1292,80 @@
 #### LIGHT #######################################################################################
 # włączenie flux przy starcie HA
 - id: light_turn_on_flux_at_start
-  alias: 'Light Turn On Flux At Start'
+  alias: "Light Turn On Flux At Start"
   trigger:
     platform: homeassistant
     event: start
   condition:
     condition: state
     entity_id: input_select.light_scenes_salon
-    state: 'automatyczny'
+    state: "automatyczny"
   action:
     service: switch.turn_on
     entity_id: switch.flux
 
 # wyłączenie oświetlenia po wyjściu z domu
 - id: light_turn_off_when_away_mode
-  alias: 'Light Turn Off When Away Mode'
+  alias: "Light Turn Off When Away Mode"
   trigger:
     platform: state
     entity_id: input_boolean.away_mode
-    from: 'off'
-    to: 'on'
+    from: "off"
+    to: "on"
   action:
     service: script.light_away_mode
 
 ## SALON ##
 # wyłączanie przekaźnika lampy w salonie gdy lampa niedostępna
 - id: light_turn_off_lamp_salon_relay_when_unavailable
-  alias: 'Light Turn Off Lamp Salon Relay When Unavailable'
+  alias: "Light Turn Off Lamp Salon Relay When Unavailable"
   trigger:
     platform: state
     entity_id: light.lamp_salon
-    to: 'unavailable'
+    to: "unavailable"
     for:
       minutes: 2
   action:
     - service: switch.turn_off
       entity_id: switch.lamp_salon
-    - delay: '00:00:05'
+    - delay: "00:00:05"
     - service: switch.turn_on
       entity_id: switch.lamp_salon
     - condition: template
       value_template: "{{ trigger.from_state.state == 'off' }}"
-    - delay: '00:01:00'
+    - delay: "00:01:00"
     - service: light.turn_off
       entity_id: light.lamp_salon
 
 # wyłączenie świateł w salonie jeśli nie ma ruchu przez godzinę i jest po północy
 - id: light_turn_off_in_salon_when_no_motion_and_after_midnight
-  alias: 'Light Turn Off In Salon When No Motion And After Midnight'
+  alias: "Light Turn Off In Salon When No Motion And After Midnight"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_salon
-    to: 'off'
+    to: "off"
     for:
       minutes: 30
   condition:
     condition: and
     conditions:
       - condition: time
-        after: '00:30:00'
-        before: '06:00:00'
+        after: "00:30:00"
+        before: "06:00:00"
       - condition: state
         entity_id: media_player.bravia
-        state: 'off'
+        state: "off"
       - condition: or
         conditions:
           - condition: state
             entity_id: light.bulbs_salon
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: light.leds_salon
-            state: 'on'
+            state: "on"
           - condition: state
             entity_id: light.lamp_salon
-            state: 'on'
+            state: "on"
   action:
     service: homeassistant.turn_off
     entity_id:
@@ -1375,20 +1375,20 @@
 
 # automatyczna scena oświetlenia w salonie
 - id: light_scene_salon_auto_when_bulbs_turn_on
-  alias: 'Light Scene Salon Auto When Bulbs Turn On'
+  alias: "Light Scene Salon Auto When Bulbs Turn On"
   trigger:
     platform: state
     entity_id: light.bulbs_salon
-    to: 'on'
+    to: "on"
   action:
     service: input_select.select_option
     data:
       entity_id: input_select.light_scenes_salon
-      option: 'automatyczny'
+      option: "automatyczny"
 
 # wybór sceny oświetlenia w salonie gdy zarówki włączone
 - id: light_scene_salon
-  alias: 'Light Scene Salon'
+  alias: "Light Scene Salon"
   trigger:
     platform: state
     entity_id: input_select.light_scenes_salon
@@ -1399,7 +1399,7 @@
 
 # włączenie/wyłączenie lampy w salonie
 - id: light_toggle_power_salon_lamp
-  alias: 'Light Toggle Power Salon Lamp'
+  alias: "Light Toggle Power Salon Lamp"
   trigger:
     - platform: event
       event_type: xiaomi_aqara.click
@@ -1417,7 +1417,7 @@
 
 # włączenie/wyłączenie żarówek w salonie
 - id: light_toggle_power_salon_bulbs
-  alias: 'Light Toggle Power Salon Bulbs'
+  alias: "Light Toggle Power Salon Bulbs"
   trigger:
     - platform: event
       event_type: xiaomi_aqara.click
@@ -1431,15 +1431,15 @@
         click_type: double
     - platform: state
       entity_id: binary_sensor.switch_bulbs_salon
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
   action:
     service: light.toggle
     entity_id: light.bulbs_salon
 
 # włączenie/wyłączenie LEDów w salonie
 - id: light_toggle_power_salon_leds
-  alias: 'Light Toggle Power Salon LEDs'
+  alias: "Light Toggle Power Salon LEDs"
   trigger:
     - platform: event
       event_type: xiaomi_aqara.click
@@ -1457,46 +1457,46 @@
 
 # włączanie lampy w salonie jak pojawi się ruch lub wyłączone światło/TV
 - id: light_turn_on_salon_lamp
-  alias: 'Light Turn On Salon Lamp'
+  alias: "Light Turn On Salon Lamp"
   trigger:
     - platform: state
       entity_id:
         - binary_sensor.motion_salon
         - binary_sensor.motion_antresola_2
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
     - platform: state
       entity_id: light.leds_salon
-      from: 'on'
-      to: 'off'
+      from: "on"
+      to: "off"
     - platform: state
       entity_id: light.bulbs_salon
-      from: 'on'
-      to: 'off'
+      from: "on"
+      to: "off"
     - platform: state
       entity_id: media_player.bravia
-      to: 'off'
+      to: "off"
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: light.leds_salon
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: light.bulbs_salon
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: media_player.bravia
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: binary_sensor.motion_salon
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.light_auto_turn_salon
-        state: 'on'
+        state: "on"
       - condition: or
         conditions:
           - condition: sun
@@ -1514,41 +1514,41 @@
 
 # Alexa Good Night
 - id: alexa_good_night
-  alias: 'Alexa Good Night'
+  alias: "Alexa Good Night"
   trigger:
     - platform: state
       entity_id: light.leds_salon
-      from: 'on'
-      to: 'off'
+      from: "on"
+      to: "off"
     - platform: state
       entity_id: light.bulbs_salon
-      from: 'on'
-      to: 'off'
+      from: "on"
+      to: "off"
     - platform: state
       entity_id: media_player.bravia
-      to: 'off'
+      to: "off"
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: light.leds_salon
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: light.bulbs_salon
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: media_player.bravia
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: binary_sensor.motion_salon
-        state: 'on'
+        state: "on"
       - condition: or
         conditions:
           - condition: time
-            after: '21:00:00'
+            after: "21:00:00"
           - condition: sun
             before: sunrise
       - condition: template
@@ -1559,29 +1559,29 @@
     service: media_player.play_media
     entity_id: media_player.echo_plus
     data:
-      media_content_type: 'sequence'
-      media_content_id: 'Alexa.GoodNight.Play'
+      media_content_type: "sequence"
+      media_content_id: "Alexa.GoodNight.Play"
 
 # wyłączenie lampy w salonie jak zniknie ruch lub włączy się światła
 - id: light_turn_off_salon_lamp
-  alias: 'Light Turn Off Salon Lamp'
+  alias: "Light Turn Off Salon Lamp"
   trigger:
     - platform: state
       entity_id: binary_sensor.motion_salon
-      from: 'on'
-      to: 'off'
+      from: "on"
+      to: "off"
     - platform: state
       entity_id: light.leds_salon
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
     - platform: state
       entity_id: light.bulbs_salon
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
   condition:
     condition: state
     entity_id: input_boolean.salon_light_motion_on
-    state: 'on'
+    state: "on"
   action:
     - service: light.turn_off
       entity_id: light.lamp_salon
@@ -1592,17 +1592,17 @@
 
 # Scena oświetlenia salonu film po włączeniu filmy/gry
 - id: light_scene_film
-  alias: 'Light Scene Film'
+  alias: "Light Scene Film"
   trigger:
     - platform: state
       entity_id: sensor.dune_activity
-      to: 'file_playback'
+      to: "file_playback"
     - platform: state
       entity_id: media_player.playstation
-      to: 'playing'
+      to: "playing"
     - platform: state
       entity_id: input_select.salon_harmony
-      to: 'Smart TV'
+      to: "Smart TV"
   condition:
     condition: and
     conditions:
@@ -1611,28 +1611,28 @@
       - condition: template
         value_template: "{{ is_state('light.leds_salon', 'on') or is_state('light.bulbs_salon', 'on') or is_state('light.lamp_salon', 'on') }}"
       - condition: time
-        after: '20:10:00'
+        after: "20:10:00"
       - condition: state
         entity_id: input_boolean.guests
-        state: 'off'
+        state: "off"
   action:
     service: input_select.select_option
     data:
       entity_id: input_select.light_scenes_salon
-      option: 'film'
+      option: "film"
 
 # Scena oświetlenia salonu auto po wyłączeniu filmu/gry
 - id: light_scene_auto_after_film
-  alias: 'Light Scene Auto After Film'
+  alias: "Light Scene Auto After Film"
   trigger:
     - platform: state
       entity_id: sensor.dune_activity
-      to: 'navigator'
+      to: "navigator"
       for:
         seconds: 20
     - platform: state
       entity_id: media_player.playstation
-      to: 'idle'
+      to: "idle"
       for:
         seconds: 20
     - platform: template
@@ -1647,31 +1647,31 @@
             is_state('light.lamp_salon', 'on') }}
       - condition: state
         entity_id: input_select.light_scenes_salon
-        state: 'film'
+        state: "film"
   action:
     service: input_select.select_option
     data:
       entity_id: input_select.light_scenes_salon
-      option: 'automatyczny'
+      option: "automatyczny"
 
 ## ANTRESOLA ##
 # włączanie lampki na antresoli jak jest ciemno i jest ruch
 - id: light_turn_on_antresola_lamp
-  alias: 'Light Turn On Antresola Lamp'
+  alias: "Light Turn On Antresola Lamp"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_antresola
-    from: 'off'
-    to: 'on'
+    from: "off"
+    to: "on"
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: light.gateway_antresola
-        state: 'off'
+        state: "off"
       - condition: numeric_state
         entity_id: sensor.illumination_antresola
         below: 60
@@ -1686,22 +1686,27 @@
       entity_id: light.gateway_antresola
       data_template:
         brightness: 200
-        rgb_color: ['{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}','{{ (range(0, 255)|random) }}']
+        rgb_color:
+          [
+            "{{ (range(0, 255)|random) }}",
+            "{{ (range(0, 255)|random) }}",
+            "{{ (range(0, 255)|random) }}",
+          ]
     - service: input_boolean.turn_on
       entity_id: input_boolean.antresola_light_motion_on
 
 # wyłączanie lampki na antresoli jak brak ruchu
 - id: light_turn_off_antresola_lamp
-  alias: 'Light Turn Off Antresola Lamp'
+  alias: "Light Turn Off Antresola Lamp"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_antresola
-    from: 'on'
-    to: 'off'
+    from: "on"
+    to: "off"
   condition:
     condition: state
     entity_id: input_boolean.antresola_light_motion_on
-    state: 'on'
+    state: "on"
   action:
     - service: homeassistant.turn_off
       entity_id:
@@ -1711,12 +1716,12 @@
 ## SYPIALNIA ##
 # włączanie LEDów w sypialni jak jest ruch i ciemno
 - id: light_turn_on_sypialnia_leds_when_dark_and_motion
-  alias: 'Light Turn On Sypialnia LEDs When Dark And Motion'
+  alias: "Light Turn On Sypialnia LEDs When Dark And Motion"
   trigger:
     - platform: state
       entity_id: binary_sensor.motion_sypialnia
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
     - platform: numeric_state
       entity_id: sensor.illumination_sypialnia
       below: 3
@@ -1725,16 +1730,16 @@
     conditions:
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: light.lightstrip_sypialnia
-        state: 'off'
+        state: "off"
       - condition: numeric_state
         entity_id: sensor.illumination_sypialnia
         below: 3
       - condition: state
         entity_id: binary_sensor.motion_sypialnia
-        state: 'on'
+        state: "on"
       - condition: or
         conditions:
           - condition: sun
@@ -1746,22 +1751,22 @@
       entity_id: light.lightstrip_sypialnia
       data:
         brightness: 200
-        rgb_color: [233,96,255]
+        rgb_color: [233, 96, 255]
     - service: input_boolean.turn_on
       entity_id: input_boolean.sypialnia_light_motion_on
 
 # wyłączanie LEDów w sypialni jak brak ruchu
 - id: light_turn_off_sypialnia_leds
-  alias: 'Light Turn Off Sypialnia LEDs'
+  alias: "Light Turn Off Sypialnia LEDs"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_sypialnia
-    from: 'on'
-    to: 'off'
+    from: "on"
+    to: "off"
   condition:
     condition: state
     entity_id: input_boolean.sypialnia_light_motion_on
-    state: 'on'
+    state: "on"
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.sypialnia_light_motion_on
@@ -1773,12 +1778,12 @@
 ## PRZEDPOKÓJ ##
 # włączanie LEDów w przedpokoju jak jest ruch i ciemno
 - id: light_turn_on_przedpokoj_leds_when_dark_and_motion
-  alias: 'Light Turn On Przedpokoj LEDs When Dark And Motion'
+  alias: "Light Turn On Przedpokoj LEDs When Dark And Motion"
   trigger:
     - platform: state
       entity_id: binary_sensor.motion_przedpokoj
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
     - platform: numeric_state
       entity_id: sensor.illumination_przedpokoj
       below: 9
@@ -1787,19 +1792,19 @@
     conditions:
       - condition: state
         entity_id: light.leds_przedpokoj
-        state: 'off'
+        state: "off"
       - condition: numeric_state
         entity_id: sensor.illumination_przedpokoj
         below: 9
       - condition: state
         entity_id: binary_sensor.motion_przedpokoj
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: light.bulbs_salon
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: light.leds_salon
-        state: 'off'
+        state: "off"
       - condition: or
         conditions:
           - condition: sun
@@ -1814,16 +1819,16 @@
 
 # wyłączanie LEDów w przedpokoju jak brak ruchu
 - id: light_turn_off_przedpokoj_leds
-  alias: 'Light Turn Off Przedpokoj LEDs'
+  alias: "Light Turn Off Przedpokoj LEDs"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_przedpokoj
-    from: 'on'
-    to: 'off'
+    from: "on"
+    to: "off"
   condition:
     condition: state
     entity_id: input_boolean.przedpokoj_light_motion_on
-    state: 'on'
+    state: "on"
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.przedpokoj_light_motion_on
@@ -1833,33 +1838,33 @@
 ## POKÓJ ANTKA ##
 # włączanie LEDów w pokoju Antka jak natężenie światła spadnie poniżej 3 i jest ruch
 - id: light_turn_on_antek_leds_when_dark_and_motion
-  alias: 'Light Turn On Antek LEDs When Dark And Motion'
+  alias: "Light Turn On Antek LEDs When Dark And Motion"
   trigger:
     - platform: numeric_state
       entity_id: sensor.illumination_antek
       below: 3
     - platform: state
       entity_id: binary_sensor.motion_antek
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: binary_sensor.motion_antek
-        state: 'on'
+        state: "on"
       - condition: numeric_state
         entity_id: sensor.illumination_antek
         below: 3
       - condition: state
         entity_id: light.lightstrip_antek
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: input_boolean.antek_lamp_night
-        state: 'off'
+        state: "off"
       - condition: or
         conditions:
           - condition: sun
@@ -1875,18 +1880,18 @@
 
 # wyłączanie LEDów w pokoju Antka jak brak ruchu
 - id: light_turn_off_antek_leds_via_motion
-  alias: 'Light Turn Off Antek LEDs Via Motion'
+  alias: "Light Turn Off Antek LEDs Via Motion"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_antek
-    from: 'on'
-    to: 'off'
+    from: "on"
+    to: "off"
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id: input_boolean.antek_light_motion_on
-        state: 'on'
+        state: "on"
   action:
     - service: script.light_turn_off_antek_leds
     - service: switch.turn_off
@@ -1894,7 +1899,7 @@
 
 # włączanie LEDów w pokoju Antka w tryb nocny
 - id: light_turn_on_antek_leds_night
-  alias: 'Light Turn On Antek LEDs Night'
+  alias: "Light Turn On Antek LEDs Night"
   trigger:
     platform: event
     event_type: xiaomi_aqara.click
@@ -1906,10 +1911,10 @@
     conditions:
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: input_boolean.antek_lamp_night
-        state: 'off'
+        state: "off"
       - condition: or
         conditions:
           - condition: sun
@@ -1921,7 +1926,7 @@
       entity_id: light.lightstrip_antek
       data:
         brightness: 15
-        rgb_color: [255,190,0]
+        rgb_color: [255, 190, 0]
     - service: input_boolean.turn_on
       entity_id: input_boolean.antek_lamp_night
     - service: input_boolean.turn_off
@@ -1929,7 +1934,7 @@
 
 # wyłączanie LEDów w pokoju Antka z trybu nocnego
 - id: light_turn_off_antek_leds_night
-  alias: 'Light Turn Off Antek LEDs Night'
+  alias: "Light Turn Off Antek LEDs Night"
   trigger:
     platform: event
     event_type: xiaomi_aqara.click
@@ -1941,10 +1946,10 @@
     conditions:
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: input_boolean.antek_lamp_night
-        state: 'on'
+        state: "on"
       - condition: or
         conditions:
           - condition: sun
@@ -1958,20 +1963,20 @@
 
 # wyłączanie LEDów w pokoju Antka jak wschód słońca
 - id: light_turn_off_antek_leds_at_sunrise
-  alias: 'Light Turn Off Antek LEDs At Sunrise'
+  alias: "Light Turn Off Antek LEDs At Sunrise"
   trigger:
     platform: sun
     event: sunrise
   condition:
     condition: state
     entity_id: light.lightstrip_antek
-    state: 'on'
+    state: "on"
   action:
     service: script.light_turn_off_antek_leds
 
 # włączenie LEDów w pokoju Antka
 - id: light_turn_on_antek_leds_via_switch
-  alias: 'Light Turn On Antek LEDs Via Switch'
+  alias: "Light Turn On Antek LEDs Via Switch"
   trigger:
     - platform: event
       event_type: xiaomi_aqara.click
@@ -1981,13 +1986,13 @@
   condition:
     condition: state
     entity_id: light.lightstrip_antek
-    state: 'off'
+    state: "off"
   action:
     service: script.light_turn_on_antek_leds
 
 # wyłączenie LEDów w pokoju Antka
 - id: light_turn_off_antek_leds_via_switch
-  alias: 'Light Turn Off Antek LEDs Via Switch'
+  alias: "Light Turn Off Antek LEDs Via Switch"
   trigger:
     platform: event
     event_type: xiaomi_aqara.click
@@ -1997,14 +2002,14 @@
   condition:
     condition: state
     entity_id: light.lightstrip_antek
-    state: 'on'
+    state: "on"
   action:
     service: light.turn_off
     entity_id: light.lightstrip_antek
 
 # włączenie/wyłączenie ledów w gablocie w pokoju Antka
 - id: light_toggle_antek_cabinet
-  alias: 'Light toggle Antek Cabinet'
+  alias: "Light toggle Antek Cabinet"
   trigger:
     - platform: event
       event_type: xiaomi_aqara.click
@@ -2017,18 +2022,18 @@
 
 # wyłączanie oświetlenia gabloty w pokoju Antka o 22, 23, 00
 - id: light_turn_off_antek_cabinet_at_night
-  alias: 'Light Turn Off Antek Cabinet At Night'
+  alias: "Light Turn Off Antek Cabinet At Night"
   trigger:
     - platform: time
-      at: '22:00:00'
+      at: "22:00:00"
     - platform: time
-      at: '23:00:00'
+      at: "23:00:00"
     - platform: time
-      at: '00:00:00'
+      at: "00:00:00"
   condition:
     condition: state
     entity_id: switch.cabinet_antek
-    state: 'on'
+    state: "on"
   action:
     service: switch.turn_off
     entity_id: switch.cabinet_antek
@@ -2036,12 +2041,12 @@
 #### PRACOWNIA ####
 # włączanie lampki w pracowni jak ruch i ciemno
 - id: light_turn_on_pracownia_lamp_when_dark_and_motion
-  alias: 'Light Turn On Pracownia Lamp When Dark And Motion'
+  alias: "Light Turn On Pracownia Lamp When Dark And Motion"
   trigger:
     - platform: state
       entity_id: binary_sensor.motion_pracownia
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
     - platform: numeric_state
       entity_id: sensor.illumination_pracownia
       below: 8
@@ -2050,19 +2055,19 @@
     conditions:
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: switch.lamp_pracownia
-        state: 'off'
+        state: "off"
       - condition: numeric_state
         entity_id: sensor.illumination_pracownia
         below: 8
       - condition: state
         entity_id: binary_sensor.motion_pracownia
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.light_auto_turn_pracownia
-        state: 'on'
+        state: "on"
       - condition: or
         conditions:
           - condition: sun
@@ -2077,16 +2082,16 @@
 
 # wyłączanie lampki w pracowni jak brak ruchu
 - id: light_turn_off_pracownia_lamp
-  alias: 'Light Turn Off Pracownia Lamp'
+  alias: "Light Turn Off Pracownia Lamp"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_pracownia
-    from: 'on'
-    to: 'off'
+    from: "on"
+    to: "off"
   condition:
     condition: state
     entity_id: input_boolean.pracownia_light_motion_on
-    state: 'on'
+    state: "on"
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.pracownia_light_motion_on
@@ -2096,16 +2101,16 @@
 #### POKÓJ GOŚCINNY ####
 # wyłączanie lampki w pokoju gościnnym jak brak ruchu
 - id: light_turn_off_goscinny_lamp
-  alias: 'Light Turn Off Goscinny Lamp'
+  alias: "Light Turn Off Goscinny Lamp"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_goscinny
-    from: 'on'
-    to: 'off'
+    from: "on"
+    to: "off"
   condition:
     condition: state
     entity_id: input_boolean.goscinny_light_motion_on
-    state: 'on'
+    state: "on"
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.goscinny_light_motion_on
@@ -2114,12 +2119,12 @@
 
 # włączanie lampki w pokoju gościnnym jak ruch i ciemno
 - id: light_turn_on_goscinny_lamp_when_dark_and_motion
-  alias: 'Light Turn On Goscinny Lamp When Dark And Motion'
+  alias: "Light Turn On Goscinny Lamp When Dark And Motion"
   trigger:
     - platform: state
       entity_id: binary_sensor.motion_goscinny
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
     - platform: numeric_state
       entity_id: sensor.illumination_goscinny
       below: 9
@@ -2128,10 +2133,10 @@
     conditions:
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: switch.lamp_goscinny
-        state: 'off'
+        state: "off"
       - condition: template
         value_template: >-
           {{ is_state('media_player.mibox', 'off')
@@ -2141,10 +2146,10 @@
         below: 9
       - condition: state
         entity_id: binary_sensor.motion_goscinny
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.light_auto_turn_goscinny
-        state: 'on'
+        state: "on"
       - condition: or
         conditions:
           - condition: sun
@@ -2160,16 +2165,16 @@
 #### GABINET ####
 # wyłączanie lampki w gabinecie jak brak ruchu
 - id: light_turn_off_gabinet_lamp
-  alias: 'Light Turn Off Gabinet Lamp'
+  alias: "Light Turn Off Gabinet Lamp"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_gabinet
-    from: 'on'
-    to: 'off'
+    from: "on"
+    to: "off"
   condition:
     condition: state
     entity_id: input_boolean.gabinet_light_motion_on
-    state: 'on'
+    state: "on"
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.gabinet_light_motion_on
@@ -2178,12 +2183,12 @@
 
 # włączanie lampki w gabinecie jak ruch i ciemno
 - id: light_turn_on_gabinet_lamp_when_dark_and_motion
-  alias: 'Light Turn On Gabinet Lamp When Dark And Motion'
+  alias: "Light Turn On Gabinet Lamp When Dark And Motion"
   trigger:
     - platform: state
       entity_id: binary_sensor.motion_gabinet
-      from: 'off'
-      to: 'on'
+      from: "off"
+      to: "on"
     - platform: numeric_state
       entity_id: sensor.illumination_gabinet
       below: 7
@@ -2192,22 +2197,22 @@
     conditions:
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: switch.lamp_gabinet
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: switch.stacjonarny
-        state: 'off'
+        state: "off"
       - condition: numeric_state
         entity_id: sensor.illumination_gabinet
         below: 9
       - condition: state
         entity_id: binary_sensor.motion_gabinet
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.light_auto_turn_gabinet
-        state: 'on'
+        state: "on"
       - condition: or
         conditions:
           - condition: sun
@@ -2225,18 +2230,18 @@
 #### HARMONY #####################################################################################
 # poprawianie przełączania wejść amplitunera
 - id: harmony_denon_input_switch_helper
-  alias: 'Harmony Denon Input Switch Helper'
+  alias: "Harmony Denon Input Switch Helper"
   trigger:
     platform: state
     entity_id: remote.salon
   action:
-    - delay: '00:00:02'
+    - delay: "00:00:02"
     - condition: template
       value_template: "{{ trigger.to_state.attributes.current_activity != 'PowerOff' }}"
     - service: remote.send_command
       entity_id: remote.salon
       data_template:
-        device: 'Amplituner'
+        device: "Amplituner"
         command: >-
           {% if trigger.to_state.attributes.current_activity == 'Telewizja' %}
             InputCbl/Sat
@@ -2254,7 +2259,7 @@
 
 # wyłączenie telewizora jeśli Harmony przejdzie do aktywności PowerOff
 - id: harmony_turn_off_television
-  alias: 'Harmony Turn Off Television'
+  alias: "Harmony Turn Off Television"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2265,18 +2270,18 @@
         value_template: "{{ trigger.to_state.attributes.current_activity == 'PowerOff' }}"
       - condition: state
         entity_id: media_player.bravia
-        state: 'on'
+        state: "on"
   action:
-    - delay: '00:00:02'
+    - delay: "00:00:02"
     - condition: state
       entity_id: media_player.bravia
-      state: 'on'
+      state: "on"
     - service: media_player.turn_off
       entity_id: media_player.bravia
 
 # wyłączenie PlayStation jeśli Harmony przejdzie do aktywności innej niż PlayStation
 - id: harmony_turn_off_playstation
-  alias: 'Harmony Turn Off PlayStation'
+  alias: "Harmony Turn Off PlayStation"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2289,17 +2294,17 @@
         value_template: "{{ trigger.to_state.attributes.current_activity != 'PlayStation' }}"
       - condition: state
         entity_id: media_player.playstation
-        state: 'idle'
+        state: "idle"
   action:
-    - delay: '00:00:10'
+    - delay: "00:00:10"
     - condition: state
       entity_id: media_player.playstation
-      state: 'idle'
+      state: "idle"
     - service: media_player.turn_off
       entity_id: media_player.playstation
 
 - id: harmony_turn_off_tv
-  alias: 'Harmony Turn Off TV'
+  alias: "Harmony Turn Off TV"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2312,12 +2317,12 @@
     - service: input_select.select_option
       entity_id: input_select.salon_harmony
       data:
-        option: 'wyłączony'
+        option: "wyłączony"
     - service: input_boolean.turn_off
       entity_id: input_boolean.harmony_command
 
 - id: harmony_starts_telewizja
-  alias: 'Harmony Starts Telewizja'
+  alias: "Harmony Starts Telewizja"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2330,12 +2335,12 @@
     - service: input_select.select_option
       entity_id: input_select.salon_harmony
       data:
-        option: 'telewizja'
+        option: "telewizja"
     - service: input_boolean.turn_off
       entity_id: input_boolean.harmony_command
 
 - id: harmony_starts_filmy
-  alias: 'Harmony Starts Filmy'
+  alias: "Harmony Starts Filmy"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2348,12 +2353,12 @@
     - service: input_select.select_option
       entity_id: input_select.salon_harmony
       data:
-        option: 'filmy'
+        option: "filmy"
     - service: input_boolean.turn_off
       entity_id: input_boolean.harmony_command
 
 - id: harmony_starts_muzyka
-  alias: 'Harmony Starts Muzyka'
+  alias: "Harmony Starts Muzyka"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2366,12 +2371,12 @@
     - service: input_select.select_option
       entity_id: input_select.salon_harmony
       data:
-        option: 'muzyka'
+        option: "muzyka"
     - service: input_boolean.turn_off
       entity_id: input_boolean.harmony_command
 
 - id: harmony_starts_smart_tv
-  alias: 'Harmony Starts Smart TV'
+  alias: "Harmony Starts Smart TV"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2384,12 +2389,12 @@
     - service: input_select.select_option
       entity_id: input_select.salon_harmony
       data:
-        option: 'Smart TV'
+        option: "Smart TV"
     - service: input_boolean.turn_off
       entity_id: input_boolean.harmony_command
 
 - id: harmony_starts_playstation
-  alias: 'Harmony Starts PlayStation'
+  alias: "Harmony Starts PlayStation"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2402,14 +2407,14 @@
     - service: input_select.select_option
       entity_id: input_select.salon_harmony
       data:
-        option: 'PlayStation'
+        option: "PlayStation"
     - service: input_boolean.turn_off
       entity_id: input_boolean.harmony_command
     - service: media_player.turn_on
       entity_id: media_player.playstation
 
 - id: harmony_starts_xbox
-  alias: 'Harmony Starts Xbox'
+  alias: "Harmony Starts Xbox"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2422,100 +2427,100 @@
     - service: input_select.select_option
       entity_id: input_select.salon_harmony
       data:
-        option: 'Xbox'
+        option: "Xbox"
     - service: input_boolean.turn_off
       entity_id: input_boolean.harmony_command
 
 - id: hass_turn_off_tv
-  alias: 'HASS Turn Off TV'
+  alias: "HASS Turn Off TV"
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
-    to: 'wyłączony'
+    to: "wyłączony"
   condition:
     condition: state
     entity_id: input_boolean.harmony_command
-    state: 'off'
+    state: "off"
   action:
     service: script.harmony_tv_off
 
 - id: hass_starts_telewizja
-  alias: 'HASS Starts Telewizja'
+  alias: "HASS Starts Telewizja"
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
-    to: 'telewizja'
+    to: "telewizja"
   condition:
     condition: state
     entity_id: input_boolean.harmony_command
-    state: 'off'
+    state: "off"
   action:
     service: script.harmony_telewizja
 
 - id: hass_starts_filmy
-  alias: 'HASS Starts Filmy'
+  alias: "HASS Starts Filmy"
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
-    to: 'filmy'
+    to: "filmy"
   condition:
     condition: state
     entity_id: input_boolean.harmony_command
-    state: 'off'
+    state: "off"
   action:
     service: script.harmony_filmy
 
 - id: hass_starts_muzyka
-  alias: 'HASS Starts Muzyka'
+  alias: "HASS Starts Muzyka"
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
-    to: 'muzyka'
+    to: "muzyka"
   condition:
     condition: state
     entity_id: input_boolean.harmony_command
-    state: 'off'
+    state: "off"
   action:
     service: script.harmony_muzyka
 
 - id: hass_starts_smart_tv
-  alias: 'HASS Starts Smart TV'
+  alias: "HASS Starts Smart TV"
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
-    to: 'Smart TV'
+    to: "Smart TV"
   condition:
     condition: state
     entity_id: input_boolean.harmony_command
-    state: 'off'
+    state: "off"
   action:
     service: script.harmony_smart_tv
 
 - id: hass_starts_playstation
-  alias: 'HASS Starts PlayStation'
+  alias: "HASS Starts PlayStation"
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
-    to: 'PlayStation'
+    to: "PlayStation"
   condition:
     condition: state
     entity_id: input_boolean.harmony_command
-    state: 'off'
+    state: "off"
   action:
     - service: script.harmony_playstation
     - service: media_player.turn_on
       entity_id: media_player.playstation
 
 - id: hass_starts_xbox
-  alias: 'HASS Starts Xbox'
+  alias: "HASS Starts Xbox"
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
-    to: 'Xbox'
+    to: "Xbox"
   condition:
     condition: state
     entity_id: input_boolean.harmony_command
-    state: 'off'
+    state: "off"
   action:
     service: script.harmony_xbox
 
@@ -2524,7 +2529,7 @@
 #### CLIMATE ######################################################################################
 # włączenie nawilżacza jak wilgotność poniżej 39% i sezon grzewczy
 - id: humidification_start
-  alias: 'Humidification Start'
+  alias: "Humidification Start"
   trigger:
     platform: template
     value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float }}"
@@ -2536,23 +2541,23 @@
         above: 5
       - condition: state
         entity_id: input_boolean.heating_season
-        state: 'on'
+        state: "on"
       - condition: state
         entity_id: input_boolean.heating_airing
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: input_boolean.away_mode
-        state: 'off'
+        state: "off"
       - condition: state
         entity_id: fan.humidifier_salon
-        state: 'off'
+        state: "off"
   action:
     service: fan.turn_on
     entity_id: fan.humidifier_salon
 
 # wyłączenie nawilżacza jak sezon grzewczy i wilgotność powyżej 41% lub w zbiorniku mniej niż 6%
 - id: humidification_stop
-  alias: 'Humidification Stop'
+  alias: "Humidification Stop"
   trigger:
     - platform: template
       value_template: "{{ states('sensor.humidity_salon') | float > states('input_select.target_humidity') | float + 1 }}"
@@ -2562,10 +2567,10 @@
   condition:
     - condition: state
       entity_id: input_boolean.heating_season
-      state: 'on'
+      state: "on"
     - condition: state
       entity_id: fan.humidifier_salon
-      state: 'on'
+      state: "on"
   action:
     - service: fan.turn_off
       entity_id: fan.humidifier_salon
@@ -2576,16 +2581,16 @@
       data_template:
         title: "Uzupełnij wodę w nawilżaczu"
         message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        tag: 'notification-humidifier'
+        tag: "notification-humidifier"
         notify_edyta: true
     - service: persistent_notification.create
       data_template:
         title: "Uzupełnij wodę w nawilżaczu"
         message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        notification_id: 'notification-humidifier'
+        notification_id: "notification-humidifier"
 
 - id: humidification_outdoor_temp_above_10
-  alias: 'Humidification Outdoor Temp Above 10'
+  alias: "Humidification Outdoor Temp Above 10"
   trigger:
     platform: numeric_state
     entity_id: sensor.temperature_outdoor
@@ -2593,15 +2598,15 @@
   condition:
     condition: state
     entity_id: input_boolean.heating_season
-    state: 'on'
+    state: "on"
   action:
     service: input_select.select_option
     data:
       entity_id: input_select.target_humidity
-      option: '45'
+      option: "45"
 
 - id: humidification_outdoor_temp_below_10
-  alias: 'Humidification Outdoor Temp Below 10'
+  alias: "Humidification Outdoor Temp Below 10"
   trigger:
     platform: numeric_state
     entity_id: sensor.temperature_outdoor
@@ -2609,59 +2614,59 @@
   condition:
     condition: state
     entity_id: input_boolean.heating_season
-    state: 'on'
+    state: "on"
   action:
     service: input_select.select_option
     data:
       entity_id: input_select.target_humidity
-      option: '40'
+      option: "40"
 
 ##################################################################################################
 
 #### OTHERS ######################################################################################
 - id: log_level
-  alias: 'Log Level'
+  alias: "Log Level"
   trigger:
     platform: state
     entity_id: input_select.log_level
   action:
     service: logger.set_level
     data_template:
-      homeassistant.components: '{{ trigger.to_state.state }}'
+      homeassistant.components: "{{ trigger.to_state.state }}"
 
 - id: mqtt_devices_announce
-  alias: 'MQTT Devices Announce'
+  alias: "MQTT Devices Announce"
   trigger:
     platform: homeassistant
     event: start
   action:
     - service: mqtt.publish
       data:
-        topic: 'shellies/command'
-        payload: 'announce'
+        topic: "shellies/command"
+        payload: "announce"
     - service: mqtt.publish
       data:
-        topic: 'sonoffs/cmnd/state'
-        payload: ''
+        topic: "sonoffs/cmnd/state"
+        payload: ""
 
 - id: shellies_discovery
-  alias: 'Shellies Discovery'
+  alias: "Shellies Discovery"
   trigger:
     platform: mqtt
-    topic: 'shellies/announce'
+    topic: "shellies/announce"
   action:
     service: python_script.shellies_discovery
     data_template:
-      id: '{{ trigger.payload_json.id }}'
-      mac: '{{ trigger.payload_json.mac }}'
-      fw_ver: '{{ trigger.payload_json.fw_ver }}'
+      id: "{{ trigger.payload_json.id }}"
+      mac: "{{ trigger.payload_json.mac }}"
+      fw_ver: "{{ trigger.payload_json.fw_ver }}"
       qos: 1
-      shelly1-328900-relay-0: 'light'
-      shellyswitch-5B2604-relay-0: 'switch'
-      shellyswitch-5B2604-relay-1: 'light'
+      shelly1-328900-relay-0: "light"
+      shellyswitch-5B2604-relay-0: "switch"
+      shellyswitch-5B2604-relay-1: "light"
 
 - id: frontend_set_theme
-  alias: 'Frontend Set Theme'
+  alias: "Frontend Set Theme"
   trigger:
     platform: homeassistant
     event: start

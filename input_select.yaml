@@ -1,177 +1,177 @@
 heating_night_start:
-  name: 'Początek nocnego obniżenia temperatury'
+  name: "Początek nocnego obniżenia temperatury"
   options:
-    - '20:30'
-    - '21:00'
-    - '21:30'
-    - '22:00'
-    - '22:30'
-    - '23:00'
-    - '23:30'
+    - "20:30"
+    - "21:00"
+    - "21:30"
+    - "22:00"
+    - "22:30"
+    - "23:00"
+    - "23:30"
   icon: mdi:clock-start
 
 heating_night_end:
-  name: 'Koniec nocnego obniżenia temperatury'
+  name: "Koniec nocnego obniżenia temperatury"
   options:
-    - '04:00'
-    - '04:30'
-    - '05:00'
-    - '05:30'
-    - '06:00'
-    - '06:30'
-    - '07:00'
+    - "04:00"
+    - "04:30"
+    - "05:00"
+    - "05:30"
+    - "06:00"
+    - "06:30"
+    - "07:00"
   icon: mdi:clock-end
 
 heating_night_start_weekend:
-  name: 'Początek nocnego obniżenia temperatury w weekendy'
+  name: "Początek nocnego obniżenia temperatury w weekendy"
   options:
-    - '20:30'
-    - '21:00'
-    - '21:30'
-    - '22:00'
-    - '22:30'
-    - '23:00'
-    - '23:30'
+    - "20:30"
+    - "21:00"
+    - "21:30"
+    - "22:00"
+    - "22:30"
+    - "23:00"
+    - "23:30"
   icon: mdi:clock-start
 
 heating_night_end_weekend:
-  name: 'Koniec nocnego obniżenia temperatury w weekendy'
+  name: "Koniec nocnego obniżenia temperatury w weekendy"
   options:
-    - '05:00'
-    - '05:30'
-    - '06:00'
-    - '06:30'
-    - '07:00'
-    - '07:30'
-    - '08:00'
+    - "05:00"
+    - "05:30"
+    - "06:00"
+    - "06:30"
+    - "07:00"
+    - "07:30"
+    - "08:00"
   icon: mdi:clock-end
 
 heating_temp_day:
-  name: 'Temperatura w innych pomieszczeniach w dzień'
+  name: "Temperatura w innych pomieszczeniach w dzień"
   options:
-    - '16'
-    - '17'
-    - '18'
-    - '19'
-    - '20'
-    - '21'
-    - '22'
+    - "16"
+    - "17"
+    - "18"
+    - "19"
+    - "20"
+    - "21"
+    - "22"
   icon: mdi:temperature-celsius
 
 heating_temp_night:
-  name: 'Temperatura w innych pomieszczeniach w nocy'
+  name: "Temperatura w innych pomieszczeniach w nocy"
   options:
-    - '16'
-    - '17'
-    - '18'
-    - '19'
-    - '20'
-    - '21'
-    - '22'
+    - "16"
+    - "17"
+    - "18"
+    - "19"
+    - "20"
+    - "21"
+    - "22"
   icon: mdi:temperature-celsius
 
 heating_temp_bedroom_day:
-  name: 'Temperatura w sypialniach w dzień'
+  name: "Temperatura w sypialniach w dzień"
   options:
-    - '16'
-    - '17'
-    - '18'
-    - '19'
-    - '20'
-    - '21'
-    - '22'
+    - "16"
+    - "17"
+    - "18"
+    - "19"
+    - "20"
+    - "21"
+    - "22"
   icon: mdi:temperature-celsius
 
 heating_temp_bedroom_night:
-  name: 'Temperatura w sypialniach w nocy'
+  name: "Temperatura w sypialniach w nocy"
   options:
-    - '16'
-    - '17'
-    - '18'
-    - '19'
-    - '20'
-    - '21'
-    - '22'
+    - "16"
+    - "17"
+    - "18"
+    - "19"
+    - "20"
+    - "21"
+    - "22"
   icon: mdi:temperature-celsius
 
 heating_temp_bathroom_day:
-  name: 'Temperatura w łazienkach w dzień'
+  name: "Temperatura w łazienkach w dzień"
   options:
-    - '18'
-    - '19'
-    - '20'
-    - '21'
-    - '22'
-    - '23'
-    - '24'
+    - "18"
+    - "19"
+    - "20"
+    - "21"
+    - "22"
+    - "23"
+    - "24"
   icon: mdi:temperature-celsius
 
 heating_temp_bathroom_night:
-  name: 'Temperatura w łazienkach w nocy'
+  name: "Temperatura w łazienkach w nocy"
   options:
-    - '18'
-    - '19'
-    - '20'
-    - '21'
-    - '22'
-    - '23'
-    - '24'
+    - "18"
+    - "19"
+    - "20"
+    - "21"
+    - "22"
+    - "23"
+    - "24"
   icon: mdi:temperature-celsius
 
 heating_temp_eco:
-  name: 'Temperatura dyżurna'
+  name: "Temperatura dyżurna"
   options:
-    - '16'
-    - '17'
-    - '18'
-    - '19'
-    - '20'
+    - "16"
+    - "17"
+    - "18"
+    - "19"
+    - "20"
   icon: mdi:temperature-celsius
 
 target_humidity:
-  name: 'Docelowa wilgotność'
+  name: "Docelowa wilgotność"
   options:
-    - '40'
-    - '45'
-    - '50'
-    - '55'
-    - '60'
+    - "40"
+    - "45"
+    - "50"
+    - "55"
+    - "60"
   icon: mdi:percent
 
 light_scenes_salon:
-  name: 'Tryb oświetlenia'
+  name: "Tryb oświetlenia"
   icon: mdi:palette
   options:
-    - 'automatyczny'
-    - 'jasny'
-    - 'film'
-    - 'czytanie'
-    - 'romantyczny'
-    - 'fiolet'
-    - 'niebieski'
-    - 'dyskoteka'
+    - "automatyczny"
+    - "jasny"
+    - "film"
+    - "czytanie"
+    - "romantyczny"
+    - "fiolet"
+    - "niebieski"
+    - "dyskoteka"
 
 log_level:
-  name: 'HA poziom informacji loga'
+  name: "HA poziom informacji loga"
   icon: mdi:format-list-bulleted
   options:
-    - 'critical'
-    - 'fatal'
-    - 'error'
-    - 'warning'
-    - 'warn'
-    - 'info'
-    - 'debug'
-  initial: 'warning'
+    - "critical"
+    - "fatal"
+    - "error"
+    - "warning"
+    - "warn"
+    - "info"
+    - "debug"
+  initial: "warning"
 
 salon_harmony:
-  name: 'Telewizor'
+  name: "Telewizor"
   options:
-    - 'wyłączony'
-    - 'telewizja'
-    - 'Smart TV'
-    - 'filmy'
-    - 'muzyka'
-    - 'PlayStation'
-    - 'Xbox'
+    - "wyłączony"
+    - "telewizja"
+    - "Smart TV"
+    - "filmy"
+    - "muzyka"
+    - "PlayStation"
+    - "Xbox"
   icon: mdi:television

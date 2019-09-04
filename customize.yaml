@@ -18,79 +18,79 @@ person.agnieszka:
 
 #### SHELLIES ####
 sensor.shelly1_firmware_version_current:
-  friendly_name: 'Shelly1'
+  friendly_name: "Shelly1"
 sensor.shelly2_firmware_version_current:
-  friendly_name: 'Shelly2'
+  friendly_name: "Shelly2"
 sensor.shelly_plug_s_firmware_version_current:
-  friendly_name: 'Shelly Plug S'
+  friendly_name: "Shelly Plug S"
 
 #### LIGHTS ####
 light.gateway_antresola:
   icon: mdi:spotlight
 light.bulb_salon_1:
-  friendly_name: 'Żarówka salon 1'
+  friendly_name: "Żarówka salon 1"
 light.bulb_salon_2:
-  friendly_name: 'Żarówka salon 2'
+  friendly_name: "Żarówka salon 2"
 light.leds_salon:
   icon: mdi:led-variant-on
 light.bulbs_salon:
-  friendly_name: 'Żarówki'
+  friendly_name: "Żarówki"
 
 #### FITBIT ####
 sensor.steps:
-  friendly_name: 'Kroki'
-  unit_of_measurement: ''
+  friendly_name: "Kroki"
+  unit_of_measurement: ""
 sensor.calories:
-  friendly_name: 'Kalorie'
-  unit_of_measurement: 'cal'
+  friendly_name: "Kalorie"
+  unit_of_measurement: "cal"
 sensor.distance:
-  friendly_name: 'Dystans'
-  unit_of_measurement: 'km'
+  friendly_name: "Dystans"
+  unit_of_measurement: "km"
 sensor.floors:
-  friendly_name: 'Piętra'
+  friendly_name: "Piętra"
   icon: mdi:stairs
-  unit_of_measurement: ''
+  unit_of_measurement: ""
 sensor.sleep_minutes_asleep:
- friendly_name: 'Sen'
- unit_of_measurement: 'min'
- icon: mdi:hotel
+  friendly_name: "Sen"
+  unit_of_measurement: "min"
+  icon: mdi:hotel
 
 #### UPS ####
 sensor.ups_status:
   icon: mdi:server-security
 sensor.ups_battery_charge:
-  friendly_name: 'Naładowanie baterii'
+  friendly_name: "Naładowanie baterii"
   icon: mdi:car-battery
 sensor.ups_battery_voltage:
-  friendly_name: 'Napięcie baterii'
+  friendly_name: "Napięcie baterii"
   icon: mdi:flash-outline
 sensor.ups_input_voltage:
-  friendly_name: 'Napięcie sieciowe'
+  friendly_name: "Napięcie sieciowe"
   icon: mdi:flash-outline
 sensor.ups_load:
-  friendly_name: 'Obciążenie'
+  friendly_name: "Obciążenie"
 
 #### RASPBERRY PI ####
 sensor.processor_use:
-  friendly_name: 'Obciążenie CPU'
+  friendly_name: "Obciążenie CPU"
 sensor.memory_use_percent:
-  friendly_name: 'Zajęty RAM'
+  friendly_name: "Zajęty RAM"
   icon: mdi:chip
 sensor.disk_use_percent:
-  friendly_name: 'Zajęte miejsce'
+  friendly_name: "Zajęte miejsce"
 sensor.last_boot:
   icon: mdi:clock-outline
-  friendly_name: 'Ostatni restart'
+  friendly_name: "Ostatni restart"
 sensor.last_boot_custom:
   icon: mdi:clock-outline
 sensor.raspberry_cpu_temp:
-  friendly_name: 'Temperatura CPU'
+  friendly_name: "Temperatura CPU"
   icon: mdi:thermometer
 sensor.ha_database_size:
-  friendly_name: 'Wielkość bazy danych'
+  friendly_name: "Wielkość bazy danych"
   icon: mdi:database
 sensor.last_ha_restart:
-  friendly_name: 'Ostatni restart HA'
+  friendly_name: "Ostatni restart HA"
   icon: mdi:clock-outline
 
 #### ZONES ####
@@ -105,7 +105,7 @@ binary_sensor.synology_status:
 binary_sensor.dune_status:
   icon: mdi:filmstrip
 binary_sensor.raspberry_status:
-  friendly_name: 'Raspberry Pi 3B'
+  friendly_name: "Raspberry Pi 3B"
   icon: mdi:raspberry-pi
 binary_sensor.switch_status:
   icon: mdi:switch
@@ -144,7 +144,7 @@ binary_sensor.kindle_8_status:
 binary_sensor.inkbook_status:
   icon: mdi:cellphone-text
 binary_sensor.modem_status:
-  friendly_name: 'ZTE GPON F660'
+  friendly_name: "ZTE GPON F660"
   icon: mdi:router-wireless
 binary_sensor.migateway_status:
   icon: mdi:router-wireless
@@ -161,24 +161,23 @@ binary_sensor.mifan_status:
 binary_sensor.echo_plus_status:
   icon: mdi:amazon-alexa
 
-
 #### FANS ####
 fan.humidifier_salon:
-  friendly_name: 'Nawilżacz'
+  friendly_name: "Nawilżacz"
   icon: mdi:air-humidifier
 
 #### SWITCHES ####
 switch.stacjonarny:
-  friendly_name: 'Komputer'
+  friendly_name: "Komputer"
   icon: mdi:desktop-tower
 
 #### MEDIA PLAYERS ####
 media_player.denon:
-  friendly_name: 'Amplituner'
+  friendly_name: "Amplituner"
   icon: mdi:audio-video
 
 media_player.bravia:
-  friendly_name: 'Telewizor'
+  friendly_name: "Telewizor"
   icon: mdi:television
 
 media_player.echo_plus:
@@ -202,66 +201,66 @@ sensor.pressure_outdoor:
 
 #### XIAOMI SWITCHES ####
 binary_sensor.switch_light_salon_1:
-  friendly_name: 'Światło salon 1'
+  friendly_name: "Światło salon 1"
   icon: mdi:lamp
 binary_sensor.switch_light_salon_2:
-  friendly_name: 'Światło salon 2'
+  friendly_name: "Światło salon 2"
   icon: mdi:lamp
 binary_sensor.switch_light_antek:
-  friendly_name: 'LEDy Antek'
+  friendly_name: "LEDy Antek"
   icon: mdi:led-variant-on
 
 #### XIAOMI MOTION SENSORS ####
 binary_sensor.motion_przedpokoj:
-  location: 'przedpokój'
+  location: "przedpokój"
 binary_sensor.motion_pracownia:
-  location: 'pracownia'
+  location: "pracownia"
 binary_sensor.motion_antresola:
-  location: 'antresola'
+  location: "antresola"
 binary_sensor.motion_salon:
-  location: 'salon'
+  location: "salon"
 binary_sensor.motion_antresola_1:
-  location: 'antresola'
+  location: "antresola"
 binary_sensor.motion_antresola_2:
-  location: 'antresola'
+  location: "antresola"
 binary_sensor.motion_salon_1:
-  location: 'salon'
+  location: "salon"
 binary_sensor.motion_salon_2:
-  location: 'salon'
+  location: "salon"
 binary_sensor.motion_sypialnia:
-  location: 'sypialnia'
+  location: "sypialnia"
 binary_sensor.motion_antek:
-  location: 'pokój Antka'
+  location: "pokój Antka"
 binary_sensor.motion_goscinny:
-  location: 'pokój gościnny'
+  location: "pokój gościnny"
 binary_sensor.motion_gabinet:
-  location: 'gabinet'
+  location: "gabinet"
 
 #### XIAOMI WINDOW/DOOR SENSORS ####
 binary_sensor.balcony_door_sypialnia:
-  location: 'sypialnia'
+  location: "sypialnia"
 binary_sensor.balcony_door_pracownia:
-  location: 'pracownia'
+  location: "pracownia"
 binary_sensor.window_kuchnia:
-  location: 'kuchnia'
+  location: "kuchnia"
 binary_sensor.window_antresola:
-  location: 'antresola'
+  location: "antresola"
 binary_sensor.window_antek:
-  location: 'pokój Antka'
+  location: "pokój Antka"
 binary_sensor.window_sypialnia:
-  location: 'sypialnia'
+  location: "sypialnia"
 binary_sensor.window_gabinet:
-  location: 'gabinet'
+  location: "gabinet"
 
 #### PRINTER ####
 sensor.printer_status_custom:
   icon: mdi:printer
 sensor.printer_counter:
-  unit_of_measurement: 'str'
+  unit_of_measurement: "str"
 
 #### SONOFF/WEMOS ####
 light.lamp_salon:
-  friendly_name: 'Lampa'
+  friendly_name: "Lampa"
   icon: mdi:floor-lamp
 light.leds_przedpokoj:
   icon: mdi:led-variant-on
@@ -274,20 +273,20 @@ switch.lamp_goscinny:
 switch.lamp_gabinet:
   icon: mdi:lamp
 script.sonoffs_upgrade:
-  friendly_name: 'Aktualizacja Sonoff-ów'
+  friendly_name: "Aktualizacja Sonoff-ów"
   icon: mdi:download-network
 
 sensor.humidity_indoor:
-  friendly_name: 'Wilgotność wewnętrzna'
+  friendly_name: "Wilgotność wewnętrzna"
   icon: mdi:water-percent
 sensor.temperature_indoor:
-  friendly_name: 'Temperatura wewnętrzna'
+  friendly_name: "Temperatura wewnętrzna"
   icon: mdi:thermometer
 
 #### SSL Sensor ####
 sensor.ssl_certificate_expiry:
-  friendly_name: 'Ważność certyfikatu SSL'
-  unit_of_measurement: 'dni'
+  friendly_name: "Ważność certyfikatu SSL"
+  unit_of_measurement: "dni"
 
 #### CAMERA ####
 switch.camera_move_up:
@@ -304,9 +303,9 @@ switch.camera_move_right:
 
 #### ENERGIA ####
 sensor.light_salon_energy_monthly:
-  friendly_name: 'Oświetlenie salonu'
+  friendly_name: "Oświetlenie salonu"
 sensor.dishwasher_kuchnia_energy_monthly:
-  friendly_name: 'Zmywarka'
+  friendly_name: "Zmywarka"
 
 #### AIRLY ####
 sensor.airly_info:

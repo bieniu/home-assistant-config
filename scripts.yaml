@@ -1,5 +1,5 @@
 reboot_router:
-  alias: 'Restart routera'
+  alias: "Restart routera"
   sequence:
     service: shell_command.reboot_router
 
@@ -48,11 +48,11 @@ light_away_mode:
 
 #### HEATING ####
 heating_fast_warm_up:
-  alias: 'Szybkie dogrzanie'
+  alias: "Szybkie dogrzanie"
   sequence:
     - condition: state
       entity_id: input_boolean.heating_season
-      state: 'on'
+      state: "on"
     - service: climate.set_temperature
       entity_id:
         - climate.thermostat_antresola
@@ -64,7 +64,7 @@ heating_fast_warm_up:
         - climate.thermostat_lazienka
       data:
         temperature: 24
-    - delay: '01:00:00'
+    - delay: "01:00:00"
     - service: script.heating_day
 
 heating_day:
@@ -120,7 +120,7 @@ heating_night:
         temperature: "{{ states('input_select.heating_temp_bathroom_night') }}"
     - condition: template
       value_template: "{{ is_state('input_boolean.guests', 'off')
-                          and is_state('media_player.bravia', 'off') }}"
+        and is_state('media_player.bravia', 'off') }}"
     - service: fan.turn_off
       entity_id: fan.humidifier_salon
     - service: climate.set_temperature
@@ -179,7 +179,7 @@ heating_airing_begin:
       entity_id: fan.humidifier_salon
     - condition: state
       entity_id: input_boolean.heating_airing
-      state: 'off'
+      state: "off"
     - service: input_boolean.turn_on
       entity_id: input_boolean.heating_airing
 
@@ -188,42 +188,42 @@ harmony_playstation:
     service: remote.turn_on
     entity_id: remote.salon
     data:
-      activity: 'PlayStation'
+      activity: "PlayStation"
 
 harmony_xbox:
   sequence:
     service: remote.turn_on
     entity_id: remote.salon
     data:
-      activity: 'Xbox'
+      activity: "Xbox"
 
 harmony_smart_tv:
   sequence:
     service: remote.turn_on
     entity_id: remote.salon
     data:
-      activity: 'Smart TV'
+      activity: "Smart TV"
 
 harmony_telewizja:
   sequence:
     service: remote.turn_on
     entity_id: remote.salon
     data:
-      activity: 'Telewizja'
+      activity: "Telewizja"
 
 harmony_muzyka:
   sequence:
     service: remote.turn_on
     entity_id: remote.salon
     data:
-      activity: 'Muzyka'
+      activity: "Muzyka"
 
 harmony_filmy:
   sequence:
     service: remote.turn_on
     entity_id: remote.salon
     data:
-      activity: 'Filmy'
+      activity: "Filmy"
 
 harmony_tv_off:
   sequence:
@@ -248,39 +248,42 @@ light_turn_on_antek_leds:
       entity_id: light.lightstrip_antek
       data_template:
         brightness: 150
-        rgb_color: ['{{ (range(0, 255)|random) }}',
-                    '{{ (range(0, 255)|random) }}',
-                    '{{ (range(0, 255)|random) }}']
+        rgb_color:
+          [
+            "{{ (range(0, 255)|random) }}",
+            "{{ (range(0, 255)|random) }}",
+            "{{ (range(0, 255)|random) }}",
+          ]
 
 notify:
   sequence:
     - service: notify.html5_maciek
       data_template:
-        title: '{{ title }}'
-        message: '{{ message }}'
+        title: "{{ title }}"
+        message: "{{ message }}"
         data:
-          tag: '{{ tag }}'
+          tag: "{{ tag }}"
     - condition: template
-      value_template: '{{ notify_edyta }}'
+      value_template: "{{ notify_edyta }}"
     - service: notify.ios_iphone_8_plus_app
       data_template:
-        title: '{{ title }}'
-        message: '{{ message }}'
+        title: "{{ title }}"
+        message: "{{ message }}"
 
 notify_motion:
   sequence:
     - service: camera.snapshot
       entity_id: camera.salon
       data_template:
-        filename: '/home/homeassistant/.homeassistant/www/snapshots/{{ datetime }}.jpg'
+        filename: "/home/homeassistant/.homeassistant/www/snapshots/{{ datetime }}.jpg"
     - delay:
         seconds: 1
     - service: notify.html5_maciek
       data_template:
-        title: '{{ title }}'
-        message: '{{ message }}'
+        title: "{{ title }}"
+        message: "{{ message }}"
         data:
-          tag: '{{ tag }}'
+          tag: "{{ tag }}"
           image: >-
             {% if location == 'salon' or location == 'przedpokój' %}
               {{ snapshot_url }}{{ datetime }}.jpg
@@ -288,11 +291,11 @@ notify_motion:
               None
             {% endif %}
     - condition: template
-      value_template: '{{ notify_edyta }}'
+      value_template: "{{ notify_edyta }}"
     - service: notify.ios_iphone_8_plus_app
       data_template:
-        title: '{{ title }}'
-        message: '{{ message }}'
+        title: "{{ title }}"
+        message: "{{ message }}"
         data:
           attachment:
             url: >-
@@ -308,8 +311,8 @@ camera_move:
   sequence:
     service: mqtt.publish
     data_template:
-      topic: 'camera/salon/motors/{{ orientation }}/set'
-      payload: '{{ direction }}'
+      topic: "camera/salon/motors/{{ orientation }}/set"
+      payload: "{{ direction }}"
 
 ## ALEXA
 alexa_netflix:
@@ -317,19 +320,19 @@ alexa_netflix:
     - service: remote.turn_on
       entity_id: remote.salon
       data:
-        activity: 'Smart TV'
+        activity: "Smart TV"
     - delay:
         seconds: 2
     - service: remote.send_command
       entity_id: remote.salon
       data:
-        device: 'Telewizor'
-        command: 'Netflix'
+        device: "Telewizor"
+        command: "Netflix"
 
 alexa_tts:
   sequence:
     service: notify.alexa_media_echo_plus
     data_template:
-      message: '{{ message }}'
+      message: "{{ message }}"
       data:
-        type: 'tts'
+        type: "tts"
