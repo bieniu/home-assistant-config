@@ -22,6 +22,18 @@
            or is_state('media_player.bravia', 'on')
            or is_state('input_boolean.guests', 'on') }}
 
+    windows:
+      friendly_name: "Okna"
+      device_class: "window"
+      value_template: >-
+        {{ is_state('binary_sensor.window_antek', 'on')
+           or is_state('binary_sensor.window_antresola', 'on')
+           or is_state('binary_sensor.window_gabinet', 'on')
+           or is_state('binary_sensor.window_kuchnia', 'on')
+           or is_state('binary_sensor.window_sypialnia', 'on')
+           or is_state('binary_sensor.balcony_door_pracownia', 'on')
+           or is_state('binary_sensor.balcony_door_sypialnia', 'on') }}
+
     motion_antresola:
       friendly_name: "Ruch"
       value_template: >-
