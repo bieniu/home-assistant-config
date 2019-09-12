@@ -363,17 +363,6 @@ views:
         cards:
           - type: vertical-stack
             cards:
-              - type: custom:vertical-stack-in-card
-                title: "Router"
-                cards:
-                  - type: glance
-                    entities:
-                      - sensor.speedtest_download
-                      - sensor.speedtest_upload
-                      - sensor.speedtest_ping
-                  - type: entities
-                    entities:
-                      - sensor.router_last_boot
               - type: entities
                 title: "Synology"
                 show_header_toggle: false
