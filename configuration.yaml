@@ -96,14 +96,6 @@ camera:
     stream_source: !secret dafang_rtsp_url
     scan_interval: 5
 
-alexa_media:
-  accounts:
-    - email: !secret amazon_user
-      password: !secret amazon_password
-      url: amazon.com
-      include_devices:
-        - "Echo Plus"
-
 notify:
   - platform: html5
     name: html5

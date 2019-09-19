@@ -19,6 +19,8 @@ resources:
     type: js
   - url: /community_plugin/lovelace-card-mod/card-mod.js
     type: module
+  - url: /local/lovelace/battery-entity.js?v=0.1
+    type: module
 
 background: "#e5e5e5"
 
@@ -50,18 +52,6 @@ views:
               entities:
                 - person.maciek
                 - zone.home
-            - type: glance
-              style: |
-                ha-card {
-                  border-radius: 0px
-                }
-              show_name: false
-              entities:
-                - sensor.steps
-                - sensor.distance
-                - sensor.floors
-                - sensor.calories
-                - sensor.sleep_minutes_asleep
       person.edyta:
         title: "Edyta"
         card:
@@ -108,7 +98,6 @@ views:
                     - entity_id: person.maciek
                     - entity_id: person.edyta
                     - entity_id: person.antek
-                      state: home
                     - entity_id: person.grazyna
                       state: home
                     - entity_id: person.romana
@@ -568,59 +557,96 @@ views:
             title: "Baterie sensorów ruchu"
             show_header_toggle: false
             entities:
-              - sensor.battery_motion_sensor_przedpokoj
-              - sensor.battery_motion_sensor_salon_1
-              - sensor.battery_motion_sensor_salon_2
-              - sensor.battery_motion_sensor_pracownia
-              - sensor.battery_motion_sensor_goscinny
-              - sensor.battery_motion_sensor_schody
-              - sensor.battery_motion_sensor_antresola
-              - sensor.battery_motion_sensor_gabinet
-              - sensor.battery_motion_sensor_antek
-              - sensor.battery_motion_sensor_sypialnia
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_przedpokoj
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_salon_1
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_salon_2
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_pracownia
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_goscinny
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_schody
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_antresola
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_gabinet
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_antek
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_sypialnia
           - type: entities
             title: "Baterie sensorów temperatury"
             show_header_toggle: false
             entities:
-              - sensor.battery_temp_humi_sensor_kuchnia
-              - sensor.battery_temp_humi_sensor_salon
-              - sensor.battery_temp_humi_sensor_pracownia
-              - sensor.battery_temp_humi_sensor_goscinny
-              - sensor.battery_temp_humi_sensor_antresola
-              - sensor.battery_temp_humi_sensor_gabinet
-              - sensor.battery_temp_humi_sensor_antek
-              - sensor.battery_temp_humi_sensor_sypialnia
-              - sensor.battery_temp_humi_sensor_lazienka
-              - sensor.battery_temp_humi_sensor_outdoor
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_kuchnia
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_salon
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_pracownia
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_goscinny
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_antresola
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_gabinet
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_antek
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_sypialnia
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_lazienka
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_outdoor
           - type: entities
             title: "Baterie termostatów"
             show_header_toggle: false
             entities:
-              - sensor.battery_thermostat_salon
-              - sensor.battery_thermostat_kuchnia
-              - sensor.battery_thermostat_antresola
-              - sensor.battery_thermostat_gabinet
-              - sensor.battery_thermostat_antek
-              - sensor.battery_thermostat_sypialnia
-              - sensor.battery_thermostat_lazienka
+              - type: custom:battery-entity
+                entity: sensor.battery_thermostat_salon
+              - type: custom:battery-entity
+                entity: sensor.battery_thermostat_kuchnia
+              - type: custom:battery-entity
+                entity: sensor.battery_thermostat_antresola
+              - type: custom:battery-entity
+                entity: sensor.battery_thermostat_gabinet
+              - type: custom:battery-entity
+                entity: sensor.battery_thermostat_antek
+              - type: custom:battery-entity
+                entity: sensor.battery_thermostat_sypialnia
+              - type: custom:battery-entity
+                entity: sensor.battery_thermostat_lazienka
           - type: entities
             title: "Baterie sensorów okien/drzwi"
             show_header_toggle: false
             entities:
-              - sensor.battery_window_sensor_kuchnia
-              - sensor.battery_door_sensor_pracownia
-              - sensor.battery_window_sensor_antresola
-              - sensor.battery_window_sensor_gabinet
-              - sensor.battery_window_sensor_antek
-              - sensor.battery_window_sensor_sypialnia
-              - sensor.battery_door_sensor_sypialnia
+              - type: custom:battery-entity
+                entity: sensor.battery_window_sensor_kuchnia
+              - type: custom:battery-entity
+                entity: sensor.battery_door_sensor_pracownia
+              - type: custom:battery-entity
+                entity: sensor.battery_window_sensor_antresola
+              - type: custom:battery-entity
+                entity: sensor.battery_window_sensor_gabinet
+              - type: custom:battery-entity
+                entity: sensor.battery_window_sensor_antek
+              - type: custom:battery-entity
+                entity: sensor.battery_window_sensor_sypialnia
+              - type: custom:battery-entity
+                entity: sensor.battery_door_sensor_sypialnia
           - type: entities
             title: "Baterie przełączników"
             show_header_toggle: false
             entities:
-              - sensor.battery_switch_light_salon_1
-              - sensor.battery_switch_light_salon_2
-              - sensor.battery_switch_light_antek
+              - type: custom:battery-entity
+                entity: sensor.battery_switch_light_salon_1
+              - type: custom:battery-entity
+                entity: sensor.battery_switch_light_salon_2
+              - type: custom:battery-entity
+                entity: sensor.battery_switch_light_antek
   - id: climate
     icon: mdi:cloud
     title: "Klimat"

@@ -1,3 +1,7 @@
+#### DEVICE_TRACKER ####
+device_tracker.oneplus_6_gps:
+  icon: mdi:cellphone-android
+
 #### PERSONS #####
 person.edyta:
   entity_picture: /local/pictures/edyta.jpg

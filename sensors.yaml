@@ -1,11 +1,3 @@
-- platform: fitbit
-  monitored_resources:
-    - activities/steps
-    - activities/distance
-    - activities/floors
-    - activities/calories
-    - sleep/minutesAsleep
-
 - platform: integration
   source: sensor.light_salon_power_sum
   name: "Light Salon Energy"
@@ -81,9 +73,6 @@
     - input.voltage
     - battery.voltage
     - battery.charge
-
-- platform: cert_expiry
-  host: !secret ha_domain
 
 - platform: command_line
   name: "Raspberry CPU Temp"
@@ -164,6 +153,7 @@
     - precip_probability
     - daily_summary
     - visibility
+    - uv_index
 
 - platform: min_max
   type: mean
