@@ -3,7 +3,7 @@ resources:
     type: js
   - url: /community_plugin/mini-media-player/mini-media-player.js
     type: module
-  - url: /local/lovelace/layout-card.js?v=83e2b1
+  - url: /local/lovelace/layout-card.js?v=83e2b1-mod
     type: js
   - url: /local/lovelace/dark-sky-weather-card.js?v=0.10.2
     type: module
@@ -336,10 +336,6 @@ views:
     panel: true
     cards:
       - type: map
-        style: |
-          ha-card {
-            border-radius: 0px
-          }
         default_zoom: 20
         entities:
           - person.edyta
