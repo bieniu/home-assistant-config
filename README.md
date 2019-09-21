@@ -46,12 +46,13 @@
 * Denon AVR-X2100W [AV receiver]
 * PlayStation 4 Pro
 * Xiaomi Mi Smart Humidifier CA1
+* Xiaomi Mi Pedestal Fan 1X
 * Xiaomi Mi Box 4K [AndroidTV box]
 * Dune BD Prime 3.0 [network media player by AppDaemon script]
 * Synology DS110j [NAS]
 * Brother HL-L2340D [printer]
 * iPhone/iPad [iOS [Home Assistant](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401) app]
-* OnePlus 6 [Android phone by [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm)]
+* OnePlus 6 [Android phone by [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm) and [OwnTracks](https://play.google.com/store/apps/details?id=org.owntracks.android&hl=pl)]
 * CyberPower DL650ELCD [UPS]
 * Xiaomi DaFang [camera with [custom firmware](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks)]
 * Sony Bravia TV (Android TV)
@@ -59,12 +60,13 @@
 
 ## Home Assistant Custom Components
 
-* [Custom Frontend](https://github.com/home-assistant/home-assistant/pull/10783)
-* [HACS](https://github.com/custom-components/hacs)
-* [Sony Bravia TV PSK](https://github.com/custom-components/media_player.braviatv_psk)
 * [Airly](https://github.com/bieniu/ha-airly)
+* [Alexa Media Player](https://github.com/custom-components/alexa_media_player)
+* [Custom Frontend](https://github.com/home-assistant/home-assistant/pull/10783)
 * [GIOS](https://github.com/bieniu/ha-gios)
+* [HACS](https://github.com/custom-components/hacs)
 * [iPhone Detect](https://github.com/mudape/iphonedetect)
+* [Sony Bravia TV PSK](https://github.com/custom-components/media_player.braviatv_psk)
 
 ## Custom Panels
 
@@ -72,22 +74,23 @@
 
 ## Lovelace Custom Cards
 
+* [battery-entity](https://github.com/cbulock/lovelace-battery-entity)
 * [card-mod](https://github.com/thomasloven/lovelace-card-mod)
 * [card-tools](https://github.com/thomasloven/lovelace-card-tools)
+* [dark-sky-weather-card](https://github.com/iammexx/home-assistant-config/tree/master/ui/darksky)
 * [layout-card](https://github.com/thomasloven/lovelace-layout-card)
+* [mini-graph-card](https://github.com/kalkih/mini-graph-card)
+* [mini-media-player](https://github.com/kalkih/mini-media-player)
 * [monster-card](https://github.com/ciotlosm/custom-lovelace/tree/master/monster-card)
 * [popup-card](https://github.com/thomasloven/lovelace-popup-card)
 * [secondaryinfo-entity-row](https://github.com/MizterB/lovelace-secondaryinfo-entity-row)
 * [vertical-stack-in-card](https://github.com/custom-cards/vertical-stack-in-card)
-* [mini-media-player](https://github.com/kalkih/mini-media-player)
-* [dark-sky-weather-card](https://github.com/iammexx/home-assistant-config/tree/master/ui/darksky)
-* [mini-graph-card](https://github.com/kalkih/mini-graph-card)
 
 ## AppDaemon
 
 * [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/ha-ad-thermostats-update)
-* [Brother printer status sensors](https://github.com/bieniu/home-assistant-config/blob/master/appdaemon/apps/brother-printer-status/brother-printer-status.py)
-* [DuneHD Activity](https://github.com/bieniu/home-assistant-config/blob/master/appdaemon/apps/dune-activity/dune-activity.py)
+* [Brother printer status sensors](https://github.com/bieniu/ha-ad-brother-printer)
+* DuneHD Activity
 * [Airly](https://github.com/bieniu/ha-ad-airly)
 
 ## Python Scripts

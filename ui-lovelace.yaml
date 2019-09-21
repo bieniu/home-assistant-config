@@ -7,7 +7,7 @@ resources:
     type: js
   - url: /local/lovelace/dark-sky-weather-card.js?v=0.10.2
     type: module
-  - url: /local/lovelace/card-tools.js?v=0efed8
+  - url: /local/lovelace/card-tools.js?v=bff8a6
     type: js
   - url: /community_plugin/monster-card/monster-card.js
     type: js
@@ -15,7 +15,7 @@ resources:
     type: js
   - url: /community_plugin/mini-graph-card/mini-graph-card.js
     type: module
-  - url: /local/lovelace/popup-card.js?v=78d39a
+  - url: /local/lovelace/popup-card.js?v=e97311
     type: js
   - url: /community_plugin/lovelace-card-mod/card-mod.js
     type: module
@@ -336,6 +336,10 @@ views:
     panel: true
     cards:
       - type: map
+        style: |
+          ha-card {
+            border-radius: 0px
+          }
         default_zoom: 20
         entities:
           - person.edyta
