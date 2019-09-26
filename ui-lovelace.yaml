@@ -5,8 +5,6 @@ resources:
     type: module
   - url: /local/lovelace/layout-card.js?v=83e2b1-mod
     type: js
-  - url: /local/lovelace/dark-sky-weather-card.js?v=0.10.2
-    type: module
   - url: /local/lovelace/card-tools.js?v=bff8a6
     type: js
   - url: /community_plugin/monster-card/monster-card.js
@@ -20,6 +18,8 @@ resources:
   - url: /community_plugin/lovelace-card-mod/card-mod.js
     type: module
   - url: /local/lovelace/battery-entity.js?v=0.1
+    type: module
+  - url: /community_plugin/bom-weather-card/bom-weather-card.js
     type: module
 
 background: "#e5e5e5"
@@ -659,7 +659,7 @@ views:
         cards:
           - type: vertical-stack
             cards:
-              - type: custom:dark-sky-weather-card
+              - type: custom:bom-weather-card
                 entity_sun: sun.sun
                 entity_daily_summary: sensor.dark_sky_daily_summary
                 entity_current_conditions: sensor.dark_sky_icon
