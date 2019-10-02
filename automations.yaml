@@ -681,8 +681,8 @@
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.away_mode
-    - service: fan.turn_off
-      entity_id: fan.salon
+    # - service: fan.turn_off
+    #   entity_id: fan.salon
     - condition: state
       entity_id: group.windows
       state: "on"
@@ -714,8 +714,8 @@
         - condition: numeric_state
           entity_id: sensor.temperature_salon
           above: 27
-    - service: fan.turn_on
-      entity_id: fan.salon
+    # - service: fan.turn_on
+    #   entity_id: fan.salon
 
 ##################################################################################################
 
@@ -866,26 +866,26 @@
       entity_id: input_boolean.heating_salon_kuchnia_night
 
 # wyłączenie wentylatora po wyłączeniu telewizora
-- id: climate_turn_off_fan
-  alias: "Climate Turn Off Fan"
-  trigger:
-    platform: state
-    entity_id: media_player.bravia
-    to: "off"
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: fan.salon
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "off"
-      - condition: time
-        after: "22:00:00"
-  action:
-    service: fan.turn_off
-    entity_id: fan.salon
+# - id: climate_turn_off_fan
+#   alias: "Climate Turn Off Fan"
+#   trigger:
+#     platform: state
+#     entity_id: media_player.bravia
+#     to: "off"
+#   condition:
+#     condition: and
+#     conditions:
+#       - condition: state
+#         entity_id: fan.salon
+#         state: "on"
+#       - condition: state
+#         entity_id: input_boolean.heating_season
+#         state: "off"
+#       - condition: time
+#         after: "22:00:00"
+#   action:
+#     service: fan.turn_off
+#     entity_id: fan.salon
 
 # zmniejszenie temperatury gdy domownicy wychodzą i jest sezon grzewczy
 - id: heating_eco_mode

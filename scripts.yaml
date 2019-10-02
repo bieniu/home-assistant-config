@@ -324,7 +324,7 @@ alexa_goodnight:
     - service: homeassistant.turn_off
       entity_id:
         - remote.salon
-        - fan.salon
+        # - fan.salon
         - fan.humidifier_salon
         - light.leds_salon
         - light.bulbs_salon

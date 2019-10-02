@@ -154,7 +154,7 @@ views:
                   - type: custom:secondaryinfo-entity-row
                     entity: fan.humidifier_salon
                     secondary_info: "poziom wody: [[ sensor.humidifier_water_level.state ]] %"
-                  - fan.salon
+                  # - fan.salon
                   - light.bulbs_salon
                   - light.leds_salon
                   - light.lamp_salon

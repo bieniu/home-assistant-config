@@ -9,8 +9,6 @@
     track_new_devices: false
     hide_if_away: true
 
-- platform: bluetooth_tracker
-
 - platform: iphonedetect
   hosts:
     ipad_air: !secret ipad_air_ip

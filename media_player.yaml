@@ -20,6 +20,7 @@
     pl.solidexplorer2: "Solid Explorer"
     com.android.vending: "Sklep Play"
     com.android.tv.settings: "Ustawienia"
+    Sys2023:dream}: "Wygaszacz ekranu"
 
 - platform: braviatv_psk
   host: !secret bravia_hostname
