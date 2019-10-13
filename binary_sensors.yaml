@@ -115,7 +115,7 @@
       friendly_name: "inkBook Classic 2"
 
     lumia_status:
-      value_template: "{{ is_state('device_tracker.lumia', 'home') }}"
+      value_template: "{{ is_state('device_tracker.lumia_640', 'home') }}"
       friendly_name: "Lumia 640"
 
     mibox_status:
