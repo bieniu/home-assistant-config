@@ -273,6 +273,10 @@
     - platform: numeric_state
       entity_id: sensor.humidifier_water_level
       below: 40
+  condition:
+    condition: state
+    entity_id: input_boolean.heating_season
+    state: "on"
   action:
     - service: persistent_notification.create
       data_template:
@@ -303,9 +307,12 @@
       entity_id: sensor.humidifier_water_level
       below: 40
   condition:
-    condition: state
-    entity_id: person.edyta
-    state: "home"
+    - condition: state
+      entity_id: person.edyta
+      state: "home"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
   action:
     service: notify.ios_iphone_8_plus_app
     data_template:
