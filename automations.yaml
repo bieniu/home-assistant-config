@@ -106,6 +106,9 @@
   trigger:
     platform: template
     value_template: "{{ states('sensor.ssl_certificate_expiry') | int < 11 }}"
+  condition:
+    condition: template
+    value_template: "{{ states('sensor.ssl_certificate_expiry') != 'unavailable' }}"
   action:
     - service: script.notify
       data_template:

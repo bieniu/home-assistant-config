@@ -489,6 +489,7 @@ views:
                     entities:
                       - sensor.light_salon_power_sum
                     line_color: "#36a2eb"
+                    group_by: hour
                   - type: custom:mini-graph-card
                     hour24: true
                     decimals: 1
@@ -500,6 +501,7 @@ views:
                     entities:
                       - sensor.dishwasher_kuchnia_power
                     line_color: "#36a2eb"
+                    group_by: hour
               - type: custom:vertical-stack-in-card
                 title: "Zużycie energii"
                 cards:

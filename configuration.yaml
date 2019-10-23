@@ -124,7 +124,7 @@ emulated_hue: !include emulated_hue.yaml
 yeelight:
   devices:
     yeelight-yldp02yl-b1b6aa:
-      name: 'bulb salon 1'
+      name: 'lamp salon'
       model: 'color1'
       <<: &YEELIGHT_PARAMS
         transition: 500
@@ -135,7 +135,7 @@ yeelight:
       model: 'color2'
       <<: *YEELIGHT_PARAMS
     yeelight-yldp02yl-f12026:
-      name: 'lamp salon'
+      name: 'bulb salon 1'
       model: 'color1'
       <<: *YEELIGHT_PARAMS
     yeelight-yldd01yl-860cfa:
