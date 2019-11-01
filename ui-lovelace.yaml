@@ -15,8 +15,8 @@ resources:
     type: module
   - url: /local/lovelace/popup-card.js?v=e97311
     type: js
-  - url: /community_plugin/lovelace-card-mod/card-mod.js
-    type: module
+  # - url: /community_plugin/lovelace-card-mod/card-mod.js
+  #   type: module
   - url: /local/lovelace/battery-entity.js?v=0.1
     type: module
   - url: /community_plugin/bom-weather-card/bom-weather-card.js
@@ -38,17 +38,17 @@ views:
           type: custom:vertical-stack-in-card
           cards:
             - type: history-graph
-              style: |
-                ha-card {
-                  border-radius: 0px
-                }
+              # style: |
+              #   ha-card {
+              #     border-radius: 0px
+              #   }
               entities:
                 - person.maciek
             - type: map
-              style: |
-                ha-card {
-                  border-radius: 0px
-                }
+              # style: |
+              #   ha-card {
+              #     border-radius: 0px
+              #   }
               entities:
                 - person.maciek
                 - zone.home
@@ -58,17 +58,17 @@ views:
           type: custom:vertical-stack-in-card
           cards:
             - type: history-graph
-              style: |
-                ha-card {
-                  border-radius: 0px
-                }
+              # style: |
+              #   ha-card {
+              #     border-radius: 0px
+              #   }
               entities:
                 - person.edyta
             - type: map
-              style: |
-                ha-card {
-                  border-radius: 0px
-                }
+              # style: |
+              #   ha-card {
+              #     border-radius: 0px
+              #   }
               entities:
                 - person.edyta
                 - zone.home
@@ -76,10 +76,10 @@ views:
         title: "Antek"
         card:
           type: history-graph
-          style: |
-            ha-card {
-              border-radius: 0px
-            }
+          # style: |
+          #   ha-card {
+          #     border-radius: 0px
+          #   }
           entities:
             - person.antek
     cards:
@@ -126,15 +126,15 @@ views:
                       - binary_sensor.window_kuchnia
                       - climate.thermostat_kuchnia
                       - entity: sensor.dishwasher_kuchnia
-                        style: |
-                          :host {
-                            --paper-item-icon-color:
-                              {% if states(config.entity) == "zmywanie" %}
-                                var(--state-icon-active-color)
-                              {% else %}
-                                var(--state-icon-color)
-                              {% endif %}
-                          }
+                        # style: |
+                        #   :host {
+                        #     --paper-item-icon-color:
+                        #       {% if states(config.entity) == "zmywanie" %}
+                        #         var(--state-icon-active-color)
+                        #       {% else %}
+                        #         var(--state-icon-color)
+                        #       {% endif %}
+                        #   }
           - type: custom:vertical-stack-in-card
             title: "Salon"
             cards:
@@ -475,10 +475,10 @@ views:
                 title: "Pobór mocy"
                 cards:
                   - type: custom:mini-graph-card
-                    style: |
-                      ha-card {
-                        border-radius: 0px
-                      }
+                    # style: |
+                    #   ha-card {
+                    #     border-radius: 0px
+                    #   }
                     hour24: true
                     decimals: 1
                     points_per_hour: 1
@@ -533,10 +533,10 @@ views:
                   - sensor.ups_battery_charge
                   - sensor.ups_load
               - type: custom:mini-graph-card
-                style: |
-                  ha-card {
-                    border-radius: 0px
-                  }
+                # style: |
+                #   ha-card {
+                #     border-radius: 0px
+                #   }
                 hour24: true
                 decimals: 0
                 show:

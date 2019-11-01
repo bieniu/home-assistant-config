@@ -315,6 +315,12 @@ sensor.dishwasher_kuchnia_energy_monthly:
 sensor.airly_info:
   icon: mdi:weather-fog
 
+sensor.airly_pm10:
+  icon: 'mdi:blur'
+
+sensor.airly_pm2_5:
+  icon: 'mdi:blur'
+
 #### DISHWASHER ####
 sensor.dishwasher_kuchnia:
   icon: mdi:dishwasher

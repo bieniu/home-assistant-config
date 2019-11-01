@@ -83,4 +83,4 @@ blue-mix:
 
   # mdc-theme-primary: 'var(--primary-color)'
 
-  ha-card-border-radius: '10px'
+  # ha-card-border-radius: '10px'

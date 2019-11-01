@@ -206,17 +206,27 @@
     airly_info:
       friendly_name: "Jakość powietrza"
       value_template: >-
-        {% if states('sensor.airly_caqi') | int <= 25 %}
+        {% if state_attr('air_quality.airly', 'air_quality_index') | int <= 25 %}
           bardzo dobra
-        {% elif states('sensor.airly_caqi') | int <= 50 %}
+        {% elif state_attr('air_quality.airly', 'air_quality_index') | int <= 50 %}
           dobra
-        {% elif states('sensor.airly_caqi') | int <= 75 %}
+        {% elif state_attr('air_quality.airly', 'air_quality_index') | int <= 75 %}
           średnia
-        {% elif states('sensor.airly_caqi') | int <= 100 %}
+        {% elif state_attr('air_quality.airly', 'air_quality_index') | int <= 100 %}
           zła
-        {% elif states('sensor.airly_caqi') | int > 100 %}
+        {% elif state_attr('air_quality.airly', 'air_quality_index') | int > 100 %}
           bardzo zła
         {% endif %}
+
+    airly_pm10:
+      friendly_name: "PM10"
+      unit_of_measurement: "µg/m³"
+      value_template: "{{ state_attr('air_quality.airly', 'particulate_matter_10') }}"
+
+    airly_pm2_5:
+      friendly_name: "PM2.5"
+      unit_of_measurement: "µg/m³"
+      value_template: "{{ state_attr('air_quality.airly', 'particulate_matter_2_5') }}"
 
     last_boot_custom:
       friendly_name: "Ostatni restart"

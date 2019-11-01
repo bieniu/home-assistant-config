@@ -6,6 +6,7 @@ logs:
   homeassistant.components.stream: debug
   homeassistant.components.media_player: error
   homeassistant.helpers.entity: error
+  homeassistant.components.airly: debug
   androidtv.basetv: error
-  custom_components.airly: debug
   custom_components.gios: debug
+  gios: debug

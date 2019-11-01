@@ -1185,54 +1185,6 @@
   action:
     service: script.heating_season_end
 
-# zmniejszanie nastawy termostatu do 22 stopni gdy temperatura w łazience przekroczy 22.8 stopnie
-- id: heating_lazienka_target_temp_down
-  alias: "Heating Lazienka Target Temp Down"
-  trigger:
-    platform: numeric_state
-    entity_id: sensor.temperature_lazienka
-    above: 22.8
-  condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{ state_attr('climate.thermostat_lazienka', 'temperature') | float > 22 }}"
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.heating_airing
-        state: "off"
-  action:
-    service: climate.set_temperature
-    entity_id: climate.thermostat_lazienka
-    data:
-      temperature: 22
-
-# zwiekszenie nastawy termostatu do 23 stopni gdy temperatura w łazience poniżej 22 stopni
-- id: heating_lazienka_target_temp_up
-  alias: "Heating Lazienka Target Temp Up"
-  trigger:
-    platform: numeric_state
-    entity_id: sensor.temperature_lazienka
-    below: 22.2
-  condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{ state_attr('climate.thermostat_lazienka', 'temperature') | float < 23 and state_attr('climate.thermostat_lazienka', 'temperature') | float > 20 }}"
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.heating_airing
-        state: "off"
-  action:
-    service: climate.set_temperature
-    entity_id: climate.thermostat_lazienka
-    data:
-      temperature: 23
-
 ##################################################################################################
 
 #### LIGHT #######################################################################################
