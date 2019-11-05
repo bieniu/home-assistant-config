@@ -24,6 +24,19 @@
     User-Agent: Home Assistant REST sensor
 
 - platform: rest
+  name: "ESPHome Version Current"
+  resource: "https://api.github.com/repos/esphome/esphome/releases/latest"
+  value_template: "{{ value_json.tag_name | replace('v', '') }}"
+  username: !secret github_username
+  password: !secret github_token_access
+  authentication: basic
+  scan_interval: 7200
+  headers:
+    Accept: application/vnd.github.v3+json
+    Content-Type: application/json
+    User-Agent: Home Assistant REST sensor
+
+- platform: rest
   name: "Caddy Version Current"
   resource: "https://api.github.com/repos/mholt/caddy/releases/latest"
   value_template: "{{ value_json.tag_name | replace('v', '') }}"

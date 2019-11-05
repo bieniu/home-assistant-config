@@ -407,6 +407,36 @@
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Tasmota."
         notification_id: "notification-tasmota-update"
 
+# powiadomienie o aktualizacji ESPHome
+- id: notification_esphome_update_available
+  alias: "Notification ESPHome Update Available"
+  trigger:
+    platform: state
+    entity_id: sensor.esphome_version_current
+  condition:
+    condition: and
+    conditions:
+      - condition: template
+        value_template: "{{ trigger.to_state.state != 'unknown' }}"
+      - condition: template
+        value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+      - condition: template
+        value_template: "{{ trigger.from_state.state != 'unknown' }}"
+      - condition: template
+        value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+  action:
+    - service: script.notify
+      data_template:
+        title: "Aktualizacja ESPHome"
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla ESPHome."
+        tag: "notification-esphome-update"
+        notify_edyta: false
+    - service: persistent_notification.create
+      data_template:
+        title: "Aktualizacja ESPHome"
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla ESPHome."
+        notification_id: "notification-esphome-update"
+
 # powiadomienie o aktualizacji Caddy
 - id: notification_caddy_update_available
   alias: "Notification Caddy Update Available"

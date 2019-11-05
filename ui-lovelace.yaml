@@ -24,6 +24,13 @@ resources:
 
 background: "#e5e5e5"
 
+anchors:
+  card_style_no_border_radius: &card_style_no_border_radius
+    style: |
+      ha-card {
+        border-radius: 0px
+      }
+
 title: "Dom"
 views:
   - id: home
@@ -38,17 +45,11 @@ views:
           type: custom:vertical-stack-in-card
           cards:
             - type: history-graph
-              style: |
-                ha-card {
-                  border-radius: 0px
-                }
+              <<: *card_style_no_border_radius
               entities:
                 - person.maciek
             - type: map
-              style: |
-                ha-card {
-                  border-radius: 0px
-                }
+              <<: *card_style_no_border_radius
               entities:
                 - person.maciek
                 - zone.home
@@ -58,17 +59,11 @@ views:
           type: custom:vertical-stack-in-card
           cards:
             - type: history-graph
-              style: |
-                ha-card {
-                  border-radius: 0px
-                }
+              <<: *card_style_no_border_radius
               entities:
                 - person.edyta
             - type: map
-              style: |
-                ha-card {
-                  border-radius: 0px
-                }
+              <<: *card_style_no_border_radius
               entities:
                 - person.edyta
                 - zone.home
@@ -76,10 +71,7 @@ views:
         title: "Antek"
         card:
           type: history-graph
-          style: |
-            ha-card {
-              border-radius: 0px
-            }
+          <<: *card_style_no_border_radius
           entities:
             - person.antek
     cards:
@@ -475,10 +467,7 @@ views:
                 title: "Pobór mocy"
                 cards:
                   - type: custom:mini-graph-card
-                    style: |
-                      ha-card {
-                        border-radius: 0px
-                      }
+                    <<: *card_style_no_border_radius
                     hour24: true
                     decimals: 1
                     points_per_hour: 1
@@ -533,10 +522,7 @@ views:
                   - sensor.ups_battery_charge
                   - sensor.ups_load
               - type: custom:mini-graph-card
-                style: |
-                  ha-card {
-                    border-radius: 0px
-                  }
+                <<: *card_style_no_border_radius
                 hour24: true
                 decimals: 0
                 show:
@@ -713,105 +699,58 @@ views:
           - type: vertical-stack
             cards:
               - type: custom:mini-graph-card
-                hour24: true
-                decimals: 1
-                align_header: left
-                align_icon: left
-                points_per_hour: 1
-                show:
-                  labels: true
+                <<: &CLIMATE_GRAPH_PARAMS
+                  hour24: true
+                  decimals: 1
+                  align_header: left
+                  align_icon: left
+                  points_per_hour: 1
+                  show:
+                    labels: true
                 entities:
                   - sensor.temperature_outdoor
                 line_color: "#ff6384"
               - type: custom:mini-graph-card
-                hour24: true
-                decimals: 1
-                align_header: left
-                align_icon: left
-                points_per_hour: 1
-                show:
-                  labels: true
+                <<: *CLIMATE_GRAPH_PARAMS
                 entities:
                   - sensor.humidity_outdoor
                 line_color: "#36a2eb"
               - type: custom:mini-graph-card
-                hour24: true
-                decimals: 0
-                align_header: left
-                align_icon: left
-                points_per_hour: 1
-                show:
-                  labels: true
+                <<: *CLIMATE_GRAPH_PARAMS
                 entities:
                   - sensor.pressure_outdoor
                 line_color: "#4bc0c0"
           - type: vertical-stack
             cards:
               - type: custom:mini-graph-card
-                hour24: true
-                decimals: 1
-                align_header: left
-                align_icon: left
-                points_per_hour: 1
-                show:
-                  labels: true
+                <<: *CLIMATE_GRAPH_PARAMS
                 entities:
                   - sensor.temperature_indoor
                 line_color: "#ff6384"
               - type: custom:mini-graph-card
-                hour24: true
-                decimals: 1
-                align_header: left
-                align_icon: left
-                points_per_hour: 1
-                show:
-                  labels: true
+                <<: *CLIMATE_GRAPH_PARAMS
                 entities:
                   - sensor.humidity_indoor
                 line_color: "#36a2eb"
               - type: custom:mini-graph-card
-                hour24: true
-                decimals: 0
-                align_header: left
-                align_icon: left
-                points_per_hour: 1
-                show:
-                  labels: true
+                <<: *CLIMATE_GRAPH_PARAMS
                 entities:
                   - sensor.co2_salon
                 line_color: "#ffce57"
           - type: vertical-stack
             cards:
               - type: custom:mini-graph-card
-                hour24: true
-                decimals: 0
-                align_header: left
-                align_icon: left
-                points_per_hour: 1
-                show:
-                  labels: true
+                <<: *CLIMATE_GRAPH_PARAMS
                 entities:
                   - sensor.airly_pm1
                 line_color: "#78909c"
               - type: custom:mini-graph-card
-                hour24: true
-                decimals: 0
-                align_header: left
-                align_icon: left
-                points_per_hour: 1
-                show:
-                  labels: true
+                <<: *CLIMATE_GRAPH_PARAMS
                 entities:
                   - sensor.airly_pm2_5
                 line_color: "#78909c"
               - type: custom:mini-graph-card
-                hour24: true
-                decimals: 0
-                align_header: left
-                align_icon: left
-                points_per_hour: 1
-                show:
-                  labels: true
+                <<: *CLIMATE_GRAPH_PARAMS
                 entities:
                   - sensor.airly_pm10
                 line_color: "#78909c"
