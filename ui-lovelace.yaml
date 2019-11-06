@@ -113,6 +113,10 @@ views:
                       - sensor.temperature_kuchnia
                       - sensor.humidity_kuchnia
                   - type: entities
+                    style: |
+                      .card-content {
+                        padding-top: 0px;
+                      }
                     show_header_toggle: false
                     entities:
                       - binary_sensor.window_kuchnia
@@ -138,6 +142,10 @@ views:
                   - sensor.co2_salon
                   - sensor.illumination_salon
               - type: entities
+                style: |
+                  .card-content {
+                    padding-top: 0px;
+                  }
                 show_header_toggle: false
                 entities:
                   - entity: binary_sensor.motion_salon
@@ -199,6 +207,10 @@ views:
                   - sensor.humidity_pracownia
                   - sensor.illumination_pracownia
               - type: entities
+                style: |
+                  .card-content {
+                    padding-top: 0px;
+                  }
                 show_header_toggle: false
                 entities:
                   - entity: binary_sensor.motion_pracownia
@@ -215,6 +227,10 @@ views:
                   - sensor.humidity_goscinny
                   - sensor.illumination_goscinny
               - type: entities
+                style: |
+                  .card-content {
+                    padding-top: 0px;
+                  }
                 show_header_toggle: false
                 entities:
                   - entity: binary_sensor.motion_goscinny
@@ -239,6 +255,10 @@ views:
                   - sensor.humidity_antresola
                   - sensor.illumination_antresola
               - type: entities
+                style: |
+                  .card-content {
+                    padding-top: 0px;
+                  }
                 show_header_toggle: false
                 entities:
                   - binary_sensor.window_antresola
@@ -256,6 +276,10 @@ views:
                   - sensor.humidity_gabinet
                   - sensor.illumination_gabinet
               - type: entities
+                style: |
+                  .card-content {
+                    padding-top: 0px;
+                  }
                 show_header_toggle: false
                 entities:
                   - binary_sensor.window_gabinet
@@ -274,6 +298,10 @@ views:
                   - sensor.humidity_antek
                   - sensor.illumination_antek
               - type: entities
+                style: |
+                  .card-content {
+                    padding-top: 0px;
+                  }
                 show_header_toggle: false
                 entities:
                   - binary_sensor.window_antek
@@ -292,6 +320,10 @@ views:
                   - sensor.humidity_sypialnia
                   - sensor.illumination_sypialnia
               - type: entities
+                style: |
+                  .card-content {
+                    padding-top: 0px;
+                  }
                 show_header_toggle: false
                 entities:
                   - binary_sensor.window_sypialnia
@@ -309,6 +341,10 @@ views:
                   - sensor.temperature_lazienka
                   - sensor.humidity_lazienka
               - type: entities
+                style: |
+                  .card-content {
+                    padding-top: 0px;
+                  }
                 show_header_toggle: false
                 entities:
                   - climate.thermostat_lazienka
@@ -363,6 +399,10 @@ views:
                       - entity: sensor.disk_use_percent
                         name: "Dysk"
                   - type: entities
+                    style: |
+                      .card-content {
+                        padding-top: 0px;
+                      }
                     show_header_toggle: false
                     entities:
                       - sensor.raspberry_cpu_temp
