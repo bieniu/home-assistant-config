@@ -74,10 +74,10 @@
   icon: mdi:pine-tree
 
 #### NETWORK DEVICES ####
-"binary_sensor.yeelight_lightstrip_*_status":
+"binary_sensor.yeelight_yldd*_status":
   icon: mdi:led-variant-outline
 
-"binary_sensor.yeelight_bulb_*_status":
+"binary_sensor.yeelight_yldp*_status":
   icon: mdi:lightbulb-outline
 
 "sensor.wemos*_status":

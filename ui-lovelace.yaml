@@ -538,6 +538,7 @@ views:
                     hour24: true
                     decimals: 2
                     lower_bound: 0
+                    animate: true
                     show:
                       icon: false
                       graph: false
@@ -547,6 +548,7 @@ views:
                     hour24: true
                     decimals: 2
                     lower_bound: 0
+                    animate: true
                     show:
                       icon: false
                       graph: false
@@ -565,19 +567,23 @@ views:
                 <<: *card_style_no_border_radius
                 hour24: true
                 decimals: 0
+                animate: true
                 show:
                   icon: false
                   labels: true
+                  fill: fade
                 entities:
                   - sensor.ups_input_voltage
-                line_color: "#ff6384"
+                line_color: "#ef5350"
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 1
                 lower_bound: 0
+                animate: true
                 show:
                   icon: false
                   labels: true
+                  fill: fade
                 entities:
                   - sensor.ups_battery_voltage
                 line_color: "#4bc0c0"
@@ -742,14 +748,16 @@ views:
                 <<: &CLIMATE_GRAPH_PARAMS
                   hour24: true
                   decimals: 1
+                  animate: true
                   align_header: left
                   align_icon: left
                   points_per_hour: 1
                   show:
                     labels: true
+                    fill: fade
                 entities:
                   - sensor.temperature_outdoor
-                line_color: "#ff6384"
+                line_color: "#ef5350"
               - type: custom:mini-graph-card
                 <<: *CLIMATE_GRAPH_PARAMS
                 entities:
@@ -766,7 +774,7 @@ views:
                 <<: *CLIMATE_GRAPH_PARAMS
                 entities:
                   - sensor.temperature_indoor
-                line_color: "#ff6384"
+                line_color: "#ef5350"
               - type: custom:mini-graph-card
                 <<: *CLIMATE_GRAPH_PARAMS
                 entities:
@@ -776,7 +784,7 @@ views:
                 <<: *CLIMATE_GRAPH_PARAMS
                 entities:
                   - sensor.co2_salon
-                line_color: "#ffce57"
+                line_color: "#8bc34a"
           - type: vertical-stack
             cards:
               - type: custom:mini-graph-card
@@ -794,6 +802,12 @@ views:
                 entities:
                   - sensor.airly_pm10
                 line_color: "#78909c"
+              - type: custom:mini-graph-card
+                <<: *CLIMATE_GRAPH_PARAMS
+                entities:
+                  - sensor.dark_sky_uv_index
+                line_color: "#ffce57"
+
   - id: misc
     icon: mdi:settings
     title: "Różne"

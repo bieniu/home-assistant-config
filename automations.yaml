@@ -158,7 +158,7 @@
         {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
         {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
         {% for domain in domains -%}
-          {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulbs' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
+          {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb_antresola' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
             - {{ item.name }} ({{ item.entity_id }})
           {%- endfor %}
         {%- endfor %}
@@ -174,7 +174,7 @@
             {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
             {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
             {% for domain in domains -%}
-              {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulbs' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
+              {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb_antresola' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
            - {{ item.name }} ({{ item.entity_id }})
               {%- endfor %}
             {%- endfor %}
@@ -189,7 +189,7 @@
             {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
             {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
             {% for domain in domains -%}
-              {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulbs' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
+              {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb_antresola' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
            - {{ item.name }} ({{ item.entity_id }})
               {%- endfor %}
             {%- endfor %}

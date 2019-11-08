@@ -164,6 +164,18 @@ binary_sensor.mifan_status:
   icon: mdi:fan
 binary_sensor.echo_plus_status:
   icon: mdi:amazon-alexa
+binary_sensor.yeelight_yldd01yl_6707fc_status:
+  location: "pokój Antka"
+binary_sensor.yeelight_yldd01yl_860cfa_status:
+  location: "sypialnia"
+binary_sensor.yeelight_yldp06yl_7cafc6_status:
+  location: "salon"
+binary_sensor.yeelight_yldp06yl_84be7a_status:
+  location: "salon"
+binary_sensor.yeelight_yldp02yl_f12026_status:
+  location: "salon"
+binary_sensor.yeelight_yldp02yl_b1b6aa_status:
+  location: "antresola"
 
 #### FANS ####
 fan.humidifier_salon:
@@ -311,15 +323,19 @@ sensor.light_salon_energy_monthly:
 sensor.dishwasher_kuchnia_energy_monthly:
   friendly_name: "Zmywarka"
 
+sensor.dark_sky_uv_index:
+  friendly_name: "Indeks UV"
+  unit_of_measurement: " "
+
 #### AIRLY ####
 sensor.airly_info:
-  icon: mdi:weather-fog
+  icon: "mdi:weather-fog"
 
 sensor.airly_pm10:
-  icon: 'mdi:blur'
+  icon: "mdi:blur"
 
 sensor.airly_pm2_5:
-  icon: 'mdi:blur'
+  icon: "mdi:blur"
 
 #### DISHWASHER ####
 sensor.dishwasher_kuchnia:

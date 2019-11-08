@@ -124,19 +124,23 @@ emulated_hue: !include emulated_hue.yaml
 yeelight:
   devices:
     yeelight-yldp02yl-b1b6aa:
-      name: 'lamp salon'
+      name: 'bulb antresola'
       model: 'color1'
       <<: &YEELIGHT_PARAMS
         transition: 500
         save_on_change: false
         use_music_mode: false
+    yeelight-yldp02yl-f12026:
+      name: 'lamp salon'
+      model: 'color1'
+      <<: *YEELIGHT_PARAMS
+    yeelight-yldp06yl-84be7a:
+      name: 'bulb salon 1'
+      model: 'color2'
+      <<: *YEELIGHT_PARAMS
     yeelight-yldp06yl-7cafc6:
       name: 'bulb salon 2'
       model: 'color2'
-      <<: *YEELIGHT_PARAMS
-    yeelight-yldp02yl-f12026:
-      name: 'bulb salon 1'
-      model: 'color1'
       <<: *YEELIGHT_PARAMS
     yeelight-yldd01yl-860cfa:
       name: 'lightstrip sypialnia'
