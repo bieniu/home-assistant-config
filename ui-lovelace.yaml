@@ -487,11 +487,12 @@ views:
               - binary_sensor.shelly_plug_s_7aecf4_status
               - binary_sensor.shelly_ht_e00abd_status
               - binary_sensor.wemos_d1_mini_1c91ea_status
-              - binary_sensor.yeelight_bulb_salon3_status
-              - binary_sensor.yeelight_bulb_salon1_status
-              - binary_sensor.yeelight_bulb_salon2_status
-              - binary_sensor.yeelight_lightstrip_sypialnia_status
-              - binary_sensor.yeelight_lightstrip_antek_status
+              - binary_sensor.yeelight_yldp06yl_84be7a_status
+              - binary_sensor.yeelight_yldp06yl_7cafc6_status
+              - binary_sensor.yeelight_yldp02yl_f12026_status
+              - binary_sensor.yeelight_yldp02yl_b1b6aa_status
+              - binary_sensor.yeelight_yldd01yl_860cfa_status
+              - binary_sensor.yeelight_yldd01yl_6707fc_status
   - id: energy
     icon: mdi:power-plug
     title: "Energia"
