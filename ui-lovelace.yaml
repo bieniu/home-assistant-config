@@ -3,18 +3,18 @@ resources:
     type: js
   - url: /community_plugin/mini-media-player/mini-media-player.js
     type: module
-  - url: /local/lovelace/layout-card.js?v=83e2b1-mod
-    type: js
-  - url: /local/lovelace/card-tools.js?v=bff8a6
-    type: js
+  - url: /community_plugin/lovelace-layout-card/layout-card.js
+    type: module
+  - url: /community_plugin/lovelace-card-tools/card-tools.js
+    type: module
   - url: /community_plugin/monster-card/monster-card.js
     type: js
+  - url: /community_plugin/lovelace-auto-entities/auto-entities.js
+    type: module
   - url: /community_plugin/secondaryinfo-entity-row/secondaryinfo-entity-row.js
     type: js
   - url: /community_plugin/mini-graph-card/mini-graph-card.js
     type: module
-  - url: /local/lovelace/popup-card.js?v=e97311
-    type: js
   - url: /community_plugin/lovelace-card-mod/card-mod.js
     type: module
   - url: /local/lovelace/battery-entity.js?v=0.1
@@ -38,45 +38,8 @@ views:
     title: "Pomieszczenia"
     path: home
     panel: true
-    popup_cards:
-      person.maciek:
-        title: "Maciek"
-        card:
-          type: custom:vertical-stack-in-card
-          cards:
-            - type: history-graph
-              <<: *card_style_no_border_radius
-              entities:
-                - person.maciek
-            - type: map
-              <<: *card_style_no_border_radius
-              entities:
-                - person.maciek
-                - zone.home
-      person.edyta:
-        title: "Edyta"
-        card:
-          type: custom:vertical-stack-in-card
-          cards:
-            - type: history-graph
-              <<: *card_style_no_border_radius
-              entities:
-                - person.edyta
-            - type: map
-              <<: *card_style_no_border_radius
-              entities:
-                - person.edyta
-                - zone.home
-      person.antek:
-        title: "Antek"
-        card:
-          type: history-graph
-          <<: *card_style_no_border_radius
-          entities:
-            - person.antek
     cards:
       - type: custom:layout-card
-        column_width: 290
         cards:
           - type: vertical-stack
             cards:
@@ -376,7 +339,6 @@ views:
     panel: true
     cards:
       - type: custom:layout-card
-        column_width: 290
         cards:
           - type: vertical-stack
             cards:
@@ -419,7 +381,7 @@ views:
                   - sensor.printer_status_custom
                   - sensor.printer_counter
                   - sensor.printer_drum_usage
-                  - sensor.printer_toner
+                  - sensor.printer_toner_black
               - type: entities
                 title: "Urządzenia Z-Wave"
                 show_header_toggle: false
@@ -500,7 +462,6 @@ views:
     panel: true
     cards:
       - type: custom:layout-card
-        column_width: 290
         cards:
           - type: vertical-stack
             cards:
@@ -689,8 +650,6 @@ views:
     panel: true
     cards:
       - type: custom:layout-card
-        max_columns: 4
-        column_width: 290
         cards:
           - type: vertical-stack
             cards:
@@ -816,8 +775,6 @@ views:
     panel: true
     cards:
       - type: custom:layout-card
-        max_columns: 4
-        column_width: 290
         cards:
           - type: vertical-stack
             cards:

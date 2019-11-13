@@ -119,8 +119,6 @@ remote:
 
 python_script:
 
-emulated_hue: !include emulated_hue.yaml
-
 yeelight:
   devices:
     yeelight-yldp02yl-b1b6aa:

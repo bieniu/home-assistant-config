@@ -1136,8 +1136,8 @@
     service: script.heating_airing_begin
 
 # koniec przewietrzania w dzień
-- id: heating_airing_end
-  alias: "Heating Airing"
+- id: heating_airing_end_at_day
+  alias: "Heating Airing At Day"
   trigger:
     platform: state
     entity_id: input_boolean.heating_airing
@@ -1165,8 +1165,8 @@
         tag: 28888
 
 # koniec przewietrzania w nocy
-- id: heating_airing_end
-  alias: "Heating Airing"
+- id: heating_airing_end_at_night
+  alias: "Heating Airing At Night"
   trigger:
     platform: state
     entity_id: input_boolean.heating_airing
@@ -1182,7 +1182,7 @@
         after: "22:00:00"
         before: "05:00:00"
   action:
-    - service: script.heating_day
+    - service: script.heating_night
     - condition: state
       entity_id: group.windows
       state: "on"

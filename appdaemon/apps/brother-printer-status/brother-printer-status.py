@@ -152,14 +152,14 @@ class BrotherPrinterStatus(hass.Hass):
             except TypeError:
                 return
             if toner:
-                sensor = "toner-" + color
+                sensor = "toner_" + color
                 entity = self.SENSOR_PREFIX.format(sensor)
                 if self.use_mqtt:
                     topic = self.TOPIC.format(sensor)
                     model = self.printer_model(page)
                     payload = {
                         "name": "Printer " + sensor,
-                        "uniq_id": self.mac_simple + "-" + sensor,
+                        "uniq_id": self.mac_simple + "-" + "toner" + "-" + color,
                         "dev": {
                             "ids": self.mac_simple,
                             "cns": [["mac", self.mac]],

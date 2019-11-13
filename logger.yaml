@@ -8,5 +8,3 @@ logs:
   homeassistant.helpers.entity: error
   homeassistant.components.airly: debug
   androidtv.basetv: error
-  custom_components.gios: debug
-  gios: debug
