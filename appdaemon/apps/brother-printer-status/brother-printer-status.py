@@ -38,7 +38,7 @@ import appdaemon.plugins.hass.hassapi as hass
 class BrotherPrinterStatus(hass.Hass):
     def initialize(self):
 
-        __version__ = "0.4.0"
+        __version__ = "0.4.1"
 
         # max value of the height of the black image on the printer's webpage
         self.MAX_IMAGE_HEIGHT = 56
