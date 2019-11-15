@@ -38,7 +38,7 @@ import appdaemon.plugins.hass.hassapi as hass
 class BrotherPrinterStatus(hass.Hass):
     def initialize(self):
 
-        __version__ = "0.4.1"
+        __version__ = "0.4.2"
 
         # max value of the height of the black image on the printer's webpage
         self.MAX_IMAGE_HEIGHT = 56
@@ -152,14 +152,14 @@ class BrotherPrinterStatus(hass.Hass):
             except TypeError:
                 return
             if toner:
-                sensor = "toner_" + color
-                entity = self.SENSOR_PREFIX.format(sensor)
+                sensor = "toner-{}".format(color)
+                entity = self.SENSOR_PREFIX.format(sensor.replace("-", "_"))
                 if self.use_mqtt:
                     topic = self.TOPIC.format(sensor)
                     model = self.printer_model(page)
                     payload = {
-                        "name": "Printer " + sensor,
-                        "uniq_id": self.mac_simple + "-" + "toner" + "-" + color,
+                        "name": "Printer " + sensor.replace("-", " "),
+                        "uniq_id": self.mac_simple + "-" + sensor,
                         "dev": {
                             "ids": self.mac_simple,
                             "cns": [["mac", self.mac]],
@@ -174,7 +174,7 @@ class BrotherPrinterStatus(hass.Hass):
                     self.mqtt_publish(topic, payload, entity, sensor, toner)
                 else:
                     attributes = {
-                        "friendly_name": "Printer " + sensor,
+                        "friendly_name": "Printer " + sensor.replace("-", " "),
                         "icon": "mdi:flask-outline",
                         "unit_of_measurement": "%",
                     }

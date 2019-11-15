@@ -9,8 +9,6 @@ resources:
     type: module
   - url: /community_plugin/monster-card/monster-card.js
     type: js
-  - url: /community_plugin/lovelace-auto-entities/auto-entities.js
-    type: module
   - url: /community_plugin/secondaryinfo-entity-row/secondaryinfo-entity-row.js
     type: js
   - url: /community_plugin/mini-graph-card/mini-graph-card.js
@@ -21,6 +19,39 @@ resources:
     type: module
   - url: /community_plugin/bom-weather-card/bom-weather-card.js
     type: module
+  - url: /community_plugin/decluttering-card/decluttering-card.js
+    type: module
+
+decluttering_templates:
+  graph:
+    card:
+      type: custom:mini-graph-card
+      hour24: true
+      decimals: "[[decimals]]"
+      animate: true
+      align_header: left
+      align_icon: left
+      points_per_hour: 1
+      show:
+        labels: true
+        fill: fade
+      entities: "[[entities]]"
+      line_color: "[[line_color]]"
+  room:
+    card:
+      type: custom:vertical-stack-in-card
+      title: "[[name]]"
+      cards:
+        - type: glance
+          show_name: false
+          entities: "[[glance]]"
+        - type: entities
+          style: |
+            .card-content {
+              padding-top: 0px;
+            }
+          show_header_toggle: false
+          entities: "[[entities]]"
 
 background: "#e5e5e5"
 
@@ -67,250 +98,187 @@ views:
                   - entity: binary_sensor.motion_przedpokoj
                     secondary_info: last-changed
                   - light.leds_przedpokoj
-              - type: custom:vertical-stack-in-card
-                title: "Kuchnia"
-                cards:
-                  - type: glance
-                    show_name: false
-                    entities:
-                      - sensor.temperature_kuchnia
-                      - sensor.humidity_kuchnia
-                  - type: entities
-                    style: |
-                      .card-content {
-                        padding-top: 0px;
-                      }
-                    show_header_toggle: false
-                    entities:
-                      - binary_sensor.window_kuchnia
-                      - climate.thermostat_kuchnia
-                      - entity: sensor.dishwasher_kuchnia
-                        style: |
-                          :host {
-                            --paper-item-icon-color:
-                              {% if states(config.entity) == "zmywanie" %}
-                                var(--state-icon-active-color)
-                              {% else %}
-                                var(--state-icon-color)
-                              {% endif %}
-                          }
-          - type: custom:vertical-stack-in-card
-            title: "Salon"
-            cards:
-              - type: glance
-                show_name: false
-                entities:
-                  - sensor.temperature_salon
-                  - sensor.humidity_salon
-                  - sensor.co2_salon
-                  - sensor.illumination_salon
-              - type: entities
-                style: |
-                  .card-content {
-                    padding-top: 0px;
-                  }
-                show_header_toggle: false
-                entities:
-                  - entity: binary_sensor.motion_salon
-                    secondary_info: last-changed
-                  - climate.thermostat_salon
-                  - type: custom:secondaryinfo-entity-row
-                    entity: fan.humidifier_salon
-                    secondary_info: "poziom wody: [[ sensor.humidifier_water_level.state ]] %"
-                  # - fan.salon
-                  - light.bulbs_salon
-                  - light.leds_salon
-                  - light.lamp_salon
-                  - input_select.light_scenes_salon
-                  - input_select.salon_harmony
-                  - type: custom:mini-media-player
-                    entity: media_player.bravia
-                    hide:
-                      controls: true
-                      volume: true
-                      power_state: false
-                      progress: true
-                    info: scroll
-                    group: true
-                  - type: custom:mini-media-player
-                    entity: media_player.denon
-                    hide:
-                      controls: true
-                      volume: true
-                      power_state: false
-                      progress: true
-                    info: scroll
-                    group: true
-                  - type: custom:mini-media-player
-                    entity: media_player.playstation
-                    hide:
-                      controls: true
-                      volume: true
-                      power_state: false
-                      progress: true
-                    info: scroll
-                    group: true
-                  - type: custom:mini-media-player
-                    entity: media_player.echo_plus
-                    hide:
-                      controls: true
-                      volume: true
-                      power: true
-                      source: true
-                      progress: true
-                    info: scroll
-                    group: true
-          - type: custom:vertical-stack-in-card
-            title: "Pracownia"
-            cards:
-              - type: glance
-                show_name: false
-                entities:
-                  - sensor.temperature_pracownia
-                  - sensor.humidity_pracownia
-                  - sensor.illumination_pracownia
-              - type: entities
-                style: |
-                  .card-content {
-                    padding-top: 0px;
-                  }
-                show_header_toggle: false
-                entities:
-                  - entity: binary_sensor.motion_pracownia
-                    secondary_info: last-changed
-                  - binary_sensor.balcony_door_pracownia
-                  - switch.lamp_pracownia
-          - type: custom:vertical-stack-in-card
-            title: "Pokój gościnny"
-            cards:
-              - type: glance
-                show_name: false
-                entities:
-                  - sensor.temperature_goscinny
-                  - sensor.humidity_goscinny
-                  - sensor.illumination_goscinny
-              - type: entities
-                style: |
-                  .card-content {
-                    padding-top: 0px;
-                  }
-                show_header_toggle: false
-                entities:
-                  - entity: binary_sensor.motion_goscinny
-                    secondary_info: last-changed
-                  - switch.lamp_goscinny
-                  - type: custom:mini-media-player
-                    entity: media_player.mibox
-                    name: "Mi Box"
-                    hide:
-                      controls: true
-                      volume: true
-                      power: true
-                    info: scroll
-                    group: true
-          - type: custom:vertical-stack-in-card
-            title: "Antresola"
-            cards:
-              - type: glance
-                show_name: false
-                entities:
-                  - sensor.temperature_antresola
-                  - sensor.humidity_antresola
-                  - sensor.illumination_antresola
-              - type: entities
-                style: |
-                  .card-content {
-                    padding-top: 0px;
-                  }
-                show_header_toggle: false
-                entities:
-                  - binary_sensor.window_antresola
-                  - entity: binary_sensor.motion_antresola
-                    secondary_info: last-changed
-                  - climate.thermostat_antresola
-                  - light.gateway_antresola
-          - type: custom:vertical-stack-in-card
-            title: "Gabinet"
-            cards:
-              - type: glance
-                show_name: false
-                entities:
-                  - sensor.temperature_gabinet
-                  - sensor.humidity_gabinet
-                  - sensor.illumination_gabinet
-              - type: entities
-                style: |
-                  .card-content {
-                    padding-top: 0px;
-                  }
-                show_header_toggle: false
-                entities:
-                  - binary_sensor.window_gabinet
-                  - entity: binary_sensor.motion_gabinet
-                    secondary_info: last-changed
-                  - climate.thermostat_gabinet
-                  - switch.lamp_gabinet
-                  - switch.stacjonarny
-          - type: custom:vertical-stack-in-card
-            title: "Pokój Antka"
-            cards:
-              - type: glance
-                show_name: false
-                entities:
-                  - sensor.temperature_antek
-                  - sensor.humidity_antek
-                  - sensor.illumination_antek
-              - type: entities
-                style: |
-                  .card-content {
-                    padding-top: 0px;
-                  }
-                show_header_toggle: false
-                entities:
-                  - binary_sensor.window_antek
-                  - entity: binary_sensor.motion_antek
-                    secondary_info: last-changed
-                  - climate.thermostat_antek
-                  - light.lightstrip_antek
-                  - switch.cabinet_antek
-          - type: custom:vertical-stack-in-card
-            title: "Sypialnia"
-            cards:
-              - type: glance
-                show_name: false
-                entities:
-                  - sensor.temperature_sypialnia
-                  - sensor.humidity_sypialnia
-                  - sensor.illumination_sypialnia
-              - type: entities
-                style: |
-                  .card-content {
-                    padding-top: 0px;
-                  }
-                show_header_toggle: false
-                entities:
-                  - binary_sensor.window_sypialnia
-                  - binary_sensor.balcony_door_sypialnia
-                  - entity: binary_sensor.motion_sypialnia
-                    secondary_info: last-changed
-                  - climate.thermostat_sypialnia
-                  - light.lightstrip_sypialnia
-          - type: custom:vertical-stack-in-card
-            title: "Łazienka"
-            cards:
-              - type: glance
-                show_name: false
-                entities:
-                  - sensor.temperature_lazienka
-                  - sensor.humidity_lazienka
-              - type: entities
-                style: |
-                  .card-content {
-                    padding-top: 0px;
-                  }
-                show_header_toggle: false
-                entities:
-                  - climate.thermostat_lazienka
+              - type: custom:decluttering-card
+                template: room
+                variables:
+                  - name: "Kuchnia"
+                  - glance:
+                    - sensor.temperature_kuchnia
+                    - sensor.humidity_kuchnia
+                  - entities:
+                    - binary_sensor.window_kuchnia
+                    - climate.thermostat_kuchnia
+                    - entity: sensor.dishwasher_kuchnia
+                      style: |
+                        :host {
+                          --paper-item-icon-color:
+                            {% if states(config.entity) == "zmywanie" %}
+                              var(--state-icon-active-color)
+                            {% else %}
+                              var(--state-icon-color)
+                            {% endif %}
+                        }
+          - type: custom:decluttering-card
+            template: room
+            variables:
+              - name: "Salon"
+              - glance:
+                - sensor.temperature_salon
+                - sensor.humidity_salon
+                - sensor.co2_salon
+                - sensor.illumination_salon
+              - entities:
+                - entity: binary_sensor.motion_salon
+                  secondary_info: last-changed
+                - climate.thermostat_salon
+                - type: custom:secondaryinfo-entity-row
+                  entity: fan.humidifier_salon
+                  secondary_info: "poziom wody: [[ sensor.humidifier_water_level.state ]] %"
+                # - fan.salon
+                - light.bulbs_salon
+                - light.leds_salon
+                - light.lamp_salon
+                - input_select.light_scenes_salon
+                - input_select.salon_harmony
+                - type: custom:mini-media-player
+                  entity: media_player.bravia
+                  hide:
+                    controls: true
+                    volume: true
+                    power_state: false
+                    progress: true
+                  info: scroll
+                  group: true
+                - type: custom:mini-media-player
+                  entity: media_player.denon
+                  hide:
+                    controls: true
+                    volume: true
+                    power_state: false
+                    progress: true
+                  info: scroll
+                  group: true
+                - type: custom:mini-media-player
+                  entity: media_player.playstation
+                  hide:
+                    controls: true
+                    volume: true
+                    power_state: false
+                    progress: true
+                  info: scroll
+                  group: true
+                - type: custom:mini-media-player
+                  entity: media_player.echo_plus
+                  hide:
+                    controls: true
+                    volume: true
+                    power: true
+                    source: true
+                    progress: true
+                  info: scroll
+                  group: true
+          - type: custom:decluttering-card
+            template: room
+            variables:
+              - name: "Pracownia"
+              - glance:
+                - sensor.temperature_pracownia
+                - sensor.humidity_pracownia
+                - sensor.illumination_pracownia
+              - entities:
+                - entity: binary_sensor.motion_pracownia
+                  secondary_info: last-changed
+                - binary_sensor.balcony_door_pracownia
+                - switch.lamp_pracownia
+          - type: custom:decluttering-card
+            template: room
+            variables:
+              - name: "Pokój gościnny"
+              - glance:
+                - sensor.temperature_goscinny
+                - sensor.humidity_goscinny
+                - sensor.illumination_goscinny
+              - entities:
+                - entity: binary_sensor.motion_goscinny
+                  secondary_info: last-changed
+                - switch.lamp_goscinny
+                - type: custom:mini-media-player
+                  entity: media_player.mibox
+                  name: "Mi Box"
+                  hide:
+                    controls: true
+                    volume: true
+                    power: true
+                  info: scroll
+                  group: true
+          - type: custom:decluttering-card
+            template: room
+            variables:
+              - name: "Antresola"
+              - glance:
+                - sensor.temperature_antresola
+                - sensor.humidity_antresola
+                - sensor.illumination_antresola
+              - entities:
+                - binary_sensor.window_antresola
+                - entity: binary_sensor.motion_antresola
+                  secondary_info: last-changed
+                - climate.thermostat_antresola
+                - light.gateway_antresola
+          - type: custom:decluttering-card
+            template: room
+            variables:
+              - name: "Gabinet"
+              - glance:
+                - sensor.temperature_gabinet
+                - sensor.humidity_gabinet
+                - sensor.illumination_gabinet
+              - entities:
+                - binary_sensor.window_gabinet
+                - entity: binary_sensor.motion_gabinet
+                  secondary_info: last-changed
+                - climate.thermostat_gabinet
+                - switch.lamp_gabinet
+                - switch.stacjonarny
+          - type: custom:decluttering-card
+            template: room
+            variables:
+              - name: "Pokój Antka"
+              - glance:
+                - sensor.temperature_antek
+                - sensor.humidity_antek
+                - sensor.illumination_antek
+              - entities:
+                - binary_sensor.window_antek
+                - entity: binary_sensor.motion_antek
+                  secondary_info: last-changed
+                - climate.thermostat_antek
+                - light.lightstrip_antek
+                - switch.cabinet_antek
+          - type: custom:decluttering-card
+            template: room
+            variables:
+              - name: "Sypialnia"
+              - glance:
+                - sensor.temperature_sypialnia
+                - sensor.humidity_sypialnia
+                - sensor.illumination_sypialnia
+              - entities:
+                - binary_sensor.window_sypialnia
+                - binary_sensor.balcony_door_sypialnia
+                - entity: binary_sensor.motion_sypialnia
+                  secondary_info: last-changed
+                - climate.thermostat_sypialnia
+                - light.lightstrip_sypialnia
+          - type: custom:decluttering-card
+            template: room
+            variables:
+              - name: "Łazienka"
+              - glance:
+                - sensor.temperature_lazienka
+                - sensor.humidity_lazienka
+              - entities:
+                - climate.thermostat_lazienka
           - type: picture-glance
             title: "Salon"
             entities:
@@ -704,69 +672,80 @@ views:
                 entity: sensor.airly_info
           - type: vertical-stack
             cards:
-              - type: custom:mini-graph-card
-                <<: &CLIMATE_GRAPH_PARAMS
-                  hour24: true
-                  decimals: 1
-                  animate: true
-                  align_header: left
-                  align_icon: left
-                  points_per_hour: 1
-                  show:
-                    labels: true
-                    fill: fade
-                entities:
-                  - sensor.temperature_outdoor
-                line_color: "#ef5350"
-              - type: custom:mini-graph-card
-                <<: *CLIMATE_GRAPH_PARAMS
-                entities:
-                  - sensor.humidity_outdoor
-                line_color: "#36a2eb"
-              - type: custom:mini-graph-card
-                <<: *CLIMATE_GRAPH_PARAMS
-                entities:
-                  - sensor.pressure_outdoor
-                line_color: "#4bc0c0"
+              - type: custom:decluttering-card
+                template: graph
+                variables:
+                  - entities:
+                    - sensor.temperature_outdoor
+                  - line_color: "#ef5350"
+                  - decimals: 1
+              - type: custom:decluttering-card
+                template: graph
+                variables:
+                  - entities:
+                    - sensor.humidity_outdoor
+                  - line_color: "#36a2eb"
+                  - decimals: 1
+              - type: custom:decluttering-card
+                template: graph
+                variables:
+                  - entities:
+                    - sensor.pressure_outdoor
+                  - line_color: "#4bc0c0"
+                  - decimals: 1
           - type: vertical-stack
             cards:
-              - type: custom:mini-graph-card
-                <<: *CLIMATE_GRAPH_PARAMS
-                entities:
-                  - sensor.temperature_indoor
-                line_color: "#ef5350"
-              - type: custom:mini-graph-card
-                <<: *CLIMATE_GRAPH_PARAMS
-                entities:
-                  - sensor.humidity_indoor
-                line_color: "#36a2eb"
-              - type: custom:mini-graph-card
-                <<: *CLIMATE_GRAPH_PARAMS
-                entities:
-                  - sensor.co2_salon
-                line_color: "#8bc34a"
+              - type: custom:decluttering-card
+                template: graph
+                variables:
+                  - entities:
+                    - sensor.temperature_indoor
+                  - line_color: "#ef5350"
+                  - decimals: 1
+              - type: custom:decluttering-card
+                template: graph
+                variables:
+                  - entities:
+                    - sensor.humidity_indoor
+                  - line_color: "#36a2eb"
+                  - decimals: 1
+              - type: custom:decluttering-card
+                template: graph
+                variables:
+                  - entities:
+                    - sensor.co2_salon
+                  - line_color: "#8bc34a"
+                  - decimals: 0
           - type: vertical-stack
             cards:
-              - type: custom:mini-graph-card
-                <<: *CLIMATE_GRAPH_PARAMS
-                entities:
-                  - sensor.airly_pm1
-                line_color: "#78909c"
-              - type: custom:mini-graph-card
-                <<: *CLIMATE_GRAPH_PARAMS
-                entities:
-                  - sensor.airly_pm2_5
-                line_color: "#78909c"
-              - type: custom:mini-graph-card
-                <<: *CLIMATE_GRAPH_PARAMS
-                entities:
-                  - sensor.airly_pm10
-                line_color: "#78909c"
-              - type: custom:mini-graph-card
-                <<: *CLIMATE_GRAPH_PARAMS
-                entities:
-                  - sensor.dark_sky_uv_index
-                line_color: "#ffce57"
+              - type: custom:decluttering-card
+                template: graph
+                variables:
+                  - entities:
+                    - sensor.airly_pm1
+                  - line_color: "#78909c"
+                  - decimals: 0
+              - type: custom:decluttering-card
+                template: graph
+                variables:
+                  - entities:
+                    - sensor.airly_pm2_5
+                  - line_color: "#78909c"
+                  - decimals: 0
+              - type: custom:decluttering-card
+                template: graph
+                variables:
+                  - entities:
+                    - sensor.airly_pm10
+                  - line_color: "#78909c"
+                  - decimals: 0
+              - type: custom:decluttering-card
+                template: graph
+                variables:
+                  - entities:
+                    - sensor.dark_sky_uv_index
+                  - line_color: "#ffce57"
+                  - decimals: 0
 
   - id: misc
     icon: mdi:settings
