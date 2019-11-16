@@ -23,7 +23,7 @@ resources:
     type: module
 
 decluttering_templates:
-  graph:
+  climate-graph:
     card:
       type: custom:mini-graph-card
       hour24: true
@@ -56,7 +56,7 @@ decluttering_templates:
 background: "#e5e5e5"
 
 anchors:
-  card_style_no_border_radius: &card_style_no_border_radius
+  card-style-no-border-radius: &card-style-no-border-radius
     style: |
       ha-card {
         border-radius: 0px
@@ -437,7 +437,7 @@ views:
                 title: "Pobór mocy"
                 cards:
                   - type: custom:mini-graph-card
-                    <<: *card_style_no_border_radius
+                    <<: *card-style-no-border-radius
                     hour24: true
                     decimals: 1
                     points_per_hour: 1
@@ -494,7 +494,7 @@ views:
                   - sensor.ups_battery_charge
                   - sensor.ups_load
               - type: custom:mini-graph-card
-                <<: *card_style_no_border_radius
+                <<: *card-style-no-border-radius
                 hour24: true
                 decimals: 0
                 animate: true
@@ -505,6 +505,14 @@ views:
                 entities:
                   - sensor.ups_input_voltage
                 line_color: "#ef5350"
+              - type: custom:decluttering-card
+                template: climate-graph
+                variables:
+                  - entities:
+                    - sensor.ups_battery_voltage
+                  - line_color: "#4bc0c0"
+                  - decimals: 1
+
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 1
@@ -673,21 +681,21 @@ views:
           - type: vertical-stack
             cards:
               - type: custom:decluttering-card
-                template: graph
+                template: climate-graph
                 variables:
                   - entities:
                     - sensor.temperature_outdoor
                   - line_color: "#ef5350"
                   - decimals: 1
               - type: custom:decluttering-card
-                template: graph
+                template: climate-graph
                 variables:
                   - entities:
                     - sensor.humidity_outdoor
                   - line_color: "#36a2eb"
                   - decimals: 1
               - type: custom:decluttering-card
-                template: graph
+                template: climate-graph
                 variables:
                   - entities:
                     - sensor.pressure_outdoor
@@ -696,21 +704,21 @@ views:
           - type: vertical-stack
             cards:
               - type: custom:decluttering-card
-                template: graph
+                template: climate-graph
                 variables:
                   - entities:
                     - sensor.temperature_indoor
                   - line_color: "#ef5350"
                   - decimals: 1
               - type: custom:decluttering-card
-                template: graph
+                template: climate-graph
                 variables:
                   - entities:
                     - sensor.humidity_indoor
                   - line_color: "#36a2eb"
                   - decimals: 1
               - type: custom:decluttering-card
-                template: graph
+                template: climate-graph
                 variables:
                   - entities:
                     - sensor.co2_salon
@@ -719,28 +727,28 @@ views:
           - type: vertical-stack
             cards:
               - type: custom:decluttering-card
-                template: graph
+                template: climate-graph
                 variables:
                   - entities:
                     - sensor.airly_pm1
                   - line_color: "#78909c"
                   - decimals: 0
               - type: custom:decluttering-card
-                template: graph
+                template: climate-graph
                 variables:
                   - entities:
                     - sensor.airly_pm2_5
                   - line_color: "#78909c"
                   - decimals: 0
               - type: custom:decluttering-card
-                template: graph
+                template: climate-graph
                 variables:
                   - entities:
                     - sensor.airly_pm10
                   - line_color: "#78909c"
                   - decimals: 0
               - type: custom:decluttering-card
-                template: graph
+                template: climate-graph
                 variables:
                   - entities:
                     - sensor.dark_sky_uv_index
