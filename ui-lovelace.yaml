@@ -21,6 +21,8 @@ resources:
     type: module
   - url: /community_plugin/decluttering-card/decluttering-card.js
     type: module
+  - url: /community_plugin/button-card/button-card.js
+    type: module
 
 decluttering_templates:
   climate-graph:
