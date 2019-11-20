@@ -25,6 +25,6 @@ sensor.fibaro_fgs223_previous_reading_1:
 sensor.fibaro_fgs223_previous_reading_2:
   ignored: true
 switch.fibaro_fgs223_relay_2:
- ignored: true
-sensor.fibaro_fgs223_sourcenodeid:
   ignored: true
+sensor.fibaro_fgs223_sourcenodeid:
+  ignored: tru

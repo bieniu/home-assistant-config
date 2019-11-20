@@ -169,7 +169,6 @@ views:
                       power: true
                       source: true
                       progress: true
-                      source: true
                     info: scroll
                     group: true
           - type: custom:vertical-stack-in-card
