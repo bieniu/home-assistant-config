@@ -14,4 +14,4 @@ jobs:
       - name: Running YAMLlint
         uses: "docker://pipelinecomponents/yamllint:latest"
         with:
-          args: yamllint .
+          args: yamllint -d "{extends: relaxed, rules: {line-length: {max: 120}}}" .
