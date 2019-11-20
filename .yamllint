@@ -4,10 +4,5 @@ ignore: |
   ip_bans.yaml
   .github/workflows/*
 rules:
-  line-length:
-    ignore: |
-      .github/support.yml
-      .github/settings.yml
-    level: warning
-    max: 150
-    
+  line-length: disable
+
