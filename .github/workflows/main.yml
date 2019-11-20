@@ -1,0 +1,17 @@
+name: Home Assistant Config
+
+on: [push]
+
+jobs:
+  yamllint:
+    
+    name: "Yamllint"
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Getting your configuration from GitHub
+        uses: actions/checkout@v1
+      - name: Running YAMLlint
+        uses: "docker://pipelinecomponents/yamllint:latest"
+        with:
+          args: yamllint .
