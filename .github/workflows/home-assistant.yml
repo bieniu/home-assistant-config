@@ -28,7 +28,7 @@ jobs:
       - name: Copy stub files into configuration folder
         run: cp -R ./.stubs/* .
       - name: Making whitelist_external_dirs directories
-        run: mkdir /home/homeassistant/.homeassistant/www/snapshots
+        run: mkdir ./snapshots
       - name: Home Assistant Version
         uses: "docker://homeassistant/home-assistant:stable"
         with:
