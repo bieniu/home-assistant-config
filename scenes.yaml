@@ -1,4 +1,5 @@
-- name: "film"
+- id: film
+  name: "film"
   entities:
     light.bulbs_salon:
       state: "on"
@@ -12,7 +13,8 @@
     switch.flux:
       state: "off"
 
-- name: "niebieski"
+- id: niebieski
+  name: "niebieski"
   entities:
     light.bulbs_salon:
       state: "on"
@@ -29,7 +31,8 @@
     switch.flux:
       state: "off"
 
-- name: "romantyczny"
+- id: romantyczny
+  name: "romantyczny"
   entities:
     light.bulbs_salon:
       state: "on"
@@ -46,7 +49,8 @@
     switch.flux:
       state: "off"
 
-- name: "fiolet"
+- id: fiolet
+  name: "fiolet"
   entities:
     light.bulbs_salon:
       state: "on"
@@ -63,7 +67,8 @@
     switch.flux:
       state: "off"
 
-- name: "automatyczny"
+- id: automatyczny
+  name: "automatyczny"
   entities:
     light.bulbs_salon:
       state: "on"
@@ -76,7 +81,8 @@
     switch.flux:
       state: "on"
 
-- name: "czytanie"
+- id: czytanie
+  name: "czytanie"
   entities:
     light.bulbs_salon:
       state: "on"
@@ -93,7 +99,8 @@
     switch.flux:
       state: "off"
 
-- name: "jasny"
+- id: jasny
+  name: "jasny"
   entities:
     light.bulbs_salon:
       state: "on"
@@ -110,7 +117,8 @@
     switch.flux:
       state: "off"
 
-- name: "dyskoteka"
+- id: dyskoteka
+  name: "dyskoteka"
   entities:
     light.leds_salon:
       state: "off"

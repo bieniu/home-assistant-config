@@ -12,6 +12,7 @@ __pycache__/
 *.bak
 *.off
 *.html
+.stubs
 test.py
 OZW_Log.txt
 home-assistant.log
