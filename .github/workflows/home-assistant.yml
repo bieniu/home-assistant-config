@@ -16,25 +16,3 @@ jobs:
         with:
           args: yamllint .
   
-  home_assistant_stable:
-    
-    name: "Home-Assistant: Stable"
-    runs-on: ubuntu-latest
-    needs: [yamllint]
-    
-    steps:
-      - name: Getting your configuration from GitHub
-        uses: actions/checkout@v1
-      - name: Copy stub files into configuration folder
-        run: cp -R ./.stubs/* .
-      - name: Making whitelist_external_dirs directories
-        run: mkdir ./snapshots
-      - name: Home Assistant Version
-        uses: "docker://homeassistant/home-assistant:stable"
-        with:
-          args: >
-            python -m homeassistant --version
-      - name: Home Assistant Check
-        uses: "docker://homeassistant/home-assistant:stable"
-        with:
-          args: python -m homeassistant --config ./ --script check_config --info all
