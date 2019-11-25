@@ -305,6 +305,14 @@ camera_move:
       payload: "{{ direction }}"
 
 ## ALEXA
+alexa_toggle_qube:
+  sequence:
+    - service: remote.send_command
+      entity_id: remote.salon
+      data:
+        device: "Kostka"
+        command: "W\u0142\u0105cz/wy\u0142\u0105cz"
+
 alexa_netflix:
   sequence:
     - service: remote.turn_on
