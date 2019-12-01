@@ -255,7 +255,7 @@ notify:
           tag: "{{ tag }}"
     - condition: template
       value_template: "{{ notify_edyta }}"
-    - service: notify.ios_iphone_8_plus_app
+    - service: notify.mobile_app_edyta_iphone
       data_template:
         title: "{{ title }}"
         message: "{{ message }}"
@@ -282,7 +282,7 @@ notify_motion:
             {% endif %}
     - condition: template
       value_template: "{{ notify_edyta }}"
-    - service: notify.ios_iphone_8_plus_app
+    - service: notify.mobile_app_edyta_iphone
       data_template:
         title: "{{ title }}"
         message: "{{ message }}"

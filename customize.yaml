@@ -2,6 +2,12 @@
 device_tracker.oneplus_6_gps:
   icon: mdi:cellphone-android
 
+device_tracker.ipad_air_app:
+  icon: mdi:tablet-ipad
+
+device_tracker.iphone_8_plus:
+  icon: mdi:cellphone-iphone
+
 #### PERSONS #####
 person.edyta:
   entity_picture: /local/pictures/edyta.jpg
@@ -104,6 +110,8 @@ zone.home:
 #### NETWORK DEVICES ####
 binary_sensor.router_status:
   icon: mdi:router-wireless
+binary_sensor.aimesh_status:
+  icon: mdi:access-point
 binary_sensor.synology_status:
   icon: mdi:nas
 binary_sensor.dune_status:
@@ -149,9 +157,9 @@ binary_sensor.inkbook_status:
   icon: mdi:cellphone-text
 binary_sensor.modem_status:
   friendly_name: "ZTE GPON F660"
-  icon: mdi:router-wireless
+  icon: mdi:network-router
 binary_sensor.migateway_status:
-  icon: mdi:router-wireless
+  icon: mdi:zigbee
 binary_sensor.brother_status:
   icon: mdi:printer
 binary_sensor.dafang_status:

@@ -317,7 +317,7 @@
       entity_id: input_boolean.heating_season
       state: "on"
   action:
-    service: notify.ios_iphone_8_plus_app
+    service: notify.mobile_app_edyta_iphone
     data_template:
       title: "Uzupełnij wodę w nawilżaczu"
       message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
@@ -1244,9 +1244,35 @@
     service: script.light_away_mode
 
 ## SALON ##
-# wyłączanie przekaźnika lampy w salonie gdy lampa niedostępna
-- id: light_turn_off_lamp_salon_relay_when_unavailable
-  alias: "Light Turn Off Lamp Salon Relay When Unavailable"
+# restart żarówek w salonie gdy niedostępne
+- id: light_restart_bulbs_salon_when_unavailable
+  alias: "Light Restart Bulbs Salon When Unavailable"
+  trigger:
+    - platform: state
+      entity_id: light.bulb_salon_1
+      to: "unavailable"
+      for:
+        minutes: 2
+    - platform: state
+      entity_id: light.bulb_salon_2
+      to: "unavailable"
+      for:
+        minutes: 2
+  action:
+    - service: switch.turn_off
+      entity_id: switch.bulbs_salon
+    - delay: "00:00:05"
+    - service: switch.turn_on
+      entity_id: switch.bulbs_salon
+    - condition: template
+      value_template: "{{ trigger.from_state.state == 'off' }}"
+    - delay: "00:01:00"
+    - service: light.turn_off
+      entity_id: light.bulbs_salon
+
+# restart lampy w salonie gdy niedostępna
+- id: light_restart_lamp_salon_when_unavailable
+  alias: "Light Restart Lamp Salon When Unavailable"
   trigger:
     platform: state
     entity_id: light.lamp_salon

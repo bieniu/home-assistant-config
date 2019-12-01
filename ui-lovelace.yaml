@@ -440,6 +440,7 @@ views:
             show_header_toggle: false
             theme: network-status
             entities:
+              - binary_sensor.aimesh_status
               - binary_sensor.migateway_status
               - binary_sensor.harmonyhub_status
               - binary_sensor.brother_status
@@ -720,6 +721,16 @@ views:
                 tooltip_fg_color: "#212121"
                 tooltip_border_color: "#D9D9D9"
                 tooltip_left_offset: -14
+                slot_l1: "wind"
+                slot_l2: "visibility"
+                slot_l3: "sun_following"
+                slot_l4: "remove"
+                slot_l5: "remove"
+                slot_r1: "humidity"
+                slot_r2: "pressure"
+                slot_r3: "sun_next"
+                slot_r4: "remove"
+                slot_r5: "remove"
               - type: iframe
                 url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates&metricWind=m%2Fs
                 aspect_ratio: 55%

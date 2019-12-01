@@ -48,7 +48,11 @@
 
     router_status:
       value_template: "{{ is_state('device_tracker.router', 'home') }}"
-      friendly_name: "ASUS RT-AC86U"
+      friendly_name: "Asus RT-AC86U"
+
+    aimesh_status:
+      value_template: "{{ is_state('device_tracker.aimesh', 'home') }}"
+      friendly_name: "Asus RT-AC68U"
 
     synology_status:
       value_template: "{{ is_state('device_tracker.synology', 'home') }}"
