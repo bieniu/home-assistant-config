@@ -92,7 +92,6 @@
 * [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/ha-ad-thermostats-update)
 * [Brother printer status sensors](https://github.com/bieniu/ha-ad-brother-printer)
 * DuneHD Activity
-* [Airly](https://github.com/bieniu/ha-ad-airly)
 
 ## Python Scripts
 
