@@ -1,6 +1,7 @@
 ![Home Assistant Logo](https://github.com/brianjking/hass-config/blob/master/images/hass.png "Home Assistant Logo")
 
 # Home Assistant Configuration
+[![Buy me a coffee][buy-me-a-coffee-shield]][buy-me-a-coffee]
 
 ## Server
 
@@ -106,3 +107,6 @@
 ![HA Climate](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/HA-climate.png)
 ![HA Settings](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/HA-settings.png)
 ![HA ZWave](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/HA-zwave.png)
+
+[buy-me-a-coffee-shield]: https://img.shields.io/static/v1.svg?label=%20&message=Buy%20me%20a%20coffee&color=6f4e37&logo=buy%20me%20a%20coffee&logoColor=white
+[buy-me-a-coffee]: https://www.buymeacoffee.com/QnLdxeaqO
