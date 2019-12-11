@@ -300,6 +300,10 @@ script.sonoffs_upgrade:
   friendly_name: "Aktualizacja Sonoff-ów"
   icon: mdi:download-network
 
+#### CHRISTMAS ####
+switch.leds_antresola:
+  icon: mdi:led-strip-variant
+
 sensor.humidity_indoor:
   friendly_name: "Wilgotność wewnętrzna"
   icon: mdi:water-percent

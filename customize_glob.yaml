@@ -45,6 +45,10 @@
   max_temp: 28
   min_temp: 4
 
+#### CHRISTMAS ####
+"*.*christmas_tree*":
+  icon: mdi:pine-tree
+
 #### ESPHOME ####
 "binary_sensor.sonoff_*_status":
   icon: mdi:light-switch
@@ -69,9 +73,6 @@
 "light.lightstrip*":
   friendly_name: "LEDy"
   icon: mdi:led-variant-on
-
-"light.christmas_tree*":
-  icon: mdi:pine-tree
 
 #### NETWORK DEVICES ####
 "binary_sensor.yeelight_yldd*_status":

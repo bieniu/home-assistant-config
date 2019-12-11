@@ -1,3 +1,45 @@
+#### CHRISTMAS ################################################################
+- id: christmas_lights_turn_on
+  alias: "Christmas Lights Turn On"
+  trigger:
+    platform: sun
+    event: sunset
+  action:
+    service: switch.turn_on
+    entity_id:
+      - switch.leds_antresola
+      - switch.christmas_tree_sypialnia
+      - switch.christmas_tree_antek
+
+- id: christmas_lights_turn_off
+  alias: "Christmas Lights Turn Off"
+  trigger:
+    platform: time
+    at: "00:00:00"
+  action:
+    service: switch.turn_off
+    entity_id:
+      - switch.leds_antresola
+      - switch.christmas_tree_sypialnia
+      - switch.christmas_tree_antek
+
+# ludzie w domu
+- id: christmas_peoples_back
+  alias: "Christmas Peoples Back"
+  trigger:
+    platform: state
+    entity_id: binary_sensor.people_at_home
+    to: "on"
+  condition:
+    condition: sun
+    after: sunset
+  action:
+    service: switch.turn_on
+    entity_id:
+      - switch.leds_antresola
+      - switch.christmas_tree_sypialnia
+      - switch.christmas_tree_antek
+
 #### PURGE RECORDER DATABASE ###################################################
 - id: purge_recorder_database
   alias: "Purge Recorder Database"
@@ -397,13 +439,13 @@
   action:
     - service: script.notify
       data_template:
-        title: "Aktualizacja Sonoff-Tasmota"
+        title: "Aktualizacja Tasmota"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Tasmota."
         tag: "notification-tasmota-update"
         notify_edyta: false
     - service: persistent_notification.create
       data_template:
-        title: "Aktualizacja Sonoff-Tasmota"
+        title: "Aktualizacja Tasmota"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Tasmota."
         notification_id: "notification-tasmota-update"
 

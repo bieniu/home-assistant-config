@@ -252,6 +252,7 @@ views:
                     secondary_info: last-changed
                   - climate.thermostat_antresola
                   - light.gateway_antresola
+                  - switch.leds_antresola
           - type: custom:vertical-stack-in-card
             title: "Gabinet"
             cards:
@@ -296,6 +297,7 @@ views:
                   - climate.thermostat_antek
                   - light.lightstrip_antek
                   - switch.cabinet_antek
+                  - switch.christmas_tree_antek
           - type: custom:vertical-stack-in-card
             title: "Sypialnia"
             cards:
@@ -318,6 +320,7 @@ views:
                     secondary_info: last-changed
                   - climate.thermostat_sypialnia
                   - light.lightstrip_sypialnia
+                  - switch.christmas_tree_sypialnia
           - type: custom:vertical-stack-in-card
             title: "Łazienka"
             cards:
