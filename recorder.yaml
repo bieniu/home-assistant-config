@@ -60,7 +60,6 @@ exclude:
     - sensor.dark_sky_wind_speed_3
     - sensor.dark_sky_wind_speed_4
     - sensor.dark_sky_wind_speed_5
-    - sensor.printer_status
     - sensor.dune_activity
     - binary_sensor.switch_light_salon_1
     - binary_sensor.switch_light_salon_2

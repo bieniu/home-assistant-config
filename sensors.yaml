@@ -255,24 +255,6 @@
           {{ states('sensor.humidifier_water_level') }}
         {% endif %}
 
-    printer_status_custom:
-      friendly_name: "Status"
-      value_template: >-
-        {% if is_state('sensor.printer_status', 'drukowanie') %}
-          drukowanie
-        {% elif 'prosz' in states('sensor.printer_status') %}
-          nagrzewanie
-        {% elif is_state('sensor.printer_status', 'gotowa') %}
-          gotowa
-        {% elif 'toneru' in states('sensor.printer_status')
-             or is_state('sensor.printer_status.state', 'oczekiwanie') %}
-          uśpiona
-        {% elif 'wymie' in states('sensor.printer_status') %}
-          brak toneru
-        {% else %}
-          {{ states('sensor.printer_status') }}
-        {% endif %}
-
     battery_temp_humi_sensor_outdoor:
       friendly_name: "zewnętrzny"
       unit_of_measurement: "%"

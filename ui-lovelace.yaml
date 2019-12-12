@@ -7,8 +7,8 @@ resources:
     type: module
   - url: /community_plugin/lovelace-card-tools/card-tools.js
     type: module
-  - url: /community_plugin/monster-card/monster-card.js
-    type: js
+  - url: /community_plugin/lovelace-auto-entities/auto-entities.js
+    type: module
   - url: /community_plugin/secondaryinfo-entity-row/secondaryinfo-entity-row.js
     type: js
   - url: /community_plugin/mini-graph-card/mini-graph-card-bundle.js
@@ -57,7 +57,7 @@ views:
         cards:
           - type: vertical-stack
             cards:
-              - type: custom:monster-card
+              - type: custom:auto-entities
                 card:
                   type: glance
                   title: "Rodzina"
@@ -404,10 +404,10 @@ views:
                 title: "Drukarka"
                 show_header_toggle: false
                 entities:
-                  - sensor.printer_status_custom
-                  - sensor.printer_counter
-                  - sensor.printer_drum_usage
-                  - sensor.printer_toner_black
+                  - sensor.printer_status
+                  - sensor.printer_page_counter
+                  - sensor.printer_drum_remaining_life
+                  - sensor.printer_toner_remaining
               - type: entities
                 title: "Urządzenia Z-Wave"
                 show_header_toggle: false
@@ -471,6 +471,8 @@ views:
               - binary_sensor.sonoff_basic_5dfba8_status
               - binary_sensor.sonoff_s26_182475_status
               - binary_sensor.blitzwolf_bw_shp6_2ad05a_status
+              - binary_sensor.blitzwolf_bw_shp6_ed007d_status
+              - binary_sensor.blitzwolf_bw_shp6_ecf9ea_status
               - binary_sensor.shelly1_328900_status
               - binary_sensor.shelly2_5b2604_status
               - binary_sensor.shelly_plug_s_7aecf4_status

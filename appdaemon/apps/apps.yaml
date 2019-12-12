@@ -7,13 +7,3 @@ dune_activity:
   mac: !secret dune_mac
   model: "BD Prime 3.0"
   retain: true
-
-brother_printer_status:
-  module: brother-printer-status
-  class: BrotherPrinterStatus
-  host: !secret brother_hostname
-  status_interval: 10
-  info_interval: 300
-  use_mqtt: true
-  mac: !secret brother_mac
-  retain: true
