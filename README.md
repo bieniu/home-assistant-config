@@ -30,7 +30,7 @@
 
 * Sonoff Basic Switches [[ESPHome](https://esphome.io) firmware]
 * Sonoff S26 Plug [[ESPHome](https://esphome.io) firmware]
-* BlitzWolf BW-SHP6 [[ESPHome](https://esphome.io) firmware]
+* BlitzWolf BW-SHP6 Plugs [[ESPHome](https://esphome.io) firmware]
 * [Shelly1](https://shelly.cloud/shelly1-open-source/) via MQTT
 * [Shelly2](https://shelly.cloud/shelly2/) via MQTT
 * [Shelly Plug S](https://shelly.cloud/shelly-plug-s/) via MQTT
@@ -75,22 +75,19 @@
 
 ## Lovelace Custom Cards
 
-* [battery-entity](https://github.com/cbulock/lovelace-battery-entity)
 * [card-mod](https://github.com/thomasloven/lovelace-card-mod)
 * [card-tools](https://github.com/thomasloven/lovelace-card-tools)
-* [dark-sky-weather-card](https://github.com/iammexx/home-assistant-config/tree/master/ui/darksky)
+* [bom-weather-card](https://github.com/DavidFW1960/bom-weather-card)
 * [layout-card](https://github.com/thomasloven/lovelace-layout-card)
 * [mini-graph-card](https://github.com/kalkih/mini-graph-card)
 * [mini-media-player](https://github.com/kalkih/mini-media-player)
-* [monster-card](https://github.com/ciotlosm/custom-lovelace/tree/master/monster-card)
-* [popup-card](https://github.com/thomasloven/lovelace-popup-card)
+* [auto-entities](https://github.com/thomasloven/lovelace-auto-entities)
 * [secondaryinfo-entity-row](https://github.com/MizterB/lovelace-secondaryinfo-entity-row)
 * [vertical-stack-in-card](https://github.com/custom-cards/vertical-stack-in-card)
 
 ## AppDaemon
 
 * [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/ha-ad-thermostats-update)
-* [Brother printer status sensors](https://github.com/bieniu/ha-ad-brother-printer)
 * DuneHD Activity
 
 ## Python Scripts
