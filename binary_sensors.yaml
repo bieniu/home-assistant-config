@@ -70,10 +70,6 @@
       value_template: "{{ is_state('device_tracker.bravia', 'home') }}"
       friendly_name: "Sony KD-55XF8596"
 
-    switch_status:
-      value_template: "{{ is_state('device_tracker.switch', 'home') }}"
-      friendly_name: "TP-Link TL-WDR4300"
-
     xbox_status:
       value_template: "{{ is_state('device_tracker.xbox', 'home') }}"
       friendly_name: "Xbox360"

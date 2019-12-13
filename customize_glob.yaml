@@ -46,8 +46,10 @@
   min_temp: 4
 
 #### CHRISTMAS ####
-"*.*christmas_tree*":
+"*.christmas_tree*":
   icon: mdi:pine-tree
+"*.christmas_lights_*":
+  icon: mdi:pine-tree  # mdi:string-lights
 
 #### ESPHOME ####
 "binary_sensor.sonoff_*_status":

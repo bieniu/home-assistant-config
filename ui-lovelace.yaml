@@ -201,6 +201,7 @@ views:
                     secondary_info: last-changed
                   - binary_sensor.balcony_door_pracownia
                   - switch.lamp_pracownia
+                  - switch.christmas_lights_pracownia
           - type: custom:vertical-stack-in-card
             title: "Pokój gościnny"
             cards:
@@ -219,7 +220,8 @@ views:
                 entities:
                   - entity: binary_sensor.motion_goscinny
                     secondary_info: last-changed
-                  - switch.lamp_goscinny
+                  # - switch.lamp_goscinny  # christmas
+                  - switch.christmas_lights_goscinny
                   - type: custom:mini-media-player
                     <<: *mini-media-player-padding
                     entity: media_player.mibox
@@ -252,7 +254,7 @@ views:
                     secondary_info: last-changed
                   - climate.thermostat_antresola
                   - light.gateway_antresola
-                  - switch.leds_antresola
+                  - switch.christmas_lights_antresola
           - type: custom:vertical-stack-in-card
             title: "Gabinet"
             cards:
@@ -297,7 +299,6 @@ views:
                   - climate.thermostat_antek
                   - light.lightstrip_antek
                   - switch.cabinet_antek
-                  - switch.christmas_tree_antek
           - type: custom:vertical-stack-in-card
             title: "Sypialnia"
             cards:
@@ -320,7 +321,7 @@ views:
                     secondary_info: last-changed
                   - climate.thermostat_sypialnia
                   - light.lightstrip_sypialnia
-                  - switch.christmas_tree_sypialnia
+                  - switch.christmas_lights_sypialnia
           - type: custom:vertical-stack-in-card
             title: "Łazienka"
             cards:
@@ -428,7 +429,6 @@ views:
             entities:
               - binary_sensor.modem_status
               - binary_sensor.router_status
-              - binary_sensor.switch_status
               - binary_sensor.fingbox_status
               - binary_sensor.synology_status
               - binary_sensor.raspberry_status

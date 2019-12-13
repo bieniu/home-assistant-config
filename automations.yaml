@@ -7,9 +7,10 @@
   action:
     service: switch.turn_on
     entity_id:
-      - switch.leds_antresola
-      - switch.christmas_tree_sypialnia
-      - switch.christmas_tree_antek
+      - switch.christmas_lights_antresola
+      - switch.christmas_lights_sypialnia
+      - switch.christmas_lights_goscinny
+      - switch.christmas_lights_pracownia
 
 - id: christmas_lights_turn_off
   alias: "Christmas Lights Turn Off"
@@ -19,26 +20,10 @@
   action:
     service: switch.turn_off
     entity_id:
-      - switch.leds_antresola
-      - switch.christmas_tree_sypialnia
-      - switch.christmas_tree_antek
-
-# ludzie w domu
-- id: christmas_peoples_back
-  alias: "Christmas Peoples Back"
-  trigger:
-    platform: state
-    entity_id: binary_sensor.people_at_home
-    to: "on"
-  condition:
-    condition: sun
-    after: sunset
-  action:
-    service: switch.turn_on
-    entity_id:
-      - switch.leds_antresola
-      - switch.christmas_tree_sypialnia
-      - switch.christmas_tree_antek
+      - switch.christmas_lights_antresola
+      - switch.christmas_lights_sypialnia
+      - switch.christmas_lights_goscinny
+      - switch.christmas_lights_pracownia
 
 #### PURGE RECORDER DATABASE ###################################################
 - id: purge_recorder_database
@@ -2045,68 +2030,68 @@
       entity_id: switch.lamp_pracownia
 
 #### POKÓJ GOŚCINNY ####
-# wyłączanie lampki w pokoju gościnnym jak brak ruchu
-- id: light_turn_off_goscinny_lamp
-  alias: "Light Turn Off Goscinny Lamp"
-  trigger:
-    platform: state
-    entity_id: binary_sensor.motion_goscinny
-    from: "on"
-    to: "off"
-  condition:
-    condition: state
-    entity_id: input_boolean.goscinny_light_motion_on
-    state: "on"
-  action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.goscinny_light_motion_on
-    - service: switch.turn_off
-      entity_id: switch.lamp_goscinny
+# wyłączanie lampki w pokoju gościnnym jak brak ruchu  # christmas
+# - id: light_turn_off_goscinny_lamp
+#   alias: "Light Turn Off Goscinny Lamp"
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.motion_goscinny
+#     from: "on"
+#     to: "off"
+#   condition:
+#     condition: state
+#     entity_id: input_boolean.goscinny_light_motion_on
+#     state: "on"
+#   action:
+#     - service: input_boolean.turn_off
+#       entity_id: input_boolean.goscinny_light_motion_on
+#     - service: switch.turn_off
+#       entity_id: switch.lamp_goscinny
 
-# włączanie lampki w pokoju gościnnym jak ruch i ciemno
-- id: light_turn_on_goscinny_lamp_when_dark_and_motion
-  alias: "Light Turn On Goscinny Lamp When Dark And Motion"
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.motion_goscinny
-      from: "off"
-      to: "on"
-    - platform: numeric_state
-      entity_id: sensor.illumination_goscinny
-      below: 9
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: "off"
-      - condition: state
-        entity_id: switch.lamp_goscinny
-        state: "off"
-      - condition: template
-        value_template: >-
-          {{ is_state('media_player.mibox', 'off')
-             or is_state('media_player.mibox', 'unavailable') }}
-      - condition: numeric_state
-        entity_id: sensor.illumination_goscinny
-        below: 9
-      - condition: state
-        entity_id: binary_sensor.motion_goscinny
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.light_auto_turn_goscinny
-        state: "on"
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
-  action:
-    - service: switch.turn_on
-      entity_id: switch.lamp_goscinny
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.goscinny_light_motion_on
+# włączanie lampki w pokoju gościnnym jak ruch i ciemno  # christmas
+# - id: light_turn_on_goscinny_lamp_when_dark_and_motion
+#   alias: "Light Turn On Goscinny Lamp When Dark And Motion"
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.motion_goscinny
+#       from: "off"
+#       to: "on"
+#     - platform: numeric_state
+#       entity_id: sensor.illumination_goscinny
+#       below: 9
+#   condition:
+#     condition: and
+#     conditions:
+#       - condition: state
+#         entity_id: input_boolean.away_mode
+#         state: "off"
+#       - condition: state
+#         entity_id: switch.lamp_goscinny
+#         state: "off"
+#       - condition: template
+#         value_template: >-
+#           {{ is_state('media_player.mibox', 'off')
+#              or is_state('media_player.mibox', 'unavailable') }}
+#       - condition: numeric_state
+#         entity_id: sensor.illumination_goscinny
+#         below: 9
+#       - condition: state
+#         entity_id: binary_sensor.motion_goscinny
+#         state: "on"
+#       - condition: state
+#         entity_id: input_boolean.light_auto_turn_goscinny
+#         state: "on"
+#       - condition: or
+#         conditions:
+#           - condition: sun
+#             after: sunset
+#           - condition: sun
+#             before: sunrise
+#   action:
+#     - service: switch.turn_on
+#       entity_id: switch.lamp_goscinny
+#     - service: input_boolean.turn_on
+#       entity_id: input_boolean.goscinny_light_motion_on
 
 #### GABINET ####
 # wyłączanie lampki w gabinecie jak brak ruchu
