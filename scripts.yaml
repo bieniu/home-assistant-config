@@ -31,10 +31,12 @@ light_away_mode:
         - light.lightstrip_sypialnia
         - light.lightstrip_antek
         - switch.cabinet_antek
-        - switch.lamp_pracownia
+        # - switch.lamp_pracownia  # christmas
         # - switch.lamp_goscinny  # christmas
         - switch.lamp_gabinet
         - input_boolean.antek_lamp_night
+        - switch.christmas_lights_antek  # christmas
+        - switch.christmas_lights_antresola  # christmas
 
 #### HEATING ####
 heating_fast_warm_up:

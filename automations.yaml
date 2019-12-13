@@ -5,12 +5,18 @@
     platform: sun
     event: sunset
   action:
-    service: switch.turn_on
-    entity_id:
-      - switch.christmas_lights_antresola
-      - switch.christmas_lights_sypialnia
-      - switch.christmas_lights_goscinny
-      - switch.christmas_lights_pracownia
+    - service: switch.turn_on
+      entity_id:
+        - switch.christmas_lights_sypialnia
+        - switch.christmas_lights_goscinny
+        - switch.christmas_lights_pracownia
+    - condition: state
+      entity_id: binary_sensor.people_at_home
+      state: "on"
+    - service: switch.turn_on
+      entity_id:
+        - switch.christmas_lights_antek
+        - switch.christmas_lights_antresola
 
 - id: christmas_lights_turn_off
   alias: "Christmas Lights Turn Off"
@@ -24,6 +30,22 @@
       - switch.christmas_lights_sypialnia
       - switch.christmas_lights_goscinny
       - switch.christmas_lights_pracownia
+      - switch.christmas_lights_antek
+
+- id: christmas_peoples_back
+  alias: "Christmas Peoples Back"
+  trigger:
+    platform: state
+    entity_id: binary_sensor.people_at_home
+    to: "on"
+  condition:
+    condition: sun
+    after: sunset
+  action:
+    service: switch.turn_on
+    entity_id:
+      - switch.christmas_lights_antek
+      - switch.christmas_lights_antresola
 
 #### PURGE RECORDER DATABASE ###################################################
 - id: purge_recorder_database
@@ -1970,64 +1992,64 @@
     entity_id: switch.cabinet_antek
 
 #### PRACOWNIA ####
-# włączanie lampki w pracowni jak ruch i ciemno
-- id: light_turn_on_pracownia_lamp_when_dark_and_motion
-  alias: "Light Turn On Pracownia Lamp When Dark And Motion"
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.motion_pracownia
-      from: "off"
-      to: "on"
-    - platform: numeric_state
-      entity_id: sensor.illumination_pracownia
-      below: 8
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: "off"
-      - condition: state
-        entity_id: switch.lamp_pracownia
-        state: "off"
-      - condition: numeric_state
-        entity_id: sensor.illumination_pracownia
-        below: 8
-      - condition: state
-        entity_id: binary_sensor.motion_pracownia
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.light_auto_turn_pracownia
-        state: "on"
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
-  action:
-    - service: switch.turn_on
-      entity_id: switch.lamp_pracownia
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.pracownia_light_motion_on
+# włączanie lampki w pracowni jak ruch i ciemno  # christmas
+# - id: light_turn_on_pracownia_lamp_when_dark_and_motion
+#   alias: "Light Turn On Pracownia Lamp When Dark And Motion"
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.motion_pracownia
+#       from: "off"
+#       to: "on"
+#     - platform: numeric_state
+#       entity_id: sensor.illumination_pracownia
+#       below: 8
+#   condition:
+#     condition: and
+#     conditions:
+#       - condition: state
+#         entity_id: input_boolean.away_mode
+#         state: "off"
+#       - condition: state
+#         entity_id: switch.lamp_pracownia
+#         state: "off"
+#       - condition: numeric_state
+#         entity_id: sensor.illumination_pracownia
+#         below: 8
+#       - condition: state
+#         entity_id: binary_sensor.motion_pracownia
+#         state: "on"
+#       - condition: state
+#         entity_id: input_boolean.light_auto_turn_pracownia
+#         state: "on"
+#       - condition: or
+#         conditions:
+#           - condition: sun
+#             after: sunset
+#           - condition: sun
+#             before: sunrise
+#   action:
+#     - service: switch.turn_on
+#       entity_id: switch.lamp_pracownia
+#     - service: input_boolean.turn_on
+#       entity_id: input_boolean.pracownia_light_motion_on
 
-# wyłączanie lampki w pracowni jak brak ruchu
-- id: light_turn_off_pracownia_lamp
-  alias: "Light Turn Off Pracownia Lamp"
-  trigger:
-    platform: state
-    entity_id: binary_sensor.motion_pracownia
-    from: "on"
-    to: "off"
-  condition:
-    condition: state
-    entity_id: input_boolean.pracownia_light_motion_on
-    state: "on"
-  action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.pracownia_light_motion_on
-    - service: switch.turn_off
-      entity_id: switch.lamp_pracownia
+# wyłączanie lampki w pracowni jak brak ruchu  # christmas
+# - id: light_turn_off_pracownia_lamp
+#   alias: "Light Turn Off Pracownia Lamp"
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.motion_pracownia
+#     from: "on"
+#     to: "off"
+#   condition:
+#     condition: state
+#     entity_id: input_boolean.pracownia_light_motion_on
+#     state: "on"
+#   action:
+#     - service: input_boolean.turn_off
+#       entity_id: input_boolean.pracownia_light_motion_on
+#     - service: switch.turn_off
+#       entity_id: switch.lamp_pracownia
 
 #### POKÓJ GOŚCINNY ####
 # wyłączanie lampki w pokoju gościnnym jak brak ruchu  # christmas

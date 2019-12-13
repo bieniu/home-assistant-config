@@ -200,7 +200,7 @@ views:
                   - entity: binary_sensor.motion_pracownia
                     secondary_info: last-changed
                   - binary_sensor.balcony_door_pracownia
-                  - switch.lamp_pracownia
+                  # - switch.lamp_pracownia  # christmas
                   - switch.christmas_lights_pracownia
           - type: custom:vertical-stack-in-card
             title: "Pokój gościnny"
@@ -299,6 +299,7 @@ views:
                   - climate.thermostat_antek
                   - light.lightstrip_antek
                   - switch.cabinet_antek
+                  - switch.christmas_lights_antek
           - type: custom:vertical-stack-in-card
             title: "Sypialnia"
             cards:
