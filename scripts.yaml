@@ -37,6 +37,7 @@ light_away_mode:
         - input_boolean.antek_lamp_night
         - switch.christmas_lights_antek  # christmas
         - switch.christmas_lights_antresola  # christmas
+        - switch.christmas_tree_salon  # christmas
 
 #### HEATING ####
 heating_fast_warm_up:

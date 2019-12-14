@@ -17,6 +17,7 @@
       entity_id:
         - switch.christmas_lights_antek
         - switch.christmas_lights_antresola
+        - switch.christmas_tree_salon
 
 - id: christmas_lights_turn_off
   alias: "Christmas Lights Turn Off"
@@ -31,6 +32,7 @@
       - switch.christmas_lights_goscinny
       - switch.christmas_lights_pracownia
       - switch.christmas_lights_antek
+      - switch.christmas_tree_salon
 
 - id: christmas_peoples_back
   alias: "Christmas Peoples Back"
@@ -46,6 +48,7 @@
     entity_id:
       - switch.christmas_lights_antek
       - switch.christmas_lights_antresola
+      - switch.christmas_tree_salon
 
 #### PURGE RECORDER DATABASE ###################################################
 - id: purge_recorder_database

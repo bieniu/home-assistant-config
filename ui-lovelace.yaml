@@ -135,6 +135,7 @@ views:
                   - light.bulbs_salon
                   - light.leds_salon
                   - light.lamp_salon
+                  - switch.christmas_tree_salon
                   - input_select.light_scenes_salon
                   - input_select.salon_harmony
                   - type: custom:mini-media-player
@@ -474,6 +475,7 @@ views:
               - binary_sensor.blitzwolf_bw_shp6_2ad05a_status
               - binary_sensor.blitzwolf_bw_shp6_ed007d_status
               - binary_sensor.blitzwolf_bw_shp6_ecf9ea_status
+              - binary_sensor.blitzwolf_bw_shp6_3766eb_status
               - binary_sensor.shelly1_328900_status
               - binary_sensor.shelly2_5b2604_status
               - binary_sensor.shelly_plug_s_7aecf4_status
