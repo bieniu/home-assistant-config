@@ -173,7 +173,7 @@ views:
                     group: true
                   - type: custom:mini-media-player
                     <<: *mini-media-player-padding
-                    entity: media_player.echo_plus
+                    entity: media_player.echo_show
                     hide:
                       controls: true
                       volume: true
@@ -301,6 +301,17 @@ views:
                   - light.lightstrip_antek
                   - switch.cabinet_antek
                   - switch.christmas_lights_antek
+                  - type: custom:mini-media-player
+                    <<: *mini-media-player-padding
+                    entity: media_player.echo_plus
+                    hide:
+                      controls: true
+                      volume: true
+                      power: true
+                      source: true
+                      progress: true
+                    info: scroll
+                    group: true
           - type: custom:vertical-stack-in-card
             title: "Sypialnia"
             cards:
@@ -324,6 +335,17 @@ views:
                   - climate.thermostat_sypialnia
                   - light.lightstrip_sypialnia
                   - switch.christmas_lights_sypialnia
+                  - type: custom:mini-media-player
+                    <<: *mini-media-player-padding
+                    entity: media_player.echo_dot
+                    hide:
+                      controls: true
+                      volume: true
+                      power: true
+                      source: true
+                      progress: true
+                    info: scroll
+                    group: true
           - type: custom:vertical-stack-in-card
             title: "Łazienka"
             cards:
@@ -431,6 +453,7 @@ views:
             entities:
               - binary_sensor.modem_status
               - binary_sensor.router_status
+              - binary_sensor.aimesh_status
               - binary_sensor.fingbox_status
               - binary_sensor.synology_status
               - binary_sensor.raspberry_status
@@ -445,7 +468,6 @@ views:
             show_header_toggle: false
             theme: network-status
             entities:
-              - binary_sensor.aimesh_status
               - binary_sensor.migateway_status
               - binary_sensor.harmonyhub_status
               - binary_sensor.brother_status
@@ -462,12 +484,14 @@ views:
               - binary_sensor.kindle_status
               - binary_sensor.kindle_8_status
               - binary_sensor.inkbook_status
+              - binary_sensor.echo_show_status
+              - binary_sensor.echo_plus_status
+              - binary_sensor.echo_dot_status
           - type: entities
             title: "Urządzenia IoT"
             show_header_toggle: false
             theme: network-status
             entities:
-              - binary_sensor.echo_plus_status
               - binary_sensor.sonoff_basic_a786cc_status
               - binary_sensor.sonoff_basic_067c81_status
               - binary_sensor.sonoff_basic_5dfba8_status
@@ -779,6 +803,7 @@ views:
                 entities:
                   - sensor.temperature_indoor
                 line_color: "#ef5350"
+                decimals: 1
               - type: custom:mini-graph-card
                 <<: *CLIMATE_GRAPH_PARAMS
                 entities:

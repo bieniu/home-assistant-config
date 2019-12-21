@@ -79,7 +79,7 @@
       domain: "persistent_notification"
       service: "dismiss"
   action:
-    service: notify.html5_dismiss
+    service: html5.dismiss
     data_template:
       target: "maciek"
       data:

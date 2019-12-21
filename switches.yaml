@@ -1,7 +1,7 @@
 - platform: wake_on_lan
   name: "stacjonarny"
   host: !secret desktop_hostname
-  mac_address: !secret desktop_mac_address
+  mac: !secret desktop_mac_address
   broadcast_address: 255.255.255.255
   turn_off:
     service: shell_command.stacjonarny_off

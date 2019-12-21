@@ -170,8 +170,6 @@ binary_sensor.mihumidifier_status:
   icon: mdi:air-humidifier
 binary_sensor.mifan_status:
   icon: mdi:fan
-binary_sensor.echo_plus_status:
-  icon: mdi:amazon-alexa
 binary_sensor.yeelight_yldd01yl_6707fc_status:
   location: "pokój Antka"
 binary_sensor.yeelight_yldd01yl_860cfa_status:
@@ -203,9 +201,6 @@ media_player.denon:
 media_player.bravia:
   friendly_name: "Telewizor"
   icon: mdi:television
-
-media_player.echo_plus:
-  icon: mdi:amazon-alexa
 
 #### SCRIPTS ####
 script.restart_hass:
