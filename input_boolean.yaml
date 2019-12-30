@@ -22,6 +22,8 @@ gabinet_light_motion_on:
 antek_lamp_night:
 harmony_command:
   initial: "off"
+notification_phone_dismiss:
+  initial: "off"
 guests:
   name: "Goście"
   icon: mdi:account-multiple-outline

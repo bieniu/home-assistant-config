@@ -276,7 +276,7 @@ views:
                   - entity: binary_sensor.motion_gabinet
                     secondary_info: last-changed
                   - climate.thermostat_gabinet
-                  - switch.lamp_gabinet
+                  # - switch.lamp_gabinet  # christmas
                   - switch.stacjonarny
           - type: custom:vertical-stack-in-card
             title: "Pokój Antka"
@@ -893,9 +893,9 @@ views:
                 show_header_toggle: false
                 entities:
                   - input_boolean.light_auto_turn_salon
-                  - input_boolean.light_auto_turn_pracownia
-                  - input_boolean.light_auto_turn_goscinny
-                  - input_boolean.light_auto_turn_gabinet
+                  # - input_boolean.light_auto_turn_pracownia  # christmas
+                  # - input_boolean.light_auto_turn_goscinny  # christmas
+                  # - input_boolean.light_auto_turn_gabinet  # christmas
               - type: entities
                 title: "Skrypty i ustawienia"
                 show_header_toggle: false

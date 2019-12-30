@@ -1,4 +1,19 @@
 #### CHRISTMAS ################################################################
+- id: christmas_light_sypialnia
+  alias: "Christmas Lights Sypialnia"
+  trigger:
+    platform: state
+    entity_id: switch.christmas_lights_sypialnia
+  condition:
+    condition: template
+    value_template: >-
+      {{ is_state("switch.christmas_lights_sypialnia", "on") or
+         is_state("switch.christmas_lights_sypialnia", "off") }}
+  action:
+    service_template: >-
+      switch.turn_{{ trigger.to_state.state }}
+    entity_id: switch.christmas_lights_2_sypialnia
+
 - id: christmas_lights_turn_on
   alias: "Christmas Lights Turn On"
   trigger:
@@ -69,6 +84,23 @@
 ################################################################################
 
 #### NOTIFICATIONS #############################################################
+# reset input_boolean.notification_phone_dismiss
+- id: notification_dismiss_reset_input_boolean
+  alias: "Notification Dismiss Reset Input Boolean"
+  trigger:
+    platform: event
+    event_type: "call_service"
+    event_data:
+      domain: "persistent_notification"
+      service: "dismiss"
+  condition:
+    condition: state
+    entity_id: input_boolean.notification_phone_dismiss
+    state: "on"
+  action:
+    service: input_boolean.turn_off
+    entity_id: input_boolean.notification_phone_dismiss
+
 # odrzucenie powiadomienia w telefonie poprzez odrzucenie we frontendzie
 - id: notification_dismiss_html5_via_persistant
   alias: "Notification Dismiss HTML5 Via Persistant"
@@ -78,6 +110,10 @@
     event_data:
       domain: "persistent_notification"
       service: "dismiss"
+  condition:
+    condition: state
+    entity_id: input_boolean.notification_phone_dismiss
+    state: "off"
   action:
     service: html5.dismiss
     data_template:
@@ -85,16 +121,18 @@
       data:
         tag: "{{ trigger.event.data.service_data.notification_id }}"
 
-# odrzucenie powiadomienia we frontendzie poprzez odrzucenie wtelefonie
+# odrzucenie powiadomienia we frontendzie poprzez odrzucenie w telefonie
 - id: notification_dismiss_persistant_via_html5
   alias: "Notification Dismiss Persistant Via HTML5"
   trigger:
     platform: event
     event_type: "html5_notification.closed"
   action:
-    service: persistent_notification.dismiss
-    data_template:
-      notification_id: "{{ trigger.event.data.tag }}"
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.notification_phone_dismiss
+    - service: persistent_notification.dismiss
+      data_template:
+        notification_id: "{{ trigger.event.data.tag }}"
 
 # powiadomienie o końcu zmywania
 - id: notification_dishwasher_end
@@ -1565,7 +1603,10 @@
       - condition: sun
         after: sunset
       - condition: template
-        value_template: "{{ is_state('light.leds_salon', 'on') or is_state('light.bulbs_salon', 'on') or is_state('light.lamp_salon', 'on') }}"
+        value_template: >-
+          {{ is_state('light.leds_salon', 'on') or
+             is_state('light.bulbs_salon', 'on') or
+             is_state('light.lamp_salon', 'on') }}
       - condition: time
         after: "20:10:00"
       - condition: state
@@ -1598,9 +1639,9 @@
     conditions:
       - condition: template
         value_template: >-
-          {{ is_state('light.leds_salon', 'on') or
-            is_state('light.bulbs_salon', 'on') or
-            is_state('light.lamp_salon', 'on') }}
+          {{ is_state("light.leds_salon", "on") or
+            is_state("light.bulbs_salon", "on") or
+            is_state("light.lamp_salon", "on") }}
       - condition: state
         entity_id: input_select.light_scenes_salon
         state: "film"
@@ -2095,8 +2136,8 @@
 #         state: "off"
 #       - condition: template
 #         value_template: >-
-#           {{ is_state('media_player.mibox', 'off')
-#              or is_state('media_player.mibox', 'unavailable') }}
+#           {{ is_state('media_player.mibox', 'off') or
+#              is_state('media_player.mibox', 'unavailable') }}
 #       - condition: numeric_state
 #         entity_id: sensor.illumination_goscinny
 #         below: 9
@@ -2119,67 +2160,67 @@
 #       entity_id: input_boolean.goscinny_light_motion_on
 
 #### GABINET ####
-# wyłączanie lampki w gabinecie jak brak ruchu
-- id: light_turn_off_gabinet_lamp
-  alias: "Light Turn Off Gabinet Lamp"
-  trigger:
-    platform: state
-    entity_id: binary_sensor.motion_gabinet
-    from: "on"
-    to: "off"
-  condition:
-    condition: state
-    entity_id: input_boolean.gabinet_light_motion_on
-    state: "on"
-  action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.gabinet_light_motion_on
-    - service: switch.turn_off
-      entity_id: switch.lamp_gabinet
+# wyłączanie lampki w gabinecie jak brak ruchu  # christmas
+# - id: light_turn_off_gabinet_lamp
+#   alias: "Light Turn Off Gabinet Lamp"
+#   trigger:
+#     platform: state
+#     entity_id: binary_sensor.motion_gabinet
+#     from: "on"
+#     to: "off"
+#   condition:
+#     condition: state
+#     entity_id: input_boolean.gabinet_light_motion_on
+#     state: "on"
+#   action:
+#     - service: input_boolean.turn_off
+#       entity_id: input_boolean.gabinet_light_motion_on
+#     - service: switch.turn_off
+#       entity_id: switch.lamp_gabinet
 
-# włączanie lampki w gabinecie jak ruch i ciemno
-- id: light_turn_on_gabinet_lamp_when_dark_and_motion
-  alias: "Light Turn On Gabinet Lamp When Dark And Motion"
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.motion_gabinet
-      from: "off"
-      to: "on"
-    - platform: numeric_state
-      entity_id: sensor.illumination_gabinet
-      below: 7
-  condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: "off"
-      - condition: state
-        entity_id: switch.lamp_gabinet
-        state: "off"
-      - condition: state
-        entity_id: switch.stacjonarny
-        state: "off"
-      - condition: numeric_state
-        entity_id: sensor.illumination_gabinet
-        below: 9
-      - condition: state
-        entity_id: binary_sensor.motion_gabinet
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.light_auto_turn_gabinet
-        state: "on"
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
-  action:
-    - service: switch.turn_on
-      entity_id: switch.lamp_gabinet
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.gabinet_light_motion_on
+# włączanie lampki w gabinecie jak ruch i ciemno  # christmas
+# - id: light_turn_on_gabinet_lamp_when_dark_and_motion
+#   alias: "Light Turn On Gabinet Lamp When Dark And Motion"
+#   trigger:
+#     - platform: state
+#       entity_id: binary_sensor.motion_gabinet
+#       from: "off"
+#       to: "on"
+#     - platform: numeric_state
+#       entity_id: sensor.illumination_gabinet
+#       below: 7
+#   condition:
+#     condition: and
+#     conditions:
+#       - condition: state
+#         entity_id: input_boolean.away_mode
+#         state: "off"
+#       - condition: state
+#         entity_id: switch.lamp_gabinet
+#         state: "off"
+#       - condition: state
+#         entity_id: switch.stacjonarny
+#         state: "off"
+#       - condition: numeric_state
+#         entity_id: sensor.illumination_gabinet
+#         below: 9
+#       - condition: state
+#         entity_id: binary_sensor.motion_gabinet
+#         state: "on"
+#       - condition: state
+#         entity_id: input_boolean.light_auto_turn_gabinet
+#         state: "on"
+#       - condition: or
+#         conditions:
+#           - condition: sun
+#             after: sunset
+#           - condition: sun
+#             before: sunrise
+#   action:
+#     - service: switch.turn_on
+#       entity_id: switch.lamp_gabinet
+#     - service: input_boolean.turn_on
+#       entity_id: input_boolean.gabinet_light_motion_on
 
 ##################################################################################################
 

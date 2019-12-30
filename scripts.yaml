@@ -112,8 +112,9 @@ heating_night:
       data_template:
         temperature: "{{ states('input_select.heating_temp_bathroom_night') }}"
     - condition: template
-      value_template: "{{ is_state('input_boolean.guests', 'off')
-        and is_state('media_player.bravia', 'off') }}"
+      value_template: >-
+        {{ is_state("input_boolean.guests", "off") and
+           is_state("media_player.bravia", "off") }}
     - service: fan.turn_off
       entity_id: fan.humidifier_salon
     - service: climate.set_temperature

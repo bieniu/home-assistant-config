@@ -203,10 +203,14 @@
     dishwasher_kuchnia:
       friendly_name: "Zmywarka"
       value_template: >-
-        {% if states('sensor.dishwasher_kuchnia_power') | int > 1 %}
-          zmywanie
+        {% if states('sensor.dishwasher_kuchnia_power') != ('unavailable' or 'unknown') %}
+          {% if states('sensor.dishwasher_kuchnia_power') | int > 1 %}
+            zmywanie
+          {% else %}
+            wyłączona
+          {% endif %}
         {% else %}
-          wyłączona
+          {{ states('sensor.dishwasher_kuchnia') }}
         {% endif %}
 
     light_salon_power_sum:
@@ -249,7 +253,7 @@
       friendly_name: "Poziom wody"
       unit_of_measurement: "%"
       value_template: >-
-        {% if state_attr('fan.humidifier_salon', 'depth') < 127 %}
+        {% if state_attr('fan.humidifier_salon', 'depth') is number %}
           {{ (state_attr('fan.humidifier_salon', 'depth') * 0.89 - 11.6) | round | min(100) | max(0) }}
         {% else %}
           {{ states('sensor.humidifier_water_level') }}
