@@ -157,32 +157,32 @@
       notify_edyta: true
 
 # powiadomienie o włączonym komputerze
-- id: notification_desktop_computer_turned_on
-  alias: "Notification Desktop Computer Turned On"
-  trigger:
-    - platform: time
-      at: "22:45:00"
-    - platform: state
-      entity_id: person.maciek
-      to: not_home
-      for:
-        minutes: 5
-  condition:
-    condition: state
-    entity_id: switch.stacjonarny
-    state: "on"
-  action:
-    service: notify.mobile_app_oneplus_6
-    data:
-      title: "Komputer stacjonarny włączony"
-      message: "Komputer stacjonarny jest włączony. Czy chcesz go wyłączyć?"
-      data:
-        android:
-          notification:
-            tag: "notification-desktop-computer"
-            actions:
-              - action: turn_off_desktop_computer
-                title: "Wyłącz"
+# - id: notification_desktop_computer_turned_on
+#   alias: "Notification Desktop Computer Turned On"
+#   trigger:
+#     - platform: time
+#       at: "22:45:00"
+#     - platform: state
+#       entity_id: person.maciek
+#       to: not_home
+#       for:
+#         minutes: 5
+#   condition:
+#     condition: state
+#     entity_id: switch.stacjonarny
+#     state: "on"
+#   action:
+#     service: notify.mobile_app_oneplus_6
+#     data:
+#       title: "Komputer stacjonarny włączony"
+#       message: "Komputer stacjonarny jest włączony. Czy chcesz go wyłączyć?"
+#       data:
+#         android:
+#           notification:
+#             tag: "notification-desktop-computer"
+#             actions:
+#               - action: turn_off_desktop_computer
+#                 title: "Wyłącz"
 
 # wyłączenie komputera z powiadomienia
 - id: notification_turn_off_desktop_computer

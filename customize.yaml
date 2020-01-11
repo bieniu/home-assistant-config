@@ -1,11 +1,11 @@
 #### DEVICE_TRACKER ####
-device_tracker.oneplus_6_gps:
+device_tracker.oneplus_6_app:
   icon: mdi:cellphone-android
 
 device_tracker.ipad_air_app:
   icon: mdi:tablet-ipad
 
-device_tracker.iphone_8_plus:
+device_tracker.iphone_8_plus_app:
   icon: mdi:cellphone-iphone
 
 #### PERSONS #####
