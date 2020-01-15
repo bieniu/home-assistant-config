@@ -453,7 +453,7 @@ views:
             entities:
               - binary_sensor.modem_status
               - binary_sensor.router_status
-              - binary_sensor.aimesh_status
+              - binary_sensor.access_point_status
               - binary_sensor.fingbox_status
               - binary_sensor.synology_status
               - binary_sensor.raspberry_status

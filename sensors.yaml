@@ -112,13 +112,13 @@
 - platform: command_line
   command: python3 -c "import requests; print(requests.get('https://pypistats.org/api/packages/gios/recent?period=day').json()['data']['last_day'])"
   name: "PyPi GIOS package downloads per day"
-  scan_interval: 86400
+  scan_interval: 14400
   unit_of_measurement: " "
 
 - platform: command_line
   command: python3 -c "import requests; print(requests.get('https://pypistats.org/api/packages/brother/recent?period=day').json()['data']['last_day'])"
   name: "PyPi Brother package downloads per day"
-  scan_interval: 86400
+  scan_interval: 14400
   unit_of_measurement: " "
 
 - platform: sql
