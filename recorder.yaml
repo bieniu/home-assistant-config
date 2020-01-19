@@ -84,12 +84,8 @@ exclude:
     - sensor.ad_version_current
     - sensor.tasmota_version_current
     - sensor.caddy_version_current
+    - sensor.esphome_version_current
     - sensor.last_boot
-    - sensor.airly_caqi
-    - sensor.airly_description
-    - sensor.airly_temperature
-    - sensor.airly_humidity
-    - sensor.airly_pressure
     - switch.lamp_salon
     - sensor.lamp_salon_power
     - sensor.light_salon_power
@@ -108,6 +104,15 @@ exclude:
     - sensor.blitzwolf_bw_shp6_2ad05a_current
     - sensor.blitzwolf_bw_shp6_2ad05a_power
     - sensor.blitzwolf_bw_shp6_2ad05a_voltage
+    - sensor.blitzwolf_bw_shp6_ed007d_current
+    - sensor.blitzwolf_bw_shp6_ed007d_power
+    - sensor.blitzwolf_bw_shp6_ed007d_voltage
+    - sensor.blitzwolf_bw_shp6_3766eb_current
+    - sensor.blitzwolf_bw_shp6_3766eb_power
+    - sensor.blitzwolf_bw_shp6_3766eb_voltage
+    - sensor.blitzwolf_bw_shp6_ecf9ea_current
+    - sensor.blitzwolf_bw_shp6_ecf9ea_power
+    - sensor.blitzwolf_bw_shp6_ecf9ea_voltage
     - sensor.fibaro_fgs223_power_2
     - switch.fibaro_fgs223_relay_2
 include:

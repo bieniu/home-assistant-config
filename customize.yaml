@@ -272,8 +272,8 @@ binary_sensor.window_gabinet:
   location: "gabinet"
 
 #### PRINTER ####
-sensor.printer_status_custom:
-  icon: mdi:printer
+sensor.printer_last_boot:
+  icon: mdi:clock-outline
 sensor.printer_page_counter:
   unit_of_measurement: "str"
 

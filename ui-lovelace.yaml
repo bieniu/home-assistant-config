@@ -18,7 +18,6 @@ resources:
   - url: /community_plugin/bom-weather-card/bom-weather-card.js
     type: module
 
-background: "#e5e5e5"
 
 anchors:
   card-no-border-radius: &card-no-border-radius
@@ -44,7 +43,12 @@ anchors:
             var(--state-icon-color)
           {% endif %}
       }
-
+  network-status-entity: &network-status-entity
+    style: |
+      :host {
+        --paper-item-icon-color: var(--disabled-text-color);
+        --paper-item-icon-active-color: var(--state-icon-color)
+      }
 title: "Dom"
 views:
   - id: home
@@ -135,7 +139,6 @@ views:
                   - light.bulbs_salon
                   - light.leds_salon
                   - light.lamp_salon
-                  - switch.christmas_tree_salon
                   - input_select.light_scenes_salon
                   - input_select.salon_harmony
                   - type: custom:mini-media-player
@@ -201,8 +204,7 @@ views:
                   - entity: binary_sensor.motion_pracownia
                     secondary_info: last-changed
                   - binary_sensor.balcony_door_pracownia
-                  # - switch.lamp_pracownia  # christmas
-                  - switch.christmas_lights_pracownia
+                  - switch.lamp_pracownia
           - type: custom:vertical-stack-in-card
             title: "Pokój gościnny"
             cards:
@@ -221,8 +223,7 @@ views:
                 entities:
                   - entity: binary_sensor.motion_goscinny
                     secondary_info: last-changed
-                  # - switch.lamp_goscinny  # christmas
-                  - switch.christmas_lights_goscinny
+                  - switch.lamp_goscinny
                   - type: custom:mini-media-player
                     <<: *mini-media-player-padding
                     entity: media_player.mibox
@@ -255,7 +256,6 @@ views:
                     secondary_info: last-changed
                   - climate.thermostat_antresola
                   - light.gateway_antresola
-                  - switch.christmas_lights_antresola
           - type: custom:vertical-stack-in-card
             title: "Gabinet"
             cards:
@@ -276,7 +276,6 @@ views:
                   - entity: binary_sensor.motion_gabinet
                     secondary_info: last-changed
                   - climate.thermostat_gabinet
-                  # - switch.lamp_gabinet  # christmas
                   - switch.stacjonarny
           - type: custom:vertical-stack-in-card
             title: "Pokój Antka"
@@ -300,7 +299,6 @@ views:
                   - climate.thermostat_antek
                   - light.lightstrip_antek
                   - switch.cabinet_antek
-                  - switch.christmas_lights_antek
                   - type: custom:mini-media-player
                     <<: *mini-media-player-padding
                     entity: media_player.echo_plus
@@ -334,7 +332,6 @@ views:
                     secondary_info: last-changed
                   - climate.thermostat_sypialnia
                   - light.lightstrip_sypialnia
-                  - switch.christmas_lights_sypialnia
                   - type: custom:mini-media-player
                     <<: *mini-media-player-padding
                     entity: media_player.echo_dot
@@ -374,7 +371,6 @@ views:
     icon: mdi:map
     title: "Mapa"
     path: map
-    theme: default
     panel: true
     cards:
       - type: map
@@ -396,7 +392,6 @@ views:
               - type: entities
                 title: "Synology"
                 show_header_toggle: false
-                theme: synology
                 entities:
                   - sensor.synology_disk_used
                   - sensor.synology_last_boot
@@ -433,6 +428,7 @@ views:
                   - sensor.printer_page_counter
                   - sensor.printer_drum_remaining_life
                   - sensor.printer_toner_remaining
+                  - sensor.printer_last_boot
               - type: entities
                 title: "Urządzenia Z-Wave"
                 show_header_toggle: false
@@ -449,68 +445,115 @@ views:
           - type: entities
             title: "Urządzenia przewodowe"
             show_header_toggle: false
-            theme: network-status
             entities:
-              - binary_sensor.modem_status
-              - binary_sensor.router_status
-              - binary_sensor.access_point_status
-              - binary_sensor.fingbox_status
-              - binary_sensor.synology_status
-              - binary_sensor.raspberry_status
-              - binary_sensor.bravia_status
-              - binary_sensor.denon_status
-              - binary_sensor.dune_status
-              - binary_sensor.playstation_status
-              - binary_sensor.xbox_status
-              - binary_sensor.stacjonarny_status
+              - entity: binary_sensor.modem_status
+                <<: *network-status-entity
+              - entity: binary_sensor.router_status
+                <<: *network-status-entity
+              - entity: binary_sensor.access_point_status
+                <<: *network-status-entity
+              - entity: binary_sensor.fingbox_status
+                <<: *network-status-entity
+              - entity: binary_sensor.synology_status
+                <<: *network-status-entity
+              - entity: binary_sensor.raspberry_status
+                <<: *network-status-entity
+              - entity: binary_sensor.bravia_status
+                <<: *network-status-entity
+              - entity: binary_sensor.denon_status
+                <<: *network-status-entity
+              - entity: binary_sensor.dune_status
+                <<: *network-status-entity
+              - entity: binary_sensor.playstation_status
+                <<: *network-status-entity
+              - entity: binary_sensor.xbox_status
+                <<: *network-status-entity
+              - entity: binary_sensor.stacjonarny_status
+                <<: *network-status-entity
           - type: entities
             title: "Urządzenia bezprzewodowe"
             show_header_toggle: false
-            theme: network-status
             entities:
-              - binary_sensor.migateway_status
-              - binary_sensor.harmonyhub_status
-              - binary_sensor.brother_status
-              - binary_sensor.mibox_status
-              - binary_sensor.dafang_status
-              - binary_sensor.mihumidifier_status
-              - binary_sensor.mifan_status
-              - binary_sensor.laptop_status
-              - binary_sensor.laptopedyta_status
-              - binary_sensor.oneplus_status
-              - binary_sensor.iphone_status
-              - binary_sensor.lumia_status
-              - binary_sensor.ipad_status
-              - binary_sensor.kindle_status
-              - binary_sensor.kindle_8_status
-              - binary_sensor.inkbook_status
-              - binary_sensor.echo_show_status
-              - binary_sensor.echo_plus_status
-              - binary_sensor.echo_dot_status
+              - entity: binary_sensor.migateway_status
+                <<: *network-status-entity
+              - entity: binary_sensor.harmonyhub_status
+                <<: *network-status-entity
+              - entity: binary_sensor.brother_status
+                <<: *network-status-entity
+              - entity: binary_sensor.mibox_status
+                <<: *network-status-entity
+              - entity: binary_sensor.dafang_status
+                <<: *network-status-entity
+              - entity: binary_sensor.mihumidifier_status
+                <<: *network-status-entity
+              - entity: binary_sensor.mifan_status
+                <<: *network-status-entity
+              - entity: binary_sensor.laptop_status
+                <<: *network-status-entity
+              - entity: binary_sensor.laptopedyta_status
+                <<: *network-status-entity
+              - entity: binary_sensor.oneplus_status
+                <<: *network-status-entity
+              - entity: binary_sensor.iphone_status
+                <<: *network-status-entity
+              - entity: binary_sensor.lumia_status
+                <<: *network-status-entity
+              - entity: binary_sensor.ipad_status
+                <<: *network-status-entity
+              - entity: binary_sensor.kindle_status
+                <<: *network-status-entity
+              - entity: binary_sensor.kindle_8_status
+                <<: *network-status-entity
+              - entity: binary_sensor.inkbook_status
+                <<: *network-status-entity
+              - entity: binary_sensor.echo_show_status
+                <<: *network-status-entity
+              - entity: binary_sensor.echo_plus_status
+                <<: *network-status-entity
+              - entity: binary_sensor.echo_dot_status
+                <<: *network-status-entity
           - type: entities
             title: "Urządzenia IoT"
             show_header_toggle: false
-            theme: network-status
             entities:
-              - binary_sensor.sonoff_basic_a786cc_status
-              - binary_sensor.sonoff_basic_067c81_status
-              - binary_sensor.sonoff_basic_5dfba8_status
-              - binary_sensor.sonoff_s26_182475_status
-              - binary_sensor.blitzwolf_bw_shp6_2ad05a_status
-              - binary_sensor.blitzwolf_bw_shp6_ed007d_status
-              - binary_sensor.blitzwolf_bw_shp6_ecf9ea_status
-              - binary_sensor.blitzwolf_bw_shp6_3766eb_status
-              - binary_sensor.shelly1_328900_status
-              - binary_sensor.shelly2_5b2604_status
-              - binary_sensor.shelly_plug_s_7aecf4_status
-              - binary_sensor.shelly_ht_e00abd_status
-              - binary_sensor.wemos_d1_mini_1c91ea_status
-              - binary_sensor.yeelight_yldp06yl_84be7a_status
-              - binary_sensor.yeelight_yldp06yl_7cafc6_status
-              - binary_sensor.yeelight_yldp02yl_f12026_status
-              - binary_sensor.yeelight_yldp02yl_b1b6aa_status
-              - binary_sensor.yeelight_yldd01yl_860cfa_status
-              - binary_sensor.yeelight_yldd01yl_6707fc_status
+              - entity: binary_sensor.sonoff_basic_a786cc_status
+                <<: *network-status-entity
+              - entity: binary_sensor.sonoff_basic_067c81_status
+                <<: *network-status-entity
+              - entity: binary_sensor.sonoff_basic_5dfba8_status
+                <<: *network-status-entity
+              - entity: binary_sensor.sonoff_s26_182475_status
+                <<: *network-status-entity
+              - entity: binary_sensor.blitzwolf_bw_shp6_2ad05a_status
+                <<: *network-status-entity
+              - entity: binary_sensor.blitzwolf_bw_shp6_ed007d_status
+                <<: *network-status-entity
+              - entity: binary_sensor.blitzwolf_bw_shp6_ecf9ea_status
+                <<: *network-status-entity
+              - entity: binary_sensor.blitzwolf_bw_shp6_3766eb_status
+                <<: *network-status-entity
+              - entity: binary_sensor.shelly1_328900_status
+                <<: *network-status-entity
+              - entity: binary_sensor.shelly2_5b2604_status
+                <<: *network-status-entity
+              - entity: binary_sensor.shelly_plug_s_7aecf4_status
+                <<: *network-status-entity
+              - entity: binary_sensor.shelly_ht_e00abd_status
+                <<: *network-status-entity
+              - entity: binary_sensor.wemos_d1_mini_1c91ea_status
+                <<: *network-status-entity
+              - entity: binary_sensor.yeelight_yldp06yl_84be7a_status
+                <<: *network-status-entity
+              - entity: binary_sensor.yeelight_yldp06yl_7cafc6_status
+                <<: *network-status-entity
+              - entity: binary_sensor.yeelight_yldp02yl_f12026_status
+                <<: *network-status-entity
+              - entity: binary_sensor.yeelight_yldp02yl_b1b6aa_status
+                <<: *network-status-entity
+              - entity: binary_sensor.yeelight_yldd01yl_860cfa_status
+                <<: *network-status-entity
+              - entity: binary_sensor.yeelight_yldd01yl_6707fc_status
+                <<: *network-status-entity
   - id: energy
     icon: mdi:power-plug
     title: "Energia"
@@ -893,9 +936,9 @@ views:
                 show_header_toggle: false
                 entities:
                   - input_boolean.light_auto_turn_salon
-                  # - input_boolean.light_auto_turn_pracownia  # christmas
-                  # - input_boolean.light_auto_turn_goscinny  # christmas
-                  # - input_boolean.light_auto_turn_gabinet  # christmas
+                  - input_boolean.light_auto_turn_pracownia
+                  - input_boolean.light_auto_turn_goscinny
+                  # - input_boolean.light_auto_turn_gabinet
               - type: entities
                 title: "Skrypty i ustawienia"
                 show_header_toggle: false

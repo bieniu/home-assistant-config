@@ -109,18 +109,6 @@
   name: "AD Version Current"
   scan_interval: 1800
 
-- platform: command_line
-  command: python3 -c "import requests; print(requests.get('https://pypistats.org/api/packages/gios/recent?period=day').json()['data']['last_day'])"
-  name: "PyPi GIOS package downloads per day"
-  scan_interval: 14400
-  unit_of_measurement: " "
-
-- platform: command_line
-  command: python3 -c "import requests; print(requests.get('https://pypistats.org/api/packages/brother/recent?period=day').json()['data']['last_day'])"
-  name: "PyPi Brother package downloads per day"
-  scan_interval: 14400
-  unit_of_measurement: " "
-
 - platform: sql
   db_url: !secret mysql_db_url
   queries:
@@ -261,14 +249,16 @@
       friendly_name: "Ostatni restart"
       value_template: "{{ states('sensor.last_boot').split('T')[0] }}"
 
+    printer_last_boot:
+      friendly_name: "Ostatni restart"
+      value_template: "{{ (as_timestamp(now()) - states('sensor.printer_uptime') | int * 24 * 60 * 60) | timestamp_custom('%Y-%m-%d') }}"
+
     humidifier_water_level:
       friendly_name: "Poziom wody"
       unit_of_measurement: "%"
       value_template: >-
         {% if state_attr('fan.humidifier_salon', 'depth') is number %}
           {{ (state_attr('fan.humidifier_salon', 'depth') * 0.89 - 11.6) | round | min(100) | max(0) }}
-        {% else %}
-          {{ states('sensor.humidifier_water_level') }}
         {% endif %}
 
     battery_temp_humi_sensor_outdoor:

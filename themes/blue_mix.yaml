@@ -15,7 +15,7 @@ blue-mix:
   # state-icon-unavailable-color: 'var(--disabled-text-color)'
 
   # card-background-color: '#ffffff'
-  # primary-background-color: '#e5e5e5'
+  primary-background-color: '#e5e5e5'
   # secondary-background-color: '#d6d6d6'
 
   # sidebar-text-color: 'var(--primary-text-color)'
