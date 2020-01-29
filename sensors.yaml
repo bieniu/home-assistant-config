@@ -258,7 +258,13 @@
       unit_of_measurement: "%"
       value_template: >-
         {% if state_attr('fan.humidifier_salon', 'depth') is number %}
-          {{ (state_attr('fan.humidifier_salon', 'depth') * 0.89 - 11.6) | round | min(100) | max(0) }}
+          {% if state_attr('fan.humidifier_salon', 'depth') < 127 %}
+            {{ (state_attr('fan.humidifier_salon', 'depth') * 0.89 - 11.6) | round | min(100) | max(0) }}
+          {% else %}
+            0
+          {% endif %}
+        {% else %}
+          0
         {% endif %}
 
     battery_temp_humi_sensor_outdoor:

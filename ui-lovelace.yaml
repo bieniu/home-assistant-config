@@ -18,6 +18,7 @@ resources:
   - url: /community_plugin/bom-weather-card/bom-weather-card.js
     type: module
 
+background: "#e5e5e5"
 
 anchors:
   card-no-border-radius: &card-no-border-radius
@@ -48,6 +49,28 @@ anchors:
       :host {
         --paper-item-icon-color: var(--disabled-text-color);
         --paper-item-icon-active-color: var(--state-icon-color)
+      }
+  percent-entity: &percent-entity
+    style: |
+      :host {
+        --paper-item-icon-color:
+          {% if states(config.entity) | int < 15 %}
+            var(--label-badge-red)
+          {% elif states(config.entity) | int < 30 %}
+            var(--label-badge-yellow)
+          {% else %}
+            var(--state-icon-color)
+          {% endif %}
+      }
+  zwave-entity: &zwave-entity
+    style: |
+      :host {
+        --paper-item-icon-color:
+          {% if is_state(config.entity, "dead") %}
+            var(--label-badge-red)
+          {% else %}
+            var(--state-icon-color)
+          {% endif %}
       }
 title: "Dom"
 views:
@@ -106,7 +129,7 @@ views:
                         style: |
                           :host {
                             --paper-item-icon-color:
-                              {% if states(config.entity) == "zmywanie" %}
+                              {% if is_state(config.entity, "zmywanie") %}
                                 var(--state-icon-active-color)
                               {% else %}
                                 var(--state-icon-color)
@@ -426,22 +449,33 @@ views:
                 entities:
                   - sensor.printer_status
                   - sensor.printer_page_counter
-                  - sensor.printer_drum_remaining_life
-                  - sensor.printer_toner_remaining
+                  - entity: sensor.printer_drum_remaining_life
+                    <<: *percent-entity
+                  - entity: sensor.printer_toner_remaining
+                    <<: *percent-entity
                   - sensor.printer_last_boot
               - type: entities
                 title: "Urządzenia Z-Wave"
                 show_header_toggle: false
                 entities:
-                  - zwave.aeotec_zw090_zstick_gen5
-                  - zwave.fibaro_fgs223
-                  - zwave.thermostat_salon
-                  - zwave.thermostat_kuchnia
-                  - zwave.thermostat_antresola
-                  - zwave.thermostat_gabinet
-                  - zwave.thermostat_antek
-                  - zwave.thermostat_sypialnia
-                  - zwave.thermostat_lazienka
+                  - entity: zwave.aeotec_zw090_zstick_gen5
+                    <<: *zwave-entity
+                  - entity: zwave.fibaro_fgs223
+                    <<: *zwave-entity
+                  - entity: zwave.thermostat_salon
+                    <<: *zwave-entity
+                  - entity: zwave.thermostat_kuchnia
+                    <<: *zwave-entity
+                  - entity: zwave.thermostat_antresola
+                    <<: *zwave-entity
+                  - entity: zwave.thermostat_gabinet
+                    <<: *zwave-entity
+                  - entity: zwave.thermostat_antek
+                    <<: *zwave-entity
+                  - entity: zwave.thermostat_sypialnia
+                    <<: *zwave-entity
+                  - entity: zwave.thermostat_lazienka
+                    <<: *zwave-entity
           - type: entities
             title: "Urządzenia przewodowe"
             show_header_toggle: false

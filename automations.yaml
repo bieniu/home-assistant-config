@@ -34,8 +34,10 @@
     entity_id: binary_sensor.people_at_home
     to: "on"
   condition:
-    condition: sun
-    after: sunset
+    - condition: sun
+      after: sunset
+    - condition: time
+      before: "23:00:00"
   action:
     service: switch.turn_on
     entity_id:
@@ -88,13 +90,11 @@
 #       domain: "persistent_notification"
 #       service: "dismiss"
 #   condition:
-#     condition: and
-#     conditions:
-#       - condition: state
-#         entity_id: input_boolean.notification_phone_dismiss
-#         state: "off"
-#       - condition: template
-#         value_template: "{{ 'notification' in trigger.event.data.service_data.notification_id }}"
+#     - condition: state
+#       entity_id: input_boolean.notification_phone_dismiss
+#       state: "off"
+#     - condition: template
+#       value_template: "{{ 'notification' in trigger.event.data.service_data.notification_id }}"
 #   action:
 #     service: html5.dismiss
 #     data_template:
@@ -277,22 +277,20 @@
     platform: state
     entity_id: sensor.ha_version_current
   condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{ trigger.to_state.state != 'unknown' }}"
-      - condition: template
-        value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-      - condition: template
-        value_template: "{{ trigger.from_state.state != 'unknown' }}"
-      - condition: template
-        value_template: "{{ trigger.from_state.state != 'unavailable' }}"
-      - condition: template
-        value_template: "{{ states('sensor.ha_version_installed') != 'unknown' }}"
-      - condition: template
-        value_template: "{{ states('sensor.ha_version_installed') != 'unavailable' }}"
-      - condition: template
-        value_template: "{{ trigger.to_state.state != states('sensor.ha_version_installed') }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ states('sensor.ha_version_installed') != 'unknown' }}"
+    - condition: template
+      value_template: "{{ states('sensor.ha_version_installed') != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != states('sensor.ha_version_installed') }}"
   action:
     - service: script.notify
       data_template:
@@ -313,16 +311,14 @@
     platform: state
     entity_id: sensor.ad_version_current
   condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{ trigger.to_state.state != 'unknown' }}"
-      - condition: template
-        value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-      - condition: template
-        value_template: "{{ trigger.from_state.state != 'unknown' }}"
-      - condition: template
-        value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
   action:
     - service: script.notify
       data_template:
@@ -350,9 +346,11 @@
       entity_id: sensor.humidifier_water_level
       below: 40
   condition:
-    condition: state
-    entity_id: input_boolean.heating_season
-    state: "on"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: template
+      value_template: "{{ states('sensor.humidifier_water_level') | int != 0 }}"
   action:
     # - service: persistent_notification.create
     #   data_template:
@@ -389,6 +387,8 @@
     - condition: state
       entity_id: input_boolean.heating_season
       state: "on"
+    - condition: template
+      value_template: "{{ states('sensor.humidifier_water_level') | int != 0 }}"
   action:
     service: notify.mobile_app_iphone_8_plus
     data_template:
@@ -427,16 +427,14 @@
     - platform: state
       entity_id: sensor.shelly_plug_s_firmware_version_current
   condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{ trigger.to_state.state != 'unknown' }}"
-      - condition: template
-        value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-      - condition: template
-        value_template: "{{ trigger.from_state.state != 'unknown' }}"
-      - condition: template
-        value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
   action:
     - service: script.notify
       data_template:
@@ -457,16 +455,14 @@
     platform: state
     entity_id: sensor.tasmota_version_current
   condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{ trigger.to_state.state != 'unknown' }}"
-      - condition: template
-        value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-      - condition: template
-        value_template: "{{ trigger.from_state.state != 'unknown' }}"
-      - condition: template
-        value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
   action:
     - service: script.notify
       data_template:
@@ -487,16 +483,14 @@
     platform: state
     entity_id: sensor.esphome_version_current
   condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{ trigger.to_state.state != 'unknown' }}"
-      - condition: template
-        value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-      - condition: template
-        value_template: "{{ trigger.from_state.state != 'unknown' }}"
-      - condition: template
-        value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
   action:
     - service: script.notify
       data_template:
@@ -517,16 +511,14 @@
     platform: state
     entity_id: sensor.caddy_version_current
   condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{ trigger.to_state.state != 'unknown' }}"
-      - condition: template
-        value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-      - condition: template
-        value_template: "{{ trigger.from_state.state != 'unknown' }}"
-      - condition: template
-        value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
   action:
     - service: script.notify
       data_template:
@@ -841,22 +833,20 @@
     minutes: "/1"
     seconds: 0
   condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_end') }}"
-      - condition: state
-        entity_id: binary_sensor.workday_sensor
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: "off"
-      - condition: state
-        entity_id: group.windows
-        state: "off"
+    - condition: template
+      value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_end') }}"
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.away_mode
+      state: "off"
+    - condition: state
+      entity_id: group.windows
+      state: "off"
   action:
     service: script.heating_day
 
@@ -868,22 +858,20 @@
     minutes: "/1"
     seconds: 0
   condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_start') }}"
-      - condition: state
-        entity_id: binary_sensor.workday_sensor
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: "off"
-      - condition: state
-        entity_id: group.windows
-        state: "off"
+    - condition: template
+      value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_start') }}"
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.away_mode
+      state: "off"
+    - condition: state
+      entity_id: group.windows
+      state: "off"
   action:
     service: script.heating_night
 
@@ -895,22 +883,20 @@
     minutes: "/1"
     seconds: 0
   condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_end_weekend') }}"
-      - condition: state
-        entity_id: binary_sensor.workday_sensor
-        state: "off"
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: "off"
-      - condition: state
-        entity_id: group.windows
-        state: "off"
+    - condition: template
+      value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_end_weekend') }}"
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: "off"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.away_mode
+      state: "off"
+    - condition: state
+      entity_id: group.windows
+      state: "off"
   action:
     service: script.heating_day
 
@@ -922,22 +908,20 @@
     minutes: "/1"
     seconds: 0
   condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_start_weekend') }}"
-      - condition: state
-        entity_id: binary_sensor.workday_sensor
-        state: "off"
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: "off"
-      - condition: state
-        entity_id: group.windows
-        state: "off"
+    - condition: template
+      value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_start_weekend') }}"
+    - condition: state
+      entity_id: binary_sensor.workday_sensor
+      state: "off"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.away_mode
+      state: "off"
+    - condition: state
+      entity_id: group.windows
+      state: "off"
   action:
     service: script.heating_night
 
@@ -949,20 +933,18 @@
     entity_id: media_player.bravia
     to: "off"
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.heating_night
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.heating_salon_kuchnia_night
-        state: "off"
-      - condition: state
-        entity_id: group.windows
-        state: "off"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.heating_night
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.heating_salon_kuchnia_night
+      state: "off"
+    - condition: state
+      entity_id: group.windows
+      state: "off"
   action:
     - service: fan.turn_off
       entity_id: fan.humidifier_salon
@@ -986,16 +968,14 @@
 #     entity_id: media_player.bravia
 #     to: "off"
 #   condition:
-#     condition: and
-#     conditions:
-#       - condition: state
-#         entity_id: fan.salon
-#         state: "on"
-#       - condition: state
-#         entity_id: input_boolean.heating_season
-#         state: "off"
-#       - condition: time
-#         after: "22:00:00"
+#     - condition: state
+#       entity_id: fan.salon
+#       state: "on"
+#     - condition: state
+#       entity_id: input_boolean.heating_season
+#       state: "off"
+#     - condition: time
+#       after: "22:00:00"
 #   action:
 #     service: fan.turn_off
 #     entity_id: fan.salon
@@ -1011,14 +991,12 @@
     for:
       minutes: 15
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "on"
-      - condition: state
-        entity_id: group.windows
-        state: "off"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: state
+      entity_id: group.windows
+      state: "off"
   action:
     service: script.heating_eco_mode
 
@@ -1031,17 +1009,15 @@
     from: "on"
     to: "off"
   condition:
-    condition: and
-    conditions:
-      - condition: time
-        after: "05:00:00"
-        before: "22:00:00"
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "on"
-      - condition: state
-        entity_id: group.windows
-        state: "off"
+    - condition: time
+      after: "05:00:00"
+      before: "22:00:00"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: state
+      entity_id: group.windows
+      state: "off"
   action:
     service: script.heating_day
 
@@ -1053,17 +1029,15 @@
     from: "on"
     to: "off"
   condition:
-    condition: and
-    conditions:
-      - condition: time
-        after: "22:00:00"
-        before: "05:00:00"
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "on"
-      - condition: state
-        entity_id: group.windows
-        state: "off"
+    - condition: time
+      after: "22:00:00"
+      before: "05:00:00"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: state
+      entity_id: group.windows
+      state: "off"
   action:
     service: script.heating_night
 
@@ -1078,26 +1052,24 @@
       entity_id: sensor.edyta_to_home
       below: 30
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.edyta_far_from_home
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.maciek_far_from_home
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: "on"
-      - condition: state
-        entity_id: script.heating_fast_warm_up
-        state: "off"
-      - condition: state
-        entity_id: group.windows
-        state: "off"
+    - condition: state
+      entity_id: input_boolean.edyta_far_from_home
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.maciek_far_from_home
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.away_mode
+      state: "on"
+    - condition: state
+      entity_id: script.heating_fast_warm_up
+      state: "off"
+    - condition: state
+      entity_id: group.windows
+      state: "off"
   action:
     - service: script.heating_day
     - service: input_boolean.turn_off
@@ -1116,28 +1088,26 @@
       entity_id: sensor.edyta_to_home
       below: 60
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.edyta_far_from_home
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.maciek_far_from_home
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: "on"
-        for:
-          hours: 12
-      - condition: state
-        entity_id: script.heating_fast_warm_up
-        state: "off"
-      - condition: state
-        entity_id: group.windows
-        state: "off"
+    - condition: state
+      entity_id: input_boolean.edyta_far_from_home
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.maciek_far_from_home
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.away_mode
+      state: "on"
+      for:
+        hours: 12
+    - condition: state
+      entity_id: script.heating_fast_warm_up
+      state: "off"
+    - condition: state
+      entity_id: group.windows
+      state: "off"
   action:
     - service: script.heating_fast_warm_up
     - service: input_boolean.turn_off
@@ -1217,14 +1187,12 @@
     from: "on"
     to: "off"
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "on"
-      - condition: time
-        after: "05:00:00"
-        before: "22:00:00"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: time
+      after: "05:00:00"
+      before: "22:00:00"
   action:
     - service: script.heating_day
     - condition: state
@@ -1246,14 +1214,12 @@
     from: "on"
     to: "off"
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "on"
-      - condition: time
-        after: "22:00:00"
-        before: "05:00:00"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: time
+      after: "22:00:00"
+      before: "05:00:00"
   action:
     - service: script.heating_night
     - condition: state
@@ -1581,20 +1547,18 @@
       entity_id: input_select.salon_harmony
       to: "Smart TV"
   condition:
-    condition: and
-    conditions:
-      - condition: sun
-        after: sunset
-      - condition: template
-        value_template: >-
-          {{ is_state('light.leds_salon', 'on') or
-             is_state('light.bulbs_salon', 'on') or
-             is_state('light.lamp_salon', 'on') }}
-      - condition: time
-        after: "20:10:00"
-      - condition: state
-        entity_id: input_boolean.guests
-        state: "off"
+    - condition: sun
+      after: sunset
+    - condition: template
+      value_template: >-
+        {{ is_state('light.leds_salon', 'on') or
+            is_state('light.bulbs_salon', 'on') or
+            is_state('light.lamp_salon', 'on') }}
+    - condition: time
+      after: "20:10:00"
+    - condition: state
+      entity_id: input_boolean.guests
+      state: "off"
   action:
     service: input_select.select_option
     data:
@@ -1618,16 +1582,14 @@
     - platform: template
       value_template: "{{ not is_state('input_select.salon_harmony', 'Smart TV') }}"
   condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: >-
-          {{ is_state("light.leds_salon", "on") or
-            is_state("light.bulbs_salon", "on") or
-            is_state("light.lamp_salon", "on") }}
-      - condition: state
-        entity_id: input_select.light_scenes_salon
-        state: "film"
+    - condition: template
+      value_template: >-
+        {{ is_state("light.leds_salon", "on") or
+          is_state("light.bulbs_salon", "on") or
+          is_state("light.lamp_salon", "on") }}
+    - condition: state
+      entity_id: input_select.light_scenes_salon
+      state: "film"
   action:
     service: input_select.select_option
     data:
@@ -1867,11 +1829,9 @@
     from: "on"
     to: "off"
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.antek_light_motion_on
-        state: "on"
+    condition: state
+    entity_id: input_boolean.antek_light_motion_on
+    state: "on"
   action:
     - service: script.light_turn_off_antek_leds
     - service: switch.turn_off
@@ -2244,13 +2204,11 @@
     platform: state
     entity_id: remote.salon
   condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{ trigger.to_state.attributes.current_activity == 'PowerOff' }}"
-      - condition: state
-        entity_id: media_player.bravia
-        state: "on"
+    - condition: template
+      value_template: "{{ trigger.to_state.attributes.current_activity == 'PowerOff' }}"
+    - condition: state
+      entity_id: media_player.bravia
+      state: "on"
   action:
     - delay: "00:00:02"
     - condition: state
@@ -2266,15 +2224,13 @@
     platform: state
     entity_id: remote.salon
   condition:
-    condition: and
-    conditions:
-      - condition: template
-        value_template: "{{ trigger.from_state.attributes.current_activity == 'PlayStation' }}"
-      - condition: template
-        value_template: "{{ trigger.to_state.attributes.current_activity != 'PlayStation' }}"
-      - condition: state
-        entity_id: media_player.playstation
-        state: "idle"
+    - condition: template
+      value_template: "{{ trigger.from_state.attributes.current_activity == 'PlayStation' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.attributes.current_activity != 'PlayStation' }}"
+    - condition: state
+      entity_id: media_player.playstation
+      state: "idle"
   action:
     - delay: "00:00:10"
     - condition: state
@@ -2514,23 +2470,21 @@
     platform: template
     value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float }}"
   condition:
-    condition: and
-    conditions:
-      - condition: numeric_state
-        entity_id: sensor.humidifier_water_level
-        above: 5
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.heating_airing
-        state: "off"
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: "off"
-      - condition: state
-        entity_id: fan.humidifier_salon
-        state: "off"
+    - condition: numeric_state
+      entity_id: sensor.humidifier_water_level
+      above: 5
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.heating_airing
+      state: "off"
+    - condition: state
+      entity_id: input_boolean.away_mode
+      state: "off"
+    - condition: state
+      entity_id: fan.humidifier_salon
+      state: "off"
   action:
     service: fan.turn_on
     entity_id: fan.humidifier_salon

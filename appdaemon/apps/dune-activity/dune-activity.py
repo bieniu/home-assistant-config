@@ -22,17 +22,18 @@ dune_activity:
   retain: true
 """
 
-import appdaemon.plugins.hass.hassapi as hass
-import requests
-from datetime import datetime
-import re
 import json
+import re
+from datetime import datetime, timedelta
+
+import hassapi as hass
+import requests
 
 
 class DuneActivity(hass.Hass):
     def initialize(self):
 
-        __version__ = "0.2.4"
+        __version__ = "0.2.5"
 
         self.URL_FORMAT = "http://{}/cgi-bin/do"
         self.ENTITY = "sensor.dune_activity"
@@ -70,7 +71,9 @@ class DuneActivity(hass.Hass):
                 if "mac" in self.args:
                     self.mac = self.args["mac"]
                     self.mac_simple = self.mac.replace(":", "").lower()
-        self.run_every(self.update_activity, datetime.now(), interval)
+        self.run_every(
+            self.update_activity, datetime.now() + timedelta(seconds=1), interval
+        )
 
     def update_activity(self, kwargs):
         request = None
