@@ -596,59 +596,83 @@ views:
     cards:
       - type: custom:layout-card
         cards:
-          - type: vertical-stack
+          - type: custom:vertical-stack-in-card
+            title: "Pobór mocy"
             cards:
-              - type: custom:vertical-stack-in-card
-                title: "Pobór mocy"
-                cards:
-                  - type: custom:mini-graph-card
-                    <<: *card-no-border-radius
-                    hour24: true
-                    decimals: 1
-                    points_per_hour: 1
-                    show:
-                      icon: false
-                      graph: bar
-                      labels: true
-                    entities:
-                      - sensor.light_salon_power_sum
-                    line_color: "#36a2eb"
-                    group_by: hour
-                  - type: custom:mini-graph-card
-                    hour24: true
-                    decimals: 1
-                    points_per_hour: 1
-                    show:
-                      icon: false
-                      graph: bar
-                      labels: true
-                    entities:
-                      - sensor.dishwasher_kuchnia_power
-                    line_color: "#36a2eb"
-                    group_by: hour
-              - type: custom:vertical-stack-in-card
-                title: "Zużycie energii"
-                cards:
-                  - type: custom:mini-graph-card
-                    hour24: true
-                    decimals: 2
-                    lower_bound: 0
-                    animate: true
-                    show:
-                      icon: false
-                      graph: false
-                    entities:
-                      - sensor.light_salon_energy_monthly
-                  - type: custom:mini-graph-card
-                    hour24: true
-                    decimals: 2
-                    lower_bound: 0
-                    animate: true
-                    show:
-                      icon: false
-                      graph: false
-                    entities:
-                      - sensor.dishwasher_kuchnia_energy_monthly
+              - type: custom:mini-graph-card
+                <<: *card-no-border-radius
+                hour24: true
+                decimals: 1
+                points_per_hour: 1
+                show:
+                  icon: false
+                  graph: bar
+                  labels: true
+                entities:
+                  - sensor.light_salon_power_sum
+                line_color: "#36a2eb"
+                group_by: hour
+              - type: custom:mini-graph-card
+                <<: *card-no-border-radius
+                hour24: true
+                decimals: 1
+                points_per_hour: 1
+                show:
+                  icon: false
+                  graph: bar
+                  labels: true
+                entities:
+                  - sensor.dishwasher_kuchnia_power
+                line_color: "#36a2eb"
+                group_by: hour
+              - type: custom:mini-graph-card
+                <<: *card-no-border-radius
+                hour24: true
+                decimals: 1
+                points_per_hour: 1
+                show:
+                  icon: false
+                  graph: bar
+                  labels: true
+                entities:
+                  - sensor.computer_gabinet_power
+                line_color: "#36a2eb"
+                group_by: hour
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 1
+                points_per_hour: 1
+                show:
+                  icon: false
+                  graph: bar
+                  labels: true
+                entities:
+                  - sensor.server_gabinet_power
+                line_color: "#36a2eb"
+                group_by: hour
+          - type: custom:vertical-stack-in-card
+            title: "Zużycie energii"
+            cards:
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 2
+                lower_bound: 0
+                animate: true
+                show:
+                  icon: false
+                  graph: false
+                entities:
+                  - sensor.light_salon_energy_monthly
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 2
+                lower_bound: 0
+                animate: true
+                show:
+                  icon: false
+                  graph: false
+                entities:
+                  - sensor.dishwasher_kuchnia_energy_monthly
           - type: custom:vertical-stack-in-card
             title: "UPS"
             cards:
@@ -842,7 +866,7 @@ views:
                 slot_r5: "remove"
               - type: iframe
                 url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates&metricWind=m%2Fs
-                aspect_ratio: 55%
+                aspect_ratio: 61%
               - type: sensor
                 entity: sensor.airly_info
           - type: vertical-stack
@@ -854,6 +878,7 @@ views:
                   align_header: left
                   align_icon: left
                   points_per_hour: 1
+                  height: 75
                   show:
                     labels: true
                     fill: fade

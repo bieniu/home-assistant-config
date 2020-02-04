@@ -42,18 +42,17 @@
 
 ## Other Integrated Devices
 
-* ASUS RT-AC86U [router]
 * Logitech Harmony Ultimate [remote]
 * Denon AVR-X2100W [AV receiver]
 * PlayStation 4 Pro
 * Xiaomi Mi Smart Humidifier CA1
 * Xiaomi Mi Pedestal Fan 1X
 * Xiaomi Mi Box 4K [AndroidTV box]
-* Dune BD Prime 3.0 [network media player by AppDaemon script]
+* Dune BD Prime 3.0 [network media player via AppDaemon script]
 * Synology DS110j [NAS]
 * Brother HL-L2340D [printer]
 * iPhone/iPad [iOS [Home Assistant](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401) app]
-* OnePlus 6 [Android phone by [Tasker](https://play.google.com/store/apps/details?id=net.dinglisch.android.taskerm) and [OwnTracks](https://play.google.com/store/apps/details?id=org.owntracks.android&hl=pl)]
+* OnePlus 6 [Android [Home Assistant](https://play.google.com/store/apps/details?id=io.homeassistant.companion.android) app]
 * CyberPower DL650ELCD [UPS]
 * Xiaomi DaFang [camera with [custom firmware](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks)]
 * Sony Bravia TV (Android TV)
