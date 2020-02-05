@@ -5,6 +5,18 @@
   round: 2
 
 - platform: integration
+  source: sensor.computer_gabinet_power
+  name: "Computer Gabinet Energy"
+  unit_prefix: k
+  round: 2
+
+- platform: integration
+  source: sensor.servers_gabinet_power
+  name: "Servers Gabinet Energy"
+  unit_prefix: k
+  round: 2
+
+- platform: integration
   source: sensor.dishwasher_kuchnia_power
   name: "Dishwasher Kuchnia Energy"
   unit_prefix: k

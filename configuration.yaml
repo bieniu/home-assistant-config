@@ -40,6 +40,12 @@ utility_meter:
   dishwasher_kuchnia_energy_monthly:
     source: sensor.dishwasher_kuchnia_energy
     cycle: monthly
+  computer_gabinet_energy_monthly:
+    source: sensor.computer_gabinet_energy
+    cycle: monthly
+  servers_gabinet_energy_monthly:
+    source: sensor.servers_gabinet_energy
+    cycle: monthly
 
 sensor: !include sensors.yaml
 binary_sensor: !include binary_sensors.yaml

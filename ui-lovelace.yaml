@@ -47,8 +47,12 @@ anchors:
   network-status-entity: &network-status-entity
     style: |
       :host {
-        --paper-item-icon-color: var(--disabled-text-color);
-        --paper-item-icon-active-color: var(--state-icon-color)
+        --paper-item-icon-color:
+          {% if is_state(config.entity, "off") %}
+            var(--disabled-text-color)
+          {% else %}
+            var(--state-icon-color)
+          {% endif %}
       }
   percent-entity: &percent-entity
     style: |
@@ -107,6 +111,7 @@ views:
                   # - sensor.illumination_przedpokoj
                   - entity: binary_sensor.motion_przedpokoj
                     secondary_info: last-changed
+                    state_color: true
                   - light.leds_przedpokoj
               - type: custom:vertical-stack-in-card
                 title: "Kuchnia"
@@ -123,7 +128,8 @@ views:
                       }
                     show_header_toggle: false
                     entities:
-                      - binary_sensor.window_kuchnia
+                      - entity: binary_sensor.window_kuchnia
+                        state_color: true
                       - climate.thermostat_kuchnia
                       - entity: sensor.dishwasher_kuchnia
                         style: |
@@ -154,11 +160,14 @@ views:
                 entities:
                   - entity: binary_sensor.motion_salon
                     secondary_info: last-changed
+                    state_color: true
                   - climate.thermostat_salon
                   - type: custom:secondaryinfo-entity-row
                     entity: fan.humidifier_salon
                     secondary_info: "poziom wody: [[ sensor.humidifier_water_level.state ]] %"
-                  # - fan.salon
+                    state_color: true
+                  # - entity: fan.salon
+                  #   state_color: true
                   - light.bulbs_salon
                   - light.leds_salon
                   - light.lamp_salon
@@ -170,9 +179,8 @@ views:
                     hide:
                       controls: true
                       volume: true
-                      power_state: false
+                      power: true
                       progress: true
-                      source: true
                     info: scroll
                     group: true
                   - type: custom:mini-media-player
@@ -181,9 +189,10 @@ views:
                     hide:
                       controls: true
                       volume: true
+                      mute: true
+                      power: true
                       power_state: false
                       progress: true
-                      source: true
                     info: scroll
                     group: true
                   - type: custom:mini-media-player
@@ -226,8 +235,11 @@ views:
                 entities:
                   - entity: binary_sensor.motion_pracownia
                     secondary_info: last-changed
-                  - binary_sensor.balcony_door_pracownia
-                  - switch.lamp_pracownia
+                    state_color: true
+                  - entity: binary_sensor.balcony_door_pracownia
+                    state_color: true
+                  - entity: switch.lamp_pracownia
+                    state_color: true
           - type: custom:vertical-stack-in-card
             title: "Pokój gościnny"
             cards:
@@ -246,7 +258,9 @@ views:
                 entities:
                   - entity: binary_sensor.motion_goscinny
                     secondary_info: last-changed
-                  - switch.lamp_goscinny
+                    state_color: true
+                  - entity: switch.lamp_goscinny
+                    state_color: true
                   - type: custom:mini-media-player
                     <<: *mini-media-player-padding
                     entity: media_player.mibox
@@ -274,9 +288,11 @@ views:
                   }
                 show_header_toggle: false
                 entities:
-                  - binary_sensor.window_antresola
+                  - entity: binary_sensor.window_antresola
+                    state_color: true
                   - entity: binary_sensor.motion_antresola
                     secondary_info: last-changed
+                    state_color: true
                   - climate.thermostat_antresola
                   - light.gateway_antresola
           - type: custom:vertical-stack-in-card
@@ -295,11 +311,14 @@ views:
                   }
                 show_header_toggle: false
                 entities:
-                  - binary_sensor.window_gabinet
+                  - entity: binary_sensor.window_gabinet
+                    state_color: true
                   - entity: binary_sensor.motion_gabinet
                     secondary_info: last-changed
+                    state_color: true
                   - climate.thermostat_gabinet
-                  - switch.stacjonarny
+                  - entity: switch.stacjonarny
+                    state_color: true
           - type: custom:vertical-stack-in-card
             title: "Pokój Antka"
             cards:
@@ -316,12 +335,15 @@ views:
                   }
                 show_header_toggle: false
                 entities:
-                  - binary_sensor.window_antek
+                  - entity: binary_sensor.window_antek
+                    state_color: true
                   - entity: binary_sensor.motion_antek
                     secondary_info: last-changed
+                    state_color: true
                   - climate.thermostat_antek
                   - light.lightstrip_antek
-                  - switch.cabinet_antek
+                  - entity: switch.cabinet_antek
+                    state_color: true
                   - type: custom:mini-media-player
                     <<: *mini-media-player-padding
                     entity: media_player.echo_plus
@@ -349,10 +371,13 @@ views:
                   }
                 show_header_toggle: false
                 entities:
-                  - binary_sensor.window_sypialnia
-                  - binary_sensor.balcony_door_sypialnia
+                  - entity: binary_sensor.window_sypialnia
+                    state_color: true
+                  - entity: binary_sensor.balcony_door_sypialnia
+                    state_color: true
                   - entity: binary_sensor.motion_sypialnia
                     secondary_info: last-changed
+                    state_color: true
                   - climate.thermostat_sypialnia
                   - light.lightstrip_sypialnia
                   - type: custom:mini-media-player
@@ -647,7 +672,7 @@ views:
                   graph: bar
                   labels: true
                 entities:
-                  - sensor.server_gabinet_power
+                  - sensor.servers_gabinet_power
                 line_color: "#36a2eb"
                 group_by: hour
           - type: custom:vertical-stack-in-card
@@ -673,6 +698,26 @@ views:
                   graph: false
                 entities:
                   - sensor.dishwasher_kuchnia_energy_monthly
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 2
+                lower_bound: 0
+                animate: true
+                show:
+                  icon: false
+                  graph: false
+                entities:
+                  - sensor.computer_gabinet_energy_monthly
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 2
+                lower_bound: 0
+                animate: true
+                show:
+                  icon: false
+                  graph: false
+                entities:
+                  - sensor.servers_gabinet_energy_monthly
           - type: custom:vertical-stack-in-card
             title: "UPS"
             cards:

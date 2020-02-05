@@ -329,6 +329,10 @@ sensor.light_salon_energy_monthly:
   friendly_name: "Oświetlenie salonu"
 sensor.dishwasher_kuchnia_energy_monthly:
   friendly_name: "Zmywarka"
+sensor.servers_gabinet_energy_monthly:
+  friendly_name: "Serwery"
+sensor.computer_gabinet_energy_monthly:
+  friendly_name: "Komputer"
 
 sensor.dark_sky_uv_index:
   friendly_name: "Indeks UV"
