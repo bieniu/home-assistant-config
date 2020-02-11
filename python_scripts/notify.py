@@ -1,12 +1,12 @@
 ATTR_ANDROID = "android"
-ATTR_IOS = "ios"
 ATTR_FRONTEND = "frontend"
+ATTR_IOS = "ios"
 ATTR_SERVICE = "service"
 ATTR_TYPE = "type"
 
 USER_EDYTA = "edyta"
-USER_MACIEK = "maciek"
 USER_FRONTEND = ATTR_FRONTEND
+USER_MACIEK = "maciek"
 
 USERS = [USER_EDYTA, USER_MACIEK, ATTR_FRONTEND]
 
@@ -66,7 +66,10 @@ for user in USERS:
                     service_data["data"] = {}
                 service_data["data"]["attachment"] = {}
                 service_data["data"]["attachment"]["url"] = image
-                service_data["data"]["attachment"]["content-type"] = "jpg"
+                if "jpg" in image:
+                    service_data["data"]["attachment"]["content-type"] = "jpg"
+                if "png" in image:
+                    service_data["data"]["attachment"]["content-type"] = "png"
                 service_data["data"]["attachment"]["hide-thumbnail"] = "false"
             if tag:
                 if not service_data.get("data"):
