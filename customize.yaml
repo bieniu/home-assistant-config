@@ -103,10 +103,6 @@ sensor.last_ha_restart:
   friendly_name: "Ostatni restart HA"
   icon: mdi:clock-outline
 
-#### ZONES ####
-zone.home:
-  icon: mdi:home-outline
-
 #### NETWORK DEVICES ####
 binary_sensor.router_status:
   icon: mdi:router-wireless

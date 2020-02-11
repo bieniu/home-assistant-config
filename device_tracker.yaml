@@ -7,7 +7,6 @@
   consider_home: 360
   new_device_defaults:
     track_new_devices: false
-    hide_if_away: true
 
 - platform: iphonedetect
   hosts:

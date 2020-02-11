@@ -1,7 +1,3 @@
-#### ZONES ####
-"zone.work_*":
-  friendly_name: "w pracy"
-
 #### SENSORS ####
 "sensor.temperature_*":
   device_class: temperature

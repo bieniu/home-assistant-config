@@ -213,10 +213,54 @@ views:
                       controls: true
                       volume: true
                       power: true
-                      source: true
                       progress: true
                     info: scroll
                     group: true
+                    shortcuts:
+                      label: "Skróty"
+                      list:
+                        - name: "RMF FM"
+                          type: "service"
+                          id: media_player.play_media
+                          data:
+                            entity_id: media_player.echo_show
+                            media_content_type: "TUNEIN"
+                            media_content_id: "RMF FM in everywhere group"
+                        - name: "MUZO FM"
+                          type: "service"
+                          id: media_player.play_media
+                          data:
+                            entity_id: media_player.echo_show
+                            media_content_type: "TUNEIN"
+                            media_content_id: "MUZO FM in everywhere group"
+                        - name: "Radio ZET"
+                          type: "service"
+                          id: media_player.play_media
+                          data:
+                            entity_id: media_player.echo_show
+                            media_content_type: "TUNEIN"
+                            media_content_id: "Radio ZET in everywhere group"
+                        - name: "Spotify [Antek]"
+                          type: "service"
+                          id: media_player.play_media
+                          data:
+                            entity_id: media_player.echo_show
+                            media_content_type: "SPOTIFY"
+                            media_content_id: "in everywhere group playlist Antek"
+                        - name: "Spotify [Edyta]"
+                          type: "service"
+                          id: media_player.play_media
+                          data:
+                            entity_id: media_player.echo_show
+                            media_content_type: "SPOTIFY"
+                            media_content_id: "in everywhere group playlist Edyta"
+                        - name: "Spotify [Maciek]"
+                          type: "service"
+                          id: media_player.play_media
+                          data:
+                            entity_id: media_player.echo_show
+                            media_content_type: "SPOTIFY"
+                            media_content_id: "in everywhere group playlist Maciek"
           - type: custom:vertical-stack-in-card
             title: "Pracownia"
             cards:
@@ -351,8 +395,8 @@ views:
                       controls: true
                       volume: true
                       power: true
-                      source: true
                       progress: true
+                      source: true
                     info: scroll
                     group: true
           - type: custom:vertical-stack-in-card
@@ -387,8 +431,8 @@ views:
                       controls: true
                       volume: true
                       power: true
-                      source: true
                       progress: true
+                      source: true
                     info: scroll
                     group: true
           - type: custom:vertical-stack-in-card
@@ -427,6 +471,15 @@ views:
           - person.edyta
           - person.maciek
           - zone.home
+          - zone.grandparents
+          - zone.grandmother
+          - zone.school_antek
+          - zone.work_edyta_katowice
+          - zone.work_edyta_lodz
+          - zone.work_edyta_warszawa
+          - zone.work_edyta_wroclaw
+          - zone.work_maciek_warszawa
+          - zone.skaratki_horses
   - id: network
     icon: mdi:ethernet
     title: "Sieć"
@@ -624,100 +677,81 @@ views:
           - type: custom:vertical-stack-in-card
             title: "Pobór mocy"
             cards:
-              - type: custom:mini-graph-card
-                <<: *card-no-border-radius
-                hour24: true
-                decimals: 1
-                points_per_hour: 1
-                show:
-                  icon: false
-                  graph: bar
-                  labels: true
-                entities:
-                  - sensor.light_salon_power_sum
-                line_color: "#36a2eb"
-                group_by: hour
-              - type: custom:mini-graph-card
-                <<: *card-no-border-radius
-                hour24: true
-                decimals: 1
-                points_per_hour: 1
-                show:
-                  icon: false
-                  graph: bar
-                  labels: true
-                entities:
-                  - sensor.dishwasher_kuchnia_power
-                line_color: "#36a2eb"
-                group_by: hour
-              - type: custom:mini-graph-card
-                <<: *card-no-border-radius
-                hour24: true
-                decimals: 1
-                points_per_hour: 1
-                show:
-                  icon: false
-                  graph: bar
-                  labels: true
-                entities:
-                  - sensor.computer_gabinet_power
-                line_color: "#36a2eb"
-                group_by: hour
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 1
-                points_per_hour: 1
-                show:
-                  icon: false
-                  graph: bar
-                  labels: true
-                entities:
-                  - sensor.servers_gabinet_power
-                line_color: "#36a2eb"
-                group_by: hour
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 1
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.light_salon_power_sum
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 1
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.dishwasher_kuchnia_power
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 1
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.computer_gabinet_power
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 1
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.servers_gabinet_power
           - type: custom:vertical-stack-in-card
             title: "Zużycie energii"
             cards:
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 2
-                lower_bound: 0
-                animate: true
-                show:
-                  icon: false
-                  graph: false
-                entities:
-                  - sensor.light_salon_energy_monthly
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 2
-                lower_bound: 0
-                animate: true
-                show:
-                  icon: false
-                  graph: false
-                entities:
-                  - sensor.dishwasher_kuchnia_energy_monthly
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 2
-                lower_bound: 0
-                animate: true
-                show:
-                  icon: false
-                  graph: false
-                entities:
-                  - sensor.computer_gabinet_energy_monthly
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 2
-                lower_bound: 0
-                animate: true
-                show:
-                  icon: false
-                  graph: false
-                entities:
-                  - sensor.servers_gabinet_energy_monthly
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 2
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.light_salon_energy_monthly
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 2
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.dishwasher_kuchnia_energy_monthly
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 2
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.computer_gabinet_energy_monthly
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 2
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.servers_gabinet_energy_monthly
           - type: custom:vertical-stack-in-card
             title: "UPS"
             cards:
