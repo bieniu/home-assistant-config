@@ -128,11 +128,14 @@
   action:
     service: python_script.notify
     data:
-      edyta: true
-      maciek: true
       title: "Koniec zmywania"
       message: "Zmywarka zakończyła zmywanie naczyń."
       tag: "notification-dishwasher"
+      services:
+        - service: !secret maciek_notify_service
+          type: "andoid"
+        - service: !secret edyta_notify_service
+          type: "ios"
 
 # powiadomienie o włączonym komputerze
 - id: notification_desktop_computer_turned_on
@@ -152,13 +155,15 @@
   action:
     service: python_script.notify
     data:
-      maciek: true
       title: "Komputer stacjonarny włączony"
       message: "Komputer stacjonarny jest włączony. Czy chcesz go wyłączyć?"
       tag: "notification-desktop-computer"
       actions:
         - title: "Wyłącz"
           action: "TURN_OFF_DESKTOP_COMPUTER"
+      services:
+        - service: !secret maciek_notify_service
+          type: "andoid"
 
 # wyłączenie komputera z powiadomienia
 - id: notification_turn_off_desktop_computer
@@ -184,10 +189,12 @@
   action:
     - service: python_script.notify
       data_template:
-        maciek: true
         title: "Wygasa certyfikat SSL"
         message: "Za {{ states('sensor.ssl_certificate_expiry') }} dni wygaśnie certyfikat SSL serwera WWW."
         tag: "notification-ssl"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
     # - service: persistent_notification.create
     #   data_template:
     #     title: "Wygasa certyfikat SSL"
@@ -206,10 +213,12 @@
   action:
     - service: python_script.notify
       data:
-        maciek: true
         title: "Aktualizacja dodatku"
         message: "Dostępna jest aktualizacja dodatku z HACS."
         tag: "notification-hacs"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
     # - service: persistent_notification.create
     #   data_template:
     #     title: "Aktualizacja dodatku"
@@ -239,7 +248,6 @@
   action:
     - service: python_script.notify
       data_template:
-        maciek: true
         title: "Encja z nieprawidłowym stanem"
         message: >
           {% macro dead_unavailable_entities() %}
@@ -253,6 +261,9 @@
           {% endmacro %}
           Następujące encje mają nieprawidłowe stany: {{ dead_unavailable_entities() }}
         tag: "notification-dead-unavailable"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
     # - service: persistent_notification.create
     #   data_template:
     #     title: "Encja z nieprawidłowym stanem"
@@ -293,10 +304,12 @@
   action:
     - service: python_script.notify
       data_template:
-        maciek: true
         title: "Aktualizacja Home Assistant'a"
         message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ha_version_current') }} dla Home Assistant'a."
         tag: "notification-ha-update"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
     # - service: persistent_notification.create
     #   data_template:
     #     title: "Aktualizacja Home Assistant'a"
@@ -321,10 +334,12 @@
   action:
     - service: python_script.notify
       data_template:
-        maciek: true
         title: "Aktualizacja AppDaemon'a"
         message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ad_version_current') }} dla AppDaemon'a."
         tag: "notification-ad-update"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
     # - service: persistent_notification.create
     #   data_template:
     #     title: "Aktualizacja AppDaemon'a"
@@ -361,10 +376,12 @@
       state: "home"
     - service: python_script.notify
       data_template:
-        maciek: true
         title: "Uzupełnij wodę w nawilżaczu"
         message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
         tag: "notification-humidifier"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
 
 # powiadomienie o małej ilości wody w nawilżaczu Edyta
 - id: notification_humidifier_low_water_edyta
@@ -391,10 +408,12 @@
   action:
     service: python_script.notify
     data_template:
-      edyta: true
       title: "Uzupełnij wodę w nawilżaczu"
       message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
       tag: "notification-humidifier"
+      services:
+        - service: !secret edyta_notify_service
+          type: "ios"
 
 # powiadomienie o wysokim stężeniu CO2 w salonie
 - id: notification_salon_co2
@@ -412,11 +431,14 @@
   action:
     service: python_script.notify
     data_template:
-      maciek: true
-      edyta: true
       title: "Wysokie stężenie dwutlenku węgla"
       message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
       tag: "notification-high-co2"
+      services:
+        - service: !secret maciek_notify_service
+          type: "andoid"
+        - service: !secret edyta_notify_service
+          type: "ios"
 
 # powiadomienie o aktualizacji oprogramowania Shelly
 - id: notification_shelly_update_available
@@ -440,10 +462,12 @@
   action:
     - service: python_script.notify
       data_template:
-        maciek: true
         title: "Aktualizacja oprogramowania Shelly"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} oprogramowania dla {{ trigger.to_state.attributes.friendly_name }}."
         tag: "notification-{{ trigger.to_state.attributes.friendly_name | lower | replace(' ', '_') }}-update"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
     # - service: persistent_notification.create
     #   data_template:
     #     title: "Aktualizacja oprogramowania Shelly"
@@ -468,10 +492,12 @@
   action:
     - service: python_script.notify
       data_template:
-        maciek: true
         title: "Aktualizacja Tasmota"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Tasmota."
         tag: "notification-tasmota-update"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
     # - service: persistent_notification.create
     #   data_template:
     #     title: "Aktualizacja Tasmota"
@@ -496,10 +522,12 @@
   action:
     - service: python_script.notify
       data_template:
-        maciek: true
         title: "Aktualizacja ESPHome"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla ESPHome."
         tag: "notification-esphome-update"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
     # - service: persistent_notification.create
     #   data_template:
     #     title: "Aktualizacja ESPHome"
@@ -524,10 +552,12 @@
   action:
     - service: python_script.notify
       data_template:
-        maciek: true
         title: "Aktualizacja Caddy"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy."
         tag: "notification-caddy-update"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
     # - service: persistent_notification.create
     #   data_template:
     #     title: "Aktualizacja Caddy"
@@ -590,12 +620,15 @@
   action:
     service: python_script.notify
     data_template:
-      maciek: true
-      edyta: true
       title: "Wykryto otwarcie okna w pustym mieszkaniu"
       message: "Pomieszczenie: {{ trigger.to_state.attributes.location }}, godzina {{ now().strftime('%H:%M') }}."
       tag: "notification-window-opened"
       priority: "high"
+      services:
+        - service: !secret maciek_notify_service
+          type: "andoid"
+        - service: !secret edyta_notify_service
+          type: "ios"
 
 # powiadomienie o otwartych drzwiach balkonowych w pracowni po wyjściu z domu
 - id: notification_balcony_door_pracownia_opened
@@ -611,12 +644,15 @@
   action:
     service: python_script.notify
     data:
-      edyta: true
-      maciek: true
       title: "Otwarte drzwi balkonowe"
       message: "Domownicy opuścili mieszkanie, a drzwi balkonowe w pracowni nie są zamknięte."
       tag: "notification-balcony-door-pracownia"
       priority: "high"
+      services:
+        - service: !secret maciek_notify_service
+          type: "andoid"
+        - service: !secret edyta_notify_service
+          type: "ios"
 
 # powiadomienia o małej ilości miejsca na Synology
 - id: notification_low_disk_space_on_synology
@@ -628,10 +664,12 @@
   action:
     - service: python_script.notify
       data_template:
-        maciek: true
         title: "Mało miejsca na dysku Synology"
         message: "Dysk Synology jest zapełniony w {{ trigger.to_state.state }}%."
         tag: "notification-synology-low-space"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
     # - service: persistent_notification.create
     #   data_template:
     #     title: "Mało miejsca na dysku Synology"
@@ -647,10 +685,12 @@
   action:
     - service: python_script.notify
       data_template:
-        maciek: true
         title: "Nowe urządzenie"
         message: "Wykryto nowe urządzenie o nazwie {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}})."
         tag: "notification-new-device"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
     # - service: persistent_notification.create
     #   data_template:
     #     title: "Nowe urządzenie"
@@ -682,7 +722,6 @@
   action:
     - service: python_script.notify
       data_template:
-        maciek: true
         title: "Niski poziom naładowania baterii"
         message: >
           {% macro battery_level() %}
@@ -699,6 +738,9 @@
           {% endmacro %}
           W następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level() }}
         tag: "notification-low-battery"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
     # - service: persistent_notification.create
     #   data_template:
     #     title: "Niski poziom naładowania baterii"
@@ -801,12 +843,15 @@
       above: 20
     - service: python_script.notify
       data_template:
-        edyta: true
-        maciek: true
         title: "Otwarte okna"
         message: "Okna w pustym mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów wynosi {{ states('sensor.dark_sky_precip_probability') }}%."
         tag: "notification-windows-weather"
         priority: "high"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
+          - service: !secret edyta_notify_service
+            type: "ios"
 
 # ludzie w domu
 - id: presence_peoples_back
@@ -1123,11 +1168,14 @@
         - input_boolean.maciek_far_from_home
     - service: python_script.notify
       data:
-        edyta: true
-        maciek: true
         title: "Włączono szybkie dogrzanie"
         message: "Włączono szybie dogrzanie pomieszczeń po długiej nieobecności domowników."
         tag: "notification-fast-warm-up"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
+          - service: !secret edyta_notify_service
+            type: "ios"
     - condition: template
       value_template: >-
         {{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float
@@ -1208,12 +1256,15 @@
       state: "on"
     - service: python_script.notify
       data:
-        edyta: true
-        maciek: true
         title: "Koniec przewietrzania"
         message: "Wyłączono tryb przewietrzania. Proszę zamknąć okna!"
         tag: "notification-airing-end"
         priority: "high"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
+          - service: !secret edyta_notify_service
+            type: "ios"
 
 # koniec przewietrzania w nocy
 - id: heating_airing_end_at_night
@@ -1237,12 +1288,15 @@
       state: "on"
     - service: python_script.notify
       data:
-        edyta: true
-        maciek: true
         title: "Koniec przewietrzania"
         message: "Wyłączono tryb przewietrzania. Proszę zamknąć okna!"
         tag: "notification-airing-end"
         priority: "high"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
+          - service: !secret edyta_notify_service
+            type: "ios"
 
 # początek sezonu grzewczego
 - id: heating_season_begin
@@ -2525,12 +2579,15 @@
       below: 6
     - service: python_script.notify
       data_template:
-        edyta: true
-        maciek: true
         title: "Uzupełnij wodę w nawilżaczu"
         message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
         tag: "notification-humidifier"
         priority: "high"
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
+          - service: !secret edyta_notify_service
+            type: "ios"
     # - service: persistent_notification.create
     #   data_template:
     #     title: "Uzupełnij wodę w nawilżaczu"

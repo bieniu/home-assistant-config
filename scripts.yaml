@@ -257,8 +257,6 @@ notify_motion:
         seconds: 1
     - service: python_script.notify
       data_template:
-        edyta: true
-        maciek: true
         title: "{{ title }}"
         message: "{{ message }}"
         tag: "notification-motion"
@@ -269,6 +267,11 @@ notify_motion:
           {% else %}
             None
           {% endif %}
+        services:
+          - service: !secret maciek_notify_service
+            type: "andoid"
+          - service: !secret edyta_notify_service
+            type: "ios"
 
 camera_move:
   sequence:
