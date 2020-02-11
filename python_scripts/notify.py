@@ -1,19 +1,23 @@
 ATTR_ANDROID = "android"
 ATTR_IOS = "ios"
+ATTR_FRONTEND = "frontend"
 ATTR_SERVICE = "service"
 ATTR_TYPE = "type"
 
 USER_EDYTA = "edyta"
 USER_MACIEK = "maciek"
+USER_FRONTEND = ATTR_FRONTEND
 
-USERS = [USER_EDYTA, USER_MACIEK]
+USERS = [USER_EDYTA, USER_MACIEK, ATTR_FRONTEND]
 
 NOTIFY_SERVICE_EDYTA = "notify.mobile_app_iphone_8_plus"
 NOTIFY_SERVICE_MACIEK = "notify.mobile_app_oneplus_6"
+NOTIFY_SERVICE_FRONTEND = "persistent_notification.create"
 
 SERVICES = {
     USER_EDYTA: {ATTR_TYPE: ATTR_IOS, ATTR_SERVICE: NOTIFY_SERVICE_EDYTA},
     USER_MACIEK: {ATTR_TYPE: ATTR_ANDROID, ATTR_SERVICE: NOTIFY_SERVICE_MACIEK},
+    USER_FRONTEND: {ATTR_TYPE: ATTR_FRONTEND, ATTR_SERVICE: NOTIFY_SERVICE_FRONTEND},
 }
 
 CONF_ACTIONS = "actions"
@@ -95,6 +99,22 @@ for user in USERS:
                 service_data["data"]["url"] = url
             if image:
                 service_data["data"]["image"] = image
+
+            logger.debug(
+                f"service: {SERVICES[user][ATTR_SERVICE]}, data: {service_data}"
+            )
+
+            hass.services.call(
+                SERVICES[user][ATTR_SERVICE].split(".")[0],
+                SERVICES[user][ATTR_SERVICE].split(".")[1],
+                service_data,
+                False,
+            )
+
+        if SERVICES[user][ATTR_TYPE] == ATTR_FRONTEND:
+            service_data = {"title": title, "message": message}
+            if tag:
+                service_data["notification_id"] = tag
 
             logger.debug(
                 f"service: {SERVICES[user][ATTR_SERVICE]}, data: {service_data}"
