@@ -2,8 +2,8 @@
 service: python_script.notify
 data:
   title: "Notification title"
-  tag: "unique-tag"
   message: "Notification message"
+  tag: "unique-tag"
   image: "https://test.xy/image.png"
   services:
     - service: notify.mobile_app_iphone
@@ -16,12 +16,27 @@ data:
       type: "sms"
       recipient: "+48123456789"
 """
+ATTR_ACTIONS = "actions"
 ATTR_ANDROID = "android"
+ATTR_APNS_COLLAPSE_ID = "apns-collapse-id"
+ATTR_APNS_HEADERS = "apns_headers"
+ATTR_ATTACHMENT = "attachment"
+ATTR_DATA = "data"
+ATTR_FALSE = "false"
 ATTR_FRONTEND = "frontend"
+ATTR_HIDE_THUMBNAIL = "hide-thumbnail"
+ATTR_IMAGE = "image"
 ATTR_IOS = "ios"
+ATTR_MESSAGE = "message"
+ATTR_NOTIFICATION_ID = "notification_id"
+ATTR_PRIORITY = "priority"
+ATTR_RECIPIENT = "recipient"
 ATTR_SMS = "sms"
 ATTR_SERVICE = "service"
+ATTR_TAG = "tag"
+ATTR_TITLE = "title"
 ATTR_TYPE = "type"
+ATTR_URL = "url"
 
 CONF_ACTIONS = "actions"
 CONF_DEVELOP = "develop"
@@ -69,18 +84,18 @@ if data.get(CONF_DEVELOP) == True:
 
 for item in services:
     if item[ATTR_TYPE] == ATTR_IOS:
-        service_data = {"title": title, "message": message}
+        service_data = {ATTR_TITLE: title, ATTR_MESSAGE: message}
         if image:
-            if not service_data.get("data"):
-                service_data["data"] = {}
-            service_data["data"]["attachment"] = {}
-            service_data["data"]["attachment"]["url"] = image
-            service_data["data"]["attachment"]["hide-thumbnail"] = "false"
+            if not service_data.get(ATTR_DATA):
+                service_data[ATTR_DATA] = {}
+            service_data[ATTR_DATA][ATTR_ATTACHMENT] = {}
+            service_data[ATTR_DATA][ATTR_ATTACHMENT][ATTR_URL] = image
+            service_data[ATTR_DATA][ATTR_ATTACHMENT][ATTR_HIDE_THUMBNAIL] = ATTR_FALSE
         if tag:
-            if not service_data.get("data"):
-                service_data["data"] = {}
-            service_data["data"]["apns_headers"] = {}
-            service_data["data"]["apns_headers"]["apns-collapse-id"] = tag
+            if not service_data.get(ATTR_DATA):
+                service_data[ATTR_DATA] = {}
+            service_data[ATTR_DATA][ATTR_APNS_HEADERS] = {}
+            service_data[ATTR_DATA][ATTR_APNS_HEADERS][ATTR_APNS_COLLAPSE_ID] = tag
 
         logger.debug(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
 
@@ -94,18 +109,18 @@ for item in services:
 
     if item[ATTR_TYPE] == ATTR_ANDROID:
         service_data = {
-            "title": title,
-            "message": message,
-            "data": {"priority": priority},
+            ATTR_TITLE: title,
+            ATTR_MESSAGE: message,
+            ATTR_DATA: {ATTR_PRIORITY: priority},
         }
         if actions:
-            service_data["data"]["actions"] = actions
+            service_data[ATTR_DATA][ATTR_ACTIONS] = actions
         if tag:
-            service_data["data"]["tag"] = tag
+            service_data[ATTR_DATA][ATTR_TAG] = tag
         if url:
-            service_data["data"]["url"] = url
+            service_data[ATTR_DATA][ATTR_URL] = url
         if image:
-            service_data["data"]["image"] = image
+            service_data[ATTR_DATA][ATTR_IMAGE] = image
 
         logger.debug(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
 
@@ -118,9 +133,9 @@ for item in services:
             )
 
     if item[ATTR_TYPE] == ATTR_FRONTEND:
-        service_data = {"title": title, "message": message}
+        service_data = {ATTR_TITLE: title, ATTR_MESSAGE: message}
         if tag:
-            service_data["notification_id"] = tag
+            service_data[ATTR_NOTIFICATION_ID] = tag
 
         logger.debug(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
 
@@ -136,7 +151,7 @@ for item in services:
         recipient = item.get(CONF_RECIPIENT)
         if not recipient:
             raise ValueError("`recipient` argument is empty")
-        service_data = {"message": message, "recipient": recipient}
+        service_data = {ATTR_MESSAGE: message, ATTR_RECIPIENT: recipient}
 
         logger.debug(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
 
