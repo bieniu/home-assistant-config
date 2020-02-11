@@ -21,6 +21,7 @@ SERVICES = {
 }
 
 CONF_ACTIONS = "actions"
+CONF_DEVELOP = "develop"
 CONF_IMAGE = "image"
 CONF_MESSAGE = "message"
 CONF_PRIORITY = "priority"
@@ -45,6 +46,9 @@ tag = data.get(CONF_TAG)
 title = data.get(CONF_TITLE)
 url = data.get(CONF_URL)
 actions = data.get(CONF_ACTIONS)
+develop = False
+if data.get(CONF_DEVELOP) == True:
+    develop = data.get(CONF_DEVELOP)
 
 if not title:
     raise ValueError("Title argument is empty")
@@ -66,7 +70,7 @@ for user in USERS:
                     service_data["data"] = {}
                 service_data["data"]["attachment"] = {}
                 service_data["data"]["attachment"]["url"] = image
-                if "jpg" in image:
+                if "jpg" in image or "jpeg" in image:
                     service_data["data"]["attachment"]["content-type"] = "jpg"
                 if "png" in image:
                     service_data["data"]["attachment"]["content-type"] = "png"
@@ -81,12 +85,13 @@ for user in USERS:
                 f"service: {SERVICES[user][ATTR_SERVICE]}, data: {service_data}"
             )
 
-            hass.services.call(
-                SERVICES[user][ATTR_SERVICE].split(".")[0],
-                SERVICES[user][ATTR_SERVICE].split(".")[1],
-                service_data,
-                False,
-            )
+            if not develop:
+                hass.services.call(
+                    SERVICES[user][ATTR_SERVICE].split(".")[0],
+                    SERVICES[user][ATTR_SERVICE].split(".")[1],
+                    service_data,
+                    False,
+                )
 
         if SERVICES[user][ATTR_TYPE] == ATTR_ANDROID:
             service_data = {
@@ -107,12 +112,13 @@ for user in USERS:
                 f"service: {SERVICES[user][ATTR_SERVICE]}, data: {service_data}"
             )
 
-            hass.services.call(
-                SERVICES[user][ATTR_SERVICE].split(".")[0],
-                SERVICES[user][ATTR_SERVICE].split(".")[1],
-                service_data,
-                False,
-            )
+            if not develop:
+                hass.services.call(
+                    SERVICES[user][ATTR_SERVICE].split(".")[0],
+                    SERVICES[user][ATTR_SERVICE].split(".")[1],
+                    service_data,
+                    False,
+                )
 
         if SERVICES[user][ATTR_TYPE] == ATTR_FRONTEND:
             service_data = {"title": title, "message": message}
@@ -123,9 +129,10 @@ for user in USERS:
                 f"service: {SERVICES[user][ATTR_SERVICE]}, data: {service_data}"
             )
 
-            hass.services.call(
-                SERVICES[user][ATTR_SERVICE].split(".")[0],
-                SERVICES[user][ATTR_SERVICE].split(".")[1],
-                service_data,
-                False,
-            )
+            if not develop:
+                hass.services.call(
+                    SERVICES[user][ATTR_SERVICE].split(".")[0],
+                    SERVICES[user][ATTR_SERVICE].split(".")[1],
+                    service_data,
+                    False,
+                )
