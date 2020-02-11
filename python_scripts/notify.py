@@ -70,7 +70,7 @@ for user in USERS:
                 service_data["data"]["apns_headers"] = {}
                 service_data["data"]["apns_headers"]["apns-collapse-id"] = tag
 
-            logger.error(
+            logger.debug(
                 f"service: {SERVICES[user][ATTR_SERVICE]}, data: {service_data}"
             )
 
@@ -96,7 +96,7 @@ for user in USERS:
             if image:
                 service_data["data"]["image"] = image
 
-            logger.error(
+            logger.debug(
                 f"service: {SERVICES[user][ATTR_SERVICE]}, data: {service_data}"
             )
 
