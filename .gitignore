@@ -29,7 +29,7 @@ travis_secrets.yaml
 known_devices.yaml
 WIP*.py
 panels
-python_scripts
+python_scripts/shellies_discovery.py
 themes/*.yaml
 !themes/blue_mix.yaml
 !.gitignore
