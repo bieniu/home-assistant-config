@@ -1,3 +1,21 @@
+"""
+service: python_script.notify
+data:
+  title: "Notification title"
+  tag: "unique-tag"
+  message: "Notification message"
+  image: "https://test.xy/image.png"
+  services:
+    - service: notify.mobile_app_iphone
+      type: "ios"
+    - service: notify.mobile_app_oneplus
+      type: "android"
+    - service: persistent_notification.create
+      type: "frontend"
+    - service: notify.sms
+      type: "sms"
+      recipient: "+48123456789"
+"""
 ATTR_ANDROID = "android"
 ATTR_FRONTEND = "frontend"
 ATTR_IOS = "ios"
@@ -21,29 +39,33 @@ PRIORITY_HIGH = "high"
 
 PRIORITIES = [PRIORITY_NORMAL, PRIORITY_HIGH]
 
+title = data.get(CONF_TITLE)
+message = data.get(CONF_MESSAGE)
+if not title:
+    raise ValueError("`title` argument is empty")
+if not message:
+    raise ValueError("`message` argument is empty")
+
+services = data.get(CONF_SERVICES)
+if not services:
+    raise ValueError("Argument `services` should be a list")
+if len(services) < 1:
+    raise ValueError("Argument `services` should be a list")
+
 priority = PRIORITY_NORMAL
 if data.get(CONF_PRIORITY):
     priority = data.get(CONF_PRIORITY)
 if not priority in PRIORITIES:
-    raise ValueError("Wrong value for priority argument")
+    raise ValueError("Wrong value for `priority` argument")
 
-image = data.get(CONF_IMAGE)
-message = data.get(CONF_MESSAGE)
-tag = data.get(CONF_TAG)
-title = data.get(CONF_TITLE)
-url = data.get(CONF_URL)
 actions = data.get(CONF_ACTIONS)
-services = data.get(CONF_SERVICES)
-# if not isinstance(services, list):
-#     raise ValueError(f"Argument services should be a list")
+image = data.get(CONF_IMAGE)
+tag = data.get(CONF_TAG)
+url = data.get(CONF_URL)
+
 develop = False
 if data.get(CONF_DEVELOP) == True:
     develop = data.get(CONF_DEVELOP)
-
-if not title:
-    raise ValueError("Title argument is empty")
-if not message:
-    raise ValueError("Message argument is empty")
 
 for item in services:
     if item[ATTR_TYPE] == ATTR_IOS:
@@ -64,9 +86,7 @@ for item in services:
             service_data["data"]["apns_headers"] = {}
             service_data["data"]["apns_headers"]["apns-collapse-id"] = tag
 
-        logger.error(
-            f"service: {item[ATTR_SERVICE]}, data: {service_data}"
-        )
+        logger.debug(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
 
         if not develop:
             hass.services.call(
@@ -91,9 +111,7 @@ for item in services:
         if image:
             service_data["data"]["image"] = image
 
-        logger.error(
-            f"service: {item[ATTR_SERVICE]}, data: {service_data}"
-        )
+        logger.debug(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
 
         if not develop:
             hass.services.call(
@@ -108,9 +126,7 @@ for item in services:
         if tag:
             service_data["notification_id"] = tag
 
-        logger.error(
-            f"service: {item[ATTR_SERVICE]}, data: {service_data}"
-        )
+        logger.debug(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
 
         if not develop:
             hass.services.call(
@@ -121,11 +137,12 @@ for item in services:
             )
 
     if item[ATTR_TYPE] == ATTR_SMS:
-        service_data = {"message": message, "recipient": item[CONF_RECIPIENT]}
+        recipient = item.get(CONF_RECIPIENT)
+        if not recipient:
+            raise ValueError("`recipient` argument is empty")
+        service_data = {"message": message, "recipient": recipient}
 
-        logger.error(
-            f"service: {item[ATTR_SERVICE]}, data: {service_data}"
-        )
+        logger.debug(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
 
         if not develop:
             hass.services.call(
