@@ -133,7 +133,7 @@
       tag: "notification-dishwasher"
       services:
         - service: !secret maciek_notify_service
-          type: "andoid"
+          type: "android"
         - service: !secret edyta_notify_service
           type: "ios"
 
@@ -163,7 +163,7 @@
           action: "TURN_OFF_DESKTOP_COMPUTER"
       services:
         - service: !secret maciek_notify_service
-          type: "andoid"
+          type: "android"
 
 # wyłączenie komputera z powiadomienia
 - id: notification_turn_off_desktop_computer
@@ -194,12 +194,7 @@
         tag: "notification-ssl"
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
-    # - service: persistent_notification.create
-    #   data_template:
-    #     title: "Wygasa certyfikat SSL"
-    #     message: "Za {{ states('sensor.ssl_certificate_expiry') }} dni wygaśnie certyfikat SSL serwera WWW."
-    #     notification_id: "notification-ssl"
+            type: "android"
 
 # powiadomienie z HACS
 - id: notification_from_hacs
@@ -211,19 +206,14 @@
       for:
         minutes: 20
   action:
-    - service: python_script.notify
-      data:
-        title: "Aktualizacja dodatku"
-        message: "Dostępna jest aktualizacja dodatku z HACS."
-        tag: "notification-hacs"
-        services:
-          - service: !secret maciek_notify_service
-            type: "andoid"
-    # - service: persistent_notification.create
-    #   data_template:
-    #     title: "Aktualizacja dodatku"
-    #     message: "Dostępna jest aktualizacja dodatku z HACS."
-    #     notification_id: "notification-hacs"
+    service: python_script.notify
+    data:
+      title: "Aktualizacja dodatku"
+      message: "Dostępna jest aktualizacja dodatku z HACS."
+      tag: "notification-hacs"
+      services:
+        - service: !secret maciek_notify_service
+          type: "android"
 
 # powiadomienie o encji ze stanem dead lub unavailable
 - id: notification_dead_or_unavailable
@@ -263,22 +253,7 @@
         tag: "notification-dead-unavailable"
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
-    # - service: persistent_notification.create
-    #   data_template:
-    #     title: "Encja z nieprawidłowym stanem"
-    #     message: >
-    #       {% macro dead_unavailable_entities() %}
-    #         {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
-    #         {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
-    #         {% for domain in domains -%}
-    #           {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb_antresola' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
-    #        - {{ item.name }} ({{ item.entity_id }})
-    #           {%- endfor %}
-    #         {%- endfor %}
-    #       {% endmacro %}
-    #       Następujące encje mają nieprawidłowe stany: {{ dead_unavailable_entities() }}
-    #     notification_id: "notification-dead-unavailable"
+            type: "android"
 
 # powiadomienie o aktualizacji HA
 - id: notification_home_assistant_update_available
@@ -310,12 +285,7 @@
         url: "https://github.com/home-assistant/home-assistant/releases"
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
-    # - service: persistent_notification.create
-    #   data_template:
-    #     title: "Aktualizacja Home Assistant'a"
-    #     message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ha_version_current') }} dla Home Assistant'a."
-    #     notification_id: "notification-ha-update"
+            type: "android"
 
 # powiadomienie o aktualizacji AD
 - id: notification_appdaemon_update_available
@@ -341,16 +311,11 @@
         url: "https://github.com/home-assistant/appdaemon/releases"
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
-    # - service: persistent_notification.create
-    #   data_template:
-    #     title: "Aktualizacja AppDaemon'a"
-    #     message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ad_version_current') }} dla AppDaemon'a."
-    #     notification_id: "notification-ad-update"
+            type: "android"
 
-# powiadomienie o małej ilości wody w nawilżaczu
-- id: notification_humidifier_low_water
-  alias: "Notification Humidifier Low Water"
+# powiadomienie o małej ilości wody w nawilżaczu Maciek
+- id: notification_humidifier_low_water_maciek
+  alias: "Notification Humidifier Low Water Maciek"
   trigger:
     - platform: numeric_state
       entity_id: sensor.humidifier_water_level
@@ -363,27 +328,22 @@
       below: 40
   condition:
     - condition: state
+      entity_id: person.maciek
+      state: "home"
+    - condition: state
       entity_id: input_boolean.heating_season
       state: "on"
     - condition: template
       value_template: "{{ states('sensor.humidifier_water_level') | int != 0 }}"
   action:
-    # - service: persistent_notification.create
-    #   data_template:
-    #     title: "Uzupełnij wodę w nawilżaczu"
-    #     message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-    #     notification_id: "notification-humidifier"
-    - condition: state
-      entity_id: person.maciek
-      state: "home"
-    - service: python_script.notify
-      data_template:
-        title: "Uzupełnij wodę w nawilżaczu"
-        message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        tag: "notification-humidifier"
-        services:
-          - service: !secret maciek_notify_service
-            type: "andoid"
+    service: python_script.notify
+    data_template:
+      title: "Uzupełnij wodę w nawilżaczu"
+      message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+      tag: "notification-humidifier"
+      services:
+        - service: !secret maciek_notify_service
+          type: "android"
 
 # powiadomienie o małej ilości wody w nawilżaczu Edyta
 - id: notification_humidifier_low_water_edyta
@@ -417,9 +377,9 @@
         - service: !secret edyta_notify_service
           type: "ios"
 
-# powiadomienie o wysokim stężeniu CO2 w salonie
-- id: notification_salon_co2
-  alias: "Notification Salon CO2"
+# powiadomienie o wysokim stężeniu CO2 w salonie Maciek
+- id: notification_salon_co2_maciek
+  alias: "Notification Salon CO2 Maciek"
   trigger:
     platform: numeric_state
     entity_id: sensor.co2_salon
@@ -427,9 +387,12 @@
     for:
       minutes: 5
   condition:
-    condition: state
-    entity_id: input_boolean.away_mode
-    state: "off"
+    - condition: state
+      entity_id: input_boolean.away_mode
+      state: "off"
+    - condition: state
+      entity_id: person.maciek
+      state: "home"
   action:
     service: python_script.notify
     data_template:
@@ -438,7 +401,31 @@
       tag: "notification-high-co2"
       services:
         - service: !secret maciek_notify_service
-          type: "andoid"
+          type: "android"
+
+# powiadomienie o wysokim stężeniu CO2 w salonie Edyta
+- id: notification_salon_co2_edyta
+  alias: "Notification Salon CO2 Edyta"
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.co2_salon
+    above: 1000
+    for:
+      minutes: 5
+  condition:
+    - condition: state
+      entity_id: input_boolean.away_mode
+      state: "off"
+    - condition: state
+      entity_id: person.edyta
+      state: "home"
+  action:
+    service: python_script.notify
+    data_template:
+      title: "Wysokie stężenie dwutlenku węgla"
+      message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
+      tag: "notification-high-co2"
+      services:
         - service: !secret edyta_notify_service
           type: "ios"
 
@@ -469,12 +456,7 @@
         tag: "notification-{{ trigger.to_state.attributes.friendly_name | lower | replace(' ', '_') }}-update"
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
-    # - service: persistent_notification.create
-    #   data_template:
-    #     title: "Aktualizacja oprogramowania Shelly"
-    #     message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} oprogramowania dla {{ trigger.to_state.attributes.friendly_name }}."
-    #     notification_id: "notification-{{ trigger.to_state.attributes.friendly_name | lower | replace(' ', '_') }}-update"
+            type: "android"
 
 # powiadomienie o aktualizacji Tasmota
 - id: notification_tasmota_update_available
@@ -500,12 +482,7 @@
         url: "https://github.com/arendst/Tasmota/releases"
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
-    # - service: persistent_notification.create
-    #   data_template:
-    #     title: "Aktualizacja Tasmota"
-    #     message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Tasmota."
-    #     notification_id: "notification-tasmota-update"
+            type: "android"
 
 # powiadomienie o aktualizacji ESPHome
 - id: notification_esphome_update_available
@@ -531,12 +508,7 @@
         url: "https://github.com/esphome/esphome/releases"
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
-    # - service: persistent_notification.create
-    #   data_template:
-    #     title: "Aktualizacja ESPHome"
-    #     message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla ESPHome."
-    #     notification_id: "notification-esphome-update"
+            type: "android"
 
 # powiadomienie o aktualizacji Caddy
 - id: notification_caddy_update_available
@@ -562,12 +534,7 @@
         url: "https://github.com/caddyserver/caddy/releases"
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
-    # - service: persistent_notification.create
-    #   data_template:
-    #     title: "Aktualizacja Caddy"
-    #     message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy."
-    #     notification_id: "notification-caddy-update"
+            type: "android"
 
 # powiadomienie jak jest ruch i nikogo w domu
 - id: notification_motion_when_away_mode
@@ -600,7 +567,6 @@
       snapshot_url: !secret snapshot_url
       location: "{{ trigger.to_state.attributes.location }}"
 
-
 # powiadomienie jak otworzy się okno i nikogo w domu
 - id: notification_window_opened_when_away_mode
   alias: "Notification Window Opened When Away Mode"
@@ -631,7 +597,7 @@
       priority: "high"
       services:
         - service: !secret maciek_notify_service
-          type: "andoid"
+          type: "android"
         - service: !secret edyta_notify_service
           type: "ios"
 
@@ -655,7 +621,7 @@
       priority: "high"
       services:
         - service: !secret maciek_notify_service
-          type: "andoid"
+          type: "android"
         - service: !secret edyta_notify_service
           type: "ios"
 
@@ -674,12 +640,7 @@
         tag: "notification-synology-low-space"
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
-    # - service: persistent_notification.create
-    #   data_template:
-    #     title: "Mało miejsca na dysku Synology"
-    #     message: "Dysk Synology jest zapełniony w {{ trigger.to_state.state }}%."
-    #     notification_id: "notification-synology-low-space"
+            type: "android"
 
 # powiadomienie o wykryciu nowego urządzenia
 - id: notification_new_device
@@ -695,12 +656,7 @@
         tag: "notification-new-device"
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
-    # - service: persistent_notification.create
-    #   data_template:
-    #     title: "Nowe urządzenie"
-    #     message: "Wykryto nowe urządzenie o nazwie {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}})."
-    #     notification_id: "notification-new-device"
+            type: "android"
 
 # powiadomienie o niskim poziomie naładowania baterii
 - id: notification_low_battery
@@ -745,25 +701,7 @@
         tag: "notification-low-battery"
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
-    # - service: persistent_notification.create
-    #   data_template:
-    #     title: "Niski poziom naładowania baterii"
-    #     message: >
-    #       {% macro battery_level() %}
-    #         {%- set threshold = 10 -%}
-    #         {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'lock', 'binary_sensor'] -%}
-    #         {% for domain in domains -%}
-    #           {% for item in states[domain] if (((item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) or ('battery' in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == 'low' or item.state | lower == 'unknown')))) and not (( 'humidity' in item.entity_id) or ('illumination' in item.entity_id)) -%}
-    #             {% if (item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) %}
-    #        - {{ item.entity_id }} [{{ item.attributes['battery_level'] | round(0) }}%]{% endif -%}
-    #             {% if 'battery' in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == 'low' or item.state | lower == 'unknown') %}
-    #        - {{ item.entity_id }} [{{ item.state | round(0) }}%]{% endif -%}
-    #           {% endfor %}
-    #         {%- endfor %}
-    #       {% endmacro %}
-    #       W następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level() }}
-    #     notification_id: "notification-low-battery"
+            type: "android"
 
 ##################################################################################################
 
@@ -854,7 +792,7 @@
         priority: "high"
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
+            type: "android"
           - service: !secret edyta_notify_service
             type: "ios"
 
@@ -1178,7 +1116,7 @@
         tag: "notification-fast-warm-up"
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
+            type: "android"
           - service: !secret edyta_notify_service
             type: "ios"
     - condition: template
@@ -1267,7 +1205,7 @@
         priority: "high"
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
+            type: "android"
           - service: !secret edyta_notify_service
             type: "ios"
 
@@ -1299,7 +1237,7 @@
         priority: "high"
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
+            type: "android"
           - service: !secret edyta_notify_service
             type: "ios"
 
@@ -2590,14 +2528,9 @@
         priority: "high"
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
+            type: "android"
           - service: !secret edyta_notify_service
             type: "ios"
-    # - service: persistent_notification.create
-    #   data_template:
-    #     title: "Uzupełnij wodę w nawilżaczu"
-    #     message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-    #     notification_id: "notification-humidifier"
 
 - id: humidification_outdoor_temp_above_10
   alias: "Humidification Outdoor Temp Above 10"

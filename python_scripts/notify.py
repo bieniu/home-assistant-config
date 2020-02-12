@@ -7,6 +7,7 @@ data:
   image: "https://test.xy/image.png"
   color: "red"
   url: "https://example.com"
+  priority: "high"
   services:
     - service: notify.mobile_app_iphone
       type: "ios"
@@ -73,6 +74,7 @@ if not services:
 if len(services) < 1:
     raise ValueError("Argument `services` should be a list")
 
+priority = PRIORITY_NORMAL
 if data.get(CONF_PRIORITY):
     priority = data.get(CONF_PRIORITY)
 if not priority in PRIORITIES:
