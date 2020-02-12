@@ -269,7 +269,7 @@ notify_motion:
           {% endif %}
         services:
           - service: !secret maciek_notify_service
-            type: "andoid"
+            type: "android"
           - service: !secret edyta_notify_service
             type: "ios"
 
