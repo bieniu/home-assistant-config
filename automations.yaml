@@ -307,6 +307,7 @@
         title: "Aktualizacja Home Assistant'a"
         message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ha_version_current') }} dla Home Assistant'a."
         tag: "notification-ha-update"
+        url: "https://github.com/home-assistant/home-assistant/releases"
         services:
           - service: !secret maciek_notify_service
             type: "andoid"
@@ -337,6 +338,7 @@
         title: "Aktualizacja AppDaemon'a"
         message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ad_version_current') }} dla AppDaemon'a."
         tag: "notification-ad-update"
+        url: "https://github.com/home-assistant/appdaemon/releases"
         services:
           - service: !secret maciek_notify_service
             type: "andoid"
@@ -495,6 +497,7 @@
         title: "Aktualizacja Tasmota"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Tasmota."
         tag: "notification-tasmota-update"
+        url: "https://github.com/arendst/Tasmota/releases"
         services:
           - service: !secret maciek_notify_service
             type: "andoid"
@@ -525,6 +528,7 @@
         title: "Aktualizacja ESPHome"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla ESPHome."
         tag: "notification-esphome-update"
+        url: "https://github.com/esphome/esphome/releases"
         services:
           - service: !secret maciek_notify_service
             type: "andoid"
@@ -555,6 +559,7 @@
         title: "Aktualizacja Caddy"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy."
         tag: "notification-caddy-update"
+        url: "https://github.com/caddyserver/caddy/releases"
         services:
           - service: !secret maciek_notify_service
             type: "andoid"

@@ -21,6 +21,8 @@ ATTR_ANDROID = "android"
 ATTR_APNS_COLLAPSE_ID = "apns-collapse-id"
 ATTR_APNS_HEADERS = "apns_headers"
 ATTR_ATTACHMENT = "attachment"
+ATTR_CLICK_ACTION = "clickAction"
+ATTR_COLOR = "color"
 ATTR_DATA = "data"
 ATTR_FALSE = "false"
 ATTR_FRONTEND = "frontend"
@@ -39,6 +41,7 @@ ATTR_TYPE = "type"
 ATTR_URL = "url"
 
 CONF_ACTIONS = "actions"
+CONF_COLOR = "color"
 CONF_DEVELOP = "develop"
 CONF_IMAGE = "image"
 CONF_MESSAGE = "message"
@@ -77,6 +80,7 @@ actions = data.get(CONF_ACTIONS)
 image = data.get(CONF_IMAGE)
 tag = data.get(CONF_TAG)
 url = data.get(CONF_URL)
+color = data.get(CONF_COLOR)
 
 develop = False
 if data.get(CONF_DEVELOP) == True:
@@ -118,7 +122,9 @@ for item in services:
         if tag:
             service_data[ATTR_DATA][ATTR_TAG] = tag
         if url:
-            service_data[ATTR_DATA][ATTR_URL] = url
+            service_data[ATTR_DATA][ATTR_CLICK_ACTION] = url
+        if color:
+            service_data[ATTR_DATA][ATTR_COLOR] = color
         if image:
             service_data[ATTR_DATA][ATTR_IMAGE] = image
 
