@@ -5,6 +5,8 @@ data:
   message: "Notification message"
   tag: "unique-tag"
   image: "https://test.xy/image.png"
+  color: "red"
+  url: "https://example.com"
   services:
     - service: notify.mobile_app_iphone
       type: "ios"
