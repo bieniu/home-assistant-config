@@ -141,6 +141,12 @@ for item in services:
             )
 
     if item[ATTR_TYPE] == ATTR_FRONTEND:
+        if image:
+            message = message + " "
+            message = message + image
+        if url:
+            message = message + " "
+            message = message + url
         service_data = {ATTR_TITLE: title, ATTR_MESSAGE: message}
         if tag:
             service_data[ATTR_NOTIFICATION_ID] = tag
@@ -159,6 +165,12 @@ for item in services:
         recipient = item.get(CONF_RECIPIENT)
         if not recipient:
             raise ValueError("`recipient` argument is empty")
+        if image:
+            message = message + " "
+            message = message + image
+        if url:
+            message = message + " "
+            message = message + url
         service_data = {ATTR_MESSAGE: message, ATTR_RECIPIENT: recipient}
 
         logger.debug(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
