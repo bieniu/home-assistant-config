@@ -39,6 +39,7 @@ ATTR_SMS = "sms"
 ATTR_SERVICE = "service"
 ATTR_TAG = "tag"
 ATTR_TITLE = "title"
+ATTR_TTL = "ttl"
 ATTR_TYPE = "type"
 ATTR_URL = "url"
 
@@ -72,7 +73,6 @@ if not services:
 if len(services) < 1:
     raise ValueError("Argument `services` should be a list")
 
-priority = PRIORITY_NORMAL
 if data.get(CONF_PRIORITY):
     priority = data.get(CONF_PRIORITY)
 if not priority in PRIORITIES:
@@ -102,6 +102,10 @@ for item in services:
                 service_data[ATTR_DATA] = {}
             service_data[ATTR_DATA][ATTR_APNS_HEADERS] = {}
             service_data[ATTR_DATA][ATTR_APNS_HEADERS][ATTR_APNS_COLLAPSE_ID] = tag
+        if url:
+            if not service_data.get(ATTR_DATA):
+                service_data[ATTR_DATA] = {}
+            service_data[ATTR_DATA][ATTR_URL] = url
 
         logger.debug(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
 
@@ -114,20 +118,31 @@ for item in services:
             )
 
     if item[ATTR_TYPE] == ATTR_ANDROID:
-        service_data = {
-            ATTR_TITLE: title,
-            ATTR_MESSAGE: message,
-            ATTR_DATA: {ATTR_PRIORITY: priority},
-        }
+        service_data = {ATTR_TITLE: title, ATTR_MESSAGE: message}
+        if priority == PRIORITY_HIGH:
+            if not service_data.get(ATTR_DATA):
+                service_data[ATTR_DATA] = {}
+            service_data[ATTR_DATA][ATTR_PRIORITY] = priority
+            service_data[ATTR_DATA][ATTR_TTL] = 0
         if actions:
+            if not service_data.get(ATTR_DATA):
+                service_data[ATTR_DATA] = {}
             service_data[ATTR_DATA][ATTR_ACTIONS] = actions
         if tag:
+            if not service_data.get(ATTR_DATA):
+                service_data[ATTR_DATA] = {}
             service_data[ATTR_DATA][ATTR_TAG] = tag
         if url:
+            if not service_data.get(ATTR_DATA):
+                service_data[ATTR_DATA] = {}
             service_data[ATTR_DATA][ATTR_CLICK_ACTION] = url
         if color:
+            if not service_data.get(ATTR_DATA):
+                service_data[ATTR_DATA] = {}
             service_data[ATTR_DATA][ATTR_COLOR] = color
         if image:
+            if not service_data.get(ATTR_DATA):
+                service_data[ATTR_DATA] = {}
             service_data[ATTR_DATA][ATTR_IMAGE] = image
 
         logger.debug(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
