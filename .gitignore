@@ -30,7 +30,6 @@ known_devices.yaml
 WIP*.py
 panels
 python_scripts/shellies_discovery.py
-themes/*.yaml
-!themes/blue_mix.yaml
+themes/*/*.yaml
 !.gitignore
 alexa_media.*
