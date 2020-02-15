@@ -5,7 +5,6 @@
 
 - platform: androidtv
   host: !secret mibox_hostname
-  # adb_server_ip: 127.0.0.1
   adbkey: "~/.android/adbkey"
   name: "MiBox"
   apps:

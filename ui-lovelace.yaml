@@ -21,12 +21,22 @@ resources:
 background: "#e5e5e5"
 
 anchors:
+  glance-card-padding: &glance-card-padding
+    style: |
+      div.entities.no-header {
+        padding-top: 8px;
+      }
+  entities-card-padding: &entities-card-padding
+    style: |
+      .card-content {
+        padding-top: 0px;
+      }
   card-no-border-radius: &card-no-border-radius
     style: |
       ha-card {
         border-radius: 0px
       }
-  mini-media-player-padding: &mini-media-player-padding
+  mini-media-player-card-padding: &mini-media-player-card-padding
     style:
       .: |
         ha-card > div.mmp-player {
@@ -117,15 +127,13 @@ views:
                 title: "Kuchnia"
                 cards:
                   - type: glance
+                    <<: *glance-card-padding
                     show_name: false
                     entities:
                       - sensor.temperature_kuchnia
                       - sensor.humidity_kuchnia
                   - type: entities
-                    style: |
-                      .card-content {
-                        padding-top: 0px;
-                      }
+                    <<: *entities-card-padding
                     show_header_toggle: false
                     entities:
                       - entity: binary_sensor.window_kuchnia
@@ -145,6 +153,7 @@ views:
             title: "Salon"
             cards:
               - type: glance
+                <<: *glance-card-padding
                 show_name: false
                 entities:
                   - sensor.temperature_salon
@@ -152,10 +161,7 @@ views:
                   - sensor.co2_salon
                   - sensor.illumination_salon
               - type: entities
-                style: |
-                  .card-content {
-                    padding-top: 0px;
-                  }
+                <<: *entities-card-padding
                 show_header_toggle: false
                 entities:
                   - entity: binary_sensor.motion_salon
@@ -174,7 +180,7 @@ views:
                   - input_select.light_scenes_salon
                   - input_select.salon_harmony
                   - type: custom:mini-media-player
-                    <<: *mini-media-player-padding
+                    <<: *mini-media-player-card-padding
                     entity: media_player.bravia
                     hide:
                       controls: true
@@ -184,7 +190,7 @@ views:
                     info: scroll
                     group: true
                   - type: custom:mini-media-player
-                    <<: *mini-media-player-padding
+                    <<: *mini-media-player-card-padding
                     entity: media_player.denon
                     hide:
                       controls: true
@@ -196,7 +202,7 @@ views:
                     info: scroll
                     group: true
                   - type: custom:mini-media-player
-                    <<: *mini-media-player-padding
+                    <<: *mini-media-player-card-padding
                     entity: media_player.playstation
                     hide:
                       controls: true
@@ -207,7 +213,7 @@ views:
                     info: scroll
                     group: true
                   - type: custom:mini-media-player
-                    <<: *mini-media-player-padding
+                    <<: *mini-media-player-card-padding
                     entity: media_player.echo_show
                     hide:
                       controls: true
@@ -265,16 +271,14 @@ views:
             title: "Pracownia"
             cards:
               - type: glance
+                <<: *glance-card-padding
                 show_name: false
                 entities:
                   - sensor.temperature_pracownia
                   - sensor.humidity_pracownia
                   - sensor.illumination_pracownia
               - type: entities
-                style: |
-                  .card-content {
-                    padding-top: 0px;
-                  }
+                <<: *entities-card-padding
                 show_header_toggle: false
                 entities:
                   - entity: binary_sensor.motion_pracownia
@@ -288,16 +292,14 @@ views:
             title: "Pokój gościnny"
             cards:
               - type: glance
+                <<: *glance-card-padding
                 show_name: false
                 entities:
                   - sensor.temperature_goscinny
                   - sensor.humidity_goscinny
                   - sensor.illumination_goscinny
               - type: entities
-                style: |
-                  .card-content {
-                    padding-top: 0px;
-                  }
+                <<: *entities-card-padding
                 show_header_toggle: false
                 entities:
                   - entity: binary_sensor.motion_goscinny
@@ -306,7 +308,7 @@ views:
                   - entity: switch.lamp_goscinny
                     state_color: true
                   - type: custom:mini-media-player
-                    <<: *mini-media-player-padding
+                    <<: *mini-media-player-card-padding
                     entity: media_player.mibox
                     name: "Mi Box"
                     hide:
@@ -320,16 +322,14 @@ views:
             title: "Antresola"
             cards:
               - type: glance
+                <<: *glance-card-padding
                 show_name: false
                 entities:
                   - sensor.temperature_antresola
                   - sensor.humidity_antresola
                   - sensor.illumination_antresola
               - type: entities
-                style: |
-                  .card-content {
-                    padding-top: 0px;
-                  }
+                <<: *entities-card-padding
                 show_header_toggle: false
                 entities:
                   - entity: binary_sensor.window_antresola
@@ -343,16 +343,14 @@ views:
             title: "Gabinet"
             cards:
               - type: glance
+                <<: *glance-card-padding
                 show_name: false
                 entities:
                   - sensor.temperature_gabinet
                   - sensor.humidity_gabinet
                   - sensor.illumination_gabinet
               - type: entities
-                style: |
-                  .card-content {
-                    padding-top: 0px;
-                  }
+                <<: *entities-card-padding
                 show_header_toggle: false
                 entities:
                   - entity: binary_sensor.window_gabinet
@@ -367,16 +365,14 @@ views:
             title: "Pokój Antka"
             cards:
               - type: glance
+                <<: *glance-card-padding
                 show_name: false
                 entities:
                   - sensor.temperature_antek
                   - sensor.humidity_antek
                   - sensor.illumination_antek
               - type: entities
-                style: |
-                  .card-content {
-                    padding-top: 0px;
-                  }
+                <<: *entities-card-padding
                 show_header_toggle: false
                 entities:
                   - entity: binary_sensor.window_antek
@@ -389,7 +385,7 @@ views:
                   - entity: switch.cabinet_antek
                     state_color: true
                   - type: custom:mini-media-player
-                    <<: *mini-media-player-padding
+                    <<: *mini-media-player-card-padding
                     entity: media_player.echo_plus
                     hide:
                       controls: true
@@ -403,16 +399,14 @@ views:
             title: "Sypialnia"
             cards:
               - type: glance
+                <<: *glance-card-padding
                 show_name: false
                 entities:
                   - sensor.temperature_sypialnia
                   - sensor.humidity_sypialnia
                   - sensor.illumination_sypialnia
               - type: entities
-                style: |
-                  .card-content {
-                    padding-top: 0px;
-                  }
+                <<: *entities-card-padding
                 show_header_toggle: false
                 entities:
                   - entity: binary_sensor.window_sypialnia
@@ -425,7 +419,7 @@ views:
                   - climate.thermostat_sypialnia
                   - light.lightstrip_sypialnia
                   - type: custom:mini-media-player
-                    <<: *mini-media-player-padding
+                    <<: *mini-media-player-card-padding
                     entity: media_player.echo_dot
                     hide:
                       controls: true
@@ -439,15 +433,13 @@ views:
             title: "Łazienka"
             cards:
               - type: glance
+                <<: *glance-card-padding
                 show_name: false
                 entities:
                   - sensor.temperature_lazienka
                   - sensor.humidity_lazienka
               - type: entities
-                style: |
-                  .card-content {
-                    padding-top: 0px;
-                  }
+                <<: *entities-card-padding
                 show_header_toggle: false
                 entities:
                   - climate.thermostat_lazienka
@@ -500,6 +492,7 @@ views:
                 title: "Raspberry Pi"
                 cards:
                   - type: glance
+                    <<: *glance-card-padding
                     entities:
                       - entity: sensor.processor_use
                         name: "CPU"
@@ -508,10 +501,7 @@ views:
                       - entity: sensor.disk_use_percent
                         name: "Dysk"
                   - type: entities
-                    style: |
-                      .card-content {
-                        padding-top: 0px;
-                      }
+                    <<: *entities-card-padding
                     show_header_toggle: false
                     entities:
                       - sensor.raspberry_cpu_temp

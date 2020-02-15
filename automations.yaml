@@ -313,9 +313,9 @@
           - service: !secret maciek_notify_service
             type: "android"
 
-# powiadomienie o małej ilości wody w nawilżaczu Maciek
-- id: notification_humidifier_low_water_maciek
-  alias: "Notification Humidifier Low Water Maciek"
+# powiadomienie o małej ilości wody w nawilżaczu
+- id: notification_humidifier_low_water
+  alias: "Notification Humidifier Low Water"
   trigger:
     - platform: numeric_state
       entity_id: sensor.humidifier_water_level
@@ -327,59 +327,42 @@
       entity_id: sensor.humidifier_water_level
       below: 40
   condition:
-    - condition: state
-      entity_id: person.maciek
-      state: "home"
-    - condition: state
-      entity_id: input_boolean.heating_season
-      state: "on"
-    - condition: template
-      value_template: "{{ states('sensor.humidifier_water_level') | int != 0 }}"
+    condition: and
+    conditions:
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: person.maciek
+            state: "home"
+          - condition: state
+            entity_id: person.edyta
+            state: "home"
+      - condition: state
+        entity_id: input_boolean.heating_season
+        state: "on"
+      - condition: template
+        value_template: "{{ states('sensor.humidifier_water_level') | int != 0 }}"
   action:
-    service: python_script.notify
-    data_template:
-      title: "Uzupełnij wodę w nawilżaczu"
-      message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-      tag: "notification-humidifier"
-      services:
-        - service: !secret maciek_notify_service
-          type: "android"
+    - service: script.notify_if_home
+      data_template:
+        title: "Uzupełnij wodę w nawilżaczu"
+        message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+        tag: "notification-humidifier"
+        location: "{{ states('person.maciek') }}"
+        notification_service: !secret maciek_notify_service
+        notification_type: "android"
+    - service: script.notify_if_home
+      data_template:
+        title: "Uzupełnij wodę w nawilżaczu"
+        message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+        tag: "notification-humidifier"
+        location: "{{ states('person.edyta') }}"
+        notification_service: !secret edyta_notify_service
+        notification_type: "ios"
 
-# powiadomienie o małej ilości wody w nawilżaczu Edyta
-- id: notification_humidifier_low_water_edyta
-  alias: "Notification Humidifier Low Water Edyta"
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.humidifier_water_level
-      below: 10
-    - platform: numeric_state
-      entity_id: sensor.humidifier_water_level
-      below: 20
-    - platform: numeric_state
-      entity_id: sensor.humidifier_water_level
-      below: 40
-  condition:
-    - condition: state
-      entity_id: person.edyta
-      state: "home"
-    - condition: state
-      entity_id: input_boolean.heating_season
-      state: "on"
-    - condition: template
-      value_template: "{{ states('sensor.humidifier_water_level') | int != 0 }}"
-  action:
-    service: python_script.notify
-    data_template:
-      title: "Uzupełnij wodę w nawilżaczu"
-      message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-      tag: "notification-humidifier"
-      services:
-        - service: !secret edyta_notify_service
-          type: "ios"
-
-# powiadomienie o wysokim stężeniu CO2 w salonie Maciek
-- id: notification_salon_co2_maciek
-  alias: "Notification Salon CO2 Maciek"
+# powiadomienie o wysokim stężeniu CO2 w salonie
+- id: notification_salon_co2
+  alias: "Notification Salon CO2"
   trigger:
     platform: numeric_state
     entity_id: sensor.co2_salon
@@ -387,47 +370,36 @@
     for:
       minutes: 5
   condition:
-    - condition: state
-      entity_id: input_boolean.away_mode
-      state: "off"
-    - condition: state
-      entity_id: person.maciek
-      state: "home"
+    condition: and
+    conditions:
+      - condition: or
+        conditions:
+          - condition: state
+            entity_id: person.maciek
+            state: "home"
+          - condition: state
+            entity_id: person.edyta
+            state: "home"
+      - condition: state
+        entity_id: input_boolean.away_mode
+        state: "off"
   action:
-    service: python_script.notify
-    data_template:
-      title: "Wysokie stężenie dwutlenku węgla"
-      message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
-      tag: "notification-high-co2"
-      services:
-        - service: !secret maciek_notify_service
-          type: "android"
-
-# powiadomienie o wysokim stężeniu CO2 w salonie Edyta
-- id: notification_salon_co2_edyta
-  alias: "Notification Salon CO2 Edyta"
-  trigger:
-    platform: numeric_state
-    entity_id: sensor.co2_salon
-    above: 1000
-    for:
-      minutes: 5
-  condition:
-    - condition: state
-      entity_id: input_boolean.away_mode
-      state: "off"
-    - condition: state
-      entity_id: person.edyta
-      state: "home"
-  action:
-    service: python_script.notify
-    data_template:
-      title: "Wysokie stężenie dwutlenku węgla"
-      message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
-      tag: "notification-high-co2"
-      services:
-        - service: !secret edyta_notify_service
-          type: "ios"
+    - service: script.notify_if_home
+      data_template:
+        title: "Wysokie stężenie dwutlenku węgla"
+        message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
+        tag: "notification-high-co2"
+        location: "{{ states('person.maciek') }}"
+        notification_service: !secret maciek_notify_service
+        notification_type: "android"
+    - service: script.notify_if_home
+      data_template:
+        title: "Wysokie stężenie dwutlenku węgla"
+        message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
+        tag: "notification-high-co2"
+        location: "{{ states('person.edyta') }}"
+        notification_service: !secret edyta_notify_service
+        notification_type: "ios"
 
 # powiadomienie o aktualizacji oprogramowania Shelly
 - id: notification_shelly_update_available

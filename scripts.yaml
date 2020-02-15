@@ -321,3 +321,16 @@ alexa_tts:
       message: "{{ message }}"
       data:
         type: "tts"
+
+notify_if_home:
+  sequence:
+    - condition: template
+      value_template: "{{ location == 'home' }}"
+    - service: python_script.notify
+      data_template:
+        title: "{{ title }}"
+        message: "{{ message }}"
+        tag: "{{ tag }}"
+        services:
+          - service: "{{ notification_service }}"
+            type: "{{ notification_type }}"

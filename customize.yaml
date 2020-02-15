@@ -347,3 +347,9 @@ sensor.airly_pm2_5:
 #### DISHWASHER ####
 sensor.dishwasher_kuchnia:
   icon: mdi:dishwasher
+
+sensor.hacs:
+  icon: mdi:store
+
+zone.home:
+  radius: 50
