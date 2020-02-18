@@ -682,9 +682,8 @@
 - id: presence_edyta_far_from_home
   alias: "Presence Edyta Far From Home"
   trigger:
-    platform: numeric_state
-    entity_id: sensor.edyta_to_home
-    above: 40
+    platform: template
+    value_template: "{{ distance('person.edyta', 'zone.home') > 40 }}"
   condition:
     condition: state
     entity_id: input_boolean.edyta_far_from_home
@@ -697,9 +696,8 @@
 - id: presence_maciek_far_from_home
   alias: "Presence Maciek Far From Home"
   trigger:
-    platform: numeric_state
-    entity_id: sensor.maciek_to_home
-    above: 40
+    platform: template
+    value_template: "{{ distance('person.maciek', 'zone.home') > 40 }}"
   condition:
     condition: state
     entity_id: input_boolean.maciek_far_from_home
@@ -1012,12 +1010,10 @@
 - id: heating_turn_on_before_return_to_home
   alias: "Heating Turn On Before Return To Home"
   trigger:
-    - platform: numeric_state
-      entity_id: sensor.maciek_to_home
-      below: 30
-    - platform: numeric_state
-      entity_id: sensor.edyta_to_home
-      below: 30
+    - platform: template
+      value_template: "{{ distance('person.edyta', 'zone.home') < 30 }}"
+    - platform: template
+      value_template: "{{ distance('person.maciek', 'zone.home') < 30 }}"
   condition:
     - condition: state
       entity_id: input_boolean.edyta_far_from_home
@@ -1048,12 +1044,10 @@
 - id: heating_heating_fast_warm_up_before_return_to_home
   alias: "Heating Fast Warm Up Before Return To Home"
   trigger:
-    - platform: numeric_state
-      entity_id: sensor.maciek_to_home
-      below: 60
-    - platform: numeric_state
-      entity_id: sensor.edyta_to_home
-      below: 60
+    - platform: template
+      value_template: "{{ distance('person.edyta', 'zone.home') < 60 }}"
+    - platform: template
+      value_template: "{{ distance('person.maciek', 'zone.home') < 60 }}"
   condition:
     - condition: state
       entity_id: input_boolean.edyta_far_from_home
@@ -1068,7 +1062,7 @@
       entity_id: input_boolean.away_mode
       state: "on"
       for:
-        hours: 12
+        hours: 10
     - condition: state
       entity_id: script.heating_fast_warm_up
       state: "off"
@@ -2492,17 +2486,22 @@
     - condition: numeric_state
       entity_id: sensor.humidifier_water_level
       below: 6
-    - service: python_script.notify
+    - service: script.notify_if_home
       data_template:
         title: "Uzupełnij wodę w nawilżaczu"
         message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
         tag: "notification-humidifier"
-        priority: "high"
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
-          - service: !secret edyta_notify_service
-            type: "ios"
+        location: "{{ states('person.maciek') }}"
+        notification_service: !secret maciek_notify_service
+        notification_type: "android"
+    - service: script.notify_if_home
+      data_template:
+        title: "Uzupełnij wodę w nawilżaczu"
+        message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+        tag: "notification-humidifier"
+        location: "{{ states('person.edyta') }}"
+        notification_service: !secret edyta_notify_service
+        notification_type: "android"
 
 - id: humidification_outdoor_temp_above_10
   alias: "Humidification Outdoor Temp Above 10"

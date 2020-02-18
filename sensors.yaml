@@ -136,18 +136,6 @@
   name: "Home Assistant Uptime"
   unit_of_measurement: minutes
 
-- platform: google_travel_time
-  name: "Edyta To Home"
-  api_key: !secret google_api_key
-  origin: person.edyta
-  destination: zone.home
-
-- platform: google_travel_time
-  name: "Maciek To Home"
-  api_key: !secret google_api_key
-  origin: person.maciek
-  destination: zone.home
-
 - platform: systemmonitor
   resources:
     - type: disk_use_percent
