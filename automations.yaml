@@ -119,12 +119,12 @@
 - id: notification_dishwasher_end
   alias: "Notification Dishwasher End"
   trigger:
-    - platform: state
-      entity_id: sensor.dishwasher_kuchnia
-      from: "zmywanie"
-      to: "wyłączona"
-      for:
-        minutes: 1
+    platform: state
+    entity_id: sensor.dishwasher_kuchnia
+    from: "zmywanie"
+    to: "wyłączona"
+    for:
+      minutes: 1
   action:
     service: python_script.notify
     data:
@@ -200,16 +200,35 @@
 - id: notification_from_hacs
   alias: "Notification From HACS"
   trigger:
-    - platform: numeric_state
-      entity_id: sensor.hacs
-      above: 0
-      for:
-        minutes: 20
+    platform: state
+    entity_id: sensor.hacs
+  condition:
+    - condition: template
+      value_template: "{{ states(trigger.entity_id) != 'unknown'}}"
+    - condition: template
+      value_template: "{{ states(trigger.entity_id) | int != 0 }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state | int < trigger.to_state.state | int}}"
   action:
     service: python_script.notify
-    data:
-      title: "Aktualizacja dodatku"
-      message: "Dostępna jest aktualizacja dodatku z HACS."
+    data_template:
+      title: >-
+        {% if (states(trigger.entity_id) | int) == 1 %}
+          Aktualizacja dodatku z HACS
+        {% else %}
+          Aktualizacje dodatków z HACS
+        {% endif %}
+      message: >-
+        {% if states(trigger.entity_id) | int == 1 %}
+          {%- for repo in state_attr(trigger.entity_id, 'repositories') %}
+            Dostępna jest aktualizacja dodatku {{ repo.display_name }} do wersji {{ repo["available version"] }}.
+          {%- endfor %}
+        {%- else %}
+          Dostępne są aktualizacje dodatków:
+          {%- for repo in state_attr(trigger.entity_id, 'repositories') %}
+         - {{ repo.display_name }} do wersji {{ repo["available version"] }}
+          {%- endfor %}
+        {%- endif %}
       tag: "notification-hacs"
       services:
         - service: !secret maciek_notify_service
@@ -280,7 +299,7 @@
     - service: python_script.notify
       data_template:
         title: "Aktualizacja Home Assistant'a"
-        message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ha_version_current') }} dla Home Assistant'a."
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Home Assistant'a."
         tag: "notification-ha-update"
         url: "https://github.com/home-assistant/home-assistant/releases"
         services:
@@ -306,7 +325,7 @@
     - service: python_script.notify
       data_template:
         title: "Aktualizacja AppDaemon'a"
-        message: "Dostępna jest aktualizacja do wersji {{ states('sensor.ad_version_current') }} dla AppDaemon'a."
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla AppDaemon'a."
         tag: "notification-ad-update"
         url: "https://github.com/home-assistant/appdaemon/releases"
         services:
@@ -678,63 +697,85 @@
 ##################################################################################################
 
 #### OBECNOŚĆ ####################################################################################
-# Edyta 40 minut od domu
+# Edyta daleko od domu
 - id: presence_edyta_far_from_home
   alias: "Presence Edyta Far From Home"
   trigger:
-    platform: template
-    value_template: "{{ distance('person.edyta', 'zone.home') > 40 }}"
+    platform: state
+    entity_id: person.edyta
   condition:
-    condition: state
-    entity_id: input_boolean.edyta_far_from_home
-    state: "off"
+    - condition: template
+      value_template: "{{ state_attr(trigger.entity_id, 'latitude') != None }}"
+    - condition: template
+      value_template: "{{ state_attr(trigger.entity_id, 'longitude') != None }}"
+    - condition: state
+      entity_id: input_boolean.edyta_far_from_home
+      state: "off"
   action:
-    service: input_boolean.turn_on
-    entity_id: input_boolean.edyta_far_from_home
+    - condition: template
+      value_template: "{{ distance(trigger.entity_id, 'zone.home') > 40 }}"
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.edyta_far_from_home
 
-# Maciek 40 minut od domu
+# Maciek daleko od domu
 - id: presence_maciek_far_from_home
   alias: "Presence Maciek Far From Home"
   trigger:
-    platform: template
-    value_template: "{{ distance('person.maciek', 'zone.home') > 40 }}"
+    platform: state
+    entity_id: person.maciek
   condition:
-    condition: state
-    entity_id: input_boolean.maciek_far_from_home
-    state: "off"
+    - condition: template
+      value_template: "{{ state_attr(trigger.entity_id, 'latitude') != None }}"
+    - condition: template
+      value_template: "{{ state_attr(trigger.entity_id, 'longitude') != None }}"
+    - condition: state
+      entity_id: input_boolean.maciek_far_from_home
+      state: "off"
   action:
-    service: input_boolean.turn_on
-    entity_id: input_boolean.maciek_far_from_home
+    - condition: template
+      value_template: "{{ distance(trigger.entity_id, 'zone.home') > 40 }}"
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.maciek_far_from_home
 
-# Maciek wrócił do domu po dalekiej podróży
-- id: presence_maciek_come_back_home
-  alias: "Presence Maciek Come Back Home"
+# Maciek blisko domu
+- id: presence_maciek_near_home
+  alias: "Presence Maciek Near Home"
   trigger:
     platform: state
     entity_id: person.maciek
-    to: "home"
   condition:
-    condition: state
-    entity_id: input_boolean.maciek_far_from_home
-    state: "on"
+    - condition: template
+      value_template: "{{ state_attr(trigger.entity_id, 'latitude') != None }}"
+    - condition: template
+      value_template: "{{ state_attr(trigger.entity_id, 'longitude') != None }}"
+    - condition: state
+      entity_id: input_boolean.maciek_far_from_home
+      state: "on"
   action:
-    service: input_boolean.turn_off
-    entity_id: input_boolean.maciek_far_from_home
+    - condition: template
+      value_template: "{{ distance(trigger.entity_id, 'zone.home') < 30 }}"
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.maciek_far_from_home
 
 # Edyta wróciła do domu po dalekiej podróży
-- id: presence_edyta_come_back_home
-  alias: "Presence Edyta Come Back Home"
+- id: presence_edyta_near_home
+  alias: "Presence Edyta Near Home"
   trigger:
     platform: state
     entity_id: person.edyta
-    to: "home"
   condition:
-    condition: state
-    entity_id: input_boolean.edyta_far_from_home
-    state: "on"
+    - condition: template
+      value_template: "{{ state_attr(trigger.entity_id, 'latitude') != None }}"
+    - condition: template
+      value_template: "{{ state_attr(trigger.entity_id, 'longitude') != None }}"
+    - condition: state
+      entity_id: input_boolean.edyta_far_from_home
+      state: "on"
   action:
-    service: input_boolean.turn_off
-    entity_id: input_boolean.edyta_far_from_home
+    - condition: template
+      value_template: "{{ distance(trigger.entity_id, 'zone.home') < 30 }}"
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.edyta_far_from_home
 
 # ludzie poza domem
 - id: presence_peoples_away
@@ -1010,17 +1051,15 @@
 - id: heating_turn_on_before_return_to_home
   alias: "Heating Turn On Before Return To Home"
   trigger:
-    - platform: template
-      value_template: "{{ distance('person.edyta', 'zone.home') < 30 }}"
-    - platform: template
-      value_template: "{{ distance('person.maciek', 'zone.home') < 30 }}"
-  condition:
-    - condition: state
+    - platform: state
       entity_id: input_boolean.edyta_far_from_home
-      state: "on"
-    - condition: state
+      from: "on"
+      to: "off"
+    - platform: state
       entity_id: input_boolean.maciek_far_from_home
-      state: "on"
+      from: "on"
+      to: "off"
+  condition:
     - condition: state
       entity_id: input_boolean.heating_season
       state: "on"
@@ -1034,21 +1073,21 @@
       entity_id: group.windows
       state: "off"
   action:
-    - service: script.heating_day
-    - service: input_boolean.turn_off
-      entity_id:
-        - input_boolean.edyta_far_from_home
-        - input_boolean.maciek_far_from_home
+    service: script.heating_day
 
 # włączenie szybkiego dogrzewania 60 minut przed powrotem do domu w dzień gdy jest sezon grzewczy gdy nieobecność domowników dłuższa niż 10 godzin
 - id: heating_heating_fast_warm_up_before_return_to_home
   alias: "Heating Fast Warm Up Before Return To Home"
   trigger:
-    - platform: template
-      value_template: "{{ distance('person.edyta', 'zone.home') < 60 }}"
-    - platform: template
-      value_template: "{{ distance('person.maciek', 'zone.home') < 60 }}"
+    platform: state
+    entity_id:
+      - person.edyta
+      - person.maciek
   condition:
+    - condition: template
+      value_template: "{{ state_attr(trigger.entity_id, 'latitude') != None }}"
+    - condition: template
+      value_template: "{{ state_attr(trigger.entity_id, 'longitude') != None }}"
     - condition: state
       entity_id: input_boolean.edyta_far_from_home
       state: "on"
@@ -1070,6 +1109,8 @@
       entity_id: group.windows
       state: "off"
   action:
+    - condition: template
+      value_template: "{{ distance(trigger.entity_id, 'zone.home') < 60 }}"
     - service: script.heating_fast_warm_up
     - service: input_boolean.turn_off
       entity_id:
