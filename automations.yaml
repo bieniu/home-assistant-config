@@ -174,8 +174,16 @@
     event_data:
       action: "TURN_OFF_DESKTOP_COMPUTER"
   action:
-    service: switch.turn_off
-    entity_id: switch.stacjonarny
+    - service: switch.turn_off
+      entity_id: switch.stacjonarny
+    - service: python_script.notify
+      data_template:
+        title: "{{ trigger.event.data.title }}"
+        message: "clear_notification"
+        tag: "{{ trigger.event.data.tag }}"
+        services:
+          - service: !secret maciek_notify_service
+            type: "android"
 
 # powiadomienie o wygasającym certyfikacie SSL
 - id: notification_ssl_cert_expiry

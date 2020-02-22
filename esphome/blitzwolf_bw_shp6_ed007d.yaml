@@ -98,4 +98,3 @@ sensor:
       unit_of_measurement: "W"
       icon: mdi:flash-outline
     change_mode_every: 4
-    update_interval: 30s

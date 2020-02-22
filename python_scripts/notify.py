@@ -8,6 +8,9 @@ data:
   color: "red"
   url: "https://example.com"
   priority: "high"
+  actions:
+    - title: "Action title"
+      action: "ACTION"
   services:
     - service: notify.mobile_app_iphone
       type: "ios"

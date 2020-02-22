@@ -34,7 +34,7 @@ anchors:
   card-no-border-radius: &card-no-border-radius
     style: |
       ha-card {
-        border-radius: 0px
+        border-radius: 0px;
       }
   mini-media-player-card-padding: &mini-media-player-card-padding
     style:
@@ -52,7 +52,7 @@ anchors:
             var(--label-badge-yellow)
           {% else %}
             var(--state-icon-color)
-          {% endif %}
+          {% endif %};
       }
   network-status-entity: &network-status-entity
     style: |
@@ -62,7 +62,7 @@ anchors:
             var(--disabled-text-color)
           {% else %}
             var(--state-icon-color)
-          {% endif %}
+          {% endif %};
       }
   percent-entity: &percent-entity
     style: |
@@ -74,7 +74,7 @@ anchors:
             var(--label-badge-yellow)
           {% else %}
             var(--state-icon-color)
-          {% endif %}
+          {% endif %};
       }
   zwave-entity: &zwave-entity
     style: |
@@ -84,7 +84,7 @@ anchors:
             var(--label-badge-red)
           {% else %}
             var(--state-icon-color)
-          {% endif %}
+          {% endif %};
       }
 title: "Dom"
 views:
@@ -147,7 +147,7 @@ views:
                                 var(--state-icon-active-color)
                               {% else %}
                                 var(--state-icon-color)
-                              {% endif %}
+                              {% endif %};
                           }
           - type: custom:vertical-stack-in-card
             title: "Salon"
@@ -938,6 +938,22 @@ views:
                 aspect_ratio: 61%
               - type: sensor
                 entity: sensor.airly_info
+                style: |
+                  ha-card {
+                    background:
+                      {% if state_attr("air_quality.airly", "air_quality_index") | int <= 25 %}
+                        #43a047
+                      {% elif state_attr("air_quality.airly", "air_quality_index") | int <= 50 %}
+                        #fbc02d
+                      {% elif state_attr("air_quality.airly", "air_quality_index") | int <= 75 %}
+                        #fb8c00
+                      {% elif state_attr("air_quality.airly", "air_quality_index") | int <= 100 %}
+                        #f4511e
+                      {% elif state_attr("air_quality.airly", "air_quality_index") | int > 100 %}
+                        #d81b60
+                      {% endif %};
+                    color: #fff;
+                  }
           - type: vertical-stack
             cards:
               - type: custom:mini-graph-card
