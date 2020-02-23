@@ -941,18 +941,21 @@ views:
                 style: |
                   ha-card {
                     background:
-                      {% if state_attr("air_quality.airly", "air_quality_index") | int <= 25 %}
+                      {% if states("sensor.airly_info") == "bardzo dobra" %}
                         #43a047
-                      {% elif state_attr("air_quality.airly", "air_quality_index") | int <= 50 %}
+                      {% elif states("sensor.airly_info") == "dobra" %}
                         #fbc02d
-                      {% elif state_attr("air_quality.airly", "air_quality_index") | int <= 75 %}
+                      {% elif states("sensor.airly_info") == "Średnia" %}
                         #fb8c00
-                      {% elif state_attr("air_quality.airly", "air_quality_index") | int <= 100 %}
+                      {% elif states("sensor.airly_info") == "zła" %}
                         #f4511e
-                      {% elif state_attr("air_quality.airly", "air_quality_index") | int > 100 %}
+                      {% elif states("sensor.airly_info") == "bardzo zła" %}
                         #d81b60
                       {% endif %};
                     color: #fff;
+                  }
+                  ha-icon {
+                    color: #ffffff;
                   }
           - type: vertical-stack
             cards:
