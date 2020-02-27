@@ -270,92 +270,47 @@
     battery_temp_humi_sensor_outdoor:
       friendly_name: "zewnętrzny"
       unit_of_measurement: "%"
-      value_template: >-
-        {% if state_attr('sensor.temperature_outdoor', 'battery_level') %}
-          {{ state_attr('sensor.temperature_outdoor', 'battery_level') | round }}
-        {% else %}
-          {{ states('sensor.battery_temp_humi_sensor_outdoor') }}
-        {% endif %}
+      value_template: "{{ state_attr('sensor.temperature_outdoor', 'battery_level') | round }}"
 
     battery_temp_humi_sensor_pracownia:
       friendly_name: "pracownia"
       unit_of_measurement: "%"
-      value_template: >-
-        {% if state_attr('sensor.temperature_pracownia', 'battery_level') %}
-          {{ state_attr('sensor.temperature_pracownia', 'battery_level') | round }}
-        {% else %}
-          {{ states('sensor.battery_temp_humi_sensor_pracownia') }}
-        {% endif %}
+      value_template: "{{ state_attr('sensor.temperature_pracownia', 'battery_level') | round }}"
 
     battery_temp_humi_sensor_antek:
       friendly_name: "pokój Antka"
       unit_of_measurement: "%"
-      value_template: >-
-        {% if state_attr('sensor.temperature_antek', 'battery_level') %}
-          {{ state_attr('sensor.temperature_antek', 'battery_level') | round }}
-        {% else %}
-          {{ states('sensor.battery_temp_humi_sensor_antek') }}
-        {% endif %}
+      value_template: "{{ state_attr('sensor.temperature_antek', 'battery_level') | round }}"
 
     battery_temp_humi_sensor_salon:
       friendly_name: "salon"
       unit_of_measurement: "%"
-      value_template: >-
-        {% if state_attr('sensor.temperature_salon', 'battery_level') %}
-          {{ state_attr('sensor.temperature_salon', 'battery_level') | round }}
-        {% else %}
-          {{ states('sensor.battery_temp_humi_sensor_salon') }}
-        {% endif %}
+      value_template: "{{ state_attr('sensor.temperature_salon', 'battery_level') | round }}"
 
     battery_temp_humi_sensor_goscinny:
       friendly_name: "pokój gościnny"
       unit_of_measurement: "%"
-      value_template: >-
-        {% if state_attr('sensor.temperature_goscinny', 'battery_level') %}
-          {{ state_attr('sensor.temperature_goscinny', 'battery_level') | round }}
-        {% else %}
-          {{ states('sensor.battery_temp_humi_sensor_goscinny') }}
-        {% endif %}
+      value_template: "{{ state_attr('sensor.temperature_goscinny', 'battery_level') | round }}"
 
     battery_temp_humi_sensor_sypialnia:
       friendly_name: "sypialnia"
       unit_of_measurement: "%"
-      value_template: >-
-        {% if state_attr('sensor.temperature_sypialnia', 'battery_level') %}
-          {{ state_attr('sensor.temperature_sypialnia', 'battery_level') | round }}
-        {% else %}
-          {{ states('sensor.battery_temp_humi_sensor_sypialnia') }}
-        {% endif %}
+      value_template: "{{ state_attr('sensor.temperature_sypialnia', 'battery_level') | round }}"
 
     battery_temp_humi_sensor_lazienka:
       friendly_name: "łazienka"
       unit_of_measurement: "%"
-      value_template: >-
-        {% if state_attr('sensor.temperature_lazienka', 'battery_level') %}
-          {{ state_attr('sensor.temperature_lazienka', 'battery_level') | round }}
-        {% else %}
-          {{ states('sensor.battery_temp_humi_sensor_lazienka') }}
-        {% endif %}
+      value_template: "{{ state_attr('sensor.temperature_lazienka', 'battery_level') | round }}"
 
     battery_temp_humi_sensor_antresola:
       friendly_name: "antresola"
       unit_of_measurement: "%"
-      value_template: >-
-        {% if state_attr('sensor.temperature_antresola', 'battery_level') %}
-          {{ state_attr('sensor.temperature_antresola', 'battery_level') | round }}
-        {% else %}
-          {{ states('sensor.battery_temp_humi_sensor_antresola') }}
-        {% endif %}
+      value_template: "{{ state_attr('sensor.temperature_antresola', 'battery_level') | round }}"
 
     battery_temp_humi_sensor_gabinet:
       friendly_name: "gabinet"
       unit_of_measurement: "%"
-      value_template: >-
-        {% if state_attr('sensor.temperature_gabinet', 'battery_level') %}
-          {{ state_attr('sensor.temperature_gabinet', 'battery_level') | round }}
-        {% else %}
-          {{ states('sensor.battery_temp_humi_sensor_gabinet') }}
-        {% endif %}
+      value_template: "{{ state_attr('sensor.temperature_gabinet', 'battery_level') | round }}"
 
     battery_motion_sensor_antresola:
       friendly_name: "antresola"

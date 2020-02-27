@@ -227,7 +227,7 @@ light_turn_off_antek_leds:
   sequence:
     - service: input_boolean.turn_off
       entity_id:
-        - input_boolean.antek_lamp_motion_on
+        - input_boolean.antek_light_motion_on
         - input_boolean.antek_lamp_night
     - service: light.turn_off
       entity_id: light.lightstrip_antek
