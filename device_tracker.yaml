@@ -9,7 +9,7 @@
     track_new_devices: false
 
 - platform: iphonedetect
-  scan_interval: 40
+  scan_interval: 50
   hosts:
     ipad_air: !secret ipad_air_ip
     iphone_8_plus: !secret iphone_8_plus_ip
