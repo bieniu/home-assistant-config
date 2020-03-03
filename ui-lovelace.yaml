@@ -1,19 +1,19 @@
 resources:
-  - url: /community_plugin/vertical-stack-in-card/vertical-stack-in-card.js
+  - url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js
     type: js
-  - url: /community_plugin/mini-media-player/mini-media-player-bundle.js
+  - url: /hacsfiles/mini-media-player/mini-media-player-bundle.js
     type: module
-  - url: /community_plugin/lovelace-layout-card/layout-card.js
+  - url: /hacsfiles/lovelace-layout-card/layout-card.js
     type: module
-  - url: /community_plugin/lovelace-card-tools/card-tools.js
+  - url: /hacsfiles/lovelace-card-tools/card-tools.js
     type: module
-  - url: /community_plugin/lovelace-auto-entities/auto-entities.js
+  - url: /hacsfiles/lovelace-auto-entities/auto-entities.js
     type: module
-  - url: /community_plugin/secondaryinfo-entity-row/secondaryinfo-entity-row.js
+  - url: /hacsfiles/secondaryinfo-entity-row/secondaryinfo-entity-row.js
     type: js
-  - url: /community_plugin/lovelace-card-mod/card-mod.js
+  - url: /hacsfiles/lovelace-card-mod/card-mod.js
     type: module
-  - url: /community_plugin/bom-weather-card/bom-weather-card.js
+  - url: /hacsfiles/bom-weather-card/bom-weather-card.js
     type: module
 
 background: "#e5e5e5"
@@ -93,6 +93,7 @@ views:
     panel: true
     cards:
       - type: custom:layout-card
+        max_columns: 5
         cards:
           - type: vertical-stack
             cards:
@@ -382,6 +383,8 @@ views:
                   - light.lightstrip_antek
                   - entity: switch.cabinet_antek
                     state_color: true
+                  - entity: switch.tree_antek
+                    state_color: true
                   - type: custom:mini-media-player
                     <<: *mini-media-player-card-padding
                     entity: media_player.echo_plus
@@ -416,6 +419,8 @@ views:
                     state_color: true
                   - climate.thermostat_sypialnia
                   - light.lightstrip_sypialnia
+                  - entity: switch.tree_sypialnia
+                    state_color: true
                   - type: custom:mini-media-player
                     <<: *mini-media-player-card-padding
                     entity: media_player.echo_dot
@@ -477,6 +482,7 @@ views:
     panel: true
     cards:
       - type: custom:layout-card
+        max_columns: 5
         cards:
           - type: vertical-stack
             cards:
@@ -661,6 +667,7 @@ views:
     panel: true
     cards:
       - type: custom:layout-card
+        max_columns: 5
         cards:
           - type: custom:vertical-stack-in-card
             title: "Pobór mocy"
@@ -840,6 +847,7 @@ views:
     panel: true
     cards:
       - type: custom:layout-card
+        max_columns: 5
         cards:
           - type: vertical-stack
             cards:
@@ -910,12 +918,14 @@ views:
                         #43a047
                       {% elif states("sensor.airly_info") == "dobra" %}
                         #fbc02d
-                      {% elif states("sensor.airly_info") == "Średnia" %}
+                      {% elif states("sensor.airly_info") == "średnia" %}
                         #fb8c00
                       {% elif states("sensor.airly_info") == "zła" %}
                         #f4511e
                       {% elif states("sensor.airly_info") == "bardzo zła" %}
                         #d81b60
+                      {% else %}
+                        #000000;
                       {% endif %};
                     color: #fff;
                   }
@@ -1005,6 +1015,7 @@ views:
     panel: true
     cards:
       - type: custom:layout-card
+        max_columns: 5
         cards:
           - type: vertical-stack
             cards:

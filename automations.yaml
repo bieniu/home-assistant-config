@@ -238,6 +238,7 @@
           {%- endfor %}
         {%- endif %}
       tag: "notification-hacs"
+      url: "/hacs/installed"
       services:
         - service: !secret maciek_notify_service
           type: "android"
