@@ -101,3 +101,6 @@
 
 "switch.tree_*":
   icon: mdi:tree
+
+"binary_sensor.laptop*status":
+  icon: mdi:laptop

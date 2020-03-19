@@ -1,21 +1,3 @@
-resources:
-  - url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js
-    type: js
-  - url: /hacsfiles/mini-media-player/mini-media-player-bundle.js
-    type: module
-  - url: /hacsfiles/lovelace-layout-card/layout-card.js
-    type: module
-  - url: /hacsfiles/lovelace-card-tools/card-tools.js
-    type: module
-  - url: /hacsfiles/lovelace-auto-entities/auto-entities.js
-    type: module
-  - url: /hacsfiles/secondaryinfo-entity-row/secondaryinfo-entity-row.js
-    type: js
-  - url: /hacsfiles/lovelace-card-mod/card-mod.js
-    type: module
-  - url: /hacsfiles/bom-weather-card/bom-weather-card.js
-    type: module
-
 background: "#e5e5e5"
 
 anchors:
@@ -44,9 +26,10 @@ anchors:
     style: |
       :host {
         --paper-item-icon-color:
-          {% if states(config.entity) | int < 10 %}
+          {% set battery = states(config.entity) %}
+          {% if battery | int < 10 %}
             var(--label-badge-red)
-          {% elif states(config.entity) | int < 30 %}
+          {% elif battery | int < 30 %}
             var(--label-badge-yellow)
           {% else %}
             var(--state-icon-color)
@@ -66,9 +49,10 @@ anchors:
     style: |
       :host {
         --paper-item-icon-color:
-          {% if states(config.entity) | int < 15 %}
+          {% set percent = states(config.entity) %}
+          {% if percent | int < 15 %}
             var(--label-badge-red)
-          {% elif states(config.entity) | int < 30 %}
+          {% elif percent | int < 30 %}
             var(--label-badge-yellow)
           {% else %}
             var(--state-icon-color)
@@ -100,6 +84,10 @@ views:
               - type: custom:auto-entities
                 card:
                   type: glance
+                  style: |
+                    div.card-header {
+                      padding-bottom: 8px;
+                    }
                   title: "Rodzina"
                   show_name: false
                 filter:
@@ -314,7 +302,6 @@ views:
                       controls: true
                       volume: true
                       power: true
-                      source: true
                     info: scroll
                     group: true
           - type: custom:vertical-stack-in-card
@@ -596,7 +583,7 @@ views:
                 <<: *network-status-entity
               - entity: binary_sensor.laptop_status
                 <<: *network-status-entity
-              - entity: binary_sensor.laptopedyta_status
+              - entity: binary_sensor.laptop_edyta_status
                 <<: *network-status-entity
               - entity: binary_sensor.oneplus_status
                 <<: *network-status-entity
@@ -674,44 +661,79 @@ views:
             cards:
               - type: horizontal-stack
                 cards:
-                  - type: sensor
-                    entity: sensor.light_salon_power_sum
-                    <<: &sensor-card-without-icon
-                      style: |
-                        ha-icon {
-                          width: 0px;
-                          height: 0px;
-                        }
-                  - type: sensor
-                    entity: sensor.dishwasher_kuchnia_power
-                    <<: *sensor-card-without-icon
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 1
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.light_salon_power_sum
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 1
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.dishwasher_kuchnia_power
               - type: horizontal-stack
                 cards:
-                  - type: sensor
-                    entity: sensor.computer_gabinet_power
-                    <<: *sensor-card-without-icon
-                  - type: sensor
-                    entity: sensor.servers_gabinet_power
-                    <<: *sensor-card-without-icon
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 1
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.computer_gabinet_power
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 1
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.servers_gabinet_power
           - type: custom:vertical-stack-in-card
             title: "Zużycie energii"
             cards:
               - type: horizontal-stack
                 cards:
-                  - type: sensor
-                    entity: sensor.light_salon_energy_monthly
-                    <<: *sensor-card-without-icon
-                  - type: sensor
-                    entity: sensor.dishwasher_kuchnia_energy_monthly
-                    <<: *sensor-card-without-icon
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 2
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.light_salon_energy_monthly
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 2
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.dishwasher_kuchnia_energy_monthly
               - type: horizontal-stack
                 cards:
-                  - type: sensor
-                    entity: sensor.computer_gabinet_energy_monthly
-                    <<: *sensor-card-without-icon
-                  - type: sensor
-                    entity: sensor.servers_gabinet_energy_monthly
-                    <<: *sensor-card-without-icon
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 2
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.computer_gabinet_energy_monthly
+                  - type: custom:mini-graph-card
+                    hour24: true
+                    decimals: 2
+                    show:
+                      icon: false
+                      graph: false
+                    entities:
+                      - sensor.servers_gabinet_energy_monthly
           - type: custom:vertical-stack-in-card
             title: "UPS"
             cards:
@@ -720,32 +742,17 @@ views:
                 entities:
                   - sensor.ups_status
                   - sensor.ups_battery_charge
+                  - sensor.ups_battery_voltage
                   - sensor.ups_load
-              - type: sensor
-                graph: line
-                style: |
-                  ha-card {
-                    border-radius: 0px;
-                  }
-                  rect {
-                    fill: #ef5350;
-                  }
-                  ha-icon {
-                    width: 0px;
-                    height: 0px;
-                  }
-                entity: sensor.ups_input_voltage
-              - type: sensor
-                graph: line
-                style: |
-                  ha-icon {
-                    width: 0px;
-                    height: 0px;
-                  }
-                  rect {
-                    fill: #4bc0c0;
-                  }
-                entity: sensor.ups_battery_voltage
+              - type: custom:mini-graph-card
+                hour24: true
+                decimals: 0
+                show:
+                  icon: false
+                  fill: fade
+                entities:
+                  - sensor.ups_input_voltage
+                line_color: "#ef5350"
           - type: entities
             title: "Baterie sensorów ruchu"
             show_header_toggle: false
@@ -914,15 +921,16 @@ views:
                 style: |
                   ha-card {
                     background:
-                      {% if states("sensor.airly_info") == "bardzo dobra" %}
+                      {% set airly = states("sensor.airly_info") %}
+                      {% if airly == "bardzo dobra" %}
                         #43a047
-                      {% elif states("sensor.airly_info") == "dobra" %}
+                      {% elif airly == "dobra" %}
                         #fbc02d
-                      {% elif states("sensor.airly_info") == "średnia" %}
+                      {% elif airly == "średnia" %}
                         #fb8c00
-                      {% elif states("sensor.airly_info") == "zła" %}
+                      {% elif airly == "zła" %}
                         #f4511e
-                      {% elif states("sensor.airly_info") == "bardzo zła" %}
+                      {% elif airly == "bardzo zła" %}
                         #d81b60
                       {% else %}
                         #000000;
@@ -934,80 +942,77 @@ views:
                   }
           - type: vertical-stack
             cards:
-              - type: sensor
-                graph: line
-                style: |
-                  rect {
-                    fill: #ef5350;
-                  }
-                entity: sensor.temperature_outdoor
-              - type: sensor
-                graph: line
-                style: |
-                  rect {
-                    fill: #36a2eb;
-                  }
-                entity: sensor.humidity_outdoor
-              - type: sensor
-                graph: line
-                style: |
-                  rect {
-                    fill: #4bc0c0;
-                  }
-                entity: sensor.pressure_outdoor
+              - type: custom:mini-graph-card
+                <<: &CLIMATE_GRAPH_PARAMS
+                  hour24: true
+                  align_header: left
+                  align_icon: left
+                  points_per_hour: 1
+                  height: 75
+                  show:
+                    fill: fade
+                entities:
+                  - sensor.temperature_outdoor
+                line_color: "#ef5350"
+                decimals: 1
+              - type: custom:mini-graph-card
+                <<: *CLIMATE_GRAPH_PARAMS
+                entities:
+                  - sensor.humidity_outdoor
+                line_color: "#36a2eb"
+                decimals: 1
+              - type: custom:mini-graph-card
+                <<: *CLIMATE_GRAPH_PARAMS
+                entities:
+                  - sensor.pressure_outdoor
+                line_color: "#4bc0c0"
+                decimals: 1
           - type: vertical-stack
             cards:
-              - type: sensor
-                graph: line
-                style: |
-                  rect {
-                    fill: #ef5350;
-                  }
-                entity: sensor.temperature_indoor
-              - type: sensor
-                graph: line
-                style: |
-                  rect {
-                    fill: #36a2eb;
-                  }
-                entity: sensor.humidity_indoor
-              - type: sensor
-                graph: line
-                style: |
-                  rect {
-                    fill: #8bc34a;
-                  }
-                entity: sensor.co2_salon
+              - type: custom:mini-graph-card
+                <<: *CLIMATE_GRAPH_PARAMS
+                entities:
+                  - sensor.temperature_indoor
+                line_color: "#ef5350"
+                decimals: 1
+              - type: custom:mini-graph-card
+                <<: *CLIMATE_GRAPH_PARAMS
+                entities:
+                  - sensor.humidity_indoor
+                line_color: "#36a2eb"
+                decimals: 1
+              - type: custom:mini-graph-card
+                <<: *CLIMATE_GRAPH_PARAMS
+                entities:
+                  - sensor.co2_salon
+                line_color: "#8bc34a"
+                decimals: 0
           - type: vertical-stack
             cards:
-              - type: sensor
-                graph: line
-                style: |
-                  rect {
-                    fill: #78909c;
-                  }
-                entity: sensor.airly_pm1
-              - type: sensor
-                graph: line
-                style: |
-                  rect {
-                    fill: #78909c;
-                  }
-                entity: sensor.airly_pm2_5
-              - type: sensor
-                graph: line
-                style: |
-                  rect {
-                    fill: #78909c;
-                  }
-                entity: sensor.airly_pm10
-              - type: sensor
-                graph: line
-                style: |
-                  rect {
-                    fill: #ffce57;
-                  }
-                entity: sensor.dark_sky_uv_index
+              - type: custom:mini-graph-card
+                <<: *CLIMATE_GRAPH_PARAMS
+                entities:
+                  - sensor.airly_pm1
+                line_color: "#78909c"
+                decimals: 0
+              - type: custom:mini-graph-card
+                <<: *CLIMATE_GRAPH_PARAMS
+                entities:
+                  - sensor.airly_pm2_5
+                line_color: "#78909c"
+                decimals: 0
+              - type: custom:mini-graph-card
+                <<: *CLIMATE_GRAPH_PARAMS
+                entities:
+                  - sensor.airly_pm10
+                line_color: "#78909c"
+                decimals: 0
+              - type: custom:mini-graph-card
+                <<: *CLIMATE_GRAPH_PARAMS
+                entities:
+                  - sensor.dark_sky_uv_index
+                line_color: "#ffce57"
+                decimals: 0
   - id: misc
     icon: mdi:settings
     title: "Różne"

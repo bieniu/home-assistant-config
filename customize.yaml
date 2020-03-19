@@ -137,10 +137,6 @@ binary_sensor.denon_status:
   icon: mdi:audio-video
 binary_sensor.mibox_status:
   icon: mdi:cast
-binary_sensor.laptopedyta_status:
-  icon: mdi:laptop
-binary_sensor.laptop_status:
-  icon: mdi:laptop
 binary_sensor.lumia_status:
   icon: mdi:cellphone
 binary_sensor.ipad_status:

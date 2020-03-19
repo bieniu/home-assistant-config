@@ -130,9 +130,13 @@
       value_template: "{{ is_state('device_tracker.mibox', 'home') }}"
       friendly_name: "Xiaomi Mi Box 3"
 
-    laptopedyta_status:
-      value_template: "{{ is_state('device_tracker.laptopedyta', 'home') }}"
+    laptop_edyta_status:
+      value_template: "{{ is_state('device_tracker.laptop_edyta', 'home') }}"
       friendly_name: "Dell Latitude 7290"
+
+    laptop_antek_status:
+      value_template: "{{ is_state('device_tracker.laptop_antek', 'home') }}"
+      friendly_name: "Lenovo IdeaPad S145"
 
     denon_status:
       value_template: "{{ is_state('device_tracker.denon', 'home') }}"
