@@ -27,23 +27,19 @@ anchors:
       :host {
         --paper-item-icon-color:
           {% set battery = states(config.entity) %}
-          {% if battery | int < 10 %}
+          {% if battery | int < 15 %}
             var(--label-badge-red)
-          {% elif battery | int < 30 %}
+          {% elif battery | int < 35 %}
             var(--label-badge-yellow)
           {% else %}
             var(--state-icon-color)
           {% endif %};
       }
-  network-status-entity: &network-status-entity
+  network-status-card: &network-status-card
     style: |
-      :host {
-        --paper-item-icon-color:
-          {% if is_state(config.entity, "off") %}
-            var(--disabled-text-color)
-          {% else %}
-            var(--state-icon-color)
-          {% endif %};
+      div#states.card-content {
+        --paper-item-icon-active-color: var(--state-icon-color);
+        --paper-item-icon-color: var(--disabled-text-color);
       }
   percent-entity: &percent-entity
     style: |
@@ -538,115 +534,71 @@ views:
           - type: entities
             title: "Urządzenia przewodowe"
             show_header_toggle: false
+            state_color: true
+            <<: *network-status-card
             entities:
-              - entity: binary_sensor.modem_status
-                <<: *network-status-entity
-              - entity: binary_sensor.router_status
-                <<: *network-status-entity
-              - entity: binary_sensor.access_point_status
-                <<: *network-status-entity
-              - entity: binary_sensor.fingbox_status
-                <<: *network-status-entity
-              - entity: binary_sensor.synology_status
-                <<: *network-status-entity
-              - entity: binary_sensor.raspberry_status
-                <<: *network-status-entity
-              - entity: binary_sensor.bravia_status
-                <<: *network-status-entity
-              - entity: binary_sensor.denon_status
-                <<: *network-status-entity
-              - entity: binary_sensor.dune_status
-                <<: *network-status-entity
-              - entity: binary_sensor.playstation_status
-                <<: *network-status-entity
-              - entity: binary_sensor.xbox_status
-                <<: *network-status-entity
-              - entity: binary_sensor.stacjonarny_status
-                <<: *network-status-entity
+              - binary_sensor.modem_status
+              - binary_sensor.router_status
+              - binary_sensor.access_point_status
+              - binary_sensor.fingbox_status
+              - binary_sensor.synology_status
+              - binary_sensor.raspberry_status
+              - binary_sensor.bravia_status
+              - binary_sensor.denon_status
+              - binary_sensor.dune_status
+              - binary_sensor.playstation_status
+              - binary_sensor.xbox_status
+              - binary_sensor.stacjonarny_status
           - type: entities
             title: "Urządzenia bezprzewodowe"
             show_header_toggle: false
+            state_color: true
+            <<: *network-status-card
             entities:
-              - entity: binary_sensor.migateway_status
-                <<: *network-status-entity
-              - entity: binary_sensor.harmonyhub_status
-                <<: *network-status-entity
-              - entity: binary_sensor.brother_status
-                <<: *network-status-entity
-              - entity: binary_sensor.mibox_status
-                <<: *network-status-entity
-              - entity: binary_sensor.dafang_status
-                <<: *network-status-entity
-              - entity: binary_sensor.mihumidifier_status
-                <<: *network-status-entity
-              - entity: binary_sensor.mifan_status
-                <<: *network-status-entity
-              - entity: binary_sensor.laptop_status
-                <<: *network-status-entity
-              - entity: binary_sensor.laptop_edyta_status
-                <<: *network-status-entity
-              - entity: binary_sensor.oneplus_status
-                <<: *network-status-entity
-              - entity: binary_sensor.iphone_status
-                <<: *network-status-entity
-              - entity: binary_sensor.lumia_status
-                <<: *network-status-entity
-              - entity: binary_sensor.ipad_status
-                <<: *network-status-entity
-              - entity: binary_sensor.kindle_status
-                <<: *network-status-entity
-              - entity: binary_sensor.kindle_8_status
-                <<: *network-status-entity
-              - entity: binary_sensor.inkbook_status
-                <<: *network-status-entity
-              - entity: binary_sensor.echo_show_status
-                <<: *network-status-entity
-              - entity: binary_sensor.echo_plus_status
-                <<: *network-status-entity
-              - entity: binary_sensor.echo_dot_status
-                <<: *network-status-entity
+              - binary_sensor.migateway_status
+              - binary_sensor.harmonyhub_status
+              - binary_sensor.brother_status
+              - binary_sensor.mibox_status
+              - binary_sensor.dafang_status
+              - binary_sensor.mihumidifier_status
+              - binary_sensor.mifan_status
+              - binary_sensor.laptop_status
+              - binary_sensor.laptop_edyta_status
+              - binary_sensor.oneplus_status
+              - binary_sensor.iphone_status
+              - binary_sensor.lumia_status
+              - binary_sensor.ipad_status
+              - binary_sensor.kindle_status
+              - binary_sensor.kindle_8_status
+              - binary_sensor.inkbook_status
+              - binary_sensor.echo_show_status
+              - binary_sensor.echo_plus_status
+              - binary_sensor.echo_dot_status
           - type: entities
             title: "Urządzenia IoT"
             show_header_toggle: false
+            state_color: true
+            <<: *network-status-card
             entities:
-              - entity: binary_sensor.sonoff_basic_a786cc_status
-                <<: *network-status-entity
-              - entity: binary_sensor.sonoff_basic_067c81_status
-                <<: *network-status-entity
-              - entity: binary_sensor.sonoff_basic_5dfba8_status
-                <<: *network-status-entity
-              - entity: binary_sensor.sonoff_s26_182475_status
-                <<: *network-status-entity
-              - entity: binary_sensor.blitzwolf_bw_shp6_2ad05a_status
-                <<: *network-status-entity
-              - entity: binary_sensor.blitzwolf_bw_shp6_ed007d_status
-                <<: *network-status-entity
-              - entity: binary_sensor.blitzwolf_bw_shp6_ecf9ea_status
-                <<: *network-status-entity
-              - entity: binary_sensor.blitzwolf_bw_shp6_3766eb_status
-                <<: *network-status-entity
-              - entity: binary_sensor.shelly1_328900_status
-                <<: *network-status-entity
-              - entity: binary_sensor.shelly2_5b2604_status
-                <<: *network-status-entity
-              - entity: binary_sensor.shelly_plug_s_7aecf4_status
-                <<: *network-status-entity
-              - entity: binary_sensor.shelly_ht_e00abd_status
-                <<: *network-status-entity
-              - entity: binary_sensor.wemos_d1_mini_1c91ea_status
-                <<: *network-status-entity
-              - entity: binary_sensor.yeelight_yldp06yl_84be7a_status
-                <<: *network-status-entity
-              - entity: binary_sensor.yeelight_yldp06yl_7cafc6_status
-                <<: *network-status-entity
-              - entity: binary_sensor.yeelight_yldp02yl_f12026_status
-                <<: *network-status-entity
-              - entity: binary_sensor.yeelight_yldp02yl_b1b6aa_status
-                <<: *network-status-entity
-              - entity: binary_sensor.yeelight_yldd01yl_860cfa_status
-                <<: *network-status-entity
-              - entity: binary_sensor.yeelight_yldd01yl_6707fc_status
-                <<: *network-status-entity
+              - binary_sensor.sonoff_basic_a786cc_status
+              - binary_sensor.sonoff_basic_067c81_status
+              - binary_sensor.sonoff_basic_5dfba8_status
+              - binary_sensor.sonoff_s26_182475_status
+              - binary_sensor.blitzwolf_bw_shp6_2ad05a_status
+              - binary_sensor.blitzwolf_bw_shp6_ed007d_status
+              - binary_sensor.blitzwolf_bw_shp6_ecf9ea_status
+              - binary_sensor.blitzwolf_bw_shp6_3766eb_status
+              - binary_sensor.shelly1_328900_status
+              - binary_sensor.shelly2_5b2604_status
+              - binary_sensor.shelly_plug_s_7aecf4_status
+              - binary_sensor.shelly_ht_e00abd_status
+              - binary_sensor.wemos_d1_mini_1c91ea_status
+              - binary_sensor.yeelight_yldp06yl_84be7a_status
+              - binary_sensor.yeelight_yldp06yl_7cafc6_status
+              - binary_sensor.yeelight_yldp02yl_f12026_status
+              - binary_sensor.yeelight_yldp02yl_b1b6aa_status
+              - binary_sensor.yeelight_yldd01yl_860cfa_status
+              - binary_sensor.yeelight_yldd01yl_6707fc_status
   - id: energy
     icon: mdi:power-plug
     title: "Energia"
@@ -741,7 +693,8 @@ views:
                 show_header_toggle: false
                 entities:
                   - sensor.ups_status
-                  - sensor.ups_battery_charge
+                  - entity: sensor.ups_battery_charge
+                    <<: *battery-entity
                   - sensor.ups_battery_voltage
                   - sensor.ups_load
               - type: custom:mini-graph-card
@@ -757,96 +710,96 @@ views:
             title: "Baterie sensorów ruchu"
             show_header_toggle: false
             entities:
-              - entity: sensor.battery_motion_sensor_przedpokoj
-                <<: *battery-entity
-              - entity: sensor.battery_motion_sensor_salon_1
-                <<: *battery-entity
-              - entity: sensor.battery_motion_sensor_salon_2
-                <<: *battery-entity
-              - entity: sensor.battery_motion_sensor_pracownia
-                <<: *battery-entity
-              - entity: sensor.battery_motion_sensor_goscinny
-                <<: *battery-entity
-              - entity: sensor.battery_motion_sensor_schody
-                <<: *battery-entity
-              - entity: sensor.battery_motion_sensor_antresola
-                <<: *battery-entity
-              - entity: sensor.battery_motion_sensor_gabinet
-                <<: *battery-entity
-              - entity: sensor.battery_motion_sensor_antek
-                <<: *battery-entity
-              - entity: sensor.battery_motion_sensor_sypialnia
-                <<: *battery-entity
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_przedpokoj
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_salon_1
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_salon_2
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_pracownia
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_goscinny
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_schody
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_antresola
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_gabinet
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_antek
+              - type: custom:battery-entity
+                entity: sensor.battery_motion_sensor_sypialnia
           - type: entities
             title: "Baterie sensorów temperatury"
             show_header_toggle: false
             entities:
-              - entity: sensor.battery_temp_humi_sensor_kuchnia
-                <<: *battery-entity
-              - entity: sensor.battery_temp_humi_sensor_salon
-                <<: *battery-entity
-              - entity: sensor.battery_temp_humi_sensor_pracownia
-                <<: *battery-entity
-              - entity: sensor.battery_temp_humi_sensor_goscinny
-                <<: *battery-entity
-              - entity: sensor.battery_temp_humi_sensor_antresola
-                <<: *battery-entity
-              - entity: sensor.battery_temp_humi_sensor_gabinet
-                <<: *battery-entity
-              - entity: sensor.battery_temp_humi_sensor_antek
-                <<: *battery-entity
-              - entity: sensor.battery_temp_humi_sensor_sypialnia
-                <<: *battery-entity
-              - entity: sensor.battery_temp_humi_sensor_lazienka
-                <<: *battery-entity
-              - entity: sensor.battery_temp_humi_sensor_outdoor
-                <<: *battery-entity
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_kuchnia
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_salon
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_pracownia
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_goscinny
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_antresola
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_gabinet
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_antek
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_sypialnia
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_lazienka
+              - type: custom:battery-entity
+                entity: sensor.battery_temp_humi_sensor_outdoor
           - type: entities
             title: "Baterie termostatów"
             show_header_toggle: false
             entities:
-              - entity: sensor.battery_thermostat_salon
-                <<: *battery-entity
-              - entity: sensor.battery_thermostat_kuchnia
-                <<: *battery-entity
-              - entity: sensor.battery_thermostat_antresola
-                <<: *battery-entity
-              - entity: sensor.battery_thermostat_gabinet
-                <<: *battery-entity
-              - entity: sensor.battery_thermostat_antek
-                <<: *battery-entity
-              - entity: sensor.battery_thermostat_sypialnia
-                <<: *battery-entity
-              - entity: sensor.battery_thermostat_lazienka
-                <<: *battery-entity
+              - type: custom:battery-entity
+                entity: sensor.battery_thermostat_salon
+              - type: custom:battery-entity
+                entity: sensor.battery_thermostat_kuchnia
+              - type: custom:battery-entity
+                entity: sensor.battery_thermostat_antresola
+              - type: custom:battery-entity
+                entity: sensor.battery_thermostat_gabinet
+              - type: custom:battery-entity
+                entity: sensor.battery_thermostat_antek
+              - type: custom:battery-entity
+                entity: sensor.battery_thermostat_sypialnia
+              - type: custom:battery-entity
+                entity: sensor.battery_thermostat_lazienka
           - type: entities
             title: "Baterie sensorów okien/drzwi"
             show_header_toggle: false
             entities:
-              - entity: sensor.battery_window_sensor_kuchnia
-                <<: *battery-entity
-              - entity: sensor.battery_door_sensor_pracownia
-                <<: *battery-entity
-              - entity: sensor.battery_window_sensor_antresola
-                <<: *battery-entity
-              - entity: sensor.battery_window_sensor_gabinet
-                <<: *battery-entity
-              - entity: sensor.battery_window_sensor_antek
-                <<: *battery-entity
-              - entity: sensor.battery_window_sensor_sypialnia
-                <<: *battery-entity
-              - entity: sensor.battery_door_sensor_sypialnia
-                <<: *battery-entity
+              - type: custom:battery-entity
+                entity: sensor.battery_window_sensor_kuchnia
+              - type: custom:battery-entity
+                entity: sensor.battery_door_sensor_pracownia
+              - type: custom:battery-entity
+                entity: sensor.battery_window_sensor_antresola
+              - type: custom:battery-entity
+                entity: sensor.battery_window_sensor_gabinet
+              - type: custom:battery-entity
+                entity: sensor.battery_window_sensor_antek
+              - type: custom:battery-entity
+                entity: sensor.battery_window_sensor_sypialnia
+              - type: custom:battery-entity
+                entity: sensor.battery_door_sensor_sypialnia
           - type: entities
             title: "Baterie przełączników"
             show_header_toggle: false
             entities:
-              - entity: sensor.battery_switch_light_salon_1
-                <<: *battery-entity
-              - entity: sensor.battery_switch_light_salon_2
-                <<: *battery-entity
-              - entity: sensor.battery_switch_light_antek
-                <<: *battery-entity
+              - type: custom:battery-entity
+                entity: sensor.battery_switch_light_salon_1
+              - type: custom:battery-entity
+                entity: sensor.battery_switch_light_salon_2
+              - type: custom:battery-entity
+                entity: sensor.battery_switch_light_antek
   - id: climate
     icon: mdi:cloud
     title: "Klimat"

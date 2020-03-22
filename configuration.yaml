@@ -30,8 +30,8 @@ lovelace:
       type: module
     - url: /hacsfiles/bom-weather-card/bom-weather-card.js
       type: module
-    # - url: /hacsfiles/lovelace-canary/canary.js
-    #   type: module
+    - url: /hacsfiles/lovelace-battery-entity/battery-entity.js
+      type: module
     - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
       type: module
 
