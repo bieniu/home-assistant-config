@@ -1,11 +1,6 @@
 background: "#e5e5e5"
 
 anchors:
-  glance-card-padding: &glance-card-padding
-    style: |
-      div.entities.no-header {
-        padding-top: 8px;
-      }
   entities-card-padding: &entities-card-padding
     style: |
       .card-content {
@@ -16,12 +11,6 @@ anchors:
       ha-card {
         border-radius: 0px;
       }
-  mini-media-player-card-padding: &mini-media-player-card-padding
-    style:
-      .: |
-        ha-card > div.mmp-player {
-          padding: 2px 0px !important;
-        }
   battery-entity: &battery-entity
     style: |
       :host {
@@ -80,10 +69,6 @@ views:
               - type: custom:auto-entities
                 card:
                   type: glance
-                  style: |
-                    div.card-header {
-                      padding-bottom: 8px;
-                    }
                   title: "Rodzina"
                   show_name: false
                 filter:
@@ -100,17 +85,16 @@ views:
               - type: entities
                 title: "Przedpokój"
                 show_header_toggle: false
+                state_color: true
                 entities:
                   # - sensor.illumination_przedpokoj
                   - entity: binary_sensor.motion_przedpokoj
                     secondary_info: last-changed
-                    state_color: true
                   - light.leds_przedpokoj
               - type: custom:vertical-stack-in-card
-                title: "Kuchnia"
                 cards:
                   - type: glance
-                    <<: *glance-card-padding
+                    title: "Kuchnia"
                     show_name: false
                     entities:
                       - sensor.temperature_kuchnia
@@ -118,9 +102,9 @@ views:
                   - type: entities
                     <<: *entities-card-padding
                     show_header_toggle: false
+                    state_color: true
                     entities:
                       - entity: binary_sensor.window_kuchnia
-                        state_color: true
                       - climate.thermostat_kuchnia
                       - entity: sensor.dishwasher_kuchnia
                         style: |
@@ -133,10 +117,9 @@ views:
                               {% endif %};
                           }
           - type: custom:vertical-stack-in-card
-            title: "Salon"
             cards:
               - type: glance
-                <<: *glance-card-padding
+                title: "Salon"
                 show_name: false
                 entities:
                   - sensor.temperature_salon
@@ -146,10 +129,10 @@ views:
               - type: entities
                 <<: *entities-card-padding
                 show_header_toggle: false
+                state_color: true
                 entities:
                   - entity: binary_sensor.motion_salon
                     secondary_info: last-changed
-                    state_color: true
                   - climate.thermostat_salon
                   - type: custom:secondaryinfo-entity-row
                     entity: fan.humidifier_salon
@@ -163,7 +146,6 @@ views:
                   - input_select.light_scenes_salon
                   - input_select.salon_harmony
                   - type: custom:mini-media-player
-                    <<: *mini-media-player-card-padding
                     entity: media_player.bravia
                     hide:
                       controls: true
@@ -173,7 +155,6 @@ views:
                     info: scroll
                     group: true
                   - type: custom:mini-media-player
-                    <<: *mini-media-player-card-padding
                     entity: media_player.denon
                     hide:
                       controls: true
@@ -185,7 +166,6 @@ views:
                     info: scroll
                     group: true
                   - type: custom:mini-media-player
-                    <<: *mini-media-player-card-padding
                     entity: media_player.playstation
                     hide:
                       controls: true
@@ -196,7 +176,7 @@ views:
                     info: scroll
                     group: true
                   - type: custom:mini-media-player
-                    <<: *mini-media-player-card-padding
+                    # <<: *mini-media-player-card-padding
                     entity: media_player.echo_show
                     hide:
                       controls: true
@@ -251,10 +231,9 @@ views:
                             media_content_type: "SPOTIFY"
                             media_content_id: "in everywhere group playlist Maciek"
           - type: custom:vertical-stack-in-card
-            title: "Pracownia"
             cards:
               - type: glance
-                <<: *glance-card-padding
+                title: "Pracownia"
                 show_name: false
                 entities:
                   - sensor.temperature_pracownia
@@ -263,19 +242,16 @@ views:
               - type: entities
                 <<: *entities-card-padding
                 show_header_toggle: false
+                state_color: true
                 entities:
                   - entity: binary_sensor.motion_pracownia
                     secondary_info: last-changed
-                    state_color: true
                   - entity: binary_sensor.balcony_door_pracownia
-                    state_color: true
                   - entity: switch.lamp_pracownia
-                    state_color: true
           - type: custom:vertical-stack-in-card
-            title: "Pokój gościnny"
             cards:
               - type: glance
-                <<: *glance-card-padding
+                title: "Pokój gościnny"
                 show_name: false
                 entities:
                   - sensor.temperature_goscinny
@@ -284,14 +260,12 @@ views:
               - type: entities
                 <<: *entities-card-padding
                 show_header_toggle: false
+                state_color: true
                 entities:
                   - entity: binary_sensor.motion_goscinny
                     secondary_info: last-changed
-                    state_color: true
                   - entity: switch.lamp_goscinny
-                    state_color: true
                   - type: custom:mini-media-player
-                    <<: *mini-media-player-card-padding
                     entity: media_player.mibox
                     name: "Mi Box"
                     hide:
@@ -301,10 +275,9 @@ views:
                     info: scroll
                     group: true
           - type: custom:vertical-stack-in-card
-            title: "Antresola"
             cards:
               - type: glance
-                <<: *glance-card-padding
+                title: "Antresola"
                 show_name: false
                 entities:
                   - sensor.temperature_antresola
@@ -313,19 +286,17 @@ views:
               - type: entities
                 <<: *entities-card-padding
                 show_header_toggle: false
+                state_color: true
                 entities:
                   - entity: binary_sensor.window_antresola
-                    state_color: true
                   - entity: binary_sensor.motion_antresola
                     secondary_info: last-changed
-                    state_color: true
                   - climate.thermostat_antresola
                   - light.gateway_antresola
           - type: custom:vertical-stack-in-card
-            title: "Gabinet"
             cards:
               - type: glance
-                <<: *glance-card-padding
+                title: "Gabinet"
                 show_name: false
                 entities:
                   - sensor.temperature_gabinet
@@ -334,20 +305,17 @@ views:
               - type: entities
                 <<: *entities-card-padding
                 show_header_toggle: false
+                state_color: true
                 entities:
                   - entity: binary_sensor.window_gabinet
-                    state_color: true
                   - entity: binary_sensor.motion_gabinet
                     secondary_info: last-changed
-                    state_color: true
                   - climate.thermostat_gabinet
                   - entity: switch.stacjonarny
-                    state_color: true
           - type: custom:vertical-stack-in-card
-            title: "Pokój Antka"
             cards:
               - type: glance
-                <<: *glance-card-padding
+                title: "Pokój Antka"
                 show_name: false
                 entities:
                   - sensor.temperature_antek
@@ -356,20 +324,16 @@ views:
               - type: entities
                 <<: *entities-card-padding
                 show_header_toggle: false
+                state_color: true
                 entities:
                   - entity: binary_sensor.window_antek
-                    state_color: true
                   - entity: binary_sensor.motion_antek
                     secondary_info: last-changed
-                    state_color: true
                   - climate.thermostat_antek
                   - light.lightstrip_antek
                   - entity: switch.cabinet_antek
-                    state_color: true
                   - entity: switch.tree_antek
-                    state_color: true
                   - type: custom:mini-media-player
-                    <<: *mini-media-player-card-padding
                     entity: media_player.echo_plus
                     hide:
                       controls: true
@@ -380,10 +344,9 @@ views:
                     info: scroll
                     group: true
           - type: custom:vertical-stack-in-card
-            title: "Sypialnia"
             cards:
               - type: glance
-                <<: *glance-card-padding
+                title: "Sypialnia"
                 show_name: false
                 entities:
                   - sensor.temperature_sypialnia
@@ -392,20 +355,16 @@ views:
               - type: entities
                 <<: *entities-card-padding
                 show_header_toggle: false
+                state_color: true
                 entities:
                   - entity: binary_sensor.window_sypialnia
-                    state_color: true
                   - entity: binary_sensor.balcony_door_sypialnia
-                    state_color: true
                   - entity: binary_sensor.motion_sypialnia
                     secondary_info: last-changed
-                    state_color: true
                   - climate.thermostat_sypialnia
                   - light.lightstrip_sypialnia
                   - entity: switch.tree_sypialnia
-                    state_color: true
                   - type: custom:mini-media-player
-                    <<: *mini-media-player-card-padding
                     entity: media_player.echo_dot
                     hide:
                       controls: true
@@ -416,10 +375,9 @@ views:
                     info: scroll
                     group: true
           - type: custom:vertical-stack-in-card
-            title: "Łazienka"
             cards:
               - type: glance
-                <<: *glance-card-padding
+                title: "Łazienka"
                 show_name: false
                 entities:
                   - sensor.temperature_lazienka
@@ -427,6 +385,7 @@ views:
               - type: entities
                 <<: *entities-card-padding
                 show_header_toggle: false
+                state_color: true
                 entities:
                   - climate.thermostat_lazienka
           - type: picture-glance
@@ -444,6 +403,7 @@ views:
     panel: true
     cards:
       - type: map
+        <<: *card-no-border-radius
         default_zoom: 20
         entities:
           - person.edyta
@@ -476,10 +436,9 @@ views:
                   - sensor.synology_disk_used
                   - sensor.synology_last_boot
               - type: custom:vertical-stack-in-card
-                title: "Raspberry Pi"
                 cards:
                   - type: glance
-                    <<: *glance-card-padding
+                    title: "Raspberry Pi"
                     entities:
                       - entity: sensor.processor_use
                         name: "CPU"
@@ -687,9 +646,13 @@ views:
                     entities:
                       - sensor.servers_gabinet_energy_monthly
           - type: custom:vertical-stack-in-card
-            title: "UPS"
             cards:
               - type: entities
+                title: "UPS"
+                style: |
+                  div#states.card-content {
+                    padding-bottom: 0px;
+                  }
                 show_header_toggle: false
                 entities:
                   - sensor.ups_status
