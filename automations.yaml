@@ -458,32 +458,6 @@
           - service: !secret maciek_notify_service
             type: "android"
 
-# powiadomienie o aktualizacji Tasmota
-- id: notification_tasmota_update_available
-  alias: "Notification Tasmota Update Available"
-  trigger:
-    platform: state
-    entity_id: sensor.tasmota_version_current
-  condition:
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
-  action:
-    - service: python_script.notify
-      data_template:
-        title: "Aktualizacja Tasmota"
-        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Tasmota."
-        tag: "notification-tasmota-update"
-        url: "https://github.com/arendst/Tasmota/releases"
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
-
 # powiadomienie o aktualizacji ESPHome
 - id: notification_esphome_update_available
   alias: "Notification ESPHome Update Available"
@@ -2598,20 +2572,16 @@
     data_template:
       homeassistant.components: "{{ trigger.to_state.state }}"
 
-- id: mqtt_devices_announce
-  alias: "MQTT Devices Announce"
+- id: shellies_announce
+  alias: "Shellies Announce"
   trigger:
     platform: homeassistant
     event: start
   action:
-    - service: mqtt.publish
-      data:
-        topic: "shellies/command"
-        payload: "announce"
-    - service: mqtt.publish
-      data:
-        topic: "sonoffs/cmnd/state"
-        payload: ""
+    service: mqtt.publish
+    data:
+      topic: "shellies/command"
+      payload: "announce"
 
 - id: shellies_discovery
   alias: "Shellies Discovery"

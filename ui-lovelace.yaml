@@ -176,7 +176,6 @@ views:
                     info: scroll
                     group: true
                   - type: custom:mini-media-player
-                    # <<: *mini-media-player-card-padding
                     entity: media_player.echo_show
                     hide:
                       controls: true
@@ -405,6 +404,7 @@ views:
       - type: map
         <<: *card-no-border-radius
         default_zoom: 20
+        hours_to_show: 12
         entities:
           - person.edyta
           - person.maciek
@@ -438,7 +438,7 @@ views:
               - type: custom:vertical-stack-in-card
                 cards:
                   - type: glance
-                    title: "Raspberry Pi"
+                    title: "Intel NUC"
                     entities:
                       - entity: sensor.processor_use
                         name: "CPU"
@@ -450,9 +450,9 @@ views:
                     <<: *entities-card-padding
                     show_header_toggle: false
                     entities:
-                      - sensor.raspberry_cpu_temp
-                      - sensor.last_boot_custom
-                      - sensor.last_ha_restart
+                      # - sensor.raspberry_cpu_temp
+                      # - sensor.last_boot_custom
+                      # - sensor.last_ha_restart
                       - sensor.ha_database_size
                       - sensor.ssl_certificate_expiry
           - type: vertical-stack
@@ -501,6 +501,7 @@ views:
               - binary_sensor.access_point_status
               - binary_sensor.fingbox_status
               - binary_sensor.synology_status
+              - binary_sensor.nuc_status
               - binary_sensor.raspberry_status
               - binary_sensor.bravia_status
               - binary_sensor.denon_status
@@ -832,7 +833,7 @@ views:
               - type: iframe
                 url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates&metricWind=m%2Fs
                 aspect_ratio: 61%
-              - type: sensor
+              - type: entity
                 entity: sensor.airly_info
                 style: |
                   ha-card {
@@ -987,5 +988,4 @@ views:
                 title: "Skrypty i ustawienia"
                 show_header_toggle: false
                 entities:
-                  - script.reboot_router
                   - input_select.log_level

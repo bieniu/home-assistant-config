@@ -13,7 +13,7 @@ wifi:
   password: !secret wifi_password
   use_address: ${device_hostname}
   domain: !secret local_domain
-  fast_connect: true
+  # fast_connect: true
   ap:
     ssid: ${device_name}
     password: !secret esphome_password
@@ -53,6 +53,9 @@ switch:
     pin: GPIO12
     icon: mdi:power-plug
     name: "${device_name} Relay"
+
+  - platform: restart
+    name: "${device_name} Restart"
 
 sensor:
   - platform: uptime

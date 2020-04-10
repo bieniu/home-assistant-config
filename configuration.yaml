@@ -34,6 +34,10 @@ lovelace:
       type: module
     - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
       type: module
+    - url: /hacsfiles/stack-in-card/stack-in-card.js
+      type: module
+    - url: /hacsfiles/lovelace-canary/canary.js
+      type: module
 
 person:
 
@@ -75,7 +79,6 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 input_select: !include input_select.yaml
-shell_command: !include shell_command.yaml
 device_tracker: !include device_tracker.yaml
 media_player: !include media_player.yaml
 switch: !include switches.yaml
@@ -139,39 +142,34 @@ panel_custom:
     url_path: zwave
     require_admin: true
 
-remote:
-  - platform: harmony
-    name: Salon
-    host: !secret harmonyhub_hostname
-
 python_script:
 
 yeelight:
   devices:
-    yeelight-yldp02yl-b1b6aa:
+    yeelight-yldp02yl-b1b6aa.bieniu.lan:
       name: 'bulb antresola'
       model: 'color1'
       <<: &YEELIGHT_PARAMS
         transition: 500
         save_on_change: false
         use_music_mode: false
-    yeelight-yldp02yl-f12026:
+    yeelight-yldp02yl-f12026.bieniu.lan:
       name: 'lamp salon'
       model: 'color1'
       <<: *YEELIGHT_PARAMS
-    yeelight-yldp06yl-84be7a:
+    yeelight-yldp06yl-84be7a.bieniu.lan:
       name: 'bulb salon 1'
       model: 'color2'
       <<: *YEELIGHT_PARAMS
-    yeelight-yldp06yl-7cafc6:
+    yeelight-yldp06yl-7cafc6.bieniu.lan:
       name: 'bulb salon 2'
       model: 'color2'
       <<: *YEELIGHT_PARAMS
-    yeelight-yldd01yl-860cfa:
+    yeelight-yldd01yl-860cfa.bieniu.lan:
       name: 'lightstrip sypialnia'
       model: 'strip1'
       <<: *YEELIGHT_PARAMS
-    yeelight-yldd01yl-6707fc:
+    yeelight-yldd01yl-6707fc.bieniu.lan:
       name: 'lightstrip antek'
       model: 'strip1'
       <<: *YEELIGHT_PARAMS

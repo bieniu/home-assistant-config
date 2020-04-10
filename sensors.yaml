@@ -23,19 +23,6 @@
   round: 2
 
 - platform: rest
-  name: "Tasmota Version Current"
-  resource: "https://api.github.com/repos/arendst/Sonoff-Tasmota/releases/latest"
-  value_template: "{{ value_json.tag_name | replace('v', '') }}"
-  username: !secret github_username
-  password: !secret github_token_access
-  authentication: basic
-  scan_interval: 7200
-  headers:
-    Accept: application/vnd.github.v3+json
-    Content-Type: application/json
-    User-Agent: Home Assistant REST sensor
-
-- platform: rest
   name: "ESPHome Version Current"
   resource: "https://api.github.com/repos/esphome/esphome/releases/latest"
   value_template: "{{ value_json.tag_name | replace('v', '') }}"
@@ -88,29 +75,6 @@
   password: !secret shellies_password
   scan_interval: 7200
 
-- platform: nut
-  name: "UPS"
-  host: !secret ups_host
-  alias: ups
-  resources:
-    - ups.status
-    - ups.load
-    - input.voltage
-    - battery.voltage
-    - battery.charge
-
-- platform: command_line
-  name: "Raspberry CPU Temp"
-  command: "cat /sys/class/thermal/thermal_zone0/temp"
-  unit_of_measurement: "°C"
-  value_template: "{{ (value | multiply(0.001)) | round(1) }}"
-  scan_interval: 300
-
-- platform: command_line
-  name: "Last HA restart"
-  command: "systemctl status home-assistant.service | head -3 | awk '{print $6}' | tail -1"
-  scan_interval: 1800
-
 - platform: command_line
   command: python3 -c "import requests; print(requests.get('https://pypi.org/pypi/homeassistant/json').json()['info']['version'])"
   name: "HA Version Current"
@@ -125,7 +89,7 @@
   db_url: !secret mysql_db_url
   queries:
     - name: "HA Database Size"
-      query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1024 / 1024, 1) "value" FROM information_schema.tables WHERE table_schema="homeassistant_db" GROUP BY table_schema;'
+      query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1024 / 1024, 1) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'
       column: "value"
       unit_of_measurement: "MB"
 

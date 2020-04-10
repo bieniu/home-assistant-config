@@ -5,8 +5,8 @@
   scan_interval: 180
 
 - platform: ping
-  host: !secret raspberry_hostname
-  name: raspberry_status
+  host: !secret nuc_hostname
+  name: nuc_status
   count: 2
   scan_interval: 180
 
@@ -57,6 +57,10 @@
     synology_status:
       value_template: "{{ is_state('device_tracker.synology', 'home') }}"
       friendly_name: "Synology DS110j"
+
+    raspberry_status:
+      value_template: "{{ is_state('device_tracker.raspberry', 'home') }}"
+      friendly_name: "Raspberry Pi 3B"
 
     stacjonarny_status:
       value_template: "{{ is_state('device_tracker.stacjonarny', 'home') }}"

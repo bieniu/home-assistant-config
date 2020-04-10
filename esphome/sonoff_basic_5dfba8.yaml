@@ -48,6 +48,9 @@ switch:
     pin: GPIO12
     name: "${device_name} Relay"
 
+  - platform: restart
+    name: "${device_name} Restart"
+
 status_led:
   pin:
     number: GPIO13

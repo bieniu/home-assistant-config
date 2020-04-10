@@ -110,10 +110,12 @@ binary_sensor.aimesh_status:
   icon: mdi:access-point
 binary_sensor.synology_status:
   icon: mdi:nas
+binary_sensor.nuc_status:
+  icon: mdi:server-network
+  friendly_name: "Intel NUC NUC5CPYH"
 binary_sensor.dune_status:
   icon: mdi:filmstrip
 binary_sensor.raspberry_status:
-  friendly_name: "Raspberry Pi 3B"
   icon: mdi:raspberry-pi
 binary_sensor.switch_status:
   icon: mdi:switch
@@ -190,9 +192,9 @@ media_player.denon:
   friendly_name: "Amplituner"
   icon: mdi:audio-video
 
-media_player.bravia:
-  friendly_name: "Telewizor"
-  icon: mdi:television
+# media_player.bravia:
+#   friendly_name: "Telewizor"
+#   icon: mdi:television
 
 #### SCRIPTS ####
 script.restart_hass:

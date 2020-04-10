@@ -31,5 +31,7 @@ WIP*.py
 panels
 python_scripts/shellies_discovery.py
 themes/*/*.yaml
+adb/*
 !.gitignore
 alexa_media.*
+core

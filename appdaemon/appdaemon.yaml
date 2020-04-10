@@ -1,0 +1,19 @@
+secrets: /config/secrets.yaml
+
+appdaemon:
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  elevation: 97
+  time_zone: "Europe/Warsaw"
+  production_mode: true
+  plugins:
+    HASS:
+      type: hass
+
+http:
+  url: "http://localhost:5050"
+  password: !secret appdaemon_http_password
+
+admin:
+
+api:

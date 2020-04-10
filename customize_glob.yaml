@@ -89,15 +89,11 @@
 "sensor.*_wifi_signal":
   device_class: signal_strength
 
-"sensor.co2_*":
-  icon: mdi:periodic-table-co2
-  unit_of_measurement: "ppm"
-
 "binary_sensor.echo_*_status":
   icon: mdi:amazon-alexa
 
-"media_player.echo_*":
-  icon: mdi:amazon-alexa
+# "media_player.echo_*":
+#   icon: mdi:amazon-alexa
 
 "switch.tree_*":
   icon: mdi:tree

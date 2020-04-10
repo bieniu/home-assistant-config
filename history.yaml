@@ -7,8 +7,6 @@ include:
     - person.grazyna
     - person.jerzy
     - person.romana
-    - person.agnieszka
-    - person.emil
     - sensor.dark_sky_precip_probability
     - sensor.humidity_outdoor
     - sensor.pressure_outdoor
@@ -16,16 +14,12 @@ include:
     - sensor.temperature_outdoor
     - sensor.dark_sky_wind_speed
     - sensor.ha_database_size
-    - sensor.speedtest_download
-    - sensor.speedtest_ping
-    - sensor.speedtest_upload
     - sensor.temperature_indoor
     - sensor.humidity_indoor
     - sensor.co2_salon
-    - sensor.router_last_boot
     - sensor.synology_last_boot
     - sensor.last_boot
     - sensor.airly_pm1
-    - sensor.airly_pm25
+    - sensor.airly_pm2_5
     - sensor.airly_pm10
     - sensor.airly_info

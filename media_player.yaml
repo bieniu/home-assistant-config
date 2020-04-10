@@ -5,7 +5,7 @@
 
 - platform: androidtv
   host: !secret mibox_hostname
-  adbkey: "~/.android/adbkey"
+  adbkey: "/config/adb/adbkey"
   name: "MiBox"
   exclude_unnamed_apps: true
   apps:
@@ -21,9 +21,3 @@
     pl.idreams.skyforcehdtv: "Sky Force"
     com.leosfortune: "Leo's Fortune"
 
-- platform: braviatv_psk
-  host: !secret bravia_hostname
-  psk: !secret bravia_psk
-  mac: !secret bravia_mac
-  amp: true
-  android: true

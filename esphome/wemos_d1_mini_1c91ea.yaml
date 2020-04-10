@@ -1,12 +1,12 @@
 substitutions:
-  device_name: "Sonoff Basic A786CC"
-  device_name_lower: "sonoff_basic_a786cc"
-  device_hostname: "sonoff-basic-a786cc"
+  device_name: "Wemos D1 mini 1C91EA"
+  device_name_lower: "wemos_d1_mini_1c91ea"
+  device_hostname: "wemos-d1-mini-1c91ea"
 
 esphome:
   name: ${device_name_lower}
   platform: ESP8266
-  board: esp01_1m
+  board: d1_mini
 
 wifi:
   ssid: !secret wifi_ssid
@@ -31,32 +31,25 @@ ota:
 web_server:
   port: 80
 
-binary_sensor:
-  - platform: gpio
-    id: button
-    internal: true
-    pin:
-      number: GPIO0
-      mode: INPUT_PULLUP
-      inverted: true
-    on_press:
-      - switch.toggle: relay
+uart:
+  rx_pin: RX
+  tx_pin: TX
+  baud_rate: 9600
 
 switch:
-  - platform: gpio
-    id: relay
-    pin: GPIO12
-    name: "${device_name} Relay"
-
   - platform: restart
     name: "${device_name} Restart"
 
-status_led:
-  pin:
-    number: GPIO13
-    inverted: true
-
 sensor:
+  - platform: mhz19
+    co2:
+      name: "MH-Z19B Carbon Dioxide"
+    temperature:
+      name: "MH-Z19B Temperature"
+      accuracy_decimals: 1
+    automatic_baseline_calibration: false
+    update_interval: 300s
+
   - platform: uptime
     name: "${device_name} Uptime"
     unit_of_measurement: days

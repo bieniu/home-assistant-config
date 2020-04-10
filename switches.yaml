@@ -4,7 +4,10 @@
   mac: !secret desktop_mac_address
   broadcast_address: 255.255.255.255
   turn_off:
-    service: shell_command.stacjonarny_off
+    service: hassio.addon_stdin
+    data:
+      addon: core_rpc_shutdown
+      input: stacjonarny
 
 - platform: flux
   lights:

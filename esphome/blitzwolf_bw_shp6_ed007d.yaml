@@ -59,6 +59,9 @@ switch:
     on_turn_off:
       - output.turn_off: led
 
+  - platform: restart
+    name: "${device_name} Restart"
+
 status_led:
   pin:
     number: GPIO02
