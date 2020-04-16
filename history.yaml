@@ -23,3 +23,4 @@ include:
     - sensor.airly_pm2_5
     - sensor.airly_pm10
     - sensor.airly_info
+    - media_player.playstation

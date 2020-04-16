@@ -7,3 +7,5 @@ logs:
   homeassistant.components.media_player: error
   homeassistant.helpers.entity: error
   homeassistant.components.braviatv: debug
+  homeassistant.components.ps4: debug
+  pyps4-2ndscreen: debug

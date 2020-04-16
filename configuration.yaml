@@ -14,11 +14,7 @@ zone:
 lovelace:
   mode: yaml
   resources:
-    - url: /hacsfiles/lovelace-card-tools/card-tools.js
-      type: module
     - url: /hacsfiles/lovelace-card-mod/card-mod.js
-      type: module
-    - url: /hacsfiles/lovelace-layout-card/layout-card.js
       type: module
     - url: /hacsfiles/lovelace-auto-entities/auto-entities.js
       type: module
@@ -26,15 +22,11 @@ lovelace:
       type: js
     - url: /hacsfiles/mini-media-player/mini-media-player-bundle.js
       type: module
-    - url: /hacsfiles/secondaryinfo-entity-row/secondaryinfo-entity-row.js
-      type: js
     - url: /hacsfiles/bom-weather-card/bom-weather-card.js
       type: module
     - url: /hacsfiles/lovelace-battery-entity/battery-entity.js
       type: module
     - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
-      type: module
-    - url: /hacsfiles/stack-in-card/stack-in-card.js
       type: module
     - url: /hacsfiles/lovelace-canary/canary.js
       type: module
@@ -78,11 +70,16 @@ group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
-input_select: !include input_select.yaml
 device_tracker: !include device_tracker.yaml
 media_player: !include media_player.yaml
 switch: !include switches.yaml
 light: !include lights.yaml
+
+input_select: !include input_select.yaml
+input_boolean: !include input_boolean.yaml
+input_number:
+input_text:
+input_datetime:
 
 fan:
   - platform: xiaomi_miio
@@ -132,8 +129,6 @@ notify:
     vapid_pub_key: !secret vapid_pub_key
     vapid_prv_key: !secret vapid_prv_key
     vapid_email: !secret vapid_email
-
-input_boolean: !include input_boolean.yaml
 
 panel_custom:
   - name: zwavegraph

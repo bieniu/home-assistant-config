@@ -76,11 +76,6 @@
   scan_interval: 7200
 
 - platform: command_line
-  command: python3 -c "import requests; print(requests.get('https://pypi.org/pypi/homeassistant/json').json()['info']['version'])"
-  name: "HA Version Current"
-  scan_interval: 1800
-
-- platform: command_line
   command: python3 -c "import requests; print(requests.get('https://pypi.org/pypi/appdaemon/json').json()['info']['version'])"
   name: "AD Version Current"
   scan_interval: 1800
@@ -95,6 +90,11 @@
 
 - platform: version
   name: "HA Version Installed"
+
+- platform: version
+  name: "HA Version Current"
+  source: hassio
+  image: intel-nuc
 
 - platform: uptime
   name: "Home Assistant Uptime"
@@ -209,13 +209,17 @@
       unit_of_measurement: "µg/m³"
       value_template: "{{ state_attr('air_quality.airly', 'particulate_matter_2_5') }}"
 
-    last_boot_custom:
+    nuc_last_boot:
       friendly_name: "Ostatni restart"
       value_template: "{{ states('sensor.last_boot').split('T')[0] }}"
 
     printer_last_boot:
       friendly_name: "Ostatni restart"
       value_template: "{{ (as_timestamp(now()) - states('sensor.printer_uptime') | int * 24 * 60 * 60) | timestamp_custom('%Y-%m-%d') }}"
+
+    ha_last_restart:
+      friendly_name: "Ostatni restart"
+      value_template: "{{ (as_timestamp(now()) - states('sensor.home_assistant_uptime') | int * 60) | timestamp_custom('%Y-%m-%d') }}"
 
     humidifier_water_level:
       friendly_name: "Poziom wody"

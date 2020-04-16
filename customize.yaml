@@ -80,7 +80,7 @@ sensor.ups_input_voltage:
 sensor.ups_load:
   friendly_name: "Obciążenie"
 
-#### RASPBERRY PI ####
+#### INTEL NUC/HA ####
 sensor.processor_use:
   friendly_name: "Obciążenie CPU"
 sensor.memory_use_percent:
@@ -91,17 +91,20 @@ sensor.disk_use_percent:
 sensor.last_boot:
   icon: mdi:clock-outline
   friendly_name: "Ostatni restart"
-sensor.last_boot_custom:
+sensor.nuc_last_boot:
+  friendly_name: "Ostatni restart"
   icon: mdi:clock-outline
-sensor.raspberry_cpu_temp:
-  friendly_name: "Temperatura CPU"
-  icon: mdi:thermometer
 sensor.ha_database_size:
   friendly_name: "Wielkość bazy danych"
   icon: mdi:database
-sensor.last_ha_restart:
-  friendly_name: "Ostatni restart HA"
+sensor.ha_last_restart:
+  friendly_name: "Ostatni restart"
   icon: mdi:clock-outline
+sensor.ha_version_current:
+  friendly_name: "Najnowsza wersja"
+sensor.ha_version_installed:
+  friendly_name: "Zainstalowana wersja"
+  icon: mdi:package-down
 
 #### NETWORK DEVICES ####
 binary_sensor.router_status:
@@ -191,10 +194,6 @@ switch.stacjonarny:
 media_player.denon:
   friendly_name: "Amplituner"
   icon: mdi:audio-video
-
-# media_player.bravia:
-#   friendly_name: "Telewizor"
-#   icon: mdi:television
 
 #### SCRIPTS ####
 script.restart_hass:
@@ -308,13 +307,10 @@ sensor.ssl_certificate_expiry:
 #### CAMERA ####
 switch.camera_move_up:
   icon: mdi:chevron-double-up
-
 switch.camera_move_down:
   icon: mdi:chevron-double-down
-
 switch.camera_move_left:
   icon: mdi:chevron-double-left
-
 switch.camera_move_right:
   icon: mdi:chevron-double-right
 

@@ -254,10 +254,11 @@
     condition: template
     value_template: >
       {% macro dead_unavailable_entities() %}
-        {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
+        {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor', 'media_player'] -%}
         {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
+        {%- set ignored = ['fan.salon', 'light.bulb_antresola'] -%}
         {% for domain in domains -%}
-          {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb_antresola' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
+          {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
             - {{ item.name }} ({{ item.entity_id }})
           {%- endfor %}
         {%- endfor %}
@@ -269,10 +270,11 @@
         title: "Encja z nieprawidłowym stanem"
         message: >
           {% macro dead_unavailable_entities() %}
-            {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor'] -%}
+            {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor', 'media_player'] -%}
             {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
+            {%- set ignored = ['fan.salon', 'light.bulb_antresola'] -%}
             {% for domain in domains -%}
-              {% for item in states[domain] if (item.entity_id.split('_')[-1] in rooms or item.entity_id.split('_')[-2] in rooms) and not ('battery' in item.entity_id or 'bulb_antresola' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
+              {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
            - {{ item.name }} ({{ item.entity_id }})
               {%- endfor %}
             {%- endfor %}
