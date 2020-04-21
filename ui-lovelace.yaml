@@ -1,11 +1,6 @@
 background: "#e5e5e5"
 
 anchors:
-  entities-card-padding: &entities-card-padding
-    style: |
-      .card-content {
-        padding-top: 0px;
-      }
   card-no-border-radius: &card-no-border-radius
     style: |
       ha-card {
@@ -83,20 +78,21 @@ views:
             show_header_toggle: false
             state_color: true
             entities:
-              # - sensor.illumination_przedpokoj
               - entity: binary_sensor.motion_przedpokoj
                 secondary_info: last-changed
               - light.leds_przedpokoj
-          - type: custom:vertical-stack-in-card
+          - type: vertical-stack
+            in_card: true
             cards:
               - type: glance
+                no_card: true
                 title: "Kuchnia"
                 show_name: false
                 entities:
                   - sensor.temperature_kuchnia
                   - sensor.humidity_kuchnia
               - type: entities
-                <<: *entities-card-padding
+                no_card: true
                 show_header_toggle: false
                 state_color: true
                 entities:
@@ -112,9 +108,11 @@ views:
                             var(--state-icon-color)
                           {% endif %};
                       }
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: glance
+            no_card: true
             title: "Salon"
             show_name: false
             entities:
@@ -123,7 +121,7 @@ views:
               - sensor.co2_salon
               - sensor.illumination_salon
           - type: entities
-            <<: *entities-card-padding
+            no_card: true
             show_header_toggle: false
             state_color: true
             entities:
@@ -155,8 +153,6 @@ views:
                 entity: media_player.denon
                 hide:
                   controls: true
-                  volume: true
-                  mute: true
                   power: true
                   power_state: false
                   progress: true
@@ -226,9 +222,11 @@ views:
                         entity_id: media_player.echo_show
                         media_content_type: "SPOTIFY"
                         media_content_id: "in everywhere group playlist Maciek"
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: glance
+            no_card: true
             title: "Pracownia"
             show_name: false
             entities:
@@ -236,7 +234,7 @@ views:
               - sensor.humidity_pracownia
               - sensor.illumination_pracownia
           - type: entities
-            <<: *entities-card-padding
+            no_card: true
             show_header_toggle: false
             state_color: true
             entities:
@@ -244,9 +242,11 @@ views:
                 secondary_info: last-changed
               - entity: binary_sensor.balcony_door_pracownia
               - entity: switch.lamp_pracownia
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: glance
+            no_card: true
             title: "Pokój gościnny"
             show_name: false
             entities:
@@ -254,7 +254,7 @@ views:
               - sensor.humidity_goscinny
               - sensor.illumination_goscinny
           - type: entities
-            <<: *entities-card-padding
+            no_card: true
             show_header_toggle: false
             state_color: true
             entities:
@@ -266,14 +266,16 @@ views:
                 name: "Mi Box"
                 hide:
                   controls: true
-                  volume: true
+                  # volume: true
                   power: true
                   source: true
                 info: scroll
                 group: true
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: glance
+            no_card: true
             title: "Antresola"
             show_name: false
             entities:
@@ -281,7 +283,7 @@ views:
               - sensor.humidity_antresola
               - sensor.illumination_antresola
           - type: entities
-            <<: *entities-card-padding
+            no_card: true
             show_header_toggle: false
             state_color: true
             entities:
@@ -290,9 +292,11 @@ views:
                 secondary_info: last-changed
               - climate.thermostat_antresola
               - light.gateway_antresola
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: glance
+            no_card: true
             title: "Gabinet"
             show_name: false
             entities:
@@ -300,7 +304,7 @@ views:
               - sensor.humidity_gabinet
               - sensor.illumination_gabinet
           - type: entities
-            <<: *entities-card-padding
+            no_card: true
             show_header_toggle: false
             state_color: true
             entities:
@@ -309,9 +313,11 @@ views:
                 secondary_info: last-changed
               - climate.thermostat_gabinet
               - entity: switch.stacjonarny
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: glance
+            no_card: true
             title: "Pokój Antka"
             show_name: false
             entities:
@@ -319,7 +325,7 @@ views:
               - sensor.humidity_antek
               - sensor.illumination_antek
           - type: entities
-            <<: *entities-card-padding
+            no_card: true
             show_header_toggle: false
             state_color: true
             entities:
@@ -340,9 +346,11 @@ views:
                   source: true
                 info: scroll
                 group: true
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: glance
+            no_card: true
             title: "Sypialnia"
             show_name: false
             entities:
@@ -350,7 +358,7 @@ views:
               - sensor.humidity_sypialnia
               - sensor.illumination_sypialnia
           - type: entities
-            <<: *entities-card-padding
+            no_card: true
             show_header_toggle: false
             state_color: true
             entities:
@@ -371,16 +379,18 @@ views:
                   source: true
                 info: scroll
                 group: true
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: glance
+            no_card: true
             title: "Łazienka"
             show_name: false
             entities:
               - sensor.temperature_lazienka
               - sensor.humidity_lazienka
           - type: entities
-            <<: *entities-card-padding
+            no_card: true
             show_header_toggle: false
             state_color: true
             entities:
@@ -437,10 +447,13 @@ views:
             entities:
               - sensor.synology_disk_used
               - sensor.synology_last_boot
-          - type: custom:vertical-stack-in-card
+          - type: vertical-stack
+            in_card: true
             cards:
               - type: glance
+                no_card: true
                 title: "Intel NUC"
+                columns: 3
                 entities:
                   - entity: sensor.processor_use
                     name: "CPU"
@@ -449,12 +462,23 @@ views:
                   - entity: sensor.disk_use_percent
                     name: "Dysk"
               - type: entities
-                <<: *entities-card-padding
+                no_card: true
                 show_header_toggle: false
                 entities:
                   - sensor.nuc_cpu_temp
                   - sensor.nuc_last_boot
                   - sensor.ssl_certificate_expiry
+              - type: custom:mini-graph-card
+                no_card: true
+                name: "Prędkość CPU"
+                hour24: true
+                decimals: 0
+                show:
+                  icon: false
+                  fill: fade
+                entities:
+                  - sensor.nuc_cpu_speed_core_0
+                  - sensor.nuc_cpu_speed_core_1
       - type: vertical-stack
         cards:
           - type: entities
@@ -524,6 +548,7 @@ views:
           - binary_sensor.mifan_status
           - binary_sensor.laptop_status
           - binary_sensor.laptop_edyta_status
+          - binary_sensor.laptop_antek_status
           - binary_sensor.oneplus_status
           - binary_sensor.iphone_status
           - binary_sensor.lumia_status
@@ -564,10 +589,11 @@ views:
     title: "Energia"
     path: energy
     cards:
-      - type: custom:vertical-stack-in-card
-        title: "Pobór mocy"
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: horizontal-stack
+            title: "Pobór mocy"
             cards:
               - type: custom:mini-graph-card
                 hour24: true
@@ -603,10 +629,11 @@ views:
                   graph: false
                 entities:
                   - sensor.servers_gabinet_power
-      - type: custom:vertical-stack-in-card
-        title: "Zużycie energii"
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: horizontal-stack
+            title: "Zużycie energii"
             cards:
               - type: custom:mini-graph-card
                 hour24: true
@@ -642,9 +669,11 @@ views:
                   graph: false
                 entities:
                   - sensor.servers_gabinet_energy_monthly
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: entities
+            no_card: true
             title: "UPS"
             style: |
               div#states.card-content {
@@ -658,6 +687,7 @@ views:
               - sensor.ups_battery_voltage
               - sensor.ups_load
           - type: custom:mini-graph-card
+            no_card: true
             hour24: true
             decimals: 0
             show:
@@ -926,6 +956,9 @@ views:
     icon: mdi:settings
     title: "Różne"
     path: misc
+    visible:
+      - user: cd5c77d085144390919eb90ad3832d0d
+      - user: bccfc5a472de4058a59e1cc468da1ca5
     cards:
       - type: vertical-stack
         cards:

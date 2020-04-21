@@ -18,8 +18,6 @@ lovelace:
       type: module
     - url: /hacsfiles/lovelace-auto-entities/auto-entities.js
       type: module
-    - url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js
-      type: js
     - url: /hacsfiles/mini-media-player/mini-media-player-bundle.js
       type: module
     - url: /hacsfiles/bom-weather-card/bom-weather-card.js

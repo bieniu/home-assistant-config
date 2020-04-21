@@ -2609,3 +2609,17 @@
     service: frontend.set_theme
     data:
       name: blue-mix
+
+- id: hassio_snapshot
+  alias: "Hassio Snapshot"
+  trigger:
+    platform: time
+    at: "02:00:00"
+  condition:
+    condition: time
+    weekday:
+      - sun
+  action:
+    service: hassio.snapshot_full
+    data_template:
+      name: "{{ now().strftime('%Y-%m-%d') }}"
