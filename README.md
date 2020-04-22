@@ -5,7 +5,8 @@
 
 ## Server
 
-* Raspberry Pi 3 [Raspbian Stretch with Python 3.7.2 virtual env]
+* Intel NUC NUC5CPYH [Debian Buster]
+* Home Assistant Supervised installation
 
 ## Z-Wave Devices
 
@@ -37,7 +38,7 @@
 
 ## Sensors
 
-* Wemos D1 mini + MH-Z19B [[Tasmota firmware](https://github.com/arendst/Sonoff-Tasmota)]
+* Wemos D1 mini + MH-Z19B [[ESPHome](https://esphome.io) firmware]
 * [Shelly H&T](https://shelly.cloud/shelly-humidity-and-temperature/) via MQTT
 
 ## Other Integrated Devices
@@ -56,17 +57,15 @@
 * CyberPower DL650ELCD [UPS]
 * Xiaomi DaFang [camera with [custom firmware](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks)]
 * Sony Bravia TV (Android TV)
-* Amazon Echo Plus (via Home Assistant Cloud)
+* Amazon Echo Plus/Dot/Show (via Home Assistant Cloud)
 
 ## Home Assistant Custom Components
 
 * [Airly](https://github.com/bieniu/ha-airly)
 * [Alexa Media Player](https://github.com/custom-components/alexa_media_player)
-* [Custom Frontend](https://github.com/home-assistant/home-assistant/pull/10783)
 * [GIOS](https://github.com/bieniu/ha-gios)
 * [HACS](https://github.com/custom-components/hacs)
 * [iPhone Detect](https://github.com/mudape/iphonedetect)
-* [Sony Bravia TV PSK](https://github.com/custom-components/media_player.braviatv_psk)
 
 ## Custom Panels
 
@@ -75,14 +74,12 @@
 ## Lovelace Custom Cards
 
 * [card-mod](https://github.com/thomasloven/lovelace-card-mod)
-* [card-tools](https://github.com/thomasloven/lovelace-card-tools)
 * [bom-weather-card](https://github.com/DavidFW1960/bom-weather-card)
-* [layout-card](https://github.com/thomasloven/lovelace-layout-card)
 * [mini-graph-card](https://github.com/kalkih/mini-graph-card)
 * [mini-media-player](https://github.com/kalkih/mini-media-player)
 * [auto-entities](https://github.com/thomasloven/lovelace-auto-entities)
-* [secondaryinfo-entity-row](https://github.com/MizterB/lovelace-secondaryinfo-entity-row)
-* [vertical-stack-in-card](https://github.com/custom-cards/vertical-stack-in-card)
+* [canary](https://github.com/jcwillox/lovelace-canary)
+* [battery-entity](https://github.com/cbulock/lovelace-battery-entity)
 
 ## AppDaemon
 

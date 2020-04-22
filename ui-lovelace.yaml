@@ -441,44 +441,67 @@ views:
               - sensor.ha_version_installed
               - sensor.ha_last_restart
               - sensor.ha_database_size
+          - type: vertical-stack
+            in_card: true
+            cards:
+              - type: entities
+                title: "Intel NUC"
+                no_card: true
+                show_header_toggle: false
+                entities:
+                  - sensor.disk_use_percent
+                  - sensor.nuc_cpu_temp
+                  - sensor.nuc_last_boot
+                  - sensor.ssl_certificate_expiry
+              - type: horizontal-stack
+                no_card: true
+                cards:
+                  - type: custom:mini-graph-card
+                    no_card: true
+                    hour24: true
+                    decimals: 0
+                    points_per_hour: 1
+                    show:
+                      fill: fade
+                    entities:
+                      - sensor.processor_use
+                    color_thresholds:
+                      - value: 17
+                        color: "#43a047"
+                      - value: 34
+                        color: "#fbc02d"
+                      - value: 51
+                        color: "#fb8c00"
+                      - value: 68
+                        color: "#f4511e"
+                      - value: 85
+                        color: "#d81b60"
+                  - type: custom:mini-graph-card
+                    no_card: true
+                    hour24: true
+                    decimals: 0
+                    points_per_hour: 1
+                    show:
+                      fill: fade
+                    entities:
+                      - sensor.memory_use_percent
+                    color_thresholds:
+                      - value: 17
+                        color: "#43a047"
+                      - value: 34
+                        color: "#fbc02d"
+                      - value: 51
+                        color: "#fb8c00"
+                      - value: 68
+                        color: "#f4511e"
+                      - value: 85
+                        color: "#d81b60"
           - type: entities
             title: "Synology"
             show_header_toggle: false
             entities:
               - sensor.synology_disk_used
               - sensor.synology_last_boot
-          - type: vertical-stack
-            in_card: true
-            cards:
-              - type: glance
-                no_card: true
-                title: "Intel NUC"
-                columns: 3
-                entities:
-                  - entity: sensor.processor_use
-                    name: "CPU"
-                  - entity: sensor.memory_use_percent
-                    name: "RAM"
-                  - entity: sensor.disk_use_percent
-                    name: "Dysk"
-              - type: entities
-                no_card: true
-                show_header_toggle: false
-                entities:
-                  - sensor.nuc_cpu_temp
-                  - sensor.nuc_last_boot
-                  - sensor.ssl_certificate_expiry
-              - type: custom:mini-graph-card
-                no_card: true
-                name: "Prędkość CPU"
-                hour24: true
-                decimals: 0
-                show:
-                  icon: false
-                  fill: fade
-                entities:
-                  - sensor.nuc_cpu_speed_core_0
-                  - sensor.nuc_cpu_speed_core_1
       - type: vertical-stack
         cards:
           - type: entities
@@ -675,27 +698,36 @@ views:
           - type: entities
             no_card: true
             title: "UPS"
-            style: |
-              div#states.card-content {
-                padding-bottom: 0px;
-              }
             show_header_toggle: false
             entities:
               - sensor.ups_status
               - entity: sensor.ups_battery_charge
                 <<: *battery-entity
-              - sensor.ups_battery_voltage
               - sensor.ups_load
-          - type: custom:mini-graph-card
-            no_card: true
-            hour24: true
-            decimals: 0
-            show:
-              icon: false
-              fill: fade
-            entities:
-              - sensor.ups_input_voltage
-            line_color: "#ef5350"
+          - type: horizontal-stack
+            no_cards: true
+            cards:
+              - type: custom:mini-graph-card
+                no_card: true
+                hour24: true
+                decimals: 0
+                points_per_hour: 1
+                show:
+                  fill: fade
+                entities:
+                  - sensor.ups_input_voltage
+                line_color: "#ef5350"
+              - type: custom:mini-graph-card
+                no_card: true
+                hour24: true
+                decimals: 0
+                points_per_hour: 1
+                show:
+                  fill: fade
+                entities:
+                  - sensor.ups_battery_voltage
+                line_color: "#36a2eb"
+                lower_bound: 0
       - type: entities
         title: "Baterie sensorów ruchu"
         show_header_toggle: false
@@ -884,8 +916,6 @@ views:
           - type: custom:mini-graph-card
             <<: &CLIMATE_GRAPH_PARAMS
               hour24: true
-              align_header: left
-              align_icon: left
               points_per_hour: 1
               height: 75
               show:
