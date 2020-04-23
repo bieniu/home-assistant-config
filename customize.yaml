@@ -87,7 +87,7 @@ sensor.memory_use_percent:
   friendly_name: "Zajęty RAM"
   icon: mdi:chip
 sensor.disk_use_percent:
-  friendly_name: "Zajęte miejsce"
+  friendly_name: "Zajęta przestrzeń dyskowa"
 sensor.last_boot:
   icon: mdi:clock-outline
   friendly_name: "Ostatni restart"

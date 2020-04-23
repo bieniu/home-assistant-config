@@ -15,7 +15,6 @@ wifi:
   password: !secret wifi_password
   use_address: ${device_hostname}
   domain: !secret local_domain
-  fast_connect: true
   ap:
     ssid: ${device_name}
     password: !secret esphome_password
