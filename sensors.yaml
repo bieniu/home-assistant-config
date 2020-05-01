@@ -495,6 +495,8 @@
           słaba bateria
         {% elif is_state('sensor.ups_status_data', 'SD') %}
           wyłączanie
+        {% elif is_state('sensor.ups_status_data', 'FSD OB DISCHRG') %}
+          wyłączanie
         {% else %}
           {{ states('sensor.ups_status_data') }}
         {% endif %}

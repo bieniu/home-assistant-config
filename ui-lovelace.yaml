@@ -11,9 +11,9 @@ anchors:
       :host {
         --paper-item-icon-color:
           {% set battery = states(config.entity) %}
-          {% if battery | int < 15 %}
+          {% if battery | int < 20 %}
             var(--label-badge-red)
-          {% elif battery | int < 35 %}
+          {% elif battery | int < 40 %}
             var(--label-badge-yellow)
           {% else %}
             var(--state-icon-color)
@@ -81,18 +81,15 @@ views:
               - entity: binary_sensor.motion_przedpokoj
                 secondary_info: last-changed
               - light.leds_przedpokoj
-          - type: vertical-stack
-            in_card: true
+          - type: custom:vertical-stack-in-card
             cards:
               - type: glance
-                no_card: true
                 title: "Kuchnia"
                 show_name: false
                 entities:
                   - sensor.temperature_kuchnia
                   - sensor.humidity_kuchnia
               - type: entities
-                no_card: true
                 show_header_toggle: false
                 state_color: true
                 entities:
@@ -108,11 +105,9 @@ views:
                             var(--state-icon-color)
                           {% endif %};
                       }
-      - type: vertical-stack
-        in_card: true
+      - type: custom:vertical-stack-in-card
         cards:
           - type: glance
-            no_card: true
             title: "Salon"
             show_name: false
             entities:
@@ -121,7 +116,6 @@ views:
               - sensor.co2_salon
               - sensor.illumination_salon
           - type: entities
-            no_card: true
             show_header_toggle: false
             state_color: true
             entities:
@@ -222,11 +216,9 @@ views:
                         entity_id: media_player.echo_show
                         media_content_type: "SPOTIFY"
                         media_content_id: "in everywhere group playlist Maciek"
-      - type: vertical-stack
-        in_card: true
+      - type: custom:vertical-stack-in-card
         cards:
           - type: glance
-            no_card: true
             title: "Pracownia"
             show_name: false
             entities:
@@ -234,7 +226,6 @@ views:
               - sensor.humidity_pracownia
               - sensor.illumination_pracownia
           - type: entities
-            no_card: true
             show_header_toggle: false
             state_color: true
             entities:
@@ -242,11 +233,9 @@ views:
                 secondary_info: last-changed
               - entity: binary_sensor.balcony_door_pracownia
               - entity: switch.lamp_pracownia
-      - type: vertical-stack
-        in_card: true
+      - type: custom:vertical-stack-in-card
         cards:
           - type: glance
-            no_card: true
             title: "Pokój gościnny"
             show_name: false
             entities:
@@ -254,7 +243,6 @@ views:
               - sensor.humidity_goscinny
               - sensor.illumination_goscinny
           - type: entities
-            no_card: true
             show_header_toggle: false
             state_color: true
             entities:
@@ -266,16 +254,13 @@ views:
                 name: "Mi Box"
                 hide:
                   controls: true
-                  # volume: true
                   power: true
                   source: true
                 info: scroll
                 group: true
-      - type: vertical-stack
-        in_card: true
+      - type: custom:vertical-stack-in-card
         cards:
           - type: glance
-            no_card: true
             title: "Antresola"
             show_name: false
             entities:
@@ -283,7 +268,6 @@ views:
               - sensor.humidity_antresola
               - sensor.illumination_antresola
           - type: entities
-            no_card: true
             show_header_toggle: false
             state_color: true
             entities:
@@ -292,11 +276,9 @@ views:
                 secondary_info: last-changed
               - climate.thermostat_antresola
               - light.gateway_antresola
-      - type: vertical-stack
-        in_card: true
+      - type: custom:vertical-stack-in-card
         cards:
           - type: glance
-            no_card: true
             title: "Gabinet"
             show_name: false
             entities:
@@ -304,7 +286,6 @@ views:
               - sensor.humidity_gabinet
               - sensor.illumination_gabinet
           - type: entities
-            no_card: true
             show_header_toggle: false
             state_color: true
             entities:
@@ -313,11 +294,9 @@ views:
                 secondary_info: last-changed
               - climate.thermostat_gabinet
               - entity: switch.stacjonarny
-      - type: vertical-stack
-        in_card: true
+      - type: custom:vertical-stack-in-card
         cards:
           - type: glance
-            no_card: true
             title: "Pokój Antka"
             show_name: false
             entities:
@@ -325,7 +304,6 @@ views:
               - sensor.humidity_antek
               - sensor.illumination_antek
           - type: entities
-            no_card: true
             show_header_toggle: false
             state_color: true
             entities:
@@ -346,11 +324,9 @@ views:
                   source: true
                 info: scroll
                 group: true
-      - type: vertical-stack
-        in_card: true
+      - type: custom:vertical-stack-in-card
         cards:
           - type: glance
-            no_card: true
             title: "Sypialnia"
             show_name: false
             entities:
@@ -358,7 +334,6 @@ views:
               - sensor.humidity_sypialnia
               - sensor.illumination_sypialnia
           - type: entities
-            no_card: true
             show_header_toggle: false
             state_color: true
             entities:
@@ -379,18 +354,15 @@ views:
                   source: true
                 info: scroll
                 group: true
-      - type: vertical-stack
-        in_card: true
+      - type: custom:vertical-stack-in-card
         cards:
           - type: glance
-            no_card: true
             title: "Łazienka"
             show_name: false
             entities:
               - sensor.temperature_lazienka
               - sensor.humidity_lazienka
           - type: entities
-            no_card: true
             show_header_toggle: false
             state_color: true
             entities:
@@ -441,12 +413,10 @@ views:
               - sensor.ha_version_installed
               - sensor.ha_last_restart
               - sensor.ha_database_size
-          - type: vertical-stack
-            in_card: true
+          - type: custom:vertical-stack-in-card
             cards:
               - type: entities
                 title: "Intel NUC"
-                no_card: true
                 show_header_toggle: false
                 entities:
                   - sensor.disk_use_percent
@@ -454,10 +424,8 @@ views:
                   - sensor.nuc_last_boot
                   - sensor.ssl_certificate_expiry
               - type: horizontal-stack
-                no_card: true
                 cards:
                   - type: custom:mini-graph-card
-                    no_card: true
                     hour24: true
                     decimals: 0
                     points_per_hour: 1
@@ -477,7 +445,6 @@ views:
                       - value: 85
                         color: "#d81b60"
                   - type: custom:mini-graph-card
-                    no_card: true
                     hour24: true
                     decimals: 0
                     points_per_hour: 1
@@ -612,8 +579,7 @@ views:
     title: "Energia"
     path: energy
     cards:
-      - type: vertical-stack
-        in_card: true
+      - type: custom:vertical-stack-in-card
         cards:
           - type: horizontal-stack
             title: "Pobór mocy"
@@ -652,8 +618,7 @@ views:
                   graph: false
                 entities:
                   - sensor.servers_gabinet_power
-      - type: vertical-stack
-        in_card: true
+      - type: custom:vertical-stack-in-card
         cards:
           - type: horizontal-stack
             title: "Zużycie energii"
@@ -692,11 +657,9 @@ views:
                   graph: false
                 entities:
                   - sensor.servers_gabinet_energy_monthly
-      - type: vertical-stack
-        in_card: true
+      - type: custom:vertical-stack-in-card
         cards:
           - type: entities
-            no_card: true
             title: "UPS"
             show_header_toggle: false
             entities:
@@ -705,10 +668,8 @@ views:
                 <<: *battery-entity
               - sensor.ups_load
           - type: horizontal-stack
-            no_cards: true
             cards:
               - type: custom:mini-graph-card
-                no_card: true
                 hour24: true
                 decimals: 0
                 points_per_hour: 1
@@ -718,7 +679,6 @@ views:
                   - sensor.ups_input_voltage
                 line_color: "#ef5350"
               - type: custom:mini-graph-card
-                no_card: true
                 hour24: true
                 decimals: 0
                 points_per_hour: 1
@@ -728,100 +688,103 @@ views:
                   - sensor.ups_battery_voltage
                 line_color: "#36a2eb"
                 lower_bound: 0
-      - type: entities
-        title: "Baterie sensorów ruchu"
-        show_header_toggle: false
+      - type: custom:battery-state-card
+        name: "Baterie sensorów ruchu"
+        tap_action:
+          action: more-info
+        color_thresholds:
+          - value: 20
+            color: var(--label-badge-red)
+          - value: 40
+            color: var(--label-badge-yellow)
+          - value: 100
+            color: var(--state-icon-color)
         entities:
-          - type: custom:battery-entity
-            entity: sensor.battery_motion_sensor_przedpokoj
-          - type: custom:battery-entity
-            entity: sensor.battery_motion_sensor_salon_1
-          - type: custom:battery-entity
-            entity: sensor.battery_motion_sensor_salon_2
-          - type: custom:battery-entity
-            entity: sensor.battery_motion_sensor_pracownia
-          - type: custom:battery-entity
-            entity: sensor.battery_motion_sensor_goscinny
-          - type: custom:battery-entity
-            entity: sensor.battery_motion_sensor_schody
-          - type: custom:battery-entity
-            entity: sensor.battery_motion_sensor_antresola
-          - type: custom:battery-entity
-            entity: sensor.battery_motion_sensor_gabinet
-          - type: custom:battery-entity
-            entity: sensor.battery_motion_sensor_antek
-          - type: custom:battery-entity
-            entity: sensor.battery_motion_sensor_sypialnia
-      - type: entities
-        title: "Baterie sensorów temperatury"
-        show_header_toggle: false
+          - sensor.battery_motion_sensor_przedpokoj
+          - sensor.battery_motion_sensor_salon_1
+          - sensor.battery_motion_sensor_salon_2
+          - sensor.battery_motion_sensor_pracownia
+          - sensor.battery_motion_sensor_goscinny
+          - sensor.battery_motion_sensor_schody
+          - sensor.battery_motion_sensor_antresola
+          - sensor.battery_motion_sensor_gabinet
+          - sensor.battery_motion_sensor_antek
+          - sensor.battery_motion_sensor_sypialnia
+      - type: custom:battery-state-card
+        name: "Baterie sensorów temperatury"
+        tap_action:
+          action: more-info
+        color_thresholds:
+          - value: 20
+            color: var(--label-badge-red)
+          - value: 40
+            color: var(--label-badge-yellow)
+          - value: 100
+            color: var(--state-icon-color)
         entities:
-          - type: custom:battery-entity
-            entity: sensor.battery_temp_humi_sensor_kuchnia
-          - type: custom:battery-entity
-            entity: sensor.battery_temp_humi_sensor_salon
-          - type: custom:battery-entity
-            entity: sensor.battery_temp_humi_sensor_pracownia
-          - type: custom:battery-entity
-            entity: sensor.battery_temp_humi_sensor_goscinny
-          - type: custom:battery-entity
-            entity: sensor.battery_temp_humi_sensor_antresola
-          - type: custom:battery-entity
-            entity: sensor.battery_temp_humi_sensor_gabinet
-          - type: custom:battery-entity
-            entity: sensor.battery_temp_humi_sensor_antek
-          - type: custom:battery-entity
-            entity: sensor.battery_temp_humi_sensor_sypialnia
-          - type: custom:battery-entity
-            entity: sensor.battery_temp_humi_sensor_lazienka
-          - type: custom:battery-entity
-            entity: sensor.battery_temp_humi_sensor_outdoor
-      - type: entities
-        title: "Baterie termostatów"
-        show_header_toggle: false
+          - sensor.battery_temp_humi_sensor_kuchnia
+          - sensor.battery_temp_humi_sensor_salon
+          - sensor.battery_temp_humi_sensor_pracownia
+          - sensor.battery_temp_humi_sensor_goscinny
+          - sensor.battery_temp_humi_sensor_antresola
+          - sensor.battery_temp_humi_sensor_gabinet
+          - sensor.battery_temp_humi_sensor_antek
+          - sensor.battery_temp_humi_sensor_sypialnia
+          - sensor.battery_temp_humi_sensor_lazienka
+          - sensor.battery_temp_humi_sensor_outdoor
+      - type: custom:battery-state-card
+        name: "Baterie termostatów"
+        tap_action:
+          action: more-info
+        color_thresholds:
+          - value: 20
+            color: var(--label-badge-red)
+          - value: 40
+            color: var(--label-badge-yellow)
+          - value: 100
+            color: var(--state-icon-color)
         entities:
-          - type: custom:battery-entity
-            entity: sensor.battery_thermostat_salon
-          - type: custom:battery-entity
-            entity: sensor.battery_thermostat_kuchnia
-          - type: custom:battery-entity
-            entity: sensor.battery_thermostat_antresola
-          - type: custom:battery-entity
-            entity: sensor.battery_thermostat_gabinet
-          - type: custom:battery-entity
-            entity: sensor.battery_thermostat_antek
-          - type: custom:battery-entity
-            entity: sensor.battery_thermostat_sypialnia
-          - type: custom:battery-entity
-            entity: sensor.battery_thermostat_lazienka
-      - type: entities
-        title: "Baterie sensorów okien/drzwi"
-        show_header_toggle: false
+          - sensor.battery_thermostat_salon
+          - sensor.battery_thermostat_kuchnia
+          - sensor.battery_thermostat_antresola
+          - sensor.battery_thermostat_gabinet
+          - sensor.battery_thermostat_antek
+          - sensor.battery_thermostat_sypialnia
+          - sensor.battery_thermostat_lazienka
+      - type: custom:battery-state-card
+        name: "Baterie sensorów okien/drzwi"
+        tap_action:
+          action: more-info
+        color_thresholds:
+          - value: 20
+            color: var(--label-badge-red)
+          - value: 40
+            color: var(--label-badge-yellow)
+          - value: 100
+            color: var(--state-icon-color)
         entities:
-          - type: custom:battery-entity
-            entity: sensor.battery_window_sensor_kuchnia
-          - type: custom:battery-entity
-            entity: sensor.battery_door_sensor_pracownia
-          - type: custom:battery-entity
-            entity: sensor.battery_window_sensor_antresola
-          - type: custom:battery-entity
-            entity: sensor.battery_window_sensor_gabinet
-          - type: custom:battery-entity
-            entity: sensor.battery_window_sensor_antek
-          - type: custom:battery-entity
-            entity: sensor.battery_window_sensor_sypialnia
-          - type: custom:battery-entity
-            entity: sensor.battery_door_sensor_sypialnia
-      - type: entities
-        title: "Baterie przełączników"
-        show_header_toggle: false
+          - sensor.battery_window_sensor_kuchnia
+          - sensor.battery_door_sensor_pracownia
+          - sensor.battery_window_sensor_antresola
+          - sensor.battery_window_sensor_gabinet
+          - sensor.battery_window_sensor_antek
+          - sensor.battery_window_sensor_sypialnia
+          - sensor.battery_door_sensor_sypialnia
+      - type: custom:battery-state-card
+        name: "Baterie przełączników"
+        tap_action:
+          action: more-info
+        color_thresholds:
+          - value: 20
+            color: var(--label-badge-red)
+          - value: 40
+            color: var(--label-badge-yellow)
+          - value: 100
+            color: var(--state-icon-color)
         entities:
-          - type: custom:battery-entity
-            entity: sensor.battery_switch_light_salon_1
-          - type: custom:battery-entity
-            entity: sensor.battery_switch_light_salon_2
-          - type: custom:battery-entity
-            entity: sensor.battery_switch_light_antek
+          - sensor.battery_switch_light_salon_1
+          - sensor.battery_switch_light_salon_2
+          - sensor.battery_switch_light_antek
   - id: climate
     icon: mdi:cloud
     title: "Klimat"

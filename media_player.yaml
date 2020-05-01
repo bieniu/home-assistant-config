@@ -8,6 +8,7 @@
   adbkey: "/config/adb/adbkey"
   name: "MiBox"
   exclude_unnamed_apps: true
+  screencap: false
   apps:
     com.nvidia.geforcenow: "GeForce NOW"
     com.amazon.amazonvideo.livingroom: "Prime Video"

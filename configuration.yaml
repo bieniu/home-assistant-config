@@ -22,11 +22,13 @@ lovelace:
       type: module
     - url: /hacsfiles/bom-weather-card/bom-weather-card.js
       type: module
-    - url: /hacsfiles/lovelace-battery-entity/battery-entity.js
-      type: module
     - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
       type: module
     - url: /hacsfiles/lovelace-canary/canary.js
+      type: module
+    - url: /hacsfiles/battery-state-card/battery-state-card.js
+      type: module
+    - url: /local/cards/vertical-stack-in-card/vertical-stack-in-card.js
       type: module
 
 person:
@@ -92,14 +94,6 @@ fan:
 sun:
 
 config:
-
-discovery:
-  ignore:
-    - denonavr
-    - harmony
-    - yeelight
-    - philips_hue
-    - google_cast
 
 ssdp:
 
