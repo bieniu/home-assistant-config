@@ -73,6 +73,24 @@ views:
                   state: home
                 - entity_id: person.jerzy
                   state: home
+          - type: custom:vertical-stack-in-card
+            title: "Pogoda"
+            cards:
+              - type: custom:simple-weather-card
+                entity: weather.dom
+                tap_action:
+                  action: navigate
+                  navigation_path: /lovelace/climate
+                name: " "
+                primary_info:
+                  - humidity
+                  - wind_speed
+                secondary_info:
+                  - precipitation
+                  - precipitation_probability
+                custom:
+                  - temp: sensor.temperature_outdoor
+                  - humidity: sensor.humidity_outdoor
           - type: entities
             title: "Przedpokój"
             show_header_toggle: false
@@ -426,43 +444,36 @@ views:
               - type: horizontal-stack
                 cards:
                   - type: custom:mini-graph-card
-                    hour24: true
+                    <<: &GRAPH_IN_CARD
+                      hour24: true
+                      points_per_hour: 1
+                      animate: true
+                      font_size: 90
+                      show:
+                        fill: false
+                        labels: false
+                        points: false
                     decimals: 0
-                    points_per_hour: 1
-                    show:
-                      fill: fade
                     entities:
                       - sensor.processor_use
-                    color_thresholds:
-                      - value: 17
-                        color: "#43a047"
-                      - value: 34
-                        color: "#fbc02d"
-                      - value: 51
-                        color: "#fb8c00"
-                      - value: 68
-                        color: "#f4511e"
-                      - value: 85
-                        color: "#d81b60"
+                    <<: &GRAPH_COLOR_THRESHOLD
+                      color_thresholds:
+                        - value: 17
+                          color: "#43a047"
+                        - value: 34
+                          color: "#fbc02d"
+                        - value: 51
+                          color: "#fb8c00"
+                        - value: 68
+                          color: "#f4511e"
+                        - value: 85
+                          color: "#d81b60"
                   - type: custom:mini-graph-card
-                    hour24: true
+                    <<: *GRAPH_IN_CARD
                     decimals: 0
-                    points_per_hour: 1
-                    show:
-                      fill: fade
                     entities:
                       - sensor.memory_use_percent
-                    color_thresholds:
-                      - value: 17
-                        color: "#43a047"
-                      - value: 34
-                        color: "#fbc02d"
-                      - value: 51
-                        color: "#fb8c00"
-                      - value: 68
-                        color: "#f4511e"
-                      - value: 85
-                        color: "#d81b60"
+                    <<: *GRAPH_COLOR_THRESHOLD
           - type: entities
             title: "Synology"
             show_header_toggle: false
@@ -670,20 +681,14 @@ views:
           - type: horizontal-stack
             cards:
               - type: custom:mini-graph-card
-                hour24: true
+                <<: *GRAPH_IN_CARD
                 decimals: 0
-                points_per_hour: 1
-                show:
-                  fill: fade
                 entities:
                   - sensor.ups_input_voltage
                 line_color: "#ef5350"
               - type: custom:mini-graph-card
-                hour24: true
+                <<: *GRAPH_IN_CARD
                 decimals: 0
-                points_per_hour: 1
-                show:
-                  fill: fade
                 entities:
                   - sensor.ups_battery_voltage
                 line_color: "#36a2eb"
@@ -857,18 +862,18 @@ views:
                 background:
                   {% set airly = states("sensor.airly_info") %}
                   {% if airly == "bardzo dobra" %}
-                    #43a047
+                    #43a047;
                   {% elif airly == "dobra" %}
-                    #fbc02d
+                    #fbc02d;
                   {% elif airly == "średnia" %}
-                    #fb8c00
+                    #fb8c00;
                   {% elif airly == "zła" %}
-                    #f4511e
+                    #f4511e;
                   {% elif airly == "bardzo zła" %}
-                    #d81b60
+                    #d81b60;
                   {% else %}
                     #000000;
-                  {% endif %};
+                  {% endif %}
                 color: #fff;
               }
               ha-icon {

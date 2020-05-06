@@ -30,6 +30,8 @@ lovelace:
       type: module
     - url: /local/cards/vertical-stack-in-card/vertical-stack-in-card.js
       type: module
+    - url: /hacsfiles/simple-weather-card/simple-weather-card-bundle.js
+      type: module
 
 person:
 
