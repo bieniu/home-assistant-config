@@ -94,9 +94,13 @@
       value_template: "{{ is_state('device_tracker.oneplus_6', 'home') }}"
       friendly_name: "OnePlus 6"
 
-    iphone_status:
+    iphone_8_plus_status:
       value_template: "{{ is_state('device_tracker.iphone_8_plus', 'home') }}"
       friendly_name: "iPhone 8 Plus"
+
+    iphone_11_status:
+      value_template: "{{ is_state('device_tracker.iphone_11', 'home') }}"
+      friendly_name: "iPhone 11"
 
     ipad_status:
       value_template: "{{ is_state('device_tracker.ipad_air', 'home') }}"

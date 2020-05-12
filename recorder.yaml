@@ -1,4 +1,5 @@
 db_url: !secret mysql_db_url
+purge_keep_days: 7
 exclude:
   domains:
     - automation

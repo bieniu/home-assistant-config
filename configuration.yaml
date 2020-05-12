@@ -89,9 +89,10 @@ fan:
     model: zhimi.humidifier.ca1
     host: !secret humidifier_hostname
     token: !secret humidifier_token
-  # - platform: xiaomi_miio_fan
-  #   host: !secret fan_hostname
-  #   token: !secret fan_token
+
+  - platform: xiaomi_miio_fan
+    host: !secret fan_hostname
+    token: !secret fan_token
 
 sun:
 

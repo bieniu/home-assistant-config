@@ -8,6 +8,9 @@ device_tracker.ipad_air_app:
 device_tracker.iphone_8_plus_app:
   icon: mdi:cellphone-iphone
 
+device_tracker.iphone_11_app:
+  icon: mdi:cellphone-iphone
+
 #### PERSONS #####
 person.edyta:
   entity_picture: /local/pictures/edyta.jpg
@@ -134,7 +137,9 @@ binary_sensor.fingbox_status:
   icon: mdi:security-network
 binary_sensor.harmonyhub_status:
   icon: mdi:remote
-binary_sensor.iphone_status:
+binary_sensor.iphone_8_plus_status:
+  icon: mdi:cellphone-iphone
+binary_sensor.iphone_11_status:
   icon: mdi:cellphone-iphone
 binary_sensor.oneplus_status:
   icon: mdi:cellphone-android
@@ -347,3 +352,6 @@ sensor.hacs:
 
 zone.home:
   radius: 50
+
+sensor.dark_sky_wind_speed:
+  friendly_name: "Prędkość wiatru"

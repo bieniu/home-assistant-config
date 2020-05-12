@@ -84,13 +84,14 @@ views:
                 name: " "
                 primary_info:
                   - humidity
-                  - wind_speed
-                secondary_info:
-                  - precipitation
                   - precipitation_probability
+                secondary_info:
+                  - pressure
                 custom:
                   - temp: sensor.temperature_outdoor
                   - humidity: sensor.humidity_outdoor
+                  - pressure: sensor.pressure_outdoor
+                  - precipitation_probability: sensor.dark_sky_precip_probability
           - type: entities
             title: "Przedpokój"
             show_header_toggle: false
@@ -311,6 +312,7 @@ views:
               - entity: binary_sensor.motion_gabinet
                 secondary_info: last-changed
               - climate.thermostat_gabinet
+              - entity: fan.mifan_gabinet
               - entity: switch.stacjonarny
       - type: custom:vertical-stack-in-card
         cards:
@@ -406,6 +408,7 @@ views:
         entities:
           - person.edyta
           - person.maciek
+          - person.antek
           - zone.home
           - zone.grandparents
           - zone.grandmother
@@ -470,7 +473,7 @@ views:
                           color: "#d81b60"
                   - type: custom:mini-graph-card
                     <<: *GRAPH_IN_CARD
-                    decimals: 0
+                    decimals: 1
                     entities:
                       - sensor.memory_use_percent
                     <<: *GRAPH_COLOR_THRESHOLD
@@ -551,8 +554,8 @@ views:
           - binary_sensor.laptop_edyta_status
           - binary_sensor.laptop_antek_status
           - binary_sensor.oneplus_status
-          - binary_sensor.iphone_status
-          - binary_sensor.lumia_status
+          - binary_sensor.iphone_11_status
+          - binary_sensor.iphone_8_plus_status
           - binary_sensor.ipad_status
           - binary_sensor.kindle_status
           - binary_sensor.kindle_8_status
@@ -833,6 +836,7 @@ views:
             entity_pop_3: sensor.dark_sky_precip_probability_3d
             entity_pop_4: sensor.dark_sky_precip_probability_4d
             entity_pop_5: sensor.dark_sky_precip_probability_5d
+            current_data_top_margin: 7em
             time_format: 24
             locale: pl
             tooltips: true

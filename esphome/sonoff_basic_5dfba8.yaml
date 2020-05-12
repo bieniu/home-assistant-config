@@ -29,6 +29,9 @@ ota:
 
 web_server:
   port: 80
+  auth:
+    username: !secret web_server_username
+    password: !secret web_server_password
 
 binary_sensor:
   - platform: gpio
