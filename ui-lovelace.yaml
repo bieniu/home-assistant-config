@@ -113,7 +113,7 @@ views:
                 state_color: true
                 entities:
                   - entity: binary_sensor.window_kuchnia
-                  - climate.thermostat_kuchnia
+                  # - climate.thermostat_kuchnia
                   - entity: sensor.dishwasher_kuchnia
                     style: |
                       :host {
@@ -506,8 +506,8 @@ views:
                 <<: *zwave-entity
               - entity: zwave.thermostat_salon
                 <<: *zwave-entity
-              - entity: zwave.thermostat_kuchnia
-                <<: *zwave-entity
+              # - entity: zwave.thermostat_kuchnia
+              #   <<: *zwave-entity
               - entity: zwave.thermostat_antresola
                 <<: *zwave-entity
               - entity: zwave.thermostat_gabinet
@@ -547,6 +547,7 @@ views:
           - binary_sensor.harmonyhub_status
           - binary_sensor.brother_status
           - binary_sensor.mibox_status
+          - binary_sensor.firetv_status
           - binary_sensor.dafang_status
           - binary_sensor.mihumidifier_status
           - binary_sensor.mifan_status
@@ -753,7 +754,7 @@ views:
             color: var(--state-icon-color)
         entities:
           - sensor.battery_thermostat_salon
-          - sensor.battery_thermostat_kuchnia
+          # - sensor.battery_thermostat_kuchnia
           - sensor.battery_thermostat_antresola
           - sensor.battery_thermostat_gabinet
           - sensor.battery_thermostat_antek

@@ -5,15 +5,15 @@
 
 - platform: androidtv
   host: !secret mibox_hostname
-  adbkey: "/config/adb/adbkey"
-  name: "MiBox"
+  device_class: "androidtv"
   exclude_unnamed_apps: true
   screencap: false
   apps:
+    com.google.android.leanbacklauncher: "Ekran domowy"
     com.nvidia.geforcenow: "GeForce NOW"
     com.amazon.amazonvideo.livingroom: "Prime Video"
     com.google.android.youtube.tv: "YouTube"
-    eu.hbogo.androidtv.production: "HBO GO"
+    eu.hbogo.androidtv.production: "HBO Go"
     com.vimeo.android.videoapp: "Vimeo"
     pl.videostar: "WP Pilot"
     com.spotify.tv.android: "Spotify"
@@ -22,3 +22,10 @@
     pl.idreams.skyforcehdtv: "Sky Force"
     com.leosfortune: "Leo's Fortune"
 
+- platform: androidtv
+  host: !secret firetv_hostname
+  device_class: "firetv"
+  screencap: false
+  apps:
+    com.amazon.tv.launcher: "Ekran domowy"
+    com.apple.atve.amazon.appletv: "Apple TV"

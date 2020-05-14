@@ -138,6 +138,10 @@
       value_template: "{{ is_state('device_tracker.mibox', 'home') }}"
       friendly_name: "Xiaomi Mi Box 3"
 
+    firetv_status:
+      value_template: "{{ is_state('device_tracker.firetv', 'home') }}"
+      friendly_name: "Fire TV Stick 4K"
+
     laptop_edyta_status:
       value_template: "{{ is_state('device_tracker.laptop_edyta', 'home') }}"
       friendly_name: "Dell Latitude 7290"

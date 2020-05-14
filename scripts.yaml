@@ -45,7 +45,7 @@ heating_fast_warm_up:
         - climate.thermostat_gabinet
         - climate.thermostat_antek
         - climate.thermostat_sypialnia
-        - climate.thermostat_kuchnia
+        # - climate.thermostat_kuchnia
         - climate.thermostat_salon
         - climate.thermostat_lazienka
       data:
@@ -62,7 +62,7 @@ heating_day:
     - service: climate.set_temperature
       entity_id:
         - climate.thermostat_antresola
-        - climate.thermostat_kuchnia
+        # - climate.thermostat_kuchnia
         - climate.thermostat_salon
         - climate.thermostat_gabinet
       data_template:
@@ -112,7 +112,7 @@ heating_night:
       entity_id: fan.humidifier_salon
     - service: climate.set_temperature
       entity_id:
-        - climate.thermostat_kuchnia
+        # - climate.thermostat_kuchnia
         - climate.thermostat_salon
       data_template:
         temperature: "{{ states('input_select.heating_temp_night') }}"
@@ -125,7 +125,7 @@ heating_eco_mode:
       entity_id:
         - climate.thermostat_antresola
         - climate.thermostat_gabinet
-        - climate.thermostat_kuchnia
+        # - climate.thermostat_kuchnia
         - climate.thermostat_salon
         - climate.thermostat_antek
         - climate.thermostat_sypialnia
@@ -141,7 +141,7 @@ heating_season_end:
     entity_id:
       - climate.thermostat_antresola
       - climate.thermostat_gabinet
-      - climate.thermostat_kuchnia
+      # - climate.thermostat_kuchnia
       - climate.thermostat_salon
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
@@ -155,7 +155,7 @@ heating_airing_begin:
       entity_id:
         - climate.thermostat_antresola
         - climate.thermostat_gabinet
-        - climate.thermostat_kuchnia
+        # - climate.thermostat_kuchnia
         - climate.thermostat_salon
         - climate.thermostat_antek
         - climate.thermostat_sypialnia
@@ -190,6 +190,13 @@ harmony_smart_tv:
     entity_id: remote.salon
     data:
       activity: "Smart TV"
+
+harmony_fire_tv:
+  sequence:
+    service: remote.turn_on
+    entity_id: remote.salon
+    data:
+      activity: "Fire TV"
 
 harmony_telewizja:
   sequence:

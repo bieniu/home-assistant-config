@@ -873,7 +873,7 @@
       state: "off"
     - service: climate.set_temperature
       entity_id:
-        - climate.thermostat_kuchnia
+        # - climate.thermostat_kuchnia
         - climate.thermostat_salon
       data_template:
         temperature: "{{ states('input_select.heating_temp_night') }}"
@@ -1477,6 +1477,9 @@
     - platform: state
       entity_id: input_select.salon_harmony
       to: "Smart TV"
+    - platform: state
+      entity_id: input_select.salon_harmony
+      to: "Fire TV"
   condition:
     - condition: sun
       after: sunset
@@ -1511,7 +1514,7 @@
       for:
         seconds: 20
     - platform: template
-      value_template: "{{ not is_state('input_select.salon_harmony', 'Smart TV') }}"
+      value_template: "{{ not is_state('input_select.salon_harmony', 'Smart TV') and not is_state('input_select.salon_harmony', 'Fire TV')}}"
   condition:
     - condition: template
       value_template: >-
@@ -2063,6 +2066,8 @@
             InputOnlineMusic
           {% elif trigger.to_state.attributes.current_activity == 'Smart TV' %}
             InputTvAudio
+          {% elif trigger.to_state.attributes.current_activity == 'Fire TV' %}
+            InputTvAudio
           {% endif %}
 
 # wyłączenie telewizora jeśli Harmony przejdzie do aktywności PowerOff
@@ -2197,6 +2202,24 @@
     - service: input_boolean.turn_off
       entity_id: input_boolean.harmony_command
 
+- id: harmony_starts_fire_tv
+  alias: "Harmony Starts Fire TV"
+  trigger:
+    platform: state
+    entity_id: remote.salon
+  condition:
+    condition: template
+    value_template: "{{ trigger.to_state.attributes.current_activity == 'Fire TV' }}"
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.harmony_command
+    - service: input_select.select_option
+      entity_id: input_select.salon_harmony
+      data:
+        option: "Fire TV"
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.harmony_command
+
 - id: harmony_starts_playstation
   alias: "Harmony Starts PlayStation"
   trigger:
@@ -2299,6 +2322,19 @@
     state: "off"
   action:
     service: script.harmony_smart_tv
+
+- id: hass_starts_fire_tv
+  alias: "HASS Starts Fire TV"
+  trigger:
+    platform: state
+    entity_id: input_select.salon_harmony
+    to: "Fire TV"
+  condition:
+    condition: state
+    entity_id: input_boolean.harmony_command
+    state: "off"
+  action:
+    service: script.harmony_fire_tv
 
 - id: hass_starts_playstation
   alias: "HASS Starts PlayStation"
