@@ -494,7 +494,7 @@
       value_template: >-
         {% if is_state('sensor.ups_status_data', 'OL') %}
           zasilanie sieciowe
-        {% elif is_state('sensor.ups_status_data', 'OL CHRG') %}
+        {% elif is_state('sensor.ups_status_data', 'OL CHRG') or is_state('sensor.ups_status_data', 'OL CHRG LB')%}
           ładowanie baterii
         {% elif is_state('sensor.ups_status_data', 'OL DISCHRG') %}
           zasilanie bateryjne
@@ -502,9 +502,7 @@
           zasilanie bateryjne
         {% elif is_state('sensor.ups_status_data', 'LB') %}
           słaba bateria
-        {% elif is_state('sensor.ups_status_data', 'SD') %}
-          wyłączanie
-        {% elif is_state('sensor.ups_status_data', 'FSD OB DISCHRG') %}
+        {% elif is_state('sensor.ups_status_data', 'SD') or is_state('sensor.ups_status_data', 'FSD OB DISCHRG') %}
           wyłączanie
         {% else %}
           {{ states('sensor.ups_status_data') }}

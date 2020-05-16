@@ -114,6 +114,25 @@
           - service: !secret maciek_notify_service
             type: "android"
 
+# powiadomienie o wysokim użyciu pamięci RAM
+- id: notification_high_rma_usage
+  alias: "Notification High RAM Usage"
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.memory_use_percent
+    above: 80
+    for:
+      minutes: 5
+  action:
+    service: python_script.notify
+    data_template:
+      title: "Wysokie użycie pamięci RAM"
+      message: "Serwer Home Assistant używa obecnie {{ states('sensor.memory_use_percent') }}% pamięci RAM."
+      tag: "notification-dishwasher"
+      services:
+        - service: !secret maciek_notify_service
+          type: "android"
+
 # powiadomienie o wygasającym certyfikacie SSL
 - id: notification_ssl_cert_expiry
   alias: "Notification SSL Cert Expiry"

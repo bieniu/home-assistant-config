@@ -97,3 +97,6 @@
 
 "binary_sensor.laptop*status":
   icon: mdi:laptop
+
+"media_player.echo_*":
+  icon: mdi:amazon-alexa

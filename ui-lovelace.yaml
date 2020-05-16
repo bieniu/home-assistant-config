@@ -478,14 +478,6 @@ views:
                       - sensor.memory_use_percent
                     <<: *GRAPH_COLOR_THRESHOLD
           - type: entities
-            title: "Synology"
-            show_header_toggle: false
-            entities:
-              - sensor.synology_disk_used
-              - sensor.synology_last_boot
-      - type: vertical-stack
-        cards:
-          - type: entities
             title: "Drukarka"
             show_header_toggle: false
             entities:
@@ -496,6 +488,76 @@ views:
               - entity: sensor.printer_toner_remaining
                 <<: *percent-entity
               - sensor.printer_last_boot
+          - type: entities
+            title: "Synology"
+            show_header_toggle: false
+            entities:
+              - sensor.synology_disk_used
+              - sensor.synology_last_boot
+      - type: vertical-stack
+        cards:
+          - type: entities
+            title: "Urządzenia sieciowe"
+            show_header_toggle: false
+            state_color: true
+            <<: *network-status-card
+            entities:
+              - binary_sensor.modem_status
+              - binary_sensor.router_status
+              - binary_sensor.access_point_status
+              - binary_sensor.fingbox_status
+          - type: entities
+            title: "Serwery"
+            show_header_toggle: false
+            state_color: true
+            <<: *network-status-card
+            entities:
+              - binary_sensor.synology_status
+              - binary_sensor.nuc_status
+              - binary_sensor.raspberry_status
+              - binary_sensor.brother_status
+          - type: entities
+            title: "Komputery"
+            show_header_toggle: false
+            state_color: true
+            <<: *network-status-card
+            entities:
+              - binary_sensor.stacjonarny_status
+              - binary_sensor.laptop_status
+              - binary_sensor.laptop_edyta_status
+              - binary_sensor.laptop_antek_status
+          - type: entities
+            title: "Urządzenia mobilne"
+            show_header_toggle: false
+            state_color: true
+            <<: *network-status-card
+            entities:
+              - binary_sensor.oneplus_status
+              - binary_sensor.iphone_11_status
+              - binary_sensor.iphone_8_plus_status
+              - binary_sensor.ipad_status
+              - binary_sensor.kindle_status
+              - binary_sensor.kindle_8_status
+              - binary_sensor.inkbook_status
+      - type: vertical-stack
+        cards:
+          - type: entities
+            title: "Urządzenia RTV"
+            show_header_toggle: false
+            state_color: true
+            <<: *network-status-card
+            entities:
+              - binary_sensor.bravia_status
+              - binary_sensor.denon_status
+              - binary_sensor.dune_status
+              - binary_sensor.playstation_status
+              - binary_sensor.xbox_status
+              - binary_sensor.mibox_status
+              - binary_sensor.firetv_status
+              - binary_sensor.echo_show_status
+              - binary_sensor.echo_plus_status
+              - binary_sensor.echo_dot_status
+              - binary_sensor.harmonyhub_status
           - type: entities
             title: "Urządzenia Z-Wave"
             show_header_toggle: false
@@ -519,57 +581,15 @@ views:
               - entity: zwave.thermostat_lazienka
                 <<: *zwave-entity
       - type: entities
-        title: "Urządzenia przewodowe"
-        show_header_toggle: false
-        state_color: true
-        <<: *network-status-card
-        entities:
-          - binary_sensor.modem_status
-          - binary_sensor.router_status
-          - binary_sensor.access_point_status
-          - binary_sensor.fingbox_status
-          - binary_sensor.synology_status
-          - binary_sensor.nuc_status
-          - binary_sensor.raspberry_status
-          - binary_sensor.bravia_status
-          - binary_sensor.denon_status
-          - binary_sensor.dune_status
-          - binary_sensor.playstation_status
-          - binary_sensor.xbox_status
-          - binary_sensor.stacjonarny_status
-      - type: entities
-        title: "Urządzenia bezprzewodowe"
-        show_header_toggle: false
-        state_color: true
-        <<: *network-status-card
-        entities:
-          - binary_sensor.migateway_status
-          - binary_sensor.harmonyhub_status
-          - binary_sensor.brother_status
-          - binary_sensor.mibox_status
-          - binary_sensor.firetv_status
-          - binary_sensor.dafang_status
-          - binary_sensor.mihumidifier_status
-          - binary_sensor.mifan_status
-          - binary_sensor.laptop_status
-          - binary_sensor.laptop_edyta_status
-          - binary_sensor.laptop_antek_status
-          - binary_sensor.oneplus_status
-          - binary_sensor.iphone_11_status
-          - binary_sensor.iphone_8_plus_status
-          - binary_sensor.ipad_status
-          - binary_sensor.kindle_status
-          - binary_sensor.kindle_8_status
-          - binary_sensor.inkbook_status
-          - binary_sensor.echo_show_status
-          - binary_sensor.echo_plus_status
-          - binary_sensor.echo_dot_status
-      - type: entities
         title: "Urządzenia IoT"
         show_header_toggle: false
         state_color: true
         <<: *network-status-card
         entities:
+          - binary_sensor.migateway_status
+          - binary_sensor.dafang_status
+          - binary_sensor.mihumidifier_status
+          - binary_sensor.mifan_status
           - binary_sensor.sonoff_basic_a786cc_status
           - binary_sensor.sonoff_basic_067c81_status
           - binary_sensor.sonoff_basic_5dfba8_status

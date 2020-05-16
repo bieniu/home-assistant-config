@@ -112,7 +112,7 @@ sensor.ha_version_installed:
 #### NETWORK DEVICES ####
 binary_sensor.router_status:
   icon: mdi:router-wireless
-binary_sensor.aimesh_status:
+binary_sensor.access_point_status:
   icon: mdi:access-point
 binary_sensor.synology_status:
   icon: mdi:nas
@@ -146,6 +146,8 @@ binary_sensor.oneplus_status:
 binary_sensor.denon_status:
   icon: mdi:audio-video
 binary_sensor.mibox_status:
+  icon: mdi:cast
+binary_sensor.firetv_status:
   icon: mdi:cast
 binary_sensor.lumia_status:
   icon: mdi:cellphone

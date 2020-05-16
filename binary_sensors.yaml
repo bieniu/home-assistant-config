@@ -64,7 +64,7 @@
 
     stacjonarny_status:
       value_template: "{{ is_state('device_tracker.stacjonarny', 'home') }}"
-      friendly_name: "Komputer"
+      friendly_name: "Komputer stacjonarny"
 
     dune_status:
       value_template: "{{ is_state('device_tracker.dune', 'home') }}"
@@ -179,77 +179,77 @@
       friendly_name: "Xiaomi DaFang"
 
     sonoff_basic_a786cc_status:
-      friendly_name: "Sonoff Basic A786CC"
+      friendly_name: "Sonoff Basic [A786CC]"
       value_template: "{{ is_state('device_tracker.sonoff_basic_a786cc', 'home') }}"
 
     sonoff_basic_067c81_status:
-      friendly_name: "Sonoff Basic 067C81"
+      friendly_name: "Sonoff Basic [067C81]"
       value_template: "{{ is_state('device_tracker.sonoff_basic_067c81', 'home') }}"
 
     sonoff_basic_5dfba8_status:
-      friendly_name: "Sonoff Basic 5DFBA8"
+      friendly_name: "Sonoff Basic [5DFBA8]"
       value_template: "{{ is_state('device_tracker.sonoff_basic_5dfba8', 'home') }}"
 
     sonoff_s26_182475_status:
-      friendly_name: "Sonoff S26 182475"
+      friendly_name: "Sonoff S26 [182475]"
       value_template: "{{ is_state('device_tracker.sonoff_s26_182475', 'home') }}"
 
     blitzwolf_bw_shp6_2ad05a_status:
-      friendly_name: "BlitzWolf BW-SHP6 2AD05A"
+      friendly_name: "BlitzWolf BW-SHP6 [2AD05A]"
       value_template: "{{ is_state('device_tracker.blitzwolf_bw_shp6_2ad05a', 'home') }}"
 
     blitzwolf_bw_shp6_3766eb_status:
-      friendly_name: "BlitzWolf BW-SHP6 3766EB"
+      friendly_name: "BlitzWolf BW-SHP6 [3766EB]"
       value_template: "{{ is_state('device_tracker.blitzwolf_bw_shp6_3766eb', 'home') }}"
 
     blitzwolf_bw_shp6_ecf9ea_status:
-      friendly_name: "BlitzWolf BW-SHP6 ECF9EA"
+      friendly_name: "BlitzWolf BW-SHP6 [ECF9EA]"
       value_template: "{{ is_state('device_tracker.blitzwolf_bw_shp6_ecf9ea', 'home') }}"
 
     blitzwolf_bw_shp6_ed007d_status:
-      friendly_name: "BlitzWolf BW-SHP6 ED007d"
+      friendly_name: "BlitzWolf BW-SHP6 [ED007d]"
       value_template: "{{ is_state('device_tracker.blitzwolf_bw_shp6_ed007d', 'home') }}"
 
     shelly1_328900_status:
-      friendly_name: "Shelly1 328900"
+      friendly_name: "Shelly1 [328900]"
       value_template: "{{ is_state('device_tracker.shelly1_328900', 'home') }}"
 
     shelly2_5b2604_status:
-      friendly_name: "Shelly2 5B2604"
+      friendly_name: "Shelly2 [5B2604]"
       value_template: "{{ is_state('device_tracker.shelly2_5b2604', 'home') }}"
 
     shelly_plug_s_7aecf4_status:
-      friendly_name: "Shelly Plug S 7AECF4"
+      friendly_name: "Shelly Plug S [7AECF4]"
       value_template: "{{ is_state('device_tracker.shelly_plug_s_7aecf4', 'home') }}"
 
     shelly_ht_e00abd_status:
-      friendly_name: "Shelly H&T E00ABD"
+      friendly_name: "Shelly H&T [E00ABD]"
       value_template: "{{ is_state('device_tracker.shelly_ht_e00abd', 'home') }}"
 
     wemos_d1_mini_1c91ea_status:
-      friendly_name: "Wemos D1 mini 1C91EA"
+      friendly_name: "Wemos D1 mini [1C91EA]"
       value_template: "{{ is_state('device_tracker.wemos_d1_mini_1c91ea', 'home') }}"
 
     yeelight_yldp06yl_7cafc6_status:
-      friendly_name: "Yeelight YLDP06YL 7CAFC6"
+      friendly_name: "Yeelight YLDP06YL [7CAFC6]"
       value_template: "{{ is_state('device_tracker.yeelight_yldp06yl_7cafc6', 'home') }}"
 
     yeelight_yldp06yl_84be7a_status:
-      friendly_name: "Yeelight YLDP06YL 84BE7A"
+      friendly_name: "Yeelight YLDP06YL [84BE7A]"
       value_template: "{{ is_state('device_tracker.yeelight_yldp06yl_84be7a', 'home') }}"
 
     yeelight_yldp02yl_b1b6aa_status:
-      friendly_name: "Yeelight YLDP02YL B1B6AA"
+      friendly_name: "Yeelight YLDP02YL [B1B6AA]"
       value_template: "{{ is_state('device_tracker.yeelight_yldp02yl_b1b6aa', 'home') }}"
 
     yeelight_yldp02yl_f12026_status:
-      friendly_name: "Yeelight YLDP02YL F12026"
+      friendly_name: "Yeelight YLDP02YL [F12026]"
       value_template: "{{ is_state('device_tracker.yeelight_yldp02yl_f12026', 'home') }}"
 
     yeelight_yldd01yl_860cfa_status:
-      friendly_name: "Yeelight YLDD01YL 860CFA"
+      friendly_name: "Yeelight YLDD01YL [860CFA]"
       value_template: "{{ is_state('device_tracker.yeelight_yldd01yl_860cfa', 'home') }}"
 
     yeelight_yldd01yl_6707fc_status:
-      friendly_name: "Yeelight YLDD01YL 6707FC"
+      friendly_name: "Yeelight YLDD01YL [6707FC]"
       value_template: "{{ is_state('device_tracker.yeelight_yldd01yl_6707fc', 'home') }}"

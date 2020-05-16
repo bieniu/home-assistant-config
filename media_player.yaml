@@ -9,7 +9,6 @@
   exclude_unnamed_apps: true
   screencap: false
   apps:
-    com.google.android.leanbacklauncher: "Ekran domowy"
     com.nvidia.geforcenow: "GeForce NOW"
     com.amazon.amazonvideo.livingroom: "Prime Video"
     com.google.android.youtube.tv: "YouTube"
@@ -21,11 +20,3 @@
     tunein.player: "TuneIn"
     pl.idreams.skyforcehdtv: "Sky Force"
     com.leosfortune: "Leo's Fortune"
-
-- platform: androidtv
-  host: !secret firetv_hostname
-  device_class: "firetv"
-  screencap: false
-  apps:
-    com.amazon.tv.launcher: "Ekran domowy"
-    com.apple.atve.amazon.appletv: "Apple TV"
