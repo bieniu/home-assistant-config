@@ -40,7 +40,6 @@ http:
   login_attempts_threshold: 5
   use_x_forwarded_for: true
   trusted_proxies: !secret http_trusted_proxies
-  base_url: !secret http_base_url
 
 recorder: !include recorder.yaml
 
@@ -51,6 +50,8 @@ history: !include history.yaml
 system_health:
 
 mobile_app:
+
+updater:
 
 utility_meter:
   light_salon_energy_monthly:

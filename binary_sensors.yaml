@@ -60,7 +60,7 @@
 
     raspberry_status:
       value_template: "{{ is_state('device_tracker.raspberry', 'home') }}"
-      friendly_name: "Raspberry Pi 3B"
+      friendly_name: "Raspberry Pi 3B+"
 
     stacjonarny_status:
       value_template: "{{ is_state('device_tracker.stacjonarny', 'home') }}"

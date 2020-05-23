@@ -140,8 +140,11 @@
     platform: template
     value_template: "{{ states('sensor.ssl_certificate_expiry') | int < 11 }}"
   condition:
-    condition: template
-    value_template: "{{ states('sensor.ssl_certificate_expiry') != 'unavailable' }}"
+    - condition: not
+      conditions:
+        condition: state
+        entity_id: sensor.ssl_certificate_expiry
+        state: "unavailable"
   action:
     - service: python_script.notify
       data_template:
@@ -156,15 +159,12 @@
 - id: notification_from_hacs
   alias: "Notification From HACS"
   trigger:
-    platform: state
+    platform: numeric_state
     entity_id: sensor.hacs
+    above: 1
   condition:
-    - condition: template
-      value_template: "{{ states(trigger.entity_id) != 'unknown'}}"
-    - condition: template
-      value_template: "{{ states(trigger.entity_id) | int != 0 }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state | int < trigger.to_state.state | int}}"
+    condition: template
+    value_template: "{{ trigger.from_state.state | int < trigger.to_state.state | int}}"
   action:
     service: python_script.notify
     data_template:
@@ -177,12 +177,12 @@
       message: >-
         {% if states(trigger.entity_id) | int == 1 %}
           {%- for repo in state_attr(trigger.entity_id, 'repositories') %}
-            Dostępna jest aktualizacja dodatku {{ repo.display_name }} do wersji {{ repo["available version"] }}.
+            Dostępna jest aktualizacja dodatku {{ repo.display_name }} do wersji {{ repo.available_version }}.
           {%- endfor %}
         {%- else %}
           Dostępne są aktualizacje dodatków:
           {%- for repo in state_attr(trigger.entity_id, 'repositories') %}
-         - {{ repo.display_name }} do wersji {{ repo["available version"] }}
+         - {{ repo.display_name }} do wersji {{ repo.available_version }}
           {%- endfor %}
         {%- endif %}
       tag: "notification-hacs"
@@ -238,29 +238,50 @@
   alias: "Notification Home Assistant Update Available"
   trigger:
     platform: state
-    entity_id: sensor.ha_version_current
-  condition:
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
-    - condition: template
-      value_template: "{{ states('sensor.ha_version_installed') != 'unknown' }}"
-    - condition: template
-      value_template: "{{ states('sensor.ha_version_installed') != 'unavailable' }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.state != states('sensor.ha_version_installed') }}"
+    entity_id: binary_sensor.updater
+    to: "on"
   action:
     - service: python_script.notify
       data_template:
-        title: "Aktualizacja Home Assistant'a"
-        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Home Assistant'a."
+        title: "Aktualizacja Home Assistanta"
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.attributes.newest_version }} dla Home Assistanta."
         tag: "notification-ha-update"
         url: "https://github.com/home-assistant/home-assistant/releases"
+        services:
+          - service: !secret maciek_notify_service
+            type: "android"
+
+# powiadomienie o aktualizacji addonów
+- id: notification_addons_update_available
+  alias: "Notification Addons Update Available"
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.supervisor_updates
+    above: 0
+  action:
+    - service: python_script.notify
+      data_template:
+        title: "Aktualizacja dodatku Supervisora"
+        message: "Dostępna jest aktualizacja dla dodatku {{ states('sensor.supervisor_updates') }}."
+        tag: "notification-addons-update"
+        url: !secret supervisor_dashboard_url
+        services:
+          - service: !secret maciek_notify_service
+            type: "android"
+
+# powiadomienie o aktualizacji Supervisora
+- id: notification_supervisor_update_available
+  alias: "Notification Supervisor Update Available"
+  trigger:
+    platform: template
+    value_template: "{{ state_attr('sensor.supervisor_updates', 'current_version') != state_attr('sensor.supervisor_updates', 'newest_version') }}"
+  action:
+    - service: python_script.notify
+      data_template:
+        title: "Aktualizacja Supervisora"
+        message: "Dostępna jest aktualizacja do wersji {{ state_attr('sensor.supervisor_updates', 'newest_version') }} dla Supervisora."
+        tag: "notification-supervisor-update"
+        url: !secret supervisor_dashboard_url
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -283,8 +304,8 @@
   action:
     - service: python_script.notify
       data_template:
-        title: "Aktualizacja AppDaemon'a"
-        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla AppDaemon'a."
+        title: "Aktualizacja AppDaemona"
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla AppDaemona."
         tag: "notification-ad-update"
         url: "https://github.com/home-assistant/appdaemon/releases"
         services:

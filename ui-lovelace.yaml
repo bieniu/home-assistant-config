@@ -443,7 +443,19 @@ views:
                   - sensor.disk_use_percent
                   - sensor.nuc_cpu_temp
                   - sensor.nuc_last_boot
-                  - sensor.ssl_certificate_expiry
+                  - entity: sensor.ssl_certificate_expiry
+                    style: |
+                      :host {
+                        --paper-item-icon-color:
+                          {% set days = states(config.entity) %}
+                          {% if days | int < 20 %}
+                            var(--label-badge-red)
+                          {% elif days | int < 40 %}
+                            var(--label-badge-yellow)
+                          {% else %}
+                            var(--state-icon-color)
+                          {% endif %};
+                      }
               - type: horizontal-stack
                 cards:
                   - type: custom:mini-graph-card
@@ -497,6 +509,28 @@ views:
       - type: vertical-stack
         cards:
           - type: entities
+            title: "Urządzenia Z-Wave"
+            show_header_toggle: false
+            entities:
+              - entity: zwave.aeotec_zw090_zstick_gen5
+                <<: *zwave-entity
+              - entity: zwave.fibaro_fgs223
+                <<: *zwave-entity
+              - entity: zwave.thermostat_salon
+                <<: *zwave-entity
+              # - entity: zwave.thermostat_kuchnia
+              #   <<: *zwave-entity
+              - entity: zwave.thermostat_antresola
+                <<: *zwave-entity
+              - entity: zwave.thermostat_gabinet
+                <<: *zwave-entity
+              - entity: zwave.thermostat_antek
+                <<: *zwave-entity
+              - entity: zwave.thermostat_sypialnia
+                <<: *zwave-entity
+              - entity: zwave.thermostat_lazienka
+                <<: *zwave-entity
+          - type: entities
             title: "Urządzenia sieciowe"
             show_header_toggle: false
             state_color: true
@@ -526,6 +560,8 @@ views:
               - binary_sensor.laptop_status
               - binary_sensor.laptop_edyta_status
               - binary_sensor.laptop_antek_status
+      - type: vertical-stack
+        cards:
           - type: entities
             title: "Urządzenia mobilne"
             show_header_toggle: false
@@ -539,8 +575,6 @@ views:
               - binary_sensor.kindle_status
               - binary_sensor.kindle_8_status
               - binary_sensor.inkbook_status
-      - type: vertical-stack
-        cards:
           - type: entities
             title: "Urządzenia RTV"
             show_header_toggle: false
@@ -550,36 +584,14 @@ views:
               - binary_sensor.bravia_status
               - binary_sensor.denon_status
               - binary_sensor.dune_status
-              - binary_sensor.playstation_status
-              - binary_sensor.xbox_status
               - binary_sensor.mibox_status
               - binary_sensor.firetv_status
+              - binary_sensor.playstation_status
+              - binary_sensor.xbox_status
               - binary_sensor.echo_show_status
               - binary_sensor.echo_plus_status
               - binary_sensor.echo_dot_status
               - binary_sensor.harmonyhub_status
-          - type: entities
-            title: "Urządzenia Z-Wave"
-            show_header_toggle: false
-            entities:
-              - entity: zwave.aeotec_zw090_zstick_gen5
-                <<: *zwave-entity
-              - entity: zwave.fibaro_fgs223
-                <<: *zwave-entity
-              - entity: zwave.thermostat_salon
-                <<: *zwave-entity
-              # - entity: zwave.thermostat_kuchnia
-              #   <<: *zwave-entity
-              - entity: zwave.thermostat_antresola
-                <<: *zwave-entity
-              - entity: zwave.thermostat_gabinet
-                <<: *zwave-entity
-              - entity: zwave.thermostat_antek
-                <<: *zwave-entity
-              - entity: zwave.thermostat_sypialnia
-                <<: *zwave-entity
-              - entity: zwave.thermostat_lazienka
-                <<: *zwave-entity
       - type: entities
         title: "Urządzenia IoT"
         show_header_toggle: false

@@ -49,25 +49,6 @@ light.leds_salon:
 light.bulbs_salon:
   friendly_name: "Żarówki"
 
-#### FITBIT ####
-sensor.steps:
-  friendly_name: "Kroki"
-  unit_of_measurement: ""
-sensor.calories:
-  friendly_name: "Kalorie"
-  unit_of_measurement: "cal"
-sensor.distance:
-  friendly_name: "Dystans"
-  unit_of_measurement: "km"
-sensor.floors:
-  friendly_name: "Piętra"
-  icon: mdi:stairs
-  unit_of_measurement: ""
-sensor.sleep_minutes_asleep:
-  friendly_name: "Sen"
-  unit_of_measurement: "min"
-  icon: mdi:hotel
-
 #### UPS ####
 sensor.ups_status:
   icon: mdi:server-security
@@ -111,14 +92,14 @@ sensor.ha_version_installed:
 
 #### NETWORK DEVICES ####
 binary_sensor.router_status:
-  icon: mdi:router-wireless
+  icon: mdi:router-network
 binary_sensor.access_point_status:
-  icon: mdi:access-point
+  icon: mdi:access-point-network
 binary_sensor.synology_status:
   icon: mdi:nas
 binary_sensor.nuc_status:
-  icon: mdi:server-network
-  friendly_name: "Intel NUC NUC5CPYH"
+  icon: mdi:server
+  friendly_name: "Intel NUC 5CPYH"
 binary_sensor.dune_status:
   icon: mdi:filmstrip
 binary_sensor.raspberry_status:
@@ -161,7 +142,7 @@ binary_sensor.inkbook_status:
   icon: mdi:cellphone-text
 binary_sensor.modem_status:
   friendly_name: "ZTE GPON F660"
-  icon: mdi:network-router
+  icon: mdi:wan
 binary_sensor.migateway_status:
   icon: mdi:zigbee
 binary_sensor.brother_status:
