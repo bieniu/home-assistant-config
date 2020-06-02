@@ -111,8 +111,7 @@ exclude:
     - sensor.blitzwolf_bw_shp6_ecf9ea_current
     - sensor.blitzwolf_bw_shp6_ecf9ea_power
     - sensor.blitzwolf_bw_shp6_ecf9ea_voltage
-    - sensor.fibaro_fgs223_power_2
-    - switch.fibaro_fgs223_relay_2
+    - sensor.lamp_salon_power
 include:
   entities:
     - input_boolean.heating_season

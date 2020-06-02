@@ -1,3 +1,303 @@
+## POWIADOMIENIA SYSTEMOWE ##
+
+# powiadomienie o aktualizacji HA
+- id: notification_home_assistant_update_available
+  alias: "Notification Home Assistant Update Available"
+  trigger:
+    platform: state
+    entity_id: sensor.ha_version_current
+  condition:
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != trigger.to_state.state }}"
+  action:
+    - service: hassio.addon_start
+      data:
+        addon: core_check_config
+    - delay:  "00:05:00"
+    - service: python_script.notify
+      data_template:
+        title: "Aktualizacja Home Assistanta"
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Home Assistanta."
+        tag: "notification-ha-update"
+        url: "/hassio/dashboard"
+        actions:
+              - title: "Zmiany"
+                action: "URI"
+                uri: "https://github.com/home-assistant/home-assistant/releases"
+              - title: "Konfiguracja"
+                action: "URI"
+                uri: "/hassio/addon/core_check_config/logs"
+        services:
+          - service: !secret maciek_notify_service
+            type: "android"
+
+# powiadomienie o aktualizacji Supervisora
+- id: notification_supervisor_update_available
+  alias: "Notification Supervisor Update Available"
+  trigger:
+    platform: template
+    value_template: "{{ state_attr('sensor.supervisor_updates', 'current_version') != state_attr('sensor.supervisor_updates', 'newest_version') }}"
+  action:
+    - service: python_script.notify
+      data_template:
+        title: "Aktualizacja Supervisora"
+        message: "Dostępna jest aktualizacja do wersji {{ state_attr('sensor.supervisor_updates', 'newest_version') }} dla Supervisora."
+        tag: "notification-supervisor-update"
+        url: "/hassio/dashboard"
+        services:
+          - service: !secret maciek_notify_service
+            type: "android"
+            actions:
+              - title: "Zmiany"
+                action: "URI"
+                uri: "https://github.com/home-assistant/supervisor/releases"
+
+# powiadomienie o aktualizacji addonów
+- id: notification_addons_update_available
+  alias: "Notification Addons Update Available"
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.supervisor_updates
+    above: 0
+  action:
+    - service: python_script.notify
+      data_template:
+        data_template:
+        title: >-
+          {% if (trigger.to_state.state | int) == 1 %}
+            Aktualizacja dodatku Supervisora
+          {% else %}
+            Aktualizacje dodatków Supervisora
+          {% endif %}
+        message: >-
+          {% if trigger.to_state.state | int == 1 %}
+            {%- for repo in state_attr(trigger.entity_id, 'addons') %}
+              Dostępna jest aktualizacja dodatku {{ repo.name }} do wersji {{ repo.version }}.
+            {%- endfor %}
+          {%- else %}
+            Dostępne są aktualizacje dodatków:
+            {%- for repo in state_attr(trigger.entity_id, 'addons') %}
+          - {{ repo.name }} do wersji {{ repo.version }}
+            {%- endfor %}
+          {%- endif %}
+        tag: "notification-addons-update"
+        url: "/hassio/dashboard"
+        services:
+          - service: !secret maciek_notify_service
+            type: "android"
+
+# powiadomienie o aktualizacji w HACS
+- id: notification_update_available_in_hacs
+  alias: "Notification Update Available In HACS"
+  trigger:
+    platform: state
+    entity_id: sensor.hacs
+  condition:
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unknown'}}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unavailable'}}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unknown'}}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unavailable'}}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state | int < trigger.to_state.state | int }}"
+  action:
+    service: python_script.notify
+    data_template:
+      title: >-
+        {% if (trigger.to_state.state | int) == 1 %}
+          Aktualizacja dodatku z HACS
+        {% else %}
+          Aktualizacje dodatków z HACS
+        {% endif %}
+      message: >-
+        {% if trigger.to_state.state | int == 1 %}
+          {%- for repo in state_attr(trigger.entity_id, 'repositories') %}
+            Dostępna jest aktualizacja dodatku {{ repo.display_name }} do wersji {{ repo.available_version }}.
+          {%- endfor %}
+        {%- else %}
+          Dostępne są aktualizacje dodatków:
+          {%- for repo in state_attr(trigger.entity_id, 'repositories') %}
+         - {{ repo.display_name }} do wersji {{ repo.available_version }}
+          {%- endfor %}
+        {%- endif %}
+      tag: "notification-hacs"
+      url: "/hacs/installed"
+      services:
+        - service: !secret maciek_notify_service
+          type: "android"
+
+# powiadomienie o wysokim użyciu pamięci RAM
+- id: notification_high_ram_usage
+  alias: "Notification High RAM Usage"
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.memory_use_percent
+    above: 50
+    for:
+      minutes: 5
+  action:
+    service: python_script.notify
+    data_template:
+      title: "Wysokie użycie pamięci RAM"
+      message: "Serwer Home Assistant używa obecnie {{ states('sensor.memory_use_percent') }}% pamięci RAM."
+      tag: "notification-dishwasher"
+      services:
+        - service: !secret maciek_notify_service
+          type: "android"
+
+# powiadomienie o wygasającym certyfikacie SSL
+- id: notification_ssl_cert_expiry
+  alias: "Notification SSL Cert Expiry"
+  trigger:
+    platform: template
+    value_template: "{{ states('sensor.ssl_certificate_expiry') | int < 11 }}"
+  condition:
+    - condition: not
+      conditions:
+        condition: state
+        entity_id: sensor.ssl_certificate_expiry
+        state: "unavailable"
+  action:
+    - service: python_script.notify
+      data_template:
+        title: "Wygasa certyfikat SSL"
+        message: "Za {{ states('sensor.ssl_certificate_expiry') }} dni wygaśnie certyfikat SSL serwera WWW."
+        tag: "notification-ssl"
+        services:
+          - service: !secret maciek_notify_service
+            type: "android"
+
+# powiadomienie o aktualizacji AD
+- id: notification_appdaemon_update_available
+  alias: "Notification AppDaemon Update Available"
+  trigger:
+    platform: state
+    entity_id: sensor.ad_version_current
+  condition:
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+  action:
+    - service: python_script.notify
+      data_template:
+        title: "Aktualizacja AppDaemona"
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla AppDaemona."
+        tag: "notification-ad-update"
+        url: "/hassio/dashboard"
+        services:
+          - service: !secret maciek_notify_service
+            type: "android"
+            actions:
+              - title: "Zmiany"
+                action: "URI"
+                uri: "https://github.com/home-assistant/appdaemon/releases"
+
+# powiadomienie o aktualizacji oprogramowania Shelly
+- id: notification_shelly_update_available
+  alias: "Notification Shelly Update Available"
+  trigger:
+    - platform: state
+      entity_id: sensor.shelly1_firmware_version_current
+    - platform: state
+      entity_id: sensor.shelly2_firmware_version_current
+    - platform: state
+      entity_id: sensor.shelly_plug_s_firmware_version_current
+  condition:
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+  action:
+    - service: python_script.notify
+      data_template:
+        title: "Aktualizacja oprogramowania Shelly"
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} oprogramowania dla {{ trigger.to_state.attributes.friendly_name }}."
+        tag: "notification-{{ trigger.to_state.attributes.friendly_name | lower | replace(' ', '_') }}-update"
+        services:
+          - service: !secret maciek_notify_service
+            type: "android"
+
+# powiadomienie o aktualizacji ESPHome
+- id: notification_esphome_update_available
+  alias: "Notification ESPHome Update Available"
+  trigger:
+    platform: state
+    entity_id: sensor.esphome_version_current
+  condition:
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+  action:
+    - service: python_script.notify
+      data_template:
+        title: "Aktualizacja ESPHome"
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla ESPHome."
+        tag: "notification-esphome-update"
+        url: "/hassio/dashboard"
+        services:
+          - service: !secret maciek_notify_service
+            type: "android"
+            actions:
+              - title: "Zmiany"
+                action: "URI"
+                uri: "https://github.com/esphome/esphome/releases"
+
+# powiadomienie o aktualizacji Caddy
+- id: notification_caddy_update_available
+  alias: "Notification Caddy Update Available"
+  trigger:
+    platform: state
+    entity_id: sensor.caddy_version_current
+  condition:
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unknown' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+  action:
+    - service: python_script.notify
+      data_template:
+        title: "Aktualizacja Caddy"
+        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy."
+        tag: "notification-caddy-update"
+        services:
+          - service: !secret maciek_notify_service
+            type: "android"
+            actions:
+              - title: "Zmiany"
+                action: "URI"
+                uri: "https://github.com/caddyserver/caddy/releases"
+
+###################################################################################################
+
 # włączenie drzewek jak jest zachód słońca i domownicy w domu
 - id: light_turn_on_trees
   alias: "Light Turn On Trees"
@@ -114,83 +414,6 @@
           - service: !secret maciek_notify_service
             type: "android"
 
-# powiadomienie o wysokim użyciu pamięci RAM
-- id: notification_high_rma_usage
-  alias: "Notification High RAM Usage"
-  trigger:
-    platform: numeric_state
-    entity_id: sensor.memory_use_percent
-    above: 80
-    for:
-      minutes: 5
-  action:
-    service: python_script.notify
-    data_template:
-      title: "Wysokie użycie pamięci RAM"
-      message: "Serwer Home Assistant używa obecnie {{ states('sensor.memory_use_percent') }}% pamięci RAM."
-      tag: "notification-dishwasher"
-      services:
-        - service: !secret maciek_notify_service
-          type: "android"
-
-# powiadomienie o wygasającym certyfikacie SSL
-- id: notification_ssl_cert_expiry
-  alias: "Notification SSL Cert Expiry"
-  trigger:
-    platform: template
-    value_template: "{{ states('sensor.ssl_certificate_expiry') | int < 11 }}"
-  condition:
-    - condition: not
-      conditions:
-        condition: state
-        entity_id: sensor.ssl_certificate_expiry
-        state: "unavailable"
-  action:
-    - service: python_script.notify
-      data_template:
-        title: "Wygasa certyfikat SSL"
-        message: "Za {{ states('sensor.ssl_certificate_expiry') }} dni wygaśnie certyfikat SSL serwera WWW."
-        tag: "notification-ssl"
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
-
-# powiadomienie z HACS
-- id: notification_from_hacs
-  alias: "Notification From HACS"
-  trigger:
-    platform: numeric_state
-    entity_id: sensor.hacs
-    above: 1
-  condition:
-    condition: template
-    value_template: "{{ trigger.from_state.state | int < trigger.to_state.state | int}}"
-  action:
-    service: python_script.notify
-    data_template:
-      title: >-
-        {% if (states(trigger.entity_id) | int) == 1 %}
-          Aktualizacja dodatku z HACS
-        {% else %}
-          Aktualizacje dodatków z HACS
-        {% endif %}
-      message: >-
-        {% if states(trigger.entity_id) | int == 1 %}
-          {%- for repo in state_attr(trigger.entity_id, 'repositories') %}
-            Dostępna jest aktualizacja dodatku {{ repo.display_name }} do wersji {{ repo.available_version }}.
-          {%- endfor %}
-        {%- else %}
-          Dostępne są aktualizacje dodatków:
-          {%- for repo in state_attr(trigger.entity_id, 'repositories') %}
-         - {{ repo.display_name }} do wersji {{ repo.available_version }}
-          {%- endfor %}
-        {%- endif %}
-      tag: "notification-hacs"
-      url: "/hacs/installed"
-      services:
-        - service: !secret maciek_notify_service
-          type: "android"
-
 # powiadomienie o encji ze stanem dead lub unavailable
 - id: notification_dead_or_unavailable
   alias: "Notification dead or unavailable"
@@ -229,85 +452,6 @@
           {% endmacro %}
           Następujące encje mają nieprawidłowe stany: {{ dead_unavailable_entities() }}
         tag: "notification-dead-unavailable"
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
-
-# powiadomienie o aktualizacji HA
-- id: notification_home_assistant_update_available
-  alias: "Notification Home Assistant Update Available"
-  trigger:
-    platform: state
-    entity_id: binary_sensor.updater
-    to: "on"
-  action:
-    - service: python_script.notify
-      data_template:
-        title: "Aktualizacja Home Assistanta"
-        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.attributes.newest_version }} dla Home Assistanta."
-        tag: "notification-ha-update"
-        url: "https://github.com/home-assistant/home-assistant/releases"
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
-
-# powiadomienie o aktualizacji addonów
-- id: notification_addons_update_available
-  alias: "Notification Addons Update Available"
-  trigger:
-    platform: numeric_state
-    entity_id: sensor.supervisor_updates
-    above: 0
-  action:
-    - service: python_script.notify
-      data_template:
-        title: "Aktualizacja dodatku Supervisora"
-        message: "Dostępna jest aktualizacja dla dodatku {{ states('sensor.supervisor_updates') }}."
-        tag: "notification-addons-update"
-        url: !secret supervisor_dashboard_url
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
-
-# powiadomienie o aktualizacji Supervisora
-- id: notification_supervisor_update_available
-  alias: "Notification Supervisor Update Available"
-  trigger:
-    platform: template
-    value_template: "{{ state_attr('sensor.supervisor_updates', 'current_version') != state_attr('sensor.supervisor_updates', 'newest_version') }}"
-  action:
-    - service: python_script.notify
-      data_template:
-        title: "Aktualizacja Supervisora"
-        message: "Dostępna jest aktualizacja do wersji {{ state_attr('sensor.supervisor_updates', 'newest_version') }} dla Supervisora."
-        tag: "notification-supervisor-update"
-        url: !secret supervisor_dashboard_url
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
-
-# powiadomienie o aktualizacji AD
-- id: notification_appdaemon_update_available
-  alias: "Notification AppDaemon Update Available"
-  trigger:
-    platform: state
-    entity_id: sensor.ad_version_current
-  condition:
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
-  action:
-    - service: python_script.notify
-      data_template:
-        title: "Aktualizacja AppDaemona"
-        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla AppDaemona."
-        tag: "notification-ad-update"
-        url: "https://github.com/home-assistant/appdaemon/releases"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -399,87 +543,6 @@
         location: "{{ states('person.edyta') }}"
         notification_service: !secret edyta_notify_service
         notification_type: "ios"
-
-# powiadomienie o aktualizacji oprogramowania Shelly
-- id: notification_shelly_update_available
-  alias: "Notification Shelly Update Available"
-  trigger:
-    - platform: state
-      entity_id: sensor.shelly1_firmware_version_current
-    - platform: state
-      entity_id: sensor.shelly2_firmware_version_current
-    - platform: state
-      entity_id: sensor.shelly_plug_s_firmware_version_current
-  condition:
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
-  action:
-    - service: python_script.notify
-      data_template:
-        title: "Aktualizacja oprogramowania Shelly"
-        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} oprogramowania dla {{ trigger.to_state.attributes.friendly_name }}."
-        tag: "notification-{{ trigger.to_state.attributes.friendly_name | lower | replace(' ', '_') }}-update"
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
-
-# powiadomienie o aktualizacji ESPHome
-- id: notification_esphome_update_available
-  alias: "Notification ESPHome Update Available"
-  trigger:
-    platform: state
-    entity_id: sensor.esphome_version_current
-  condition:
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
-  action:
-    - service: python_script.notify
-      data_template:
-        title: "Aktualizacja ESPHome"
-        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla ESPHome."
-        tag: "notification-esphome-update"
-        url: "https://github.com/esphome/esphome/releases"
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
-
-# powiadomienie o aktualizacji Caddy
-- id: notification_caddy_update_available
-  alias: "Notification Caddy Update Available"
-  trigger:
-    platform: state
-    entity_id: sensor.caddy_version_current
-  condition:
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
-  action:
-    - service: python_script.notify
-      data_template:
-        title: "Aktualizacja Caddy"
-        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy."
-        tag: "notification-caddy-update"
-        url: "https://github.com/caddyserver/caddy/releases"
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
 
 # powiadomienie jak jest ruch i nikogo w domu
 - id: notification_motion_when_away_mode
@@ -1509,8 +1572,8 @@
   alias: "Light Scene Film"
   trigger:
     - platform: state
-      entity_id: sensor.dune_activity
-      to: "file_playback"
+      entity_id: media_player.dune
+      to: "playing"
     - platform: state
       entity_id: media_player.playstation
       to: "playing"
@@ -1544,12 +1607,14 @@
   alias: "Light Scene Auto After Film"
   trigger:
     - platform: state
-      entity_id: sensor.dune_activity
-      to: "navigator"
+      entity_id: media_player.dune
+      from: "playing"
+      to: "on"
       for:
         seconds: 20
     - platform: state
       entity_id: media_player.playstation
+      from: "playing"
       to: "idle"
       for:
         seconds: 20

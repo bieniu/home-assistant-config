@@ -6,6 +6,11 @@ anchors:
       ha-card {
         border-radius: 0px;
       }
+  card-header-no-padding-bottom: &card-header-no-padding-bottom
+    style: |
+      div.card-header {
+        padding-bottom: 0px;
+      }
   battery-entity: &battery-entity
     style: |
       :host {
@@ -60,6 +65,7 @@ views:
           - type: custom:auto-entities
             card:
               type: glance
+              <<: *card-header-no-padding-bottom
               title: "Rodzina"
               show_name: false
             filter:
@@ -73,10 +79,18 @@ views:
                   state: home
                 - entity_id: person.jerzy
                   state: home
-          - type: custom:vertical-stack-in-card
+          - type: custom:stack-in-card
+            style: |
+              div.card-header {
+                padding-bottom: 8px;
+              }
             title: "Pogoda"
             cards:
               - type: custom:simple-weather-card
+                style: |
+                  ha-card {
+                    padding-top: 0px !important;
+                  }
                 entity: weather.dom
                 tap_action:
                   action: navigate
@@ -100,9 +114,11 @@ views:
               - entity: binary_sensor.motion_przedpokoj
                 secondary_info: last-changed
               - light.leds_przedpokoj
-          - type: custom:vertical-stack-in-card
+          - type: vertical-stack
+            in_card: true
             cards:
               - type: glance
+                <<: *card-header-no-padding-bottom
                 title: "Kuchnia"
                 show_name: false
                 entities:
@@ -112,8 +128,7 @@ views:
                 show_header_toggle: false
                 state_color: true
                 entities:
-                  - entity: binary_sensor.window_kuchnia
-                  # - climate.thermostat_kuchnia
+                  - binary_sensor.window_kuchnia
                   - entity: sensor.dishwasher_kuchnia
                     style: |
                       :host {
@@ -124,9 +139,11 @@ views:
                             var(--state-icon-color)
                           {% endif %};
                       }
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: glance
+            <<: *card-header-no-padding-bottom
             title: "Salon"
             show_name: false
             entities:
@@ -140,14 +157,18 @@ views:
             entities:
               - entity: binary_sensor.motion_salon
                 secondary_info: last-changed
-              - climate.thermostat_salon
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.heating_season
+                    state_not: "off"
+                row:
+                  entity: climate.thermostat_salon
               - entity: fan.humidifier_salon
                 secondary_info:
                   entity: sensor.humidifier_water_level
                   prefix: "poziom wody: "
                   postfix: " %"
-              # - entity: fan.salon
-              #   state_color: true
+              # - fan.salon
               - light.bulbs_salon
               - light.leds_salon
               - light.lamp_salon
@@ -169,6 +190,27 @@ views:
                   power: true
                   power_state: false
                   progress: true
+                info: scroll
+                group: true
+              - type: conditional
+                conditions:
+                  - entity: media_player.dune
+                    state_not: "unavailable"
+                row:
+                  type: custom:mini-media-player
+                  entity: media_player.dune
+                  hide:
+                    controls: true
+                    power: true
+                    source: true
+                  info: scroll
+                  group: true
+              - type: custom:mini-media-player
+                entity: media_player.firetv
+                hide:
+                  controls: true
+                  power: true
+                  source: true
                 info: scroll
                 group: true
               - type: custom:mini-media-player
@@ -235,9 +277,11 @@ views:
                         entity_id: media_player.echo_show
                         media_content_type: "SPOTIFY"
                         media_content_id: "in everywhere group playlist Maciek"
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: glance
+            <<: *card-header-no-padding-bottom
             title: "Pracownia"
             show_name: false
             entities:
@@ -250,11 +294,13 @@ views:
             entities:
               - entity: binary_sensor.motion_pracownia
                 secondary_info: last-changed
-              - entity: binary_sensor.balcony_door_pracownia
-              - entity: switch.lamp_pracownia
-      - type: custom:vertical-stack-in-card
+              - binary_sensor.balcony_door_pracownia
+              - switch.lamp_pracownia
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: glance
+            <<: *card-header-no-padding-bottom
             title: "Pokój gościnny"
             show_name: false
             entities:
@@ -267,7 +313,7 @@ views:
             entities:
               - entity: binary_sensor.motion_goscinny
                 secondary_info: last-changed
-              - entity: switch.lamp_goscinny
+              - switch.lamp_goscinny
               - type: custom:mini-media-player
                 entity: media_player.mibox
                 name: "Mi Box"
@@ -277,9 +323,11 @@ views:
                   source: true
                 info: scroll
                 group: true
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: glance
+            <<: *card-header-no-padding-bottom
             title: "Antresola"
             show_name: false
             entities:
@@ -290,14 +338,21 @@ views:
             show_header_toggle: false
             state_color: true
             entities:
-              - entity: binary_sensor.window_antresola
+              - binary_sensor.window_antresola
               - entity: binary_sensor.motion_antresola
                 secondary_info: last-changed
-              - climate.thermostat_antresola
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.heating_season
+                    state_not: "off"
+                row:
+                  entity: climate.thermostat_antresola
               - light.gateway_antresola
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: glance
+            <<: *card-header-no-padding-bottom
             title: "Gabinet"
             show_name: false
             entities:
@@ -308,15 +363,22 @@ views:
             show_header_toggle: false
             state_color: true
             entities:
-              - entity: binary_sensor.window_gabinet
+              - binary_sensor.window_gabinet
               - entity: binary_sensor.motion_gabinet
                 secondary_info: last-changed
-              - climate.thermostat_gabinet
-              - entity: fan.mifan_gabinet
-              - entity: switch.stacjonarny
-      - type: custom:vertical-stack-in-card
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.heating_season
+                    state_not: "off"
+                row:
+                  entity: climate.thermostat_gabinet
+              - fan.mifan_gabinet
+              - switch.stacjonarny
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: glance
+            <<: *card-header-no-padding-bottom
             title: "Pokój Antka"
             show_name: false
             entities:
@@ -327,13 +389,18 @@ views:
             show_header_toggle: false
             state_color: true
             entities:
-              - entity: binary_sensor.window_antek
+              - binary_sensor.window_antek
               - entity: binary_sensor.motion_antek
                 secondary_info: last-changed
-              - climate.thermostat_antek
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.heating_season
+                    state_not: "off"
+                row:
+                  entity: climate.thermostat_antek
               - light.lightstrip_antek
-              - entity: switch.cabinet_antek
-              - entity: switch.tree_antek
+              - switch.cabinet_antek
+              - switch.tree_antek
               - type: custom:mini-media-player
                 entity: media_player.echo_plus
                 hide:
@@ -344,9 +411,11 @@ views:
                   source: true
                 info: scroll
                 group: true
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: glance
+            <<: *card-header-no-padding-bottom
             title: "Sypialnia"
             show_name: false
             entities:
@@ -357,13 +426,18 @@ views:
             show_header_toggle: false
             state_color: true
             entities:
-              - entity: binary_sensor.window_sypialnia
-              - entity: binary_sensor.balcony_door_sypialnia
+              - binary_sensor.window_sypialnia
+              - binary_sensor.balcony_door_sypialnia
               - entity: binary_sensor.motion_sypialnia
                 secondary_info: last-changed
-              - climate.thermostat_sypialnia
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.heating_season
+                    state_not: "off"
+                row:
+                  entity: climate.thermostat_sypialnia
               - light.lightstrip_sypialnia
-              - entity: switch.tree_sypialnia
+              - switch.tree_sypialnia
               - type: custom:mini-media-player
                 entity: media_player.echo_dot
                 hide:
@@ -374,9 +448,11 @@ views:
                   source: true
                 info: scroll
                 group: true
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: glance
+            <<: *card-header-no-padding-bottom
             title: "Łazienka"
             show_name: false
             entities:
@@ -386,7 +462,12 @@ views:
             show_header_toggle: false
             state_color: true
             entities:
-              - climate.thermostat_lazienka
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.heating_season
+                    state_not: "off"
+                row:
+                  entity: climate.thermostat_lazienka
       - type: picture-glance
         title: "Salon"
         entities:
@@ -434,7 +515,8 @@ views:
               - sensor.ha_version_installed
               - sensor.ha_last_restart
               - sensor.ha_database_size
-          - type: custom:vertical-stack-in-card
+          - type: vertical-stack
+            in_card: true
             cards:
               - type: entities
                 title: "Intel NUC"
@@ -514,21 +596,19 @@ views:
             entities:
               - entity: zwave.aeotec_zw090_zstick_gen5
                 <<: *zwave-entity
-              - entity: zwave.fibaro_fgs223
+              - entity: zwave.aeotec_zw175_smart_switch_7
                 <<: *zwave-entity
-              - entity: zwave.thermostat_salon
+              - entity: zwave.danfoss_014g0013_thermostat_salon
                 <<: *zwave-entity
-              # - entity: zwave.thermostat_kuchnia
-              #   <<: *zwave-entity
-              - entity: zwave.thermostat_antresola
+              - entity: zwave.danfoss_014g0013_thermostat_antresola
                 <<: *zwave-entity
-              - entity: zwave.thermostat_gabinet
+              - entity: zwave.danfoss_014g0013_thermostat_gabinet
                 <<: *zwave-entity
-              - entity: zwave.thermostat_antek
+              - entity: zwave.danfoss_014g0013_thermostat_antek
                 <<: *zwave-entity
-              - entity: zwave.thermostat_sypialnia
+              - entity: zwave.danfoss_014g0013_thermostat_sypialnia
                 <<: *zwave-entity
-              - entity: zwave.thermostat_lazienka
+              - entity: zwave.danfoss_014g0013_thermostat_lazienka
                 <<: *zwave-entity
           - type: entities
             title: "Urządzenia sieciowe"
@@ -626,7 +706,8 @@ views:
     title: "Energia"
     path: energy
     cards:
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: horizontal-stack
             title: "Pobór mocy"
@@ -665,7 +746,8 @@ views:
                   graph: false
                 entities:
                   - sensor.servers_gabinet_power
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: horizontal-stack
             title: "Zużycie energii"
@@ -704,7 +786,8 @@ views:
                   graph: false
                 entities:
                   - sensor.servers_gabinet_energy_monthly
-      - type: custom:vertical-stack-in-card
+      - type: vertical-stack
+        in_card: true
         cards:
           - type: entities
             title: "UPS"

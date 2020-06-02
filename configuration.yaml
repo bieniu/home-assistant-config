@@ -14,7 +14,13 @@ zone:
 lovelace:
   mode: yaml
   resources:
+    - url: /hacsfiles/lovelace-canary/canary.js
+      type: module
+    - url: /hacsfiles/stack-in-card/stack-in-card.js
+      type: module
     - url: /hacsfiles/lovelace-card-mod/card-mod.js
+      type: module
+    - url: /hacsfiles/simple-weather-card/simple-weather-card-bundle.js
       type: module
     - url: /hacsfiles/lovelace-auto-entities/auto-entities.js
       type: module
@@ -24,13 +30,7 @@ lovelace:
       type: module
     - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
       type: module
-    - url: /hacsfiles/lovelace-canary/canary.js
-      type: module
     - url: /hacsfiles/battery-state-card/battery-state-card.js
-      type: module
-    - url: /local/cards/vertical-stack-in-card/vertical-stack-in-card.js
-      type: module
-    - url: /hacsfiles/simple-weather-card/simple-weather-card-bundle.js
       type: module
 
 person:
@@ -104,7 +104,6 @@ ssdp:
 zeroconf:
 
 zwave:
-  device_config: !include zwave_device_config.yaml
   debug: true
 
 xiaomi_aqara:
@@ -119,13 +118,6 @@ camera:
     stream_source: !secret dafang_rtsp_url
     scan_interval: 5
 
-notify:
-  - platform: html5
-    name: html5
-    vapid_pub_key: !secret vapid_pub_key
-    vapid_prv_key: !secret vapid_prv_key
-    vapid_email: !secret vapid_email
-
 panel_custom:
   - name: zwavegraph
     sidebar_title: Z-Wave
@@ -137,17 +129,13 @@ python_script:
 
 yeelight:
   devices:
-    yeelight-yldp02yl-b1b6aa.bieniu.lan:
-      name: 'bulb antresola'
+    yeelight-yldp02yl-f12026.bieniu.lan:
+      name: 'lamp salon'
       model: 'color1'
       <<: &YEELIGHT_PARAMS
         transition: 500
         save_on_change: false
         use_music_mode: false
-    yeelight-yldp02yl-f12026.bieniu.lan:
-      name: 'lamp salon'
-      model: 'color1'
-      <<: *YEELIGHT_PARAMS
     yeelight-yldp06yl-84be7a.bieniu.lan:
       name: 'bulb salon 1'
       model: 'color2'

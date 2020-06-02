@@ -1,9 +1,9 @@
-dune_activity:
-  module: dune-activity
-  class: DuneActivity
-  host: !secret dune_hostname
-  interval: 10
-  use_mqtt: true
-  mac: !secret dune_mac
-  model: "BD Prime 3.0"
-  retain: true
+# dune_activity:
+#   module: dune-activity
+#   class: DuneActivity
+#   host: !secret dune_hostname
+#   interval: 10
+#   use_mqtt: true
+#   mac: !secret dune_mac
+#   model: "BD Prime 3.0"
+#   retain: true

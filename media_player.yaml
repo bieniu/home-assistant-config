@@ -9,6 +9,7 @@
   exclude_unnamed_apps: true
   screencap: false
   apps:
+    com.google.android.tvlauncher: ""
     com.nvidia.geforcenow: "GeForce NOW"
     com.amazon.amazonvideo.livingroom: "Prime Video"
     com.google.android.youtube.tv: "YouTube"
@@ -18,5 +19,16 @@
     com.spotify.tv.android: "Spotify"
     org.xbmc.kodi: "Kodi"
     tunein.player: "TuneIn"
-    pl.idreams.skyforcehdtv: "Sky Force"
-    com.leosfortune: "Leo's Fortune"
+
+- platform: androidtv
+  host: !secret firetv_hostname
+  device_class: "firetv"
+  exclude_unnamed_apps: true
+  screencap: false
+  apps:
+    com.amazon.tv.launcher: ""
+    com.netflix.ninja: "Netflix"
+    com.amazon.avod: "Prime Video"
+    com.amazon.firetv.youtube: "YouTube"
+    com.apple.atve.amazon.appletv: "Apple TV"
+    org.xbmc.kodi: "Kodi"

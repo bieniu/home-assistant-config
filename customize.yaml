@@ -101,7 +101,7 @@ binary_sensor.nuc_status:
   icon: mdi:server
   friendly_name: "Intel NUC 5CPYH"
 binary_sensor.dune_status:
-  icon: mdi:filmstrip
+  icon: mdi:disc-player
 binary_sensor.raspberry_status:
   icon: mdi:raspberry-pi
 binary_sensor.switch_status:

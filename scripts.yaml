@@ -254,7 +254,7 @@ notify_motion:
     - service: camera.snapshot
       entity_id: camera.salon
       data_template:
-        filename: "/home/homeassistant/.homeassistant/www/snapshots/{{ datetime }}.jpg"
+        filename: "/config/www/snapshots/{{ datetime }}.jpg"
     - delay:
         seconds: 1
     - service: python_script.notify
