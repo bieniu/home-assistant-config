@@ -200,6 +200,7 @@ views:
                   type: custom:mini-media-player
                   entity: media_player.dune
                   hide:
+                    volume: true
                     controls: true
                     power: true
                     source: true
@@ -208,6 +209,7 @@ views:
               - type: custom:mini-media-player
                 entity: media_player.firetv
                 hide:
+                  volume: true
                   controls: true
                   power: true
                   source: true
