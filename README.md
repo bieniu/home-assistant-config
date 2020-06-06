@@ -12,8 +12,8 @@
 ## Z-Wave Devices
 
 * Aeotec ZW090 Z-Stick Gen5
+* Aeotec ZW175 Smart Switch 7
 * Danfoss 014G0013 Thermostats
-* Fibaro FGS223 Double Relay
 
 ## Xiaomi ZigBee Devices
 
@@ -44,21 +44,22 @@
 
 ## Other Integrated Devices
 
-* Logitech Harmony Ultimate [remote]
-* Denon AVR-X2100W [AV receiver]
+* Logitech Harmony Ultimate
+* Denon AVR-X2100W
 * PlayStation 4 Pro
 * Xiaomi Mi Smart Humidifier CA1
 * Xiaomi Mi Pedestal Fan 1X
-* Xiaomi Mi Box 4K [AndroidTV box]
-* Dune BD Prime 3.0 [network media player via AppDaemon script]
-* Synology DS110j [NAS]
-* Brother HL-L2340D [printer]
+* Xiaomi Mi Box 4K
+* Amazon Fire TV Stick 4K
+* Dune BD Prime 3.0
+* Synology DS110j
+* Brother HL-L2340D
 * iPhone/iPad [iOS [Home Assistant](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401) app]
 * OnePlus 6 [Android [Home Assistant](https://play.google.com/store/apps/details?id=io.homeassistant.companion.android) app]
-* CyberPower DL650ELCD [UPS]
+* CyberPower DL650ELCD
 * Xiaomi DaFang [camera with [custom firmware](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks)]
-* Sony Bravia TV (Android TV)
-* Amazon Echo Plus/Dot/Show (via Home Assistant Cloud)
+* Sony Bravia TV
+* Amazon Echo Plus/Dot/Show [via Home Assistant Cloud]
 
 ## Home Assistant Custom Components
 
@@ -67,6 +68,7 @@
 * [GIOS](https://github.com/bieniu/ha-gios)
 * [HACS](https://github.com/custom-components/hacs)
 * [iPhone Detect](https://github.com/mudape/iphonedetect)
+* [Xiaomi Mi Smart Pedestal Fan](https://github.com/syssi/xiaomi_fan)
 
 ## Custom Panels
 
@@ -74,18 +76,19 @@
 
 ## Lovelace Custom Cards
 
-* [card-mod](https://github.com/thomasloven/lovelace-card-mod)
+* [auto-entities](https://github.com/thomasloven/lovelace-auto-entities)
+* [battery-state-card](https://github.com/maxwroc/battery-state-card)
 * [bom-weather-card](https://github.com/DavidFW1960/bom-weather-card)
+* [canary](https://github.com/jcwillox/lovelace-canary)
+* [card-mod](https://github.com/thomasloven/lovelace-card-mod)
 * [mini-graph-card](https://github.com/kalkih/mini-graph-card)
 * [mini-media-player](https://github.com/kalkih/mini-media-player)
-* [auto-entities](https://github.com/thomasloven/lovelace-auto-entities)
-* [canary](https://github.com/jcwillox/lovelace-canary)
-* [battery-entity](https://github.com/cbulock/lovelace-battery-entity)
+* [simple=weather-card](https://github.com/kalkih/simple-weather-card)
+* [stack-in-card](https://github.com/custom-cards/stack-in-card)
 
 ## AppDaemon
 
 * [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/ha-ad-thermostats-update)
-* DuneHD Activity
 
 ## Python Scripts
 
