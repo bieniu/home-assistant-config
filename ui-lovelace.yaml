@@ -630,7 +630,6 @@ views:
             entities:
               - binary_sensor.synology_status
               - binary_sensor.nuc_status
-              - binary_sensor.raspberry_status
               - binary_sensor.brother_status
           - type: entities
             title: "Komputery"

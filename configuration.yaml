@@ -131,24 +131,15 @@ yeelight:
   devices:
     yeelight-yldp02yl-f12026.bieniu.lan:
       name: 'lamp salon'
-      model: 'color1'
       <<: &YEELIGHT_PARAMS
         transition: 500
         save_on_change: false
         use_music_mode: false
     yeelight-yldp06yl-84be7a.bieniu.lan:
-      name: 'bulb salon 1'
-      model: 'color2'
       <<: *YEELIGHT_PARAMS
     yeelight-yldp06yl-7cafc6.bieniu.lan:
-      name: 'bulb salon 2'
-      model: 'color2'
       <<: *YEELIGHT_PARAMS
     yeelight-yldd01yl-860cfa.bieniu.lan:
-      name: 'lightstrip sypialnia'
-      model: 'strip1'
       <<: *YEELIGHT_PARAMS
     yeelight-yldd01yl-6707fc.bieniu.lan:
-      name: 'lightstrip antek'
-      model: 'strip1'
       <<: *YEELIGHT_PARAMS

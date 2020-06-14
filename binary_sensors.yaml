@@ -58,10 +58,6 @@
       value_template: "{{ is_state('device_tracker.synology', 'home') }}"
       friendly_name: "Synology DS110j"
 
-    raspberry_status:
-      value_template: "{{ is_state('device_tracker.raspberry', 'home') }}"
-      friendly_name: "Raspberry Pi 3B+"
-
     stacjonarny_status:
       value_template: "{{ is_state('device_tracker.stacjonarny', 'home') }}"
       friendly_name: "Komputer stacjonarny"
