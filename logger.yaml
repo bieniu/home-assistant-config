@@ -6,3 +6,4 @@ logs:
   homeassistant.components.stream: debug
   homeassistant.components.media_player: error
   homeassistant.helpers.entity: error
+  custom_components.accuweather: debug

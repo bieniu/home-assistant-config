@@ -8,6 +8,7 @@ data:
   color: "red"
   url: "https://example.com"
   priority: "high"
+  group: "group-1"
   actions:
     - title: "Action title"
       action: "ACTION"
@@ -33,15 +34,18 @@ ATTR_DATA = "data"
 ATTR_FALSE = False
 ATTR_FRONTEND = "frontend"
 ATTR_HIDE_THUMBNAIL = "hide-thumbnail"
+ATTR_GROUP = "group"
 ATTR_IMAGE = "image"
 ATTR_IOS = "ios"
 ATTR_MESSAGE = "message"
 ATTR_NOTIFICATION_ID = "notification_id"
 ATTR_PRIORITY = "priority"
+ATTR_PUSH = "push"
 ATTR_RECIPIENT = "recipient"
 ATTR_SMS = "sms"
 ATTR_SERVICE = "service"
 ATTR_TAG = "tag"
+ATTR_THREAD_ID = "thread-id"
 ATTR_TITLE = "title"
 ATTR_TTL = "ttl"
 ATTR_TYPE = "type"
@@ -50,6 +54,7 @@ ATTR_URL = "url"
 CONF_ACTIONS = "actions"
 CONF_COLOR = "color"
 CONF_DEVELOP = "develop"
+CONF_GROUP = "group"
 CONF_IMAGE = "image"
 CONF_MESSAGE = "message"
 CONF_PRIORITY = "priority"
@@ -84,6 +89,7 @@ if not priority in PRIORITIES:
     raise ValueError("Wrong value for `priority` argument")
 
 actions = data.get(CONF_ACTIONS)
+group = data.get(CONF_GROUP)
 image = data.get(CONF_IMAGE)
 tag = data.get(CONF_TAG)
 url = data.get(CONF_URL)
@@ -102,6 +108,11 @@ for item in services:
             service_data[ATTR_DATA][ATTR_ATTACHMENT] = {}
             service_data[ATTR_DATA][ATTR_ATTACHMENT][ATTR_URL] = image
             service_data[ATTR_DATA][ATTR_ATTACHMENT][ATTR_HIDE_THUMBNAIL] = ATTR_FALSE
+        if group:
+            if not service_data.get(ATTR_DATA):
+                service_data[ATTR_DATA] = {}
+            service_data[ATTR_DATA][ATTR_PUSH] = {}
+            service_data[ATTR_DATA][ATTR_PUSH][ATTR_THREAD_ID] = group
         if tag:
             if not service_data.get(ATTR_DATA):
                 service_data[ATTR_DATA] = {}
@@ -133,6 +144,10 @@ for item in services:
             if not service_data.get(ATTR_DATA):
                 service_data[ATTR_DATA] = {}
             service_data[ATTR_DATA][ATTR_ACTIONS] = actions
+        if group:
+            if not service_data.get(ATTR_DATA):
+                service_data[ATTR_DATA] = {}
+            service_data[ATTR_DATA][ATTR_GROUP] = group
         if tag:
             if not service_data.get(ATTR_DATA):
                 service_data[ATTR_DATA] = {}

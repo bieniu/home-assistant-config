@@ -207,11 +207,11 @@
       value_template: "{{ is_state('device_tracker.blitzwolf_bw_shp6_ed007d', 'home') }}"
 
     shelly1_328900_status:
-      friendly_name: "Shelly1 [328900]"
+      friendly_name: "Shelly 1 [328900]"
       value_template: "{{ is_state('device_tracker.shelly1_328900', 'home') }}"
 
     shelly2_5b2604_status:
-      friendly_name: "Shelly2 [5B2604]"
+      friendly_name: "Shelly 2 [5B2604]"
       value_template: "{{ is_state('device_tracker.shelly2_5b2604', 'home') }}"
 
     shelly_plug_s_7aecf4_status:

@@ -27,6 +27,7 @@
         title: "Aktualizacja Home Assistanta"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Home Assistanta."
         tag: "notification-ha-update"
+        group: "aktualizacje"
         url: "/hassio/dashboard"
         actions:
               - title: "Zmiany"
@@ -51,6 +52,7 @@
         title: "Aktualizacja Supervisora"
         message: "Dostępna jest aktualizacja do wersji {{ state_attr('sensor.supervisor_updates', 'newest_version') }} dla Supervisora."
         tag: "notification-supervisor-update"
+        group: "aktualizacje"
         url: "/hassio/dashboard"
         services:
           - service: !secret maciek_notify_service
@@ -89,6 +91,7 @@
             {%- endfor %}
           {%- endif %}
         tag: "notification-addons-update"
+        group: "aktualizacje"
         url: "/hassio/dashboard"
         services:
           - service: !secret maciek_notify_service
@@ -132,6 +135,7 @@
           {%- endfor %}
         {%- endif %}
       tag: "notification-hacs"
+      group: "aktualizacje"
       url: "/hacs/installed"
       services:
         - service: !secret maciek_notify_service
@@ -151,7 +155,9 @@
     data_template:
       title: "Wysokie użycie pamięci RAM"
       message: "Serwer Home Assistant używa obecnie {{ states('sensor.memory_use_percent') }}% pamięci RAM."
-      tag: "notification-dishwasher"
+      tag: "notification-high-ram-usage"
+      group: "inne"
+      priority: "high"
       services:
         - service: !secret maciek_notify_service
           type: "android"
@@ -174,39 +180,10 @@
         title: "Wygasa certyfikat SSL"
         message: "Za {{ states('sensor.ssl_certificate_expiry') }} dni wygaśnie certyfikat SSL serwera WWW."
         tag: "notification-ssl"
+        group: "inne"
         services:
           - service: !secret maciek_notify_service
             type: "android"
-
-# powiadomienie o aktualizacji AD
-- id: notification_appdaemon_update_available
-  alias: "Notification AppDaemon Update Available"
-  trigger:
-    platform: state
-    entity_id: sensor.ad_version_current
-  condition:
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
-  action:
-    - service: python_script.notify
-      data_template:
-        title: "Aktualizacja AppDaemona"
-        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla AppDaemona."
-        tag: "notification-ad-update"
-        url: "/hassio/dashboard"
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
-            actions:
-              - title: "Zmiany"
-                action: "URI"
-                uri: "https://github.com/home-assistant/appdaemon/releases"
 
 # powiadomienie o aktualizacji oprogramowania Shelly
 - id: notification_shelly_update_available
@@ -233,6 +210,7 @@
         title: "Aktualizacja oprogramowania Shelly"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} oprogramowania dla {{ trigger.to_state.attributes.friendly_name }}."
         tag: "notification-{{ trigger.to_state.attributes.friendly_name | lower | replace(' ', '_') }}-update"
+        group: "aktualizacje"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -258,6 +236,7 @@
         title: "Aktualizacja ESPHome"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla ESPHome."
         tag: "notification-esphome-update"
+        group: "aktualizacje"
         url: "/hassio/dashboard"
         services:
           - service: !secret maciek_notify_service
@@ -288,6 +267,7 @@
         title: "Aktualizacja Caddy"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy."
         tag: "notification-caddy-update"
+        group: "aktualizacje"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -360,6 +340,7 @@
       title: "Koniec zmywania"
       message: "Zmywarka zakończyła zmywanie naczyń."
       tag: "notification-dishwasher"
+      group: "inne"
       services:
         - service: !secret maciek_notify_service
           type: "android"
@@ -387,6 +368,7 @@
       title: "Komputer stacjonarny włączony"
       message: "Komputer stacjonarny jest włączony. Czy chcesz go wyłączyć?"
       tag: "notification-desktop-computer"
+      group: "inne"
       actions:
         - title: "Wyłącz"
           action: "TURN_OFF_DESKTOP_COMPUTER"
@@ -452,6 +434,7 @@
           {% endmacro %}
           Następujące encje mają nieprawidłowe stany: {{ dead_unavailable_entities() }}
         tag: "notification-dead-unavailable"
+        group: "inne"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -571,6 +554,7 @@
     data_template:
       title: "Wykryto ruch w pustym mieszkaniu"
       message: "Pomieszczenie: {{ trigger.to_state.attributes.location }}, godzina {{ now().strftime('%H:%M') }}."
+      tag: "notification-motion-{{ trigger.to_state.attributes.location }}"
       datetime: "{{ now().strftime('%Y%m%d%H%M%S') }}"
       snapshot_url: !secret snapshot_url
       location: "{{ trigger.to_state.attributes.location }}"
@@ -601,7 +585,8 @@
     data_template:
       title: "Wykryto otwarcie okna w pustym mieszkaniu"
       message: "Pomieszczenie: {{ trigger.to_state.attributes.location }}, godzina {{ now().strftime('%H:%M') }}."
-      tag: "notification-window-opened"
+      tag: "notification-window-opened-{{ trigger.to_state.attributes.location }}"
+      group: "okna"
       priority: "high"
       services:
         - service: !secret maciek_notify_service
@@ -627,6 +612,7 @@
       message: "Domownicy opuścili mieszkanie, a drzwi balkonowe w pracowni nie są zamknięte."
       tag: "notification-balcony-door-pracownia"
       priority: "high"
+      group: "okna"
       services:
         - service: !secret maciek_notify_service
           type: "android"
@@ -646,6 +632,7 @@
         title: "Mało miejsca na dysku Synology"
         message: "Dysk Synology jest zapełniony w {{ trigger.to_state.state }}%."
         tag: "notification-synology-low-space"
+        group: "inne"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -662,6 +649,7 @@
         title: "Nowe urządzenie"
         message: "Wykryto nowe urządzenie o nazwie {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}})."
         tag: "notification-new-device"
+        group: "inne"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -707,6 +695,7 @@
           {% endmacro %}
           W następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level() }}
         tag: "notification-low-battery"
+        group: "inne"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -817,6 +806,7 @@
         title: "Otwarte okna"
         message: "Okna w pustym mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów wynosi {{ states('sensor.dark_sky_precip_probability') }}%."
         tag: "notification-windows-weather"
+        group: "okna"
         priority: "high"
         services:
           - service: !secret maciek_notify_service
@@ -1138,6 +1128,7 @@
         title: "Włączono szybkie dogrzanie"
         message: "Włączono szybie dogrzanie pomieszczeń po długiej nieobecności domowników."
         tag: "notification-fast-warm-up"
+        group: "ogrzewanie"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -1226,6 +1217,7 @@
         title: "Koniec przewietrzania"
         message: "Wyłączono tryb przewietrzania. Proszę zamknąć okna!"
         tag: "notification-airing-end"
+        group: "ogrzewanie"
         priority: "high"
         services:
           - service: !secret maciek_notify_service
@@ -1258,6 +1250,7 @@
         title: "Koniec przewietrzania"
         message: "Wyłączono tryb przewietrzania. Proszę zamknąć okna!"
         tag: "notification-airing-end"
+        group: "ogrzewanie"
         priority: "high"
         services:
           - service: !secret maciek_notify_service

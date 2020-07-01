@@ -168,7 +168,7 @@ views:
                   entity: sensor.humidifier_water_level
                   prefix: "poziom wody: "
                   postfix: " %"
-              # - fan.salon
+              - fan.mifan_salon
               - light.bulbs_salon
               - light.leds_salon
               - light.lamp_salon
@@ -374,7 +374,6 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_gabinet
-              - fan.mifan_gabinet
               - switch.stacjonarny
       - type: vertical-stack
         in_card: true

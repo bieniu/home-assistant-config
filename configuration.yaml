@@ -130,16 +130,20 @@ python_script:
 yeelight:
   devices:
     yeelight-yldp02yl-f12026.bieniu.lan:
-      name: 'lamp salon'
+      model: 'color1'
       <<: &YEELIGHT_PARAMS
         transition: 500
         save_on_change: false
         use_music_mode: false
     yeelight-yldp06yl-84be7a.bieniu.lan:
+      model: 'color2'
       <<: *YEELIGHT_PARAMS
     yeelight-yldp06yl-7cafc6.bieniu.lan:
+      model: 'color2'
       <<: *YEELIGHT_PARAMS
     yeelight-yldd01yl-860cfa.bieniu.lan:
+      model: 'strip1'
       <<: *YEELIGHT_PARAMS
     yeelight-yldd01yl-6707fc.bieniu.lan:
+      model: 'strip1'
       <<: *YEELIGHT_PARAMS
