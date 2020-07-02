@@ -832,8 +832,8 @@
         - condition: numeric_state
           entity_id: sensor.temperature_salon
           above: 27
-    # - service: fan.turn_on
-    #   entity_id: fan.salon
+    - service: fan.turn_on
+      entity_id: fan.mifan_salon
 
 ##################################################################################################
 
@@ -849,16 +849,14 @@
     - condition: template
       value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_end') }}"
     - condition: state
-      entity_id: binary_sensor.workday_sensor
+      entity_id:
+        - binary_sensor.workday_sensor
+        - input_boolean.heating_season
       state: "on"
     - condition: state
-      entity_id: input_boolean.heating_season
-      state: "on"
-    - condition: state
-      entity_id: input_boolean.away_mode
-      state: "off"
-    - condition: state
-      entity_id: group.windows
+      entity_id:
+        - input_boolean.away_mode
+        - group.windows
       state: "off"
   action:
     service: script.heating_day
@@ -874,16 +872,14 @@
     - condition: template
       value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_start') }}"
     - condition: state
-      entity_id: binary_sensor.workday_sensor
+      entity_id:
+        - binary_sensor.workday_sensor
+        - input_boolean.heating_season
       state: "on"
     - condition: state
-      entity_id: input_boolean.heating_season
-      state: "on"
-    - condition: state
-      entity_id: input_boolean.away_mode
-      state: "off"
-    - condition: state
-      entity_id: group.windows
+      entity_id:
+        - input_boolean.away_mode
+        - group.windows
       state: "off"
   action:
     service: script.heating_night
@@ -899,17 +895,14 @@
     - condition: template
       value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_end_weekend') }}"
     - condition: state
-      entity_id: binary_sensor.workday_sensor
+      entity_id:
+        - binary_sensor.workday_sensor
+        - input_boolean.away_mode
+        - group.windows
       state: "off"
     - condition: state
       entity_id: input_boolean.heating_season
       state: "on"
-    - condition: state
-      entity_id: input_boolean.away_mode
-      state: "off"
-    - condition: state
-      entity_id: group.windows
-      state: "off"
   action:
     service: script.heating_day
 
@@ -924,17 +917,14 @@
     - condition: template
       value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_start_weekend') }}"
     - condition: state
-      entity_id: binary_sensor.workday_sensor
+      entity_id:
+        - binary_sensor.workday_sensor
+        - input_boolean.away_mode
+        - group.windows
       state: "off"
     - condition: state
       entity_id: input_boolean.heating_season
       state: "on"
-    - condition: state
-      entity_id: input_boolean.away_mode
-      state: "off"
-    - condition: state
-      entity_id: group.windows
-      state: "off"
   action:
     service: script.heating_night
 
@@ -947,16 +937,14 @@
     to: "off"
   condition:
     - condition: state
-      entity_id: input_boolean.heating_season
+      entity_id:
+        - input_boolean.heating_season
+        - input_boolean.heating_night
       state: "on"
     - condition: state
-      entity_id: input_boolean.heating_night
-      state: "on"
-    - condition: state
-      entity_id: input_boolean.heating_salon_kuchnia_night
-      state: "off"
-    - condition: state
-      entity_id: group.windows
+      entity_id:
+        - input_boolean.heating_salon_kuchnia_night
+        - group.windows
       state: "off"
   action:
     - service: fan.turn_off
@@ -974,24 +962,24 @@
       entity_id: input_boolean.heating_salon_kuchnia_night
 
 # wyłączenie wentylatora po wyłączeniu telewizora
-# - id: climate_turn_off_fan
-#   alias: "Climate Turn Off Fan"
-#   trigger:
-#     platform: state
-#     entity_id: media_player.bravia
-#     to: "off"
-#   condition:
-#     - condition: state
-#       entity_id: fan.salon
-#       state: "on"
-#     - condition: state
-#       entity_id: input_boolean.heating_season
-#       state: "off"
-#     - condition: time
-#       after: "22:00:00"
-#   action:
-#     service: fan.turn_off
-#     entity_id: fan.salon
+- id: climate_turn_off_fan
+  alias: "Climate Turn Off Fan"
+  trigger:
+    platform: state
+    entity_id: media_player.bravia
+    to: "off"
+  condition:
+    - condition: state
+      entity_id: fan.mifan_salon
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "off"
+    - condition: time
+      after: "22:00:00"
+  action:
+    service: fan.turn_off
+    entity_id: fan.salon
 
 # zmniejszenie temperatury gdy domownicy wychodzą i jest sezon grzewczy
 - id: heating_eco_mode
@@ -1068,16 +1056,14 @@
       to: "off"
   condition:
     - condition: state
-      entity_id: input_boolean.heating_season
+      entity_id:
+        - input_boolean.heating_season
+        - input_boolean.away_mode
       state: "on"
     - condition: state
-      entity_id: input_boolean.away_mode
-      state: "on"
-    - condition: state
-      entity_id: script.heating_fast_warm_up
-      state: "off"
-    - condition: state
-      entity_id: group.windows
+      entity_id:
+        - script.heating_fast_warm_up
+        - group.windows
       state: "off"
   action:
     service: script.heating_day
@@ -1096,13 +1082,10 @@
     - condition: template
       value_template: "{{ state_attr(trigger.entity_id, 'longitude') != None }}"
     - condition: state
-      entity_id: input_boolean.edyta_far_from_home
-      state: "on"
-    - condition: state
-      entity_id: input_boolean.maciek_far_from_home
-      state: "on"
-    - condition: state
-      entity_id: input_boolean.heating_season
+      entity_id:
+        - input_boolean.edyta_far_from_home
+        - input_boolean.maciek_far_from_home
+        - input_boolean.heating_season
       state: "on"
     - condition: state
       entity_id: input_boolean.away_mode
@@ -1110,10 +1093,9 @@
       for:
         hours: 10
     - condition: state
-      entity_id: script.heating_fast_warm_up
-      state: "off"
-    - condition: state
-      entity_id: group.windows
+      entity_id:
+        - script.heating_fast_warm_up
+        - group.windows
       state: "off"
   action:
     - condition: template
@@ -1500,22 +1482,16 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: input_boolean.away_mode
+        entity_id:
+          - input_boolean.away_mode
+          - light.leds_salon
+          - light.bulbs_salon
+          - media_player.bravia
         state: "off"
       - condition: state
-        entity_id: light.leds_salon
-        state: "off"
-      - condition: state
-        entity_id: light.bulbs_salon
-        state: "off"
-      - condition: state
-        entity_id: media_player.bravia
-        state: "off"
-      - condition: state
-        entity_id: binary_sensor.motion_salon
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.light_auto_turn_salon
+        entity_id:
+          - binary_sensor.motion_salon
+          - input_boolean.light_auto_turn_salon
         state: "on"
       - condition: or
         conditions:
@@ -1641,10 +1617,9 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: input_boolean.away_mode
-        state: "off"
-      - condition: state
-        entity_id: light.gateway_antresola
+        entity_id:
+          - input_boolean.away_mode
+          - light.gateway_antresola
         state: "off"
       - condition: numeric_state
         entity_id: sensor.illumination_antresola
@@ -1703,10 +1678,9 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: input_boolean.away_mode
-        state: "off"
-      - condition: state
-        entity_id: light.lightstrip_sypialnia
+        entity_id:
+          - input_boolean.away_mode
+          - light.lightstrip_sypialnia
         state: "off"
       - condition: numeric_state
         entity_id: sensor.illumination_sypialnia
@@ -1765,7 +1739,10 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: light.leds_przedpokoj
+        entity_id:
+          - light.leds_przedpokoj
+          - light.bulbs_salon
+          - light.leds_salon
         state: "off"
       - condition: numeric_state
         entity_id: sensor.illumination_przedpokoj
@@ -1773,12 +1750,6 @@
       - condition: state
         entity_id: binary_sensor.motion_przedpokoj
         state: "on"
-      - condition: state
-        entity_id: light.bulbs_salon
-        state: "off"
-      - condition: state
-        entity_id: light.leds_salon
-        state: "off"
       - condition: or
         conditions:
           - condition: sun
@@ -1825,7 +1796,10 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: input_boolean.away_mode
+        entity_id:
+          - input_boolean.away_mode
+          - light.lightstrip_antek
+          - input_boolean.antek_lamp_night
         state: "off"
       - condition: state
         entity_id: binary_sensor.motion_antek
@@ -1833,12 +1807,6 @@
       - condition: numeric_state
         entity_id: sensor.illumination_antek
         below: 3
-      - condition: state
-        entity_id: light.lightstrip_antek
-        state: "off"
-      - condition: state
-        entity_id: input_boolean.antek_lamp_night
-        state: "off"
       - condition: or
         conditions:
           - condition: sun
@@ -1882,10 +1850,9 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: input_boolean.away_mode
-        state: "off"
-      - condition: state
-        entity_id: input_boolean.antek_lamp_night
+        entity_id:
+          - input_boolean.away_mode
+          - input_boolean.antek_lamp_night
         state: "off"
       - condition: or
         conditions:
@@ -2026,19 +1993,17 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: input_boolean.away_mode
-        state: "off"
-      - condition: state
-        entity_id: switch.lamp_pracownia
+        entity_id:
+          - input_boolean.away_mode
+          - switch.lamp_pracownia
         state: "off"
       - condition: numeric_state
         entity_id: sensor.illumination_pracownia
         below: 8
       - condition: state
-        entity_id: binary_sensor.motion_pracownia
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.light_auto_turn_pracownia
+        entity_id:
+          - binary_sensor.motion_pracownia
+          - input_boolean.light_auto_turn_pracownia
         state: "on"
       - condition: or
         conditions:
@@ -2104,10 +2069,9 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: input_boolean.away_mode
-        state: "off"
-      - condition: state
-        entity_id: switch.lamp_goscinny
+        entity_id:
+          - input_boolean.away_mode
+          - switch.lamp_goscinny
         state: "off"
       - condition: template
         value_template: >-
@@ -2117,10 +2081,9 @@
         entity_id: sensor.illumination_goscinny
         below: 9
       - condition: state
-        entity_id: binary_sensor.motion_goscinny
-        state: "on"
-      - condition: state
-        entity_id: input_boolean.light_auto_turn_goscinny
+        entity_id:
+          - binary_sensor.motion_goscinny
+          - input_boolean.light_auto_turn_goscinny
         state: "on"
       - condition: or
         conditions:
@@ -2479,13 +2442,10 @@
       entity_id: input_boolean.heating_season
       state: "on"
     - condition: state
-      entity_id: input_boolean.heating_airing
-      state: "off"
-    - condition: state
-      entity_id: input_boolean.away_mode
-      state: "off"
-    - condition: state
-      entity_id: fan.humidifier_salon
+      entity_id:
+        - input_boolean.heating_airing
+        - input_boolean.away_mode
+        - fan.humidifier_salon
       state: "off"
   action:
     service: fan.turn_on
@@ -2502,10 +2462,9 @@
       below: 6
   condition:
     - condition: state
-      entity_id: input_boolean.heating_season
-      state: "on"
-    - condition: state
-      entity_id: fan.humidifier_salon
+      entity_id:
+        - input_boolean.heating_season
+        - fan.humidifier_salon
       state: "on"
   action:
     - service: fan.turn_off

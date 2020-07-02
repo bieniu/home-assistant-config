@@ -106,11 +106,6 @@ zeroconf:
 zwave:
   debug: true
 
-xiaomi_aqara:
-  gateways:
-    mac: !secret migateway_mac
-    key: !secret migateway_key
-
 camera:
   - platform: generic
     name: 'Salon'
