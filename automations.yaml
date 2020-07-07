@@ -409,7 +409,7 @@
       {% macro dead_unavailable_entities() %}
         {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor', 'media_player'] -%}
         {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
-        {%- set ignored = ['fan.salon', 'light.bulb_antresola'] -%}
+        {%- set ignored = [] -%}
         {% for domain in domains -%}
           {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
             - {{ item.name }} ({{ item.entity_id }})
@@ -425,7 +425,7 @@
           {% macro dead_unavailable_entities() %}
             {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor', 'media_player'] -%}
             {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
-            {%- set ignored = ['fan.salon', 'light.bulb_antresola'] -%}
+            {%- set ignored = [] -%}
             {% for domain in domains -%}
               {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
            - {{ item.name }} ({{ item.entity_id }})
@@ -793,8 +793,8 @@
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.away_mode
-    # - service: fan.turn_off
-    #   entity_id: fan.salon
+    - service: fan.turn_off
+      entity_id: fan.pedestal_salon
     - condition: state
       entity_id: group.windows
       state: "on"
@@ -833,7 +833,7 @@
           entity_id: sensor.temperature_salon
           above: 27
     - service: fan.turn_on
-      entity_id: fan.mifan_salon
+      entity_id: fan.pedestal_salon
 
 ##################################################################################################
 
@@ -970,7 +970,7 @@
     to: "off"
   condition:
     - condition: state
-      entity_id: fan.mifan_salon
+      entity_id: fan.pedestal_salon
       state: "on"
     - condition: state
       entity_id: input_boolean.heating_season
@@ -979,7 +979,7 @@
       after: "22:00:00"
   action:
     service: fan.turn_off
-    entity_id: fan.salon
+    entity_id: fan.pedestal_salon
 
 # zmniejszenie temperatury gdy domownicy wychodzą i jest sezon grzewczy
 - id: heating_eco_mode

@@ -16,8 +16,6 @@ lovelace:
   resources:
     - url: /hacsfiles/lovelace-canary/canary.js
       type: module
-    - url: /hacsfiles/stack-in-card/stack-in-card.js
-      type: module
     - url: /hacsfiles/lovelace-card-mod/card-mod.js
       type: module
     - url: /hacsfiles/simple-weather-card/simple-weather-card-bundle.js

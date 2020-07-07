@@ -79,11 +79,8 @@ views:
                   state: home
                 - entity_id: person.jerzy
                   state: home
-          - type: custom:stack-in-card
-            style: |
-              div.card-header {
-                padding-bottom: 8px;
-              }
+          - type: vertical-stack
+            in_card: true
             title: "Pogoda"
             cards:
               - type: custom:simple-weather-card
@@ -168,7 +165,7 @@ views:
                   entity: sensor.humidifier_water_level
                   prefix: "poziom wody: "
                   postfix: " %"
-              - fan.mifan_salon
+              - fan.pedestal_salon
               - light.bulbs_salon
               - light.leds_salon
               - light.lamp_salon
@@ -508,6 +505,42 @@ views:
     cards:
       - type: vertical-stack
         cards:
+          - type: vertical-stack
+            in_card: true
+            title: "Internet"
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    style: |
+                      ha-card.flex {
+                        padding-top: 0px;
+                        padding-bottom: 0px;
+                      }
+                    <<: &GRAPH_IN_CARD
+                      hour24: true
+                      points_per_hour: 1
+                      animate: true
+                      font_size: 90
+                      show:
+                        fill: false
+                        labels: false
+                        points: false
+                    line_color: "#36a2eb"
+                    decimals: 1
+                    entities:
+                      - sensor.speedtest_download
+                  - type: custom:mini-graph-card
+                    style: |
+                      ha-card.flex {
+                        padding-top: 0px;
+                        padding-bottom: 0px;
+                      }
+                    <<: *GRAPH_IN_CARD
+                    line_color: "#ffce57"
+                    decimals: 1
+                    entities:
+                      - sensor.speedtest_upload
           - type: entities
             title: "Home Assistant"
             show_header_toggle: false
@@ -542,15 +575,7 @@ views:
               - type: horizontal-stack
                 cards:
                   - type: custom:mini-graph-card
-                    <<: &GRAPH_IN_CARD
-                      hour24: true
-                      points_per_hour: 1
-                      animate: true
-                      font_size: 90
-                      show:
-                        fill: false
-                        labels: false
-                        points: false
+                    <<: *GRAPH_IN_CARD
                     decimals: 0
                     entities:
                       - sensor.processor_use
