@@ -33,14 +33,15 @@
 * Sonoff Basic Switches [[ESPHome](https://esphome.io) firmware]
 * Sonoff S26 Plug [[ESPHome](https://esphome.io) firmware]
 * BlitzWolf BW-SHP6 Plugs [[ESPHome](https://esphome.io) firmware]
-* [Shelly1](https://shelly.cloud/shelly1-open-source/) via MQTT
-* [Shelly2](https://shelly.cloud/shelly2/) via MQTT
-* [Shelly Plug S](https://shelly.cloud/shelly-plug-s/) via MQTT
+* [Shelly 1](https://shelly.cloud/products/shelly-1-smart-home-automation-relay/) via MQTT
+* Shelly 2 via MQTT
+* [Shelly Plug S](https://shelly.cloud/products/shelly-plug-s-smart-home-automation-device/) via MQTT
 
 ## Sensors
 
 * Wemos D1 mini + MH-Z19B [[ESPHome](https://esphome.io) firmware]
-* [Shelly H&T](https://shelly.cloud/shelly-humidity-and-temperature/) via MQTT
+* [Shelly H&T](https://shelly.cloud/products/shelly-humidity-temperature-smart-home-automation-sensor/) via MQTT
+* [Shelly Flood](https://shelly.cloud/products/shelly-flood-smart-home-automation-sensor/) via MQTT
 
 ## Other Integrated Devices
 
