@@ -190,26 +190,27 @@
   alias: "Notification Shelly Update Available"
   trigger:
     - platform: state
-      entity_id: sensor.shelly1_firmware_version_current
+      entity_id: binary_sensor.shelly_1_328900_firmware_update
+      to: "on"
     - platform: state
-      entity_id: sensor.shelly2_firmware_version_current
+      entity_id: binary_sensor.shelly_2_5b2604_firmware_update
+      to: "on"
     - platform: state
-      entity_id: sensor.shelly_plug_s_firmware_version_current
+      entity_id: binary_sensor.shelly_flood_f2ad1d_firmware_update
+      to: "on"
+    - platform: state
+      entity_id: binary_sensor.shelly_h_t_e00abd_firmware_update
+      to: "on"
+    - platform: state
+      entity_id: binary_sensor.shelly_plug_s_7aecf4_firmware_update
+      to: "on"
   condition:
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
   action:
     - service: python_script.notify
       data_template:
         title: "Aktualizacja oprogramowania Shelly"
-        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} oprogramowania dla {{ trigger.to_state.attributes.friendly_name }}."
-        tag: "notification-{{ trigger.to_state.attributes.friendly_name | lower | replace(' ', '_') }}-update"
+        message: "Dostępna jest aktualizacja oprogramowania dla {{ trigger.to_state.attributes.friendly_name | replace(' Firmware Update', '')}}."
+        tag: "notification-{{ trigger.entity_id }}"
         group: "aktualizacje"
         services:
           - service: !secret maciek_notify_service
@@ -2537,8 +2538,10 @@
 - id: shellies_announce
   alias: "Shellies Announce"
   trigger:
-    platform: homeassistant
-    event: start
+    - platform: homeassistant
+      event: start
+    - platform: time_pattern
+      hours: "/1"
   action:
     service: mqtt.publish
     data:

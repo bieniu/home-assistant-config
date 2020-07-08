@@ -715,10 +715,11 @@ views:
           - binary_sensor.blitzwolf_bw_shp6_ed007d_status
           - binary_sensor.blitzwolf_bw_shp6_ecf9ea_status
           - binary_sensor.blitzwolf_bw_shp6_3766eb_status
-          - binary_sensor.shelly1_328900_status
-          - binary_sensor.shelly2_5b2604_status
+          - binary_sensor.shelly_1_328900_status
+          - binary_sensor.shelly_2_5b2604_status
           - binary_sensor.shelly_plug_s_7aecf4_status
           - binary_sensor.shelly_ht_e00abd_status
+          - binary_sensor.shelly_flood_f2ad1d_status
           - binary_sensor.wemos_d1_mini_1c91ea_status
           - binary_sensor.yeelight_yldp06yl_84be7a_status
           - binary_sensor.yeelight_yldp06yl_7cafc6_status

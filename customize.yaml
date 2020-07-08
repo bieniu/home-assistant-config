@@ -29,14 +29,6 @@ person.emil:
 person.agnieszka:
   entity_picture: /local/pictures/agnieszka.jpg
 
-#### SHELLIES ####
-sensor.shelly1_firmware_version_current:
-  friendly_name: "Shelly 1"
-sensor.shelly2_firmware_version_current:
-  friendly_name: "Shelly 2"
-sensor.shelly_plug_s_firmware_version_current:
-  friendly_name: "Shelly Plug S"
-
 #### LIGHTS ####
 light.gateway_antresola:
   icon: mdi:spotlight

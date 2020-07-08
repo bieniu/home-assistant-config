@@ -48,33 +48,6 @@
     Content-Type: application/json
     User-Agent: Home Assistant REST sensor
 
-- platform: rest
-  resource: !secret shelly1_url
-  name: "Shelly1 Firmware Version Current"
-  value_template: "{{ (value_json['update'].new_version).split('/')[1].split('@')[0] | replace('v', '') }}"
-  authentication: basic
-  username: !secret shellies_username
-  password: !secret shellies_password
-  scan_interval: 7200
-
-- platform: rest
-  resource: !secret shelly2_url
-  name: "Shelly2 Firmware Version Current"
-  value_template: "{{ (value_json['update'].new_version).split('/')[1].split('@')[0] | replace('v', '') }}"
-  authentication: basic
-  username: !secret shellies_username
-  password: !secret shellies_password
-  scan_interval: 7200
-
-- platform: rest
-  resource: !secret shelly_plug_s_url
-  name: "Shelly Plug S Firmware Version Current"
-  value_template: "{{ (value_json['update'].new_version).split('/')[1].split('@')[0] | replace('v', '') }}"
-  authentication: basic
-  username: !secret shellies_username
-  password: !secret shellies_password
-  scan_interval: 7200
-
 - platform: command_line
   command: python3 -c "import requests; print(requests.get('https://pypi.org/pypi/appdaemon/json').json()['info']['version'])"
   name: "AD Version Current"

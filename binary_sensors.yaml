@@ -206,13 +206,13 @@
       friendly_name: "BlitzWolf BW-SHP6 [ED007d]"
       value_template: "{{ is_state('device_tracker.blitzwolf_bw_shp6_ed007d', 'home') }}"
 
-    shelly1_328900_status:
+    shelly_1_328900_status:
       friendly_name: "Shelly 1 [328900]"
-      value_template: "{{ is_state('device_tracker.shelly1_328900', 'home') }}"
+      value_template: "{{ is_state('device_tracker.shelly_1_328900', 'home') }}"
 
-    shelly2_5b2604_status:
+    shelly_2_5b2604_status:
       friendly_name: "Shelly 2 [5B2604]"
-      value_template: "{{ is_state('device_tracker.shelly2_5b2604', 'home') }}"
+      value_template: "{{ is_state('device_tracker.shelly_2_5b2604', 'home') }}"
 
     shelly_plug_s_7aecf4_status:
       friendly_name: "Shelly Plug S [7AECF4]"
@@ -221,6 +221,10 @@
     shelly_ht_e00abd_status:
       friendly_name: "Shelly H&T [E00ABD]"
       value_template: "{{ is_state('device_tracker.shelly_ht_e00abd', 'home') }}"
+
+    shelly_flood_f2ad1d_status:
+      friendly_name: "Shelly Flood [F2AD1D]"
+      value_template: "{{ is_state('device_tracker.shelly_flood_f2ad1d', 'home') }}"
 
     wemos_d1_mini_1c91ea_status:
       friendly_name: "Wemos D1 mini [1C91EA]"
