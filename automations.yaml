@@ -190,19 +190,13 @@
   alias: "Notification Shelly Update Available"
   trigger:
     - platform: state
-      entity_id: binary_sensor.shelly_1_328900_firmware_update
-      to: "on"
-    - platform: state
-      entity_id: binary_sensor.shelly_2_5b2604_firmware_update
-      to: "on"
-    - platform: state
-      entity_id: binary_sensor.shelly_flood_f2ad1d_firmware_update
-      to: "on"
-    - platform: state
-      entity_id: binary_sensor.shelly_h_t_e00abd_firmware_update
-      to: "on"
-    - platform: state
-      entity_id: binary_sensor.shelly_plug_s_7aecf4_firmware_update
+      entity_id:
+        - binary_sensor.shelly_1_328900_firmware_update
+        - binary_sensor.shelly_2_5b2604_firmware_update
+        - binary_sensor.shelly_flood_f2ad1d_firmware_update
+        - binary_sensor.shelly_h_t_e00abd_firmware_update
+        - binary_sensor.shelly_plug_s_7aecf4_firmware_update
+      from: "off"
       to: "on"
   condition:
   action:
@@ -527,6 +521,57 @@
         location: "{{ states('person.edyta') }}"
         notification_service: !secret edyta_notify_service
         notification_type: "ios"
+
+# powiadomienie jak pojawi się woda na podłodze w kuchni
+- id: notification_water_leak_kuchnia
+  alias: "Notification Water Leak Kuchnia"
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.water_leak_kuchnia
+      from: "off"
+      to: "on"
+  action:
+    service: python_script.notify
+    data_template:
+      title: "Wykryto wyciek wody"
+      message: "W kuchni wykryto wodę na podłodze."
+      tag: "notification-water-leak"
+      priority: "high"
+      services:
+        - service: !secret maciek_notify_service
+          type: "android"
+        - service: !secret edyta_notify_service
+          type: "ios"
+
+# powiadomienie jak zbyt duże obciążenie przekaźnika
+- id: notification_relay_overpower
+  alias: "Notification Relay Overpower"
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.shelly_plug_s_7aecf4_overpower_0
+        - binary_sensor.shelly_2_5b2604_overpower_0
+        - binary_sensor.shelly_2_5b2604_overpower_1
+      from: "off"
+      to: "on"
+      for:
+        minutes: 1
+  action:
+    - service: python_script.notify
+      data_template:
+        title: "Zbyt duże obciążenie przekaźnika"
+        message: "Przekaźnik {{ state_attr(trigger.to_state.attributes.relay, 'friendly_name') }} ma zbyt duże obciążenie i zostanie wyłączony."
+        tag: "notification-relay-overpower-{{ trigger.entity_id }}"
+        priority: "high"
+        services:
+          - service: !secret maciek_notify_service
+            type: "android"
+          - service: !secret edyta_notify_service
+            type: "ios"
+    - service: homeassistant.turn_off
+      data_template:
+        entity_id: "{{ trigger.to_state.attributes.relay }}"
 
 # powiadomienie jak jest ruch i nikogo w domu
 - id: notification_motion_when_away_mode

@@ -84,10 +84,8 @@ views:
             title: "Pogoda"
             cards:
               - type: custom:simple-weather-card
-                style: |
-                  ha-card {
-                    padding-top: 0px !important;
-                  }
+                canary_style:
+                  margin-top: "-24px"
                 entity: weather.dom
                 tap_action:
                   action: navigate
@@ -126,6 +124,7 @@ views:
                 state_color: true
                 entities:
                   - binary_sensor.window_kuchnia
+                  - binary_sensor.water_leak_kuchnia
                   - entity: sensor.dishwasher_kuchnia
                     style: |
                       :host {
@@ -882,6 +881,19 @@ views:
           - sensor.battery_temp_humi_sensor_sypialnia
           - sensor.battery_temp_humi_sensor_lazienka
           - sensor.battery_temp_humi_sensor_outdoor
+      - type: custom:battery-state-card
+        name: "Baterie sensorów wody"
+        tap_action:
+          action: more-info
+        color_thresholds:
+          - value: 20
+            color: var(--label-badge-red)
+          - value: 40
+            color: var(--label-badge-yellow)
+          - value: 100
+            color: var(--state-icon-color)
+        entities:
+          - sensor.battery_water_leak_sensor_gabinet
       - type: custom:battery-state-card
         name: "Baterie termostatów"
         tap_action:

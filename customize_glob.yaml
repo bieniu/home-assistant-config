@@ -58,14 +58,16 @@
   unit_of_measurement: "dni"
 
 #### SHELLY ####
-"binary_sensor.shelly1_*_status":
+"binary_sensor.shelly_1_*_status":
   icon: mdi:light-switch
-"binary_sensor.shelly2_*_status":
+"binary_sensor.shelly_2_*_status":
   icon: mdi:light-switch
 "binary_sensor.shelly_plug_*_status":
   icon: mdi:light-switch
 "binary_sensor.shelly_ht_*_status":
   icon: mdi:thermometer-lines
+"binary_sensor.shelly_flood_*_status":
+  icon: mdi:water
 
 #### LIGHTS ####
 "light.lightstrip*":
