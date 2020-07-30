@@ -250,6 +250,7 @@ light_turn_on_antek_leds:
           ]
 
 notify_motion:
+  mode: queued
   sequence:
     - service: camera.snapshot
       entity_id: camera.salon
@@ -311,7 +312,7 @@ alexa_goodnight:
     - service: homeassistant.turn_off
       entity_id:
         - remote.salon
-        # - fan.salon
+        - fan.pedestal_salon
         - fan.humidifier_salon
         - light.leds_salon
         - light.bulbs_salon
@@ -326,6 +327,7 @@ alexa_tts:
         type: "tts"
 
 notify_if_home:
+  mode: queued
   sequence:
     - condition: template
       value_template: "{{ location == 'home' }}"

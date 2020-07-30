@@ -30,12 +30,12 @@
         group: "aktualizacje"
         url: "/hassio/dashboard"
         actions:
-              - title: "Zmiany"
-                action: "URI"
-                uri: "https://github.com/home-assistant/home-assistant/releases"
-              - title: "Konfiguracja"
-                action: "URI"
-                uri: "/hassio/addon/core_check_config/logs"
+          - title: "Zmiany"
+            action: "URI"
+            uri: "https://github.com/home-assistant/home-assistant/releases"
+          - title: "Konfiguracja"
+            action: "URI"
+            uri: "/hassio/addon/core_check_config/logs"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -763,11 +763,11 @@
     - condition: state
       entity_id: input_boolean.edyta_far_from_home
       state: "off"
-  action:
     - condition: template
       value_template: "{{ distance(trigger.entity_id, 'zone.home') > 40 }}"
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.edyta_far_from_home
+  action:
+    service: input_boolean.turn_on
+    entity_id: input_boolean.edyta_far_from_home
 
 # Maciek daleko od domu
 - id: presence_maciek_far_from_home
@@ -783,11 +783,11 @@
     - condition: state
       entity_id: input_boolean.maciek_far_from_home
       state: "off"
-  action:
     - condition: template
       value_template: "{{ distance(trigger.entity_id, 'zone.home') > 40 }}"
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.maciek_far_from_home
+  action:
+    service: input_boolean.turn_on
+    entity_id: input_boolean.maciek_far_from_home
 
 # Maciek blisko domu
 - id: presence_maciek_near_home
@@ -803,11 +803,11 @@
     - condition: state
       entity_id: input_boolean.maciek_far_from_home
       state: "on"
-  action:
     - condition: template
       value_template: "{{ distance(trigger.entity_id, 'zone.home') < 30 }}"
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.maciek_far_from_home
+  action:
+    service: input_boolean.turn_off
+    entity_id: input_boolean.maciek_far_from_home
 
 # Edyta wróciła do domu po dalekiej podróży
 - id: presence_edyta_near_home
@@ -823,11 +823,11 @@
     - condition: state
       entity_id: input_boolean.edyta_far_from_home
       state: "on"
-  action:
     - condition: template
       value_template: "{{ distance(trigger.entity_id, 'zone.home') < 30 }}"
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.edyta_far_from_home
+  action:
+    service: input_boolean.turn_off
+    entity_id: input_boolean.edyta_far_from_home
 
 # ludzie poza domem
 - id: presence_peoples_away
@@ -884,7 +884,7 @@
 ##################################################################################################
 
 #### HEATING #####################################################################################
-# zwiększenie temperatury rano w tygodniu jeśli ktoś jest w domu i trwa sezon grzewczy
+# zwiększenie temperatury rano jeśli ktoś jest w domu i trwa sezon grzewczy
 - id: heating_day
   alias: "Heating Day"
   trigger:
@@ -892,12 +892,14 @@
     minutes: "/1"
     seconds: 0
   condition:
-    - condition: template
-      value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_end') }}"
+    - condition: or
+      conditions:
+        - condition: template
+          value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_end') and is_state('binary_sensor.workday_sensor', 'on') }}"
+        - condition: template
+          value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_end_weekend') and is_state('binary_sensor.workday_sensor', 'off') }}"
     - condition: state
-      entity_id:
-        - binary_sensor.workday_sensor
-        - input_boolean.heating_season
+      entity_id: input_boolean.heating_season
       state: "on"
     - condition: state
       entity_id:
@@ -907,7 +909,7 @@
   action:
     service: script.heating_day
 
-# zmniejszenie temperatury na noc w tygodniu jeśli trwa sezon grzewczy
+# zmniejszenie temperatury na noc jeśli trwa sezon grzewczy
 - id: heating_night
   alias: "Heating Night"
   trigger:
@@ -915,62 +917,20 @@
     minutes: "/1"
     seconds: 0
   condition:
-    - condition: template
-      value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_start') }}"
-    - condition: state
-      entity_id:
-        - binary_sensor.workday_sensor
-        - input_boolean.heating_season
-      state: "on"
-    - condition: state
-      entity_id:
-        - input_boolean.away_mode
-        - group.windows
-      state: "off"
-  action:
-    service: script.heating_night
-
-# zwiększenie temperatury rano w weekendy jeśli ktoś jest w domu i trwa sezon grzewczy
-- id: heating_day_weekend
-  alias: "Heating Day Weekend"
-  trigger:
-    platform: time_pattern
-    minutes: "/1"
-    seconds: 0
-  condition:
-    - condition: template
-      value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_end_weekend') }}"
-    - condition: state
-      entity_id:
-        - binary_sensor.workday_sensor
-        - input_boolean.away_mode
-        - group.windows
-      state: "off"
+    - condition: or
+      conditions:
+        - condition: template
+          value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_start') and is_state('binary_sensor.workday_sensor', 'on') }}"
+        - condition: template
+          value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_start_weekend') and is_state('binary_sensor.workday_sensor', 'off') }}"
     - condition: state
       entity_id: input_boolean.heating_season
       state: "on"
-  action:
-    service: script.heating_day
-
-# zmniejszenie temperatury na noc w weekendy jeśli trwa sezon grzewczy
-- id: heating_night_weekend
-  alias: "Heating Night Weekend"
-  trigger:
-    platform: time_pattern
-    minutes: "/1"
-    seconds: 0
-  condition:
-    - condition: template
-      value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_start_weekend') }}"
     - condition: state
       entity_id:
-        - binary_sensor.workday_sensor
         - input_boolean.away_mode
         - group.windows
       state: "off"
-    - condition: state
-      entity_id: input_boolean.heating_season
-      state: "on"
   action:
     service: script.heating_night
 
@@ -1056,9 +1016,6 @@
     from: "on"
     to: "off"
   condition:
-    - condition: time
-      after: "05:00:00"
-      before: "22:00:00"
     - condition: state
       entity_id: input_boolean.heating_season
       state: "on"
@@ -1066,27 +1023,15 @@
       entity_id: group.windows
       state: "off"
   action:
-    service: script.heating_day
-
-- id: heating_peoples_back_night
-  alias: "Heating Peoples Back Night"
-  trigger:
-    platform: state
-    entity_id: input_boolean.away_mode
-    from: "on"
-    to: "off"
-  condition:
-    - condition: time
-      after: "22:00:00"
-      before: "05:00:00"
-    - condition: state
-      entity_id: input_boolean.heating_season
-      state: "on"
-    - condition: state
-      entity_id: group.windows
-      state: "off"
-  action:
-    service: script.heating_night
+    choose:
+      conditions:
+        condition: time
+        after: "05:00:00"
+        before: "22:00:00"
+      sequence:
+        service: script.heating_day
+    default:
+      service: script.heating_night
 
 # włączenie ogrzewania 30 minut przed powrotem do domu w dzień gdy jest sezon grzewczy
 - id: heating_turn_on_before_return_to_home
@@ -1220,9 +1165,9 @@
   action:
     service: script.heating_airing_begin
 
-# koniec przewietrzania w dzień
-- id: heating_airing_end_at_day
-  alias: "Heating Airing At Day"
+# koniec przewietrzania
+- id: heating_airing_end
+  alias: "Heating Airing End"
   trigger:
     platform: state
     entity_id: input_boolean.heating_airing
@@ -1232,44 +1177,16 @@
     - condition: state
       entity_id: input_boolean.heating_season
       state: "on"
-    - condition: time
-      after: "05:00:00"
-      before: "22:00:00"
   action:
-    - service: script.heating_day
-    - condition: state
-      entity_id: group.windows
-      state: "on"
-    - service: python_script.notify
-      data:
-        title: "Koniec przewietrzania"
-        message: "Wyłączono tryb przewietrzania. Proszę zamknąć okna!"
-        tag: "notification-airing-end"
-        group: "ogrzewanie"
-        priority: "high"
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
-          - service: !secret edyta_notify_service
-            type: "ios"
-
-# koniec przewietrzania w nocy
-- id: heating_airing_end_at_night
-  alias: "Heating Airing At Night"
-  trigger:
-    platform: state
-    entity_id: input_boolean.heating_airing
-    from: "on"
-    to: "off"
-  condition:
-    - condition: state
-      entity_id: input_boolean.heating_season
-      state: "on"
-    - condition: time
-      after: "22:00:00"
-      before: "05:00:00"
-  action:
-    - service: script.heating_night
+    - choose:
+        conditions:
+          condition: time
+          after: "05:00:00"
+          before: "22:00:00"
+        sequence:
+          service: script.heating_day
+      default:
+        service: script.heating_night
     - condition: state
       entity_id: group.windows
       state: "on"
@@ -2147,34 +2064,50 @@
 
 #### HARMONY #####################################################################################
 # poprawianie przełączania wejść amplitunera
-- id: harmony_denon_input_switch_helper
-  alias: "Harmony Denon Input Switch Helper"
+- id: input_switch_helper
+  alias: "Input Switch Helper"
   trigger:
     platform: state
     entity_id: remote.salon
   action:
-    - delay: "00:00:02"
+    - delay: "00:00:05"
     - condition: template
       value_template: "{{ trigger.to_state.attributes.current_activity != 'PowerOff' }}"
-    - service: remote.send_command
-      entity_id: remote.salon
+    - service: media_player.select_source
+      entity_id: media_player.denon
       data_template:
-        device: "Amplituner"
-        command: >-
+        source: >-
           {% if trigger.to_state.attributes.current_activity == 'Telewizja' %}
-            InputCbl/Sat
+            CBL
           {% elif trigger.to_state.attributes.current_activity == 'Filmy' %}
-            InputBlu-ray
+            DUNE
           {% elif trigger.to_state.attributes.current_activity == 'PlayStation' %}
-            InputTvAudio
+            TV
           {% elif trigger.to_state.attributes.current_activity == 'Xbox' %}
-            InputAux2
+            XBOX
           {% elif trigger.to_state.attributes.current_activity == 'Muzyka' %}
-            InputOnlineMusic
+            Online Music
           {% elif trigger.to_state.attributes.current_activity == 'Smart TV' %}
-            InputTvAudio
+            TV
           {% elif trigger.to_state.attributes.current_activity == 'Fire TV' %}
-            InputTvAudio
+            TV
+          {% endif %}
+    - service: media_player.select_source
+      entity_id: media_player.bravia
+      data_template:
+        source: >-
+          {% if trigger.to_state.attributes.current_activity == 'Telewizja' %}
+            HDMI 3/ARC
+          {% elif trigger.to_state.attributes.current_activity == 'Filmy' %}
+            HDMI 3/ARC
+          {% elif trigger.to_state.attributes.current_activity == 'PlayStation' %}
+            HDMI 2
+          {% elif trigger.to_state.attributes.current_activity == 'Xbox' %}
+            HDMI 3/ARC
+          {% elif trigger.to_state.attributes.current_activity == 'Muzyka' %}
+            HDMI 3/ARC
+          {% elif trigger.to_state.attributes.current_activity == 'Fire TV' %}
+            HDMI 1
           {% endif %}
 
 # wyłączenie telewizora jeśli Harmony przejdzie do aktywności PowerOff
@@ -2595,6 +2528,8 @@
 
 - id: shellies_discovery
   alias: "Shellies Discovery"
+  mode: queued
+  max: 999
   trigger:
     platform: mqtt
     topic: "shellies/announce"

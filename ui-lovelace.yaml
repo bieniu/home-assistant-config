@@ -1109,7 +1109,7 @@ views:
             line_color: "#ffce57"
             decimals: 0
   - id: misc
-    icon: mdi:settings
+    icon: mdi:cog
     title: "Różne"
     path: misc
     visible:

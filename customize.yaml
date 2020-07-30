@@ -101,9 +101,9 @@ binary_sensor.switch_status:
 binary_sensor.stacjonarny_status:
   icon: mdi:desktop-tower
 binary_sensor.xbox_status:
-  icon: mdi:xbox
+  icon: mdi:microsoft-xbox
 binary_sensor.playstation_status:
-  icon: mdi:playstation
+  icon: mdi:sony-playstation
 binary_sensor.bravia_status:
   icon: mdi:television
 binary_sensor.fingbox_status:

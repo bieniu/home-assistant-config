@@ -14,8 +14,6 @@ zone:
 lovelace:
   mode: yaml
   resources:
-    - url: /hacsfiles/lovelace-canary/canary.js
-      type: module
     - url: /hacsfiles/lovelace-card-mod/card-mod.js
       type: module
     - url: /hacsfiles/simple-weather-card/simple-weather-card-bundle.js
@@ -29,6 +27,8 @@ lovelace:
     - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
       type: module
     - url: /hacsfiles/battery-state-card/battery-state-card.js
+      type: module
+    - url: /hacsfiles/lovelace-canary/canary.js
       type: module
 
 person:

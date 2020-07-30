@@ -23,7 +23,6 @@
   apps:
     com.amazon.tv.launcher: ""
     com.netflix.ninja: "Netflix"
-    com.amazon.avod: "Prime Video"
     com.amazon.firetv.youtube: "YouTube"
     com.apple.atve.amazon.appletv: "Apple TV"
     org.xbmc.kodi: "Kodi"
