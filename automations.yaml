@@ -194,7 +194,7 @@
         - binary_sensor.shelly_1_328900_firmware_update
         - binary_sensor.shelly_2_5b2604_firmware_update
         - binary_sensor.shelly_flood_f2ad1d_firmware_update
-        - binary_sensor.shelly_h_t_e00abd_firmware_update
+        - binary_sensor.shelly_ht_e00abd_firmware_update
         - binary_sensor.shelly_plug_s_7aecf4_firmware_update
       from: "off"
       to: "on"

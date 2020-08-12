@@ -850,15 +850,15 @@ views:
             color: var(--state-icon-color)
         entities:
           - sensor.battery_motion_sensor_przedpokoj
-          - sensor.battery_motion_sensor_salon_1
-          - sensor.battery_motion_sensor_salon_2
-          - sensor.battery_motion_sensor_pracownia
-          - sensor.battery_motion_sensor_goscinny
-          - sensor.battery_motion_sensor_schody
-          - sensor.battery_motion_sensor_antresola
-          - sensor.battery_motion_sensor_gabinet
-          - sensor.battery_motion_sensor_antek
-          - sensor.battery_motion_sensor_sypialnia
+          - sensor.battery_xiaomi_motion_salon
+          - sensor.battery_xiaomi_motion_aq2_salon
+          - sensor.battery_xiaomi_motion_aq2_pracownia
+          - sensor.battery_xiaomi_motion_aq2_goscinny
+          - sensor.battery_xiaomi_motion_schody
+          - sensor.battery_xiaomi_motion_antresola
+          - sensor.battery_xiaomi_motion_aq2_gabinet
+          - sensor.battery_xiaomi_motion_aq2_antek
+          - sensor.battery_xiaomi_motion_aq2_sypialnia
       - type: custom:battery-state-card
         name: "Baterie sensorów temperatury"
         tap_action:
@@ -871,16 +871,16 @@ views:
           - value: 100
             color: var(--state-icon-color)
         entities:
-          - sensor.battery_temp_humi_sensor_kuchnia
-          - sensor.battery_temp_humi_sensor_salon
-          - sensor.battery_temp_humi_sensor_pracownia
-          - sensor.battery_temp_humi_sensor_goscinny
-          - sensor.battery_temp_humi_sensor_antresola
-          - sensor.battery_temp_humi_sensor_gabinet
-          - sensor.battery_temp_humi_sensor_antek
-          - sensor.battery_temp_humi_sensor_sypialnia
-          - sensor.battery_temp_humi_sensor_lazienka
-          - sensor.battery_temp_humi_sensor_outdoor
+          - sensor.battery_shelly_ht_kuchnia
+          - sensor.battery_xiaomi_ht_salon
+          - sensor.battery_xiaomi_ht_pracownia
+          - sensor.battery_xiaomi_ht_goscinny
+          - sensor.battery_xiaomi_ht_antresola
+          - sensor.battery_xiaomi_ht_gabinet
+          - sensor.battery_xiaomi_ht_antek
+          - sensor.battery_xiaomi_ht_sypialnia
+          - sensor.battery_xiaomi_ht_lazienka
+          - sensor.battery_xiaomi_weather_v1_outdoor
       - type: custom:battery-state-card
         name: "Baterie sensorów wody"
         tap_action:
@@ -893,7 +893,7 @@ views:
           - value: 100
             color: var(--state-icon-color)
         entities:
-          - sensor.battery_water_leak_sensor_gabinet
+          - sensor.battery_shelly_flood_kuchnia
       - type: custom:battery-state-card
         name: "Baterie termostatów"
         tap_action:
@@ -925,13 +925,13 @@ views:
           - value: 100
             color: var(--state-icon-color)
         entities:
-          - sensor.battery_window_sensor_kuchnia
-          - sensor.battery_door_sensor_pracownia
-          - sensor.battery_window_sensor_antresola
-          - sensor.battery_window_sensor_gabinet
-          - sensor.battery_window_sensor_antek
-          - sensor.battery_window_sensor_sypialnia
-          - sensor.battery_door_sensor_sypialnia
+          - sensor.battery_xiaomi_magnet_kuchnia
+          - sensor.battery_xiaomi_magnet_pracownia
+          - sensor.battery_xiaomi_magnet_antresola
+          - sensor.battery_xiaomi_magnet_gabinet
+          - sensor.battery_xiaomi_magnet_antek
+          - sensor.battery_xiaomi_magnet_window_sypialnia
+          - sensor.battery_xiaomi_magnet_door_sypialnia
       - type: custom:battery-state-card
         name: "Baterie przełączników"
         tap_action:
@@ -944,9 +944,9 @@ views:
           - value: 100
             color: var(--state-icon-color)
         entities:
-          - sensor.battery_switch_light_salon_1
-          - sensor.battery_switch_light_salon_2
-          - sensor.battery_switch_light_antek
+          - sensor.battery_xiaomi_switch_salon_1
+          - sensor.battery_xiaomi_switch_salon_2
+          - sensor.battery_xiaomi_switch_antek
   - id: climate
     icon: mdi:cloud
     title: "Klimat"
@@ -961,7 +961,7 @@ views:
             entity_humidity: sensor.humidity_outdoor
             entity_pressure: sensor.pressure_outdoor
             entity_temperature: sensor.temperature_outdoor
-            entity_apparent_temp: sensor.dark_sky_apparent_temperature
+            entity_apparent_temp: sensor.dom_realfeel_temperature
             entity_visibility: sensor.dark_sky_visibility
             entity_wind_bearing: sensor.dark_sky_wind_bearing
             entity_wind_speed: sensor.dark_sky_wind_speed
@@ -1105,7 +1105,7 @@ views:
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - sensor.dark_sky_uv_index
+              - sensor.dom_uv_index
             line_color: "#ffce57"
             decimals: 0
   - id: misc

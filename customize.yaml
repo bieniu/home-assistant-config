@@ -304,8 +304,7 @@ sensor.servers_gabinet_energy_monthly:
 sensor.computer_gabinet_energy_monthly:
   friendly_name: "Komputer"
 
-sensor.dark_sky_uv_index:
-  friendly_name: "Indeks UV"
+  sensor.dom_uv_index:
   unit_of_measurement: " "
 
 #### AIRLY ####
