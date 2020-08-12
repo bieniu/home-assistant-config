@@ -71,7 +71,6 @@ group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
-device_tracker: !include device_tracker.yaml
 media_player: !include media_player.yaml
 switch: !include switches.yaml
 light: !include lights.yaml
@@ -140,3 +139,10 @@ yeelight:
     yeelight-yldd01yl-6707fc.bieniu.lan:
       model: 'strip1'
       <<: *YEELIGHT_PARAMS
+
+asuswrt:
+  host: !secret router_hostname
+  username: !secret router_username
+  protocol: "ssh"
+  mode: "ap"
+  ssh_key: "/config/.storage/asuswrt_key"

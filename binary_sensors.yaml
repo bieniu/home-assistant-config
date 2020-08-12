@@ -1,12 +1,12 @@
 - platform: ping
-  host: !secret modem_hostname
-  name: modem_status
+  host: !secret router_hostname
+  name: router_status
   count: 2
   scan_interval: 180
 
 - platform: ping
-  host: !secret nuc_hostname
-  name: nuc_status
+  host: !secret modem_hostname
+  name: modem_status
   count: 2
   scan_interval: 180
 
@@ -19,7 +19,7 @@
       value_template: >-
         {{ is_state('group.household', 'home')
            or is_state('group.family', 'home')
-           or is_state('media_player.bravia', 'on')
+           or is_state('media_player.denon', 'on')
            or is_state('input_boolean.guests', 'on') }}
 
     windows:
@@ -46,10 +46,6 @@
         {{ is_state('binary_sensor.motion_salon_1', 'on')
            or is_state('binary_sensor.motion_salon_2', 'on') }}
 
-    router_status:
-      value_template: "{{ is_state('device_tracker.router', 'home') }}"
-      friendly_name: "Asus RT-AC86U"
-
     access_point_status:
       value_template: "{{ is_state('device_tracker.access_point', 'home') }}"
       friendly_name: "Asus RT-AC68U"
@@ -57,6 +53,10 @@
     synology_status:
       value_template: "{{ is_state('device_tracker.synology', 'home') }}"
       friendly_name: "Synology DS110j"
+
+    nuc_status:
+      value_template: "{{ is_state('device_tracker.intel_nuc', 'home') }}"
+      friendly_name: "Intel NUC 5CPYH"
 
     stacjonarny_status:
       value_template: "{{ is_state('device_tracker.stacjonarny', 'home') }}"

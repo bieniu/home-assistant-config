@@ -85,13 +85,13 @@ sensor.ha_version_installed:
 #### NETWORK DEVICES ####
 binary_sensor.router_status:
   icon: mdi:router-network
+  friendly_name: "Asus RT-AC86U"
 binary_sensor.access_point_status:
   icon: mdi:access-point-network
 binary_sensor.synology_status:
   icon: mdi:nas
 binary_sensor.nuc_status:
   icon: mdi:server
-  friendly_name: "Intel NUC 5CPYH"
 binary_sensor.dune_status:
   icon: mdi:disc-player
 binary_sensor.raspberry_status:

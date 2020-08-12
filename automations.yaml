@@ -319,6 +319,33 @@
       - switch.tree_sypialnia
       - switch.tree_antek
 
+# powiadomienie o zbliżającej się burzy
+- id: notification_storm_comming
+  alias: "Notification Storm Comming"
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.lightning_distance
+    below: 10
+  action:
+    - service: script.notify_if_home
+      data_template:
+        title: "Burza w pobliżu domu"
+        message: "Wyładowania atmosferyczne występują states('sensor.lightning_distance') km od domu, zbliża się burza."
+        tag: "notification-storm-comming"
+        location: "{{ states('person.maciek') }}"
+        notification_service: !secret maciek_notify_service
+        notification_type: "android"
+    - service: script.notify_if_home
+      data_template:
+        title: "Burza w pobliżu domu"
+        message: "Wyładowania atmosferyczne występują states('sensor.lightning_distance') km od domu, zbliża się burza."
+        tag: "notification-storm-comming"
+        location: "{{ states('person.edyta') }}"
+        notification_service: !secret edyta_notify_service
+        notification_type: "ios"
+    - delay: "00:15:00"
+
+
 # powiadomienie o końcu zmywania
 - id: notification_dishwasher_end
   alias: "Notification Dishwasher End"
@@ -839,8 +866,6 @@
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.away_mode
-    - service: fan.turn_off
-      entity_id: fan.pedestal_salon
     - condition: state
       entity_id: group.windows
       state: "on"
@@ -877,7 +902,7 @@
           state: "off"
         - condition: numeric_state
           entity_id: sensor.temperature_salon
-          above: 27
+          above: 26
     - service: fan.turn_on
       entity_id: fan.pedestal_salon
 
@@ -939,7 +964,7 @@
   alias: "Heating Night Salon and Kuchnia"
   trigger:
     platform: state
-    entity_id: media_player.bravia
+    entity_id: media_player.denon
     to: "off"
   condition:
     - condition: state
@@ -972,7 +997,7 @@
   alias: "Climate Turn Off Fan"
   trigger:
     platform: state
-    entity_id: media_player.bravia
+    entity_id: media_player.denon
     to: "off"
   condition:
     - condition: state
@@ -1251,7 +1276,7 @@
     from: "off"
     to: "on"
   action:
-    service: script.light_away_mode
+    service: script.devices_away_mode
 
 ## SALON ##
 # restart żarówek w salonie gdy niedostępne
@@ -1301,9 +1326,9 @@
     - service: light.turn_off
       entity_id: light.lamp_salon
 
-# wyłączenie świateł w salonie jeśli nie ma ruchu przez godzinę i jest po północy
-- id: light_turn_off_in_salon_when_no_motion_and_after_midnight
-  alias: "Light Turn Off In Salon When No Motion And After Midnight"
+# wyłączenie urządzeń w salonie jeśli nie ma ruchu przez godzinę i jest po północy
+- id: devices_turn_off_in_salon_when_no_motion_and_after_midnight
+  alias: "Devices Turn Off In Salon When No Motion And After Midnight"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_salon
@@ -1317,7 +1342,7 @@
         after: "00:30:00"
         before: "06:00:00"
       - condition: state
-        entity_id: media_player.bravia
+        entity_id: media_player.denon
         state: "off"
       - condition: or
         conditions:
@@ -1330,12 +1355,16 @@
           - condition: state
             entity_id: light.lamp_salon
             state: "on"
+          - condition: state
+            entity_id: fan.pedestal_salon
+            state: "on"
   action:
     service: homeassistant.turn_off
     entity_id:
       - light.bulbs_salon
       - light.leds_salon
       - light.lamp_salon
+      - fan.pedestal_salon
 
 # automatyczna scena oświetlenia w salonie
 - id: light_scene_salon_auto_when_bulbs_turn_on
@@ -1439,7 +1468,7 @@
       from: "on"
       to: "off"
     - platform: state
-      entity_id: media_player.bravia
+      entity_id: media_player.denon
       to: "off"
   condition:
     condition: and
@@ -1449,7 +1478,7 @@
           - input_boolean.away_mode
           - light.leds_salon
           - light.bulbs_salon
-          - media_player.bravia
+          - media_player.denon
         state: "off"
       - condition: state
         entity_id:
@@ -2070,7 +2099,7 @@
     platform: state
     entity_id: remote.salon
   action:
-    - delay: "00:00:05"
+    - delay: "00:00:06"
     - condition: template
       value_template: "{{ trigger.to_state.attributes.current_activity != 'PowerOff' }}"
     - service: media_player.select_source
