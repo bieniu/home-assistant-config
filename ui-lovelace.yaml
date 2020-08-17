@@ -849,7 +849,7 @@ views:
           - value: 100
             color: var(--state-icon-color)
         entities:
-          - sensor.battery_motion_sensor_przedpokoj
+          - sensor.battery_xiaomi_motion_aq2_przedpokoj
           - sensor.battery_xiaomi_motion_salon
           - sensor.battery_xiaomi_motion_aq2_salon
           - sensor.battery_xiaomi_motion_aq2_pracownia
@@ -1166,3 +1166,5 @@ views:
             show_header_toggle: false
             entities:
               - input_select.log_level
+              - entity: sensor.shelly_1_328900_uptime
+                format: relative

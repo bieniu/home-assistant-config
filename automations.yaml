@@ -198,7 +198,6 @@
         - binary_sensor.shelly_plug_s_7aecf4_firmware_update
       from: "off"
       to: "on"
-  condition:
   action:
     - service: python_script.notify
       data_template:
@@ -1956,11 +1955,10 @@
   alias: "Light Turn Off Antek Cabinet At Night"
   trigger:
     - platform: time
-      at: "22:00:00"
-    - platform: time
-      at: "23:00:00"
-    - platform: time
-      at: "00:00:00"
+      at:
+        - "22:00:00"
+        - "23:00:00"
+        - "00:00:00"
   condition:
     condition: state
     entity_id: switch.cabinet_antek
@@ -2093,15 +2091,18 @@
 
 #### HARMONY #####################################################################################
 # poprawianie przełączania wejść amplitunera
-- id: input_switch_helper
-  alias: "Input Switch Helper"
+- id: denon_bravia_input_helper
+  alias: "Denon Bravia Input Switch Helper"
   trigger:
     platform: state
     entity_id: remote.salon
-  action:
-    - delay: "00:00:06"
+  condition:
+    - condition: template
+      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
     - condition: template
       value_template: "{{ trigger.to_state.attributes.current_activity != 'PowerOff' }}"
+  action:
+    - delay: "00:00:06"
     - service: media_player.select_source
       entity_id: media_player.denon
       data_template:
@@ -2147,6 +2148,8 @@
     entity_id: remote.salon
   condition:
     - condition: template
+      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
+    - condition: template
       value_template: "{{ trigger.to_state.attributes.current_activity == 'PowerOff' }}"
     - condition: state
       entity_id: media_player.bravia
@@ -2166,6 +2169,8 @@
     platform: state
     entity_id: remote.salon
   condition:
+    - condition: template
+      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
     - condition: template
       value_template: "{{ trigger.from_state.attributes.current_activity == 'PlayStation' }}"
     - condition: template
@@ -2187,8 +2192,10 @@
     platform: state
     entity_id: remote.salon
   condition:
-    condition: template
-    value_template: "{{ trigger.to_state.attributes.current_activity == 'PowerOff' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.attributes.current_activity == 'PowerOff' }}"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2205,8 +2212,10 @@
     platform: state
     entity_id: remote.salon
   condition:
-    condition: template
-    value_template: "{{ trigger.to_state.attributes.current_activity == 'Telewizja' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.attributes.current_activity == 'Telewizja' }}"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2223,8 +2232,10 @@
     platform: state
     entity_id: remote.salon
   condition:
-    condition: template
-    value_template: "{{ trigger.to_state.attributes.current_activity == 'Filmy' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.attributes.current_activity == 'Filmy' }}"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2241,8 +2252,10 @@
     platform: state
     entity_id: remote.salon
   condition:
-    condition: template
-    value_template: "{{ trigger.to_state.attributes.current_activity == 'Muzyka' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.attributes.current_activity == 'Muzyka' }}"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2259,8 +2272,10 @@
     platform: state
     entity_id: remote.salon
   condition:
-    condition: template
-    value_template: "{{ trigger.to_state.attributes.current_activity == 'Smart TV' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.attributes.current_activity == 'Smart TV' }}"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2277,8 +2292,10 @@
     platform: state
     entity_id: remote.salon
   condition:
-    condition: template
-    value_template: "{{ trigger.to_state.attributes.current_activity == 'Fire TV' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.attributes.current_activity == 'Fire TV' }}"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2295,8 +2312,10 @@
     platform: state
     entity_id: remote.salon
   condition:
-    condition: template
-    value_template: "{{ trigger.to_state.attributes.current_activity == 'PlayStation' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.attributes.current_activity == 'PlayStation' }}"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2315,8 +2334,10 @@
     platform: state
     entity_id: remote.salon
   condition:
-    condition: template
-    value_template: "{{ trigger.to_state.attributes.current_activity == 'Xbox' }}"
+    - condition: template
+      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
+    - condition: template
+      value_template: "{{ trigger.to_state.attributes.current_activity == 'Xbox' }}"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2573,6 +2594,9 @@
         relay-0: "light"
       shellyswitch-5B2604:
         relay-1: "light"
+      shellyht-E00ABD:
+        powered: "ac"
+        force_update_sensors: true
 
 - id: frontend_set_theme
   alias: "Frontend Set Theme"
