@@ -3,8 +3,10 @@ windows:
   entities:
     - binary_sensor.balcony_door_sypialnia
     - binary_sensor.window_kuchnia
+    - binary_sensor.window_salon
     - binary_sensor.balcony_door_pracownia
-    - binary_sensor.window_antresola
+    - binary_sensor.window_antresola_1
+    - binary_sensor.window_antresola_2
     - binary_sensor.window_antek
     - binary_sensor.window_sypialnia
     - binary_sensor.window_gabinet
@@ -22,4 +24,3 @@ family:
     - person.grazyna
     - person.romana
     - person.jerzy
-

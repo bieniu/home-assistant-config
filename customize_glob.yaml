@@ -9,31 +9,16 @@
   device_class: pressure
 
 "binary_sensor.motion_*":
-  icon: mdi:run
   device_class: motion
 
 "binary_sensor.balcony_door_*":
-  device_class: opening
-  icon: mdi:window-open
+  device_class: window
 
 "binary_sensor.window_*":
-  device_class: opening
-  icon: mdi:window-open
+  device_class: window
 
 "sensor.illumination_*":
   icon: mdi:lightbulb-on-outline
-  device_class: illuminance
-
-"sensor.*power*":
-  device_class: power
-  icon: mdi:flash-outline
-
-"sensor.*energy*":
-  device_class: power
-  icon: mdi:flash-outline
-
-"sensor.battery_*":
-  device_class: battery
 
 #### CLIMATE ####
 "climate.thermostat_*":
@@ -46,16 +31,16 @@
   icon: mdi:pine-tree
 "*.christmas_lights_*":
   icon: mdi:pine-tree  # string-lights
+"switch.tree_*":
+  icon: mdi:tree
 
 #### ESPHOME ####
 "binary_sensor.sonoff_*_status":
   icon: mdi:light-switch
 "binary_sensor.blitzwolf_*_status":
   icon: mdi:light-switch
-"sensor.sonoff_*_uptime":
-  unit_of_measurement: "dni"
-"sensor.blitzwolf_*_uptime":
-  unit_of_measurement: "dni"
+"sensor.sonoff_basic_*_uptime":
+  device_class: timestamp
 
 #### SHELLY ####
 "binary_sensor.shelly_1_*_status":
@@ -81,24 +66,11 @@
 "binary_sensor.yeelight_yldp*_status":
   icon: mdi:lightbulb-outline
 
-"sensor.wemos*_status":
-  device_class: signal_strength
-  unit_of_measurement: "%"
-
 "binary_sensor.*_status":
   device_class: connectivity
-
-"sensor.*_wifi_signal":
-  device_class: signal_strength
 
 "binary_sensor.echo_*_status":
   icon: mdi:amazon-alexa
 
-"switch.tree_*":
-  icon: mdi:tree
-
-"binary_sensor.laptop*status":
+"binary_sensor.laptop*_status":
   icon: mdi:laptop
-
-"media_player.echo_*":
-  icon: mdi:amazon-alexa

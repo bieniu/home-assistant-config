@@ -108,7 +108,7 @@ heating_night:
     - condition: template
       value_template: >-
         {{ is_state("input_boolean.guests", "off") and
-           is_state("media_player.denon", "off") }}
+           is_state("media_player.denon_salon", "off") }}
     - service: fan.turn_off
       entity_id: fan.humidifier_salon
     - service: climate.set_temperature

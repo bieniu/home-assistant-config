@@ -40,6 +40,7 @@ light.leds_salon:
   icon: mdi:led-variant-on
 light.bulbs_salon:
   friendly_name: "Żarówki"
+  icon: mdi:lightbulb-multiple
 
 #### UPS ####
 sensor.ups_status:
@@ -170,11 +171,6 @@ switch.stacjonarny:
   friendly_name: "Komputer"
   icon: mdi:desktop-tower
 
-#### MEDIA PLAYERS ####
-media_player.denon:
-  friendly_name: "Amplituner"
-  icon: mdi:audio-video
-
 #### SCRIPTS ####
 script.restart_hass:
   icon: mdi:refresh
@@ -235,7 +231,11 @@ binary_sensor.balcony_door_pracownia:
   location: "pracownia"
 binary_sensor.window_kuchnia:
   location: "kuchnia"
-binary_sensor.window_antresola:
+binary_sensor.window_salon:
+  location: "salon"
+binary_sensor.window_antresola_1:
+  location: "antresola"
+binary_sensor.window_antresola_2:
   location: "antresola"
 binary_sensor.window_antek:
   location: "pokój Antka"
@@ -304,7 +304,7 @@ sensor.servers_gabinet_energy_monthly:
 sensor.computer_gabinet_energy_monthly:
   friendly_name: "Komputer"
 
-  sensor.dom_uv_index:
+sensor.dom_uv_index:
   unit_of_measurement: " "
 
 #### AIRLY ####
@@ -339,3 +339,6 @@ binary_sensor.shelly_2_5b2604_overpower_0:
 
 binary_sensor.shelly_2_5b2604_overpower_1:
   relay: light.leds_salon
+
+sensor.sonoff_basic_5dfba8_uptime:
+  device_class: timestamp

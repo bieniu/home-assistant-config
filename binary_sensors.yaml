@@ -19,7 +19,7 @@
       value_template: >-
         {{ is_state('group.household', 'home')
            or is_state('group.family', 'home')
-           or is_state('media_player.denon', 'on')
+           or is_state('media_player.denon_salon', 'on')
            or is_state('input_boolean.guests', 'on') }}
 
     windows:
@@ -27,21 +27,32 @@
       device_class: "window"
       value_template: >-
         {{ is_state('binary_sensor.window_antek', 'on')
-           or is_state('binary_sensor.window_antresola', 'on')
+           or is_state('binary_sensor.window_antresola_1', 'on')
+           or is_state('binary_sensor.window_antresola_2', 'on')
            or is_state('binary_sensor.window_gabinet', 'on')
            or is_state('binary_sensor.window_kuchnia', 'on')
+           or is_state('binary_sensor.window_salon', 'on')
            or is_state('binary_sensor.window_sypialnia', 'on')
            or is_state('binary_sensor.balcony_door_pracownia', 'on')
            or is_state('binary_sensor.balcony_door_sypialnia', 'on') }}
 
+    windows_antresola:
+      friendly_name: "Okna"
+      device_class: "window"
+      value_template: >-
+        {{ is_state('binary_sensor.window_antresola_1', 'on')
+            or is_state('binary_sensor.window_antresola_2', 'on') }}
+
     motion_antresola:
       friendly_name: "Ruch"
+      device_class: "motion"
       value_template: >-
         {{ is_state('binary_sensor.motion_antresola_2', 'on')
            or is_state('binary_sensor.motion_antresola_1', 'on') }}
 
     motion_salon:
       friendly_name: "Ruch"
+      device_class: "motion"
       value_template: >-
         {{ is_state('binary_sensor.motion_salon_1', 'on')
            or is_state('binary_sensor.motion_salon_2', 'on') }}

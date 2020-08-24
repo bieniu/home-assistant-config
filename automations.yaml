@@ -329,7 +329,7 @@
     - service: script.notify_if_home
       data_template:
         title: "Burza w pobliżu domu"
-        message: "Wyładowania atmosferyczne występują states('sensor.lightning_distance') km od domu, zbliża się burza."
+        message: "Wyładowania atmosferyczne występują {{ states('sensor.lightning_distance') }} km od domu."
         tag: "notification-storm-comming"
         location: "{{ states('person.maciek') }}"
         notification_service: !secret maciek_notify_service
@@ -337,13 +337,12 @@
     - service: script.notify_if_home
       data_template:
         title: "Burza w pobliżu domu"
-        message: "Wyładowania atmosferyczne występują states('sensor.lightning_distance') km od domu, zbliża się burza."
+        message: "Wyładowania atmosferyczne występują {{ states('sensor.lightning_distance') }} km od domu."
         tag: "notification-storm-comming"
         location: "{{ states('person.edyta') }}"
         notification_service: !secret edyta_notify_service
         notification_type: "ios"
     - delay: "00:15:00"
-
 
 # powiadomienie o końcu zmywania
 - id: notification_dishwasher_end
@@ -430,7 +429,7 @@
       {% macro dead_unavailable_entities() %}
         {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor', 'media_player'] -%}
         {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
-        {%- set ignored = [] -%}
+        {%- set ignored = ['media_player.dune_salon'] -%}
         {% for domain in domains -%}
           {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
             - {{ item.name }} ({{ item.entity_id }})
@@ -446,7 +445,7 @@
           {% macro dead_unavailable_entities() %}
             {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor', 'media_player'] -%}
             {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
-            {%- set ignored = [] -%}
+            {%- set ignored = ['media_player.dune_salon'] -%}
             {% for domain in domains -%}
               {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
            - {{ item.name }} ({{ item.entity_id }})
@@ -963,7 +962,7 @@
   alias: "Heating Night Salon and Kuchnia"
   trigger:
     platform: state
-    entity_id: media_player.denon
+    entity_id: media_player.denon_salon
     to: "off"
   condition:
     - condition: state
@@ -996,7 +995,7 @@
   alias: "Climate Turn Off Fan"
   trigger:
     platform: state
-    entity_id: media_player.denon
+    entity_id: media_player.denon_salon
     to: "off"
   condition:
     - condition: state
@@ -1341,7 +1340,7 @@
         after: "00:30:00"
         before: "06:00:00"
       - condition: state
-        entity_id: media_player.denon
+        entity_id: media_player.denon_salon
         state: "off"
       - condition: or
         conditions:
@@ -1467,7 +1466,7 @@
       from: "on"
       to: "off"
     - platform: state
-      entity_id: media_player.denon
+      entity_id: media_player.denon_salon
       to: "off"
   condition:
     condition: and
@@ -1477,7 +1476,7 @@
           - input_boolean.away_mode
           - light.leds_salon
           - light.bulbs_salon
-          - media_player.denon
+          - media_player.denon_salon
         state: "off"
       - condition: state
         entity_id:
@@ -1532,10 +1531,10 @@
   alias: "Light Scene Film"
   trigger:
     - platform: state
-      entity_id: media_player.dune
+      entity_id: media_player.dune_salon
       to: "playing"
     - platform: state
-      entity_id: media_player.playstation
+      entity_id: media_player.playstation_salon
       to: "playing"
     - platform: state
       entity_id: input_select.salon_harmony
@@ -1567,13 +1566,13 @@
   alias: "Light Scene Auto After Film"
   trigger:
     - platform: state
-      entity_id: media_player.dune
+      entity_id: media_player.dune_salon
       from: "playing"
       to: "on"
       for:
         seconds: 20
     - platform: state
-      entity_id: media_player.playstation
+      entity_id: media_player.playstation_salon
       from: "playing"
       to: "idle"
       for:
@@ -2065,8 +2064,8 @@
         state: "off"
       - condition: template
         value_template: >-
-          {{ is_state('media_player.mibox', 'off') or
-             is_state('media_player.mibox', 'unavailable') }}
+          {{ is_state('media_player.mibox_goscinny', 'off') or
+             is_state('media_player.mibox_goscinny', 'unavailable') }}
       - condition: numeric_state
         entity_id: sensor.illumination_goscinny
         below: 9
@@ -2104,7 +2103,7 @@
   action:
     - delay: "00:00:06"
     - service: media_player.select_source
-      entity_id: media_player.denon
+      entity_id: media_player.denon_salon
       data_template:
         source: >-
           {% if trigger.to_state.attributes.current_activity == 'Telewizja' %}
@@ -2123,7 +2122,7 @@
             TV
           {% endif %}
     - service: media_player.select_source
-      entity_id: media_player.bravia
+      entity_id: media_player.bravia_salon
       data_template:
         source: >-
           {% if trigger.to_state.attributes.current_activity == 'Telewizja' %}
@@ -2152,15 +2151,15 @@
     - condition: template
       value_template: "{{ trigger.to_state.attributes.current_activity == 'PowerOff' }}"
     - condition: state
-      entity_id: media_player.bravia
+      entity_id: media_player.bravia_salon
       state: "on"
   action:
     - delay: "00:00:02"
     - condition: state
-      entity_id: media_player.bravia
+      entity_id: media_player.bravia_salon
       state: "on"
     - service: media_player.turn_off
-      entity_id: media_player.bravia
+      entity_id: media_player.bravia_salon
 
 # wyłączenie PlayStation jeśli Harmony przejdzie do aktywności innej niż PlayStation
 - id: harmony_turn_off_playstation
@@ -2176,15 +2175,15 @@
     - condition: template
       value_template: "{{ trigger.to_state.attributes.current_activity != 'PlayStation' }}"
     - condition: state
-      entity_id: media_player.playstation
+      entity_id: media_player.playstation_salon
       state: "idle"
   action:
     - delay: "00:00:10"
     - condition: state
-      entity_id: media_player.playstation
+      entity_id: media_player.playstation_salon
       state: "idle"
     - service: media_player.turn_off
-      entity_id: media_player.playstation
+      entity_id: media_player.playstation_salon
 
 - id: harmony_turn_off_tv
   alias: "Harmony Turn Off TV"
@@ -2326,7 +2325,7 @@
     - service: input_boolean.turn_off
       entity_id: input_boolean.harmony_command
     - service: media_player.turn_on
-      entity_id: media_player.playstation
+      entity_id: media_player.playstation_salon
 
 - id: harmony_starts_xbox
   alias: "Harmony Starts Xbox"
@@ -2439,7 +2438,7 @@
   action:
     - service: script.harmony_playstation
     - service: media_player.turn_on
-      entity_id: media_player.playstation
+      entity_id: media_player.playstation_salon
 
 - id: hass_starts_xbox
   alias: "HASS Starts Xbox"

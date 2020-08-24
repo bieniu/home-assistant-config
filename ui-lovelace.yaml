@@ -151,6 +151,7 @@ views:
             show_header_toggle: false
             state_color: true
             entities:
+              - binary_sensor.window_salon
               - entity: binary_sensor.motion_salon
                 secondary_info: last-changed
               - type: conditional
@@ -171,7 +172,7 @@ views:
               - input_select.light_scenes_salon
               - input_select.salon_harmony
               - type: custom:mini-media-player
-                entity: media_player.bravia
+                entity: media_player.bravia_salon
                 hide:
                   controls: true
                   volume: true
@@ -180,7 +181,7 @@ views:
                 info: scroll
                 group: true
               - type: custom:mini-media-player
-                entity: media_player.denon
+                entity: media_player.denon_salon
                 hide:
                   controls: true
                   power: true
@@ -190,7 +191,7 @@ views:
                 group: true
               - type: conditional
                 conditions:
-                  - entity: media_player.dune
+                  - entity: media_player.dune_salon
                     state_not: "unavailable"
                 row:
                   type: custom:mini-media-player
@@ -203,7 +204,7 @@ views:
                   info: scroll
                   group: true
               - type: custom:mini-media-player
-                entity: media_player.firetv
+                entity: media_player.firetv_salon
                 hide:
                   volume: true
                   controls: true
@@ -212,7 +213,7 @@ views:
                 info: scroll
                 group: true
               - type: custom:mini-media-player
-                entity: media_player.playstation
+                entity: media_player.playstation_salon
                 hide:
                   controls: true
                   volume: true
@@ -222,7 +223,7 @@ views:
                 info: scroll
                 group: true
               - type: custom:mini-media-player
-                entity: media_player.echo_show
+                entity: media_player.echo_show_salon
                 hide:
                   controls: true
                   volume: true
@@ -237,42 +238,42 @@ views:
                       type: "service"
                       id: media_player.play_media
                       data:
-                        entity_id: media_player.echo_show
+                        entity_id: media_player.echo_show_salon
                         media_content_type: "TUNEIN"
                         media_content_id: "RMF FM in everywhere group"
                     - name: "MUZO FM"
                       type: "service"
                       id: media_player.play_media
                       data:
-                        entity_id: media_player.echo_show
+                        entity_id: media_player.echo_show_salon
                         media_content_type: "TUNEIN"
                         media_content_id: "MUZO FM in everywhere group"
                     - name: "Radio ZET"
                       type: "service"
                       id: media_player.play_media
                       data:
-                        entity_id: media_player.echo_show
+                        entity_id: media_player.echo_show_salon
                         media_content_type: "TUNEIN"
                         media_content_id: "Radio ZET in everywhere group"
                     - name: "Spotify [Antek]"
                       type: "service"
                       id: media_player.play_media
                       data:
-                        entity_id: media_player.echo_show
+                        entity_id: media_player.echo_show_salon
                         media_content_type: "SPOTIFY"
                         media_content_id: "in everywhere group playlist Antek"
                     - name: "Spotify [Edyta]"
                       type: "service"
                       id: media_player.play_media
                       data:
-                        entity_id: media_player.echo_show
+                        entity_id: media_player.echo_show_salon
                         media_content_type: "SPOTIFY"
                         media_content_id: "in everywhere group playlist Edyta"
                     - name: "Spotify [Maciek]"
                       type: "service"
                       id: media_player.play_media
                       data:
-                        entity_id: media_player.echo_show
+                        entity_id: media_player.echo_show_salon
                         media_content_type: "SPOTIFY"
                         media_content_id: "in everywhere group playlist Maciek"
       - type: vertical-stack
@@ -290,9 +291,9 @@ views:
             show_header_toggle: false
             state_color: true
             entities:
+              - binary_sensor.balcony_door_pracownia
               - entity: binary_sensor.motion_pracownia
                 secondary_info: last-changed
-              - binary_sensor.balcony_door_pracownia
               - switch.lamp_pracownia
       - type: vertical-stack
         in_card: true
@@ -313,7 +314,7 @@ views:
                 secondary_info: last-changed
               - switch.lamp_goscinny
               - type: custom:mini-media-player
-                entity: media_player.mibox
+                entity: media_player.mibox_goscinny
                 name: "Mi Box"
                 hide:
                   controls: true
@@ -336,7 +337,7 @@ views:
             show_header_toggle: false
             state_color: true
             entities:
-              - binary_sensor.window_antresola
+              - binary_sensor.windows_antresola
               - entity: binary_sensor.motion_antresola
                 secondary_info: last-changed
               - type: conditional
@@ -399,7 +400,7 @@ views:
               - switch.cabinet_antek
               - switch.tree_antek
               - type: custom:mini-media-player
-                entity: media_player.echo_plus
+                entity: media_player.echo_plus_antek
                 hide:
                   controls: true
                   volume: true
@@ -436,7 +437,7 @@ views:
               - light.lightstrip_sypialnia
               - switch.tree_sypialnia
               - type: custom:mini-media-player
-                entity: media_player.echo_dot
+                entity: media_player.echo_dot_sypialnia
                 hide:
                   controls: true
                   volume: true
@@ -546,7 +547,8 @@ views:
             entities:
               - sensor.ha_version_current
               - sensor.ha_version_installed
-              - sensor.ha_last_restart
+              - entity: sensor.ha_last_restart
+                # format: relative
               - sensor.ha_database_size
           - type: vertical-stack
             in_card: true
@@ -557,7 +559,8 @@ views:
                 entities:
                   - sensor.disk_use_percent
                   - sensor.nuc_cpu_temp
-                  - sensor.nuc_last_boot
+                  - entity: sensor.last_boot
+                    format: relative
                   - entity: sensor.ssl_certificate_expiry
                     style: |
                       :host {
@@ -871,7 +874,6 @@ views:
           - value: 100
             color: var(--state-icon-color)
         entities:
-          - sensor.battery_shelly_ht_kuchnia
           - sensor.battery_xiaomi_ht_salon
           - sensor.battery_xiaomi_ht_pracownia
           - sensor.battery_xiaomi_ht_goscinny
@@ -926,8 +928,10 @@ views:
             color: var(--state-icon-color)
         entities:
           - sensor.battery_xiaomi_magnet_kuchnia
+          - sensor.battery_xiaomi_magnet_salon
           - sensor.battery_xiaomi_magnet_pracownia
-          - sensor.battery_xiaomi_magnet_antresola
+          - sensor.battery_xiaomi_magnet_antresola_1
+          - sensor.battery_xiaomi_magnet_antresola_2
           - sensor.battery_xiaomi_magnet_gabinet
           - sensor.battery_xiaomi_magnet_antek
           - sensor.battery_xiaomi_magnet_window_sypialnia
@@ -1166,5 +1170,3 @@ views:
             show_header_toggle: false
             entities:
               - input_select.log_level
-              - entity: sensor.shelly_1_328900_uptime
-                format: relative
