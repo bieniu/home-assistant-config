@@ -41,6 +41,12 @@
   icon: mdi:light-switch
 "sensor.sonoff_basic_*_uptime":
   device_class: timestamp
+"sensor.wemos_d1_mini_*_uptime":
+  device_class: timestamp
+"sensor.sonoff_s26_*_uptime":
+  device_class: timestamp
+"sensor.blitzwolf_bwshp6_*_uptime":
+  device_class: timestamp
 
 #### SHELLY ####
 "binary_sensor.shelly_1_*_status":

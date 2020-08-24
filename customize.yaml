@@ -339,6 +339,3 @@ binary_sensor.shelly_2_5b2604_overpower_0:
 
 binary_sensor.shelly_2_5b2604_overpower_1:
   relay: light.leds_salon
-
-sensor.sonoff_basic_5dfba8_uptime:
-  device_class: timestamp

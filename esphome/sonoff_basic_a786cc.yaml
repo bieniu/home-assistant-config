@@ -33,6 +33,10 @@ web_server:
     username: !secret web_server_username
     password: !secret web_server_password
 
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
 binary_sensor:
   - platform: gpio
     id: button
@@ -60,12 +64,26 @@ status_led:
 
 sensor:
   - platform: uptime
-    name: "${device_name} Uptime"
-    unit_of_measurement: days
-    update_interval: 300s
-    filters:
-      - multiply: 0.000011574
+    id: uptime_sec
+    internal: true
 
   - platform: wifi_signal
     name: "${device_name} WiFi Signal"
     update_interval: 300s
+
+text_sensor:
+  - platform: template
+    name: "${device_name} Uptime"
+    update_interval: 300s
+    icon: mdi:timer-outline
+    lambda: |-
+      auto time = id(homeassistant_time).now();
+      if (time.is_valid()) {
+        int uptime_seconds = int(id(uptime_sec).state);
+        int time_timestamp = int(time.timestamp);
+        int uptime_timestamp = { time_timestamp - uptime_seconds };
+        auto uptime_text = id(homeassistant_time).now().from_epoch_local(uptime_timestamp).strftime("%Y-%m-%d %H:%M:%S");
+        return uptime_text;
+      } else {
+        return {};
+      }

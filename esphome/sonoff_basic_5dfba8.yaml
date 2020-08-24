@@ -65,7 +65,6 @@ status_led:
 sensor:
   - platform: uptime
     id: uptime_sec
-    unit_of_measurement: days
     internal: true
 
   - platform: wifi_signal
@@ -76,7 +75,7 @@ text_sensor:
   - platform: template
     name: "${device_name} Uptime"
     update_interval: 300s
-    icon: mdi:timer
+    icon: mdi:timer-outline
     lambda: |-
       auto time = id(homeassistant_time).now();
       if (time.is_valid()) {
