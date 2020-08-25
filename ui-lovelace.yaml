@@ -548,7 +548,7 @@ views:
               - sensor.ha_version_current
               - sensor.ha_version_installed
               - entity: sensor.ha_last_restart
-                # format: relative
+                format: relative
               - sensor.ha_database_size
           - type: vertical-stack
             in_card: true
@@ -561,11 +561,12 @@ views:
                   - sensor.nuc_cpu_temp
                   - entity: sensor.last_boot
                     format: relative
-                  - entity: sensor.ssl_certificate_expiry
+                  - entity: sensor.ssl_certificate_expiry_timestamp
+                    format: relative
                     style: |
                       :host {
                         --paper-item-icon-color:
-                          {% set days = states(config.entity) %}
+                          {% set days = states('sensor.ssl_certificate_expiry') %}
                           {% if days | int < 20 %}
                             var(--label-badge-red)
                           {% elif days | int < 40 %}
@@ -615,7 +616,8 @@ views:
             show_header_toggle: false
             entities:
               - sensor.synology_disk_used
-              - sensor.synology_last_boot
+              - entity: sensor.synology_last_boot
+                format: relative
       - type: vertical-stack
         cards:
           - type: entities

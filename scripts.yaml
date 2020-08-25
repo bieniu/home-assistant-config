@@ -340,3 +340,17 @@ notify_if_home:
         services:
           - service: "{{ notification_service }}"
             type: "{{ notification_type }}"
+
+restart_esphome_devices:
+  sequence:
+    service: switch.turn_on
+    entity_id:
+      - switch.blitzwolf_bw_shp6_2ad05a_restart
+      - switch.blitzwolf_bw_shp6_3766eb_restart
+      - switch.blitzwolf_bw_shp6_ecf9ea_restart
+      - switch.blitzwolf_bw_shp6_ed007d_restart
+      - switch.sonoff_basic_067c81_restart
+      - switch.sonoff_basic_5dfba8_restart
+      - switch.sonoff_basic_a786cc_restart
+      - switch.sonoff_s26_182475_restart
+      - switch.wemos_d1_mini_1c91ea_restart

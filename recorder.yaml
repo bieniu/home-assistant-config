@@ -83,7 +83,6 @@ exclude:
     - sensor.ad_version_current
     - sensor.caddy_version_current
     - sensor.esphome_version_current
-    - sensor.last_boot
     - switch.lamp_salon
     - sensor.lamp_salon_power
     - sensor.light_salon_power
