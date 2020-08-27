@@ -136,7 +136,7 @@
         {%- endif %}
       tag: "notification-hacs"
       group: "aktualizacje"
-      url: "/hacs/installed"
+      url: "/hacs/entry"
       services:
         - service: !secret maciek_notify_service
           type: "android"
@@ -326,22 +326,62 @@
     entity_id: sensor.lightning_distance
     below: 10
   action:
-    - service: script.notify_if_home
-      data_template:
-        title: "Burza w pobliżu domu"
-        message: "Wyładowania atmosferyczne występują {{ states('sensor.lightning_distance') }} km od domu."
-        tag: "notification-storm-comming"
-        location: "{{ states('person.maciek') }}"
-        notification_service: !secret maciek_notify_service
-        notification_type: "android"
-    - service: script.notify_if_home
-      data_template:
-        title: "Burza w pobliżu domu"
-        message: "Wyładowania atmosferyczne występują {{ states('sensor.lightning_distance') }} km od domu."
-        tag: "notification-storm-comming"
-        location: "{{ states('person.edyta') }}"
-        notification_service: !secret edyta_notify_service
-        notification_type: "ios"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.maciek
+          state: "home"
+        sequence:
+          service: python_script.notify
+          data_template:
+            title: "Burza w pobliżu domu"
+            message: "Wyładowania atmosferyczne występują {{ states('sensor.lightning_distance') }} km od domu."
+            tag: "notification-storm-comming"
+            services:
+              - service: !secret maciek_notify_service
+                type: "android"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.edyta
+          state: "home"
+        sequence:
+          service: python_script.notify
+          data_template:
+            title: "Burza w pobliżu domu"
+            message: "Wyładowania atmosferyczne występują {{ states('sensor.lightning_distance') }} km od domu."
+            tag: "notification-storm-comming"
+            services:
+              - service: !secret edyta_notify_service
+                type: "ios"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: media_player.bravia_salon
+          state: "on"
+        sequence:
+          service: notify.bravia
+          data_template:
+            title: "Burza w pobliżu domu"
+            message: "Wyładowania atmosferyczne występują {{ states('sensor.lightning_distance') }} km od domu."
+            data:
+              file:
+                url: !secret favicon_url
+              duration: 10
+    - choose:
+        conditions:
+          condition: state
+          entity_id: media_player.mibox_goscinny
+          state: "on"
+        sequence:
+          service: notify.mibox
+          data_template:
+            title: "Burza w pobliżu domu"
+            message: "Wyładowania atmosferyczne występują {{ states('sensor.lightning_distance') }} km od domu."
+            data:
+              file:
+                url: !secret favicon_url
+              duration: 10
     - delay: "00:15:00"
 
 # powiadomienie o końcu zmywania
@@ -489,22 +529,62 @@
       - condition: template
         value_template: "{{ states('sensor.humidifier_water_level') | int != 0 }}"
   action:
-    - service: script.notify_if_home
-      data_template:
-        title: "Uzupełnij wodę w nawilżaczu"
-        message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        tag: "notification-humidifier"
-        location: "{{ states('person.maciek') }}"
-        notification_service: !secret maciek_notify_service
-        notification_type: "android"
-    - service: script.notify_if_home
-      data_template:
-        title: "Uzupełnij wodę w nawilżaczu"
-        message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        tag: "notification-humidifier"
-        location: "{{ states('person.edyta') }}"
-        notification_service: !secret edyta_notify_service
-        notification_type: "ios"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.maciek
+          state: "home"
+        sequence:
+          service: python_script.notify
+          data_template:
+            title: "Uzupełnij wodę w nawilżaczu"
+            message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+            tag: "notification-humidifier"
+            services:
+              - service: !secret maciek_notify_service
+                type: "android"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.edyta
+          state: "home"
+        sequence:
+          service: python_script.notify
+          data_template:
+            title: "Uzupełnij wodę w nawilżaczu"
+            message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+            tag: "notification-humidifier"
+            services:
+              - service: !secret edyta_notify_service
+                type: "ios"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: media_player.bravia_salon
+          state: "on"
+        sequence:
+          service: notify.bravia
+          data_template:
+            title: "Uzupełnij wodę w nawilżaczu"
+            message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+            data:
+              file:
+                url: !secret favicon_url
+              duration: 10
+    - choose:
+        conditions:
+          condition: state
+          entity_id: media_player.mibox_goscinny
+          state: "on"
+        sequence:
+          service: notify.mibox
+          data_template:
+            title: "Uzupełnij wodę w nawilżaczu"
+            message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+            data:
+              file:
+                url: !secret favicon_url
+              duration: 10
 
 # powiadomienie o wysokim stężeniu CO2 w salonie
 - id: notification_salon_co2
@@ -530,22 +610,63 @@
         entity_id: input_boolean.away_mode
         state: "off"
   action:
-    - service: script.notify_if_home
-      data_template:
-        title: "Wysokie stężenie dwutlenku węgla"
-        message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
-        tag: "notification-high-co2"
-        location: "{{ states('person.maciek') }}"
-        notification_service: !secret maciek_notify_service
-        notification_type: "android"
-    - service: script.notify_if_home
-      data_template:
-        title: "Wysokie stężenie dwutlenku węgla"
-        message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
-        tag: "notification-high-co2"
-        location: "{{ states('person.edyta') }}"
-        notification_service: !secret edyta_notify_service
-        notification_type: "ios"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.maciek
+          state: "home"
+        sequence:
+          service: python_script.notify
+          data_template:
+            title: "Wysokie stężenie dwutlenku węgla"
+            message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
+            tag: "notification-high-co2"
+            services:
+              - service: !secret maciek_notify_service
+                type: "android"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.edyta
+          state: "home"
+        sequence:
+          service: python_script.notify
+          data_template:
+            title: "Wysokie stężenie dwutlenku węgla"
+            message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
+            tag: "notification-high-co2"
+            services:
+              - service: !secret edyta_notify_service
+                type: "ios"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: media_player.bravia_salon
+          state: "on"
+        sequence:
+          service: notify.bravia
+          data_template:
+            title: "Wysokie stężenie dwutlenku węgla"
+            message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
+            data:
+              file:
+                url: !secret favicon_url
+              duration: 10
+    - choose:
+        conditions:
+          condition: state
+          entity_id: media_player.mibox_goscinny
+          state: "on"
+        sequence:
+          service: notify.mibox
+          data_template:
+            title: "Wysokie stężenie dwutlenku węgla"
+            message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
+            data:
+              file:
+                url: !secret favicon_url
+              duration: 10
+
 
 # powiadomienie jak pojawi się woda na podłodze w kuchni
 - id: notification_water_leak_kuchnia
@@ -557,17 +678,45 @@
       from: "off"
       to: "on"
   action:
-    service: python_script.notify
-    data_template:
-      title: "Wykryto wyciek wody"
-      message: "W kuchni wykryto wodę na podłodze."
-      tag: "notification-water-leak"
-      priority: "high"
-      services:
-        - service: !secret maciek_notify_service
-          type: "android"
-        - service: !secret edyta_notify_service
-          type: "ios"
+    - service: python_script.notify
+      data_template:
+        title: "Wykryto wyciek wody"
+        message: "W kuchni wykryto wodę na podłodze."
+        tag: "notification-water-leak"
+        priority: "high"
+        services:
+          - service: !secret maciek_notify_service
+            type: "android"
+          - service: !secret edyta_notify_service
+            type: "ios"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: media_player.bravia_salon
+          state: "on"
+        sequence:
+          service: notify.bravia
+          data_template:
+            title: "Wykryto wyciek wody"
+            message: "W kuchni wykryto wodę na podłodze."
+            data:
+              file:
+                url: !secret favicon_url
+              duration: 10
+    - choose:
+        conditions:
+          condition: state
+          entity_id: media_player.mibox_goscinny
+          state: "on"
+        sequence:
+          service: notify.mibox
+          data_template:
+            title: "Wykryto wyciek wody"
+            message: "W kuchni wykryto wodę na podłodze."
+            data:
+              file:
+                url: !secret favicon_url
+              duration: 10
 
 # powiadomienie jak zbyt duże obciążenie przekaźnika
 - id: notification_relay_overpower
@@ -594,6 +743,34 @@
             type: "android"
           - service: !secret edyta_notify_service
             type: "ios"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: media_player.bravia_salon
+          state: "on"
+        sequence:
+          service: notify.bravia
+          data_template:
+            title: "Zbyt duże obciążenie przekaźnika"
+            message: "Przekaźnik {{ state_attr(trigger.to_state.attributes.relay, 'friendly_name') }} ma zbyt duże obciążenie i zostanie wyłączony."
+            data:
+              file:
+                url: !secret favicon_url
+              duration: 10
+    - choose:
+        conditions:
+          condition: state
+          entity_id: media_player.mibox_goscinny
+          state: "on"
+        sequence:
+          service: notify.mibox
+          data_template:
+            title: "Zbyt duże obciążenie przekaźnika"
+            message: "Przekaźnik {{ state_attr(trigger.to_state.attributes.relay, 'friendly_name') }} ma zbyt duże obciążenie i zostanie wyłączony."
+            data:
+              file:
+                url: !secret favicon_url
+              duration: 10
     - service: homeassistant.turn_off
       data_template:
         entity_id: "{{ trigger.to_state.attributes.relay }}"
@@ -2101,7 +2278,7 @@
     - condition: template
       value_template: "{{ trigger.to_state.attributes.current_activity != 'PowerOff' }}"
   action:
-    - delay: "00:00:06"
+    - delay: "00:00:07"
     - service: media_player.select_source
       entity_id: media_player.denon_salon
       data_template:
@@ -2500,22 +2677,62 @@
     - condition: numeric_state
       entity_id: sensor.humidifier_water_level
       below: 6
-    - service: script.notify_if_home
-      data_template:
-        title: "Uzupełnij wodę w nawilżaczu"
-        message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        tag: "notification-humidifier"
-        location: "{{ states('person.maciek') }}"
-        notification_service: !secret maciek_notify_service
-        notification_type: "android"
-    - service: script.notify_if_home
-      data_template:
-        title: "Uzupełnij wodę w nawilżaczu"
-        message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-        tag: "notification-humidifier"
-        location: "{{ states('person.edyta') }}"
-        notification_service: !secret edyta_notify_service
-        notification_type: "android"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.maciek
+          state: "home"
+        sequence:
+          service: python_script.notify
+          data_template:
+            title: "Uzupełnij wodę w nawilżaczu"
+            message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+            tag: "notification-humidifier"
+            services:
+              - service: !secret maciek_notify_service
+                type: "android"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.edyta
+          state: "home"
+        sequence:
+          service: python_script.notify
+          data_template:
+            title: "Uzupełnij wodę w nawilżaczu"
+            message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+            tag: "notification-humidifier"
+            services:
+              - service: !secret edyta_notify_service
+                type: "ios"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: media_player.bravia_salon
+          state: "on"
+        sequence:
+          service: notify.bravia
+          data_template:
+            title: "Uzupełnij wodę w nawilżaczu"
+            message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+            data:
+              file:
+                url: !secret favicon_url
+              duration: 10
+    - choose:
+        conditions:
+          condition: state
+          entity_id: media_player.mibox_goscinny
+          state: "on"
+        sequence:
+          service: notify.mibox
+          data_template:
+            title: "Uzupełnij wodę w nawilżaczu"
+            message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+            data:
+              file:
+                url: !secret favicon_url
+              duration: 10
 
 - id: humidification_outdoor_temp_above_10
   alias: "Humidification Outdoor Temp Above 10"

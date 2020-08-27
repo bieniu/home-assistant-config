@@ -146,3 +146,12 @@ asuswrt:
   protocol: "ssh"
   mode: "ap"
   ssh_key: "/config/.storage/asuswrt_key"
+
+notify:
+  - platform: nfandroidtv
+    name: "MiBox"
+    host: !secret mibox_hostname
+
+  - platform: nfandroidtv
+    name: "Bravia"
+    host: !secret bravia_hostname

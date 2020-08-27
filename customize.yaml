@@ -66,17 +66,17 @@ sensor.memory_use_percent:
 sensor.disk_use_percent:
   friendly_name: "Zajęta przestrzeń dyskowa"
 sensor.last_boot:
-  icon: mdi:clock-outline
+  icon: mdi:timer-outline
   friendly_name: "Ostatni restart"
 sensor.nuc_last_boot:
   friendly_name: "Ostatni restart"
-  icon: mdi:clock-outline
+  icon: mdi:timer-outline
 sensor.ha_database_size:
   friendly_name: "Wielkość bazy danych"
   icon: mdi:database
 sensor.ha_last_restart:
   friendly_name: "Ostatni restart"
-  icon: mdi:clock-outline
+  icon: mdi:timer-outline
 sensor.ha_version_current:
   friendly_name: "Najnowsza wersja"
 sensor.ha_version_installed:
@@ -246,7 +246,7 @@ binary_sensor.window_gabinet:
 
 #### PRINTER ####
 sensor.printer_last_boot:
-  icon: mdi:clock-outline
+  icon: mdi:timer-outline
 sensor.printer_page_counter:
   unit_of_measurement: "str"
 
