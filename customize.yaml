@@ -227,22 +227,31 @@ binary_sensor.motion_gabinet:
 #### XIAOMI WINDOW/DOOR SENSORS ####
 binary_sensor.balcony_door_sypialnia:
   location: "sypialnia"
+  location_eng: "bedroom"
 binary_sensor.balcony_door_pracownia:
   location: "pracownia"
+  location_eng: "workshop"
 binary_sensor.window_kuchnia:
   location: "kuchnia"
+  location_eng: "kitchen"
 binary_sensor.window_salon:
   location: "salon"
+  location_eng: "living room"
 binary_sensor.window_antresola_1:
   location: "antresola"
+  location_eng: "entresol"
 binary_sensor.window_antresola_2:
   location: "antresola"
+  location_eng: "entresol"
 binary_sensor.window_antek:
   location: "pokój Antka"
+  location_eng: "Antek's room"
 binary_sensor.window_sypialnia:
   location: "sypialnia"
+  location_eng: "bedroom"
 binary_sensor.window_gabinet:
   location: "gabinet"
+  location_eng: "office"
 
 #### PRINTER ####
 sensor.printer_last_boot:

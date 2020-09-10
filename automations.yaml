@@ -2805,6 +2805,7 @@
       id: "{{ trigger.payload_json.id }}"
       mac: "{{ trigger.payload_json.mac }}"
       fw_ver: "{{ trigger.payload_json.fw_ver }}"
+      model: "{{ trigger.payload_json.model }}"
       qos: 1
       shelly1-328900:
         relay-0: "light"

@@ -11,6 +11,18 @@ windows:
     - binary_sensor.window_sypialnia
     - binary_sensor.window_gabinet
 
+windows_alexa:
+  name: "Okna dla Alexy"
+  entities:
+    - binary_sensor.balcony_door_sypialnia
+    - binary_sensor.window_kuchnia
+    - binary_sensor.window_salon
+    - binary_sensor.balcony_door_pracownia
+    - binary_sensor.windows_antresola
+    - binary_sensor.window_antek
+    - binary_sensor.window_sypialnia
+    - binary_sensor.window_gabinet
+
 household:
   name: "Domownicy"
   entities:
@@ -24,3 +36,15 @@ family:
     - person.grazyna
     - person.romana
     - person.jerzy
+
+motion:
+  name: "Ruch"
+  entities:
+    - binary_sensor.motion_antek
+    - binary_sensor.motion_antresola
+    - binary_sensor.motion_gabinet
+    - binary_sensor.motion_goscinny
+    - binary_sensor.motion_pracownia
+    - binary_sensor.motion_przedpokoj
+    - binary_sensor.motion_salon
+    - binary_sensor.motion_sypialnia
