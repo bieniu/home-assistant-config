@@ -1105,16 +1105,17 @@
 - id: heating_day
   alias: "Heating Day"
   trigger:
-    platform: time_pattern
-    minutes: "/1"
-    seconds: 0
+    platform: time
+    at:
+      - input_datetime.heating_night_end
+      - input_datetime.heating_night_end_weekend
   condition:
     - condition: or
       conditions:
         - condition: template
-          value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_end') and is_state('binary_sensor.workday_sensor', 'on') }}"
+          value_template: "{{ trigger.entity_id == 'input_datetime.heating_night_end' and is_state('binary_sensor.workday_sensor', 'on') }}"
         - condition: template
-          value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_end_weekend') and is_state('binary_sensor.workday_sensor', 'off') }}"
+          value_template: "{{ trigger.entity_id == 'input_datetime.heating_night_end_weekend' and is_state('binary_sensor.workday_sensor', 'off') }}"
     - condition: state
       entity_id: input_boolean.heating_season
       state: "on"
@@ -1130,16 +1131,17 @@
 - id: heating_night
   alias: "Heating Night"
   trigger:
-    platform: time_pattern
-    minutes: "/1"
-    seconds: 0
+    platform: time
+    at:
+      - input_datetime.heating_night_start
+      - input_datetime.heating_night_start_weekend
   condition:
     - condition: or
       conditions:
         - condition: template
-          value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_start') and is_state('binary_sensor.workday_sensor', 'on') }}"
+          value_template: "{{ trigger.entity_id == 'input_datetime.heating_night_start' and is_state('binary_sensor.workday_sensor', 'on') }}"
         - condition: template
-          value_template: "{{ now().strftime('%H:%M') == states('input_select.heating_night_start_weekend') and is_state('binary_sensor.workday_sensor', 'off') }}"
+          value_template: "{{ trigger.entity_id == 'input_datetime.heating_night_start_weekend' and is_state('binary_sensor.workday_sensor', 'off') }}"
     - condition: state
       entity_id: input_boolean.heating_season
       state: "on"

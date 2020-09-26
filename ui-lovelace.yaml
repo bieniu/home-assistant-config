@@ -1136,13 +1136,13 @@ views:
               - input_boolean.away_mode
               - input_boolean.guests
           - type: entities
-            title: "Godziny ogrzewania"
+            title: "Harmonogram ogrzewania"
             show_header_toggle: false
             entities:
-              - input_select.heating_night_start
-              - input_select.heating_night_end
-              - input_select.heating_night_start_weekend
-              - input_select.heating_night_end_weekend
+              - input_datetime.heating_night_start
+              - input_datetime.heating_night_end
+              - input_datetime.heating_night_start_weekend
+              - input_datetime.heating_night_end_weekend
       - type: entities
         title: "Temperatury ogrzewania"
         show_header_toggle: false
