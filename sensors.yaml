@@ -49,11 +49,6 @@
     User-Agent: Home Assistant REST sensor
 
 - platform: command_line
-  command: python3 -c "import requests; print(requests.get('https://pypi.org/pypi/appdaemon/json').json()['info']['version'])"
-  name: "AD Version Current"
-  scan_interval: 1800
-
-- platform: command_line
   name: "Supervisor Updates"
   command: 'curl http://supervisor/supervisor/info -H "Authorization: Bearer $(printenv SUPERVISOR_TOKEN)" | jq ''{"newest_version":.data.version_latest,"current_version":.data.version,"addons":[.data.addons[] | select(.version != .installed)]}'''
   value_template: "{{ value_json.addons | length }}"

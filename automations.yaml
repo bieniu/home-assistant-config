@@ -23,7 +23,7 @@
         addon: core_check_config
     - delay:  "00:05:00"
     - service: python_script.notify
-      data_template:
+      data:
         title: "Aktualizacja Home Assistanta"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Home Assistanta."
         tag: "notification-ha-update"
@@ -48,7 +48,7 @@
     value_template: "{{ state_attr('sensor.supervisor_updates', 'current_version') != state_attr('sensor.supervisor_updates', 'newest_version') }}"
   action:
     - service: python_script.notify
-      data_template:
+      data:
         title: "Aktualizacja Supervisora"
         message: "Dostępna jest aktualizacja do wersji {{ state_attr('sensor.supervisor_updates', 'newest_version') }} dla Supervisora."
         tag: "notification-supervisor-update"
@@ -71,8 +71,7 @@
     above: 0
   action:
     - service: python_script.notify
-      data_template:
-        data_template:
+      data:
         title: >-
           {% if (trigger.to_state.state | int) == 1 %}
             Aktualizacja dodatku Supervisora
@@ -116,7 +115,7 @@
       value_template: "{{ trigger.from_state.state | int < trigger.to_state.state | int }}"
   action:
     service: python_script.notify
-    data_template:
+    data:
       title: >-
         {% if (trigger.to_state.state | int) == 1 %}
           Aktualizacja dodatku z HACS
@@ -152,7 +151,7 @@
       minutes: 5
   action:
     service: python_script.notify
-    data_template:
+    data:
       title: "Wysokie użycie pamięci RAM"
       message: "Serwer Home Assistant używa obecnie {{ states('sensor.memory_use_percent') }}% pamięci RAM."
       tag: "notification-high-ram-usage"
@@ -176,7 +175,7 @@
         state: "unavailable"
   action:
     - service: python_script.notify
-      data_template:
+      data:
         title: "Wygasa certyfikat SSL"
         message: "Za {{ states('sensor.ssl_certificate_expiry') }} dni wygaśnie certyfikat SSL serwera WWW."
         tag: "notification-ssl"
@@ -200,7 +199,7 @@
       to: "on"
   action:
     - service: python_script.notify
-      data_template:
+      data:
         title: "Aktualizacja oprogramowania Shelly"
         message: "Dostępna jest aktualizacja oprogramowania dla {{ trigger.to_state.attributes.friendly_name | replace(' Firmware Update', '')}}."
         tag: "notification-{{ trigger.entity_id }}"
@@ -226,7 +225,7 @@
       value_template: "{{ trigger.from_state.state != 'unavailable' }}"
   action:
     - service: python_script.notify
-      data_template:
+      data:
         title: "Aktualizacja ESPHome"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla ESPHome."
         tag: "notification-esphome-update"
@@ -257,7 +256,7 @@
       value_template: "{{ trigger.from_state.state != 'unavailable' }}"
   action:
     - service: python_script.notify
-      data_template:
+      data:
         title: "Aktualizacja Caddy"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla Caddy."
         tag: "notification-caddy-update"
@@ -325,6 +324,10 @@
     platform: numeric_state
     entity_id: sensor.lightning_distance
     below: 10
+  variables:
+    notification_title: "Burza w pobliżu domu"
+    notification_message: "Wyładowania atmosferyczne występują {{ states('sensor.lightning_distance') }} km od domu."
+    notification_tag: "notification-storm-comming"
   action:
     - choose:
         conditions:
@@ -333,10 +336,10 @@
           state: "home"
         sequence:
           service: python_script.notify
-          data_template:
-            title: "Burza w pobliżu domu"
-            message: "Wyładowania atmosferyczne występują {{ states('sensor.lightning_distance') }} km od domu."
-            tag: "notification-storm-comming"
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
+            tag: "{{ notification_tag }}"
             services:
               - service: !secret maciek_notify_service
                 type: "android"
@@ -347,10 +350,10 @@
           state: "home"
         sequence:
           service: python_script.notify
-          data_template:
-            title: "Burza w pobliżu domu"
-            message: "Wyładowania atmosferyczne występują {{ states('sensor.lightning_distance') }} km od domu."
-            tag: "notification-storm-comming"
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
+            tag: "{{ notification_tag }}"
             services:
               - service: !secret edyta_notify_service
                 type: "ios"
@@ -361,9 +364,9 @@
           state: "on"
         sequence:
           service: notify.bravia
-          data_template:
-            title: "Burza w pobliżu domu"
-            message: "Wyładowania atmosferyczne występują {{ states('sensor.lightning_distance') }} km od domu."
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
             data:
               file:
                 url: !secret favicon_url
@@ -375,9 +378,9 @@
           state: "on"
         sequence:
           service: notify.mibox
-          data_template:
-            title: "Burza w pobliżu domu"
-            message: "Wyładowania atmosferyczne występują {{ states('sensor.lightning_distance') }} km od domu."
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
             data:
               file:
                 url: !secret favicon_url
@@ -448,7 +451,7 @@
     - service: switch.turn_off
       entity_id: switch.stacjonarny
     - service: python_script.notify
-      data_template:
+      data:
         title: "{{ trigger.event.data.title }}"
         message: "clear_notification"
         tag: "{{ trigger.event.data.tag }}"
@@ -479,7 +482,7 @@
       {{ dead_unavailable_entities()  | trim != '' }}
   action:
     - service: python_script.notify
-      data_template:
+      data:
         title: "Encja z nieprawidłowym stanem"
         message: >
           {% macro dead_unavailable_entities() %}
@@ -528,6 +531,10 @@
         state: "on"
       - condition: template
         value_template: "{{ states('sensor.humidifier_water_level') | int != 0 }}"
+  variables:
+    notification_title: "Uzupełnij wodę w nawilżaczu"
+    notification_message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+    notification_tag: "notification-humidifier"
   action:
     - choose:
         conditions:
@@ -536,10 +543,10 @@
           state: "home"
         sequence:
           service: python_script.notify
-          data_template:
-            title: "Uzupełnij wodę w nawilżaczu"
-            message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-            tag: "notification-humidifier"
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
+            tag: "{{ notification_tag }}"
             services:
               - service: !secret maciek_notify_service
                 type: "android"
@@ -550,10 +557,10 @@
           state: "home"
         sequence:
           service: python_script.notify
-          data_template:
-            title: "Uzupełnij wodę w nawilżaczu"
-            message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-            tag: "notification-humidifier"
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
+            tag: "{{ notification_tag }}"
             services:
               - service: !secret edyta_notify_service
                 type: "ios"
@@ -564,9 +571,9 @@
           state: "on"
         sequence:
           service: notify.bravia
-          data_template:
-            title: "Uzupełnij wodę w nawilżaczu"
-            message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
             data:
               file:
                 url: !secret favicon_url
@@ -578,9 +585,9 @@
           state: "on"
         sequence:
           service: notify.mibox
-          data_template:
-            title: "Uzupełnij wodę w nawilżaczu"
-            message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
             data:
               file:
                 url: !secret favicon_url
@@ -609,6 +616,10 @@
       - condition: state
         entity_id: input_boolean.away_mode
         state: "off"
+  variables:
+    notification_title: "Wysokie stężenie dwutlenku węgla"
+    notification_message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
+    notification_tag: "notification-high-co2"
   action:
     - choose:
         conditions:
@@ -617,10 +628,10 @@
           state: "home"
         sequence:
           service: python_script.notify
-          data_template:
-            title: "Wysokie stężenie dwutlenku węgla"
-            message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
-            tag: "notification-high-co2"
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
+            tag: "{{ notification_tag }}"
             services:
               - service: !secret maciek_notify_service
                 type: "android"
@@ -631,10 +642,10 @@
           state: "home"
         sequence:
           service: python_script.notify
-          data_template:
-            title: "Wysokie stężenie dwutlenku węgla"
-            message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
-            tag: "notification-high-co2"
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
+            tag: "{{ notification_tag }}"
             services:
               - service: !secret edyta_notify_service
                 type: "ios"
@@ -645,9 +656,9 @@
           state: "on"
         sequence:
           service: notify.bravia
-          data_template:
-            title: "Wysokie stężenie dwutlenku węgla"
-            message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
             data:
               file:
                 url: !secret favicon_url
@@ -659,9 +670,9 @@
           state: "on"
         sequence:
           service: notify.mibox
-          data_template:
-            title: "Wysokie stężenie dwutlenku węgla"
-            message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
             data:
               file:
                 url: !secret favicon_url
@@ -677,11 +688,14 @@
         - binary_sensor.water_leak_kuchnia
       from: "off"
       to: "on"
+  variables:
+    notification_title: "Wykryto wyciek wody"
+    notification_message: "W kuchni wykryto wodę na podłodze."
   action:
     - service: python_script.notify
-      data_template:
-        title: "Wykryto wyciek wody"
-        message: "W kuchni wykryto wodę na podłodze."
+      data:
+        title: "{{ notification_title }}"
+        message: "{{ notification_message }}"
         tag: "notification-water-leak"
         priority: "high"
         services:
@@ -696,9 +710,9 @@
           state: "on"
         sequence:
           service: notify.bravia
-          data_template:
-            title: "Wykryto wyciek wody"
-            message: "W kuchni wykryto wodę na podłodze."
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
             data:
               file:
                 url: !secret favicon_url
@@ -710,9 +724,9 @@
           state: "on"
         sequence:
           service: notify.mibox
-          data_template:
-            title: "Wykryto wyciek wody"
-            message: "W kuchni wykryto wodę na podłodze."
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
             data:
               file:
                 url: !secret favicon_url
@@ -731,11 +745,14 @@
       to: "on"
       for:
         minutes: 1
+  variables:
+    notification_title: "Zbyt duże obciążenie przekaźnika"
+    notification_message: "Przekaźnik {{ state_attr(trigger.to_state.attributes.relay, 'friendly_name') }} ma zbyt duże obciążenie i zostanie wyłączony."
   action:
     - service: python_script.notify
-      data_template:
-        title: "Zbyt duże obciążenie przekaźnika"
-        message: "Przekaźnik {{ state_attr(trigger.to_state.attributes.relay, 'friendly_name') }} ma zbyt duże obciążenie i zostanie wyłączony."
+      data:
+        title: "{{ notification_title }}"
+        message: "{{ notification_message }}"
         tag: "notification-relay-overpower-{{ trigger.entity_id }}"
         priority: "high"
         services:
@@ -750,9 +767,9 @@
           state: "on"
         sequence:
           service: notify.bravia
-          data_template:
-            title: "Zbyt duże obciążenie przekaźnika"
-            message: "Przekaźnik {{ state_attr(trigger.to_state.attributes.relay, 'friendly_name') }} ma zbyt duże obciążenie i zostanie wyłączony."
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
             data:
               file:
                 url: !secret favicon_url
@@ -764,15 +781,15 @@
           state: "on"
         sequence:
           service: notify.mibox
-          data_template:
-            title: "Zbyt duże obciążenie przekaźnika"
-            message: "Przekaźnik {{ state_attr(trigger.to_state.attributes.relay, 'friendly_name') }} ma zbyt duże obciążenie i zostanie wyłączony."
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
             data:
               file:
                 url: !secret favicon_url
               duration: 10
     - service: homeassistant.turn_off
-      data_template:
+      data:
         entity_id: "{{ trigger.to_state.attributes.relay }}"
 
 # powiadomienie jak jest ruch i nikogo w domu
@@ -799,7 +816,7 @@
       minutes: 10
   action:
     service: script.notify_motion
-    data_template:
+    data:
       title: "Wykryto ruch w pustym mieszkaniu"
       message: "Pomieszczenie: {{ trigger.to_state.attributes.location }}, godzina {{ now().strftime('%H:%M') }}."
       tag: "notification-motion-{{ trigger.to_state.attributes.location }}"
@@ -830,7 +847,7 @@
       minutes: 10
   action:
     service: python_script.notify
-    data_template:
+    data:
       title: "Wykryto otwarcie okna w pustym mieszkaniu"
       message: "Pomieszczenie: {{ trigger.to_state.attributes.location }}, godzina {{ now().strftime('%H:%M') }}."
       tag: "notification-window-opened-{{ trigger.to_state.attributes.location }}"
@@ -876,7 +893,7 @@
     above: 70
   action:
     - service: python_script.notify
-      data_template:
+      data:
         title: "Mało miejsca na dysku Synology"
         message: "Dysk Synology jest zapełniony w {{ trigger.to_state.state }}%."
         tag: "notification-synology-low-space"
@@ -893,7 +910,7 @@
     event_type: device_tracker_new_device
   action:
     - service: python_script.notify
-      data_template:
+      data:
         title: "Nowe urządzenie"
         message: "Wykryto nowe urządzenie o nazwie {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}})."
         tag: "notification-new-device"
@@ -926,7 +943,7 @@
       {{ battery_level() | trim != '' }}
   action:
     - service: python_script.notify
-      data_template:
+      data:
         title: "Niski poziom naładowania baterii"
         message: >
           {% macro battery_level() %}
@@ -1048,7 +1065,7 @@
       entity_id: sensor.dark_sky_precip_probability
       above: 20
     - service: python_script.notify
-      data_template:
+      data:
         title: "Otwarte okna"
         message: "Okna w pustym mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów wynosi {{ states('sensor.dark_sky_precip_probability') }}%."
         tag: "notification-windows-weather"
@@ -1162,7 +1179,7 @@
       entity_id:
         # - climate.thermostat_kuchnia
         - climate.thermostat_salon
-      data_template:
+      data:
         temperature: "{{ states('input_select.heating_temp_night') }}"
     - service: input_boolean.turn_on
       entity_id: input_boolean.heating_salon_kuchnia_night
@@ -1562,7 +1579,7 @@
     entity_id: input_select.light_scenes_salon
   action:
     service: scene.turn_on
-    data_template:
+    data:
       entity_id: scene.{{ trigger.to_state.state }}
       transition: 5
 
@@ -1670,7 +1687,7 @@
     - service: light.turn_on
       entity_id: light.lamp_salon
       data:
-        brightness: 245
+        brightness: 128
         color_temp: 330
     - service: input_boolean.turn_on
       entity_id: input_boolean.salon_light_motion_on
@@ -1800,7 +1817,7 @@
   action:
     - service: light.turn_on
       entity_id: light.gateway_antresola
-      data_template:
+      data:
         brightness: 200
         rgb_color:
           [
@@ -2281,7 +2298,7 @@
     - delay: "00:00:07"
     - service: media_player.select_source
       entity_id: media_player.denon_salon
-      data_template:
+      data:
         source: >-
           {% if trigger.to_state.attributes.current_activity == 'Telewizja' %}
             CBL
@@ -2300,7 +2317,7 @@
           {% endif %}
     - service: media_player.select_source
       entity_id: media_player.bravia_salon
-      data_template:
+      data:
         source: >-
           {% if trigger.to_state.attributes.current_activity == 'Telewizja' %}
             HDMI 3/ARC
@@ -2322,14 +2339,12 @@
   trigger:
     platform: state
     entity_id: remote.salon
+    attribute: current_activity
+    to: "PowerOff"
   condition:
-    - condition: template
-      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.attributes.current_activity == 'PowerOff' }}"
-    - condition: state
-      entity_id: media_player.bravia_salon
-      state: "on"
+    condition: state
+    entity_id: media_player.bravia_salon
+    state: "on"
   action:
     - delay: "00:00:02"
     - condition: state
@@ -2344,16 +2359,11 @@
   trigger:
     platform: state
     entity_id: remote.salon
+    from: "PlayStation"
   condition:
-    - condition: template
-      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.attributes.current_activity == 'PlayStation' }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.attributes.current_activity != 'PlayStation' }}"
-    - condition: state
-      entity_id: media_player.playstation_salon
-      state: "idle"
+    condition: state
+    entity_id: media_player.playstation_salon
+    state: "idle"
   action:
     - delay: "00:00:10"
     - condition: state
@@ -2367,11 +2377,8 @@
   trigger:
     platform: state
     entity_id: remote.salon
-  condition:
-    - condition: template
-      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.attributes.current_activity == 'PowerOff' }}"
+    attribute: current_activity
+    to: "PowerOff"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2387,11 +2394,8 @@
   trigger:
     platform: state
     entity_id: remote.salon
-  condition:
-    - condition: template
-      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.attributes.current_activity == 'Telewizja' }}"
+    attribute: current_activity
+    to: "Telewizja"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2407,11 +2411,8 @@
   trigger:
     platform: state
     entity_id: remote.salon
-  condition:
-    - condition: template
-      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.attributes.current_activity == 'Filmy' }}"
+    attribute: current_activity
+    to: "Filmy"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2427,11 +2428,8 @@
   trigger:
     platform: state
     entity_id: remote.salon
-  condition:
-    - condition: template
-      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.attributes.current_activity == 'Muzyka' }}"
+    attribute: current_activity
+    to: "Muzyka"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2447,11 +2445,8 @@
   trigger:
     platform: state
     entity_id: remote.salon
-  condition:
-    - condition: template
-      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.attributes.current_activity == 'Smart TV' }}"
+    attribute: current_activity
+    to: "Smart TV"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2467,11 +2462,8 @@
   trigger:
     platform: state
     entity_id: remote.salon
-  condition:
-    - condition: template
-      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.attributes.current_activity == 'Fire TV' }}"
+    attribute: current_activity
+    to: "Fire TV"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2487,11 +2479,8 @@
   trigger:
     platform: state
     entity_id: remote.salon
-  condition:
-    - condition: template
-      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.attributes.current_activity == 'PlayStation' }}"
+    attribute: current_activity
+    to: "Playstation"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2509,11 +2498,8 @@
   trigger:
     platform: state
     entity_id: remote.salon
-  condition:
-    - condition: template
-      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.attributes.current_activity == 'Xbox' }}"
+    attribute: current_activity
+    to: "Xbox"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2684,7 +2670,7 @@
           state: "home"
         sequence:
           service: python_script.notify
-          data_template:
+          data:
             title: "Uzupełnij wodę w nawilżaczu"
             message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
             tag: "notification-humidifier"
@@ -2698,7 +2684,7 @@
           state: "home"
         sequence:
           service: python_script.notify
-          data_template:
+          data:
             title: "Uzupełnij wodę w nawilżaczu"
             message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
             tag: "notification-humidifier"
@@ -2712,7 +2698,7 @@
           state: "on"
         sequence:
           service: notify.bravia
-          data_template:
+          data:
             title: "Uzupełnij wodę w nawilżaczu"
             message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
             data:
@@ -2726,7 +2712,7 @@
           state: "on"
         sequence:
           service: notify.mibox
-          data_template:
+          data:
             title: "Uzupełnij wodę w nawilżaczu"
             message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
             data:
@@ -2776,7 +2762,7 @@
     entity_id: input_select.log_level
   action:
     service: logger.set_level
-    data_template:
+    data:
       homeassistant.components: "{{ trigger.to_state.state }}"
 
 - id: shellies_announce
@@ -2801,7 +2787,7 @@
     topic: "shellies/announce"
   action:
     service: python_script.shellies_discovery
-    data_template:
+    data:
       id: "{{ trigger.payload_json.id }}"
       mac: "{{ trigger.payload_json.mac }}"
       fw_ver: "{{ trigger.payload_json.fw_ver }}"
@@ -2836,5 +2822,5 @@
       - sun
   action:
     service: hassio.snapshot_full
-    data_template:
+    data:
       name: "{{ now().strftime('%Y-%m-%d') }}"

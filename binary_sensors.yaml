@@ -165,9 +165,13 @@
       value_template: "{{ is_state('device_tracker.laptop', 'home') }}"
       friendly_name: "Lenovo IdeaPad Z510"
 
-    migateway_status:
-      value_template: "{{ is_state('device_tracker.migateway', 'home') }}"
-      friendly_name: "Xiaomi Mi Home Gateway 2"
+    migateway_cc6f0b_status:
+      value_template: "{{ is_state('device_tracker.migateway_cc6f0b', 'home') }}"
+      friendly_name: "Xiaomi Mi Gateway 2 [CC6F0B]"
+
+    migateway_a0f210_status:
+      value_template: "{{ is_state('device_tracker.migateway_a0f210', 'home') }}"
+      friendly_name: "Xiaomi Mi Gateway 2 [A0F210]"
 
     mihumidifier_status:
       value_template: "{{ is_state('device_tracker.mihumidifier', 'home') }}"

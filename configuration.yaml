@@ -3,6 +3,8 @@ homeassistant:
   customize_glob: !include customize_glob.yaml
   allowlist_external_dirs:
     - !secret snapshots_dir
+  media_dirs:
+    camera: www/snapshots
 
 frontend:
   themes: !include_dir_merge_named themes
@@ -10,6 +12,8 @@ frontend:
 cloud:
 
 zone:
+
+logbook:
 
 lovelace:
   mode: yaml
@@ -35,9 +39,11 @@ person:
 
 http:
   ip_ban_enabled: true
-  login_attempts_threshold: 5
+  login_attempts_threshold: 3
   use_x_forwarded_for: true
   trusted_proxies: !secret http_trusted_proxies
+
+media_source:
 
 recorder: !include recorder.yaml
 
@@ -100,6 +106,8 @@ ssdp:
 
 zeroconf:
 
+image:
+
 zwave:
   debug: true
 
@@ -110,35 +118,7 @@ camera:
     stream_source: !secret dafang_rtsp_url
     scan_interval: 5
 
-panel_custom:
-  - name: zwavegraph
-    sidebar_title: Z-Wave
-    sidebar_icon: mdi:z-wave
-    url_path: zwave
-    require_admin: true
-
 python_script:
-
-yeelight:
-  devices:
-    yeelight-yldp02yl-f12026.bieniu.lan:
-      model: 'color1'
-      <<: &YEELIGHT_PARAMS
-        transition: 500
-        save_on_change: false
-        use_music_mode: false
-    yeelight-yldp06yl-84be7a.bieniu.lan:
-      model: 'color2'
-      <<: *YEELIGHT_PARAMS
-    yeelight-yldp06yl-7cafc6.bieniu.lan:
-      model: 'color2'
-      <<: *YEELIGHT_PARAMS
-    yeelight-yldd01yl-860cfa.bieniu.lan:
-      model: 'strip1'
-      <<: *YEELIGHT_PARAMS
-    yeelight-yldd01yl-6707fc.bieniu.lan:
-      model: 'strip1'
-      <<: *YEELIGHT_PARAMS
 
 asuswrt:
   host: !secret router_hostname

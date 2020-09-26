@@ -20,6 +20,7 @@ wifi:
 captive_portal:
 
 logger:
+  baud_rate: 0
 
 api:
   password: !secret esphome_password

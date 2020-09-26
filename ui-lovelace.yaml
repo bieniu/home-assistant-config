@@ -295,6 +295,7 @@ views:
               - entity: binary_sensor.motion_pracownia
                 secondary_info: last-changed
               - switch.lamp_pracownia
+              - light.gateway_pracownia
       - type: vertical-stack
         in_card: true
         cards:
@@ -707,7 +708,8 @@ views:
         state_color: true
         <<: *network-status-card
         entities:
-          - binary_sensor.migateway_status
+          - binary_sensor.migateway_cc6f0b_status
+          - binary_sensor.migateway_a0f210_status
           - binary_sensor.dafang_status
           - binary_sensor.mihumidifier_status
           - binary_sensor.mifan_status

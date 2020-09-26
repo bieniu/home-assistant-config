@@ -11,26 +11,10 @@ device_tracker.iphone_8_plus_app:
 device_tracker.iphone_11_app:
   icon: mdi:cellphone-iphone
 
-#### PERSONS #####
-person.edyta:
-  entity_picture: /local/pictures/edyta.jpg
-person.maciek:
-  entity_picture: /local/pictures/maciek.jpg
-person.antek:
-  entity_picture: /local/pictures/antoni.jpg
-person.jerzy:
-  entity_picture: /local/pictures/jerzy.jpg
-person.grazyna:
-  entity_picture: /local/pictures/grazyna.jpg
-person.romana:
-  entity_picture: /local/pictures/romana.jpg
-person.emil:
-  entity_picture: /local/pictures/emil.jpg
-person.agnieszka:
-  entity_picture: /local/pictures/agnieszka.jpg
-
 #### LIGHTS ####
 light.gateway_antresola:
+  icon: mdi:spotlight
+light.gateway_pracownia:
   icon: mdi:spotlight
 light.bulb_salon_1:
   friendly_name: "Żarówka salon 1"
@@ -136,8 +120,6 @@ binary_sensor.inkbook_status:
 binary_sensor.modem_status:
   friendly_name: "ZTE GPON F660"
   icon: mdi:wan
-binary_sensor.migateway_status:
-  icon: mdi:zigbee
 binary_sensor.brother_status:
   icon: mdi:printer
 binary_sensor.dafang_status:
@@ -227,31 +209,22 @@ binary_sensor.motion_gabinet:
 #### XIAOMI WINDOW/DOOR SENSORS ####
 binary_sensor.balcony_door_sypialnia:
   location: "sypialnia"
-  location_eng: "bedroom"
 binary_sensor.balcony_door_pracownia:
   location: "pracownia"
-  location_eng: "workshop"
 binary_sensor.window_kuchnia:
   location: "kuchnia"
-  location_eng: "kitchen"
 binary_sensor.window_salon:
   location: "salon"
-  location_eng: "living room"
 binary_sensor.window_antresola_1:
   location: "antresola"
-  location_eng: "entresol"
 binary_sensor.window_antresola_2:
   location: "antresola"
-  location_eng: "entresol"
 binary_sensor.window_antek:
   location: "pokój Antka"
-  location_eng: "Antek's room"
 binary_sensor.window_sypialnia:
   location: "sypialnia"
-  location_eng: "bedroom"
 binary_sensor.window_gabinet:
   location: "gabinet"
-  location_eng: "office"
 
 #### PRINTER ####
 sensor.printer_last_boot:

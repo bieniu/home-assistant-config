@@ -341,7 +341,7 @@ restart_esphome_devices:
       - switch.sonoff_s26_182475_restart
       - switch.wemos_d1_mini_1c91ea_restart
 
-alexa_open_windows:
+open_windows:
   sequence:
     service: notify.alexa_media_echo_show
     data_template:
@@ -349,16 +349,16 @@ alexa_open_windows:
         {% set ns = namespace(open_windows=[]) %}
           {% for entity in state_attr('group.windows', 'entity_id') %}
             {% if is_state(entity, 'on') %}
-              {% set ns.open_windows = ns.open_windows + [ state_attr(entity, 'location_eng') ] %}
+              {% set ns.open_windows = ns.open_windows + [ state_attr(entity, 'location') ] %}
             {% endif %}
           {% endfor %}
         {% set open_windows = ns.open_windows | unique | list %}
         {% if open_windows | count == 0 %}
-        All windows are closed.
+          Wszystkie okna są zamknięte.
         {% elif open_windows | count == 1 %}
-        Windows is open in {{ open_windows[0] }}.
+          Okno jest otwarte w: {{ open_windows[0] }}.
         {% else %}
-        Windows are open in{% for window in open_windows | unique | list %}{% if loop.first %} {% elif not loop.last %}, {% else %} and {% endif %}{{ window }}{% endfor %}.
+          Okna są otwarte w:{% for window in open_windows | unique | list %}{% if loop.first %} {% elif not loop.last %}, {% else %} i {% endif %}{{ window }}{% endfor %}.
         {% endif %}
       data:
         type: tts
