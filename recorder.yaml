@@ -1,5 +1,6 @@
 db_url: !secret mysql_db_url
 purge_keep_days: 7
+auto_purge: false
 exclude:
   domains:
     - automation
@@ -9,111 +10,26 @@ exclude:
     - script
     - group
     - mqtt
-    - device_tracker
-    - input_boolean
     - history_graph
   entities:
     - sensor.dark_sky_daily_summary
     - sensor.dark_sky_daytime_high_temperature
-    - sensor.dark_sky_daytime_high_temperature_1
-    - sensor.dark_sky_daytime_high_temperature_2
-    - sensor.dark_sky_daytime_high_temperature_3
-    - sensor.dark_sky_daytime_high_temperature_4
-    - sensor.dark_sky_daytime_high_temperature_5
+    - sensor.dark_sky_daytime_high_temperature_*
     - sensor.dark_sky_icon
-    - sensor.dark_sky_icon_1
-    - sensor.dark_sky_icon_2
-    - sensor.dark_sky_icon_3
-    - sensor.dark_sky_icon_4
-    - sensor.dark_sky_icon_5
+    - sensor.dark_sky_icon_*
     - sensor.dark_sky_overnight_low_temperature
-    - sensor.dark_sky_overnight_low_temperature_1
-    - sensor.dark_sky_overnight_low_temperature_2
-    - sensor.dark_sky_overnight_low_temperature_3
-    - sensor.dark_sky_overnight_low_temperature_4
-    - sensor.dark_sky_overnight_low_temperature_5
+    - sensor.dark_sky_overnight_low_temperature_*
     - sensor.dark_sky_precip_probability
-    - sensor.dark_sky_precip_probability_1
-    - sensor.dark_sky_precip_probability_2
-    - sensor.dark_sky_precip_probability_3
-    - sensor.dark_sky_precip_probability_4
-    - sensor.dark_sky_precip_probability_5
+    - sensor.dark_sky_precip_probability_*
     - sensor.dark_sky_summary
-    - sensor.dark_sky_summary_1
-    - sensor.dark_sky_summary_2
-    - sensor.dark_sky_summary_3
-    - sensor.dark_sky_summary_4
-    - sensor.dark_sky_summary_5
+    - sensor.dark_sky_summary_*
     - sensor.dark_sky_visibility
-    - sensor.dark_sky_visibility_1
-    - sensor.dark_sky_visibility_2
-    - sensor.dark_sky_visibility_3
-    - sensor.dark_sky_visibility_4
-    - sensor.dark_sky_visibility_5
+    - sensor.dark_sky_visibility_*
     - sensor.dark_sky_wind_bearing
-    - sensor.dark_sky_wind_bearing_1
-    - sensor.dark_sky_wind_bearing_2
-    - sensor.dark_sky_wind_bearing_3
-    - sensor.dark_sky_wind_bearing_4
-    - sensor.dark_sky_wind_bearing_5
-    - sensor.dark_sky_wind_speed_1
-    - sensor.dark_sky_wind_speed_2
-    - sensor.dark_sky_wind_speed_3
-    - sensor.dark_sky_wind_speed_4
-    - sensor.dark_sky_wind_speed_5
-    - sensor.dune_activity
-    - binary_sensor.switch_light_salon_1
-    - binary_sensor.switch_light_salon_2
-    - binary_sensor.switch_light_antek
-    - binary_sensor.motion_antresola_1
-    - binary_sensor.motion_antresola_2
-    - binary_sensor.motion_salon_1
-    - binary_sensor.motion_salon_2
-    - sensor.home_assistant_uptime
-    - light.bulb_salon_1
-    - light.bulb_salon_2
-    - sensor.ups_status_data
-    - binary_sensor.workday_sensor
-    - switch.camera_move_up
-    - switch.camera_move_down
-    - switch.camera_move_right
-    - switch.camera_move_left
-    - sensor.custom_card_tracker
-    - sensor.custom_component_tracker
-    - sensor.ad_version_current
-    - sensor.caddy_version_current
-    - sensor.esphome_version_current
-    - switch.lamp_salon
-    - sensor.lamp_salon_power
+    - sensor.dark_sky_wind_bearing_*
+    - sensor.dark_sky_wind_speed_*
+    - sensor.blitzwolf_bw_shp6_*_current
+    - sensor.blitzwolf_bw_shp6_*_power
+    - sensor.blitzwolf_bw_shp6_*_voltage
     - sensor.light_salon_power
-    - sensor.mhz19b_model
-    - sensor.mhz19b_temperature
-    - sensor.shelly1_firmware_version_current
-    - sensor.shelly2_firmware_version_current
-    - sensor.shelly_plug_s_firmware_version_current
-    - binary_sensor.shelly1_328900_input_0
-    - binary_sensor.shelly2_5b2604_input_0
-    - binary_sensor.shelly2_5b2604_input_1
-    - sensor.shelly2_5b2604_energy
-    - sensor.shelly_plug_s_7aecf4_energy
-    - sensor.shelly_plug_s_7aecf4_temperature
-    - binary_sensor.shelly_plug_s_7aecf4_overtemperature
-    - sensor.blitzwolf_bw_shp6_2ad05a_current
-    - sensor.blitzwolf_bw_shp6_2ad05a_power
-    - sensor.blitzwolf_bw_shp6_2ad05a_voltage
-    - sensor.blitzwolf_bw_shp6_ed007d_current
-    - sensor.blitzwolf_bw_shp6_ed007d_power
-    - sensor.blitzwolf_bw_shp6_ed007d_voltage
-    - sensor.blitzwolf_bw_shp6_3766eb_current
-    - sensor.blitzwolf_bw_shp6_3766eb_power
-    - sensor.blitzwolf_bw_shp6_3766eb_voltage
-    - sensor.blitzwolf_bw_shp6_ecf9ea_current
-    - sensor.blitzwolf_bw_shp6_ecf9ea_power
-    - sensor.blitzwolf_bw_shp6_ecf9ea_voltage
     - sensor.lamp_salon_power
-include:
-  entities:
-    - input_boolean.heating_season
-    - input_boolean.heating_airing
-    - input_boolean.away_mode
-    - input_boolean.guests

@@ -314,15 +314,20 @@ views:
               - entity: binary_sensor.motion_goscinny
                 secondary_info: last-changed
               - switch.lamp_goscinny
-              - type: custom:mini-media-player
-                entity: media_player.mibox_goscinny
-                name: "Mi Box"
-                hide:
-                  controls: true
-                  power: true
-                  source: true
-                info: scroll
-                group: true
+              - type: conditional
+                conditions:
+                  - entity: media_player.mibox_goscinny
+                    state_not: "unavailable"
+                row:
+                  type: custom:mini-media-player
+                  entity: media_player.mibox_goscinny
+                  name: "Mi Box"
+                  hide:
+                    controls: true
+                    power: true
+                    source: true
+                  info: scroll
+                  group: true
       - type: vertical-stack
         in_card: true
         cards:
@@ -611,7 +616,7 @@ views:
                 <<: *percent-entity
               - entity: sensor.printer_toner_remaining
                 <<: *percent-entity
-              - sensor.printer_last_boot
+              - sensor.printer_uptime
           - type: entities
             title: "Synology"
             show_header_toggle: false

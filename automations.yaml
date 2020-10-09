@@ -86,7 +86,7 @@
           {%- else %}
             Dostępne są aktualizacje dodatków:
             {%- for repo in state_attr(trigger.entity_id, 'addons') %}
-          - {{ repo.name }} do wersji {{ repo.version }}
+          <br>- {{ repo.name }} do wersji {{ repo.version }}
             {%- endfor %}
           {%- endif %}
         tag: "notification-addons-update"
@@ -130,7 +130,7 @@
         {%- else %}
           Dostępne są aktualizacje dodatków:
           {%- for repo in state_attr(trigger.entity_id, 'repositories') %}
-         - {{ repo.display_name }} do wersji {{ repo.available_version }}
+         <br>- {{ repo.display_name }} do wersji {{ repo.available_version }}
           {%- endfor %}
         {%- endif %}
       tag: "notification-hacs"
@@ -472,10 +472,10 @@
       {% macro dead_unavailable_entities() %}
         {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor', 'media_player'] -%}
         {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
-        {%- set ignored = ['media_player.dune_salon'] -%}
+        {%- set ignored = ['media_player.dune_salon', 'media_player.mibox_goscinny'] -%}
         {% for domain in domains -%}
           {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
-            - {{ item.name }} ({{ item.entity_id }})
+            {{ item.name }} ({{ item.entity_id }})
           {%- endfor %}
         {%- endfor %}
       {% endmacro %}
@@ -488,10 +488,10 @@
           {% macro dead_unavailable_entities() %}
             {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor', 'media_player'] -%}
             {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
-            {%- set ignored = ['media_player.dune_salon'] -%}
+            {%- set ignored = ['media_player.dune_salon', 'media_player.mibox_goscinny'] -%}
             {% for domain in domains -%}
               {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
-           - {{ item.name }} ({{ item.entity_id }})
+           <br>- {{ item.name }} ({{ item.entity_id }})
               {%- endfor %}
             {%- endfor %}
           {% endmacro %}
@@ -934,9 +934,9 @@
         {% for domain in domains -%}
           {% for item in states[domain] if (((item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) or ('battery' in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == 'low' or item.state | lower == 'unknown')))) and not (( 'humidity' in item.entity_id) or ('illumination' in item.entity_id)) -%}
             {% if (item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) %}
-              - {{ item.entity_id }} [{{ item.attributes['battery_level'] | round(0) }}%]{% endif -%}
+              {{ item.entity_id }} [{{ item.attributes['battery_level'] | round(0) }}%]{% endif -%}
             {% if 'battery' in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == 'low' or item.state | lower == 'unknown') %}
-              - {{ item.entity_id }} [{{ item.state | round(0) }}%]{% endif -%}
+              {{ item.entity_id }} [{{ item.state | round(0) }}%]{% endif -%}
           {% endfor %}
         {%- endfor %}
       {% endmacro %}
@@ -952,9 +952,9 @@
             {% for domain in domains -%}
               {% for item in states[domain] if (((item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) or ('battery' in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == 'low' or item.state | lower == 'unknown')))) and not (( 'humidity' in item.entity_id) or ('illumination' in item.entity_id)) -%}
                 {% if (item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) %}
-           - {{ item.entity_id }} [{{ item.attributes['battery_level'] | round(0) }}%]{% endif -%}
+           <br>- {{ item.entity_id }} [{{ item.attributes['battery_level'] | round(0) }}%]{% endif -%}
                 {% if 'battery' in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == 'low' or item.state | lower == 'unknown') %}
-           - {{ item.entity_id }} [{{ item.state | round(0) }}%]{% endif -%}
+           <br>- {{ item.entity_id }} [{{ item.state | round(0) }}%]{% endif -%}
               {% endfor %}
             {%- endfor %}
           {% endmacro %}
@@ -2802,6 +2802,9 @@
       shellyht-E00ABD:
         powered: "ac"
         force_update_sensors: true
+        expire_after: 660
+      shellyflood-F2AD1D:
+        expire_after: 47520
 
 - id: frontend_set_theme
   alias: "Frontend Set Theme"
