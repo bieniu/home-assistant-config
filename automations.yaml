@@ -1,4 +1,66 @@
-## POWIADOMIENIA SYSTEMOWE ##
+## AKCJE IOS ##
+
+# włącz TV
+- id: ios_turn_on_tv
+  alias: "iOS Turn On TV"
+  trigger:
+    platform: event
+    event_type: ios.action_fired
+    event_data:
+      actionName: turn_on_tv
+  action:
+    service: script.harmony_telewizja
+
+# wyłącz TV
+- id: ios_turn_off_tv
+  alias: "iOS Turn Off TV"
+  trigger:
+    platform: event
+    event_type: ios.action_fired
+    event_data:
+      actionName: turn_off_tv
+  action:
+    service: script.harmony_tv_off
+
+## POWIADOMIENIA ##
+# przekazanie persitant_notification na telefon
+- id: notification_forward_persistant_notification_to_the_phone
+  alias: "Notification Forward Persistant Notification To The Phone"
+  trigger:
+    platform: event
+    event_type: "call_service"
+    event_data:
+      domain: "persistent_notification"
+      service: "create"
+  action:
+    service: python_script.notify
+    data:
+      title: "{{ trigger.event.data.service_data.title }}"
+      message: "{{ trigger.event.data.service_data.message }}"
+      tag: "{{ trigger.event.data.service_data.notification_id }}"
+      group: "persistan_notification"
+      services:
+        - service: !secret maciek_notify_service
+          type: "android"
+
+# usuwanie przekazanego persitant_notification na telefonie
+- id: notification_dismiss_forwarded_persistant_notification_on_the_phone
+  alias: "Notification Dismiss Forwarded Persistant Notification On The Phone"
+  trigger:
+    platform: event
+    event_type: "call_service"
+    event_data:
+      domain: "persistent_notification"
+      service: "dismiss"
+  action:
+    service: python_script.notify
+    data:
+      title: "clear_notification"
+      message: "clear_notification"
+      tag: "{{ trigger.event.data.service_data.notification_id }}"
+      services:
+        - service: !secret maciek_notify_service
+          type: "android"
 
 # powiadomienie o aktualizacji HA
 - id: notification_home_assistant_update_available
