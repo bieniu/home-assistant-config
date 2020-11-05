@@ -18,7 +18,6 @@ antek_light_motion_on:
 przedpokoj_light_motion_on:
 pracownia_light_motion_on:
 goscinny_light_motion_on:
-gabinet_light_motion_on:
 antek_lamp_night:
 harmony_command:
   initial: false

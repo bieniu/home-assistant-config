@@ -52,6 +52,9 @@
     event_data:
       domain: "persistent_notification"
       service: "dismiss"
+  condition:
+    condition: template
+    value_template: "{{ trigger.event.data.service_data.notification_id != 'config_entry_discovery' }}"
   action:
     service: python_script.notify
     data:
@@ -249,13 +252,14 @@
 # powiadomienie o aktualizacji oprogramowania Shelly
 - id: notification_shelly_update_available
   alias: "Notification Shelly Update Available"
+  mode: queued
   trigger:
     - platform: state
       entity_id:
         - binary_sensor.shelly_1_328900_firmware_update
         - binary_sensor.shelly_2_5b2604_firmware_update
         - binary_sensor.shelly_flood_f2ad1d_firmware_update
-        - binary_sensor.shelly_ht_e00abd_firmware_update
+        # - binary_sensor.shelly_ht_e00abd_firmware_update
         - binary_sensor.shelly_plug_s_7aecf4_firmware_update
       from: "off"
       to: "on"
@@ -263,7 +267,7 @@
     - service: python_script.notify
       data:
         title: "Aktualizacja oprogramowania Shelly"
-        message: "Dostępna jest aktualizacja oprogramowania dla {{ trigger.to_state.attributes.friendly_name | replace(' Firmware Update', '')}}."
+        message: "Dostępna jest aktualizacja oprogramowania dla {{ trigger.to_state.attributes.friendly_name | replace(' Firmware Update', '') }}."
         tag: "notification-{{ trigger.entity_id }}"
         group: "aktualizacje"
         services:
@@ -883,7 +887,6 @@
       message: "Pomieszczenie: {{ trigger.to_state.attributes.location }}, godzina {{ now().strftime('%H:%M') }}."
       tag: "notification-motion-{{ trigger.to_state.attributes.location }}"
       datetime: "{{ now().strftime('%Y%m%d%H%M%S') }}"
-      snapshot_url: !secret snapshot_url
       location: "{{ trigger.to_state.attributes.location }}"
 
 # powiadomienie jak otworzy się okno i nikogo w domu
@@ -1149,16 +1152,16 @@
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.away_mode
-    - condition: and
-      conditions:
-        - condition: state
-          entity_id: input_boolean.heating_season
-          state: "off"
-        - condition: numeric_state
-          entity_id: sensor.temperature_salon
-          above: 26
-    - service: fan.turn_on
-      entity_id: fan.pedestal_salon
+    # - condition: and
+    #   conditions:
+    #     - condition: state
+    #       entity_id: input_boolean.heating_season
+    #       state: "off"
+    #     - condition: numeric_state
+    #       entity_id: sensor.temperature_salon
+    #       above: 26
+    # - service: fan.turn_on
+    #   entity_id: fan.pedestal_salon
 
 ##################################################################################################
 
@@ -1249,24 +1252,24 @@
       entity_id: input_boolean.heating_salon_kuchnia_night
 
 # wyłączenie wentylatora po wyłączeniu telewizora
-- id: climate_turn_off_fan
-  alias: "Climate Turn Off Fan"
-  trigger:
-    platform: state
-    entity_id: media_player.denon_salon
-    to: "off"
-  condition:
-    - condition: state
-      entity_id: fan.pedestal_salon
-      state: "on"
-    - condition: state
-      entity_id: input_boolean.heating_season
-      state: "off"
-    - condition: time
-      after: "22:00:00"
-  action:
-    service: fan.turn_off
-    entity_id: fan.pedestal_salon
+# - id: climate_turn_off_fan
+#   alias: "Climate Turn Off Fan"
+#   trigger:
+#     platform: state
+#     entity_id: media_player.denon_salon
+#     to: "off"
+#   condition:
+#     - condition: state
+#       entity_id: fan.pedestal_salon
+#       state: "on"
+#     - condition: state
+#       entity_id: input_boolean.heating_season
+#       state: "off"
+#     - condition: time
+#       after: "22:00:00"
+#   action:
+#     service: fan.turn_off
+#     entity_id: fan.pedestal_salon
 
 # zmniejszenie temperatury gdy domownicy wychodzą i jest sezon grzewczy
 - id: heating_eco_mode
@@ -1611,16 +1614,16 @@
           - condition: state
             entity_id: light.lamp_salon
             state: "on"
-          - condition: state
-            entity_id: fan.pedestal_salon
-            state: "on"
+          # - condition: state
+          #   entity_id: fan.pedestal_salon
+          #   state: "on"
   action:
     service: homeassistant.turn_off
     entity_id:
       - light.bulbs_salon
       - light.leds_salon
       - light.lamp_salon
-      - fan.pedestal_salon
+      # - fan.pedestal_salon
 
 # automatyczna scena oświetlenia w salonie
 - id: light_scene_salon_auto_when_bulbs_turn_on
@@ -2282,6 +2285,64 @@
     - service: switch.turn_off
       entity_id: switch.lamp_pracownia
 
+
+#### GABINET ####
+# włączanie oświetlenia w gabinecie jak ruch i ciemno
+- id: light_turn_on_pracownia_light_when_dark_and_motion
+  alias: "Light Turn On Pracownia Light When Dark And Motion"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_gabinet
+      from: "off"
+      to: "on"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id: switch.stacjonarny
+        state: "off"
+      - condition: state
+        entity_id:
+          - input_boolean.away_mode
+          - light.ceiling_gabinet
+        state: "off"
+      - condition: numeric_state
+        entity_id: sensor.illumination_gabinet
+        below: 8
+      - condition: state
+        entity_id: input_boolean.light_auto_turn_gabinet
+        state: "on"
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+          - condition: sun
+            before: sunrise
+  action:
+    service: homeassistant.turn_on
+    entity_id:
+      - light.ceiling_gabinet
+      - input_boolean.gabinet_light_motion_on
+
+# wyłączanie oświetlenia w gabinecie jak brak ruchu
+- id: light_turn_off_gabinet_lamp
+  alias: "Light Turn Off Gabinet Lamp"
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_gabinet
+    from: "on"
+    to: "off"
+  condition:
+    condition: state
+    entity_id: input_boolean.gabinet_light_motion_on
+    state: "on"
+  action:
+    service: homeassistant.turn_off
+    entity_id:
+      - input_boolean.gabinet_light_motion_on
+      - light.ceiling_gabinet
+
+
 #### POKÓJ GOŚCINNY ####
 # wyłączanie lampki w pokoju gościnnym jak brak ruchu
 - id: light_turn_off_goscinny_lamp
@@ -2798,7 +2859,7 @@
     service: input_select.select_option
     data:
       entity_id: input_select.target_humidity
-      option: "45"
+      option: "50"
 
 - id: humidification_outdoor_temp_below_10
   alias: "Humidification Outdoor Temp Below 10"
@@ -2814,7 +2875,7 @@
     service: input_select.select_option
     data:
       entity_id: input_select.target_humidity
-      option: "40"
+      option: "45"
 
 ##################################################################################################
 
@@ -2864,9 +2925,11 @@
       shellyht-E00ABD:
         powered: "ac"
         force_update_sensors: true
-        expire_after: 660
+        expire_after: 1200
       shellyflood-F2AD1D:
-        expire_after: 47520
+        expire_after: 50400
+      shelly1l-483FDA701559:
+        relay-0: "light"
 
 - id: frontend_set_theme
   alias: "Frontend Set Theme"

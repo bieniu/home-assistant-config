@@ -24,6 +24,19 @@
 
 - platform: template
   switches:
+    heater_lazienka:
+      value_template: "{{ is_state_attr('climate.thermostat_lazienka', 'temperature', 28) }}"
+      turn_on:
+        service: climate.set_temperature
+        entity_id: climate.thermostat_lazienka
+        data:
+          temperature: 28
+      turn_off:
+        service: climate.set_temperature
+        entity_id: climate.thermostat_lazienka
+        data:
+          temperature: 8
+
     camera_move_up:
       friendly_name: "w górę"
       value_template: "on"

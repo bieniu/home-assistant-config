@@ -26,6 +26,10 @@
   max_temp: 28
   min_temp: 4
 
+"climate.custom_thermostat_*":
+  icon: mdi:radiator
+  friendly_name: "Grzejnik"
+
 #### CHRISTMAS ####
 "*.christmas_tree*":
   icon: mdi:pine-tree
@@ -39,10 +43,12 @@
   icon: mdi:timer-outline
 
 #### ESPHOME ####
-"binary_sensor.sonoff_*_status":
+"binary_sensor.sonoff_basic_*_status":
   icon: mdi:light-switch
+"binary_sensor.sonoff_s26_*_status":
+  icon: mdi:power-plug-outline
 "binary_sensor.blitzwolf_*_status":
-  icon: mdi:light-switch
+  icon: mdi:power-plug-outline
 
 #### SHELLY ####
 "binary_sensor.shelly_1_*_status":

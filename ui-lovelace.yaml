@@ -165,7 +165,7 @@ views:
                   entity: sensor.humidifier_water_level
                   prefix: "poziom wody: "
                   postfix: " %"
-              - fan.pedestal_salon
+              # - fan.pedestal_salon
               - light.bulbs_salon
               - light.leds_salon
               - light.lamp_salon
@@ -377,6 +377,7 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_gabinet
+              - light.ceiling_gabinet
               - switch.stacjonarny
       - type: vertical-stack
         in_card: true
@@ -471,7 +472,7 @@ views:
                   - entity: input_boolean.heating_season
                     state_not: "off"
                 row:
-                  entity: climate.thermostat_lazienka
+                  entity: climate.custom_thermostat_lazienka
       - type: picture-glance
         title: "Salon"
         entities:
@@ -627,7 +628,7 @@ views:
       - type: vertical-stack
         cards:
           - type: entities
-            title: "Urządzenia Z-Wave"
+            title: "Węzły Z-Wave"
             show_header_toggle: false
             entities:
               - entity: zwave.aeotec_zw090_zstick_gen5
@@ -1173,7 +1174,7 @@ views:
               - input_boolean.light_auto_turn_salon
               - input_boolean.light_auto_turn_pracownia
               - input_boolean.light_auto_turn_goscinny
-              # - input_boolean.light_auto_turn_gabinet
+              - input_boolean.light_auto_turn_gabinet
           - type: entities
             title: "Skrypty i ustawienia"
             show_header_toggle: false

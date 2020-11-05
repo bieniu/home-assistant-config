@@ -31,7 +31,8 @@ devices_away_mode:
         - input_boolean.antek_lamp_night
         - switch.tree_antek
         - switch.tree_sypialnia
-        - fan.pedestal_salon
+        # - fan.pedestal_salon
+        - light.ceiling_gabinet
 
 #### HEATING ####
 heating_fast_warm_up:
@@ -48,7 +49,7 @@ heating_fast_warm_up:
         - climate.thermostat_sypialnia
         # - climate.thermostat_kuchnia
         - climate.thermostat_salon
-        - climate.thermostat_lazienka
+        - climate.custom_thermostat_lazienka
       data:
         temperature: 24
     - delay: "01:00:00"
@@ -57,7 +58,7 @@ heating_fast_warm_up:
 heating_day:
   sequence:
     - service: climate.set_temperature
-      entity_id: climate.thermostat_lazienka
+      entity_id: climate.custom_thermostat_lazienka
       data_template:
         temperature: "{{ states('input_select.heating_temp_bathroom_day') }}"
     - service: climate.set_temperature
@@ -102,7 +103,7 @@ heating_night:
       data_template:
         temperature: "{{ states('input_select.heating_temp_bedroom_night') }}"
     - service: climate.set_temperature
-      entity_id: climate.thermostat_lazienka
+      entity_id: climate.custom_thermostat_lazienka
       data_template:
         temperature: "{{ states('input_select.heating_temp_bathroom_night') }}"
     - condition: template
@@ -130,7 +131,7 @@ heating_eco_mode:
         - climate.thermostat_salon
         - climate.thermostat_antek
         - climate.thermostat_sypialnia
-        - climate.thermostat_lazienka
+        - climate.custom_thermostat_lazienka
       data_template:
         temperature: "{{ states('input_select.heating_temp_eco') }}"
     - service: fan.turn_off
@@ -146,7 +147,7 @@ heating_season_end:
       - climate.thermostat_salon
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
-      - climate.thermostat_lazienka
+      - climate.custom_thermostat_lazienka
     data:
       temperature: 4
 
@@ -160,7 +161,7 @@ heating_airing_begin:
         - climate.thermostat_salon
         - climate.thermostat_antek
         - climate.thermostat_sypialnia
-        - climate.thermostat_lazienka
+        - climate.custom_thermostat_lazienka
       data:
         temperature: 8
     - service: fan.turn_off
@@ -256,7 +257,7 @@ notify_motion:
     - service: camera.snapshot
       entity_id: camera.salon
       data_template:
-        filename: "/config/www/snapshots/{{ datetime }}.jpg"
+        filename: "/media/camera_snapshots/{{ datetime }}.jpg"
     - delay:
         seconds: 1
     - service: python_script.notify
@@ -268,7 +269,7 @@ notify_motion:
         priority: "high"
         image: >-
           {% if location == 'salon' or location == 'przedpokój' %}
-            {{ snapshot_url }}{{ datetime }}.jpg
+            /media/local/camera_snapshots/{{ datetime }}.jpg
           {% else %}
             None
           {% endif %}
@@ -313,11 +314,12 @@ alexa_goodnight:
     - service: homeassistant.turn_off
       entity_id:
         - remote.salon
-        - fan.pedestal_salon
+        # - fan.pedestal_salon
         - fan.humidifier_salon
         - light.leds_salon
         - light.bulbs_salon
         - switch.cabinet_antek
+        - light.ceiling_gabinet
 
 alexa_tts:
   sequence:
