@@ -218,12 +218,16 @@
       value_template: "{{ is_state('device_tracker.blitzwolf_bw_shp6_ecf9ea', 'home') }}"
 
     blitzwolf_bw_shp6_ed007d_status:
-      friendly_name: "BlitzWolf BW-SHP6 [ED007d]"
+      friendly_name: "BlitzWolf BW-SHP6 [ED007D]"
       value_template: "{{ is_state('device_tracker.blitzwolf_bw_shp6_ed007d', 'home') }}"
 
     shelly_1_328900_status:
       friendly_name: "Shelly 1 [328900]"
       value_template: "{{ is_state('device_tracker.shelly_1_328900', 'home') }}"
+
+    shelly_1l_701559_status:
+      friendly_name: "Shelly 1L [701559]"
+      value_template: "{{ is_state('device_tracker.shelly_1l_701559', 'home') }}"
 
     shelly_2_5b2604_status:
       friendly_name: "Shelly 2 [5B2604]"

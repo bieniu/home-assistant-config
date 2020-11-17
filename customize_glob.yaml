@@ -53,6 +53,8 @@
 #### SHELLY ####
 "binary_sensor.shelly_1_*_status":
   icon: mdi:light-switch
+"binary_sensor.shelly_1l_*_status":
+  icon: mdi:light-switch
 "binary_sensor.shelly_2_*_status":
   icon: mdi:light-switch
 "binary_sensor.shelly_plug_*_status":

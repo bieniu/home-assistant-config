@@ -318,11 +318,17 @@ sensor.dark_sky_wind_speed:
   friendly_name: "Prędkość wiatru"
 
 #### RELAYS ####
-binary_sensor.shelly_plug_s_7aecf4_overpower_0:
-  relay: switch.shelly_plug_s_7aecf4_relay_0
+binary_sensor.shelly_plug_s_7aecf4_overpower:
+  relay: switch.dishwasher_kuchnia
+
+binary_sensor.shelly_plug_s_7aecf4_overtemperature:
+  relay: switch.dishwasher_kuchnia
 
 binary_sensor.shelly_2_5b2604_overpower_0:
   relay: switch.bulbs_salon
 
 binary_sensor.shelly_2_5b2604_overpower_1:
   relay: light.leds_salon
+
+binary_sensor.shelly_1l_701559_overtemperature:
+  relay: light.ceiling_gabinet

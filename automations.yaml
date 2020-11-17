@@ -65,6 +65,19 @@
         - service: !secret maciek_notify_service
           type: "android"
 
+# usuwanie persitant_notification po usunięciu na telefonie
+- id: notification_dismiss_persistant_notification_after_dismiss_on_the_phone
+  alias: "Notification Dismiss Persistant Notification After Dimiss On The Phone"
+  trigger:
+    platform: event
+    event_type: "mobile_app_notification_cleared"
+    event_data:
+      device_id: "9d5ca9a741416fa4"
+  action:
+    service: persistent_notification.dismiss
+    data:
+      notification_id: "{{ trigger.event.context.id }}"
+
 # powiadomienie o aktualizacji HA
 - id: notification_home_assistant_update_available
   alias: "Notification Home Assistant Update Available"
@@ -109,8 +122,10 @@
 - id: notification_supervisor_update_available
   alias: "Notification Supervisor Update Available"
   trigger:
-    platform: template
-    value_template: "{{ state_attr('sensor.supervisor_updates', 'current_version') != state_attr('sensor.supervisor_updates', 'newest_version') }}"
+    platform: state
+    entity_id: sensor.supervisor_updates
+    attribute: update_available
+    to: true
   action:
     - service: python_script.notify
       data:
@@ -813,7 +828,7 @@
         minutes: 1
   variables:
     notification_title: "Zbyt duże obciążenie przekaźnika"
-    notification_message: "Przekaźnik {{ state_attr(trigger.to_state.attributes.relay, 'friendly_name') }} ma zbyt duże obciążenie i zostanie wyłączony."
+    notification_message: "Przekaźnik {{ state_attr(trigger.to_state.attributes.relay, 'friendly_name') }} ma zbyt duże obciążenie i został wyłączony."
   action:
     - service: python_script.notify
       data:
@@ -854,9 +869,62 @@
               file:
                 url: !secret favicon_url
               duration: 10
-    - service: homeassistant.turn_off
+
+# powiadomienie urządzenei się przegrzewa
+- id: notification_relay_overheating
+  alias: "Notification Relay Overheating"
+  trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.shelly_1l_701559_overtemperature
+        - binary_sensor.shelly_plug_s_7aecf4_overtemperature
+      from: "off"
+      to: "on"
+      for:
+        minutes: 1
+  variables:
+    notification_title: "Przekaźniek się przegrzewa"
+    notification_message: "Przekaźnik {{ state_attr(trigger.to_state.attributes.relay, 'friendly_name') }} się przegrzewa."
+  action:
+    - service: python_script.notify
       data:
-        entity_id: "{{ trigger.to_state.attributes.relay }}"
+        title: "{{ notification_title }}"
+        message: "{{ notification_message }}"
+        tag: "notification-relay-overheating-{{ trigger.entity_id }}"
+        priority: "high"
+        services:
+          - service: !secret maciek_notify_service
+            type: "android"
+          - service: !secret edyta_notify_service
+            type: "ios"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: media_player.bravia_salon
+          state: "on"
+        sequence:
+          service: notify.bravia
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
+            data:
+              file:
+                url: !secret favicon_url
+              duration: 10
+    - choose:
+        conditions:
+          condition: state
+          entity_id: media_player.mibox_goscinny
+          state: "on"
+        sequence:
+          service: notify.mibox
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
+            data:
+              file:
+                url: !secret favicon_url
+              duration: 10
 
 # powiadomienie jak jest ruch i nikogo w domu
 - id: notification_motion_when_away_mode
@@ -2925,9 +2993,9 @@
       shellyht-E00ABD:
         powered: "ac"
         force_update_sensors: true
-        expire_after: 1200
+        expire_after: 720
       shellyflood-F2AD1D:
-        expire_after: 50400
+        expire_after: 51840
       shelly1l-483FDA701559:
         relay-0: "light"
 
