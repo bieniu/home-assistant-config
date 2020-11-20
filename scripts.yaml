@@ -47,7 +47,7 @@ heating_fast_warm_up:
         - climate.thermostat_gabinet
         - climate.thermostat_antek
         - climate.thermostat_sypialnia
-        # - climate.thermostat_kuchnia
+        - climate.aeotec_thermostat_kuchnia
         - climate.thermostat_salon
         - climate.custom_thermostat_lazienka
       data:
@@ -64,7 +64,7 @@ heating_day:
     - service: climate.set_temperature
       entity_id:
         - climate.thermostat_antresola
-        # - climate.thermostat_kuchnia
+        - climate.aeotec_thermostat_kuchnia
         - climate.thermostat_salon
         - climate.thermostat_gabinet
       data_template:
@@ -114,7 +114,7 @@ heating_night:
       entity_id: fan.humidifier_salon
     - service: climate.set_temperature
       entity_id:
-        # - climate.thermostat_kuchnia
+        - climate.aeotec_thermostat_kuchnia
         - climate.thermostat_salon
       data_template:
         temperature: "{{ states('input_select.heating_temp_night') }}"
@@ -127,7 +127,7 @@ heating_eco_mode:
       entity_id:
         - climate.thermostat_antresola
         - climate.thermostat_gabinet
-        # - climate.thermostat_kuchnia
+        - climate.aeotec_thermostat_kuchnia
         - climate.thermostat_salon
         - climate.thermostat_antek
         - climate.thermostat_sypialnia
@@ -139,17 +139,23 @@ heating_eco_mode:
 
 heating_season_end:
   sequence:
-    service: climate.set_temperature
-    entity_id:
-      - climate.thermostat_antresola
-      - climate.thermostat_gabinet
-      # - climate.thermostat_kuchnia
-      - climate.thermostat_salon
-      - climate.thermostat_antek
-      - climate.thermostat_sypialnia
-      - climate.custom_thermostat_lazienka
-    data:
-      temperature: 4
+    - service: climate.set_temperature
+      entity_id:
+        - climate.thermostat_antresola
+        - climate.thermostat_gabinet
+        - climate.thermostat_salon
+        - climate.thermostat_antek
+        - climate.thermostat_sypialnia
+        - climate.custom_thermostat_lazienka
+      data:
+        temperature: 4
+    - service: climate.set_hvac_mode
+      entity_id:
+        - climate.aeotec_thermostat_kuchnia
+        - climate.custom_thermostat_lazienka
+      data:
+        hvac_mode: "off"
+
 
 heating_airing_begin:
   sequence:
@@ -157,7 +163,7 @@ heating_airing_begin:
       entity_id:
         - climate.thermostat_antresola
         - climate.thermostat_gabinet
-        # - climate.thermostat_kuchnia
+        - climate.aeotec_thermostat_kuchnia
         - climate.thermostat_salon
         - climate.thermostat_antek
         - climate.thermostat_sypialnia

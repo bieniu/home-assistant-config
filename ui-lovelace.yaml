@@ -125,6 +125,7 @@ views:
                 entities:
                   - binary_sensor.window_kuchnia
                   - binary_sensor.water_leak_kuchnia
+                  - climate.aeotec_thermostat_kuchnia
                   - entity: sensor.dishwasher_kuchnia
                     style: |
                       :host {
@@ -635,6 +636,8 @@ views:
                 <<: *zwave-entity
               - entity: zwave.aeotec_zw175_smart_switch_7
                 <<: *zwave-entity
+              - entity: zwave.aeotec_zwa021_thermostat_kuchnia
+                <<: *zwave-entity
               - entity: zwave.danfoss_014g0013_thermostat_salon
                 <<: *zwave-entity
               - entity: zwave.danfoss_014g0013_thermostat_antresola
@@ -920,7 +923,7 @@ views:
             color: var(--state-icon-color)
         entities:
           - sensor.battery_thermostat_salon
-          # - sensor.battery_thermostat_kuchnia
+          - sensor.battery_thermostat_kuchnia
           - sensor.battery_thermostat_antresola
           - sensor.battery_thermostat_gabinet
           - sensor.battery_thermostat_antek

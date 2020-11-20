@@ -13,6 +13,7 @@
 
 * Aeotec ZW090 Z-Stick Gen5
 * Aeotec ZW175 Smart Switch 7
+* Aeotec ZWA021 Thermostat
 * Danfoss 014G0013 Thermostats
 
 ## Xiaomi ZigBee Devices
@@ -34,6 +35,7 @@
 * Sonoff S26 Plug [[ESPHome](https://esphome.io) firmware]
 * BlitzWolf BW-SHP6 Plugs [[ESPHome](https://esphome.io) firmware]
 * [Shelly 1](https://shelly.cloud/products/shelly-1-smart-home-automation-relay/) via MQTT
+* [Shelly 1L](https://shelly.cloud/products/shelly-1l-single-wire-smart-home-automation-relay/) via MQTT
 * Shelly 2 via MQTT
 * [Shelly Plug S](https://shelly.cloud/products/shelly-plug-s-smart-home-automation-device/) via MQTT
 
@@ -70,10 +72,7 @@
 * [HACS](https://github.com/custom-components/hacs)
 * [iPhone Detect](https://github.com/mudape/iphonedetect)
 * [Xiaomi Mi Smart Pedestal Fan](https://github.com/syssi/xiaomi_fan)
-
-## Custom Panels
-
-* [Z-Wave Graph](https://gist.github.com/AdamNaj/cbf4d792a22f443fe9d354e4dca4de00)
+* [Blitzortung.org Lightning Detector](https://github.com/mrk-its/homeassistant-blitzortung)
 
 ## Lovelace Custom Cards
 
@@ -85,7 +84,6 @@
 * [mini-graph-card](https://github.com/kalkih/mini-graph-card)
 * [mini-media-player](https://github.com/kalkih/mini-media-player)
 * [simple=weather-card](https://github.com/kalkih/simple-weather-card)
-* [stack-in-card](https://github.com/custom-cards/stack-in-card)
 
 ## AppDaemon
 

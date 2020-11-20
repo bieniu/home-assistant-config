@@ -1312,7 +1312,7 @@
       state: "off"
     - service: climate.set_temperature
       entity_id:
-        # - climate.thermostat_kuchnia
+        - climate.aeotec_thermostat_kuchnia
         - climate.thermostat_salon
       data:
         temperature: "{{ states('input_select.heating_temp_night') }}"
@@ -1564,7 +1564,13 @@
     from: "off"
     to: "on"
   action:
-    service: script.heating_day
+    - service: climate.set_hvac_mode
+      entity_id:
+        - climate.aeotec_thermostat_kuchnia
+        - climate.custom_thermostat_lazienka
+      data:
+        hvac_mode: "heat"
+    - service: script.heating_day
 
 # koniec sezonu grzewczego
 - id: heating_season_end

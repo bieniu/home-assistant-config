@@ -15,7 +15,11 @@ logbook:
       - device_tracker
       - zwave
       - script
-
+    entity_globs:
+      - binary_sensor.*_status
+      - sensor.*_last_restart
+      - sensor.*_last_boot
+      - sensor.*_uptime
 
 lovelace:
   mode: yaml
