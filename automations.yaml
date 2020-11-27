@@ -272,9 +272,10 @@
     - platform: state
       entity_id:
         - binary_sensor.shelly_1_328900_firmware_update
+        - binary_sensor.shelly_1l_701559_firmware_update
         - binary_sensor.shelly_2_5b2604_firmware_update
         - binary_sensor.shelly_flood_f2ad1d_firmware_update
-        # - binary_sensor.shelly_ht_e00abd_firmware_update
+        - binary_sensor.shelly_ht_e00abd_firmware_update
         - binary_sensor.shelly_plug_s_7aecf4_firmware_update
       from: "off"
       to: "on"
@@ -1564,12 +1565,10 @@
     from: "off"
     to: "on"
   action:
-    - service: climate.set_hvac_mode
+    - service: climate.turn_on
       entity_id:
         - climate.aeotec_thermostat_kuchnia
         - climate.custom_thermostat_lazienka
-      data:
-        hvac_mode: "heat"
     - service: script.heating_day
 
 # koniec sezonu grzewczego
@@ -2999,9 +2998,9 @@
       shellyht-E00ABD:
         powered: "ac"
         force_update_sensors: true
-        expire_after: 720
+        expire_after: 1320
       shellyflood-F2AD1D:
-        expire_after: 51840
+        expire_after: 95040
       shelly1l-483FDA701559:
         relay-0: "light"
 

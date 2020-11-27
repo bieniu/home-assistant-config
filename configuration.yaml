@@ -90,7 +90,7 @@ switch: !include switches.yaml
 light: !include lights.yaml
 
 input_select: !include input_select.yaml
-input_boolean: !include input_boolean.yaml
+input_boolean:
 input_number:
 input_text:
 input_datetime:

@@ -59,7 +59,7 @@ heating_day:
   sequence:
     - service: climate.set_temperature
       entity_id: climate.custom_thermostat_lazienka
-      data_template:
+      data:
         temperature: "{{ states('input_select.heating_temp_bathroom_day') }}"
     - service: climate.set_temperature
       entity_id:
@@ -67,13 +67,13 @@ heating_day:
         - climate.aeotec_thermostat_kuchnia
         - climate.thermostat_salon
         - climate.thermostat_gabinet
-      data_template:
+      data:
         temperature: "{{ states('input_select.heating_temp_day') }}"
     - service: climate.set_temperature
       entity_id:
         - climate.thermostat_antek
         - climate.thermostat_sypialnia
-      data_template:
+      data:
         temperature: "{{ states('input_select.heating_temp_bedroom_day') }}"
     - service: input_boolean.turn_off
       entity_id:
@@ -94,17 +94,17 @@ heating_night:
       entity_id:
         - climate.thermostat_antresola
         - climate.thermostat_gabinet
-      data_template:
+      data:
         temperature: "{{ states('input_select.heating_temp_night') }}"
     - service: climate.set_temperature
       entity_id:
         - climate.thermostat_antek
         - climate.thermostat_sypialnia
-      data_template:
+      data:
         temperature: "{{ states('input_select.heating_temp_bedroom_night') }}"
     - service: climate.set_temperature
       entity_id: climate.custom_thermostat_lazienka
-      data_template:
+      data:
         temperature: "{{ states('input_select.heating_temp_bathroom_night') }}"
     - condition: template
       value_template: >-
@@ -116,7 +116,7 @@ heating_night:
       entity_id:
         - climate.aeotec_thermostat_kuchnia
         - climate.thermostat_salon
-      data_template:
+      data:
         temperature: "{{ states('input_select.heating_temp_night') }}"
     - service: input_boolean.turn_on
       entity_id: input_boolean.heating_salon_kuchnia_night
@@ -132,7 +132,7 @@ heating_eco_mode:
         - climate.thermostat_antek
         - climate.thermostat_sypialnia
         - climate.custom_thermostat_lazienka
-      data_template:
+      data:
         temperature: "{{ states('input_select.heating_temp_eco') }}"
     - service: fan.turn_off
       entity_id: fan.humidifier_salon
@@ -149,13 +149,10 @@ heating_season_end:
         - climate.custom_thermostat_lazienka
       data:
         temperature: 4
-    - service: climate.set_hvac_mode
+    - service: climate.turn_off
       entity_id:
         - climate.aeotec_thermostat_kuchnia
         - climate.custom_thermostat_lazienka
-      data:
-        hvac_mode: "off"
-
 
 heating_airing_begin:
   sequence:
@@ -163,10 +160,11 @@ heating_airing_begin:
       entity_id:
         - climate.thermostat_antresola
         - climate.thermostat_gabinet
-        - climate.aeotec_thermostat_kuchnia
         - climate.thermostat_salon
         - climate.thermostat_antek
         - climate.thermostat_sypialnia
+        - climate.custom_thermostat_lazienka
+        - climate.aeotec_thermostat_kuchnia
         - climate.custom_thermostat_lazienka
       data:
         temperature: 8
@@ -248,7 +246,7 @@ light_turn_on_antek_leds:
   sequence:
     - service: light.turn_on
       entity_id: light.lightstrip_antek
-      data_template:
+      data:
         brightness: 150
         rgb_color:
           [
@@ -262,12 +260,12 @@ notify_motion:
   sequence:
     - service: camera.snapshot
       entity_id: camera.salon
-      data_template:
+      data:
         filename: "/media/camera_snapshots/{{ datetime }}.jpg"
     - delay:
         seconds: 1
     - service: python_script.notify
-      data_template:
+      data:
         title: "{{ title }}"
         message: "{{ message }}"
         tag: "{{ tag }}"
@@ -288,7 +286,7 @@ notify_motion:
 camera_move:
   sequence:
     service: mqtt.publish
-    data_template:
+    data:
       topic: "camera/salon/motors/{{ orientation }}/set"
       payload: "{{ direction }}"
 
@@ -330,7 +328,7 @@ alexa_goodnight:
 alexa_tts:
   sequence:
     service: notify.alexa_media_echo_plus
-    data_template:
+    data:
       message: "{{ message }}"
       data:
         type: "tts"
@@ -352,7 +350,7 @@ restart_esphome_devices:
 open_windows:
   sequence:
     service: notify.alexa_media_echo_show
-    data_template:
+    data:
       message: >-
         {% set ns = namespace(open_windows=[]) %}
           {% for entity in state_attr('group.windows', 'entity_id') %}
