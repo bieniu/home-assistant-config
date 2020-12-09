@@ -23,16 +23,19 @@ devices_away_mode:
         - light.lamp_salon
         - light.leds_przedpokoj
         - light.gateway_antresola
+        - light.gateway_goscinny
         - light.lightstrip_sypialnia
         - light.lightstrip_antek
         - switch.cabinet_antek
         - switch.lamp_pracownia
-        - switch.lamp_goscinny
+        # - switch.lamp_goscinny
         - input_boolean.antek_lamp_night
         - switch.tree_antek
-        - switch.tree_sypialnia
+        # - switch.tree_sypialnia
         # - fan.pedestal_salon
         - light.ceiling_gabinet
+        - light.ceiling_kuchnia
+        - light.ceiling_lazienka
 
 #### HEATING ####
 heating_fast_warm_up:
@@ -324,6 +327,8 @@ alexa_goodnight:
         - light.bulbs_salon
         - switch.cabinet_antek
         - light.ceiling_gabinet
+        - light.ceiling_kuchnia
+        - light.ceiling_lazienka
 
 alexa_tts:
   sequence:

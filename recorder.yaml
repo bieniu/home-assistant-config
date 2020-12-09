@@ -1,12 +1,8 @@
 db_url: !secret mysql_db_url
 purge_keep_days: 7
 exclude:
-  # domains:
-  #   - sun
   entities:
     - sensor.dark_sky_daily_summary
-    - sensor.light_salon_power
-    - sensor.lamp_salon_power
   entity_globs:
     - sensor.dark_sky_daytime_high_temperature*
     - sensor.dark_sky_icon*
@@ -16,6 +12,3 @@ exclude:
     - sensor.dark_sky_visibility*
     - sensor.dark_sky_wind_bearing*
     - sensor.dark_sky_wind_speed*
-    - sensor.blitzwolf_bw_shp6_*_current
-    - sensor.blitzwolf_bw_shp6_*_power
-    - sensor.blitzwolf_bw_shp6_*_voltage

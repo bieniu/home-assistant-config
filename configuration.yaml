@@ -65,20 +65,6 @@ updater:
 
 # stream:
 
-utility_meter:
-  light_salon_energy_monthly:
-    source: sensor.light_salon_energy
-    cycle: monthly
-  dishwasher_kuchnia_energy_monthly:
-    source: sensor.dishwasher_kuchnia_energy
-    cycle: monthly
-  computer_gabinet_energy_monthly:
-    source: sensor.computer_gabinet_energy
-    cycle: monthly
-  servers_gabinet_energy_monthly:
-    source: sensor.servers_gabinet_energy
-    cycle: monthly
-
 sensor: !include sensors.yaml
 binary_sensor: !include binary_sensors.yaml
 group: !include groups.yaml
@@ -160,3 +146,13 @@ climate:
     initial_hvac_mode: "heat"
     away_temp: 16
     precision: 0.1
+
+panel_custom:
+  - name: zwave-graph-panel
+    sidebar_title: "Mapa sieci Z-Wave"
+    sidebar_icon: mdi:z-wave
+    module_url: /local/zwavegraph.js
+    config:
+      ranker: network-simplex
+      edge_visibility: relevant
+      grouping: z-wave

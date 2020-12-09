@@ -136,6 +136,7 @@ views:
                             var(--state-icon-color)
                           {% endif %};
                       }
+                  - light.ceiling_kuchnia
       - type: vertical-stack
         in_card: true
         cards:
@@ -296,7 +297,6 @@ views:
               - entity: binary_sensor.motion_pracownia
                 secondary_info: last-changed
               - switch.lamp_pracownia
-              - light.gateway_pracownia
       - type: vertical-stack
         in_card: true
         cards:
@@ -314,7 +314,8 @@ views:
             entities:
               - entity: binary_sensor.motion_goscinny
                 secondary_info: last-changed
-              - switch.lamp_goscinny
+              # - switch.lamp_goscinny
+              - light.gateway_goscinny
               - type: conditional
                 conditions:
                   - entity: media_player.mibox_goscinny
@@ -427,6 +428,7 @@ views:
             entities:
               - sensor.temperature_sypialnia
               - sensor.humidity_sypialnia
+              - sensor.co2_sypialnia
               - sensor.illumination_sypialnia
           - type: entities
             show_header_toggle: false
@@ -443,7 +445,7 @@ views:
                 row:
                   entity: climate.thermostat_sypialnia
               - light.lightstrip_sypialnia
-              - switch.tree_sypialnia
+              # - switch.tree_sypialnia
               - type: custom:mini-media-player
                 entity: media_player.echo_dot_sypialnia
                 hide:
@@ -474,6 +476,7 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.custom_thermostat_lazienka
+              - light.ceiling_lazienka
       - type: picture-glance
         title: "Salon"
         entities:
@@ -638,6 +641,8 @@ views:
                 <<: *zwave-entity
               - entity: zwave.aeotec_zwa021_thermostat_kuchnia
                 <<: *zwave-entity
+              - entity: zwave.eurotronic_air_quality_sensor
+                <<: *zwave-entity
               - entity: zwave.danfoss_014g0013_thermostat_salon
                 <<: *zwave-entity
               - entity: zwave.danfoss_014g0013_thermostat_antresola
@@ -732,6 +737,8 @@ views:
           - binary_sensor.blitzwolf_bw_shp6_3766eb_status
           - binary_sensor.shelly_1_328900_status
           - binary_sensor.shelly_1l_701559_status
+          - binary_sensor.shelly_1l_aceb5f_status
+          - binary_sensor.shelly_1l_ad1b60_status
           - binary_sensor.shelly_2_5b2604_status
           - binary_sensor.shelly_plug_s_7aecf4_status
           - binary_sensor.shelly_ht_e00abd_status
@@ -761,7 +768,7 @@ views:
                   icon: false
                   graph: false
                 entities:
-                  - sensor.light_salon_power_sum
+                  - sensor.light_salon_power
               - type: custom:mini-graph-card
                 hour24: true
                 decimals: 1
@@ -788,46 +795,6 @@ views:
                   graph: false
                 entities:
                   - sensor.servers_gabinet_power
-      - type: vertical-stack
-        in_card: true
-        cards:
-          - type: horizontal-stack
-            title: "Zużycie energii"
-            cards:
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 2
-                show:
-                  icon: false
-                  graph: false
-                entities:
-                  - sensor.light_salon_energy_monthly
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 2
-                show:
-                  icon: false
-                  graph: false
-                entities:
-                  - sensor.dishwasher_kuchnia_energy_monthly
-          - type: horizontal-stack
-            cards:
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 2
-                show:
-                  icon: false
-                  graph: false
-                entities:
-                  - sensor.computer_gabinet_energy_monthly
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 2
-                show:
-                  icon: false
-                  graph: false
-                entities:
-                  - sensor.servers_gabinet_energy_monthly
       - type: vertical-stack
         in_card: true
         cards:
@@ -889,6 +856,7 @@ views:
             color: var(--state-icon-color)
         entities:
           - sensor.battery_xiaomi_ht_salon
+          - sensor.battery_xiaomi_weather_v1_kuchnia
           - sensor.battery_xiaomi_ht_pracownia
           - sensor.battery_xiaomi_ht_goscinny
           - sensor.battery_xiaomi_ht_antresola
@@ -896,7 +864,6 @@ views:
           - sensor.battery_xiaomi_ht_antek
           - sensor.battery_xiaomi_ht_sypialnia
           - sensor.battery_xiaomi_ht_lazienka
-          - sensor.battery_xiaomi_weather_v1_outdoor
       - type: custom:battery-state-card
         name: "Baterie sensorów wody"
         tap_action:
@@ -980,9 +947,10 @@ views:
             entity_pressure: sensor.pressure_outdoor
             entity_temperature: sensor.temperature_outdoor
             entity_apparent_temp: sensor.dom_realfeel_temperature
-            entity_visibility: sensor.dark_sky_visibility
             entity_wind_bearing: sensor.dark_sky_wind_bearing
             entity_wind_speed: sensor.dark_sky_wind_speed
+            entity_pop: sensor.dark_sky_precip_probability
+            entity_pop_intensity: sensor.dom_precipitation
             entity_forecast_high_temp_1: sensor.dark_sky_daytime_high_temperature_1d
             entity_forecast_high_temp_2: sensor.dark_sky_daytime_high_temperature_2d
             entity_forecast_high_temp_3: sensor.dark_sky_daytime_high_temperature_3d
@@ -1018,7 +986,7 @@ views:
             tooltip_border_color: "#D9D9D9"
             tooltip_left_offset: -14
             slot_l1: "wind"
-            slot_l2: "visibility"
+            slot_l2: "pop"
             slot_l3: "sun_following"
             slot_l4: "remove"
             slot_l5: "remove"
@@ -1028,6 +996,7 @@ views:
             slot_r4: "remove"
             slot_r5: "remove"
             old_icon: "true"
+            show_decimals: true
           - type: iframe
             url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates&metricWind=m%2Fs
             aspect_ratio: 61%
@@ -1061,9 +1030,10 @@ views:
             <<: &CLIMATE_GRAPH_PARAMS
               hour24: true
               points_per_hour: 1
-              height: 75
+              height: 85
               show:
                 fill: fade
+                legend: false
             entities:
               - sensor.temperature_outdoor
             line_color: "#ef5350"
@@ -1079,7 +1049,13 @@ views:
             entities:
               - sensor.pressure_outdoor
             line_color: "#4bc0c0"
-            decimals: 1
+            decimals: 0
+          - type: custom:mini-graph-card
+            <<: *CLIMATE_GRAPH_PARAMS
+            entities:
+              - sensor.voc_salon
+            line_color: "#795548"
+            decimals: 2
       - type: vertical-stack
         cards:
           - type: custom:mini-graph-card
@@ -1096,9 +1072,14 @@ views:
             decimals: 1
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
+            name: "Dwutlenek węgla"
             entities:
-              - sensor.co2_salon
-            line_color: "#8bc34a"
+              - entity: sensor.co2_salon
+                name: salon
+                color: "#8bc34a"
+              - entity: sensor.co2_sypialnia
+                name: sypialnia
+                color: "#ff9800"
             decimals: 0
       - type: vertical-stack
         cards:

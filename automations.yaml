@@ -352,6 +352,18 @@
                 uri: "https://github.com/caddyserver/caddy/releases"
 
 ###################################################################################################
+# włączenie oświetlenia świątecznego jak jest zachód słońca
+- id: light_turn_on_christmas_lights
+  alias: "Light Turn On Christmas Lights"
+  trigger:
+    platform: sun
+    event: sunset
+  action:
+    - service: switch.turn_on
+      entity_id:
+        - switch.christmas_lights_balkon_dol
+        - switch.christmas_lights_balkon_gora
+        - switch.christmas_lights_goscinny
 
 # włączenie drzewek jak jest zachód słońca i domownicy w domu
 - id: light_turn_on_trees
@@ -366,8 +378,9 @@
   action:
     - service: switch.turn_on
       entity_id:
-        - switch.tree_sypialnia
+        # - switch.tree_sypialnia
         - switch.tree_antek
+        - switch.christmas_lights_antresola
 
 # wyłączenie drzewek o 23
 - id: light_turn_off_trees
@@ -378,8 +391,12 @@
   action:
     service: switch.turn_off
     entity_id:
-      - switch.tree_sypialnia
+      # - switch.tree_sypialnia
       - switch.tree_antek
+      - switch.christmas_lights_balkon_dol
+      - switch.christmas_lights_balkon_gora
+      - switch.christmas_lights_antresola
+      - switch.christmas_lights_goscinny
 
 # włączenie drzewek jak po zachodzie słońca wracają domownicy
 - id: light_turn_on_trees_when_peoples_back
@@ -396,8 +413,9 @@
   action:
     service: switch.turn_on
     entity_id:
-      - switch.tree_sypialnia
+      # - switch.tree_sypialnia
       - switch.tree_antek
+      - switch.christmas_lights_antresola
 
 # powiadomienie o zbliżającej się burzy
 - id: notification_storm_comming
@@ -760,7 +778,6 @@
                 url: !secret favicon_url
               duration: 10
 
-
 # powiadomienie jak pojawi się woda na podłodze w kuchni
 - id: notification_water_leak_kuchnia
   alias: "Notification Water Leak Kuchnia"
@@ -878,6 +895,8 @@
     - platform: state
       entity_id:
         - binary_sensor.shelly_1l_701559_overtemperature
+        - binary_sensor.shelly_1l_aceb5f_overtemperature
+        - binary_sensor.shelly_1l_ad1b60_overtemperature
         - binary_sensor.shelly_plug_s_7aecf4_overtemperature
       from: "off"
       to: "on"
@@ -1235,6 +1254,41 @@
 ##################################################################################################
 
 #### HEATING #####################################################################################
+# kalibracja termostatu Aeotec
+- id: heating_aeotec_thermostat_calibration
+  alias: "Heating Aeotec Thermostat Calibration"
+  trigger:
+    platform: template
+    value_template: "{{ state_attr('climate.aeotec_thermostat_kuchnia', 'current_temperature') | float - state_attr('climate.aeotec_thermostat_kuchnia', 'temperature') | float > 2 }}"
+    for: "00:10:00"
+  condition:
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.heating_season
+          state: "on"
+        - condition: state
+          entity_id: input_boolean.heating_airing
+          state: "off"
+        - condition: numeric_state
+          entity_id: climate.aeotec_thermostat_kuchnia
+          attribute: temperature
+          above: 20.5
+        - condition: template
+          value_template: "{{ (now() - state_attr('automation.heating_aeotec_thermostat_calibration', 'last_triggered')).total_seconds() > 3600 }}"
+  action:
+    - service: climate.set_preset_mode
+      entity_id: climate.aeotec_thermostat_kuchnia
+      data:
+        preset_mode: "Boost"
+    - delay: "00:00:15"
+    - service: climate.turn_off
+      entity_id: climate.aeotec_thermostat_kuchnia
+    - delay: "00:00:15"
+    - service: climate.turn_on
+      entity_id: climate.aeotec_thermostat_kuchnia
+
+
 # zwiększenie temperatury rano jeśli ktoś jest w domu i trwa sezon grzewczy
 - id: heating_day
   alias: "Heating Day"
@@ -1610,6 +1664,20 @@
   action:
     service: script.devices_away_mode
 
+## ŁAZIENKA ##
+# wyłącz światło w łazience jak jest włączone przez godzinę
+- id: light_turn_off_lazienka_light_if_on_for_an_hour
+  alias: "Light Turn Off Lazienka Light If On For An Hour"
+  trigger:
+    - platform: state
+      entity_id: light.ceiling_lazienka
+      to: "on"
+      for:
+        minutes: 60
+  action:
+    - service: light.turn_off
+      entity_id: light.ceiling_lazienka
+
 ## SALON ##
 # restart żarówek w salonie gdy niedostępne
 - id: light_restart_bulbs_salon_when_unavailable
@@ -1636,27 +1704,6 @@
     - wait_template: "{{ is_state('light.bulb_salon_1', 'on') and is_state('light.bulb_salon_2', 'on') }}"
     - service: light.turn_off
       entity_id: light.bulbs_salon
-
-# restart lampy w salonie gdy niedostępna
-- id: light_restart_lamp_salon_when_unavailable
-  alias: "Light Restart Lamp Salon When Unavailable"
-  trigger:
-    platform: state
-    entity_id: light.lamp_salon
-    to: "unavailable"
-    for:
-      minutes: 2
-  action:
-    - service: switch.turn_off
-      entity_id: switch.lamp_salon
-    - delay: "00:00:05"
-    - service: switch.turn_on
-      entity_id: switch.lamp_salon
-    - condition: template
-      value_template: "{{ trigger.from_state.state == 'off' }}"
-    - wait_template: "{{ is_state('light.lamp_salon', 'on') }}"
-    - service: light.turn_off
-      entity_id: light.lamp_salon
 
 # wyłączenie urządzeń w salonie jeśli nie ma ruchu przez godzinę i jest po północy
 - id: devices_turn_off_in_salon_when_no_motion_and_after_midnight
@@ -1784,6 +1831,7 @@
 # włączanie lampy w salonie jak pojawi się ruch lub wyłączone światło/TV
 - id: light_turn_on_salon_lamp
   alias: "Light Turn On Salon Lamp"
+  max_exceeded: silent
   trigger:
     - platform: state
       entity_id:
@@ -1995,9 +2043,6 @@
       entity_id: binary_sensor.motion_sypialnia
       from: "off"
       to: "on"
-    - platform: numeric_state
-      entity_id: sensor.illumination_sypialnia
-      below: 3
   condition:
     condition: and
     conditions:
@@ -2009,9 +2054,6 @@
       - condition: numeric_state
         entity_id: sensor.illumination_sypialnia
         below: 3
-      - condition: state
-        entity_id: binary_sensor.motion_sypialnia
-        state: "on"
       - condition: or
         conditions:
           - condition: sun
@@ -2056,9 +2098,6 @@
       entity_id: binary_sensor.motion_przedpokoj
       from: "off"
       to: "on"
-    - platform: numeric_state
-      entity_id: sensor.illumination_przedpokoj
-      below: 9
   condition:
     condition: and
     conditions:
@@ -2071,9 +2110,6 @@
       - condition: numeric_state
         entity_id: sensor.illumination_przedpokoj
         below: 9
-      - condition: state
-        entity_id: binary_sensor.motion_przedpokoj
-        state: "on"
       - condition: or
         conditions:
           - condition: sun
@@ -2109,9 +2145,6 @@
 - id: light_turn_on_antek_leds_when_dark_and_motion
   alias: "Light Turn On Antek LEDs When Dark And Motion"
   trigger:
-    - platform: numeric_state
-      entity_id: sensor.illumination_antek
-      below: 3
     - platform: state
       entity_id: binary_sensor.motion_antek
       from: "off"
@@ -2125,9 +2158,6 @@
           - light.lightstrip_antek
           - input_boolean.antek_lamp_night
         state: "off"
-      - condition: state
-        entity_id: binary_sensor.motion_antek
-        state: "on"
       - condition: numeric_state
         entity_id: sensor.illumination_antek
         below: 3
@@ -2309,9 +2339,6 @@
       entity_id: binary_sensor.motion_pracownia
       from: "off"
       to: "on"
-    - platform: numeric_state
-      entity_id: sensor.illumination_pracownia
-      below: 8
   condition:
     condition: and
     conditions:
@@ -2324,9 +2351,7 @@
         entity_id: sensor.illumination_pracownia
         below: 8
       - condition: state
-        entity_id:
-          - binary_sensor.motion_pracownia
-          - input_boolean.light_auto_turn_pracownia
+        entity_id: input_boolean.light_auto_turn_pracownia
         state: "on"
       - condition: or
         conditions:
@@ -2361,8 +2386,8 @@
 
 #### GABINET ####
 # włączanie oświetlenia w gabinecie jak ruch i ciemno
-- id: light_turn_on_pracownia_light_when_dark_and_motion
-  alias: "Light Turn On Pracownia Light When Dark And Motion"
+- id: light_turn_on_gabinet_light_when_dark_and_motion
+  alias: "Light Turn On Gabinet Light When Dark And Motion"
   trigger:
     - platform: state
       entity_id: binary_sensor.motion_gabinet
@@ -2410,10 +2435,13 @@
     entity_id: input_boolean.gabinet_light_motion_on
     state: "on"
   action:
-    service: homeassistant.turn_off
-    entity_id:
-      - input_boolean.gabinet_light_motion_on
-      - light.ceiling_gabinet
+    - service: homeassistant.turn_off
+      entity_id: input_boolean.gabinet_light_motion_on
+    - condition: state
+      entity_id: switch.stacjonarny
+      state: "off"
+    - service: light.turn_off
+      entity_id: light.ceiling_gabinet
 
 
 #### POKÓJ GOŚCINNY ####
@@ -2432,8 +2460,8 @@
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.goscinny_light_motion_on
-    - service: switch.turn_off
-      entity_id: switch.lamp_goscinny
+    - service: light.turn_off
+      entity_id: light.gateway_goscinny
 
 # włączanie lampki w pokoju gościnnym jak ruch i ciemno
 - id: light_turn_on_goscinny_lamp_when_dark_and_motion
@@ -2443,16 +2471,13 @@
       entity_id: binary_sensor.motion_goscinny
       from: "off"
       to: "on"
-    - platform: numeric_state
-      entity_id: sensor.illumination_goscinny
-      below: 9
   condition:
     condition: and
     conditions:
       - condition: state
         entity_id:
           - input_boolean.away_mode
-          - switch.lamp_goscinny
+          - light.gateway_goscinny
         state: "off"
       - condition: template
         value_template: >-
@@ -2462,9 +2487,7 @@
         entity_id: sensor.illumination_goscinny
         below: 9
       - condition: state
-        entity_id:
-          - binary_sensor.motion_goscinny
-          - input_boolean.light_auto_turn_goscinny
+        entity_id: input_boolean.light_auto_turn_goscinny
         state: "on"
       - condition: or
         conditions:
@@ -2473,8 +2496,8 @@
           - condition: sun
             before: sunrise
   action:
-    - service: switch.turn_on
-      entity_id: switch.lamp_goscinny
+    - service: light.turn_on
+      entity_id: light.gateway_goscinny
     - service: input_boolean.turn_on
       entity_id: input_boolean.goscinny_light_motion_on
 
@@ -3002,6 +3025,10 @@
       shellyflood-F2AD1D:
         expire_after: 95040
       shelly1l-483FDA701559:
+        relay-0: "light"
+      shelly1l-84CCA8ACEB5F:
+        relay-0: "light"
+      shelly1l-84CCA8AD1B60:
         relay-0: "light"
 
 - id: frontend_set_theme

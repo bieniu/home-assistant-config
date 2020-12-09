@@ -17,10 +17,6 @@ device_tracker.iphone_11_app:
   icon: mdi:cellphone-iphone
 
 #### LIGHTS ####
-light.gateway_antresola:
-  icon: mdi:spotlight
-light.gateway_pracownia:
-  icon: mdi:spotlight
 light.bulb_salon_1:
   friendly_name: "Żarówka salon 1"
 light.bulb_salon_2:
@@ -332,3 +328,18 @@ binary_sensor.shelly_2_5b2604_overpower_1:
 
 binary_sensor.shelly_1l_701559_overtemperature:
   relay: light.ceiling_gabinet
+
+binary_sensor.shelly_1l_aceb5f_overtemperature:
+  relay: light.ceiling_kuchnia
+
+binary_sensor.shelly_1l_ad1b60_overtemperature:
+  relay: light.ceiling_lazienka
+
+sensor.eurotronic_air_quality_sensor_temperature:
+  device_class: "temperature"
+
+sensor.eurotronic_air_quality_sensor_relative_humidity:
+  device_class: "humidity"
+
+sensor.co2_sypialnia:
+  friendly_name: "Dwutlenek węgla"

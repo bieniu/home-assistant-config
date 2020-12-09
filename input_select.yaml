@@ -80,16 +80,6 @@ heating_temp_eco:
     - "20"
   icon: mdi:temperature-celsius
 
-target_humidity:
-  name: "Docelowa wilgotność"
-  options:
-    - "40"
-    - "45"
-    - "50"
-    - "55"
-    - "60"
-  icon: mdi:percent
-
 light_scenes_salon:
   name: "Tryb oświetlenia"
   icon: mdi:palette
@@ -102,19 +92,6 @@ light_scenes_salon:
     - "fiolet"
     - "niebieski"
     - "dyskoteka"
-
-log_level:
-  name: "HA poziom informacji loga"
-  icon: mdi:format-list-bulleted
-  options:
-    - "critical"
-    - "fatal"
-    - "error"
-    - "warning"
-    - "warn"
-    - "info"
-    - "debug"
-  initial: "warning"
 
 salon_harmony:
   name: "Telewizor"

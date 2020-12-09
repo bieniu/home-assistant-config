@@ -229,6 +229,14 @@
       friendly_name: "Shelly 1L [701559]"
       value_template: "{{ is_state('device_tracker.shelly_1l_701559', 'home') }}"
 
+    shelly_1l_aceb5f_status:
+      friendly_name: "Shelly 1L [ACEB5F]"
+      value_template: "{{ is_state('device_tracker.shelly_1l_aceb5f', 'home') }}"
+
+    shelly_1l_ad1b60_status:
+      friendly_name: "Shelly 1L [AD1B60]"
+      value_template: "{{ is_state('device_tracker.shelly_1l_ad1b60', 'home') }}"
+
     shelly_2_5b2604_status:
       friendly_name: "Shelly 2 [5B2604]"
       value_template: "{{ is_state('device_tracker.shelly_2_5b2604', 'home') }}"

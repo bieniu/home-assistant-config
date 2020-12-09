@@ -24,6 +24,10 @@ logger:
 
 api:
   password: !secret esphome_password
+  services:
+    - service: calibrate
+      then:
+        - mhz19.calibrate_zero: mhz19_sensor
 
 ota:
   password: !secret esphome_password
@@ -49,6 +53,7 @@ switch:
 
 sensor:
   - platform: mhz19
+    id: mhz19_sensor
     co2:
       name: "MH-Z19B Carbon Dioxide"
     temperature:

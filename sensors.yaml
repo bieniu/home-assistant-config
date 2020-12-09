@@ -1,28 +1,11 @@
+- platform: filter
+  name: "CO2 Sypialnia"
+  entity_id: sensor.eurotronic_air_quality_sensor_co2_level
+  filters:
+    - filter: lowpass
+      precision: 0
+
 - platform: moon
-
-- platform: integration
-  source: sensor.light_salon_power_sum
-  name: "Light Salon Energy"
-  unit_prefix: k
-  round: 2
-
-- platform: integration
-  source: sensor.computer_gabinet_power
-  name: "Computer Gabinet Energy"
-  unit_prefix: k
-  round: 2
-
-- platform: integration
-  source: sensor.servers_gabinet_power
-  name: "Servers Gabinet Energy"
-  unit_prefix: k
-  round: 2
-
-- platform: integration
-  source: sensor.dishwasher_kuchnia_power
-  name: "Dishwasher Kuchnia Energy"
-  unit_prefix: k
-  round: 2
 
 - platform: rest
   name: "ESPHome Version Current"
@@ -109,9 +92,8 @@
     - wind_speed
     - wind_bearing
     - precip_probability
+    - precip_intensity
     - daily_summary
-    - visibility
-    - uv_index
 
 - platform: min_max
   type: mean
@@ -157,13 +139,6 @@
         {% else %}
           {{ states('sensor.dishwasher_kuchnia') }}
         {% endif %}
-
-    light_salon_power_sum:
-      friendly_name: "Oświetlenie salonu"
-      unit_of_measurement: "W"
-      value_template: >-
-        {{ (states('sensor.light_salon_power') | float +
-           states('sensor.lamp_salon_power') | float) | round(1) }}
 
     airly_info:
       friendly_name: "Jakość powietrza"

@@ -34,7 +34,7 @@
 "*.christmas_tree*":
   icon: mdi:pine-tree
 "*.christmas_lights_*":
-  icon: mdi:pine-tree  # string-lights
+  icon: mdi:string-lights
 "switch.tree_*":
   icon: mdi:tree
 
