@@ -9,19 +9,6 @@
       addon: core_rpc_shutdown
       input: stacjonarny
 
-- platform: flux
-  lights:
-    - light.bulbs_salon
-    - light.lamp_salon
-  name: "Flux"
-  start_colortemp: 4400
-  sunset_colortemp: 3850
-  stop_colortemp: 3300
-  mode: mired
-  brightness: 255
-  transition: 30
-  interval: 600
-
 - platform: template
   switches:
     heater_lazienka:

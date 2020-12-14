@@ -171,6 +171,7 @@ views:
               - light.bulbs_salon
               - light.leds_salon
               - light.lamp_salon
+              - switch.christmas_tree_salon
               - input_select.light_scenes_salon
               - input_select.salon_harmony
               - type: custom:mini-media-player
@@ -355,6 +356,7 @@ views:
                 row:
                   entity: climate.thermostat_antresola
               - light.gateway_antresola
+              - switch.christmas_lights_antresola
       - type: vertical-stack
         in_card: true
         cards:
@@ -428,7 +430,6 @@ views:
             entities:
               - sensor.temperature_sypialnia
               - sensor.humidity_sypialnia
-              - sensor.co2_sypialnia
               - sensor.illumination_sypialnia
           - type: entities
             show_header_toggle: false
@@ -558,7 +559,7 @@ views:
             entities:
               - sensor.ha_version_current
               - sensor.ha_version_installed
-              - entity: sensor.ha_last_restart
+              - entity: sensor.home_assistant_last_restart
                 format: relative
               - sensor.ha_database_size
           - type: vertical-stack
@@ -574,18 +575,6 @@ views:
                     format: relative
                   - entity: sensor.ssl_certificate_expiry_timestamp
                     format: relative
-                    style: |
-                      :host {
-                        --paper-item-icon-color:
-                          {% set days = states('sensor.ssl_certificate_expiry') %}
-                          {% if days | int < 20 %}
-                            var(--label-badge-red)
-                          {% elif days | int < 40 %}
-                            var(--label-badge-yellow)
-                          {% else %}
-                            var(--state-icon-color)
-                          {% endif %};
-                      }
               - type: horizontal-stack
                 cards:
                   - type: custom:mini-graph-card
@@ -640,8 +629,6 @@ views:
               - entity: zwave.aeotec_zw175_smart_switch_7
                 <<: *zwave-entity
               - entity: zwave.aeotec_zwa021_thermostat_kuchnia
-                <<: *zwave-entity
-              - entity: zwave.eurotronic_air_quality_sensor
                 <<: *zwave-entity
               - entity: zwave.danfoss_014g0013_thermostat_salon
                 <<: *zwave-entity
@@ -756,45 +743,17 @@ views:
     path: energy
     cards:
       - type: vertical-stack
+        title: "Pobór mocy"
         in_card: true
         cards:
-          - type: horizontal-stack
-            title: "Pobór mocy"
-            cards:
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 1
-                show:
-                  icon: false
-                  graph: false
-                entities:
-                  - sensor.light_salon_power
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 1
-                show:
-                  icon: false
-                  graph: false
-                entities:
-                  - sensor.dishwasher_kuchnia_power
-          - type: horizontal-stack
-            cards:
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 1
-                show:
-                  icon: false
-                  graph: false
-                entities:
-                  - sensor.computer_gabinet_power
-              - type: custom:mini-graph-card
-                hour24: true
-                decimals: 1
-                show:
-                  icon: false
-                  graph: false
-                entities:
-                  - sensor.servers_gabinet_power
+          - type: custom:mini-graph-card
+            hour24: true
+            decimals: 1
+            show:
+              icon: false
+              name: false
+            entities:
+              - sensor.sum_power
       - type: vertical-stack
         in_card: true
         cards:
@@ -1075,11 +1034,7 @@ views:
             name: "Dwutlenek węgla"
             entities:
               - entity: sensor.co2_salon
-                name: salon
-                color: "#8bc34a"
-              - entity: sensor.co2_sypialnia
-                name: sypialnia
-                color: "#ff9800"
+            line_color: "#8bc34a"
             decimals: 0
       - type: vertical-stack
         cards:

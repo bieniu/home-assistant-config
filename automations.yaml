@@ -381,13 +381,14 @@
         # - switch.tree_sypialnia
         - switch.tree_antek
         - switch.christmas_lights_antresola
+        - switch.christmas_tree_salon
 
 # wyłączenie drzewek o 23
 - id: light_turn_off_trees
   alias: "Light Turn Off Trees"
   trigger:
     platform: time
-    at: "23:00:00"
+    at: "23:59:00"
   action:
     service: switch.turn_off
     entity_id:
@@ -397,6 +398,7 @@
       - switch.christmas_lights_balkon_gora
       - switch.christmas_lights_antresola
       - switch.christmas_lights_goscinny
+      - switch.christmas_tree_salon
 
 # włączenie drzewek jak po zachodzie słońca wracają domownicy
 - id: light_turn_on_trees_when_peoples_back
@@ -409,13 +411,14 @@
     - condition: sun
       after: sunset
     - condition: time
-      before: "23:00:00"
+      before: "23:59:00"
   action:
     service: switch.turn_on
     entity_id:
       # - switch.tree_sypialnia
       - switch.tree_antek
       - switch.christmas_lights_antresola
+      - switch.christmas_tree_salon
 
 # powiadomienie o zbliżającej się burzy
 - id: notification_storm_comming
@@ -1639,9 +1642,9 @@
 ##################################################################################################
 
 #### LIGHT #######################################################################################
-# włączenie flux przy starcie HA
-- id: light_turn_on_flux_at_start
-  alias: "Light Turn On Flux At Start"
+# włączenie adaptive lightning przy starcie HA
+- id: light_turn_on_adaptive_lightning_at_start
+  alias: "Light Turn On Adaptive Lightning At Start"
   trigger:
     platform: homeassistant
     event: start
@@ -1651,7 +1654,7 @@
     state: "automatyczny"
   action:
     service: switch.turn_on
-    entity_id: switch.flux
+    entity_id: switch.adaptive_lighting_salon
 
 # wyłączenie oświetlenia po wyjściu z domu
 - id: light_turn_off_when_away_mode

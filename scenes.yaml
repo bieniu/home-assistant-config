@@ -9,7 +9,7 @@
       state: "off"
     light.lamp_salon:
       state: "off"
-    switch.flux:
+    switch.adaptive_lighting_salon:
       state: "off"
 
 - id: niebieski
@@ -25,7 +25,7 @@
       state: "on"
       brightness: 200
       rgb_color: [20, 20, 50]
-    switch.flux:
+    switch.adaptive_lighting_salon:
       state: "off"
 
 - id: romantyczny
@@ -41,7 +41,7 @@
       state: "on"
       brightness: 128
       rgb_color: [255, 102, 0]
-    switch.flux:
+    switch.adaptive_lighting_salon:
       state: "off"
 
 - id: fiolet
@@ -57,7 +57,7 @@
       state: "on"
       brightness: 200
       rgb_color: [255, 0, 255]
-    switch.flux:
+    switch.adaptive_lighting_salon:
       state: "off"
 
 - id: automatyczny
@@ -70,7 +70,7 @@
       state: "off"
     light.lamp_salon:
       state: "off"
-    switch.flux:
+    switch.adaptive_lighting_salon:
       state: "on"
 
 - id: czytanie
@@ -86,7 +86,7 @@
       state: "on"
       brightness: 220
       color_temp: 300
-    switch.flux:
+    switch.adaptive_lighting_salon:
       state: "off"
 
 - id: jasny
@@ -102,7 +102,7 @@
       state: "on"
       brightness: 255
       color_temp: 260
-    switch.flux:
+    switch.adaptive_lighting_salon:
       state: "off"
 
 - id: dyskoteka
@@ -116,5 +116,5 @@
     light.bulbs_salon:
       state: "on"
       effect: "Disco"
-    switch.flux:
+    switch.adaptive_lighting_salon:
       state: "off"

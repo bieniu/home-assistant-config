@@ -59,7 +59,7 @@ sensor.nuc_last_boot:
 sensor.ha_database_size:
   friendly_name: "Wielkość bazy danych"
   icon: mdi:database
-sensor.ha_last_restart:
+sensor.home_assistant_last_restart:
   friendly_name: "Ostatni restart"
   icon: mdi:timer-outline
 sensor.ha_version_current:
