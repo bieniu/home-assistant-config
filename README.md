@@ -28,6 +28,7 @@
 
 * Xiaomi Yeelight Color Bulbs [YLDP02YL and YLDP06YL]
 * Xiaomi Yeelight Lightstrips [YLDD01YL]
+* Xiaomi Mi Led Desk Lamp 1S [MJTD01SYL]
 
 ## Switches
 
@@ -44,6 +45,7 @@
 * Wemos D1 mini + MH-Z19B [[ESPHome](https://esphome.io) firmware]
 * [Shelly H&T](https://shelly.cloud/products/shelly-humidity-temperature-smart-home-automation-sensor/) via MQTT
 * [Shelly Flood](https://shelly.cloud/products/shelly-flood-smart-home-automation-sensor/) via MQTT
+* [Shelly Motion](https://shelly.cloud/ifa-2020-products/) via MQTT
 
 ## Other Integrated Devices
 
