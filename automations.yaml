@@ -899,6 +899,7 @@
         - binary_sensor.shelly_1l_701559_overtemperature
         - binary_sensor.shelly_1l_aceb5f_overtemperature
         - binary_sensor.shelly_1l_ad1b60_overtemperature
+        - binary_sensor.shelly_1l_61c9fd_overtemperature
         - binary_sensor.shelly_plug_s_7aecf4_overtemperature
       from: "off"
       to: "on"
@@ -3001,6 +3002,8 @@
       shelly1l-84CCA8ACEB5F:
         relay-0: "light"
       shelly1l-84CCA8AD1B60:
+        relay-0: "light"
+      shelly1l-8CAAB561C9FD:
         relay-0: "light"
 
 - id: frontend_set_theme

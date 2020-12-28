@@ -37,6 +37,7 @@ devices_away_mode:
         - light.ceiling_kuchnia
         - light.ceiling_lazienka
         - light.desk_lamp_antek
+        - light.ceiling_wc
 
 #### HEATING ####
 heating_fast_warm_up:
@@ -329,6 +330,7 @@ alexa_goodnight:
         - light.ceiling_gabinet
         - light.ceiling_kuchnia
         - light.ceiling_lazienka
+        - light.ceiling_wc
 
 alexa_tts:
   sequence:

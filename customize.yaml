@@ -321,6 +321,9 @@ sensor.dark_sky_wind_speed:
 binary_sensor.shelly_plug_s_7aecf4_overpower:
   relay: switch.dishwasher_kuchnia
 
+binary_sensor.shelly_1l_61c9fd_overtemperature:
+  relay: light.ceiling_wc
+
 binary_sensor.shelly_plug_s_7aecf4_overtemperature:
   relay: switch.dishwasher_kuchnia
 

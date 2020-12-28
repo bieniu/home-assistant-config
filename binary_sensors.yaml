@@ -229,6 +229,10 @@
       friendly_name: "Shelly 1L [701559]"
       value_template: "{{ is_state('device_tracker.shelly_1l_701559', 'home') }}"
 
+    shelly_1l_61c9fd_status:
+      friendly_name: "Shelly 1L [61C9FD]"
+      value_template: "{{ is_state('device_tracker.shelly_1l_61c9fd', 'home') }}"
+
     shelly_1l_aceb5f_status:
       friendly_name: "Shelly 1L [ACEB5F]"
       value_template: "{{ is_state('device_tracker.shelly_1l_aceb5f', 'home') }}"
@@ -262,7 +266,7 @@
       value_template: "{{ is_state('device_tracker.wemos_d1_mini_1c91ea', 'home') }}"
 
     yeelight_mjtd01syl_status:
-      friendly_name: "Yeelight MJTD01SYL"
+      friendly_name: "Xiaomi Mi Led Desk Lamp 1S"
       value_template: "{{ is_state('device_tracker.yeelight_mjtd01syl', 'home') }}"
 
     yeelight_yldp06yl_7cafc6_status:

@@ -282,6 +282,12 @@ views:
                         entity_id: media_player.echo_show_salon
                         media_content_type: "SPOTIFY"
                         media_content_id: "in everywhere group playlist Maciek"
+      - type: entities
+        title: "WC"
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - light.ceiling_wc
       - type: vertical-stack
         in_card: true
         cards:
@@ -730,6 +736,7 @@ views:
           - binary_sensor.shelly_1l_701559_status
           - binary_sensor.shelly_1l_aceb5f_status
           - binary_sensor.shelly_1l_ad1b60_status
+          - binary_sensor.shelly_1l_61c9fd_status
           - binary_sensor.shelly_2_5b2604_status
           - binary_sensor.shelly_plug_s_7aecf4_status
           - binary_sensor.shelly_ht_e00abd_status
@@ -799,6 +806,7 @@ views:
             color: var(--state-icon-color)
         entities:
           - sensor.battery_xiaomi_motion_aq2_przedpokoj
+          - sensor.shelly_motion_97664e_battery
           - sensor.battery_xiaomi_motion_salon
           - sensor.battery_xiaomi_motion_aq2_salon
           - sensor.battery_xiaomi_motion_aq2_pracownia

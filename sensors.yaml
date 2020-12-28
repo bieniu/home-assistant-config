@@ -164,7 +164,11 @@
       unit_of_measurement: "%"
       value_template: >-
         {% if state_attr('fan.humidifier_salon', 'depth') is number %}
-          {{ (state_attr('fan.humidifier_salon', 'depth') / 127 * 100) | round }}
+          {% if state_attr('fan.humidifier_salon', 'depth') < 127 %}
+            {{ (state_attr('fan.humidifier_salon', 'depth') * 0.89 - 11.6) | round | min(100) | max(0) }}
+          {% else %}
+            0
+          {% endif %}
         {% else %}
           0
         {% endif %}
@@ -196,6 +200,7 @@
            states('sensor.tree_antek_power') | float +
            states('sensor.light_gabinet_power') | float +
            states('sensor.light_kuchnia_power') | float +
+           states('sensor.light_wc_power') | float +
            states('sensor.christmas_tree_salon_power') | float +
            states('sensor.christmas_lights_balkon_gora_power') | float +
            states('sensor.christmas_lights_antresola_power') | float +
