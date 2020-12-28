@@ -1,5 +1,4 @@
 ## AKCJE IOS ##
-
 # włącz TV
 - id: ios_turn_on_tv
   alias: "iOS Turn On TV"
@@ -1263,7 +1262,8 @@
   trigger:
     platform: template
     value_template: "{{ state_attr('climate.aeotec_thermostat_kuchnia', 'current_temperature') | float - state_attr('climate.aeotec_thermostat_kuchnia', 'temperature') | float > 2 }}"
-    for: "00:10:00"
+    for:
+      minutes: 10
   condition:
     - condition: and
       conditions:
@@ -1667,20 +1667,6 @@
   action:
     service: script.devices_away_mode
 
-## ŁAZIENKA ##
-# wyłącz światło w łazience jak jest włączone przez godzinę
-- id: light_turn_off_lazienka_light_if_on_for_an_hour
-  alias: "Light Turn Off Lazienka Light If On For An Hour"
-  trigger:
-    - platform: state
-      entity_id: light.ceiling_lazienka
-      to: "on"
-      for:
-        minutes: 60
-  action:
-    - service: light.turn_off
-      entity_id: light.ceiling_lazienka
-
 ## SALON ##
 # restart żarówek w salonie gdy niedostępne
 - id: light_restart_bulbs_salon_when_unavailable
@@ -1862,6 +1848,7 @@
           - light.leds_salon
           - light.bulbs_salon
           - media_player.denon_salon
+          - switch.christmas_tree_salon
         state: "off"
       - condition: state
         entity_id:
@@ -1877,39 +1864,23 @@
   action:
     - service: light.turn_on
       entity_id: light.lamp_salon
-      data:
-        brightness: 128
-        color_temp: 330
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.salon_light_motion_on
-
-# wyłączenie lampy w salonie jak zniknie ruch lub włączy się światła
-- id: light_turn_off_salon_lamp
-  alias: "Light Turn Off Salon Lamp"
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.motion_salon
-      from: "on"
-      to: "off"
-    - platform: state
-      entity_id: light.leds_salon
-      from: "off"
-      to: "on"
-    - platform: state
-      entity_id: light.bulbs_salon
-      from: "off"
-      to: "on"
-  condition:
-    condition: state
-    entity_id: input_boolean.salon_light_motion_on
-    state: "on"
-  action:
+    - wait_for_trigger:
+        - platform: state
+          entity_id: binary_sensor.motion_salon
+          from: "on"
+          to: "off"
+        - platform: state
+          entity_id: light.leds_salon
+          from: "off"
+          to: "on"
+        - platform: state
+          entity_id: light.bulbs_salon
+          from: "off"
+          to: "on"
     - service: light.turn_off
       entity_id: light.lamp_salon
       data:
         transition: 10
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.salon_light_motion_on
 
 # Scena oświetlenia salonu film po włączeniu filmy/gry
 - id: light_scene_film
@@ -1979,6 +1950,63 @@
       entity_id: input_select.light_scenes_salon
       option: "automatyczny"
 
+## KUCHNIA ##
+# włączanie światła w kuchni jak pojawi się ruch i jest ciemno
+- id: light_turn_on_light_when_dark_and_motion
+  alias: "Light Turn On Light When Dark And Motion"
+  max_exceeded: silent
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_kuchnia
+      from: "off"
+      to: "on"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id:
+          - input_boolean.away_mode
+          - light.leds_salon
+          - light.bulbs_salon
+        state: "off"
+      - condition: numeric_state
+        entity_id: sensor.illumination_kuchnia
+        below: 20
+      - condition: or
+        conditions:
+          - condition: sun
+            after: sunset
+          - condition: sun
+            before: sunrise
+  action:
+    - service: light.turn_on
+      entity_id: light.ceiling_kuchnia
+    - wait_for_trigger:
+        - platform: state
+          entity_id: binary_sensor.motion_kuchnia
+          from: "on"
+          to: "off"
+    - service: light.turn_off
+      entity_id: light.ceiling_kuchnia
+
+# wyłączanie oświetlenia w kuchni jak brak ruchu przez 20 min
+- id: light_turn_off_light_when_no_motion_for_20_min
+  alias: "Light Turn Off Kuchnia Light When No Motion For 20 Min"
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_kuchnia
+    from: "on"
+    to: "off"
+    for:
+      minutes: 20
+  condition:
+    condition: state
+    entity_id: light.ceiling_kuchnia
+    state: "on"
+  action:
+    service: light.turn_off
+    entity_id: light.ceiling_kuchnia
+
 ## ANTRESOLA ##
 # włączanie lampki na antresoli jak jest ciemno i jest ruch
 - id: light_turn_on_antresola_lamp
@@ -2016,26 +2044,13 @@
             "{{ (range(0, 255)|random) }}",
             "{{ (range(0, 255)|random) }}",
           ]
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.antresola_light_motion_on
-
-# wyłączanie lampki na antresoli jak brak ruchu
-- id: light_turn_off_antresola_lamp
-  alias: "Light Turn Off Antresola Lamp"
-  trigger:
-    platform: state
-    entity_id: binary_sensor.motion_antresola
-    from: "on"
-    to: "off"
-  condition:
-    condition: state
-    entity_id: input_boolean.antresola_light_motion_on
-    state: "on"
-  action:
-    - service: homeassistant.turn_off
-      entity_id:
-        - light.gateway_antresola
-        - input_boolean.antresola_light_motion_on
+    - wait_for_trigger:
+        platform: state
+        entity_id: binary_sensor.motion_antresola
+        from: "on"
+        to: "off"
+    - service: light.turn_off
+      entity_id: light.gateway_antresola
 
 ## SYPIALNIA ##
 # włączanie LEDów w sypialni jak jest ruch i ciemno
@@ -2069,24 +2084,11 @@
       data:
         brightness: 200
         rgb_color: [233, 96, 255]
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.sypialnia_light_motion_on
-
-# wyłączanie LEDów w sypialni jak brak ruchu
-- id: light_turn_off_sypialnia_leds
-  alias: "Light Turn Off Sypialnia LEDs"
-  trigger:
-    platform: state
-    entity_id: binary_sensor.motion_sypialnia
-    from: "on"
-    to: "off"
-  condition:
-    condition: state
-    entity_id: input_boolean.sypialnia_light_motion_on
-    state: "on"
-  action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.sypialnia_light_motion_on
+    - wait_for_trigger:
+        platform: state
+        entity_id: binary_sensor.motion_sypialnia
+        from: "on"
+        to: "off"
     - service: light.turn_off
       entity_id: light.lightstrip_sypialnia
       data:
@@ -2122,28 +2124,33 @@
   action:
     - service: light.turn_on
       entity_id: light.leds_przedpokoj
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.przedpokoj_light_motion_on
-
-# wyłączanie LEDów w przedpokoju jak brak ruchu
-- id: light_turn_off_przedpokoj_leds
-  alias: "Light Turn Off Przedpokoj LEDs"
-  trigger:
-    platform: state
-    entity_id: binary_sensor.motion_przedpokoj
-    from: "on"
-    to: "off"
-  condition:
-    condition: state
-    entity_id: input_boolean.przedpokoj_light_motion_on
-    state: "on"
-  action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.przedpokoj_light_motion_on
+    - wait_for_trigger:
+        platform: state
+        entity_id: binary_sensor.motion_przedpokoj
+        from: "on"
+        to: "off"
     - service: light.turn_off
       entity_id: light.leds_przedpokoj
 
 ## POKÓJ ANTKA ##
+# wyłączanie oświetlenia w pokóju Antka jak brak ruchu przez 20 min
+- id: light_turn_off_antek_light_when_no_motion_for_20_min
+  alias: "Light Turn Off Antek Light When No Motion For 20 Min"
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_antek
+    from: "on"
+    to: "off"
+    for:
+      minutes: 20
+  condition:
+    condition: state
+    entity_id: light.desk_lamp_antek
+    state: "on"
+  action:
+    service: light.turn_off
+    entity_id: light.desk_lamp_antek
+
 # włączanie LEDów w pokoju Antka jak natężenie światła spadnie poniżej 3 i jest ruch
 - id: light_turn_on_antek_leds_when_dark_and_motion
   alias: "Light Turn On Antek LEDs When Dark And Motion"
@@ -2174,22 +2181,14 @@
     - service: script.light_turn_on_antek_leds
     - service: switch.turn_on
       entity_id: switch.cabinet_antek
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.antek_light_motion_on
-
-# wyłączanie LEDów w pokoju Antka jak brak ruchu
-- id: light_turn_off_antek_leds_via_motion
-  alias: "Light Turn Off Antek LEDs Via Motion"
-  trigger:
-    platform: state
-    entity_id: binary_sensor.motion_antek
-    from: "on"
-    to: "off"
-  condition:
-    condition: state
-    entity_id: input_boolean.antek_light_motion_on
-    state: "on"
-  action:
+    - wait_for_trigger:
+        platform: state
+        entity_id: binary_sensor.motion_antek
+        from: "on"
+        to: "off"
+    - condition: state
+      entity_id: input_boolean.antek_lamp_night
+      state: "off"
     - service: script.light_turn_off_antek_leds
     - service: switch.turn_off
       entity_id: switch.cabinet_antek
@@ -2225,8 +2224,6 @@
         rgb_color: [255, 190, 0]
     - service: input_boolean.turn_on
       entity_id: input_boolean.antek_lamp_night
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.antek_light_motion_on
 
 # wyłączanie LEDów w pokoju Antka z trybu nocnego
 - id: light_turn_off_antek_leds_night
@@ -2321,10 +2318,7 @@
   alias: "Light Turn Off Antek Cabinet At Night"
   trigger:
     - platform: time
-      at:
-        - "22:00:00"
-        - "23:00:00"
-        - "00:00:00"
+      at: "00:00:00"
   condition:
     condition: state
     entity_id: switch.cabinet_antek
@@ -2365,27 +2359,13 @@
   action:
     - service: switch.turn_on
       entity_id: switch.lamp_pracownia
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.pracownia_light_motion_on
-
-# wyłączanie lampki w pracowni jak brak ruchu
-- id: light_turn_off_pracownia_lamp
-  alias: "Light Turn Off Pracownia Lamp"
-  trigger:
-    platform: state
-    entity_id: binary_sensor.motion_pracownia
-    from: "on"
-    to: "off"
-  condition:
-    condition: state
-    entity_id: input_boolean.pracownia_light_motion_on
-    state: "on"
-  action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.pracownia_light_motion_on
+    - wait_for_trigger:
+        platform: state
+        entity_id: binary_sensor.motion_pracownia
+        from: "on"
+        to: "off"
     - service: switch.turn_off
       entity_id: switch.lamp_pracownia
-
 
 #### GABINET ####
 # włączanie oświetlenia w gabinecie jak ruch i ciemno
@@ -2420,52 +2400,36 @@
           - condition: sun
             before: sunrise
   action:
-    service: homeassistant.turn_on
-    entity_id:
-      - light.ceiling_gabinet
-      - input_boolean.gabinet_light_motion_on
+    - service: light.turn_on
+      entity_id: light.ceiling_gabinet
+    - wait_for_trigger:
+        platform: state
+        entity_id: binary_sensor.motion_gabinet
+        from: "on"
+        to: "off"
+    - service: light.turn_off
+      entity_id: light.ceiling_gabinet
 
-# wyłączanie oświetlenia w gabinecie jak brak ruchu
-- id: light_turn_off_gabinet_lamp
-  alias: "Light Turn Off Gabinet Lamp"
+# wyłączanie oświetlenia w gabinecie jak brak ruchu przez 20 min
+- id: light_turn_off_gabinet_light_when_no_motion_for_20_min
+  alias: "Light Turn Off Gabinet Light When No Motion For 20 Min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_gabinet
     from: "on"
     to: "off"
+    for:
+      minutes: 20
   condition:
     condition: state
-    entity_id: input_boolean.gabinet_light_motion_on
+    entity_id: light.ceiling_gabinet
     state: "on"
   action:
-    - service: homeassistant.turn_off
-      entity_id: input_boolean.gabinet_light_motion_on
-    - condition: state
-      entity_id: switch.stacjonarny
-      state: "off"
-    - service: light.turn_off
-      entity_id: light.ceiling_gabinet
+    service: light.turn_off
+    entity_id: light.ceiling_gabinet
 
 
 #### POKÓJ GOŚCINNY ####
-# wyłączanie lampki w pokoju gościnnym jak brak ruchu
-- id: light_turn_off_goscinny_lamp
-  alias: "Light Turn Off Goscinny Lamp"
-  trigger:
-    platform: state
-    entity_id: binary_sensor.motion_goscinny
-    from: "on"
-    to: "off"
-  condition:
-    condition: state
-    entity_id: input_boolean.goscinny_light_motion_on
-    state: "on"
-  action:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.goscinny_light_motion_on
-    - service: light.turn_off
-      entity_id: light.gateway_goscinny
-
 # włączanie lampki w pokoju gościnnym jak ruch i ciemno
 - id: light_turn_on_goscinny_lamp_when_dark_and_motion
   alias: "Light Turn On Goscinny Lamp When Dark And Motion"
@@ -2501,8 +2465,13 @@
   action:
     - service: light.turn_on
       entity_id: light.gateway_goscinny
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.goscinny_light_motion_on
+    - wait_for_trigger:
+        platform: state
+        entity_id: binary_sensor.motion_goscinny
+        from: "on"
+        to: "off"
+    - service: light.turn_off
+      entity_id: light.gateway_goscinny
 
 ##################################################################################################
 

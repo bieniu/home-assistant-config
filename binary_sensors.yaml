@@ -253,9 +253,17 @@
       friendly_name: "Shelly Flood [F2AD1D]"
       value_template: "{{ is_state('device_tracker.shelly_flood_f2ad1d', 'home') }}"
 
+    shelly_motion_97664e_status:
+      friendly_name: "Shelly Motion [97664E]"
+      value_template: "{{ is_state('device_tracker.shelly_motion_97664e', 'home') }}"
+
     wemos_d1_mini_1c91ea_status:
       friendly_name: "Wemos D1 mini [1C91EA]"
       value_template: "{{ is_state('device_tracker.wemos_d1_mini_1c91ea', 'home') }}"
+
+    yeelight_mjtd01syl_status:
+      friendly_name: "Yeelight MJTD01SYL"
+      value_template: "{{ is_state('device_tracker.yeelight_mjtd01syl', 'home') }}"
 
     yeelight_yldp06yl_7cafc6_status:
       friendly_name: "Yeelight YLDP06YL [7CAFC6]"

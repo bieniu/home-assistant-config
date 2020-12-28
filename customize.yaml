@@ -143,6 +143,10 @@ binary_sensor.yeelight_yldp02yl_f12026_status:
   location: "salon"
 binary_sensor.yeelight_yldp02yl_b1b6aa_status:
   location: "antresola"
+binary_sensor.shelly_motion_97664e_status:
+  icon: mdi:motion-sensor
+binary_sensor.yeelight_mjtd01syl_status:
+  icon: mdi:desk-lamp
 
 #### FANS ####
 fan.humidifier_salon:

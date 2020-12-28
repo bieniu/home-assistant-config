@@ -36,6 +36,7 @@ devices_away_mode:
         - light.ceiling_gabinet
         - light.ceiling_kuchnia
         - light.ceiling_lazienka
+        - light.desk_lamp_antek
 
 #### HEATING ####
 heating_fast_warm_up:
@@ -237,9 +238,7 @@ harmony_tv_off:
 light_turn_off_antek_leds:
   sequence:
     - service: input_boolean.turn_off
-      entity_id:
-        - input_boolean.antek_light_motion_on
-        - input_boolean.antek_lamp_night
+      entity_id: input_boolean.antek_lamp_night
     - service: light.turn_off
       entity_id: light.lightstrip_antek
       data:
@@ -326,6 +325,7 @@ alexa_goodnight:
         - light.leds_salon
         - light.bulbs_salon
         - switch.cabinet_antek
+        - light.desk_lamp_antek
         - light.ceiling_gabinet
         - light.ceiling_kuchnia
         - light.ceiling_lazienka

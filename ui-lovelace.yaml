@@ -119,11 +119,14 @@ views:
                 entities:
                   - sensor.temperature_kuchnia
                   - sensor.humidity_kuchnia
+                  - sensor.illumination_kuchnia
               - type: entities
                 show_header_toggle: false
                 state_color: true
                 entities:
                   - binary_sensor.window_kuchnia
+                  - entity: binary_sensor.motion_kuchnia
+                    secondary_info: last-changed
                   - binary_sensor.water_leak_kuchnia
                   - climate.aeotec_thermostat_kuchnia
                   - entity: sensor.dishwasher_kuchnia
@@ -407,6 +410,7 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_antek
+              - light.desk_lamp_antek
               - light.lightstrip_antek
               - switch.cabinet_antek
               - switch.tree_antek
@@ -729,6 +733,7 @@ views:
           - binary_sensor.shelly_2_5b2604_status
           - binary_sensor.shelly_plug_s_7aecf4_status
           - binary_sensor.shelly_ht_e00abd_status
+          - binary_sensor.shelly_motion_97664e_status
           - binary_sensor.shelly_flood_f2ad1d_status
           - binary_sensor.wemos_d1_mini_1c91ea_status
           - binary_sensor.yeelight_yldp06yl_84be7a_status
@@ -737,6 +742,7 @@ views:
           - binary_sensor.yeelight_yldp02yl_b1b6aa_status
           - binary_sensor.yeelight_yldd01yl_860cfa_status
           - binary_sensor.yeelight_yldd01yl_6707fc_status
+          - binary_sensor.yeelight_mjtd01syl_status
   - id: energy
     icon: mdi:power-plug
     title: "Energia"
