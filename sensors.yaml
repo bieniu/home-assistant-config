@@ -84,7 +84,7 @@
     - wind_speed
     - wind_bearing
     - precip_probability
-    - precip_intensity
+    - precip_intensity_max
     - daily_summary
 
 - platform: min_max
@@ -200,7 +200,7 @@
            states('sensor.tree_antek_power') | float +
            states('sensor.light_gabinet_power') | float +
            states('sensor.light_kuchnia_power') | float +
-           states('sensor.light_wc_power') | float +
+           states('sensor.light_toaleta_power') | float +
            states('sensor.christmas_tree_salon_power') | float +
            states('sensor.christmas_lights_balkon_gora_power') | float +
            states('sensor.christmas_lights_antresola_power') | float +

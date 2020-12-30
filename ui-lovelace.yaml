@@ -283,11 +283,11 @@ views:
                         media_content_type: "SPOTIFY"
                         media_content_id: "in everywhere group playlist Maciek"
       - type: entities
-        title: "WC"
+        title: "Toaleta"
         show_header_toggle: false
         state_color: true
         entities:
-          - light.ceiling_wc
+          - light.ceiling_toaleta
       - type: vertical-stack
         in_card: true
         cards:
@@ -628,91 +628,87 @@ views:
               - sensor.synology_disk_used
               - entity: sensor.synology_last_boot
                 format: relative
-      - type: vertical-stack
-        cards:
-          - type: entities
-            title: "Węzły Z-Wave"
-            show_header_toggle: false
-            entities:
-              - entity: zwave.aeotec_zw090_zstick_gen5
-                <<: *zwave-entity
-              - entity: zwave.aeotec_zw175_smart_switch_7
-                <<: *zwave-entity
-              - entity: zwave.aeotec_zwa021_thermostat_kuchnia
-                <<: *zwave-entity
-              - entity: zwave.danfoss_014g0013_thermostat_salon
-                <<: *zwave-entity
-              - entity: zwave.danfoss_014g0013_thermostat_antresola
-                <<: *zwave-entity
-              - entity: zwave.danfoss_014g0013_thermostat_gabinet
-                <<: *zwave-entity
-              - entity: zwave.danfoss_014g0013_thermostat_antek
-                <<: *zwave-entity
-              - entity: zwave.danfoss_014g0013_thermostat_sypialnia
-                <<: *zwave-entity
-              - entity: zwave.danfoss_014g0013_thermostat_lazienka
-                <<: *zwave-entity
-          - type: entities
-            title: "Urządzenia sieciowe"
-            show_header_toggle: false
-            state_color: true
-            <<: *network-status-card
-            entities:
-              - binary_sensor.modem_status
-              - binary_sensor.router_status
-              - binary_sensor.access_point_status
-              - binary_sensor.fingbox_status
-          - type: entities
-            title: "Serwery"
-            show_header_toggle: false
-            state_color: true
-            <<: *network-status-card
-            entities:
-              - binary_sensor.synology_status
-              - binary_sensor.nuc_status
-              - binary_sensor.brother_status
-          - type: entities
-            title: "Komputery"
-            show_header_toggle: false
-            state_color: true
-            <<: *network-status-card
-            entities:
-              - binary_sensor.stacjonarny_status
-              - binary_sensor.laptop_status
-              - binary_sensor.laptop_edyta_status
-              - binary_sensor.laptop_antek_status
-      - type: vertical-stack
-        cards:
-          - type: entities
-            title: "Urządzenia mobilne"
-            show_header_toggle: false
-            state_color: true
-            <<: *network-status-card
-            entities:
-              - binary_sensor.oneplus_status
-              - binary_sensor.iphone_11_status
-              - binary_sensor.iphone_8_plus_status
-              - binary_sensor.ipad_status
-              - binary_sensor.kindle_status
-              - binary_sensor.kindle_8_status
-              - binary_sensor.inkbook_status
-          - type: entities
-            title: "Urządzenia RTV"
-            show_header_toggle: false
-            state_color: true
-            <<: *network-status-card
-            entities:
-              - binary_sensor.bravia_status
-              - binary_sensor.denon_status
-              - binary_sensor.dune_status
-              - binary_sensor.mibox_status
-              - binary_sensor.firetv_status
-              - binary_sensor.playstation_status
-              - binary_sensor.xbox_status
-              - binary_sensor.echo_show_status
-              - binary_sensor.echo_plus_status
-              - binary_sensor.echo_dot_status
-              - binary_sensor.harmonyhub_status
+      - type: entities
+        title: "Węzły Z-Wave"
+        show_header_toggle: false
+        entities:
+          - entity: zwave.aeotec_zw090_zstick_gen5
+            <<: *zwave-entity
+          - entity: zwave.aeotec_zw175_smart_switch_7
+            <<: *zwave-entity
+          - entity: zwave.aeotec_zwa021_thermostat_kuchnia
+            <<: *zwave-entity
+          - entity: zwave.danfoss_014g0013_thermostat_salon
+            <<: *zwave-entity
+          - entity: zwave.danfoss_014g0013_thermostat_antresola
+            <<: *zwave-entity
+          - entity: zwave.danfoss_014g0013_thermostat_gabinet
+            <<: *zwave-entity
+          - entity: zwave.danfoss_014g0013_thermostat_antek
+            <<: *zwave-entity
+          - entity: zwave.danfoss_014g0013_thermostat_sypialnia
+            <<: *zwave-entity
+          - entity: zwave.danfoss_014g0013_thermostat_lazienka
+            <<: *zwave-entity
+      - type: entities
+        title: "Urządzenia sieciowe"
+        show_header_toggle: false
+        state_color: true
+        <<: *network-status-card
+        entities:
+          - binary_sensor.modem_status
+          - binary_sensor.router_status
+          - binary_sensor.access_point_status
+          - binary_sensor.fingbox_status
+      - type: entities
+        title: "Serwery"
+        show_header_toggle: false
+        state_color: true
+        <<: *network-status-card
+        entities:
+          - binary_sensor.synology_status
+          - binary_sensor.nuc_status
+          - binary_sensor.brother_status
+      - type: entities
+        title: "Komputery"
+        show_header_toggle: false
+        state_color: true
+        <<: *network-status-card
+        entities:
+          - binary_sensor.stacjonarny_status
+          - binary_sensor.laptop_status
+          - binary_sensor.laptop_edyta_status
+          - binary_sensor.laptop_antek_status
+      - type: entities
+        title: "Urządzenia mobilne"
+        show_header_toggle: false
+        state_color: true
+        <<: *network-status-card
+        entities:
+          - binary_sensor.oneplus_status
+          - binary_sensor.iphone_11_status
+          - binary_sensor.iphone_8_plus_status
+          - binary_sensor.ipad_status
+          - binary_sensor.kindle_status
+          - binary_sensor.kindle_8_status
+          - binary_sensor.inkbook_status
+      - type: entities
+        title: "Urządzenia RTV"
+        show_header_toggle: false
+        state_color: true
+        <<: *network-status-card
+        entities:
+          - binary_sensor.bravia_status
+          - binary_sensor.denon_status
+          - binary_sensor.dune_status
+          - binary_sensor.mibox_status
+          - binary_sensor.firetv_status
+          - binary_sensor.playstation_status
+          - binary_sensor.xbox_status
+          - binary_sensor.echo_show_status
+          - binary_sensor.echo_plus_status
+          - binary_sensor.echo_dot_status
+          - binary_sensor.harmonyhub_status
       - type: entities
         title: "Urządzenia IoT"
         show_header_toggle: false
@@ -724,6 +720,13 @@ views:
           - binary_sensor.dafang_status
           - binary_sensor.mihumidifier_status
           - binary_sensor.mifan_status
+          - binary_sensor.yeelight_mjtd01syl_status
+      - type: entities
+        title: "Przekaźniki/światła/sensory"
+        show_header_toggle: false
+        state_color: true
+        <<: *network-status-card
+        entities:
           - binary_sensor.sonoff_basic_a786cc_status
           - binary_sensor.sonoff_basic_067c81_status
           - binary_sensor.sonoff_basic_5dfba8_status
@@ -732,6 +735,8 @@ views:
           - binary_sensor.blitzwolf_bw_shp6_ed007d_status
           - binary_sensor.blitzwolf_bw_shp6_ecf9ea_status
           - binary_sensor.blitzwolf_bw_shp6_3766eb_status
+          - binary_sensor.blitzwolf_bw_shp6_17957c_status
+          - binary_sensor.blitzwolf_bw_shp6_173eb6_status
           - binary_sensor.shelly_1_328900_status
           - binary_sensor.shelly_1l_701559_status
           - binary_sensor.shelly_1l_aceb5f_status
@@ -749,7 +754,6 @@ views:
           - binary_sensor.yeelight_yldp02yl_b1b6aa_status
           - binary_sensor.yeelight_yldd01yl_860cfa_status
           - binary_sensor.yeelight_yldd01yl_6707fc_status
-          - binary_sensor.yeelight_mjtd01syl_status
   - id: energy
     icon: mdi:power-plug
     title: "Energia"
