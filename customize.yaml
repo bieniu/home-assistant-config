@@ -30,17 +30,6 @@ light.bulbs_salon:
 #### UPS ####
 sensor.ups_status:
   icon: mdi:server-security
-sensor.ups_battery_charge:
-  friendly_name: "Naładowanie baterii"
-  icon: mdi:car-battery
-sensor.ups_battery_voltage:
-  friendly_name: "Napięcie baterii"
-  icon: mdi:flash-outline
-sensor.ups_input_voltage:
-  friendly_name: "Napięcie sieciowe"
-  icon: mdi:flash-outline
-sensor.ups_load:
-  friendly_name: "Obciążenie"
 
 #### INTEL NUC/HA ####
 sensor.processor_use:
@@ -69,6 +58,8 @@ sensor.ha_version_installed:
   icon: mdi:package-down
 
 #### NETWORK DEVICES ####
+binary_sensor.raspberry_status:
+  icon: mdi:raspberry-pi
 binary_sensor.router_status:
   icon: mdi:router-network
   friendly_name: "Asus RT-AC86U"

@@ -69,6 +69,10 @@
       value_template: "{{ is_state('device_tracker.intel_nuc', 'home') }}"
       friendly_name: "Intel NUC 5CPYH"
 
+    raspberry_status:
+      value_template: "{{ is_state('device_tracker.raspberry', 'home') }}"
+      friendly_name: "Raspberry Pi 4B"
+
     stacjonarny_status:
       value_template: "{{ is_state('device_tracker.stacjonarny', 'home') }}"
       friendly_name: "Komputer stacjonarny"

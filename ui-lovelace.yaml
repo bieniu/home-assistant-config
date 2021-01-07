@@ -179,6 +179,7 @@ views:
               - input_select.salon_harmony
               - type: custom:mini-media-player
                 entity: media_player.bravia_salon
+                icon: mdi:television
                 hide:
                   controls: true
                   volume: true
@@ -188,6 +189,7 @@ views:
                 group: true
               - type: custom:mini-media-player
                 entity: media_player.denon_salon
+                icon: mdi:audio-video
                 hide:
                   controls: true
                   power: true
@@ -202,6 +204,7 @@ views:
                 row:
                   type: custom:mini-media-player
                   entity: media_player.dune
+                  icon: mdi:disc-player
                   hide:
                     volume: true
                     controls: true
@@ -220,6 +223,7 @@ views:
                 group: true
               - type: custom:mini-media-player
                 entity: media_player.playstation_salon
+                icon: mdi:sony-playstation
                 hide:
                   controls: true
                   volume: true
@@ -230,6 +234,7 @@ views:
                 group: true
               - type: custom:mini-media-player
                 entity: media_player.echo_show_salon
+                icon: mdi:amazon-alexa
                 hide:
                   controls: true
                   volume: true
@@ -422,6 +427,7 @@ views:
               - switch.tree_antek
               - type: custom:mini-media-player
                 entity: media_player.echo_plus_antek
+                icon: mdi:amazon-alexa
                 hide:
                   controls: true
                   volume: true
@@ -459,6 +465,7 @@ views:
               # - switch.tree_sypialnia
               - type: custom:mini-media-player
                 entity: media_player.echo_dot_sypialnia
+                icon: mdi:amazon-alexa
                 hide:
                   controls: true
                   volume: true
@@ -572,6 +579,8 @@ views:
               - entity: sensor.home_assistant_last_restart
                 format: relative
               - sensor.ha_database_size
+      - type: vertical-stack
+        cards:
           - type: vertical-stack
             in_card: true
             cards:
@@ -610,6 +619,33 @@ views:
                     entities:
                       - sensor.memory_use_percent
                     <<: *GRAPH_COLOR_THRESHOLD
+          - type: vertical-stack
+            in_card: true
+            cards:
+              - type: entities
+                title: "Raspberry Pi 4B"
+                show_header_toggle: false
+                entities:
+                  - sensor.raspberry_disk_use
+                  - sensor.raspberry_cpu_temp
+                  - entity: sensor.raspberry_last_restart
+                    format: relative
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    <<: *GRAPH_IN_CARD
+                    decimals: 0
+                    entities:
+                      - sensor.raspberry_processor_use
+                    <<: *GRAPH_COLOR_THRESHOLD
+                  - type: custom:mini-graph-card
+                    <<: *GRAPH_IN_CARD
+                    decimals: 1
+                    entities:
+                      - sensor.raspberry_memory_use
+                    <<: *GRAPH_COLOR_THRESHOLD
+      - type: vertical-stack
+        cards:
           - type: entities
             title: "Drukarka"
             show_header_toggle: false
@@ -668,6 +704,7 @@ views:
         entities:
           - binary_sensor.synology_status
           - binary_sensor.nuc_status
+          - binary_sensor.raspberry_status
           - binary_sensor.brother_status
       - type: entities
         title: "Komputery"
@@ -710,7 +747,7 @@ views:
           - binary_sensor.echo_dot_status
           - binary_sensor.harmonyhub_status
       - type: entities
-        title: "Urządzenia IoT"
+        title: "IoT - inne"
         show_header_toggle: false
         state_color: true
         <<: *network-status-card
@@ -720,9 +757,31 @@ views:
           - binary_sensor.dafang_status
           - binary_sensor.mihumidifier_status
           - binary_sensor.mifan_status
+      - type: entities
+        title: "IoT - oświetlenie"
+        show_header_toggle: false
+        state_color: true
+        <<: *network-status-card
+        entities:
+          - binary_sensor.yeelight_yldp06yl_84be7a_status
+          - binary_sensor.yeelight_yldp06yl_7cafc6_status
+          - binary_sensor.yeelight_yldp02yl_f12026_status
+          - binary_sensor.yeelight_yldp02yl_b1b6aa_status
+          - binary_sensor.yeelight_yldd01yl_860cfa_status
+          - binary_sensor.yeelight_yldd01yl_6707fc_status
           - binary_sensor.yeelight_mjtd01syl_status
       - type: entities
-        title: "Przekaźniki/światła/sensory"
+        title: "IoT - sensory"
+        show_header_toggle: false
+        state_color: true
+        <<: *network-status-card
+        entities:
+          - binary_sensor.shelly_ht_e00abd_status
+          - binary_sensor.shelly_motion_97664e_status
+          - binary_sensor.shelly_flood_f2ad1d_status
+          - binary_sensor.wemos_d1_mini_1c91ea_status
+      - type: entities
+        title: "IoT - przekaźniki"
         show_header_toggle: false
         state_color: true
         <<: *network-status-card
@@ -744,33 +803,11 @@ views:
           - binary_sensor.shelly_1l_61c9fd_status
           - binary_sensor.shelly_2_5b2604_status
           - binary_sensor.shelly_plug_s_7aecf4_status
-          - binary_sensor.shelly_ht_e00abd_status
-          - binary_sensor.shelly_motion_97664e_status
-          - binary_sensor.shelly_flood_f2ad1d_status
-          - binary_sensor.wemos_d1_mini_1c91ea_status
-          - binary_sensor.yeelight_yldp06yl_84be7a_status
-          - binary_sensor.yeelight_yldp06yl_7cafc6_status
-          - binary_sensor.yeelight_yldp02yl_f12026_status
-          - binary_sensor.yeelight_yldp02yl_b1b6aa_status
-          - binary_sensor.yeelight_yldd01yl_860cfa_status
-          - binary_sensor.yeelight_yldd01yl_6707fc_status
   - id: energy
     icon: mdi:power-plug
     title: "Energia"
     path: energy
     cards:
-      - type: vertical-stack
-        title: "Pobór mocy"
-        in_card: true
-        cards:
-          - type: custom:mini-graph-card
-            hour24: true
-            decimals: 1
-            show:
-              icon: false
-              name: false
-            entities:
-              - sensor.sum_power
       - type: vertical-stack
         in_card: true
         cards:
@@ -779,22 +816,22 @@ views:
             show_header_toggle: false
             entities:
               - sensor.ups_status
-              - entity: sensor.ups_battery_charge
+              - entity: sensor.cyberpower_dl650elcd_battery_charge
                 <<: *battery-entity
-              - sensor.ups_load
+              - sensor.cyberpower_dl650elcd_load
           - type: horizontal-stack
             cards:
               - type: custom:mini-graph-card
                 <<: *GRAPH_IN_CARD
                 decimals: 0
                 entities:
-                  - sensor.ups_input_voltage
+                  - sensor.cyberpower_dl650elcd_input_voltage
                 line_color: "#ef5350"
               - type: custom:mini-graph-card
                 <<: *GRAPH_IN_CARD
                 decimals: 0
                 entities:
-                  - sensor.ups_battery_voltage
+                  - sensor.cyberpower_dl650elcd_battery_voltage
                 line_color: "#36a2eb"
                 lower_bound: 0
       - type: custom:battery-state-card
