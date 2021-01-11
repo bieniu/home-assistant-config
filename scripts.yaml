@@ -28,10 +28,8 @@ devices_away_mode:
         - light.lightstrip_antek
         - switch.cabinet_antek
         - switch.lamp_pracownia
-        # - switch.lamp_goscinny
         - input_boolean.antek_lamp_night
         - switch.tree_antek
-        # - switch.tree_sypialnia
         # - fan.pedestal_salon
         - light.ceiling_gabinet
         - light.ceiling_kuchnia

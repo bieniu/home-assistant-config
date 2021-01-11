@@ -71,8 +71,6 @@ binary_sensor.nuc_status:
   icon: mdi:server
 binary_sensor.dune_status:
   icon: mdi:disc-player
-binary_sensor.raspberry_status:
-  icon: mdi:raspberry-pi
 binary_sensor.switch_status:
   icon: mdi:switch
 binary_sensor.stacjonarny_status:

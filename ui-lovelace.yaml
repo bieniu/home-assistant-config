@@ -174,7 +174,6 @@ views:
               - light.bulbs_salon
               - light.leds_salon
               - light.lamp_salon
-              - switch.christmas_tree_salon
               - input_select.light_scenes_salon
               - input_select.salon_harmony
               - type: custom:mini-media-player
@@ -370,7 +369,7 @@ views:
                 row:
                   entity: climate.thermostat_antresola
               - light.gateway_antresola
-              - switch.christmas_lights_antresola
+              - switch.lights_stairs_antresola
       - type: vertical-stack
         in_card: true
         cards:

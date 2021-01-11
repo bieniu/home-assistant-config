@@ -276,13 +276,14 @@
         - binary_sensor.shelly_flood_f2ad1d_firmware_update
         - binary_sensor.shelly_ht_e00abd_firmware_update
         - binary_sensor.shelly_plug_s_7aecf4_firmware_update
+        - binary_sensor.shelly_motion_97664e_firmware_update
       from: "off"
       to: "on"
   action:
     - service: python_script.notify
       data:
         title: "Aktualizacja oprogramowania Shelly"
-        message: "Dostępna jest aktualizacja oprogramowania dla {{ trigger.to_state.attributes.friendly_name | replace(' Firmware Update', '') }}."
+        message: "Dostępna jest aktualizacja oprogramowania dla {{ trigger.to_state.attributes.friendly_name.split(' [')[0] }}."
         tag: "notification-{{ trigger.entity_id }}"
         group: "aktualizacje"
         services:
@@ -362,7 +363,6 @@
       entity_id:
         - switch.christmas_lights_balkon_dol
         - switch.christmas_lights_balkon_gora
-        - switch.christmas_lights_goscinny
 
 # włączenie drzewek jak jest zachód słońca i domownicy w domu
 - id: light_turn_on_trees
@@ -377,27 +377,22 @@
   action:
     - service: switch.turn_on
       entity_id:
-        # - switch.tree_sypialnia
         - switch.tree_antek
-        - switch.christmas_lights_antresola
-        - switch.christmas_tree_salon
+        - switch.lights_stairs_antresola
 
 # wyłączenie drzewek o 23
 - id: light_turn_off_trees
   alias: "Light Turn Off Trees"
   trigger:
     platform: time
-    at: "23:59:00"
+    at: "23:00:00"
   action:
     service: switch.turn_off
     entity_id:
-      # - switch.tree_sypialnia
       - switch.tree_antek
       - switch.christmas_lights_balkon_dol
       - switch.christmas_lights_balkon_gora
-      - switch.christmas_lights_antresola
-      - switch.christmas_lights_goscinny
-      - switch.christmas_tree_salon
+      - switch.lights_stairs_antresola
 
 # włączenie drzewek jak po zachodzie słońca wracają domownicy
 - id: light_turn_on_trees_when_peoples_back
@@ -410,14 +405,12 @@
     - condition: sun
       after: sunset
     - condition: time
-      before: "23:59:00"
+      before: "23:00:00"
   action:
     service: switch.turn_on
     entity_id:
-      # - switch.tree_sypialnia
       - switch.tree_antek
-      - switch.christmas_lights_antresola
-      - switch.christmas_tree_salon
+      - switch.lights_stairs_antresola
 
 # powiadomienie o zbliżającej się burzy
 - id: notification_storm_comming
@@ -1849,7 +1842,6 @@
           - light.leds_salon
           - light.bulbs_salon
           - media_player.denon_salon
-          - switch.christmas_tree_salon
         state: "off"
       - condition: state
         entity_id:
@@ -1862,6 +1854,7 @@
             after: sunset
           - condition: sun
             before: sunrise
+            before_offset: "+01:00:00"
   action:
     - service: light.turn_on
       entity_id: light.lamp_salon
@@ -1979,6 +1972,7 @@
             after: sunset
           - condition: sun
             before: sunrise
+            before_offset: "+01:00:00"
   action:
     - service: light.turn_on
       entity_id: light.ceiling_kuchnia
@@ -2034,6 +2028,7 @@
             after: sunset
           - condition: sun
             before: sunrise
+            before_offset: "+01:00:00"
   action:
     - service: light.turn_on
       entity_id: light.gateway_antresola
@@ -2079,6 +2074,7 @@
             after: sunset
           - condition: sun
             before: sunrise
+            before_offset: "+01:00:00"
   action:
     - service: light.turn_on
       entity_id: light.lightstrip_sypialnia
@@ -2122,6 +2118,7 @@
             after: sunset
           - condition: sun
             before: sunrise
+            before_offset: "+01:00:00"
   action:
     - service: light.turn_on
       entity_id: light.leds_przedpokoj
@@ -2178,6 +2175,7 @@
             after: sunset
           - condition: sun
             before: sunrise
+            before_offset: "+01:00:00"
   action:
     - service: script.light_turn_on_antek_leds
     - service: switch.turn_on
@@ -2357,6 +2355,7 @@
             after: sunset
           - condition: sun
             before: sunrise
+            before_offset: "+01:00:00"
   action:
     - service: switch.turn_on
       entity_id: switch.lamp_pracownia
@@ -2400,6 +2399,7 @@
             after: sunset
           - condition: sun
             before: sunrise
+            before_offset: "+01:00:00"
   action:
     - service: light.turn_on
       entity_id: light.ceiling_gabinet
@@ -2463,6 +2463,7 @@
             after: sunset
           - condition: sun
             before: sunrise
+            before_offset: "+01:00:00"
   action:
     - service: light.turn_on
       entity_id: light.gateway_goscinny
