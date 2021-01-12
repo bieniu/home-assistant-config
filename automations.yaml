@@ -1753,67 +1753,44 @@
       entity_id: scene.{{ trigger.to_state.state }}
       transition: 5
 
-# włączenie/wyłączenie lampy w salonie
-- id: light_toggle_power_salon_lamp
-  alias: "Light Toggle Power Salon Lamp"
+- id: light_toggle_salon_light
+  alias: "Light Toggle Salon Light"
+  description: "włącz/wyłącz oświetlenie w salonie"
   trigger:
     - platform: event
       event_type: xiaomi_aqara.click
       event_data:
         entity_id: binary_sensor.switch_light_salon_1
-        click_type: single
     - platform: event
       event_type: xiaomi_aqara.click
       event_data:
         entity_id: binary_sensor.switch_light_salon_2
-        click_type: single
   action:
-    service: light.toggle
-    entity_id: light.lamp_salon
+    - choose:
+        conditions:
+          condition: template
+          value_template: "{{ trigger.event.data.click_type == 'single' }}"
+        sequence:
+          service: light.toggle
+          entity_id: light.lamp_salon
+    - choose:
+        conditions:
+          condition: template
+          value_template: "{{ trigger.event.data.click_type == 'double' }}"
+        sequence:
+          service: light.toggle
+          entity_id: light.bulbs_salon
+    - choose:
+        conditions:
+          condition: template
+          value_template: "{{ trigger.event.data.click_type == 'hold' }}"
+        sequence:
+          service: light.toggle
+          entity_id: light.leds_salon
 
-# włączenie/wyłączenie żarówek w salonie
-- id: light_toggle_power_salon_bulbs
-  alias: "Light Toggle Power Salon Bulbs"
-  trigger:
-    - platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: binary_sensor.switch_light_salon_1
-        click_type: double
-    - platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: binary_sensor.switch_light_salon_2
-        click_type: double
-    - platform: state
-      entity_id: binary_sensor.switch_bulbs_salon
-      from: "off"
-      to: "on"
-  action:
-    service: light.toggle
-    entity_id: light.bulbs_salon
-
-# włączenie/wyłączenie LEDów w salonie
-- id: light_toggle_power_salon_leds
-  alias: "Light Toggle Power Salon LEDs"
-  trigger:
-    - platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: binary_sensor.switch_light_salon_1
-        click_type: hold
-    - platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: binary_sensor.switch_light_salon_2
-        click_type: hold
-  action:
-    service: light.toggle
-    entity_id: light.leds_salon
-
-# włączanie lampy w salonie jak pojawi się ruch lub wyłączone światło/TV
-- id: light_turn_on_salon_lamp
-  alias: "Light Turn On Salon Lamp"
+- id: light_turn_on_salon_lamp_when_dark_and_motion
+  alias: "Light Turn On Salon Lamp When Dark And Motion"
+  description: "włącz lampę w salonie jak jest ciemno i pojawi się ruch"
   max_exceeded: silent
   trigger:
     - platform: state
@@ -1848,13 +1825,16 @@
           - binary_sensor.motion_salon
           - input_boolean.light_auto_turn_salon
         state: "on"
+      - condition: numeric_state
+        entity_id: sensor.illumination_salon
+        below: 10
       - condition: or
         conditions:
           - condition: sun
             after: sunset
           - condition: sun
             before: sunrise
-            before_offset: "+01:00:00"
+            before_offset: "+00:30:00"
   action:
     - service: light.turn_on
       entity_id: light.lamp_salon
@@ -1965,14 +1945,14 @@
         state: "off"
       - condition: numeric_state
         entity_id: sensor.illumination_kuchnia
-        below: 20
+        below: 41
       - condition: or
         conditions:
           - condition: sun
             after: sunset
           - condition: sun
             before: sunrise
-            before_offset: "+01:00:00"
+            before_offset: "+00:30:00"
   action:
     - service: light.turn_on
       entity_id: light.ceiling_kuchnia
@@ -2028,7 +2008,7 @@
             after: sunset
           - condition: sun
             before: sunrise
-            before_offset: "+01:00:00"
+            before_offset: "+00:30:00"
   action:
     - service: light.turn_on
       entity_id: light.gateway_antresola
@@ -2074,7 +2054,7 @@
             after: sunset
           - condition: sun
             before: sunrise
-            before_offset: "+01:00:00"
+            before_offset: "+00:30:00"
   action:
     - service: light.turn_on
       entity_id: light.lightstrip_sypialnia
@@ -2118,7 +2098,7 @@
             after: sunset
           - condition: sun
             before: sunrise
-            before_offset: "+01:00:00"
+            before_offset: "+00:30:00"
   action:
     - service: light.turn_on
       entity_id: light.leds_przedpokoj
@@ -2175,7 +2155,7 @@
             after: sunset
           - condition: sun
             before: sunrise
-            before_offset: "+01:00:00"
+            before_offset: "+00:30:00"
   action:
     - service: script.light_turn_on_antek_leds
     - service: switch.turn_on
@@ -2355,7 +2335,7 @@
             after: sunset
           - condition: sun
             before: sunrise
-            before_offset: "+01:00:00"
+            before_offset: "+00:30:00"
   action:
     - service: switch.turn_on
       entity_id: switch.lamp_pracownia
@@ -2399,7 +2379,7 @@
             after: sunset
           - condition: sun
             before: sunrise
-            before_offset: "+01:00:00"
+            before_offset: "+00:30:00"
   action:
     - service: light.turn_on
       entity_id: light.ceiling_gabinet
@@ -2408,6 +2388,19 @@
         entity_id: binary_sensor.motion_gabinet
         from: "on"
         to: "off"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: switch.stacjonarny
+          state: "on"
+        sequence:
+          - wait_for_trigger:
+              platform: state
+              entity_id: switch.stacjonarny
+              from: "on"
+              to: "off"
+          - service: light.turn_off
+            entity_id: light.ceiling_gabinet
     - service: light.turn_off
       entity_id: light.ceiling_gabinet
 
@@ -2463,7 +2456,7 @@
             after: sunset
           - condition: sun
             before: sunrise
-            before_offset: "+01:00:00"
+            before_offset: "+00:30:00"
   action:
     - service: light.turn_on
       entity_id: light.gateway_goscinny
