@@ -1,375 +1,383 @@
-#### XIAOMI GATEWAY ALARM ####
-xiaomi_alarm:
-  sequence:
-    service: xiaomi.play_ringtone
-    data:
-      ringtone_id: 2
-      gw_mac: !secret migateway_mac
-      ringtone_vol: 10
-
-xiaomi_alarm_stop:
-  sequence:
-    service: xiaomi.stop_ringtone
-    data:
-      gw_mac: !secret migateway_mac
-
-#### LIGHT ####
 devices_away_mode:
   sequence:
-    - service: homeassistant.turn_off
-      entity_id:
-        - light.bulbs_salon
-        - light.leds_salon
-        - light.lamp_salon
-        - light.leds_przedpokoj
-        - light.gateway_antresola
-        - light.gateway_goscinny
-        - light.lightstrip_sypialnia
-        - light.lightstrip_antek
-        - switch.cabinet_antek
-        - switch.lamp_pracownia
-        - input_boolean.antek_lamp_night
-        - switch.tree_antek
-        # - fan.pedestal_salon
-        - light.ceiling_gabinet
-        - light.ceiling_kuchnia
-        - light.ceiling_lazienka
-        - light.desk_lamp_antek
-        - light.ceiling_toaleta
-
-#### HEATING ####
+  - service: homeassistant.turn_off
+    entity_id:
+    - light.bulbs_salon
+    - light.leds_salon
+    - light.lamp_salon
+    - light.leds_przedpokoj
+    - light.gateway_antresola
+    - light.gateway_goscinny
+    - light.lightstrip_sypialnia
+    - light.lightstrip_antek
+    - switch.cabinet_antek
+    - switch.lamp_pracownia
+    - input_boolean.antek_lamp_night
+    - switch.tree_antek
+    - light.ceiling_gabinet
+    - light.ceiling_kuchnia
+    - light.ceiling_lazienka
+    - light.desk_lamp_antek
+    - light.ceiling_toaleta
+  mode: single
+  alias: 'Devices: away mode'
+  icon: mdi:home-export-outline
 heating_fast_warm_up:
-  alias: "Szybkie dogrzanie"
+  alias: Szybkie dogrzanie
   sequence:
-    - condition: state
-      entity_id: input_boolean.heating_season
-      state: "on"
-    - service: climate.set_temperature
-      entity_id:
-        - climate.thermostat_antresola
-        - climate.thermostat_gabinet
-        - climate.thermostat_antek
-        - climate.thermostat_sypialnia
-        - climate.aeotec_thermostat_kuchnia
-        - climate.thermostat_salon
-        - climate.custom_thermostat_lazienka
-      data:
-        temperature: 24
-    - delay: "01:00:00"
-    - service: script.heating_day
-
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  - service: climate.set_temperature
+    entity_id:
+    - climate.thermostat_antresola
+    - climate.thermostat_gabinet
+    - climate.thermostat_antek
+    - climate.thermostat_sypialnia
+    - climate.aeotec_thermostat_kuchnia
+    - climate.thermostat_salon
+    - climate.custom_thermostat_lazienka
+    data:
+      temperature: 24
+  - delay: 01:00:00
+  - service: script.heating_day
+  mode: single
+  icon: mdi:clock-fast
 heating_day:
   sequence:
-    - service: climate.set_temperature
-      entity_id: climate.custom_thermostat_lazienka
-      data:
-        temperature: "{{ states('input_select.heating_temp_bathroom_day') }}"
-    - service: climate.set_temperature
-      entity_id:
-        - climate.thermostat_antresola
-        - climate.aeotec_thermostat_kuchnia
-        - climate.thermostat_salon
-        - climate.thermostat_gabinet
-      data:
-        temperature: "{{ states('input_select.heating_temp_day') }}"
-    - service: climate.set_temperature
-      entity_id:
-        - climate.thermostat_antek
-        - climate.thermostat_sypialnia
-      data:
-        temperature: "{{ states('input_select.heating_temp_bedroom_day') }}"
-    - service: input_boolean.turn_off
-      entity_id:
-        - input_boolean.heating_night
-        - input_boolean.heating_salon_kuchnia_night
-    - condition: template
-      value_template: >-
-        {{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float
-           and states('sensor.humidifier_water_level') | int > 5 }}
-    - service: fan.turn_on
-      entity_id: fan.humidifier_salon
-
+  - service: climate.set_temperature
+    entity_id: climate.custom_thermostat_lazienka
+    data:
+      temperature: '{{ states(''input_select.heating_temp_bathroom_day'') }}'
+  - service: climate.set_temperature
+    entity_id:
+    - climate.thermostat_antresola
+    - climate.aeotec_thermostat_kuchnia
+    - climate.thermostat_salon
+    - climate.thermostat_gabinet
+    data:
+      temperature: '{{ states(''input_select.heating_temp_day'') }}'
+  - service: climate.set_temperature
+    entity_id:
+    - climate.thermostat_antek
+    - climate.thermostat_sypialnia
+    data:
+      temperature: '{{ states(''input_select.heating_temp_bedroom_day'') }}'
+  - service: input_boolean.turn_off
+    entity_id:
+    - input_boolean.heating_night
+    - input_boolean.heating_salon_kuchnia_night
+  - condition: template
+    value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity')\
+      \ | float\n   and states('sensor.humidifier_water_level') | int > 5 }}"
+  - service: fan.turn_on
+    entity_id: fan.humidifier_salon
+  mode: single
+  icon: mdi:radiator
+  alias: 'Heating: day'
 heating_night:
   sequence:
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.heating_night
-    - service: climate.set_temperature
-      entity_id:
-        - climate.thermostat_antresola
-        - climate.thermostat_gabinet
-      data:
-        temperature: "{{ states('input_select.heating_temp_night') }}"
-    - service: climate.set_temperature
-      entity_id:
-        - climate.thermostat_antek
-        - climate.thermostat_sypialnia
-      data:
-        temperature: "{{ states('input_select.heating_temp_bedroom_night') }}"
-    - service: climate.set_temperature
-      entity_id: climate.custom_thermostat_lazienka
-      data:
-        temperature: "{{ states('input_select.heating_temp_bathroom_night') }}"
-    - condition: template
-      value_template: >-
-        {{ is_state("input_boolean.guests", "off") and
-           is_state("media_player.denon_salon", "off") }}
-    - service: fan.turn_off
-      entity_id: fan.humidifier_salon
-    - service: climate.set_temperature
-      entity_id:
-        - climate.aeotec_thermostat_kuchnia
-        - climate.thermostat_salon
-      data:
-        temperature: "{{ states('input_select.heating_temp_night') }}"
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.heating_salon_kuchnia_night
-
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.heating_night
+  - service: climate.set_temperature
+    entity_id:
+    - climate.thermostat_antresola
+    - climate.thermostat_gabinet
+    data:
+      temperature: '{{ states(''input_select.heating_temp_night'') }}'
+  - service: climate.set_temperature
+    entity_id:
+    - climate.thermostat_antek
+    - climate.thermostat_sypialnia
+    data:
+      temperature: '{{ states(''input_select.heating_temp_bedroom_night'') }}'
+  - service: climate.set_temperature
+    entity_id: climate.custom_thermostat_lazienka
+    data:
+      temperature: '{{ states(''input_select.heating_temp_bathroom_night'') }}'
+  - condition: template
+    value_template: "{{ is_state(\"input_boolean.guests\", \"off\") and\n   is_state(\"\
+      media_player.denon_salon\", \"off\") }}"
+  - service: fan.turn_off
+    entity_id: fan.humidifier_salon
+  - service: climate.set_temperature
+    entity_id:
+    - climate.aeotec_thermostat_kuchnia
+    - climate.thermostat_salon
+    data:
+      temperature: '{{ states(''input_select.heating_temp_night'') }}'
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.heating_salon_kuchnia_night
+  mode: single
+  alias: 'Heating: night'
+  icon: mdi:radiator
 heating_eco_mode:
   sequence:
-    - service: climate.set_temperature
-      entity_id:
-        - climate.thermostat_antresola
-        - climate.thermostat_gabinet
-        - climate.aeotec_thermostat_kuchnia
-        - climate.thermostat_salon
-        - climate.thermostat_antek
-        - climate.thermostat_sypialnia
-        - climate.custom_thermostat_lazienka
-      data:
-        temperature: "{{ states('input_select.heating_temp_eco') }}"
-    - service: fan.turn_off
-      entity_id: fan.humidifier_salon
-
+  - service: climate.set_temperature
+    entity_id:
+    - climate.thermostat_antresola
+    - climate.thermostat_gabinet
+    - climate.aeotec_thermostat_kuchnia
+    - climate.thermostat_salon
+    - climate.thermostat_antek
+    - climate.thermostat_sypialnia
+    - climate.custom_thermostat_lazienka
+    data:
+      temperature: '{{ states(''input_select.heating_temp_eco'') }}'
+  - service: fan.turn_off
+    entity_id: fan.humidifier_salon
+  mode: single
+  alias: 'Heating: eco'
+  icon: mdi:radiator
 heating_season_end:
   sequence:
-    - service: climate.set_temperature
-      entity_id:
-        - climate.thermostat_antresola
-        - climate.thermostat_gabinet
-        - climate.thermostat_salon
-        - climate.thermostat_antek
-        - climate.thermostat_sypialnia
-        - climate.custom_thermostat_lazienka
-      data:
-        temperature: 4
-    - service: climate.turn_off
-      entity_id:
-        - climate.aeotec_thermostat_kuchnia
-        - climate.custom_thermostat_lazienka
-
+  - service: climate.set_temperature
+    entity_id:
+    - climate.thermostat_antresola
+    - climate.thermostat_gabinet
+    - climate.thermostat_salon
+    - climate.thermostat_antek
+    - climate.thermostat_sypialnia
+    - climate.custom_thermostat_lazienka
+    data:
+      temperature: 4
+  - service: climate.turn_off
+    entity_id:
+    - climate.aeotec_thermostat_kuchnia
+    - climate.custom_thermostat_lazienka
+  mode: single
+  alias: 'Heating: end season'
+  icon: mdi:radiator
 heating_airing_begin:
   sequence:
-    - service: climate.set_temperature
-      entity_id:
-        - climate.thermostat_antresola
-        - climate.thermostat_gabinet
-        - climate.thermostat_salon
-        - climate.thermostat_antek
-        - climate.thermostat_sypialnia
-        - climate.custom_thermostat_lazienka
-        - climate.aeotec_thermostat_kuchnia
-        - climate.custom_thermostat_lazienka
-      data:
-        temperature: 8
-    - service: fan.turn_off
-      entity_id: fan.humidifier_salon
-    - condition: state
-      entity_id: input_boolean.heating_airing
-      state: "off"
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.heating_airing
-
+  - service: climate.set_temperature
+    entity_id:
+    - climate.thermostat_antresola
+    - climate.thermostat_gabinet
+    - climate.thermostat_salon
+    - climate.thermostat_antek
+    - climate.thermostat_sypialnia
+    - climate.custom_thermostat_lazienka
+    - climate.aeotec_thermostat_kuchnia
+    - climate.custom_thermostat_lazienka
+    data:
+      temperature: 8
+  - service: fan.turn_off
+    entity_id: fan.humidifier_salon
+  - condition: state
+    entity_id: input_boolean.heating_airing
+    state: 'off'
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.heating_airing
+  mode: single
+  alias: 'Heating: airing'
+  icon: mdi:radiator
 harmony_playstation:
   sequence:
-    service: remote.turn_on
+  - service: remote.turn_on
     entity_id: remote.salon
     data:
-      activity: "PlayStation"
-
+      activity: PlayStation
+  mode: single
+  alias: 'Harmony: PlayStation'
+  icon: mdi:remote-tv
 harmony_xbox:
   sequence:
-    service: remote.turn_on
+  - service: remote.turn_on
     entity_id: remote.salon
     data:
-      activity: "Xbox"
-
+      activity: Xbox
+  mode: single
+  alias: 'Harmony: Xbox'
+  icon: mdi:remote-tv
 harmony_smart_tv:
   sequence:
-    service: remote.turn_on
+  - service: remote.turn_on
     entity_id: remote.salon
     data:
-      activity: "Smart TV"
-
+      activity: Smart TV
+  mode: single
+  alias: 'Harmony: smart TV'
+  icon: mdi:remote-tv
 harmony_fire_tv:
   sequence:
-    service: remote.turn_on
+  - service: remote.turn_on
     entity_id: remote.salon
     data:
-      activity: "Fire TV"
-
+      activity: Fire TV
+  mode: single
+  icon: mdi:remote-tv
+  alias: 'Harmony: Fire TV'
 harmony_telewizja:
   sequence:
-    service: remote.turn_on
+  - service: remote.turn_on
     entity_id: remote.salon
     data:
-      activity: "Telewizja"
-
+      activity: Telewizja
+  mode: single
+  alias: 'Harmony: telewizja'
+  icon: mdi:remote-tv
 harmony_muzyka:
   sequence:
-    service: remote.turn_on
+  - service: remote.turn_on
     entity_id: remote.salon
     data:
-      activity: "Muzyka"
-
+      activity: Muzyka
+  mode: single
+  alias: 'Harmony: muzyka'
+  icon: mdi:remote-tv
 harmony_filmy:
   sequence:
-    service: remote.turn_on
+  - service: remote.turn_on
     entity_id: remote.salon
     data:
-      activity: "Filmy"
-
+      activity: Filmy
+  mode: single
+  alias: 'Harmony: filmy'
+  icon: mdi:remote-tv
 harmony_tv_off:
   sequence:
-    service: remote.turn_off
+  - service: remote.turn_off
     entity_id: remote.salon
-
-#### LIGHT ####
+  mode: single
+  alias: 'Harmony: wyłączone'
+  icon: mdi:remote-tv
 light_turn_off_antek_leds:
   sequence:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.antek_lamp_night
-    - service: light.turn_off
-      entity_id: light.lightstrip_antek
-      data:
-        transition: 10
-
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.antek_lamp_night
+  - service: light.turn_off
+    entity_id: light.lightstrip_antek
+    data:
+      transition: 10
+  mode: single
+  alias: 'Light: turn off Antek''s LEDs'
+  icon: mdi:lightbulb-outline
 light_turn_on_antek_leds:
   sequence:
-    - service: light.turn_on
-      entity_id: light.lightstrip_antek
-      data:
-        brightness: 150
-        rgb_color:
-          [
-            "{{ (range(0, 255)|random) }}",
-            "{{ (range(0, 255)|random) }}",
-            "{{ (range(0, 255)|random) }}",
-          ]
-
+  - service: light.turn_on
+    entity_id: light.lightstrip_antek
+    data:
+      brightness: 150
+      rgb_color:
+      - '{{ (range(0, 255)|random) }}'
+      - '{{ (range(0, 255)|random) }}'
+      - '{{ (range(0, 255)|random) }}'
+  mode: single
+  icon: mdi:lightbulb-outline
+  alias: 'Light: turn on Antek''s LEDs'
 notify_motion:
   mode: queued
   sequence:
-    - service: camera.snapshot
-      entity_id: camera.salon
-      data:
-        filename: "/media/camera_snapshots/{{ datetime }}.jpg"
-    - delay:
-        seconds: 1
-    - service: python_script.notify
-      data:
-        title: "{{ title }}"
-        message: "{{ message }}"
-        tag: "{{ tag }}"
-        group: "ruch"
-        priority: "high"
-        image: >-
-          {% if location == 'salon' or location == 'przedpokój' %}
-            /media/local/camera_snapshots/{{ datetime }}.jpg
-          {% else %}
-            None
-          {% endif %}
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
-          - service: !secret edyta_notify_service
-            type: "ios"
-
+  - service: camera.snapshot
+    entity_id: camera.salon
+    data:
+      filename: /media/camera_snapshots/{{ datetime }}.jpg
+  - delay: 00:00:01
+  - service: python_script.notify
+    data:
+      title: '{{ title }}'
+      message: '{{ message }}'
+      tag: '{{ tag }}'
+      group: ruch
+      priority: high
+      image: "{% if location in ['salon', 'kuchnia', 'przedpokój'] %}\n  /media/local/camera_snapshots/{{\
+        \ datetime }}.jpg\n{% else %}\n  None\n{% endif %}"
+      services:
+      - service: notify.mobile_app_oneplus_6
+        type: android
+      - service: notify.mobile_app_iphone_11
+        type: ios
+  max: 10
+  alias: 'Notify: motion'
+  icon: mdi:bell-ring
 camera_move:
   sequence:
-    service: mqtt.publish
+  - service: mqtt.publish
     data:
-      topic: "camera/salon/motors/{{ orientation }}/set"
-      payload: "{{ direction }}"
-
-## ALEXA
+      topic: camera/salon/motors/{{ orientation }}/set
+      payload: '{{ direction }}'
+  mode: single
+  alias: 'Camera: move'
+  icon: mdi:cctv
 alexa_toggle_qube:
   sequence:
-    - service: remote.send_command
-      entity_id: remote.salon
-      data:
-        device: "Kostka"
-        command: "W\u0142\u0105cz/wy\u0142\u0105cz"
-
+  - service: remote.send_command
+    entity_id: remote.salon
+    data:
+      device: Kostka
+      command: Włącz/wyłącz
+  mode: single
+  alias: 'Alexa: toggle qube'
+  icon: mdi:amazon-alexa
 alexa_netflix:
   sequence:
-    - service: remote.turn_on
-      entity_id: remote.salon
-      data:
-        activity: "Smart TV"
-    - delay:
-        seconds: 2
-    - service: remote.send_command
-      entity_id: remote.salon
-      data:
-        device: "Telewizor"
-        command: "Netflix"
-
+  - delay: 00:00:02
+  - service: remote.turn_on
+    entity_id: remote.salon
+    data:
+      activity: Smart TV
+  mode: single
+  icon: mdi:amazon-alexa
+  alias: 'Alexa: Netflix'
 alexa_goodnight:
   sequence:
-    - service: homeassistant.turn_off
-      entity_id:
-        - remote.salon
-        # - fan.pedestal_salon
-        - fan.humidifier_salon
-        - light.leds_salon
-        - light.bulbs_salon
-        - switch.cabinet_antek
-        - light.desk_lamp_antek
-        - light.ceiling_gabinet
-        - light.ceiling_kuchnia
-        - light.ceiling_lazienka
-        - light.ceiling_toaleta
-
+  - service: homeassistant.turn_off
+    entity_id:
+    - remote.salon
+    - fan.humidifier_salon
+    - light.leds_salon
+    - light.bulbs_salon
+    - switch.cabinet_antek
+    - light.desk_lamp_antek
+    - light.ceiling_gabinet
+    - light.ceiling_kuchnia
+    - light.ceiling_lazienka
+    - light.ceiling_toaleta
+  mode: single
+  alias: 'Alexa: goodnight'
+  icon: mdi:amazon-alexa
 alexa_tts:
   sequence:
-    service: notify.alexa_media_echo_plus
+  - service: notify.alexa_media_echo_plus
     data:
-      message: "{{ message }}"
-      data:
-        type: "tts"
-
-restart_esphome_devices:
-  sequence:
-    service: switch.turn_on
-    entity_id:
-      - switch.blitzwolf_bw_shp6_2ad05a_restart
-      - switch.blitzwolf_bw_shp6_3766eb_restart
-      - switch.blitzwolf_bw_shp6_ecf9ea_restart
-      - switch.blitzwolf_bw_shp6_ed007d_restart
-      - switch.sonoff_basic_067c81_restart
-      - switch.sonoff_basic_5dfba8_restart
-      - switch.sonoff_basic_a786cc_restart
-      - switch.sonoff_s26_182475_restart
-      - switch.wemos_d1_mini_1c91ea_restart
-
-open_windows:
-  sequence:
-    service: notify.alexa_media_echo_show
-    data:
-      message: >-
-        {% set ns = namespace(open_windows=[]) %}
-          {% for entity in state_attr('group.windows', 'entity_id') %}
-            {% if is_state(entity, 'on') %}
-              {% set ns.open_windows = ns.open_windows + [ state_attr(entity, 'location') ] %}
-            {% endif %}
-          {% endfor %}
-        {% set open_windows = ns.open_windows | unique | list %}
-        {% if open_windows | count == 0 %}
-          Wszystkie okna są zamknięte.
-        {% elif open_windows | count == 1 %}
-          Okno jest otwarte w: {{ open_windows[0] }}.
-        {% else %}
-          Okna są otwarte w:{% for window in open_windows | unique | list %}{% if loop.first %} {% elif not loop.last %}, {% else %} i {% endif %}{{ window }}{% endfor %}.
-        {% endif %}
+      message: '{{ message }}'
       data:
         type: tts
+  mode: single
+  icon: mdi:amazon-alexa
+  alias: 'Alexa: TTS'
+restart_esphome_devices:
+  alias: Restart ESPHome Devices
+  sequence:
+  - service: switch.turn_on
+    entity_id:
+    - switch.blitzwolf_bw_shp6_2ad05a_restart
+    - switch.blitzwolf_bw_shp6_3766eb_restart
+    - switch.blitzwolf_bw_shp6_ecf9ea_restart
+    - switch.blitzwolf_bw_shp6_ed007d_restart
+    - switch.sonoff_basic_067c81_restart
+    - switch.sonoff_basic_5dfba8_restart
+    - switch.sonoff_basic_a786cc_restart
+    - switch.sonoff_s26_182475_restart
+    - switch.wemos_d1_mini_1c91ea_restart
+  mode: single
+  icon: mdi:restart
+alexa_open_windows:
+  sequence:
+  - service: notify.alexa_media_echo_show
+    data:
+      message: "{% set ns = namespace(open_windows=[]) %}\n  {% for entity in state_attr('group.windows',\
+        \ 'entity_id') %}\n    {% if is_state(entity, 'on') %}\n      {% set ns.open_windows\
+        \ = ns.open_windows + [ state_attr(entity, 'location') ] %}\n    {% endif\
+        \ %}\n  {% endfor %}\n{% set open_windows = ns.open_windows | unique | list\
+        \ %} {% if open_windows | count == 0 %}\n  Wszystkie okna są zamknięte.\n\
+        {% elif open_windows | count == 1 %}\n  Okno jest otwarte w: {{ open_windows[0]\
+        \ }}.\n{% else %}\n  Okna są otwarte w:{% for window in open_windows | unique\
+        \ | list %}{% if loop.first %} {% elif not loop.last %}, {% else %} i {% endif\
+        \ %}{{ window }}{% endfor %}.\n{% endif %}"
+      data:
+        type: tts
+  mode: single
+  alias: 'Alexa: open windows'
+  icon: mdi:amazon-alexa

@@ -147,18 +147,6 @@ switch.stacjonarny:
   friendly_name: "Komputer"
   icon: mdi:desktop-tower
 
-#### SCRIPTS ####
-script.restart_hass:
-  icon: mdi:refresh
-script.reboot_pi:
-  icon: mdi:refresh
-script.heating_fast_warm_up:
-  icon: mdi:clock-fast
-script.reboot_router:
-  icon: mdi:refresh
-script.shutdown_pi:
-  icon: mdi:power
-
 #### XIAOMI SENSORS ####
 sensor.pressure_outdoor:
   icon: mdi:gauge
@@ -199,6 +187,8 @@ binary_sensor.motion_goscinny:
   location: "pokój gościnny"
 binary_sensor.motion_gabinet:
   location: "gabinet"
+  binary_sensor.motion_kuchnia:
+    location: "kuchnia"
 
 #### XIAOMI WINDOW/DOOR SENSORS ####
 binary_sensor.balcony_door_sypialnia:

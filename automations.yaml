@@ -1,7 +1,17 @@
-## AKCJE IOS ##
-# włącz TV
+- id: shelly_flood_info
+  alias: "Shelly Flood Info"
+  trigger:
+    platform: mqtt
+    topic: "shellies/shellyflood-F2AD1D/info"
+  action:
+    service: persistent_notification.create
+    data:
+      title: "Shelly Flood"
+      message: "{{ trigger.payload }}"
+
 - id: ios_turn_on_tv
   alias: "iOS Turn On TV"
+  description: "iOS włącz TV"
   trigger:
     platform: event
     event_type: ios.action_fired
@@ -10,9 +20,9 @@
   action:
     service: script.harmony_telewizja
 
-# wyłącz TV
 - id: ios_turn_off_tv
   alias: "iOS Turn Off TV"
+  description: "iOS wyłącz TV"
   trigger:
     platform: event
     event_type: ios.action_fired
@@ -21,10 +31,9 @@
   action:
     service: script.harmony_tv_off
 
-## POWIADOMIENIA ##
-# przekazanie persitant_notification na telefon
 - id: notification_forward_persistant_notification_to_the_phone
   alias: "Notification Forward Persistant Notification To The Phone"
+  description: "przekazanie persitant_notification na telefon"
   trigger:
     platform: event
     event_type: "call_service"
@@ -42,9 +51,9 @@
         - service: !secret maciek_notify_service
           type: "android"
 
-# usuwanie przekazanego persitant_notification na telefonie
 - id: notification_dismiss_forwarded_persistant_notification_on_the_phone
   alias: "Notification Dismiss Forwarded Persistant Notification On The Phone"
+  description: "usuwanie przekazanego persitant_notification na telefonie"
   trigger:
     platform: event
     event_type: "call_service"
@@ -64,9 +73,9 @@
         - service: !secret maciek_notify_service
           type: "android"
 
-# usuwanie persitant_notification po usunięciu na telefonie
 - id: notification_dismiss_persistant_notification_after_dismiss_on_the_phone
   alias: "Notification Dismiss Persistant Notification After Dimiss On The Phone"
+  description: "usuwanie persitant_notification po usunięciu na telefonie"
   trigger:
     platform: event
     event_type: "mobile_app_notification_cleared"
@@ -77,9 +86,9 @@
     data:
       notification_id: "{{ trigger.event.context.id }}"
 
-# powiadomienie o aktualizacji HA
 - id: notification_home_assistant_update_available
   alias: "Notification Home Assistant Update Available"
+  description: "powiadomienie o aktualizacji HA"
   trigger:
     platform: state
     entity_id: sensor.ha_version_current
@@ -832,7 +841,7 @@
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.shelly_plug_s_7aecf4_overpower_0
+        - binary_sensor.shelly_plug_s_7aecf4_overpower
         - binary_sensor.shelly_2_5b2604_overpower_0
         - binary_sensor.shelly_2_5b2604_overpower_1
       from: "off"
@@ -956,6 +965,7 @@
         - binary_sensor.motion_pracownia
         - binary_sensor.motion_goscinny
         - binary_sensor.motion_gabinet
+        - binary_sensor.motion_kuchnia
       from: "off"
       to: "on"
   condition:
@@ -1765,25 +1775,29 @@
       event_type: xiaomi_aqara.click
       event_data:
         entity_id: binary_sensor.switch_light_salon_2
+    - platform: state
+      entity_id: binary_sensor.switch_bulbs_salon
+      from: "off"
+      to: "on"
   action:
     - choose:
         conditions:
           condition: template
-          value_template: "{{ trigger.event.data.click_type == 'single' }}"
+          value_template: "{{ trigger.platform == 'event' and trigger.event.data.click_type == 'single' }}"
         sequence:
           service: light.toggle
           entity_id: light.lamp_salon
     - choose:
         conditions:
           condition: template
-          value_template: "{{ trigger.event.data.click_type == 'double' }}"
+          value_template: "{{ (trigger.platform == 'event' and trigger.event.data.click_type == 'double') or (trigger.platform == 'state' and trigger.entity_id == 'binary_sensor.switch_bulbs_salon') }}"
         sequence:
           service: light.toggle
           entity_id: light.bulbs_salon
     - choose:
         conditions:
           condition: template
-          value_template: "{{ trigger.event.data.click_type == 'hold' }}"
+          value_template: "{{ trigger.platform == 'event' and trigger.event.data.click_type == 'hold' }}"
         sequence:
           service: light.toggle
           entity_id: light.leds_salon
@@ -1825,9 +1839,6 @@
           - binary_sensor.motion_salon
           - input_boolean.light_auto_turn_salon
         state: "on"
-      - condition: numeric_state
-        entity_id: sensor.illumination_salon
-        below: 10
       - condition: or
         conditions:
           - condition: sun
@@ -2360,9 +2371,6 @@
     condition: and
     conditions:
       - condition: state
-        entity_id: switch.stacjonarny
-        state: "off"
-      - condition: state
         entity_id:
           - input_boolean.away_mode
           - light.ceiling_gabinet
@@ -2384,23 +2392,17 @@
     - service: light.turn_on
       entity_id: light.ceiling_gabinet
     - wait_for_trigger:
-        platform: state
-        entity_id: binary_sensor.motion_gabinet
-        from: "on"
-        to: "off"
-    - choose:
-        conditions:
-          condition: state
+        - platform: state
+          entity_id: binary_sensor.motion_gabinet
+          from: "on"
+          to: "off"
+        - platform: state
           entity_id: switch.stacjonarny
-          state: "on"
-        sequence:
-          - wait_for_trigger:
-              platform: state
-              entity_id: switch.stacjonarny
-              from: "on"
-              to: "off"
-          - service: light.turn_off
-            entity_id: light.ceiling_gabinet
+          from: "on"
+          to: "off"
+    - condition: state
+      entity_id: switch.stacjonarny
+      state: "off"
     - service: light.turn_off
       entity_id: light.ceiling_gabinet
 
