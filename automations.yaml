@@ -60,9 +60,7 @@
     event_data:
       domain: "persistent_notification"
       service: "dismiss"
-  condition:
-    condition: template
-    value_template: "{{ trigger.event.data.service_data.notification_id != 'config_entry_discovery' }}"
+  condition: "{{ trigger.event.data.service_data.notification_id != 'config_entry_discovery' }}"
   action:
     service: python_script.notify
     data:
@@ -93,16 +91,11 @@
     platform: state
     entity_id: sensor.ha_version_current
   condition:
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != trigger.to_state.state }}"
+    - "{{ trigger.to_state.state != 'unknown' }}"
+    - "{{ trigger.to_state.state != 'unavailable' }}"
+    - "{{ trigger.from_state.state != 'unknown' }}"
+    - "{{ trigger.from_state.state != 'unavailable' }}"
+    - "{{ trigger.from_state.state != trigger.to_state.state }}"
   action:
     - service: hassio.addon_start
       data:
@@ -160,13 +153,13 @@
   action:
     - service: python_script.notify
       data:
-        title: >-
+        title: >
           {% if (trigger.to_state.state | int) == 1 %}
             Aktualizacja dodatku Supervisora
           {% else %}
             Aktualizacje dodatków Supervisora
           {% endif %}
-        message: >-
+        message: >
           {% if trigger.to_state.state | int == 1 %}
             {%- for repo in state_attr(trigger.entity_id, 'addons') %}
               Dostępna jest aktualizacja dodatku {{ repo.name }} do wersji {{ repo.version }}.
@@ -191,26 +184,21 @@
     platform: state
     entity_id: sensor.hacs
   condition:
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unknown'}}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unavailable'}}"
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unknown'}}"
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unavailable'}}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state | int < trigger.to_state.state | int }}"
+    - "{{ trigger.from_state.state != 'unknown' }}"
+    - "{{ trigger.from_state.state != 'unavailable' }}"
+    - "{{ trigger.to_state.state != 'unknown' }}"
+    - "{{ trigger.to_state.state != 'unavailable' }}"
+    - "{{ trigger.from_state.state | int < trigger.to_state.state | int }}"
   action:
     service: python_script.notify
     data:
-      title: >-
+      title: >
         {% if (trigger.to_state.state | int) == 1 %}
           Aktualizacja dodatku z HACS
         {% else %}
           Aktualizacje dodatków z HACS
         {% endif %}
-      message: >-
+      message: >
         {% if trigger.to_state.state | int == 1 %}
           {%- for repo in state_attr(trigger.entity_id, 'repositories') %}
             Dostępna jest aktualizacja dodatku {{ repo.display_name }} do wersji {{ repo.available_version }}.
@@ -306,14 +294,10 @@
     platform: state
     entity_id: sensor.esphome_version_current
   condition:
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+    - "{{ trigger.to_state.state != 'unknown' }}"
+    - "{{ trigger.to_state.state != 'unavailable' }}"
+    - "{{ trigger.from_state.state != 'unknown' }}"
+    - "{{ trigger.from_state.state != 'unavailable' }}"
   action:
     - service: python_script.notify
       data:
@@ -337,14 +321,10 @@
     platform: state
     entity_id: sensor.caddy_version_current
   condition:
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.state != 'unavailable' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unknown' }}"
-    - condition: template
-      value_template: "{{ trigger.from_state.state != 'unavailable' }}"
+    - "{{ trigger.to_state.state != 'unknown' }}"
+    - "{{ trigger.to_state.state != 'unavailable' }}"
+    - "{{ trigger.from_state.state != 'unknown' }}"
+    - "{{ trigger.from_state.state != 'unavailable' }}"
   action:
     - service: python_script.notify
       data:
@@ -570,20 +550,18 @@
     platform: time_pattern
     minutes: "/10"
     seconds: 0
-  condition:
-    condition: template
-    value_template: >
-      {% macro dead_unavailable_entities() %}
-        {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor', 'media_player'] -%}
-        {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
-        {%- set ignored = ['media_player.dune_salon', 'media_player.mibox_goscinny'] -%}
-        {% for domain in domains -%}
-          {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
-            {{ item.name }} ({{ item.entity_id }})
-          {%- endfor %}
+  condition: >
+    {% macro dead_unavailable_entities() %}
+      {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor', 'media_player'] -%}
+      {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
+      {%- set ignored = ['media_player.dune_salon', 'media_player.mibox_goscinny'] -%}
+      {% for domain in domains -%}
+        {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
+          {{ item.name }} ({{ item.entity_id }})
         {%- endfor %}
-      {% endmacro %}
-      {{ dead_unavailable_entities()  | trim != '' }}
+      {%- endfor %}
+    {% endmacro %}
+    {{ dead_unavailable_entities()  | trim != '' }}
   action:
     - service: python_script.notify
       data:
@@ -633,8 +611,7 @@
       - condition: state
         entity_id: input_boolean.heating_season
         state: "on"
-      - condition: template
-        value_template: "{{ states('sensor.humidifier_water_level') | int != 0 }}"
+      - "{{ states('sensor.humidifier_water_level') | int != 0 }}"
   variables:
     notification_title: "Uzupełnij wodę w nawilżaczu"
     notification_message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
@@ -902,6 +879,7 @@
         - binary_sensor.shelly_1l_aceb5f_overtemperature
         - binary_sensor.shelly_1l_ad1b60_overtemperature
         - binary_sensor.shelly_1l_61c9fd_overtemperature
+        - binary_sensor.shelly_1l_ad365e_overtemperature
         - binary_sensor.shelly_plug_s_7aecf4_overtemperature
       from: "off"
       to: "on"
@@ -966,6 +944,8 @@
         - binary_sensor.motion_goscinny
         - binary_sensor.motion_gabinet
         - binary_sensor.motion_kuchnia
+        - binary_sensor.motion_lazienka
+        - binary_sensor.motion_toaleta
       from: "off"
       to: "on"
   condition:
@@ -1084,22 +1064,20 @@
   trigger:
     platform: time
     at: "18:00:00"
-  condition:
-    condition: template
-    value_template: >
-      {% macro battery_level() %}
-        {%- set threshold = 10 -%}
-        {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'lock', 'binary_sensor'] -%}
-        {% for domain in domains -%}
-          {% for item in states[domain] if (((item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) or ('battery' in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == 'low' or item.state | lower == 'unknown')))) and not (( 'humidity' in item.entity_id) or ('illumination' in item.entity_id)) -%}
-            {% if (item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) %}
-              {{ item.entity_id }} [{{ item.attributes['battery_level'] | round(0) }}%]{% endif -%}
-            {% if 'battery' in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == 'low' or item.state | lower == 'unknown') %}
-              {{ item.entity_id }} [{{ item.state | round(0) }}%]{% endif -%}
-          {% endfor %}
-        {%- endfor %}
-      {% endmacro %}
-      {{ battery_level() | trim != '' }}
+  condition: >
+    {% macro battery_level() %}
+      {%- set threshold = 10 -%}
+      {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'lock', 'binary_sensor'] -%}
+      {% for domain in domains -%}
+        {% for item in states[domain] if (((item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) or ('battery' in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == 'low' or item.state | lower == 'unknown')))) and not (( 'humidity' in item.entity_id) or ('illumination' in item.entity_id)) -%}
+          {% if (item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) %}
+            {{ item.entity_id }} [{{ item.attributes['battery_level'] | round(0) }}%]{% endif -%}
+          {% if 'battery' in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == 'low' or item.state | lower == 'unknown') %}
+            {{ item.entity_id }} [{{ item.state | round(0) }}%]{% endif -%}
+        {% endfor %}
+      {%- endfor %}
+    {% endmacro %}
+    {{ battery_level() | trim != '' }}
   action:
     - service: python_script.notify
       data:
@@ -1134,15 +1112,12 @@
     platform: state
     entity_id: person.edyta
   condition:
-    - condition: template
-      value_template: "{{ state_attr(trigger.entity_id, 'latitude') != None }}"
-    - condition: template
-      value_template: "{{ state_attr(trigger.entity_id, 'longitude') != None }}"
+    - "{{ state_attr(trigger.entity_id, 'latitude') != None }}"
+    - "{{ state_attr(trigger.entity_id, 'longitude') != None }}"
     - condition: state
       entity_id: input_boolean.edyta_far_from_home
       state: "off"
-    - condition: template
-      value_template: "{{ distance(trigger.entity_id, 'zone.home') > 40 }}"
+    - "{{ distance(trigger.entity_id, 'zone.home') > 40 }}"
   action:
     service: input_boolean.turn_on
     entity_id: input_boolean.edyta_far_from_home
@@ -1154,15 +1129,12 @@
     platform: state
     entity_id: person.maciek
   condition:
-    - condition: template
-      value_template: "{{ state_attr(trigger.entity_id, 'latitude') != None }}"
-    - condition: template
-      value_template: "{{ state_attr(trigger.entity_id, 'longitude') != None }}"
+    - "{{ state_attr(trigger.entity_id, 'latitude') != None }}"
+    - "{{ state_attr(trigger.entity_id, 'longitude') != None }}"
     - condition: state
       entity_id: input_boolean.maciek_far_from_home
       state: "off"
-    - condition: template
-      value_template: "{{ distance(trigger.entity_id, 'zone.home') > 40 }}"
+    - "{{ distance(trigger.entity_id, 'zone.home') > 40 }}"
   action:
     service: input_boolean.turn_on
     entity_id: input_boolean.maciek_far_from_home
@@ -1174,15 +1146,12 @@
     platform: state
     entity_id: person.maciek
   condition:
-    - condition: template
-      value_template: "{{ state_attr(trigger.entity_id, 'latitude') != None }}"
-    - condition: template
-      value_template: "{{ state_attr(trigger.entity_id, 'longitude') != None }}"
+    - "{{ state_attr(trigger.entity_id, 'latitude') != None }}"
+    - "{{ state_attr(trigger.entity_id, 'longitude') != None }}"
     - condition: state
       entity_id: input_boolean.maciek_far_from_home
       state: "on"
-    - condition: template
-      value_template: "{{ distance(trigger.entity_id, 'zone.home') < 30 }}"
+    - "{{ distance(trigger.entity_id, 'zone.home') < 30 }}"
   action:
     service: input_boolean.turn_off
     entity_id: input_boolean.maciek_far_from_home
@@ -1194,15 +1163,12 @@
     platform: state
     entity_id: person.edyta
   condition:
-    - condition: template
-      value_template: "{{ state_attr(trigger.entity_id, 'latitude') != None }}"
-    - condition: template
-      value_template: "{{ state_attr(trigger.entity_id, 'longitude') != None }}"
+    - "{{ state_attr(trigger.entity_id, 'latitude') != None }}"
+    - "{{ state_attr(trigger.entity_id, 'longitude') != None }}"
     - condition: state
       entity_id: input_boolean.edyta_far_from_home
       state: "on"
-    - condition: template
-      value_template: "{{ distance(trigger.entity_id, 'zone.home') < 30 }}"
+    - "{{ distance(trigger.entity_id, 'zone.home') < 30 }}"
   action:
     service: input_boolean.turn_off
     entity_id: input_boolean.edyta_far_from_home
@@ -1246,16 +1212,16 @@
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.away_mode
-    # - condition: and
-    #   conditions:
-    #     - condition: state
-    #       entity_id: input_boolean.heating_season
-    #       state: "off"
-    #     - condition: numeric_state
-    #       entity_id: sensor.temperature_salon
-    #       above: 26
-    # - service: fan.turn_on
-    #   entity_id: fan.pedestal_salon
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.heating_season
+          state: "off"
+        - condition: numeric_state
+          entity_id: sensor.temperature_salon
+          above: 26
+    - service: fan.turn_on
+      entity_id: fan.pedestal_salon
 
 ##################################################################################################
 
@@ -1281,8 +1247,7 @@
           entity_id: climate.aeotec_thermostat_kuchnia
           attribute: temperature
           above: 20.5
-        - condition: template
-          value_template: "{{ (now() - state_attr('automation.heating_aeotec_thermostat_calibration', 'last_triggered')).total_seconds() > 3600 }}"
+        - "{{ (now() - state_attr('automation.heating_aeotec_thermostat_calibration', 'last_triggered')).total_seconds() > 3600 }}"
   action:
     - service: climate.set_preset_mode
       entity_id: climate.aeotec_thermostat_kuchnia
@@ -1307,10 +1272,8 @@
   condition:
     - condition: or
       conditions:
-        - condition: template
-          value_template: "{{ 'input_datetime.heating_night_end' in trigger.description and is_state('binary_sensor.workday_sensor', 'on') }}"
-        - condition: template
-          value_template: "{{ 'input_datetime.heating_night_end_weekend' in trigger.description and is_state('binary_sensor.workday_sensor', 'off') }}"
+        - "{{ 'input_datetime.heating_night_end' in trigger.description and is_state('binary_sensor.workday_sensor', 'on') }}"
+        - "{{ 'input_datetime.heating_night_end_weekend' in trigger.description and is_state('binary_sensor.workday_sensor', 'off') }}"
     - condition: state
       entity_id: input_boolean.heating_season
       state: "on"
@@ -1333,10 +1296,8 @@
   condition:
     - condition: or
       conditions:
-        - condition: template
-          value_template: "{{ 'input_datetime.heating_night_start' in trigger.description and is_state('binary_sensor.workday_sensor', 'on') }}"
-        - condition: template
-          value_template: "{{ 'input_datetime.heating_night_start_weekend' in trigger.description and is_state('binary_sensor.workday_sensor', 'off') }}"
+        - "{{ 'input_datetime.heating_night_start' in trigger.description and is_state('binary_sensor.workday_sensor', 'on') }}"
+        - "{{ 'input_datetime.heating_night_start_weekend' in trigger.description and is_state('binary_sensor.workday_sensor', 'off') }}"
     - condition: state
       entity_id: input_boolean.heating_season
       state: "on"
@@ -1381,25 +1342,25 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.heating_salon_kuchnia_night
 
-# wyłączenie wentylatora po wyłączeniu telewizora
-# - id: climate_turn_off_fan
-#   alias: "Climate Turn Off Fan"
-#   trigger:
-#     platform: state
-#     entity_id: media_player.denon_salon
-#     to: "off"
-#   condition:
-#     - condition: state
-#       entity_id: fan.pedestal_salon
-#       state: "on"
-#     - condition: state
-#       entity_id: input_boolean.heating_season
-#       state: "off"
-#     - condition: time
-#       after: "22:00:00"
-#   action:
-#     service: fan.turn_off
-#     entity_id: fan.pedestal_salon
+# yłączenie wentylatora po wyłączeniu telewizora
+- id: climate_turn_off_fan
+  alias: "Climate Turn Off Fan"
+  trigger:
+    platform: state
+    entity_id: media_player.denon_salon
+    to: "off"
+  condition:
+    - condition: state
+      entity_id: fan.pedestal_salon
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "off"
+    - condition: time
+      after: "22:00:00"
+  action:
+    service: fan.turn_off
+    entity_id: fan.pedestal_salon
 
 # zmniejszenie temperatury gdy domownicy wychodzą i jest sezon grzewczy
 - id: heating_eco_mode
@@ -1482,10 +1443,8 @@
       - person.edyta
       - person.maciek
   condition:
-    - condition: template
-      value_template: "{{ state_attr(trigger.entity_id, 'latitude') != None }}"
-    - condition: template
-      value_template: "{{ state_attr(trigger.entity_id, 'longitude') != None }}"
+    - "{{ state_attr(trigger.entity_id, 'latitude') != None }}"
+    - "{{ state_attr(trigger.entity_id, 'longitude') != None }}"
     - condition: state
       entity_id:
         - input_boolean.edyta_far_from_home
@@ -1522,7 +1481,7 @@
           - service: !secret edyta_notify_service
             type: "ios"
     - condition: template
-      value_template: >-
+      value_template: >
         {{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float
            and states('sensor.humidifier_water_level') | int > 5 }}
     - service: fan.turn_on
@@ -1698,9 +1657,9 @@
     - service: light.turn_off
       entity_id: light.bulbs_salon
 
-# wyłączenie urządzeń w salonie jeśli nie ma ruchu przez godzinę i jest po północy
 - id: devices_turn_off_in_salon_when_no_motion_and_after_midnight
   alias: "Devices Turn Off In Salon When No Motion And After Midnight"
+  description: "wyłącz urządzenia w salonie jeśli nie ma ruchu przez 30 min i jest po północy"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_salon
@@ -1727,16 +1686,16 @@
           - condition: state
             entity_id: light.lamp_salon
             state: "on"
-          # - condition: state
-          #   entity_id: fan.pedestal_salon
-          #   state: "on"
+          - condition: state
+            entity_id: fan.pedestal_salon
+            state: "on"
   action:
     service: homeassistant.turn_off
     entity_id:
       - light.bulbs_salon
       - light.leds_salon
       - light.lamp_salon
-      # - fan.pedestal_salon
+      - fan.pedestal_salon
 
 # automatyczna scena oświetlenia w salonie
 - id: light_scene_salon_auto_when_bulbs_turn_on
@@ -1781,30 +1740,26 @@
       to: "on"
   action:
     - choose:
-        conditions:
-          condition: template
-          value_template: "{{ trigger.platform == 'event' and trigger.event.data.click_type == 'single' }}"
-        sequence:
-          service: light.toggle
-          entity_id: light.lamp_salon
-    - choose:
-        conditions:
-          condition: template
-          value_template: "{{ (trigger.platform == 'event' and trigger.event.data.click_type == 'double') or (trigger.platform == 'state' and trigger.entity_id == 'binary_sensor.switch_bulbs_salon') }}"
-        sequence:
-          service: light.toggle
-          entity_id: light.bulbs_salon
-    - choose:
-        conditions:
-          condition: template
-          value_template: "{{ trigger.platform == 'event' and trigger.event.data.click_type == 'hold' }}"
-        sequence:
-          service: light.toggle
-          entity_id: light.leds_salon
+        - conditions: >
+            {{ trigger.platform == 'event' and trigger.event.data.click_type == 'single' }}
+          sequence:
+            service: light.toggle
+            entity_id: light.lamp_salon
+        - conditions: >
+            {{ (trigger.platform == 'event' and trigger.event.data.click_type == 'double') or
+               (trigger.platform == 'state' and trigger.entity_id == 'binary_sensor.switch_bulbs_salon') }}
+          sequence:
+            service: light.toggle
+            entity_id: light.bulbs_salon
+        - conditions: >
+            {{ trigger.platform == 'event' and trigger.event.data.click_type == 'hold' }}
+          sequence:
+            service: light.toggle
+            entity_id: light.leds_salon
 
 - id: light_turn_on_salon_lamp_when_dark_and_motion
   alias: "Light Turn On Salon Lamp When Dark And Motion"
-  description: "włącz lampę w salonie jak jest ciemno i pojawi się ruch"
+  description: "włącz lampę w salonie jak pojawi się ruch i jest ciemno"
   max_exceeded: silent
   trigger:
     - platform: state
@@ -1886,11 +1841,7 @@
   condition:
     - condition: sun
       after: sunset
-    - condition: template
-      value_template: >-
-        {{ is_state('light.leds_salon', 'on') or
-            is_state('light.bulbs_salon', 'on') or
-            is_state('light.lamp_salon', 'on') }}
+    - "{{ is_state('light.leds_salon', 'on') or is_state('light.bulbs_salon', 'on') or is_state('light.lamp_salon', 'on') }}"
     - condition: time
       after: "20:10:00"
     - condition: state
@@ -1921,11 +1872,7 @@
     - platform: template
       value_template: "{{ not is_state('input_select.salon_harmony', 'Smart TV') and not is_state('input_select.salon_harmony', 'Fire TV')}}"
   condition:
-    - condition: template
-      value_template: >-
-        {{ is_state("light.leds_salon", "on") or
-          is_state("light.bulbs_salon", "on") or
-          is_state("light.lamp_salon", "on") }}
+    - "{{ is_state('light.leds_salon', 'on') or is_state('light.bulbs_salon', 'on') or is_state('light.lamp_salon', 'on') }}"
     - condition: state
       entity_id: input_select.light_scenes_salon
       state: "film"
@@ -1935,10 +1882,110 @@
       entity_id: input_select.light_scenes_salon
       option: "automatyczny"
 
+## TOALETA ##
+- id: light_turn_on_toaleta_light_when_dark_and_motion
+  alias: "Light Turn On Toaleta Light When Dark And Motion"
+  description: "włącz światło w toalecie jak pojawi się ruch i jest ciemno"
+  max_exceeded: silent
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_toaleta
+      from: "off"
+      to: "on"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id:
+          - input_boolean.away_mode
+          - light.ceiling_toaleta
+        state: "off"
+      - condition: numeric_state
+        entity_id: sensor.illumination_toaleta
+        below: 40
+  action:
+    - service: light.turn_on
+      entity_id: light.ceiling_toaleta
+    - wait_for_trigger:
+        - platform: state
+          entity_id: binary_sensor.motion_toaleta
+          from: "on"
+          to: "off"
+    - service: light.turn_off
+      entity_id: light.ceiling_toaleta
+
+- id: light_turn_off_toaleta_light_when_no_motion
+  alias: "Light Turn Off Toaleta Light When No Motion"
+  description: "wyłącz światło w toalecie jak brak ruchu przez 20 min"
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_toaleta
+    from: "on"
+    to: "off"
+    for:
+      minutes: 20
+  condition:
+    condition: state
+    entity_id: light.ceiling_toaleta
+    state: "on"
+  action:
+    service: light.turn_off
+    entity_id: light.ceiling_toaleta
+
+## ŁAZIENKA ##
+- id: light_turn_on_lazienka_light_when_dark_and_motion
+  alias: "Light Turn On Lazienka Light When Dark And Motion"
+  description: "włącz światło w łazience jak pojawi się ruch i jest ciemno"
+  max_exceeded: silent
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.motion_lazienka
+      from: "off"
+      to: "on"
+  condition:
+    condition: and
+    conditions:
+      - condition: state
+        entity_id:
+          - input_boolean.away_mode
+          - light.ceiling_lazienka
+        state: "off"
+      - condition: numeric_state
+        entity_id: sensor.illumination_lazienka
+        below: 40
+  action:
+    - service: light.turn_on
+      entity_id: light.ceiling_lazienka
+    - wait_for_trigger:
+        - platform: state
+          entity_id: binary_sensor.motion_lazienka
+          from: "on"
+          to: "off"
+    - service: light.turn_off
+      entity_id: light.ceiling_lazienka
+
+- id: light_turn_off_lazienka_light_when_no_motion
+  alias: "Light Turn Off Lazienka Light When No Motion"
+  description: "wyłącz światło w łazience jak brak ruchu przez 20 min"
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_lazienka
+    from: "on"
+    to: "off"
+    for:
+      minutes: 20
+  condition:
+    condition: state
+    entity_id: light.ceiling_lazienka
+    state: "on"
+  action:
+    service: light.turn_off
+    entity_id: light.ceiling_lazienka
+
 ## KUCHNIA ##
-# włączanie światła w kuchni jak pojawi się ruch i jest ciemno
-- id: light_turn_on_light_when_dark_and_motion
-  alias: "Light Turn On Light When Dark And Motion"
+- id: light_turn_on_kuchnia_light_when_dark_and_motion
+  alias: "Light Turn On Kuchnia Light When Dark And Motion"
+  description: "włącz światło w kuchni jak pojawi się ruch i jest ciemno"
   max_exceeded: silent
   trigger:
     - platform: state
@@ -1951,6 +1998,7 @@
       - condition: state
         entity_id:
           - input_boolean.away_mode
+          - light.ceiling_kuchnia
           - light.leds_salon
           - light.bulbs_salon
         state: "off"
@@ -1975,9 +2023,9 @@
     - service: light.turn_off
       entity_id: light.ceiling_kuchnia
 
-# wyłączanie oświetlenia w kuchni jak brak ruchu przez 20 min
-- id: light_turn_off_light_when_no_motion_for_20_min
-  alias: "Light Turn Off Kuchnia Light When No Motion For 20 Min"
+- id: light_turn_off_kuchnia_light_when_no_motion
+  alias: "Light Turn Off Kuchnia Light When No Motion"
+  description: "wyłącz światło w kuchni jak brak ruchu przez 20 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_kuchnia
@@ -1994,9 +2042,9 @@
     entity_id: light.ceiling_kuchnia
 
 ## ANTRESOLA ##
-# włączanie lampki na antresoli jak jest ciemno i jest ruch
-- id: light_turn_on_antresola_lamp
-  alias: "Light Turn On Antresola Lamp"
+- id: light_turn_on_antresola_lampt_when_dark_and_motion
+  alias: "Light Turn On Antresola Lamp When Dark And Motion"
+  description: "włącz lampkę na antresoli jak pojawi się ruch i jest ciemno"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_antresola
@@ -2040,9 +2088,9 @@
       entity_id: light.gateway_antresola
 
 ## SYPIALNIA ##
-# włączanie LEDów w sypialni jak jest ruch i ciemno
 - id: light_turn_on_sypialnia_leds_when_dark_and_motion
   alias: "Light Turn On Sypialnia LEDs When Dark And Motion"
+  description: "włącz LEDy w sypialni jak pojawi się ruch i jest ciemno"
   trigger:
     - platform: state
       entity_id: binary_sensor.motion_sypialnia
@@ -2083,9 +2131,9 @@
         transition: 10
 
 ## PRZEDPOKÓJ ##
-# włączanie LEDów w przedpokoju jak jest ruch i ciemno
 - id: light_turn_on_przedpokoj_leds_when_dark_and_motion
   alias: "Light Turn On Przedpokoj LEDs When Dark And Motion"
+  description: "włącz LEDy na przedpokoju jak pojawi się ruch i jest ciemno"
   trigger:
     - platform: state
       entity_id: binary_sensor.motion_przedpokoj
@@ -2121,10 +2169,28 @@
     - service: light.turn_off
       entity_id: light.leds_przedpokoj
 
+- id: light_turn_off_przedpokoj_leds_when_no_motion
+  alias: "Light Turn Off Przedpokoj LEDs When No Motion"
+  description: "wyłącz LEDy na przedpokoju jak brak ruchu przez 20 min"
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_przedpokoj
+    from: "on"
+    to: "off"
+    for:
+      minutes: 20
+  condition:
+    condition: state
+    entity_id: light.leds_przedpokoj
+    state: "on"
+  action:
+    service: light.turn_off
+    entity_id: light.leds_przedpokoj
+
 ## POKÓJ ANTKA ##
-# wyłączanie oświetlenia w pokóju Antka jak brak ruchu przez 20 min
-- id: light_turn_off_antek_light_when_no_motion_for_20_min
-  alias: "Light Turn Off Antek Light When No Motion For 20 Min"
+- id: light_turn_off_antek_lights_when_no_motion
+  alias: "Light Turn Off Antek Lights When No Motion"
+  description: "wyłącz światła w pokoju Antka jak brak ruchu przez 20 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_antek
@@ -2133,16 +2199,23 @@
     for:
       minutes: 20
   condition:
-    condition: state
-    entity_id: light.desk_lamp_antek
-    state: "on"
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: light.desk_lamp_antek
+        state: "on"
+      - condition: state
+        entity_id: light.ceiling_antek
+        state: "on"
   action:
     service: light.turn_off
-    entity_id: light.desk_lamp_antek
+    entity_id:
+      - light.desk_lamp_antek
+      - light.ceiling_antek
 
-# włączanie LEDów w pokoju Antka jak natężenie światła spadnie poniżej 3 i jest ruch
-- id: light_turn_on_antek_leds_when_dark_and_motion
-  alias: "Light Turn On Antek LEDs When Dark And Motion"
+- id: light_turn_on_antek_leds_and_cabinet_when_dark_and_motion
+  alias: "Light Turn On Antek LEDs And Cabinet When Dark And Motion"
+  description: "włącz LEDy i gablotę w pokoju Antka jak pojawi się ruch i jest ciemno"
   trigger:
     - platform: state
       entity_id: binary_sensor.motion_antek
@@ -2155,6 +2228,7 @@
         entity_id:
           - input_boolean.away_mode
           - light.lightstrip_antek
+          - switch.cabinet_antek
           - input_boolean.antek_lamp_night
         state: "off"
       - condition: numeric_state
@@ -2257,42 +2331,30 @@
   action:
     service: script.light_turn_off_antek_leds
 
-# włączenie LEDów w pokoju Antka
-- id: light_turn_on_antek_leds_via_switch
-  alias: "Light Turn On Antek LEDs Via Switch"
-  trigger:
-    - platform: event
-      event_type: xiaomi_aqara.click
-      event_data:
-        entity_id: binary_sensor.switch_light_antek
-        click_type: single
-  condition:
-    condition: state
-    entity_id: light.lightstrip_antek
-    state: "off"
-  action:
-    service: script.light_turn_on_antek_leds
-
-# wyłączenie LEDów w pokoju Antka
-- id: light_turn_off_antek_leds_via_switch
-  alias: "Light Turn Off Antek LEDs Via Switch"
+- id: light_toggle_antek_leds
+  alias: "Light Toggle Antek LEDs"
+  description: "włącz/wyłącz LEDy w pokoju Antka"
   trigger:
     platform: event
     event_type: xiaomi_aqara.click
     event_data:
       entity_id: binary_sensor.switch_light_antek
       click_type: single
-  condition:
-    condition: state
-    entity_id: light.lightstrip_antek
-    state: "on"
   action:
-    service: light.turn_off
-    entity_id: light.lightstrip_antek
+    - choose:
+        conditions:
+          condition: state
+          entity_id: light.lightstrip_antek
+          state: "off"
+        sequence:
+          service: script.light_turn_on_antek_leds
+      default:
+        service: light.turn_off
+        entity_id: light.lightstrip_antek
 
-# włączenie/wyłączenie ledów w gablocie w pokoju Antka
 - id: light_toggle_antek_cabinet
   alias: "Light toggle Antek Cabinet"
+  description: "włącz/wyłącz oświetlenie gabloty w pokoju Antka"
   trigger:
     - platform: event
       event_type: xiaomi_aqara.click
@@ -2318,9 +2380,9 @@
     entity_id: switch.cabinet_antek
 
 #### PRACOWNIA ####
-# włączanie lampki w pracowni jak ruch i ciemno
 - id: light_turn_on_pracownia_lamp_when_dark_and_motion
   alias: "Light Turn On Pracownia Lamp When Dark And Motion"
+  description: "włącz lampkę w pracowni jak pojawi się ruch i jest ciemno"
   trigger:
     - platform: state
       entity_id: binary_sensor.motion_pracownia
@@ -2359,9 +2421,9 @@
       entity_id: switch.lamp_pracownia
 
 #### GABINET ####
-# włączanie oświetlenia w gabinecie jak ruch i ciemno
 - id: light_turn_on_gabinet_light_when_dark_and_motion
   alias: "Light Turn On Gabinet Light When Dark And Motion"
+  description: "włącz światło w gabinecie jak pojawi się ruch i jest ciemno"
   trigger:
     - platform: state
       entity_id: binary_sensor.motion_gabinet
@@ -2406,9 +2468,9 @@
     - service: light.turn_off
       entity_id: light.ceiling_gabinet
 
-# wyłączanie oświetlenia w gabinecie jak brak ruchu przez 20 min
-- id: light_turn_off_gabinet_light_when_no_motion_for_20_min
-  alias: "Light Turn Off Gabinet Light When No Motion For 20 Min"
+- id: light_turn_off_gabinet_light_when_no_motion
+  alias: "Light Turn Off Gabinet Light When No Motion"
+  description: "wyłącz światło w gabinecie jak brak ruchu przez 20 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_gabinet
@@ -2424,11 +2486,11 @@
     service: light.turn_off
     entity_id: light.ceiling_gabinet
 
-
 #### POKÓJ GOŚCINNY ####
 # włączanie lampki w pokoju gościnnym jak ruch i ciemno
 - id: light_turn_on_goscinny_lamp_when_dark_and_motion
   alias: "Light Turn On Goscinny Lamp When Dark And Motion"
+  description: "włącz lampkę w pokoju gościnnym jak pojawi się ruch i jest ciemno"
   trigger:
     - platform: state
       entity_id: binary_sensor.motion_goscinny
@@ -2442,10 +2504,7 @@
           - input_boolean.away_mode
           - light.gateway_goscinny
         state: "off"
-      - condition: template
-        value_template: >-
-          {{ is_state('media_player.mibox_goscinny', 'off') or
-             is_state('media_player.mibox_goscinny', 'unavailable') }}
+      - "{{ is_state('media_player.mibox_goscinny', 'off') or is_state('media_player.mibox_goscinny', 'unavailable') }}"
       - condition: numeric_state
         entity_id: sensor.illumination_goscinny
         below: 9
@@ -2480,16 +2539,14 @@
     platform: state
     entity_id: remote.salon
   condition:
-    - condition: template
-      value_template: "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
-    - condition: template
-      value_template: "{{ trigger.to_state.attributes.current_activity != 'PowerOff' }}"
+    - "{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity }}"
+    - "{{ trigger.to_state.attributes.current_activity != 'PowerOff' }}"
   action:
     - delay: "00:00:07"
     - service: media_player.select_source
       entity_id: media_player.denon_salon
       data:
-        source: >-
+        source: >
           {% if trigger.to_state.attributes.current_activity == 'Telewizja' %}
             CBL
           {% elif trigger.to_state.attributes.current_activity == 'Filmy' %}
@@ -2508,7 +2565,7 @@
     - service: media_player.select_source
       entity_id: media_player.bravia_salon
       data:
-        source: >-
+        source: >
           {% if trigger.to_state.attributes.current_activity == 'Telewizja' %}
             HDMI 3/ARC
           {% elif trigger.to_state.attributes.current_activity == 'Filmy' %}
@@ -3000,6 +3057,8 @@
       shelly1l-84CCA8AD1B60:
         relay-0: "light"
       shelly1l-8CAAB561C9FD:
+        relay-0: "light"
+      shelly1l-84CCA8AD365E:
         relay-0: "light"
 
 - id: frontend_set_theme

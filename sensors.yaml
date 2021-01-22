@@ -198,6 +198,7 @@
       value_template: >-
         {{ (states('sensor.light_salon_power') | float +
            states('sensor.tree_antek_power') | float +
+           states('sensor.ceiling_light_antek_power') | float +
            states('sensor.cabinet_antek_power') | float +
            states('sensor.light_gabinet_power') | float +
            states('sensor.light_kuchnia_power') | float +

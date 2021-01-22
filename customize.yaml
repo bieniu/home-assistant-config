@@ -187,8 +187,12 @@ binary_sensor.motion_goscinny:
   location: "pokój gościnny"
 binary_sensor.motion_gabinet:
   location: "gabinet"
-  binary_sensor.motion_kuchnia:
-    location: "kuchnia"
+binary_sensor.motion_kuchnia:
+  location: "kuchnia"
+binary_sensor.motion_lazienka:
+  location: "łazienka"
+binary_sensor.motion_toaleta:
+  location: "toaleta"
 
 #### XIAOMI WINDOW/DOOR SENSORS ####
 binary_sensor.balcony_door_sypialnia:
@@ -300,9 +304,6 @@ sensor.dark_sky_wind_speed:
 binary_sensor.shelly_plug_s_7aecf4_overpower:
   relay: switch.dishwasher_kuchnia
 
-binary_sensor.shelly_1l_61c9fd_overtemperature:
-  relay: light.ceiling_wc
-
 binary_sensor.shelly_plug_s_7aecf4_overtemperature:
   relay: switch.dishwasher_kuchnia
 
@@ -311,6 +312,12 @@ binary_sensor.shelly_2_5b2604_overpower_0:
 
 binary_sensor.shelly_2_5b2604_overpower_1:
   relay: light.leds_salon
+
+binary_sensor.shelly_1l_ad365e_overtemperature:
+  relay: light.ceiling_antek
+
+binary_sensor.shelly_1l_61c9fd_overtemperature:
+  relay: light.ceiling_wc
 
 binary_sensor.shelly_1l_701559_overtemperature:
   relay: light.ceiling_gabinet

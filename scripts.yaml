@@ -19,6 +19,7 @@ devices_away_mode:
     - light.ceiling_lazienka
     - light.desk_lamp_antek
     - light.ceiling_toaleta
+    - light.ceiling_antek
   mode: single
   alias: 'Devices: away mode'
   icon: mdi:home-export-outline
@@ -334,6 +335,7 @@ alexa_goodnight:
     - light.ceiling_kuchnia
     - light.ceiling_lazienka
     - light.ceiling_toaleta
+    - light.ceiling_antek
   mode: single
   alias: 'Alexa: goodnight'
   icon: mdi:amazon-alexa
