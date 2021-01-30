@@ -1,3 +1,37 @@
+- platform: statistics
+  entity_id: sensor.aqi_raw_salon
+  name: "AQI Salon"
+  precision: 0
+  sampling_size: 10
+
+- platform: statistics
+  entity_id: sensor.aqi_raw_salon
+  name: "AQI Salon 8"
+  precision: 0
+  sampling_size: 8
+
+- platform: statistics
+  entity_id: sensor.aqi_raw_salon
+  name: "AQI Salon 6"
+  precision: 0
+  sampling_size: 6
+
+- platform: filter
+  entity_id: sensor.aqi_raw_salon
+  name: "AQI Salon moving average 30"
+  filters:
+    filter: time_simple_moving_average
+    precision: 0
+    window_size: "00:30"
+
+- platform: filter
+  entity_id: sensor.aqi_raw_salon
+  name: "AQI Salon moving average 20"
+  filters:
+    filter: time_simple_moving_average
+    precision: 0
+    window_size: "00:20"
+
 - platform: moon
 
 - platform: rest
@@ -135,7 +169,7 @@
         {% endif %}
 
     airly_info:
-      friendly_name: "Jakość powietrza"
+      friendly_name: "Jakość powietrza zewnętrzenego"
       value_template: >-
         {% if state_attr('air_quality.airly', 'air_quality_index') | int <= 25 %}
           bardzo dobra
@@ -171,6 +205,40 @@
           {% endif %}
         {% else %}
           0
+        {% endif %}
+
+    aqi_raw_salon:
+      value_template: "{{ state_attr('fan.airpurifier_salon', 'aqi') }}"
+      unit_of_measurement: " "
+
+    aqi_info_salon:
+      friendly_name: "Jakość powietrza wewnętrznego"
+      value_template: >-
+        {% if states('sensor.aqi_salon') | int <= 25 %}
+          bardzo dobra
+        {% elif states('sensor.aqi_salon') | int <= 50 %}
+          dobra
+        {% elif states('sensor.aqi_salon') | int <= 100 %}
+          średnia
+        {% elif states('sensor.aqi_salon') | int <= 150 %}
+          zła
+        {% elif states('sensor.aqi_salon') | int > 200 %}
+          bardzo zła
+        {% endif %}
+
+    aqi_attr_salon:
+      friendly_name: "Powietrze"
+      value_template: >-
+        {% if states('sensor.aqi_salon') | int <= 25 %}
+          bardzo dobre
+        {% elif states('sensor.aqi_salon') | int <= 50 %}
+          dobre
+        {% elif states('sensor.aqi_salon') | int <= 100 %}
+          średnie
+        {% elif states('sensor.aqi_salon') | int <= 150 %}
+          złe
+        {% elif states('sensor.aqi_salon') | int > 200 %}
+          bardzo złe
         {% endif %}
 
     ups_status:

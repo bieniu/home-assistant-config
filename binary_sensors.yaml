@@ -181,6 +181,10 @@
       value_template: "{{ is_state('device_tracker.mihumidifier', 'home') }}"
       friendly_name: "Xiaomi Mi Humidifier CA1"
 
+    miairpurifier_status:
+      value_template: "{{ is_state('device_tracker.miairpurifier', 'home') }}"
+      friendly_name: "Xiaomi Mi Air Purifier 3H"
+
     mifan_status:
       value_template: "{{ is_state('device_tracker.mifan', 'home') }}"
       friendly_name: "Xiaomi Mi Pedestal Fan 1X"

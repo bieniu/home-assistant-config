@@ -170,6 +170,10 @@ views:
                   entity: sensor.humidifier_water_level
                   prefix: "poziom wody: "
                   postfix: " %"
+              - entity: fan.airpurifier_salon
+                secondary_info:
+                  entity: sensor.aqi_attr_salon
+                  prefix: "powietrze: "
               # - fan.pedestal_salon
               - light.bulbs_salon
               - light.leds_salon
@@ -762,6 +766,7 @@ views:
           - binary_sensor.dafang_status
           - binary_sensor.mihumidifier_status
           - binary_sensor.mifan_status
+          - binary_sensor.miairpurifier_status
       - type: entities
         title: "IoT - oświetlenie"
         show_header_toggle: false
@@ -1046,6 +1051,30 @@ views:
               ha-icon {
                 color: #ffffff;
               }
+          - type: entity
+            entity: sensor.aqi_info_salon
+            style: |
+              ha-card {
+                background:
+                  {% set airly = states("sensor.aqi_info_salon") %}
+                  {% if airly == "bardzo dobra" %}
+                    #43a047;
+                  {% elif airly == "dobra" %}
+                    #fbc02d;
+                  {% elif airly == "średnia" %}
+                    #fb8c00;
+                  {% elif airly == "zła" %}
+                    #f4511e;
+                  {% elif airly == "bardzo zła" %}
+                    #d81b60;
+                  {% else %}
+                    #000000;
+                  {% endif %}
+                color: #fff;
+              }
+              ha-icon {
+                color: #ffffff;
+              }
       - type: vertical-stack
         cards:
           - type: custom:mini-graph-card
@@ -1092,6 +1121,13 @@ views:
             entities:
               - entity: sensor.co2_salon
             line_color: "#8bc34a"
+            decimals: 0
+          - type: custom:mini-graph-card
+            <<: *CLIMATE_GRAPH_PARAMS
+            name: "AQI wewnętrzne"
+            entities:
+              - entity: sensor.aqi_salon
+            line_color: "#78909c"
             decimals: 0
       - type: vertical-stack
         cards:
@@ -1177,3 +1213,11 @@ views:
             show_header_toggle: false
             entities:
               - input_select.log_level
+          - type: history-graph
+            entities:
+              - sensor.aqi_raw_salon
+              - sensor.aqi_salon
+              - sensor.aqi_salon_6
+              - sensor.aqi_salon_8
+              - sensor.aqi_salon_moving_average_20
+              - sensor.aqi_salon_moving_average_30

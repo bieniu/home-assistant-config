@@ -88,6 +88,12 @@ fan:
     host: !secret humidifier_hostname
     token: !secret humidifier_token
 
+  - platform: xiaomi_miio_airpurifier
+    name: Airpurifier Salon
+    model: zhimi.airpurifier.mb3
+    host: !secret airpurifier_hostname
+    token: !secret airpurifier_token
+
   # - platform: xiaomi_miio_airpurifier
   #   model: dmaker.fan.p5
   #   host: !secret fan_hostname

@@ -118,6 +118,8 @@ binary_sensor.wemos_d1_mini_1c91ea_status:
   icon: mdi:developer-board
 binary_sensor.mihumidifier_status:
   icon: mdi:air-humidifier
+binary_sensor.miairpurifier_status:
+  icon: mdi:air-purifier
 binary_sensor.mifan_status:
   icon: mdi:fan
 binary_sensor.yeelight_yldd01yl_6707fc_status:
@@ -141,6 +143,16 @@ binary_sensor.yeelight_mjtd01syl_status:
 fan.humidifier_salon:
   friendly_name: "Nawilżacz"
   icon: mdi:air-humidifier
+
+fan.airpurifier_salon:
+  friendly_name: "Oczyszczacz"
+  icon: mdi:air-purifier
+
+sensor.aqi_info_salon:
+  icon: "mdi:home-import-outline"
+
+sensor.aqi_salon:
+  icon: "mdi:blur"
 
 #### SWITCHES ####
 switch.stacjonarny:
@@ -279,7 +291,7 @@ sensor.dom_uv_index:
 
 #### AIRLY ####
 sensor.airly_info:
-  icon: "mdi:weather-fog"
+  icon: "mdi:home-export-outline"
 
 sensor.airly_pm10:
   icon: "mdi:blur"

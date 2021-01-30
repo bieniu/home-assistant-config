@@ -1,17 +1,6 @@
-- id: shelly_flood_info
-  alias: "Shelly Flood Info"
-  trigger:
-    platform: mqtt
-    topic: "shellies/shellyflood-F2AD1D/info"
-  action:
-    service: persistent_notification.create
-    data:
-      title: "Shelly Flood"
-      message: "{{ trigger.payload }}"
-
 - id: ios_turn_on_tv
   alias: "iOS Turn On TV"
-  description: "iOS włącz TV"
+  description: "włącz TV via iOS"
   trigger:
     platform: event
     event_type: ios.action_fired
@@ -22,7 +11,7 @@
 
 - id: ios_turn_off_tv
   alias: "iOS Turn Off TV"
-  description: "iOS wyłącz TV"
+  description: "wyłącz TV via iOS"
   trigger:
     platform: event
     event_type: ios.action_fired
@@ -33,7 +22,7 @@
 
 - id: notification_forward_persistant_notification_to_the_phone
   alias: "Notification Forward Persistant Notification To The Phone"
-  description: "przekazanie persitant_notification na telefon"
+  description: "przekaż persitant_notification na telefon"
   trigger:
     platform: event
     event_type: "call_service"
@@ -53,7 +42,7 @@
 
 - id: notification_dismiss_forwarded_persistant_notification_on_the_phone
   alias: "Notification Dismiss Forwarded Persistant Notification On The Phone"
-  description: "usuwanie przekazanego persitant_notification na telefonie"
+  description: "usuń przekazane persitant_notification z telefonu"
   trigger:
     platform: event
     event_type: "call_service"
@@ -73,7 +62,7 @@
 
 - id: notification_dismiss_persistant_notification_after_dismiss_on_the_phone
   alias: "Notification Dismiss Persistant Notification After Dimiss On The Phone"
-  description: "usuwanie persitant_notification po usunięciu na telefonie"
+  description: "usuń persitant_notification po usunięciu na telefonie"
   trigger:
     platform: event
     event_type: "mobile_app_notification_cleared"
@@ -86,7 +75,7 @@
 
 - id: notification_home_assistant_update_available
   alias: "Notification Home Assistant Update Available"
-  description: "powiadomienie o aktualizacji HA"
+  description: "powiadom o aktualizacji HA"
   trigger:
     platform: state
     entity_id: sensor.ha_version_current
@@ -119,9 +108,9 @@
           - service: !secret maciek_notify_service
             type: "android"
 
-# powiadomienie o aktualizacji Supervisora
 - id: notification_supervisor_update_available
   alias: "Notification Supervisor Update Available"
+  description: "powiadom o aktualizacji Supervisora"
   trigger:
     platform: state
     entity_id: sensor.supervisor_updates
@@ -143,9 +132,9 @@
                 action: "URI"
                 uri: "https://github.com/home-assistant/supervisor/releases"
 
-# powiadomienie o aktualizacji addonów
 - id: notification_addons_update_available
   alias: "Notification Addons Update Available"
+  description: "powiadom o aktualizacji addonów"
   trigger:
     platform: numeric_state
     entity_id: sensor.supervisor_updates
@@ -177,9 +166,9 @@
           - service: !secret maciek_notify_service
             type: "android"
 
-# powiadomienie o aktualizacji w HACS
 - id: notification_update_available_in_hacs
   alias: "Notification Update Available In HACS"
+  description: "powiadom o aktualizacji dodatków z HACS"
   trigger:
     platform: state
     entity_id: sensor.hacs
@@ -216,9 +205,9 @@
         - service: !secret maciek_notify_service
           type: "android"
 
-# powiadomienie o wysokim użyciu pamięci RAM
 - id: notification_high_ram_usage
   alias: "Notification High RAM Usage"
+  description: "powiadom o wysokim użyciu pamięci RAM"
   trigger:
     platform: numeric_state
     entity_id: sensor.memory_use_percent
@@ -237,9 +226,9 @@
         - service: !secret maciek_notify_service
           type: "android"
 
-# powiadomienie o wygasającym certyfikacie SSL
 - id: notification_ssl_cert_expiry
   alias: "Notification SSL Cert Expiry"
+  description: "powiadom o wygasającym certyfikacie SSL"
   trigger:
     platform: template
     value_template: "{{ states('sensor.ssl_certificate_expiry') | int < 11 }}"
@@ -260,9 +249,9 @@
           - service: !secret maciek_notify_service
             type: "android"
 
-# powiadomienie o aktualizacji oprogramowania Shelly
 - id: notification_shelly_update_available
   alias: "Notification Shelly Update Available"
+  description: "powiadom o aktualizacji oprogramowania Shelly"
   mode: queued
   trigger:
     - platform: state
@@ -287,9 +276,9 @@
           - service: !secret maciek_notify_service
             type: "android"
 
-# powiadomienie o aktualizacji ESPHome
 - id: notification_esphome_update_available
   alias: "Notification ESPHome Update Available"
+  description: "powiadom o aktualizacji ESPHome"
   trigger:
     platform: state
     entity_id: sensor.esphome_version_current
@@ -314,9 +303,9 @@
                 action: "URI"
                 uri: "https://github.com/esphome/esphome/releases"
 
-# powiadomienie o aktualizacji Caddy
 - id: notification_caddy_update_available
   alias: "Notification Caddy Update Available"
+  description: "powiadom o aktualizacji Caddy"
   trigger:
     platform: state
     entity_id: sensor.caddy_version_current
@@ -340,70 +329,9 @@
                 action: "URI"
                 uri: "https://github.com/caddyserver/caddy/releases"
 
-###################################################################################################
-# włączenie oświetlenia świątecznego jak jest zachód słońca
-- id: light_turn_on_christmas_lights
-  alias: "Light Turn On Christmas Lights"
-  trigger:
-    platform: sun
-    event: sunset
-  action:
-    - service: switch.turn_on
-      entity_id:
-        - switch.christmas_lights_balkon_dol
-        - switch.christmas_lights_balkon_gora
-
-# włączenie drzewek jak jest zachód słońca i domownicy w domu
-- id: light_turn_on_trees
-  alias: "Light Turn On Trees"
-  trigger:
-    platform: sun
-    event: sunset
-  condition:
-    condition: state
-    entity_id: binary_sensor.people_at_home
-    state: "on"
-  action:
-    - service: switch.turn_on
-      entity_id:
-        - switch.tree_antek
-        - switch.lights_stairs_antresola
-
-# wyłączenie drzewek o 23
-- id: light_turn_off_trees
-  alias: "Light Turn Off Trees"
-  trigger:
-    platform: time
-    at: "23:00:00"
-  action:
-    service: switch.turn_off
-    entity_id:
-      - switch.tree_antek
-      - switch.christmas_lights_balkon_dol
-      - switch.christmas_lights_balkon_gora
-      - switch.lights_stairs_antresola
-
-# włączenie drzewek jak po zachodzie słońca wracają domownicy
-- id: light_turn_on_trees_when_peoples_back
-  alias: "Light Turn On Trees When Peoples Back"
-  trigger:
-    platform: state
-    entity_id: binary_sensor.people_at_home
-    to: "on"
-  condition:
-    - condition: sun
-      after: sunset
-    - condition: time
-      before: "23:00:00"
-  action:
-    service: switch.turn_on
-    entity_id:
-      - switch.tree_antek
-      - switch.lights_stairs_antresola
-
-# powiadomienie o zbliżającej się burzy
 - id: notification_storm_comming
   alias: "Notification Storm Comming"
+  description: "powiadom o zblizającej się burzy"
   trigger:
     platform: numeric_state
     entity_id: sensor.lightning_distance
@@ -471,9 +399,9 @@
               duration: 10
     - delay: "00:15:00"
 
-# powiadomienie o końcu zmywania
 - id: notification_dishwasher_end
   alias: "Notification Dishwasher End"
+  description: "powiadom o końcu zmywania"
   trigger:
     platform: state
     entity_id: sensor.dishwasher_kuchnia
@@ -494,9 +422,9 @@
         - service: !secret edyta_notify_service
           type: "ios"
 
-# powiadomienie o włączonym komputerze
 - id: notification_desktop_computer_turned_on
   alias: "Notification Desktop Computer Turned On"
+  description: "powiadom o włączonym komputerze"
   trigger:
     - platform: time
       at: "22:45:00"
@@ -523,9 +451,9 @@
         - service: !secret maciek_notify_service
           type: "android"
 
-# wyłączenie komputera z powiadomienia
 - id: notification_turn_off_desktop_computer
   alias: "Notification Turn Off Desktop Computer"
+  description: "wyłącz komputer z akcji powiadomienia"
   trigger:
     platform: event
     event_type: mobile_app_notification_action
@@ -543,9 +471,9 @@
           - service: !secret maciek_notify_service
             type: "android"
 
-# powiadomienie o encji ze stanem dead lub unavailable
 - id: notification_dead_or_unavailable
   alias: "Notification dead or unavailable"
+  description: "powiadom o encji ze stanem dead/unavailable"
   trigger:
     platform: time_pattern
     minutes: "/10"
@@ -584,9 +512,9 @@
           - service: !secret maciek_notify_service
             type: "android"
 
-# powiadomienie o małej ilości wody w nawilżaczu
 - id: notification_humidifier_low_water
   alias: "Notification Humidifier Low Water"
+  description: "powiadom o małej ilości wody w nawilżaczu"
   trigger:
     - platform: numeric_state
       entity_id: sensor.humidifier_water_level
@@ -674,9 +602,9 @@
                 url: !secret favicon_url
               duration: 10
 
-# powiadomienie o wysokim stężeniu CO2 w salonie
 - id: notification_salon_co2
   alias: "Notification Salon CO2"
+  description: "powiadom o wysokim stężeniu CO2 w salonie"
   trigger:
     platform: numeric_state
     entity_id: sensor.co2_salon
@@ -759,9 +687,9 @@
                 url: !secret favicon_url
               duration: 10
 
-# powiadomienie jak pojawi się woda na podłodze w kuchni
 - id: notification_water_leak_kuchnia
   alias: "Notification Water Leak Kuchnia"
+  description: "powiadom o wycieku wodu w kuchni"
   trigger:
     - platform: state
       entity_id:
@@ -812,9 +740,9 @@
                 url: !secret favicon_url
               duration: 10
 
-# powiadomienie jak zbyt duże obciążenie przekaźnika
 - id: notification_relay_overpower
   alias: "Notification Relay Overpower"
+  description: "powiadom o zbyt dużym obciązeniu przekaźnika"
   trigger:
     - platform: state
       entity_id:
@@ -869,9 +797,9 @@
                 url: !secret favicon_url
               duration: 10
 
-# powiadomienie urządzenei się przegrzewa
 - id: notification_relay_overheating
   alias: "Notification Relay Overheating"
+  description: "powiadom o przegrzewaniu się urządzenia"
   trigger:
     - platform: state
       entity_id:
@@ -929,9 +857,9 @@
                 url: !secret favicon_url
               duration: 10
 
-# powiadomienie jak jest ruch i nikogo w domu
 - id: notification_motion_when_away_mode
   alias: "Notification Motion When Away Mode"
+  description: "powiadom o ruchu w pustym mieszkaniu"
   trigger:
     - platform: state
       entity_id:
@@ -963,9 +891,9 @@
       datetime: "{{ now().strftime('%Y%m%d%H%M%S') }}"
       location: "{{ trigger.to_state.attributes.location }}"
 
-# powiadomienie jak otworzy się okno i nikogo w domu
 - id: notification_window_opened_when_away_mode
   alias: "Notification Window Opened When Away Mode"
+  description: "powiadom o otwarciu okna w pustym mieszkaniu"
   trigger:
     - platform: state
       entity_id:
@@ -998,9 +926,9 @@
         - service: !secret edyta_notify_service
           type: "ios"
 
-# powiadomienie o otwartych drzwiach balkonowych w pracowni po wyjściu z domu
 - id: notification_balcony_door_pracownia_opened
   alias: "Notification Balcony Door Pracownia Opened"
+  description: "powiadom o otwartych drzwiach balkonowych w pracowni po wyjściu z domu"
   trigger:
     platform: state
     entity_id: binary_sensor.people_at_home
@@ -1023,9 +951,9 @@
         - service: !secret edyta_notify_service
           type: "ios"
 
-# powiadomienia o małej ilości miejsca na Synology
 - id: notification_low_disk_space_on_synology
   alias: "Notification Low Disk Space On Synology"
+  description: "powiadom o małej ilości miejsca na Synology"
   trigger:
     platform: numeric_state
     entity_id: sensor.synology_disk_used
@@ -1041,9 +969,9 @@
           - service: !secret maciek_notify_service
             type: "android"
 
-# powiadomienie o wykryciu nowego urządzenia
 - id: notification_new_device
   alias: "Notification New Device"
+  description: "powiadom o wykryciu nowego urządzenia"
   trigger:
     platform: event
     event_type: device_tracker_new_device
@@ -1058,9 +986,9 @@
           - service: !secret maciek_notify_service
             type: "android"
 
-# powiadomienie o niskim poziomie naładowania baterii
 - id: notification_low_battery
   alias: "Notification Low Battery"
+  description: "powiadom o niskim poziomie naładowania baterii"
   trigger:
     platform: time
     at: "18:00:00"
@@ -1259,7 +1187,6 @@
     - delay: "00:00:15"
     - service: climate.turn_on
       entity_id: climate.aeotec_thermostat_kuchnia
-
 
 # zwiększenie temperatury rano jeśli ktoś jest w domu i trwa sezon grzewczy
 - id: heating_day
@@ -1481,15 +1408,13 @@
           - service: !secret edyta_notify_service
             type: "ios"
     - condition: template
-      value_template: >
-        {{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float
-           and states('sensor.humidifier_water_level') | int > 5 }}
+      value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float and states('sensor.humidifier_water_level') | int > 5 }}"
     - service: fan.turn_on
       entity_id: fan.humidifier_salon
 
-# otwarcie okien uruchamia przewietrzanie
-- id: windows_opened_for_airing
-  alias: "Windows Opened For Airing"
+- id: windows_opened
+  alias: "Windows Opened"
+  description: "włącz przewietrzanie i wyłącz oczyszczacz jak otwarte okna"
   trigger:
     platform: state
     entity_id: group.windows
@@ -1497,17 +1422,18 @@
     to: "on"
     for:
       minutes: 10
-  condition:
-    condition: state
-    entity_id: input_boolean.heating_season
-    state: "on"
   action:
-    service: input_boolean.turn_on
-    entity_id: input_boolean.heating_airing
+    - service: fan.turn_off
+      entity_id: fan.airpurifier_salon
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.heating_airing
 
-# zamknięcie okien kończy przewietrzanie
 - id: windows_closed
   alias: "Windows Closed"
+  description: "wyłącz przewietrzanie jak zamknięte okna"
   trigger:
     platform: state
     entity_id: group.windows
@@ -1515,13 +1441,86 @@
     to: "off"
     for:
       minutes: 5
+  action:
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.heating_airing
+
+- id: air_quality_turn_on_air_purifier
+  alias: "Air Quality Turn On Air Purifier"
+  description: "włącz oczyszczacz gdy AQI większe od 50"
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.aqi_salon
+    above: 50
   condition:
     condition: state
-    entity_id: input_boolean.heating_season
-    state: "on"
+    entity_id: group.windows
+    state: "off"
   action:
-    service: input_boolean.turn_off
-    entity_id: input_boolean.heating_airing
+    service: xiaomi_miio_airpurifier.fan_set_fan_level
+    entity_id: fan.airpurifier_salon
+    data:
+      level: 1
+
+- id: air_quality_turn_off_air_purifier
+  alias: "Air Quality Turn Off Air Purifier"
+  description: "wyłącz oczyszczacz gdy AQI mniejsze od 50"
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.aqi_salon
+    below: 50
+  action:
+    service: fan.turn_off
+    entity_id: fan.airpurifier_salon
+
+- id: air_quality_air_purifier_switch_fan_level_to_2
+  alias: "Air Quality Air Purifier Switch Fan Level To 2"
+  description: "zmień prędkość wentylatora oczyszczacza na 2"
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.aqi_salon
+    above: 100
+    for:
+      minutes: 3
+  condition:
+    - condition: state
+      entity_id: fan.airpurifier_salon
+      state: "on"
+    - condition: numeric_state
+      entity_id: fan.airpurifier_salon
+      attribute: fan_level
+      below: 2
+  action:
+    service: xiaomi_miio_airpurifier.fan_set_fan_level
+    entity_id: fan.airpurifier_salon
+    data:
+      level: 2
+
+- id: air_quality_air_purifier_switch_fan_level_to_1
+  alias: "Air Quality Air Purifier Switch Fan Level To 1"
+  description: "zmień prędkość wentylatora oczyszczacza na 1"
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.aqi_salon
+    below: 100
+    for:
+      minutes: 3
+  condition:
+    - condition: state
+      entity_id: fan.airpurifier_salon
+      state: "on"
+    - condition: numeric_state
+      entity_id: fan.airpurifier_salon
+      attribute: fan_level
+      above: 1
+  action:
+    service: xiaomi_miio_airpurifier.fan_set_fan_level
+    entity_id: fan.airpurifier_salon
+    data:
+      level: 1
 
 # początek przewietrzania
 - id: heating_airing_begin
@@ -1605,6 +1604,65 @@
 ##################################################################################################
 
 #### LIGHT #######################################################################################
+- id: light_turn_on_christmas_lights
+  alias: "Light Turn On Christmas Lights"
+  description: "włącz oświetlenie świateczne o zachodzie słońca"
+  trigger:
+    platform: sun
+    event: sunset
+  action:
+    - service: switch.turn_on
+      entity_id:
+        - switch.christmas_lights_balkon_dol
+        - switch.christmas_lights_balkon_gora
+
+- id: light_turn_off_christmas_lights
+  alias: "Light Turn Off Christmas Lights"
+  description: "wyłącz oświetlenie świateczne o 23:00"
+  trigger:
+    platform: time
+    at: "23:00:00"
+  action:
+    - service: switch.turn_off
+      entity_id:
+        - switch.christmas_lights_balkon_dol
+        - switch.christmas_lights_balkon_gora
+
+- id: light_turn_on_tree_and_stairs_light
+  alias: "Light Turn On Tree And Stairs Light"
+  description: "włącz drzewko i światełka na schodach o zachodzie słońca"
+  trigger:
+    - platform: sun
+      event: sunset
+    - platform: state
+      entity_id: binary_sensor.people_at_home
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: binary_sensor.people_at_home
+      state: "on"
+    - condition: sun
+      after: sunset
+    - condition: time
+      before: "23:00:00"
+  action:
+    - service: switch.turn_on
+      entity_id:
+        - switch.tree_antek
+        - switch.lights_stairs_antresola
+
+- id: light_turn_off_tree_and_stairs_light
+  alias: "Light Turn Off Tree And Stairs Light"
+  description: "wyłącz drzewko i światełka na schodach o 23:00"
+  trigger:
+    platform: time
+    at: "23:00:00"
+  action:
+    service: switch.turn_off
+    entity_id:
+      - switch.tree_antek
+      - switch.lights_stairs_antresola
+
 # włączenie adaptive lightning przy starcie HA
 - id: light_turn_on_adaptive_lightning_at_start
   alias: "Light Turn On Adaptive Lightning At Start"
@@ -1740,8 +1798,7 @@
       to: "on"
   action:
     - choose:
-        - conditions: >
-            {{ trigger.platform == 'event' and trigger.event.data.click_type == 'single' }}
+        - conditions: "{{ trigger.platform == 'event' and trigger.event.data.click_type == 'single' }}"
           sequence:
             service: light.toggle
             entity_id: light.lamp_salon
@@ -1751,8 +1808,7 @@
           sequence:
             service: light.toggle
             entity_id: light.bulbs_salon
-        - conditions: >
-            {{ trigger.platform == 'event' and trigger.event.data.click_type == 'hold' }}
+        - conditions: "{{ trigger.platform == 'event' and trigger.event.data.click_type == 'hold' }}"
           sequence:
             service: light.toggle
             entity_id: light.leds_salon
