@@ -144,7 +144,7 @@ fan.humidifier_salon:
   friendly_name: "Nawilżacz"
   icon: mdi:air-humidifier
 
-fan.airpurifier_salon:
+fan.air_purifier_salon:
   friendly_name: "Oczyszczacz"
   icon: mdi:air-purifier
 
@@ -250,13 +250,13 @@ script.sonoffs_upgrade:
   friendly_name: "Aktualizacja Sonoff-ów"
   icon: mdi:download-network
 
-#### CHRISTMAS ####
 switch.leds_antresola:
   icon: mdi:led-strip-variant
 
 sensor.humidity_indoor:
   friendly_name: "Wilgotność wewnętrzna"
   icon: mdi:water-percent
+
 sensor.temperature_indoor:
   friendly_name: "Temperatura wewnętrzna"
   icon: mdi:thermometer

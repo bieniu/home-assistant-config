@@ -109,37 +109,38 @@ views:
               - entity: binary_sensor.motion_przedpokoj
                 secondary_info: last-changed
               - light.leds_przedpokoj
-          - type: vertical-stack
-            in_card: true
-            cards:
-              - type: glance
-                <<: *card-header-no-padding-bottom
-                title: "Kuchnia"
-                show_name: false
-                entities:
-                  - sensor.temperature_kuchnia
-                  - sensor.humidity_kuchnia
-                  - sensor.illumination_kuchnia
-              - type: entities
-                show_header_toggle: false
-                state_color: true
-                entities:
-                  - binary_sensor.window_kuchnia
-                  - entity: binary_sensor.motion_kuchnia
-                    secondary_info: last-changed
-                  - binary_sensor.water_leak_kuchnia
-                  - climate.aeotec_thermostat_kuchnia
-                  - entity: sensor.dishwasher_kuchnia
-                    style: |
-                      :host {
-                        --paper-item-icon-color:
-                          {% if is_state(config.entity, "zmywanie") %}
-                            var(--state-icon-active-color)
-                          {% else %}
-                            var(--state-icon-color)
-                          {% endif %};
-                      }
-                  - light.ceiling_kuchnia
+          # - type: vertical-stack
+          #   in_card: true
+          #   cards:
+          #     - type: glance
+          #       <<: *card-header-no-padding-bottom
+          #       title: "Kuchnia"
+          #       show_name: false
+          #       entities:
+          #         - sensor.temperature_salon
+          #         - sensor.humidity_salon
+          #         - sensor.illumination_kuchnia
+          - type: entities
+            title: "Kuchnia"
+            show_header_toggle: false
+            state_color: true
+            entities:
+              - binary_sensor.window_kuchnia
+              - entity: binary_sensor.motion_kuchnia
+                secondary_info: last-changed
+              - binary_sensor.water_leak_kuchnia
+              - climate.aeotec_thermostat_kuchnia
+              - entity: sensor.dishwasher_kuchnia
+                style: |
+                  :host {
+                    --paper-item-icon-color:
+                      {% if is_state(config.entity, "zmywanie") %}
+                        var(--state-icon-active-color)
+                      {% else %}
+                        var(--state-icon-color)
+                      {% endif %};
+                  }
+              - light.ceiling_kuchnia
       - type: vertical-stack
         in_card: true
         cards:
@@ -170,7 +171,7 @@ views:
                   entity: sensor.humidifier_water_level
                   prefix: "poziom wody: "
                   postfix: " %"
-              - entity: fan.airpurifier_salon
+              - entity: fan.air_purifier_salon
                 secondary_info:
                   entity: sensor.aqi_attr_salon
                   prefix: "powietrze: "
@@ -290,14 +291,24 @@ views:
                         entity_id: media_player.echo_show_salon
                         media_content_type: "SPOTIFY"
                         media_content_id: "in everywhere group playlist Maciek"
-      - type: entities
-        title: "Toaleta"
-        show_header_toggle: false
-        state_color: true
-        entities:
-          - entity: binary_sensor.motion_toaleta
-            secondary_info: last-changed
-          - light.ceiling_toaleta
+      - type: vertical-stack
+        in_card: true
+        cards:
+          - type: glance
+            <<: *card-header-no-padding-bottom
+            title: "Toaleta"
+            show_name: false
+            entities:
+              - sensor.temperature_toaleta
+              - sensor.humidity_toaleta
+              - sensor.illumination_toaleta
+          - type: entities
+            show_header_toggle: false
+            state_color: true
+            entities:
+              - entity: binary_sensor.motion_toaleta
+                secondary_info: last-changed
+              - light.ceiling_toaleta
       - type: vertical-stack
         in_card: true
         cards:
@@ -526,6 +537,7 @@ views:
           - person.edyta
           - person.maciek
           - person.antek
+          - person.karmel
           - zone.home
           - zone.grandparents
           - zone.grandmother
@@ -883,7 +895,7 @@ views:
             color: var(--state-icon-color)
         entities:
           - sensor.battery_xiaomi_ht_salon
-          - sensor.battery_xiaomi_weather_v1_kuchnia
+          - sensor.battery_xiaomi_weather_v1_toaleta
           - sensor.battery_xiaomi_ht_pracownia
           - sensor.battery_xiaomi_ht_goscinny
           - sensor.battery_xiaomi_ht_antresola
@@ -1213,11 +1225,3 @@ views:
             show_header_toggle: false
             entities:
               - input_select.log_level
-          - type: history-graph
-            entities:
-              - sensor.aqi_raw_salon
-              - sensor.aqi_salon
-              - sensor.aqi_salon_6
-              - sensor.aqi_salon_8
-              - sensor.aqi_salon_moving_average_20
-              - sensor.aqi_salon_moving_average_30

@@ -7,7 +7,8 @@
     event_data:
       actionName: turn_on_tv
   action:
-    service: script.harmony_telewizja
+    service: switch.turn_on
+    entity_id: switch.harmony_telewizja
 
 - id: ios_turn_off_tv
   alias: "iOS Turn Off TV"
@@ -18,7 +19,8 @@
     event_data:
       actionName: turn_off_tv
   action:
-    service: script.harmony_tv_off
+    service: remote.turn_off
+    entity_id: remote.salon
 
 - id: notification_forward_persistant_notification_to_the_phone
   alias: "Notification Forward Persistant Notification To The Phone"
@@ -211,7 +213,7 @@
   trigger:
     platform: numeric_state
     entity_id: sensor.memory_use_percent
-    above: 50
+    above: 60
     for:
       minutes: 5
   action:
@@ -526,20 +528,18 @@
       entity_id: sensor.humidifier_water_level
       below: 40
   condition:
-    condition: and
-    conditions:
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: person.maciek
-            state: "home"
-          - condition: state
-            entity_id: person.edyta
-            state: "home"
-      - condition: state
-        entity_id: input_boolean.heating_season
-        state: "on"
-      - "{{ states('sensor.humidifier_water_level') | int != 0 }}"
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.maciek
+          state: "home"
+        - condition: state
+          entity_id: person.edyta
+          state: "home"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - "{{ states('sensor.humidifier_water_level') | int != 0 }}"
   variables:
     notification_title: "Uzupełnij wodę w nawilżaczu"
     notification_message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
@@ -612,19 +612,17 @@
     for:
       minutes: 5
   condition:
-    condition: and
-    conditions:
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: person.maciek
-            state: "home"
-          - condition: state
-            entity_id: person.edyta
-            state: "home"
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: "off"
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.maciek
+          state: "home"
+        - condition: state
+          entity_id: person.edyta
+          state: "home"
+    - condition: state
+      entity_id: input_boolean.away_mode
+      state: "off"
   variables:
     notification_title: "Wysokie stężenie dwutlenku węgla"
     notification_message: "W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state }} ppm. Należy przewietrzyć pomieszczenie."
@@ -1033,9 +1031,9 @@
 ##################################################################################################
 
 #### OBECNOŚĆ ####################################################################################
-# Edyta daleko od domu
 - id: presence_edyta_far_from_home
   alias: "Presence Edyta Far From Home"
+  description: "Edyta daleko od domu"
   trigger:
     platform: state
     entity_id: person.edyta
@@ -1050,9 +1048,9 @@
     service: input_boolean.turn_on
     entity_id: input_boolean.edyta_far_from_home
 
-# Maciek daleko od domu
 - id: presence_maciek_far_from_home
   alias: "Presence Maciek Far From Home"
+  description: "Maciek daleko od domu"
   trigger:
     platform: state
     entity_id: person.maciek
@@ -1067,9 +1065,9 @@
     service: input_boolean.turn_on
     entity_id: input_boolean.maciek_far_from_home
 
-# Maciek blisko domu
 - id: presence_maciek_near_home
   alias: "Presence Maciek Near Home"
+  description: "Maciek wraca z dalekiej podróży"
   trigger:
     platform: state
     entity_id: person.maciek
@@ -1084,9 +1082,9 @@
     service: input_boolean.turn_off
     entity_id: input_boolean.maciek_far_from_home
 
-# Edyta wróciła do domu po dalekiej podróży
 - id: presence_edyta_near_home
   alias: "Presence Edyta Near Home"
+  description: "Edyta wraca z dalekiej podróży"
   trigger:
     platform: state
     entity_id: person.edyta
@@ -1101,9 +1099,9 @@
     service: input_boolean.turn_off
     entity_id: input_boolean.edyta_far_from_home
 
-# ludzie poza domem
 - id: presence_peoples_away
   alias: "Presence Peoples Away"
+  description: "ludzie poza domem"
   trigger:
     platform: state
     entity_id: binary_sensor.people_at_home
@@ -1130,9 +1128,9 @@
           - service: !secret edyta_notify_service
             type: "ios"
 
-# ludzie w domu
 - id: presence_peoples_back
   alias: "Presence Peoples Back"
+  description: "ludzie w domu"
   trigger:
     platform: state
     entity_id: binary_sensor.people_at_home
@@ -1154,28 +1152,26 @@
 ##################################################################################################
 
 #### HEATING #####################################################################################
-# kalibracja termostatu Aeotec
 - id: heating_aeotec_thermostat_calibration
   alias: "Heating Aeotec Thermostat Calibration"
+  description: "kalibracja termostatu Aeotec"
   trigger:
     platform: template
     value_template: "{{ state_attr('climate.aeotec_thermostat_kuchnia', 'current_temperature') | float - state_attr('climate.aeotec_thermostat_kuchnia', 'temperature') | float > 2 }}"
     for:
       minutes: 10
   condition:
-    - condition: and
-      conditions:
-        - condition: state
-          entity_id: input_boolean.heating_season
-          state: "on"
-        - condition: state
-          entity_id: input_boolean.heating_airing
-          state: "off"
-        - condition: numeric_state
-          entity_id: climate.aeotec_thermostat_kuchnia
-          attribute: temperature
-          above: 20.5
-        - "{{ (now() - state_attr('automation.heating_aeotec_thermostat_calibration', 'last_triggered')).total_seconds() > 3600 }}"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.heating_airing
+      state: "off"
+    - condition: numeric_state
+      entity_id: climate.aeotec_thermostat_kuchnia
+      attribute: temperature
+      above: 20.5
+    - "{{ (now() - state_attr('automation.heating_aeotec_thermostat_calibration', 'last_triggered')).total_seconds() > 3600 }}"
   action:
     - service: climate.set_preset_mode
       entity_id: climate.aeotec_thermostat_kuchnia
@@ -1188,9 +1184,9 @@
     - service: climate.turn_on
       entity_id: climate.aeotec_thermostat_kuchnia
 
-# zwiększenie temperatury rano jeśli ktoś jest w domu i trwa sezon grzewczy
 - id: heating_day
   alias: "Heating Day"
+  description: "przełącz na ogrzewanie dzienne"
   trigger:
     platform: time
     at:
@@ -1212,9 +1208,9 @@
   action:
     service: script.heating_day
 
-# zmniejszenie temperatury na noc jeśli trwa sezon grzewczy
 - id: heating_night
   alias: "Heating Night"
+  description: "przełącz na ogrzewanie nocne"
   trigger:
     platform: time
     at:
@@ -1236,9 +1232,9 @@
   action:
     service: script.heating_night
 
-# zmniejszenie temperatury na noc w salonie i kuchni po wyłączeniu TV
 - id: heating_night_salon_and_kuchnia
   alias: "Heating Night Salon and Kuchnia"
+  description: "przejdź na ogrzewanie nocne po wyłączeniu telewizora"
   trigger:
     platform: state
     entity_id: media_player.denon_salon
@@ -1269,9 +1265,9 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.heating_salon_kuchnia_night
 
-# yłączenie wentylatora po wyłączeniu telewizora
 - id: climate_turn_off_fan
   alias: "Climate Turn Off Fan"
+  description: "wyłącz wentylator po wyłączeniu telewizora"
   trigger:
     platform: state
     entity_id: media_player.denon_salon
@@ -1289,9 +1285,9 @@
     service: fan.turn_off
     entity_id: fan.pedestal_salon
 
-# zmniejszenie temperatury gdy domownicy wychodzą i jest sezon grzewczy
 - id: heating_eco_mode
   alias: "Heating Eco Mode"
+  description: "przełącz ogrzewanie w tryb eco jak domownicy wychodzą"
   trigger:
     platform: state
     entity_id: input_boolean.away_mode
@@ -1309,9 +1305,9 @@
   action:
     service: script.heating_eco_mode
 
-# zwiększenie temperatury gdy domownicy wracają i jest sezon grzewczy
 - id: heating_peoples_back
   alias: "Heating Peoples Back"
+  description: "włącz ogrzewanie dzienne lub nocne gdy domownicy wrócą do domu"
   trigger:
     platform: state
     entity_id: input_boolean.away_mode
@@ -1335,9 +1331,9 @@
     default:
       service: script.heating_night
 
-# włączenie ogrzewania 30 minut przed powrotem do domu w dzień gdy jest sezon grzewczy
 - id: heating_turn_on_before_return_to_home
   alias: "Heating Turn On Before Return To Home"
+  description: "włącz ogrzewanie dzienne przed powrotem domowników do domu"
   trigger:
     - platform: state
       entity_id: input_boolean.edyta_far_from_home
@@ -1361,9 +1357,9 @@
   action:
     service: script.heating_day
 
-# włączenie szybkiego dogrzewania 60 minut przed powrotem do domu w dzień gdy jest sezon grzewczy gdy nieobecność domowników dłuższa niż 10 godzin
 - id: heating_heating_fast_warm_up_before_return_to_home
   alias: "Heating Fast Warm Up Before Return To Home"
+  description: "włącz szybkie dogrzanie przed powrotem domowników do domu"
   trigger:
     platform: state
     entity_id:
@@ -1424,7 +1420,7 @@
       minutes: 10
   action:
     - service: fan.turn_off
-      entity_id: fan.airpurifier_salon
+      entity_id: fan.air_purifier_salon
     - condition: state
       entity_id: input_boolean.heating_season
       state: "on"
@@ -1461,7 +1457,7 @@
     state: "off"
   action:
     service: xiaomi_miio_airpurifier.fan_set_fan_level
-    entity_id: fan.airpurifier_salon
+    entity_id: fan.air_purifier_salon
     data:
       level: 1
 
@@ -1474,7 +1470,7 @@
     below: 50
   action:
     service: fan.turn_off
-    entity_id: fan.airpurifier_salon
+    entity_id: fan.air_purifier_salon
 
 - id: air_quality_air_purifier_switch_fan_level_to_2
   alias: "Air Quality Air Purifier Switch Fan Level To 2"
@@ -1487,15 +1483,15 @@
       minutes: 3
   condition:
     - condition: state
-      entity_id: fan.airpurifier_salon
+      entity_id: fan.air_purifier_salon
       state: "on"
     - condition: numeric_state
-      entity_id: fan.airpurifier_salon
+      entity_id: fan.air_purifier_salon
       attribute: fan_level
       below: 2
   action:
     service: xiaomi_miio_airpurifier.fan_set_fan_level
-    entity_id: fan.airpurifier_salon
+    entity_id: fan.air_purifier_salon
     data:
       level: 2
 
@@ -1510,21 +1506,21 @@
       minutes: 3
   condition:
     - condition: state
-      entity_id: fan.airpurifier_salon
+      entity_id: fan.air_purifier_salon
       state: "on"
     - condition: numeric_state
-      entity_id: fan.airpurifier_salon
+      entity_id: fan.air_purifier_salon
       attribute: fan_level
       above: 1
   action:
     service: xiaomi_miio_airpurifier.fan_set_fan_level
-    entity_id: fan.airpurifier_salon
+    entity_id: fan.air_purifier_salon
     data:
       level: 1
 
-# początek przewietrzania
 - id: heating_airing_begin
   alias: "Heating Airing Begin"
+  description: "początek przewietrzania"
   trigger:
     platform: state
     entity_id: input_boolean.heating_airing
@@ -1537,9 +1533,9 @@
   action:
     service: script.heating_airing_begin
 
-# koniec przewietrzania
 - id: heating_airing_end
   alias: "Heating Airing End"
+  description: "koniec przewietrzania"
   trigger:
     platform: state
     entity_id: input_boolean.heating_airing
@@ -1575,9 +1571,9 @@
           - service: !secret edyta_notify_service
             type: "ios"
 
-# początek sezonu grzewczego
 - id: heating_season_begin
   alias: "Heating Season Begin"
+  description: "początek sezonu grzewczego"
   trigger:
     platform: state
     entity_id: input_boolean.heating_season
@@ -1590,9 +1586,9 @@
         - climate.custom_thermostat_lazienka
     - service: script.heating_day
 
-# koniec sezonu grzewczego
 - id: heating_season_end
   alias: "Heating Season End"
+  description: "koniec sezonu grzewczego"
   trigger:
     platform: state
     entity_id: input_boolean.heating_season
@@ -1604,30 +1600,6 @@
 ##################################################################################################
 
 #### LIGHT #######################################################################################
-- id: light_turn_on_christmas_lights
-  alias: "Light Turn On Christmas Lights"
-  description: "włącz oświetlenie świateczne o zachodzie słońca"
-  trigger:
-    platform: sun
-    event: sunset
-  action:
-    - service: switch.turn_on
-      entity_id:
-        - switch.christmas_lights_balkon_dol
-        - switch.christmas_lights_balkon_gora
-
-- id: light_turn_off_christmas_lights
-  alias: "Light Turn Off Christmas Lights"
-  description: "wyłącz oświetlenie świateczne o 23:00"
-  trigger:
-    platform: time
-    at: "23:00:00"
-  action:
-    - service: switch.turn_off
-      entity_id:
-        - switch.christmas_lights_balkon_dol
-        - switch.christmas_lights_balkon_gora
-
 - id: light_turn_on_tree_and_stairs_light
   alias: "Light Turn On Tree And Stairs Light"
   description: "włącz drzewko i światełka na schodach o zachodzie słońca"
@@ -1663,9 +1635,9 @@
       - switch.tree_antek
       - switch.lights_stairs_antresola
 
-# włączenie adaptive lightning przy starcie HA
 - id: light_turn_on_adaptive_lightning_at_start
   alias: "Light Turn On Adaptive Lightning At Start"
+  description: "włącz adaptive lightning przy starcie HA"
   trigger:
     platform: homeassistant
     event: start
@@ -1725,28 +1697,26 @@
     for:
       minutes: 30
   condition:
-    condition: and
-    conditions:
-      - condition: time
-        after: "00:30:00"
-        before: "06:00:00"
-      - condition: state
-        entity_id: media_player.denon_salon
-        state: "off"
-      - condition: or
-        conditions:
-          - condition: state
-            entity_id: light.bulbs_salon
-            state: "on"
-          - condition: state
-            entity_id: light.leds_salon
-            state: "on"
-          - condition: state
-            entity_id: light.lamp_salon
-            state: "on"
-          - condition: state
-            entity_id: fan.pedestal_salon
-            state: "on"
+    - condition: time
+      after: "00:30:00"
+      before: "06:00:00"
+    - condition: state
+      entity_id: media_player.denon_salon
+      state: "off"
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: light.bulbs_salon
+          state: "on"
+        - condition: state
+          entity_id: light.leds_salon
+          state: "on"
+        - condition: state
+          entity_id: light.lamp_salon
+          state: "on"
+        - condition: state
+          entity_id: fan.pedestal_salon
+          state: "on"
   action:
     service: homeassistant.turn_off
     entity_id:
@@ -1836,27 +1806,25 @@
       entity_id: media_player.denon_salon
       to: "off"
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id:
-          - input_boolean.away_mode
-          - light.leds_salon
-          - light.bulbs_salon
-          - media_player.denon_salon
-        state: "off"
-      - condition: state
-        entity_id:
-          - binary_sensor.motion_salon
-          - input_boolean.light_auto_turn_salon
-        state: "on"
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
-            before_offset: "+00:30:00"
+    - condition: state
+      entity_id:
+        - input_boolean.away_mode
+        - light.leds_salon
+        - light.bulbs_salon
+        - media_player.denon_salon
+      state: "off"
+    - condition: state
+      entity_id:
+        - binary_sensor.motion_salon
+        - input_boolean.light_auto_turn_salon
+      state: "on"
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
+          before_offset: "+00:30:00"
   action:
     - service: light.turn_on
       entity_id: light.lamp_salon
@@ -1949,16 +1917,14 @@
       from: "off"
       to: "on"
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id:
-          - input_boolean.away_mode
-          - light.ceiling_toaleta
-        state: "off"
-      - condition: numeric_state
-        entity_id: sensor.illumination_toaleta
-        below: 40
+    - condition: state
+      entity_id:
+        - input_boolean.away_mode
+        - light.ceiling_toaleta
+      state: "off"
+    - condition: numeric_state
+      entity_id: sensor.illumination_toaleta
+      below: 40
   action:
     - service: light.turn_on
       entity_id: light.ceiling_toaleta
@@ -1999,16 +1965,14 @@
       from: "off"
       to: "on"
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id:
-          - input_boolean.away_mode
-          - light.ceiling_lazienka
-        state: "off"
-      - condition: numeric_state
-        entity_id: sensor.illumination_lazienka
-        below: 40
+    - condition: state
+      entity_id:
+        - input_boolean.away_mode
+        - light.ceiling_lazienka
+      state: "off"
+    - condition: numeric_state
+      entity_id: sensor.illumination_lazienka
+      below: 40
   action:
     - service: light.turn_on
       entity_id: light.ceiling_lazienka
@@ -2049,25 +2013,23 @@
       from: "off"
       to: "on"
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id:
-          - input_boolean.away_mode
-          - light.ceiling_kuchnia
-          - light.leds_salon
-          - light.bulbs_salon
-        state: "off"
-      - condition: numeric_state
-        entity_id: sensor.illumination_kuchnia
-        below: 41
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
-            before_offset: "+00:30:00"
+    - condition: state
+      entity_id:
+        - input_boolean.away_mode
+        - light.ceiling_kuchnia
+        - light.leds_salon
+        - light.bulbs_salon
+      state: "off"
+    - condition: numeric_state
+      entity_id: sensor.illumination_kuchnia
+      below: 41
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
+          before_offset: "+00:30:00"
   action:
     - service: light.turn_on
       entity_id: light.ceiling_kuchnia
@@ -2107,23 +2069,21 @@
     from: "off"
     to: "on"
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id:
-          - input_boolean.away_mode
-          - light.gateway_antresola
-        state: "off"
-      - condition: numeric_state
-        entity_id: sensor.illumination_antresola
-        below: 60
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
-            before_offset: "+00:30:00"
+    - condition: state
+      entity_id:
+        - input_boolean.away_mode
+        - light.gateway_antresola
+      state: "off"
+    - condition: numeric_state
+      entity_id: sensor.illumination_antresola
+      below: 60
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
+          before_offset: "+00:30:00"
   action:
     - service: light.turn_on
       entity_id: light.gateway_antresola
@@ -2153,23 +2113,21 @@
       from: "off"
       to: "on"
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id:
-          - input_boolean.away_mode
-          - light.lightstrip_sypialnia
-        state: "off"
-      - condition: numeric_state
-        entity_id: sensor.illumination_sypialnia
-        below: 3
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
-            before_offset: "+00:30:00"
+    - condition: state
+      entity_id:
+        - input_boolean.away_mode
+        - light.lightstrip_sypialnia
+      state: "off"
+    - condition: numeric_state
+      entity_id: sensor.illumination_sypialnia
+      below: 3
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
+          before_offset: "+00:30:00"
   action:
     - service: light.turn_on
       entity_id: light.lightstrip_sypialnia
@@ -2196,24 +2154,22 @@
       from: "off"
       to: "on"
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id:
-          - light.leds_przedpokoj
-          - light.bulbs_salon
-          - light.leds_salon
-        state: "off"
-      - condition: numeric_state
-        entity_id: sensor.illumination_przedpokoj
-        below: 9
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
-            before_offset: "+00:30:00"
+    - condition: state
+      entity_id:
+        - light.leds_przedpokoj
+        - light.bulbs_salon
+        - light.leds_salon
+      state: "off"
+    - condition: numeric_state
+      entity_id: sensor.illumination_przedpokoj
+      below: 9
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
+          before_offset: "+00:30:00"
   action:
     - service: light.turn_on
       entity_id: light.leds_przedpokoj
@@ -2278,25 +2234,23 @@
       from: "off"
       to: "on"
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id:
-          - input_boolean.away_mode
-          - light.lightstrip_antek
-          - switch.cabinet_antek
-          - input_boolean.antek_lamp_night
-        state: "off"
-      - condition: numeric_state
-        entity_id: sensor.illumination_antek
-        below: 3
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
-            before_offset: "+00:30:00"
+    - condition: state
+      entity_id:
+        - input_boolean.away_mode
+        - light.lightstrip_antek
+        - switch.cabinet_antek
+        - input_boolean.antek_lamp_night
+      state: "off"
+    - condition: numeric_state
+      entity_id: sensor.illumination_antek
+      below: 3
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
+          before_offset: "+00:30:00"
   action:
     - service: script.light_turn_on_antek_leds
     - service: switch.turn_on
@@ -2323,19 +2277,17 @@
       entity_id: binary_sensor.switch_light_antek
       click_type: hold
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id:
-          - input_boolean.away_mode
-          - input_boolean.antek_lamp_night
-        state: "off"
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
+    - condition: state
+      entity_id:
+        - input_boolean.away_mode
+        - input_boolean.antek_lamp_night
+      state: "off"
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
   action:
     - service: light.turn_on
       entity_id: light.lightstrip_antek
@@ -2355,20 +2307,18 @@
       entity_id: binary_sensor.switch_light_antek
       click_type: hold
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id: input_boolean.away_mode
-        state: "off"
-      - condition: state
-        entity_id: input_boolean.antek_lamp_night
-        state: "on"
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
+    - condition: state
+      entity_id: input_boolean.away_mode
+      state: "off"
+    - condition: state
+      entity_id: input_boolean.antek_lamp_night
+      state: "on"
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
   action:
     - service: script.light_turn_on_antek_leds
     - service: input_boolean.turn_off
@@ -2445,26 +2395,27 @@
       from: "off"
       to: "on"
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id:
-          - input_boolean.away_mode
-          - switch.lamp_pracownia
-        state: "off"
-      - condition: numeric_state
-        entity_id: sensor.illumination_pracownia
-        below: 8
-      - condition: state
-        entity_id: input_boolean.light_auto_turn_pracownia
-        state: "on"
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
-            before_offset: "+00:30:00"
+    - condition: state
+      entity_id:
+        - input_boolean.away_mode
+        - switch.lamp_pracownia
+      state: "off"
+    - condition: numeric_state
+      entity_id: sensor.illumination_pracownia
+      below: 8
+    - condition: state
+      entity_id: input_boolean.light_auto_turn_pracownia
+      state: "on"
+    - condition: numeric_state
+      entity_id: sensor.computer_monitor_pracownia
+      below: 4
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
+          before_offset: "+00:30:00"
   action:
     - service: switch.turn_on
       entity_id: switch.lamp_pracownia
@@ -2486,26 +2437,24 @@
       from: "off"
       to: "on"
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id:
-          - input_boolean.away_mode
-          - light.ceiling_gabinet
-        state: "off"
-      - condition: numeric_state
-        entity_id: sensor.illumination_gabinet
-        below: 8
-      - condition: state
-        entity_id: input_boolean.light_auto_turn_gabinet
-        state: "on"
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
-            before_offset: "+00:30:00"
+    - condition: state
+      entity_id:
+        - input_boolean.away_mode
+        - light.ceiling_gabinet
+      state: "off"
+    - condition: numeric_state
+      entity_id: sensor.illumination_gabinet
+      below: 8
+    - condition: state
+      entity_id: input_boolean.light_auto_turn_gabinet
+      state: "on"
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
+          before_offset: "+00:30:00"
   action:
     - service: light.turn_on
       entity_id: light.ceiling_gabinet
@@ -2553,27 +2502,25 @@
       from: "off"
       to: "on"
   condition:
-    condition: and
-    conditions:
-      - condition: state
-        entity_id:
-          - input_boolean.away_mode
-          - light.gateway_goscinny
-        state: "off"
-      - "{{ is_state('media_player.mibox_goscinny', 'off') or is_state('media_player.mibox_goscinny', 'unavailable') }}"
-      - condition: numeric_state
-        entity_id: sensor.illumination_goscinny
-        below: 9
-      - condition: state
-        entity_id: input_boolean.light_auto_turn_goscinny
-        state: "on"
-      - condition: or
-        conditions:
-          - condition: sun
-            after: sunset
-          - condition: sun
-            before: sunrise
-            before_offset: "+00:30:00"
+    - condition: state
+      entity_id:
+        - input_boolean.away_mode
+        - light.gateway_goscinny
+      state: "off"
+    - "{{ is_state('media_player.mibox_goscinny', 'off') or is_state('media_player.mibox_goscinny', 'unavailable') }}"
+    - condition: numeric_state
+      entity_id: sensor.illumination_goscinny
+      below: 9
+    - condition: state
+      entity_id: input_boolean.light_auto_turn_goscinny
+      state: "on"
+    - condition: or
+      conditions:
+        - condition: sun
+          after: sunset
+        - condition: sun
+          before: sunrise
+          before_offset: "+00:30:00"
   action:
     - service: light.turn_on
       entity_id: light.gateway_goscinny
@@ -2824,7 +2771,8 @@
     entity_id: input_boolean.harmony_command
     state: "off"
   action:
-    service: script.harmony_tv_off
+    service: remote.turn_off
+    entity_id: remote.salon
 
 - id: hass_starts_telewizja
   alias: "HASS Starts Telewizja"
@@ -2837,7 +2785,8 @@
     entity_id: input_boolean.harmony_command
     state: "off"
   action:
-    service: script.harmony_telewizja
+    service: switch.turn_on
+    entity_id: switch.harmony_telewizja
 
 - id: hass_starts_filmy
   alias: "HASS Starts Filmy"
@@ -2850,7 +2799,8 @@
     entity_id: input_boolean.harmony_command
     state: "off"
   action:
-    service: script.harmony_filmy
+    service: switch.turn_on
+    entity_id: switch.harmony_filmy
 
 - id: hass_starts_muzyka
   alias: "HASS Starts Muzyka"
@@ -2863,7 +2813,8 @@
     entity_id: input_boolean.harmony_command
     state: "off"
   action:
-    service: script.harmony_muzyka
+    service: switch.turn_on
+    entity_id: switch.harmony_muzyka
 
 - id: hass_starts_smart_tv
   alias: "HASS Starts Smart TV"
@@ -2876,7 +2827,8 @@
     entity_id: input_boolean.harmony_command
     state: "off"
   action:
-    service: script.harmony_smart_tv
+    service: switch.turn_on
+    entity_id: switch.harmony_smart_tv
 
 - id: hass_starts_fire_tv
   alias: "HASS Starts Fire TV"
@@ -2889,7 +2841,8 @@
     entity_id: input_boolean.harmony_command
     state: "off"
   action:
-    service: script.harmony_fire_tv
+    service: switch.turn_on
+    entity_id: switch.harmony_fire_tv
 
 - id: hass_starts_playstation
   alias: "HASS Starts PlayStation"
@@ -2902,7 +2855,8 @@
     entity_id: input_boolean.harmony_command
     state: "off"
   action:
-    - service: script.harmony_playstation
+    - service: switch.turn_on
+      entity_id: switch.harmony_playstation
     - service: media_player.turn_on
       entity_id: media_player.playstation_salon
 
@@ -2917,7 +2871,8 @@
     entity_id: input_boolean.harmony_command
     state: "off"
   action:
-    service: script.harmony_xbox
+    service: switch.turn_on
+    entity_id: switch.harmony_xbox
 
 ##################################################################################################
 

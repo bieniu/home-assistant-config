@@ -1,36 +1,10 @@
-- platform: statistics
+- platform: filter
   entity_id: sensor.aqi_raw_salon
   name: "AQI Salon"
-  precision: 0
-  sampling_size: 10
-
-- platform: statistics
-  entity_id: sensor.aqi_raw_salon
-  name: "AQI Salon 8"
-  precision: 0
-  sampling_size: 8
-
-- platform: statistics
-  entity_id: sensor.aqi_raw_salon
-  name: "AQI Salon 6"
-  precision: 0
-  sampling_size: 6
-
-- platform: filter
-  entity_id: sensor.aqi_raw_salon
-  name: "AQI Salon moving average 30"
   filters:
     filter: time_simple_moving_average
     precision: 0
-    window_size: "00:30"
-
-- platform: filter
-  entity_id: sensor.aqi_raw_salon
-  name: "AQI Salon moving average 20"
-  filters:
-    filter: time_simple_moving_average
-    precision: 0
-    window_size: "00:20"
+    window_size: "00:40"
 
 - platform: moon
 
@@ -125,7 +99,7 @@
   type: mean
   name: "Temperature Indoor"
   entity_ids:
-    - sensor.temperature_kuchnia
+    - sensor.temperature_toaleta
     - sensor.temperature_salon
     - sensor.temperature_antresola
     - sensor.temperature_gabinet
@@ -141,7 +115,7 @@
   type: mean
   name: "Humidity Indoor"
   entity_ids:
-    - sensor.humidity_kuchnia
+    - sensor.humidity_toaleta
     - sensor.humidity_salon
     - sensor.humidity_antresola
     - sensor.humidity_gabinet
@@ -207,8 +181,22 @@
           0
         {% endif %}
 
+    humidifier_water_level_test:
+      friendly_name: "Poziom wody"
+      unit_of_measurement: "%"
+      value_template: >-
+        {% if state_attr('fan.humidifier_salon', 'depth') is number %}
+          {% if state_attr('fan.humidifier_salon', 'depth') == 127 %}
+            0
+          {% else %}
+            {{ (state_attr('fan.humidifier_salon', 'depth') / 125 * 100) | round }}
+          {% endif %}
+        {% else %}
+          0
+        {% endif %}
+
     aqi_raw_salon:
-      value_template: "{{ state_attr('fan.airpurifier_salon', 'aqi') }}"
+      value_template: "{{ state_attr('fan.air_purifier_salon', 'aqi') }}"
       unit_of_measurement: " "
 
     aqi_info_salon:

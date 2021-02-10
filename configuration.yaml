@@ -89,7 +89,7 @@ fan:
     token: !secret humidifier_token
 
   - platform: xiaomi_miio_airpurifier
-    name: Airpurifier Salon
+    name: Air Purifier Salon
     model: zhimi.airpurifier.mb3
     host: !secret airpurifier_hostname
     token: !secret airpurifier_token
@@ -163,3 +163,10 @@ panel_custom:
       ranker: network-simplex
       edge_visibility: relevant
       grouping: z-wave
+
+device_tracker:
+  - platform: traccar
+    host: localhost
+    port: 18682
+    username: !secret traccar_email
+    password: !secret traccar_password
