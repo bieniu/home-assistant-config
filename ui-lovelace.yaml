@@ -411,6 +411,7 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_gabinet
+              - light.desk_lamp_gabinet
               - light.ceiling_gabinet
               - switch.stacjonarny
       - type: vertical-stack
@@ -478,8 +479,8 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_sypialnia
+              - light.double_ceiling_sypialnia
               - light.lightstrip_sypialnia
-              # - switch.tree_sypialnia
               - type: custom:mini-media-player
                 entity: media_player.echo_dot_sypialnia
                 icon: mdi:amazon-alexa
@@ -791,7 +792,8 @@ views:
           - binary_sensor.yeelight_yldp02yl_b1b6aa_status
           - binary_sensor.yeelight_yldd01yl_860cfa_status
           - binary_sensor.yeelight_yldd01yl_6707fc_status
-          - binary_sensor.yeelight_mjtd01syl_status
+          - binary_sensor.yeelight_mjtd01syl_94e1f5_status
+          - binary_sensor.yeelight_mjtd01syl_4fbaa2_status
       - type: entities
         title: "IoT - sensory"
         show_header_toggle: false
@@ -824,6 +826,7 @@ views:
           - binary_sensor.shelly_1l_ad1b60_status
           - binary_sensor.shelly_1l_61c9fd_status
           - binary_sensor.shelly_1l_ad365e_status
+          - binary_sensor.shelly_1l_acedf2_status
           - binary_sensor.shelly_2_5b2604_status
           - binary_sensor.shelly_plug_s_7aecf4_status
   - id: energy

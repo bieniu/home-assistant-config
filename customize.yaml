@@ -136,7 +136,9 @@ binary_sensor.yeelight_yldp02yl_b1b6aa_status:
   location: "antresola"
 binary_sensor.shelly_motion_97664e_status:
   icon: mdi:motion-sensor
-binary_sensor.yeelight_mjtd01syl_status:
+binary_sensor.yeelight_mjtd01syl_94e1f5_status:
+  icon: mdi:desk-lamp
+binary_sensor.yeelight_mjtd01syl_4fbaa2_status:
   icon: mdi:desk-lamp
 
 #### FANS ####
@@ -339,6 +341,9 @@ binary_sensor.shelly_1l_aceb5f_overtemperature:
 
 binary_sensor.shelly_1l_ad1b60_overtemperature:
   relay: light.ceiling_lazienka
+
+binary_sensor.shelly_1l_acedf2_overtemperature:
+  relay: light.double_ceiling_sypialnia
 
 sensor.eurotronic_air_quality_sensor_temperature:
   device_class: "temperature"

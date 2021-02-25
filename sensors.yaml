@@ -259,6 +259,7 @@
            states('sensor.light_gabinet_power') | float +
            states('sensor.light_kuchnia_power') | float +
            states('sensor.light_toaleta_power') | float +
+           states('sensor.light_sypialnia_power') | float +
            states('sensor.christmas_lights_balkon_gora_power') | float +
            states('sensor.lights_stairs_antresola_power') | float +
            states('sensor.servers_gabinet_power') | float +

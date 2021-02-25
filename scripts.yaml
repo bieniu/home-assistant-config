@@ -15,11 +15,13 @@ devices_away_mode:
     - input_boolean.antek_lamp_night
     - switch.tree_antek
     - light.ceiling_gabinet
+    - light.desk_lamp_gabinet
     - light.ceiling_kuchnia
     - light.ceiling_lazienka
     - light.desk_lamp_antek
     - light.ceiling_toaleta
     - light.ceiling_antek
+    - light.double_ceiling_sypialnia
   mode: single
   alias: 'Devices: away mode'
   icon: mdi:home-export-outline

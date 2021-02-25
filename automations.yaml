@@ -153,7 +153,7 @@
         message: >
           {% if trigger.to_state.state | int == 1 %}
             {%- for repo in state_attr(trigger.entity_id, 'addons') %}
-              Dostępna jest aktualizacja dodatku {{ repo.name }} do wersji {{ repo.version }}.
+              Dostępna jest aktualizacja dodatku {{ repo.name }} do wersji {{ repo.version_latest }}.
             {%- endfor %}
           {%- else %}
             Dostępne są aktualizacje dodatków:
@@ -806,6 +806,7 @@
         - binary_sensor.shelly_1l_ad1b60_overtemperature
         - binary_sensor.shelly_1l_61c9fd_overtemperature
         - binary_sensor.shelly_1l_ad365e_overtemperature
+        - binary_sensor.shelly_1l_acedf2_overtemperature
         - binary_sensor.shelly_plug_s_7aecf4_overtemperature
       from: "off"
       to: "on"
@@ -1294,7 +1295,7 @@
     from: "off"
     to: "on"
     for:
-      minutes: 15
+      minutes: 10
   condition:
     - condition: state
       entity_id: input_boolean.heating_season
@@ -1649,9 +1650,9 @@
     service: switch.turn_on
     entity_id: switch.adaptive_lighting_salon
 
-# wyłączenie oświetlenia po wyjściu z domu
 - id: light_turn_off_when_away_mode
   alias: "Light Turn Off When Away Mode"
+  description: "wyłącz oświetlenie gdy domownicy wyjdą z domu"
   trigger:
     platform: state
     entity_id: input_boolean.away_mode
@@ -1661,9 +1662,9 @@
     service: script.devices_away_mode
 
 ## SALON ##
-# restart żarówek w salonie gdy niedostępne
 - id: light_restart_bulbs_salon_when_unavailable
   alias: "Light Restart Bulbs Salon When Unavailable"
+  description: "zrestartuj żarówki w salonie gdy staną się niedostępne"
   trigger:
     - platform: state
       entity_id: light.bulb_salon_1
@@ -1725,9 +1726,9 @@
       - light.lamp_salon
       - fan.pedestal_salon
 
-# automatyczna scena oświetlenia w salonie
 - id: light_scene_salon_auto_when_bulbs_turn_on
   alias: "Light Scene Salon Auto When Bulbs Turn On"
+  description: "wybierz automatyczną scenę oświetlenia w salonie po włączeniu światła"
   trigger:
     platform: state
     entity_id: light.bulbs_salon
@@ -1738,9 +1739,9 @@
       entity_id: input_select.light_scenes_salon
       option: "automatyczny"
 
-# wybór sceny oświetlenia w salonie gdy zarówki włączone
 - id: light_scene_salon
   alias: "Light Scene Salon"
+  description: "wybierz scenę oświetlenia w salonie"
   trigger:
     platform: state
     entity_id: input_select.light_scenes_salon
@@ -1846,9 +1847,9 @@
       data:
         transition: 10
 
-# Scena oświetlenia salonu film po włączeniu filmy/gry
 - id: light_scene_film
   alias: "Light Scene Film"
+  description: "włącz scenę oświetlenia film po włączeniu filmu/gry/trybu smart"
   trigger:
     - platform: state
       entity_id: media_player.dune_salon
@@ -1877,9 +1878,9 @@
       entity_id: input_select.light_scenes_salon
       option: "film"
 
-# Scena oświetlenia salonu auto po wyłączeniu filmu/gry
 - id: light_scene_auto_after_film
   alias: "Light Scene Auto After Film"
+  description: "wybierz automatyczną scenę oświetlenia w salonie po wyłączeniu filmu/gry/trybu smart"
   trigger:
     - platform: state
       entity_id: media_player.dune_salon
@@ -1938,14 +1939,14 @@
 
 - id: light_turn_off_toaleta_light_when_no_motion
   alias: "Light Turn Off Toaleta Light When No Motion"
-  description: "wyłącz światło w toalecie jak brak ruchu przez 20 min"
+  description: "wyłącz światło w toalecie jak brak ruchu przez 10 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_toaleta
     from: "on"
     to: "off"
     for:
-      minutes: 20
+      minutes: 10
   condition:
     condition: state
     entity_id: light.ceiling_toaleta
@@ -1986,14 +1987,14 @@
 
 - id: light_turn_off_lazienka_light_when_no_motion
   alias: "Light Turn Off Lazienka Light When No Motion"
-  description: "wyłącz światło w łazience jak brak ruchu przez 20 min"
+  description: "wyłącz światło w łazience jak brak ruchu przez 10 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_lazienka
     from: "on"
     to: "off"
     for:
-      minutes: 20
+      minutes: 10
   condition:
     condition: state
     entity_id: light.ceiling_lazienka
@@ -2043,14 +2044,14 @@
 
 - id: light_turn_off_kuchnia_light_when_no_motion
   alias: "Light Turn Off Kuchnia Light When No Motion"
-  description: "wyłącz światło w kuchni jak brak ruchu przez 20 min"
+  description: "wyłącz światło w kuchni jak brak ruchu przez 10 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_kuchnia
     from: "on"
     to: "off"
     for:
-      minutes: 20
+      minutes: 10
   condition:
     condition: state
     entity_id: light.ceiling_kuchnia
@@ -2104,6 +2105,24 @@
       entity_id: light.gateway_antresola
 
 ## SYPIALNIA ##
+- id: light_turn_off_sypialnia_light_when_no_motion
+  alias: "Light Turn Off Sypialnia Light When No Motion"
+  description: "wyłącz światło w sypialni jak brak ruchu przez 10 min"
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_sypialnia
+    from: "on"
+    to: "off"
+    for:
+      minutes: 10
+  condition:
+    condition: state
+    entity_id: light.double_ceiling_sypialnia
+    state: "on"
+  action:
+    service: light.turn_off
+    entity_id: light.double_ceiling_sypialnia
+
 - id: light_turn_on_sypialnia_leds_when_dark_and_motion
   alias: "Light Turn On Sypialnia LEDs When Dark And Motion"
   description: "włącz LEDy w sypialni jak pojawi się ruch i jest ciemno"
@@ -2183,14 +2202,14 @@
 
 - id: light_turn_off_przedpokoj_leds_when_no_motion
   alias: "Light Turn Off Przedpokoj LEDs When No Motion"
-  description: "wyłącz LEDy na przedpokoju jak brak ruchu przez 20 min"
+  description: "wyłącz LEDy na przedpokoju jak brak ruchu przez 10 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_przedpokoj
     from: "on"
     to: "off"
     for:
-      minutes: 20
+      minutes: 10
   condition:
     condition: state
     entity_id: light.leds_przedpokoj
@@ -2202,14 +2221,14 @@
 ## POKÓJ ANTKA ##
 - id: light_turn_off_antek_lights_when_no_motion
   alias: "Light Turn Off Antek Lights When No Motion"
-  description: "wyłącz światła w pokoju Antka jak brak ruchu przez 20 min"
+  description: "wyłącz światła w pokoju Antka jak brak ruchu przez 10 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_antek
     from: "on"
     to: "off"
     for:
-      minutes: 20
+      minutes: 10
   condition:
     condition: or
     conditions:
@@ -2240,6 +2259,7 @@
         - light.lightstrip_antek
         - switch.cabinet_antek
         - input_boolean.antek_lamp_night
+        - light.ceiling_antek
       state: "off"
     - condition: numeric_state
       entity_id: sensor.illumination_antek
@@ -2297,9 +2317,9 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.antek_lamp_night
 
-# wyłączanie LEDów w pokoju Antka z trybu nocnego
 - id: light_turn_off_antek_leds_night
   alias: "Light Turn Off Antek LEDs Night"
+  description: "wyłącz LEDy w pokoju Antka po zakończeniu trybu nocnego"
   trigger:
     platform: event
     event_type: xiaomi_aqara.click
@@ -2324,9 +2344,9 @@
     - service: input_boolean.turn_off
       entity_id: input_boolean.antek_lamp_night
 
-# wyłączanie LEDów w pokoju Antka jak wschód słońca
 - id: light_turn_off_antek_leds_at_sunrise
   alias: "Light Turn Off Antek LEDs At Sunrise"
+  description: "wyłącz LEDy w pokoju Antka o wschodzie słońca"
   trigger:
     platform: sun
     event: sunrise
@@ -2371,9 +2391,9 @@
     service: switch.toggle
     entity_id: switch.cabinet_antek
 
-# wyłączanie oświetlenia gabloty w pokoju Antka o 22, 23, 00
 - id: light_turn_off_antek_cabinet_at_night
   alias: "Light Turn Off Antek Cabinet At Night"
+  description: "wyłącz na noc gablotę w pokoju Antka"
   trigger:
     - platform: time
       at: "00:00:00"
@@ -2428,9 +2448,9 @@
       entity_id: switch.lamp_pracownia
 
 #### GABINET ####
-- id: light_turn_on_gabinet_light_when_dark_and_motion
-  alias: "Light Turn On Gabinet Light When Dark And Motion"
-  description: "włącz światło w gabinecie jak pojawi się ruch i jest ciemno"
+- id: light_turn_on_gabinet_desk_lamp_when_dark_and_motion
+  alias: "Light Turn On Gabinet Desk Lamp When Dark And Motion"
+  description: "włącz lampkę biurkową w gabinecie jak pojawi się ruch i jest ciemno"
   trigger:
     - platform: state
       entity_id: binary_sensor.motion_gabinet
@@ -2441,6 +2461,7 @@
       entity_id:
         - input_boolean.away_mode
         - light.ceiling_gabinet
+        - light.desk_lamp_gabinet
       state: "off"
     - condition: numeric_state
       entity_id: sensor.illumination_gabinet
@@ -2457,32 +2478,30 @@
           before_offset: "+00:30:00"
   action:
     - service: light.turn_on
-      entity_id: light.ceiling_gabinet
+      entity_id: light.desk_lamp_gabinet
+      data:
+        color_temp: 370
+        brightness: 180
     - wait_for_trigger:
-        - platform: state
-          entity_id: binary_sensor.motion_gabinet
-          from: "on"
-          to: "off"
-        - platform: state
-          entity_id: switch.stacjonarny
-          from: "on"
-          to: "off"
-    - condition: state
-      entity_id: switch.stacjonarny
-      state: "off"
+        platform: state
+        entity_id: binary_sensor.motion_gabinet
+        from: "on"
+        to: "off"
     - service: light.turn_off
-      entity_id: light.ceiling_gabinet
+      entity_id: light.desk_lamp_gabinet
+      data:
+        transition: 10
 
 - id: light_turn_off_gabinet_light_when_no_motion
   alias: "Light Turn Off Gabinet Light When No Motion"
-  description: "wyłącz światło w gabinecie jak brak ruchu przez 20 min"
+  description: "wyłącz światło w gabinecie jak brak ruchu przez 10 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_gabinet
     from: "on"
     to: "off"
     for:
-      minutes: 20
+      minutes: 10
   condition:
     condition: state
     entity_id: light.ceiling_gabinet
@@ -2492,7 +2511,6 @@
     entity_id: light.ceiling_gabinet
 
 #### POKÓJ GOŚCINNY ####
-# włączanie lampki w pokoju gościnnym jak ruch i ciemno
 - id: light_turn_on_goscinny_lamp_when_dark_and_motion
   alias: "Light Turn On Goscinny Lamp When Dark And Motion"
   description: "włącz lampkę w pokoju gościnnym jak pojawi się ruch i jest ciemno"
@@ -2535,9 +2553,9 @@
 ##################################################################################################
 
 #### HARMONY #####################################################################################
-# poprawianie przełączania wejść amplitunera
 - id: denon_bravia_input_helper
   alias: "Denon Bravia Input Switch Helper"
+  description: "pomocnik przełączanie wejść w aplitunerze i telewizorze"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2583,9 +2601,9 @@
             HDMI 1
           {% endif %}
 
-# wyłączenie telewizora jeśli Harmony przejdzie do aktywności PowerOff
 - id: harmony_turn_off_television
   alias: "Harmony Turn Off Television"
+  description: "wyłącz telewizor jeśli nie wyłączył go Harmony"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2603,9 +2621,9 @@
     - service: media_player.turn_off
       entity_id: media_player.bravia_salon
 
-# wyłączenie PlayStation jeśli Harmony przejdzie do aktywności innej niż PlayStation
 - id: harmony_turn_off_playstation
   alias: "Harmony Turn Off PlayStation"
+  description: "wyłącz PlayStation jeśli nie wyłączył go Harmony"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2624,6 +2642,7 @@
 
 - id: harmony_turn_off_tv
   alias: "Harmony Turn Off TV"
+  description: "Harmony zmienia aktywność na PowerOff"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2641,6 +2660,7 @@
 
 - id: harmony_starts_telewizja
   alias: "Harmony Starts Telewizja"
+  description: "Harmony zmienia aktywność na Telewizja"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2658,6 +2678,7 @@
 
 - id: harmony_starts_filmy
   alias: "Harmony Starts Filmy"
+  description: "Harmony zmienia aktywność na Filmy"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2675,6 +2696,7 @@
 
 - id: harmony_starts_muzyka
   alias: "Harmony Starts Muzyka"
+  description: "Harmony zmienia aktywność na Muzyka"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2692,6 +2714,7 @@
 
 - id: harmony_starts_smart_tv
   alias: "Harmony Starts Smart TV"
+  description: "Harmony zmienia aktywność na Smart TV"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2709,6 +2732,7 @@
 
 - id: harmony_starts_fire_tv
   alias: "Harmony Starts Fire TV"
+  description: "Harmony zmienia aktywność na Fire TV"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2726,11 +2750,12 @@
 
 - id: harmony_starts_playstation
   alias: "Harmony Starts PlayStation"
+  description: "Harmony zmienia aktywność na PlayStation"
   trigger:
     platform: state
     entity_id: remote.salon
     attribute: current_activity
-    to: "Playstation"
+    to: "PlayStation"
   action:
     - service: input_boolean.turn_on
       entity_id: input_boolean.harmony_command
@@ -2745,6 +2770,7 @@
 
 - id: harmony_starts_xbox
   alias: "Harmony Starts Xbox"
+  description: "Harmony zmienia aktywność na Xbox"
   trigger:
     platform: state
     entity_id: remote.salon
@@ -2760,8 +2786,9 @@
     - service: input_boolean.turn_off
       entity_id: input_boolean.harmony_command
 
-- id: hass_turn_off_tv
-  alias: "HASS Turn Off TV"
+- id: ha_turns_off_tv
+  alias: "HA Turns Off TV"
+  description: "HA zmienia aktywność na PowerOff"
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
@@ -2774,8 +2801,9 @@
     service: remote.turn_off
     entity_id: remote.salon
 
-- id: hass_starts_telewizja
-  alias: "HASS Starts Telewizja"
+- id: ha_starts_telewizja
+  alias: "HA Starts Telewizja"
+  description: "HA zmienia aktywność na Telewizja"
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
@@ -2788,8 +2816,9 @@
     service: switch.turn_on
     entity_id: switch.harmony_telewizja
 
-- id: hass_starts_filmy
-  alias: "HASS Starts Filmy"
+- id: ha_starts_filmy
+  alias: "HA Starts Filmy"
+  description: "HA zmienia aktywność na Filmy"
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
@@ -2802,8 +2831,9 @@
     service: switch.turn_on
     entity_id: switch.harmony_filmy
 
-- id: hass_starts_muzyka
-  alias: "HASS Starts Muzyka"
+- id: ha_starts_muzyka
+  alias: "HA Starts Muzyka"
+  description: "HA zmienia aktywność na Muzyka"
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
@@ -2816,8 +2846,9 @@
     service: switch.turn_on
     entity_id: switch.harmony_muzyka
 
-- id: hass_starts_smart_tv
-  alias: "HASS Starts Smart TV"
+- id: ha_starts_smart_tv
+  alias: "HA Starts Smart TV"
+  description: "HA zmienia aktywność na Smart TV"
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
@@ -2830,8 +2861,9 @@
     service: switch.turn_on
     entity_id: switch.harmony_smart_tv
 
-- id: hass_starts_fire_tv
-  alias: "HASS Starts Fire TV"
+- id: ha_starts_fire_tv
+  alias: "HA Starts Fire TV"
+  description: "HA zmienia aktywność na Fire TV"
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
@@ -2844,8 +2876,9 @@
     service: switch.turn_on
     entity_id: switch.harmony_fire_tv
 
-- id: hass_starts_playstation
-  alias: "HASS Starts PlayStation"
+- id: ha_starts_playstation
+  alias: "HA Starts PlayStation"
+  description: "HA zmienia aktywność na PalyStation"
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
@@ -2860,8 +2893,9 @@
     - service: media_player.turn_on
       entity_id: media_player.playstation_salon
 
-- id: hass_starts_xbox
-  alias: "HASS Starts Xbox"
+- id: ha_starts_xbox
+  alias: "HA Starts Xbox"
+  description: "HA zmienia aktywność na Xbox"
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
@@ -2877,9 +2911,9 @@
 ##################################################################################################
 
 #### CLIMATE ######################################################################################
-# włączenie nawilżacza jak wilgotność poniżej 39% i sezon grzewczy
 - id: humidification_start
   alias: "Humidification Start"
+  description: "włącz nawilżanie jak wilgotność spadnie poniżej ustawionego poziomu"
   trigger:
     platform: template
     value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float }}"
@@ -2900,9 +2934,9 @@
     service: fan.turn_on
     entity_id: fan.humidifier_salon
 
-# wyłączenie nawilżacza jak sezon grzewczy i wilgotność powyżej 41% lub w zbiorniku mniej niż 6%
 - id: humidification_stop
   alias: "Humidification Stop"
+  description: "wyłącz nawilżanie jak wilgotność wzroścnie powyżej ustawionego poziomu lub zbiotrnik pusty"
   trigger:
     - platform: template
       value_template: "{{ states('sensor.humidity_salon') | float > states('input_select.target_humidity') | float + 1 }}"
@@ -2980,6 +3014,7 @@
 
 - id: humidification_outdoor_temp_above_10
   alias: "Humidification Outdoor Temp Above 10"
+  description: "ustaw wymagany poziom wilgotności gdy temperatura zewnętrzna większa niż 10"
   trigger:
     platform: numeric_state
     entity_id: sensor.temperature_outdoor
@@ -2996,6 +3031,7 @@
 
 - id: humidification_outdoor_temp_below_10
   alias: "Humidification Outdoor Temp Below 10"
+  description: "ustaw wymagany poziom wilgotności gdy temperatura zewnętrzna niższa niż 10"
   trigger:
     platform: numeric_state
     entity_id: sensor.temperature_outdoor
@@ -3015,6 +3051,7 @@
 #### OTHERS ######################################################################################
 - id: log_level
   alias: "Log Level"
+  description: "ustaw poziom logowania"
   trigger:
     platform: state
     entity_id: input_select.log_level
@@ -3025,6 +3062,7 @@
 
 - id: shellies_announce
   alias: "Shellies Announce"
+  description: "wyślij komendę announce do urządzeń Shelly"
   trigger:
     - platform: homeassistant
       event: start
@@ -3038,6 +3076,7 @@
 
 - id: shellies_discovery
   alias: "Shellies Discovery"
+  description: "uruchom skrypt Shellies Discovery"
   mode: queued
   max: 999
   trigger:
@@ -3071,9 +3110,12 @@
         relay-0: "light"
       shelly1l-84CCA8AD365E:
         relay-0: "light"
+      shelly1l-84CCA8ACEDF2:
+        relay-0: "light"
 
 - id: frontend_set_theme
   alias: "Frontend Set Theme"
+  description: "ustaw motyw frontendu"
   trigger:
     platform: homeassistant
     event: start
@@ -3084,6 +3126,7 @@
 
 - id: hassio_snapshot
   alias: "Hassio Snapshot"
+  description: "wykonaj hassio snapshot"
   trigger:
     platform: time
     at: "02:00:00"
