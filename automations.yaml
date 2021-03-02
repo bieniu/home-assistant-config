@@ -1252,8 +1252,8 @@
         - group.windows
       state: "off"
   action:
-    - service: fan.turn_off
-      entity_id: fan.humidifier_salon
+    - service: humidifier.turn_off
+      entity_id: humidifier.xiaomi_salon
     - condition: state
       entity_id: input_boolean.guests
       state: "off"
@@ -1406,8 +1406,8 @@
             type: "ios"
     - condition: template
       value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float and states('sensor.humidifier_water_level') | int > 5 }}"
-    - service: fan.turn_on
-      entity_id: fan.humidifier_salon
+    - service: humidifier.turn_on
+      entity_id: humidifier.xiaomi_salon
 
 - id: windows_opened
   alias: "Windows Opened"
@@ -2928,11 +2928,11 @@
       entity_id:
         - input_boolean.heating_airing
         - input_boolean.away_mode
-        - fan.humidifier_salon
+        - humidifier.xiaomi_salon
       state: "off"
   action:
-    service: fan.turn_on
-    entity_id: fan.humidifier_salon
+    service: humidifier.turn_on
+    entity_id: humidifier.xiaomi_salon
 
 - id: humidification_stop
   alias: "Humidification Stop"
@@ -2947,11 +2947,11 @@
     - condition: state
       entity_id:
         - input_boolean.heating_season
-        - fan.humidifier_salon
+        - humidifier.xiaomi_salon
       state: "on"
   action:
-    - service: fan.turn_off
-      entity_id: fan.humidifier_salon
+    - service: humidifier.turn_off
+      entity_id: humidifier.xiaomi_salon
     - condition: numeric_state
       entity_id: sensor.humidifier_water_level
       below: 6

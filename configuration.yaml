@@ -81,19 +81,7 @@ input_number:
 input_text:
 input_datetime:
 
-fan:
-  - platform: xiaomi_miio_airpurifier
-    name: Humidifier Salon
-    model: zhimi.humidifier.ca1
-    host: !secret humidifier_hostname
-    token: !secret humidifier_token
-
-  - platform: xiaomi_miio_airpurifier
-    name: Air Purifier Salon
-    model: zhimi.airpurifier.mb3
-    host: !secret airpurifier_hostname
-    token: !secret airpurifier_token
-
+# fan:
   # - platform: xiaomi_miio_airpurifier
   #   model: dmaker.fan.p5
   #   host: !secret fan_hostname
