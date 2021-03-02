@@ -35,25 +35,26 @@
 * Sonoff Basic Switches [[ESPHome](https://esphome.io) firmware]
 * Sonoff S26 Plug [[ESPHome](https://esphome.io) firmware]
 * BlitzWolf BW-SHP6 Plugs [[ESPHome](https://esphome.io) firmware]
-* [Shelly 1](https://shelly.cloud/products/shelly-1-smart-home-automation-relay/) via MQTT
-* [Shelly 1L](https://shelly.cloud/products/shelly-1l-single-wire-smart-home-automation-relay/) via MQTT
-* Shelly 2 via MQTT
-* [Shelly Plug S](https://shelly.cloud/products/shelly-plug-s-smart-home-automation-device/) via MQTT
+* [Shelly 1](https://shelly.cloud/products/shelly-1-smart-home-automation-relay/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
+* [Shelly 1L](https://shelly.cloud/products/shelly-1l-single-wire-smart-home-automation-relay/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
+* Shelly 2 via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
+* [Shelly Plug S](https://shelly.cloud/products/shelly-plug-s-smart-home-automation-device/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 
 ## Sensors
 
 * Wemos D1 mini + MH-Z19B [[ESPHome](https://esphome.io) firmware]
-* [Shelly H&T](https://shelly.cloud/products/shelly-humidity-temperature-smart-home-automation-sensor/) via MQTT
-* [Shelly Flood](https://shelly.cloud/products/shelly-flood-smart-home-automation-sensor/) via MQTT
-* [Shelly Motion](https://shelly.cloud/ifa-2020-products/) via MQTT
+* [Shelly H&T](https://shelly.cloud/products/shelly-humidity-temperature-smart-home-automation-sensor/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
+* [Shelly Flood](https://shelly.cloud/products/shelly-flood-smart-home-automation-sensor/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
+* [Shelly Motion](https://shelly.cloud/ifa-2020-products/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 
 ## Other Integrated Devices
 
 * Logitech Harmony Ultimate
 * Denon AVR-X2100W
 * PlayStation 4 Pro
-* Xiaomi Mi Smart Humidifier CA1
+* Xiaomi Mi Humidifier CA1
 * Xiaomi Mi Pedestal Fan 1X
+* Xiaomi Mi Air Purifier 3H
 * Xiaomi Mi Box 4K
 * Amazon Fire TV Stick 4K
 * Dune BD Prime 3.0
@@ -72,8 +73,6 @@
 * [Alexa Media Player](https://github.com/custom-components/alexa_media_player)
 * [GIOS](https://github.com/bieniu/ha-gios)
 * [HACS](https://github.com/custom-components/hacs)
-* [iPhone Detect](https://github.com/mudape/iphonedetect)
-* [Xiaomi Mi Smart Pedestal Fan](https://github.com/syssi/xiaomi_fan)
 * [Blitzortung.org Lightning Detector](https://github.com/mrk-its/homeassistant-blitzortung)
 
 ## Lovelace Custom Cards
@@ -86,15 +85,6 @@
 * [mini-graph-card](https://github.com/kalkih/mini-graph-card)
 * [mini-media-player](https://github.com/kalkih/mini-media-player)
 * [simple=weather-card](https://github.com/kalkih/simple-weather-card)
-
-## AppDaemon
-
-* [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/ha-ad-thermostats-update)
-
-## Python Scripts
-
-* [Update Z-Wave radiator thermostats states and current temperature](https://github.com/bieniu/ha-thermostat-update)
-* [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 
 ## Screenshots
 
