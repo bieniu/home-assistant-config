@@ -66,7 +66,7 @@
       friendly_name: "Synology DS110j"
 
     nuc_status:
-      value_template: "{{ is_state('device_tracker.intel_nuc', 'home') }}"
+      value_template: "{{ is_state('device_tracker.nuc', 'home') }}"
       friendly_name: "Intel NUC 5CPYH"
 
     raspberry_status:
@@ -97,8 +97,8 @@
       value_template: "{{ is_state('device_tracker.fingbox', 'home') }}"
       friendly_name: "Fingbox"
 
-    harmonyhub_status:
-      value_template: "{{ is_state('device_tracker.harmonyhub', 'home') }}"
+    harmony_status:
+      value_template: "{{ is_state('device_tracker.harmony', 'home') }}"
       friendly_name: "Logitech Harmony Hub"
 
     oneplus_status:
@@ -290,33 +290,33 @@
       value_template: "{{ is_state('device_tracker.wemos_d1_mini_1c91ea', 'home') }}"
 
     yeelight_mjtd01syl_94e1f5_status:
-      friendly_name: "Xiaomi Mi Led Desk Lamp 1S [94E1F5]"
+      friendly_name: "Yeelight Desk Lamp 1S [94E1F5]"
       value_template: "{{ is_state('device_tracker.yeelight_mjtd01syl_94e1f5', 'home') }}"
 
     yeelight_mjtd01syl_4fbaa2_status:
-      friendly_name: "Xiaomi Mi Led Desk Lamp 1S [4FBAA2]"
+      friendly_name: "Yeelight Desk Lamp 1S [4FBAA2]"
       value_template: "{{ is_state('device_tracker.yeelight_mjtd01syl_4fbaa2', 'home') }}"
 
     yeelight_yldp06yl_7cafc6_status:
-      friendly_name: "Yeelight YLDP06YL [7CAFC6]"
+      friendly_name: "Yeelight Color Bulb 2 [7CAFC6]"
       value_template: "{{ is_state('device_tracker.yeelight_yldp06yl_7cafc6', 'home') }}"
 
     yeelight_yldp06yl_84be7a_status:
-      friendly_name: "Yeelight YLDP06YL [84BE7A]"
+      friendly_name: "Yeelight Color Bulb 2 [84BE7A]"
       value_template: "{{ is_state('device_tracker.yeelight_yldp06yl_84be7a', 'home') }}"
 
     yeelight_yldp02yl_b1b6aa_status:
-      friendly_name: "Yeelight YLDP02YL [B1B6AA]"
+      friendly_name: "Yeelight Color Bulb [B1B6AA]"
       value_template: "{{ is_state('device_tracker.yeelight_yldp02yl_b1b6aa', 'home') }}"
 
     yeelight_yldp02yl_f12026_status:
-      friendly_name: "Yeelight YLDP02YL [F12026]"
+      friendly_name: "Yeelight Color Bulb [F12026]"
       value_template: "{{ is_state('device_tracker.yeelight_yldp02yl_f12026', 'home') }}"
 
     yeelight_yldd01yl_860cfa_status:
-      friendly_name: "Yeelight YLDD01YL [860CFA]"
+      friendly_name: "Yeelight Lightstrip [860CFA]"
       value_template: "{{ is_state('device_tracker.yeelight_yldd01yl_860cfa', 'home') }}"
 
     yeelight_yldd01yl_6707fc_status:
-      friendly_name: "Yeelight YLDD01YL [6707FC]"
+      friendly_name: "Yeelight Lightstrip [6707FC]"
       value_template: "{{ is_state('device_tracker.yeelight_yldd01yl_6707fc', 'home') }}"

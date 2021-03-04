@@ -171,9 +171,9 @@
       friendly_name: "Poziom wody"
       unit_of_measurement: "%"
       value_template: >-
-        {% if state_attr('humidifier.xiaomi_salon', 'depth') is number %}
-          {% if state_attr('humidifier.xiaomi_salon', 'depth') < 127 %}
-            {{ (state_attr('humidifier.xiaomi_salon', 'depth') * 0.89 - 11.6) | round | min(100) | max(0) }}
+        {% if state_attr('fan.humidifier_salon', 'depth') is number %}
+          {% if state_attr('fan.humidifier_salon', 'depth') < 127 %}
+            {{ (state_attr('fan.humidifier_salon', 'depth') * 0.89 - 11.6) | round | min(100) | max(0) }}
           {% else %}
             0
           {% endif %}
@@ -182,7 +182,16 @@
         {% endif %}
 
     aqi_raw_salon:
-      value_template: "{{ state_attr('fan.air_purifier_salon', 'aqi') }}"
+      value_template: >-
+        {% if state_attr('fan.air_purifier_salon', 'aqi') is number %}
+          {% if state_attr('fan.air_purifier_salon', 'aqi') != 1 %}
+            {{ state_attr('fan.air_purifier_salon', 'aqi') }}
+          {% else %}
+            {{ states('sensor.aqi_raw_salon') }}
+          {% endif %}
+        {% else %}
+          {{ states('sensor.aqi_raw_salon') }}
+        {% endif %}
       unit_of_measurement: " "
 
     aqi_info_salon:

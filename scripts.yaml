@@ -73,8 +73,8 @@ heating_day:
   - condition: template
     value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity')\
       \ | float\n   and states('sensor.humidifier_water_level') | int > 5 }}"
-  - service: humidifier.turn_on
-    entity_id: humidifier.xiaomi_salon
+  - service: fan.turn_on
+    entity_id: fan.humidifier_salon
   mode: single
   icon: mdi:radiator
   alias: 'Heating: day'
@@ -101,8 +101,8 @@ heating_night:
   - condition: template
     value_template: "{{ is_state(\"input_boolean.guests\", \"off\") and\n   is_state(\"\
       media_player.denon_salon\", \"off\") }}"
-  - service: humidifier.turn_off
-    entity_id: humidifier.xiaomi_salon
+  - service: fan.turn_off
+    entity_id: fan.humidifier_salon
   - service: climate.set_temperature
     entity_id:
     - climate.aeotec_thermostat_kuchnia
@@ -127,8 +127,8 @@ heating_eco_mode:
     - climate.custom_thermostat_lazienka
     data:
       temperature: '{{ states(''input_select.heating_temp_eco'') }}'
-  - service: humidifier.turn_off
-    entity_id: humidifier.xiaomi_salon
+  - service: fan.turn_off
+    entity_id: fan.humidifier_salon
   mode: single
   alias: 'Heating: eco'
   icon: mdi:radiator
@@ -165,8 +165,8 @@ heating_airing_begin:
     - climate.custom_thermostat_lazienka
     data:
       temperature: 8
-  - service: humidifier.turn_off
-    entity_id: humidifier.xiaomi_salon
+  - service: fan.turn_off
+    entity_id: fan.humidifier_salon
   - condition: state
     entity_id: input_boolean.heating_airing
     state: 'off'
@@ -258,7 +258,7 @@ alexa_goodnight:
   - service: homeassistant.turn_off
     entity_id:
     - remote.salon
-    - humidifier.xiaomi_salon
+    - fan.humidifier_salon
     - light.leds_salon
     - light.bulbs_salon
     - switch.cabinet_antek

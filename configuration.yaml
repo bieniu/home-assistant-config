@@ -81,7 +81,19 @@ input_number:
 input_text:
 input_datetime:
 
-# fan:
+fan:
+  - platform: xiaomi_miio_airpurifier
+    name: Humidifier Salon
+    model: zhimi.humidifier.ca1
+    host: !secret humidifier_hostname
+    token: !secret humidifier_token
+
+  - platform: xiaomi_miio_airpurifier
+    name: Air Purifier Salon
+    model: zhimi.airpurifier.mb3
+    host: !secret airpurifier_hostname
+    token: !secret airpurifier_token
+
   # - platform: xiaomi_miio_airpurifier
   #   model: dmaker.fan.p5
   #   host: !secret fan_hostname
@@ -112,13 +124,6 @@ camera:
     scan_interval: 5
 
 python_script:
-
-asuswrt:
-  host: !secret router_hostname
-  username: !secret router_username
-  protocol: "ssh"
-  mode: "ap"
-  ssh_key: "/config/.storage/asuswrt_key"
 
 notify:
   - platform: nfandroidtv

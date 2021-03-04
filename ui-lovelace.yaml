@@ -153,7 +153,7 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_salon
-              - entity: humidifier.xiaomi_salon
+              - entity: fan.humidifier_salon
                 secondary_info:
                   entity: sensor.humidifier_water_level
                   prefix: "poziom wody: "
@@ -760,7 +760,7 @@ views:
           - binary_sensor.echo_show_status
           - binary_sensor.echo_plus_status
           - binary_sensor.echo_dot_status
-          - binary_sensor.harmonyhub_status
+          - binary_sensor.harmony_status
       - type: entities
         title: "IoT - inne"
         show_header_toggle: false

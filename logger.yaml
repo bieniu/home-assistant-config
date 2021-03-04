@@ -3,3 +3,4 @@ logs:
   homeassistant.components.recorder: info
   homeassistant.components.automation: info
   homeassistant.components.zwave: info
+  custom_components.airly: debug

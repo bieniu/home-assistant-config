@@ -1139,16 +1139,16 @@
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.away_mode
-    - condition: and
-      conditions:
-        - condition: state
-          entity_id: input_boolean.heating_season
-          state: "off"
-        - condition: numeric_state
-          entity_id: sensor.temperature_salon
-          above: 26
-    - service: fan.turn_on
-      entity_id: fan.pedestal_salon
+    # - condition: and
+    #   conditions:
+    #     - condition: state
+    #       entity_id: input_boolean.heating_season
+    #       state: "off"
+    #     - condition: numeric_state
+    #       entity_id: sensor.temperature_salon
+    #       above: 26
+    # - service: fan.turn_on
+    #   entity_id: fan.pedestal_salon
 
 ##################################################################################################
 
@@ -1252,8 +1252,8 @@
         - group.windows
       state: "off"
   action:
-    - service: humidifier.turn_off
-      entity_id: humidifier.xiaomi_salon
+    - service: fan.turn_off
+      entity_id: fan.humidifier_salon
     - condition: state
       entity_id: input_boolean.guests
       state: "off"
@@ -1266,25 +1266,25 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.heating_salon_kuchnia_night
 
-- id: climate_turn_off_fan
-  alias: "Climate Turn Off Fan"
-  description: "wyłącz wentylator po wyłączeniu telewizora"
-  trigger:
-    platform: state
-    entity_id: media_player.denon_salon
-    to: "off"
-  condition:
-    - condition: state
-      entity_id: fan.pedestal_salon
-      state: "on"
-    - condition: state
-      entity_id: input_boolean.heating_season
-      state: "off"
-    - condition: time
-      after: "22:00:00"
-  action:
-    service: fan.turn_off
-    entity_id: fan.pedestal_salon
+# - id: climate_turn_off_fan
+#   alias: "Climate Turn Off Fan"
+#   description: "wyłącz wentylator po wyłączeniu telewizora"
+#   trigger:
+#     platform: state
+#     entity_id: media_player.denon_salon
+#     to: "off"
+#   condition:
+#     - condition: state
+#       entity_id: fan.pedestal_salon
+#       state: "on"
+#     - condition: state
+#       entity_id: input_boolean.heating_season
+#       state: "off"
+#     - condition: time
+#       after: "22:00:00"
+#   action:
+#     service: fan.turn_off
+#     entity_id: fan.pedestal_salon
 
 - id: heating_eco_mode
   alias: "Heating Eco Mode"
@@ -1406,8 +1406,8 @@
             type: "ios"
     - condition: template
       value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float and states('sensor.humidifier_water_level') | int > 5 }}"
-    - service: humidifier.turn_on
-      entity_id: humidifier.xiaomi_salon
+    - service: fan.turn_on
+      entity_id: fan.humidifier_salon
 
 - id: windows_opened
   alias: "Windows Opened"
@@ -1715,16 +1715,16 @@
         - condition: state
           entity_id: light.lamp_salon
           state: "on"
-        - condition: state
-          entity_id: fan.pedestal_salon
-          state: "on"
+        # - condition: state
+        #   entity_id: fan.pedestal_salon
+        #   state: "on"
   action:
     service: homeassistant.turn_off
     entity_id:
       - light.bulbs_salon
       - light.leds_salon
       - light.lamp_salon
-      - fan.pedestal_salon
+      # - fan.pedestal_salon
 
 - id: light_scene_salon_auto_when_bulbs_turn_on
   alias: "Light Scene Salon Auto When Bulbs Turn On"
@@ -2928,11 +2928,11 @@
       entity_id:
         - input_boolean.heating_airing
         - input_boolean.away_mode
-        - humidifier.xiaomi_salon
+        - fan.humidifier_salon
       state: "off"
   action:
-    service: humidifier.turn_on
-    entity_id: humidifier.xiaomi_salon
+    service: fan.turn_on
+    entity_id: fan.humidifier_salon
 
 - id: humidification_stop
   alias: "Humidification Stop"
@@ -2947,11 +2947,11 @@
     - condition: state
       entity_id:
         - input_boolean.heating_season
-        - humidifier.xiaomi_salon
+        - fan.humidifier_salon
       state: "on"
   action:
-    - service: humidifier.turn_off
-      entity_id: humidifier.xiaomi_salon
+    - service: fan.turn_off
+      entity_id: fan.humidifier_salon
     - condition: numeric_state
       entity_id: sensor.humidifier_water_level
       below: 6
