@@ -261,8 +261,8 @@
         - binary_sensor.shelly_1_328900_firmware_update
         - binary_sensor.shelly_1l_701559_firmware_update
         - binary_sensor.shelly_2_5b2604_firmware_update
-        - binary_sensor.shelly_flood_f2ad1d_firmware_update
-        - binary_sensor.shelly_ht_e00abd_firmware_update
+        # - binary_sensor.shelly_flood_f2ad1d_firmware_update
+        # - binary_sensor.shelly_ht_e00abd_firmware_update
         - binary_sensor.shelly_plug_s_7aecf4_firmware_update
         - binary_sensor.shelly_motion_97664e_firmware_update
       from: "off"
@@ -1157,10 +1157,8 @@
   alias: "Heating Aeotec Thermostat Calibration"
   description: "kalibracja termostatu Aeotec"
   trigger:
-    platform: template
-    value_template: "{{ state_attr('climate.aeotec_thermostat_kuchnia', 'current_temperature') | float - state_attr('climate.aeotec_thermostat_kuchnia', 'temperature') | float > 2 }}"
-    for:
-      minutes: 10
+    platform: time
+    at: "01:00:00"
   condition:
     - condition: state
       entity_id: input_boolean.heating_season
@@ -1168,11 +1166,6 @@
     - condition: state
       entity_id: input_boolean.heating_airing
       state: "off"
-    - condition: numeric_state
-      entity_id: climate.aeotec_thermostat_kuchnia
-      attribute: temperature
-      above: 20.5
-    - "{{ (now() - state_attr('automation.heating_aeotec_thermostat_calibration', 'last_triggered')).total_seconds() > 3600 }}"
   action:
     - service: climate.set_preset_mode
       entity_id: climate.aeotec_thermostat_kuchnia
@@ -1286,9 +1279,9 @@
 #     service: fan.turn_off
 #     entity_id: fan.pedestal_salon
 
-- id: heating_eco_mode
-  alias: "Heating Eco Mode"
-  description: "przełącz ogrzewanie w tryb eco jak domownicy wychodzą"
+- id: heating_away_mode
+  alias: "Heating Away Mode"
+  description: "przełącz ogrzewanie w tryb away jak domownicy wychodzą"
   trigger:
     platform: state
     entity_id: input_boolean.away_mode
@@ -1304,7 +1297,7 @@
       entity_id: group.windows
       state: "off"
   action:
-    service: script.heating_eco_mode
+    service: script.heating_away_mode
 
 - id: heating_peoples_back
   alias: "Heating Peoples Back"
@@ -1452,6 +1445,8 @@
     platform: numeric_state
     entity_id: sensor.aqi_salon
     above: 50
+    for:
+      minutes: 2
   condition:
     condition: state
     entity_id: group.windows
@@ -1460,7 +1455,12 @@
     service: xiaomi_miio_airpurifier.fan_set_fan_level
     entity_id: fan.air_purifier_salon
     data:
-      level: 1
+      level: >-
+        {% if states('sensor.aqi_salon') | int > 100 %}
+          2
+        {% else %}
+          1
+        {% endif %}
 
 - id: air_quality_turn_off_air_purifier
   alias: "Air Quality Turn Off Air Purifier"
@@ -1469,6 +1469,8 @@
     platform: numeric_state
     entity_id: sensor.aqi_salon
     below: 50
+    for:
+      minutes: 2
   action:
     service: fan.turn_off
     entity_id: fan.air_purifier_salon
@@ -1481,7 +1483,7 @@
     entity_id: sensor.aqi_salon
     above: 100
     for:
-      minutes: 3
+      minutes: 2
   condition:
     - condition: state
       entity_id: fan.air_purifier_salon
@@ -1504,7 +1506,7 @@
     entity_id: sensor.aqi_salon
     below: 100
     for:
-      minutes: 3
+      minutes: 2
   condition:
     - condition: state
       entity_id: fan.air_purifier_salon
@@ -1939,14 +1941,14 @@
 
 - id: light_turn_off_toaleta_light_when_no_motion
   alias: "Light Turn Off Toaleta Light When No Motion"
-  description: "wyłącz światło w toalecie jak brak ruchu przez 10 min"
+  description: "wyłącz światło w toalecie jak brak ruchu przez 15 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_toaleta
     from: "on"
     to: "off"
     for:
-      minutes: 10
+      minutes: 15
   condition:
     condition: state
     entity_id: light.ceiling_toaleta
@@ -3089,6 +3091,7 @@
       mac: "{{ trigger.payload_json.mac }}"
       fw_ver: "{{ trigger.payload_json.fw_ver }}"
       model: "{{ trigger.payload_json.model }}"
+      mode: "{{ trigger.payload_json.mode }}"
       qos: 1
       shelly1-328900:
         relay-0: "light"

@@ -93,6 +93,7 @@ fan:
     model: zhimi.airpurifier.mb3
     host: !secret airpurifier_hostname
     token: !secret airpurifier_token
+    retries: 2
 
   # - platform: xiaomi_miio_airpurifier
   #   model: dmaker.fan.p5
@@ -137,6 +138,7 @@ notify:
 climate:
   - platform: generic_thermostat
     name: "Custom Thermostat Lazienka"
+    unique_id: thermostat_lazienka
     heater: switch.heater_lazienka
     target_sensor: sensor.temperature_lazienka
     min_temp: 4
@@ -145,7 +147,7 @@ climate:
       minutes: 10
     initial_hvac_mode: "heat"
     away_temp: 16
-    precision: 0.1
+    precision: 0.5
 
 panel_custom:
   - name: zwave-graph-panel

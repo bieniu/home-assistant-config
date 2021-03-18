@@ -3,4 +3,7 @@ logs:
   homeassistant.components.recorder: info
   homeassistant.components.automation: info
   homeassistant.components.zwave: info
-  custom_components.airly: debug
+  slixmpp.stringprep: error
+  androidtv.adb_manager.adb_manager_async: error
+  homeassistant.components.androidtv.media_player: error
+  homeassistant.components.shelly: debug

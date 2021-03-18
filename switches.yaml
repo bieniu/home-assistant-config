@@ -22,7 +22,7 @@
         service: climate.set_temperature
         entity_id: climate.thermostat_lazienka
         data:
-          temperature: 8
+          temperature: 4
 
     camera_move_up:
       friendly_name: "w górę"

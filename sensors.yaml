@@ -1,10 +1,10 @@
-- platform: filter
-  entity_id: sensor.aqi_raw_salon
-  name: "AQI Salon"
-  filters:
-    filter: time_simple_moving_average
-    precision: 0
-    window_size: "00:40"
+# - platform: filter
+#   entity_id: sensor.aqi_raw_salon
+#   name: "AQI Salon"
+#   filters:
+#     filter: time_simple_moving_average
+#     precision: 0
+#     window_size: "00:40"
 
 - platform: moon
 
@@ -142,30 +142,30 @@
           {{ states('sensor.dishwasher_kuchnia') }}
         {% endif %}
 
-    airly_info:
+    air_quality_info_outdoor:
       friendly_name: "Jakość powietrza zewnętrzenego"
       value_template: >-
-        {% if state_attr('air_quality.airly', 'air_quality_index') | int <= 25 %}
+        {% if state_attr('air_quality.home', 'air_quality_index') | int <= 25 %}
           bardzo dobra
-        {% elif state_attr('air_quality.airly', 'air_quality_index') | int <= 50 %}
+        {% elif state_attr('air_quality.home', 'air_quality_index') | int <= 50 %}
           dobra
-        {% elif state_attr('air_quality.airly', 'air_quality_index') | int <= 75 %}
+        {% elif state_attr('air_quality.home', 'air_quality_index') | int <= 75 %}
           średnia
-        {% elif state_attr('air_quality.airly', 'air_quality_index') | int <= 100 %}
+        {% elif state_attr('air_quality.home', 'air_quality_index') | int <= 100 %}
           zła
-        {% elif state_attr('air_quality.airly', 'air_quality_index') | int > 100 %}
+        {% elif state_attr('air_quality.home', 'air_quality_index') | int > 100 %}
           bardzo zła
         {% endif %}
 
-    airly_pm10:
+    pm10_outdoor:
       friendly_name: "PM10"
       unit_of_measurement: "µg/m³"
-      value_template: "{{ state_attr('air_quality.airly', 'particulate_matter_10') }}"
+      value_template: "{{ state_attr('air_quality.home', 'particulate_matter_10') }}"
 
-    airly_pm2_5:
+    pm2_5_outdoor:
       friendly_name: "PM2.5"
       unit_of_measurement: "µg/m³"
-      value_template: "{{ state_attr('air_quality.airly', 'particulate_matter_2_5') }}"
+      value_template: "{{ state_attr('air_quality.home', 'particulate_matter_2_5') }}"
 
     humidifier_water_level:
       friendly_name: "Poziom wody"
@@ -181,16 +181,16 @@
           0
         {% endif %}
 
-    aqi_raw_salon:
+    aqi_salon:
       value_template: >-
         {% if state_attr('fan.air_purifier_salon', 'aqi') is number %}
-          {% if state_attr('fan.air_purifier_salon', 'aqi') != 1 %}
+          {% if state_attr('fan.air_purifier_salon', 'aqi') > 1 %}
             {{ state_attr('fan.air_purifier_salon', 'aqi') }}
           {% else %}
-            {{ states('sensor.aqi_raw_salon') }}
+            {{ states('sensor.aqi_salon') }}
           {% endif %}
         {% else %}
-          {{ states('sensor.aqi_raw_salon') }}
+          {{ states('sensor.aqi_salon') }}
         {% endif %}
       unit_of_measurement: " "
 

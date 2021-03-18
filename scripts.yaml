@@ -114,7 +114,7 @@ heating_night:
   mode: single
   alias: 'Heating: night'
   icon: mdi:radiator
-heating_eco_mode:
+heating_away_mode:
   sequence:
   - service: climate.set_temperature
     entity_id:
@@ -126,11 +126,11 @@ heating_eco_mode:
     - climate.thermostat_sypialnia
     - climate.custom_thermostat_lazienka
     data:
-      temperature: '{{ states(''input_select.heating_temp_eco'') }}'
+      temperature: '{{ states(''input_select.heating_temp_away'') }}'
   - service: fan.turn_off
     entity_id: fan.humidifier_salon
   mode: single
-  alias: 'Heating: eco'
+  alias: 'Heating: away'
   icon: mdi:radiator
 heating_season_end:
   sequence:
@@ -162,7 +162,6 @@ heating_airing_begin:
     - climate.thermostat_sypialnia
     - climate.custom_thermostat_lazienka
     - climate.aeotec_thermostat_kuchnia
-    - climate.custom_thermostat_lazienka
     data:
       temperature: 8
   - service: fan.turn_off

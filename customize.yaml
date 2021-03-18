@@ -241,7 +241,7 @@ light.lamp_salon:
 light.leds_przedpokoj:
   icon: mdi:led-variant-on
 switch.cabinet_antek:
-  icon: mdi:spotlight
+  icon: mdi:locker
 switch.lamp_pracownia:
   icon: mdi:lamp
 switch.lamp_goscinny:
@@ -292,13 +292,13 @@ sensor.dom_uv_index:
   unit_of_measurement: " "
 
 #### AIRLY ####
-sensor.airly_info:
+sensor.air_quality_info_outdoor:
   icon: "mdi:home-export-outline"
 
-sensor.airly_pm10:
+sensor.pm10_outdoor:
   icon: "mdi:blur"
 
-sensor.airly_pm2_5:
+sensor.pm2_5_outdoor:
   icon: "mdi:blur"
 
 #### DISHWASHER ####

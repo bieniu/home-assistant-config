@@ -585,6 +585,36 @@ views:
                     decimals: 1
                     entities:
                       - sensor.speedtest_upload
+          - type: vertical-stack
+            in_card: true
+            title: "Router"
+            cards:
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    card_mod:
+                      style: |
+                        ha-card.flex {
+                          padding-top: 0px;
+                          padding-bottom: 0px;
+                        }
+                    <<: *GRAPH_IN_CARD
+                    line_color: "#36a2eb"
+                    decimals: 1
+                    entities:
+                      - sensor.asuswrt_download_speed
+                  - type: custom:mini-graph-card
+                    card_mod:
+                      style: |
+                        ha-card.flex {
+                          padding-top: 0px;
+                          padding-bottom: 0px;
+                        }
+                    <<: *GRAPH_IN_CARD
+                    line_color: "#ffce57"
+                    decimals: 1
+                    entities:
+                      - sensor.asuswrt_upload_speed
           - type: entities
             title: "Home Assistant"
             show_header_toggle: false
@@ -1048,21 +1078,21 @@ views:
             url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates&metricWind=m%2Fs
             aspect_ratio: 61%
           - type: entity
-            entity: sensor.airly_info
+            entity: sensor.air_quality_info_outdoor
             card_mod:
               style: |
                 ha-card {
                   --ha-card-background:
-                    {% set airly = states("sensor.airly_info") %}
-                    {% if airly == "bardzo dobra" %}
+                    {% set air_quality = states("sensor.air_quality_info_outdoor") %}
+                    {% if air_quality == "bardzo dobra" %}
                       #43a047;
-                    {% elif airly == "dobra" %}
+                    {% elif air_quality == "dobra" %}
                       #fbc02d;
-                    {% elif airly == "średnia" %}
+                    {% elif air_quality == "średnia" %}
                       #fb8c00;
-                    {% elif airly == "zła" %}
+                    {% elif air_quality == "zła" %}
                       #f4511e;
-                    {% elif airly == "bardzo zła" %}
+                    {% elif air_quality == "bardzo zła" %}
                       #d81b60;
                     {% else %}
                       #000000;
@@ -1156,19 +1186,19 @@ views:
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - sensor.airly_pm1
+              - sensor.pm1_outdoor
             line_color: "#78909c"
             decimals: 0
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - sensor.airly_pm2_5
+              - sensor.pm2_5_outdoor
             line_color: "#78909c"
             decimals: 0
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - sensor.airly_pm10
+              - sensor.pm10_outdoor
             line_color: "#78909c"
             decimals: 0
           - type: custom:mini-graph-card
@@ -1214,7 +1244,7 @@ views:
           - input_select.heating_temp_bathroom_night
           - input_select.heating_temp_day
           - input_select.heating_temp_night
-          - input_select.heating_temp_eco
+          - input_select.heating_temp_away
       - type: vertical-stack
         cards:
           - type: entities
