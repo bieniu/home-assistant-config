@@ -155,6 +155,7 @@ sensor.aqi_info_salon:
 
 sensor.aqi_salon:
   icon: "mdi:blur"
+  friendly_name: "AQI wewnętrzne"
 
 #### SWITCHES ####
 switch.stacjonarny:
@@ -344,12 +345,3 @@ binary_sensor.shelly_1l_ad1b60_overtemperature:
 
 binary_sensor.shelly_1l_acedf2_overtemperature:
   relay: light.double_ceiling_sypialnia
-
-sensor.eurotronic_air_quality_sensor_temperature:
-  device_class: "temperature"
-
-sensor.eurotronic_air_quality_sensor_relative_humidity:
-  device_class: "humidity"
-
-sensor.co2_sypialnia:
-  friendly_name: "Dwutlenek węgla"

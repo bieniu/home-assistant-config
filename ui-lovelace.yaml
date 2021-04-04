@@ -373,7 +373,6 @@ views:
                 row:
                   entity: climate.thermostat_antresola
               - light.gateway_antresola
-              - switch.lights_stairs_antresola
       - type: vertical-stack
         in_card: true
         cards:
@@ -884,12 +883,14 @@ views:
             cards:
               - type: custom:mini-graph-card
                 <<: *GRAPH_IN_CARD
+                icon: mdi:sine-wave
                 decimals: 0
                 entities:
                   - sensor.cyberpower_dl650elcd_input_voltage
                 line_color: "#ef5350"
               - type: custom:mini-graph-card
                 <<: *GRAPH_IN_CARD
+                icon: mdi:sine-wave
                 decimals: 0
                 entities:
                   - sensor.cyberpower_dl650elcd_battery_voltage
@@ -953,7 +954,7 @@ views:
           - value: 100
             color: var(--state-icon-color)
         entities:
-          - sensor.battery_shelly_flood_kuchnia
+          - sensor.shelly_flood_f2ad1d_battery
       - type: custom:battery-state-card
         name: "Baterie termostatów"
         tap_action:
@@ -1207,6 +1208,15 @@ views:
               - sensor.dom_uv_index
             line_color: "#ffce57"
             decimals: 0
+      - type: custom:auto-entities
+        card:
+          type: entities
+          title: "Stężenia alergenów"
+        filter:
+          include:
+            - entity_id: "sensor.stezenie_*"
+          exclude:
+            - state: "brak"
   - id: misc
     icon: mdi:cog
     title: "Różne"

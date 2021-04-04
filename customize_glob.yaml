@@ -2,6 +2,9 @@
 "sensor.temperature_*":
   device_class: temperature
 
+"sensor.*_voltage":
+  device_class: voltage
+
 "sensor.humidity_*":
   device_class: humidity
 

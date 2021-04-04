@@ -261,8 +261,8 @@
         - binary_sensor.shelly_1_328900_firmware_update
         - binary_sensor.shelly_1l_701559_firmware_update
         - binary_sensor.shelly_2_5b2604_firmware_update
-        # - binary_sensor.shelly_flood_f2ad1d_firmware_update
-        # - binary_sensor.shelly_ht_e00abd_firmware_update
+        - binary_sensor.shelly_flood_f2ad1d_firmware_update
+        - binary_sensor.shelly_ht_e00abd_firmware_update
         - binary_sensor.shelly_plug_s_7aecf4_firmware_update
         - binary_sensor.shelly_motion_97664e_firmware_update
       from: "off"
@@ -480,11 +480,12 @@
     platform: time_pattern
     minutes: "/10"
     seconds: 0
+  variables:
+    domains: ["light", "switch", "sensor", "zwave", "fan", "binary_sensor", "media_player"]
+    rooms: ["przedpokoj", "goscinny", "pracownia", "kuchnia", "salon", "schody", "antresola", "gabinet", "pralnia", "antek", "sypialnia", "lazienka", "balkon", "indoor", "outdoor"]
+    ignored: ["media_player.dune_salon", "media_player.mibox_goscinny", "light.bulb_gabinet"]
   condition: >
     {% macro dead_unavailable_entities() %}
-      {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor', 'media_player'] -%}
-      {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
-      {%- set ignored = ['media_player.dune_salon', 'media_player.mibox_goscinny'] -%}
       {% for domain in domains -%}
         {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
           {{ item.name }} ({{ item.entity_id }})
@@ -498,9 +499,6 @@
         title: "Encja z nieprawidłowym stanem"
         message: >
           {% macro dead_unavailable_entities() %}
-            {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'fan', 'binary_sensor', 'media_player'] -%}
-            {%- set rooms = ['przedpokoj', 'goscinny', 'pracownia', 'kuchnia', 'salon', 'schody', 'antresola', 'gabinet', 'pralnia', 'antek', 'sypialnia', 'lazienka', 'balkon', 'indoor', 'outdoor'] -%}
-            {%- set ignored = ['media_player.dune_salon', 'media_player.mibox_goscinny'] -%}
             {% for domain in domains -%}
               {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
            <br>- {{ item.name }} ({{ item.entity_id }})
@@ -1158,7 +1156,7 @@
   description: "kalibracja termostatu Aeotec"
   trigger:
     platform: time
-    at: "01:00:00"
+    at: "00:10:00"
   condition:
     - condition: state
       entity_id: input_boolean.heating_season
@@ -1603,9 +1601,9 @@
 ##################################################################################################
 
 #### LIGHT #######################################################################################
-- id: light_turn_on_tree_and_stairs_light
-  alias: "Light Turn On Tree And Stairs Light"
-  description: "włącz drzewko i światełka na schodach o zachodzie słońca"
+- id: light_turn_on_tree
+  alias: "Light Turn On Tree"
+  description: "włącz drzewko o zachodzie słońca"
   trigger:
     - platform: sun
       event: sunset
@@ -1622,21 +1620,18 @@
       before: "23:00:00"
   action:
     - service: switch.turn_on
-      entity_id:
-        - switch.tree_antek
-        - switch.lights_stairs_antresola
+      entity_id: switch.tree_antek
 
-- id: light_turn_off_tree_and_stairs_light
-  alias: "Light Turn Off Tree And Stairs Light"
-  description: "wyłącz drzewko i światełka na schodach o 23:00"
+- id: light_turn_off_tree
+  alias: "Light Turn Off Tree"
+  description: "wyłącz drzewko o 23:00"
   trigger:
     platform: time
     at: "23:00:00"
   action:
     service: switch.turn_off
-    entity_id:
-      - switch.tree_antek
-      - switch.lights_stairs_antresola
+    entity_id: switch.tree_antek
+
 
 - id: light_turn_on_adaptive_lightning_at_start
   alias: "Light Turn On Adaptive Lightning At Start"

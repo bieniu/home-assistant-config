@@ -1,13 +1,59 @@
-homeassistant:
-  customize: !include customize.yaml
-  customize_glob: !include customize_glob.yaml
+automation: !include automations.yaml
+
+binary_sensor: !include binary_sensors.yaml
+
+camera:
+  - platform: generic
+    name: 'Salon'
+    still_image_url: !secret dafang_still_mage_url
+    stream_source: !secret dafang_rtsp_url
+    scan_interval: 5
+
+climate:
+  - platform: generic_thermostat
+    name: "Custom Thermostat Lazienka"
+    unique_id: thermostat_lazienka
+    heater: switch.heater_lazienka
+    target_sensor: sensor.temperature_lazienka
+    min_temp: 4
+    max_temp: 28
+    min_cycle_duration:
+      minutes: 10
+    initial_hvac_mode: "heat"
+    away_temp: 16
+    precision: 0.5
+
+default_config:
+
+device_tracker:
+  - platform: traccar
+    host: localhost
+    port: 18682
+    username: !secret traccar_email
+    password: !secret traccar_password
+
+fan: !include fans.yaml
 
 frontend:
   themes: !include_dir_merge_named themes
 
-cloud:
+group: !include groups.yaml
 
-zone:
+history: !include history.yaml
+
+homeassistant:
+  customize: !include customize.yaml
+  customize_glob: !include customize_glob.yaml
+
+http:
+  ip_ban_enabled: true
+  login_attempts_threshold: 3
+  use_x_forwarded_for: true
+  trusted_proxies: !secret http_trusted_proxies
+
+input_select: !include input_select.yaml
+
+light: !include lights.yaml
 
 logbook:
   exclude:
@@ -20,6 +66,8 @@ logbook:
       - sensor.*_last_restart
       - sensor.*_last_boot
       - sensor.*_uptime
+
+logger: !include logger.yaml
 
 lovelace:
   mode: yaml
@@ -41,90 +89,7 @@ lovelace:
     - url: /hacsfiles/lovelace-canary/canary.js
       type: module
 
-person:
-
-http:
-  ip_ban_enabled: true
-  login_attempts_threshold: 3
-  use_x_forwarded_for: true
-  trusted_proxies: !secret http_trusted_proxies
-
-media_source:
-
-recorder: !include recorder.yaml
-
-logger: !include logger.yaml
-
-history: !include history.yaml
-
-system_health:
-
-mobile_app:
-
-updater:
-
-stream:
-
-sensor: !include sensors.yaml
-binary_sensor: !include binary_sensors.yaml
-group: !include groups.yaml
-automation: !include automations.yaml
-script: !include scripts.yaml
-scene: !include scenes.yaml
 media_player: !include media_player.yaml
-switch: !include switches.yaml
-light: !include lights.yaml
-
-input_select: !include input_select.yaml
-input_boolean:
-input_number:
-input_text:
-input_datetime:
-
-fan:
-  - platform: xiaomi_miio_airpurifier
-    name: Humidifier Salon
-    model: zhimi.humidifier.ca1
-    host: !secret humidifier_hostname
-    token: !secret humidifier_token
-
-  - platform: xiaomi_miio_airpurifier
-    name: Air Purifier Salon
-    model: zhimi.airpurifier.mb3
-    host: !secret airpurifier_hostname
-    token: !secret airpurifier_token
-    retries: 2
-
-  # - platform: xiaomi_miio_airpurifier
-  #   model: dmaker.fan.p5
-  #   host: !secret fan_hostname
-  #   token: !secret fan_token
-
-sun:
-
-config:
-
-ssdp:
-
-zeroconf:
-
-image:
-
-counter:
-
-timer:
-
-zwave:
-  debug: true
-
-camera:
-  - platform: generic
-    name: 'Salon'
-    still_image_url: !secret dafang_still_mage_url
-    stream_source: !secret dafang_rtsp_url
-    scan_interval: 5
-
-python_script:
 
 notify:
   - platform: nfandroidtv
@@ -134,20 +99,6 @@ notify:
   - platform: nfandroidtv
     name: "Bravia"
     host: !secret bravia_hostname
-
-climate:
-  - platform: generic_thermostat
-    name: "Custom Thermostat Lazienka"
-    unique_id: thermostat_lazienka
-    heater: switch.heater_lazienka
-    target_sensor: sensor.temperature_lazienka
-    min_temp: 4
-    max_temp: 28
-    min_cycle_duration:
-      minutes: 10
-    initial_hvac_mode: "heat"
-    away_temp: 16
-    precision: 0.5
 
 panel_custom:
   - name: zwave-graph-panel
@@ -159,9 +110,17 @@ panel_custom:
       edge_visibility: relevant
       grouping: z-wave
 
-device_tracker:
-  - platform: traccar
-    host: localhost
-    port: 18682
-    username: !secret traccar_email
-    password: !secret traccar_password
+python_script:
+
+recorder: !include recorder.yaml
+
+scene: !include scenes.yaml
+
+script: !include scripts.yaml
+
+sensor: !include sensors.yaml
+
+switch: !include switches.yaml
+
+zwave:
+  debug: true
