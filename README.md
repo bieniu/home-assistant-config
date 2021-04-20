@@ -46,6 +46,7 @@
 * [Shelly H&T](https://shelly.cloud/products/shelly-humidity-temperature-smart-home-automation-sensor/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Shelly Flood](https://shelly.cloud/products/shelly-flood-smart-home-automation-sensor/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Shelly Motion](https://shelly.cloud/ifa-2020-products/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
+* [Nettigo Air Monitor](https://air.nettigo.pl/?lang=en)
 
 ## Other Integrated Devices
 
