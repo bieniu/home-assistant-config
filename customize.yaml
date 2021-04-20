@@ -244,7 +244,7 @@ light.leds_przedpokoj:
 switch.cabinet_antek:
   icon: mdi:locker
 switch.lamp_pracownia:
-  icon: mdi:lamp
+  icon: mdi:floor-lamp
 switch.lamp_goscinny:
   icon: mdi:lamp
 switch.lamp_gabinet:
@@ -345,3 +345,6 @@ binary_sensor.shelly_1l_ad1b60_overtemperature:
 
 binary_sensor.shelly_1l_acedf2_overtemperature:
   relay: light.double_ceiling_sypialnia
+
+sensor.minecraft_server_players_online:
+  unit_of_measurement: "graczy"

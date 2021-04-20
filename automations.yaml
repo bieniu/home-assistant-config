@@ -3057,6 +3057,26 @@
     data:
       homeassistant.components: "{{ trigger.to_state.state }}"
 
+- id: shelly_motion_debug
+  alias: "Shelly Motion Debug"
+  description: "debug Shelly Motion"
+  mode: queued
+  max: 999
+  trigger:
+    platform: mqtt
+    topic: "shellies/announce"
+  condition:
+    condition: template
+    value_template: "{{ trigger.payload_json.id == 'shellymotionsensor-60A42397664E' }}"
+  action:
+    service: python_script.notify
+    data:
+      title: "Shelly Motion"
+      message: "Shelly Motion odpowiedziało na announce: {{ now() }}"
+      services:
+        - service: !secret maciek_notify_service
+          type: "android"
+
 - id: shellies_announce
   alias: "Shellies Announce"
   description: "wyślij komendę announce do urządzeń Shelly"
@@ -3086,7 +3106,7 @@
       mac: "{{ trigger.payload_json.mac }}"
       fw_ver: "{{ trigger.payload_json.fw_ver }}"
       model: "{{ trigger.payload_json.model }}"
-      mode: "{{ trigger.payload_json.mode }}"
+      mode: "{{ trigger.payload_json.mode | default }}"
       qos: 1
       shelly1-328900:
         relay-0: "light"

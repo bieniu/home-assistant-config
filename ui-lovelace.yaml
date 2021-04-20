@@ -170,7 +170,6 @@ views:
               - input_select.salon_harmony
               - type: custom:mini-media-player
                 entity: media_player.bravia_salon
-                icon: mdi:television
                 hide:
                   controls: true
                   volume: true
@@ -180,7 +179,6 @@ views:
                 group: true
               - type: custom:mini-media-player
                 entity: media_player.denon_salon
-                icon: mdi:audio-video
                 hide:
                   controls: true
                   power: true
@@ -195,7 +193,6 @@ views:
                 row:
                   type: custom:mini-media-player
                   entity: media_player.dune
-                  icon: mdi:disc-player
                   hide:
                     volume: true
                     controls: true
@@ -214,7 +211,6 @@ views:
                 group: true
               - type: custom:mini-media-player
                 entity: media_player.playstation_salon
-                icon: mdi:sony-playstation
                 hide:
                   controls: true
                   volume: true
@@ -225,7 +221,6 @@ views:
                 group: true
               - type: custom:mini-media-player
                 entity: media_player.echo_show_salon
-                icon: mdi:amazon-alexa
                 hide:
                   controls: true
                   volume: true
@@ -431,7 +426,6 @@ views:
               - switch.tree_antek
               - type: custom:mini-media-player
                 entity: media_player.echo_plus_antek
-                icon: mdi:amazon-alexa
                 hide:
                   controls: true
                   volume: true
@@ -469,7 +463,6 @@ views:
               - light.lightstrip_sypialnia
               - type: custom:mini-media-player
                 entity: media_player.echo_dot_sypialnia
-                icon: mdi:amazon-alexa
                 hide:
                   controls: true
                   volume: true
@@ -614,17 +607,6 @@ views:
                     decimals: 1
                     entities:
                       - sensor.asuswrt_upload_speed
-          - type: entities
-            title: "Home Assistant"
-            show_header_toggle: false
-            entities:
-              - sensor.ha_version_current
-              - sensor.ha_version_installed
-              - entity: sensor.home_assistant_last_restart
-                format: relative
-              - sensor.ha_database_size
-      - type: vertical-stack
-        cards:
           - type: vertical-stack
             in_card: true
             cards:
@@ -688,26 +670,43 @@ views:
                     entities:
                       - sensor.raspberry_memory_use
                     <<: *GRAPH_COLOR_THRESHOLD
+          - type: vertical-stack
+            cards:
+              - type: entities
+                title: "Drukarka"
+                show_header_toggle: false
+                entities:
+                  - sensor.printer_status
+                  - sensor.printer_page_counter
+                  - entity: sensor.printer_drum_remaining_life
+                    <<: *percent-entity
+                  - entity: sensor.printer_toner_remaining
+                    <<: *percent-entity
+                  - sensor.printer_uptime
+              - type: entities
+                title: "Synology"
+                show_header_toggle: false
+                entities:
+                  - sensor.synology_disk_used
+                  - entity: sensor.synology_last_boot
+                    format: relative
       - type: vertical-stack
         cards:
           - type: entities
-            title: "Drukarka"
+            title: "Home Assistant"
             show_header_toggle: false
             entities:
-              - sensor.printer_status
-              - sensor.printer_page_counter
-              - entity: sensor.printer_drum_remaining_life
-                <<: *percent-entity
-              - entity: sensor.printer_toner_remaining
-                <<: *percent-entity
-              - sensor.printer_uptime
-          - type: entities
-            title: "Synology"
-            show_header_toggle: false
-            entities:
-              - sensor.synology_disk_used
-              - entity: sensor.synology_last_boot
+              - sensor.ha_version_current
+              - sensor.ha_version_installed
+              - entity: sensor.home_assistant_last_restart
                 format: relative
+              - sensor.ha_database_size
+          - type: entities
+            title: "Serwer Minecraft"
+            entities:
+              - binary_sensor.minecraft_server_status
+              - sensor.minecraft_server_players_online
+              - sensor.minecraft_server_version
       - type: entities
         title: "Węzły Z-Wave"
         show_header_toggle: false
@@ -1193,13 +1192,19 @@ views:
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - sensor.pm2_5_outdoor
+              - entity: air_quality.home
+                name: PM2.5
+              - entity: air_quality.nettigo_air_monitor_sds011
             line_color: "#78909c"
             decimals: 0
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - sensor.pm10_outdoor
+              - entity: air_quality.home
+                attribute: particulate_matter_10
+                name: PM10
+              - entity: air_quality.nettigo_air_monitor_sds011
+                attribute: particulate_matter_10
             line_color: "#78909c"
             decimals: 0
           - type: custom:mini-graph-card

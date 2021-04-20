@@ -1,11 +1,11 @@
 default: warning
 logs:
-  homeassistant.components.recorder: info
-  homeassistant.components.automation: info
+  # homeassistant.components.automation: info
   homeassistant.components.zwave: info
   slixmpp.stringprep: error
   androidtv.adb_manager.adb_manager_async: error
   homeassistant.components.androidtv.media_player: error
-  homeassistant.components.shelly: debug
   custom_components.zadnego_ale: debug
+  zadnegoale: debug
   custom_components.nettigo: debug
+  nettigo: debug
