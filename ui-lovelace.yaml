@@ -115,7 +115,12 @@ views:
               - entity: binary_sensor.motion_kuchnia
                 secondary_info: last-changed
               - binary_sensor.water_leak_kuchnia
-              - climate.aeotec_thermostat_kuchnia
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.heating_season
+                    state_not: "off"
+                row:
+                  entity: climate.aeotec_thermostat_kuchnia
               - entity: sensor.dishwasher_kuchnia
                 card_mod:
                   style: |
@@ -153,11 +158,16 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_salon
-              - entity: fan.humidifier_salon
-                secondary_info:
-                  entity: sensor.humidifier_water_level
-                  prefix: "poziom wody: "
-                  postfix: " %"
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.heating_season
+                    state_not: "off"
+                row:
+                  entity: fan.humidifier_salon
+                  secondary_info:
+                    entity: sensor.humidifier_water_level
+                    prefix: "poziom wody: "
+                    postfix: " %"
               - entity: fan.air_purifier_salon
                 secondary_info:
                   entity: sensor.aqi_attr_salon

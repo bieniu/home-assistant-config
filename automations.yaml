@@ -1,3 +1,25 @@
+- id: minecraft_server_players_online_notification
+  alias: "Minecraft Server Players Online Notification"
+  description: "powiadomienie o aktywnych graczach na serwerze Minecraft"
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.minecraft_server_players_online
+    above: 0
+  action:
+    service: python_script.notify
+    data:
+      title: "Gracze na serwerze Minecraft"
+      message: >-
+        {% if trigger.to_state.state == 1 %}
+          Na serwerze Minecraft gra obecnie {{ trigger.to_state.state }} gracz.
+        {% else %}
+          Na serwerze Minecraft gra obecnie {{ trigger.to_state.state }} graczy.
+        {% endif %}
+      tag: "minecraft-server"
+      services:
+        - service: !secret antek_notify_service
+          type: "ios"
+
 - id: ios_turn_on_tv
   alias: "iOS Turn On TV"
   description: "włącz TV via iOS"
@@ -1936,14 +1958,14 @@
 
 - id: light_turn_off_toaleta_light_when_no_motion
   alias: "Light Turn Off Toaleta Light When No Motion"
-  description: "wyłącz światło w toalecie jak brak ruchu przez 15 min"
+  description: "wyłącz światło w toalecie jak brak ruchu przez 20 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_toaleta
     from: "on"
     to: "off"
     for:
-      minutes: 15
+      minutes: 20
   condition:
     condition: state
     entity_id: light.ceiling_toaleta
@@ -1984,14 +2006,14 @@
 
 - id: light_turn_off_lazienka_light_when_no_motion
   alias: "Light Turn Off Lazienka Light When No Motion"
-  description: "wyłącz światło w łazience jak brak ruchu przez 10 min"
+  description: "wyłącz światło w łazience jak brak ruchu przez 20 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_lazienka
     from: "on"
     to: "off"
     for:
-      minutes: 10
+      minutes: 20
   condition:
     condition: state
     entity_id: light.ceiling_lazienka
@@ -2041,14 +2063,14 @@
 
 - id: light_turn_off_kuchnia_light_when_no_motion
   alias: "Light Turn Off Kuchnia Light When No Motion"
-  description: "wyłącz światło w kuchni jak brak ruchu przez 10 min"
+  description: "wyłącz światło w kuchni jak brak ruchu przez 20 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_kuchnia
     from: "on"
     to: "off"
     for:
-      minutes: 10
+      minutes: 20
   condition:
     condition: state
     entity_id: light.ceiling_kuchnia
@@ -2104,14 +2126,14 @@
 ## SYPIALNIA ##
 - id: light_turn_off_sypialnia_light_when_no_motion
   alias: "Light Turn Off Sypialnia Light When No Motion"
-  description: "wyłącz światło w sypialni jak brak ruchu przez 10 min"
+  description: "wyłącz światło w sypialni jak brak ruchu przez 20 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_sypialnia
     from: "on"
     to: "off"
     for:
-      minutes: 10
+      minutes: 20
   condition:
     condition: state
     entity_id: light.double_ceiling_sypialnia
@@ -2199,14 +2221,14 @@
 
 - id: light_turn_off_przedpokoj_leds_when_no_motion
   alias: "Light Turn Off Przedpokoj LEDs When No Motion"
-  description: "wyłącz LEDy na przedpokoju jak brak ruchu przez 10 min"
+  description: "wyłącz LEDy na przedpokoju jak brak ruchu przez 20 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_przedpokoj
     from: "on"
     to: "off"
     for:
-      minutes: 10
+      minutes: 20
   condition:
     condition: state
     entity_id: light.leds_przedpokoj
@@ -2218,23 +2240,26 @@
 ## POKÓJ ANTKA ##
 - id: light_turn_off_antek_lights_when_no_motion
   alias: "Light Turn Off Antek Lights When No Motion"
-  description: "wyłącz światła w pokoju Antka jak brak ruchu przez 10 min"
+  description: "wyłącz światła w pokoju Antka jak brak ruchu przez 20 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_antek
     from: "on"
     to: "off"
     for:
-      minutes: 10
+      minutes: 20
   condition:
-    condition: or
-    conditions:
-      - condition: state
-        entity_id: light.desk_lamp_antek
-        state: "on"
-      - condition: state
-        entity_id: light.ceiling_antek
-        state: "on"
+    - condition: state
+      entity_id: binary_sensor.laptop_antek_status
+      state: "off"
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: light.desk_lamp_antek
+          state: "on"
+        - condition: state
+          entity_id: light.ceiling_antek
+          state: "on"
   action:
     service: light.turn_off
     entity_id:
@@ -2491,18 +2516,21 @@
 
 - id: light_turn_off_gabinet_light_when_no_motion
   alias: "Light Turn Off Gabinet Light When No Motion"
-  description: "wyłącz światło w gabinecie jak brak ruchu przez 10 min"
+  description: "wyłącz światło w gabinecie jak brak ruchu przez 20 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_gabinet
     from: "on"
     to: "off"
     for:
-      minutes: 10
+      minutes: 20
   condition:
-    condition: state
-    entity_id: light.ceiling_gabinet
-    state: "on"
+    - condition: state
+      entity_id: light.ceiling_gabinet
+      state: "on"
+    - condition: state
+      entity_id: switch.stacjonarny
+      state: "off"
   action:
     service: light.turn_off
     entity_id: light.ceiling_gabinet
@@ -3056,26 +3084,6 @@
     service: logger.set_level
     data:
       homeassistant.components: "{{ trigger.to_state.state }}"
-
-- id: shelly_motion_debug
-  alias: "Shelly Motion Debug"
-  description: "debug Shelly Motion"
-  mode: queued
-  max: 999
-  trigger:
-    platform: mqtt
-    topic: "shellies/announce"
-  condition:
-    condition: template
-    value_template: "{{ trigger.payload_json.id == 'shellymotionsensor-60A42397664E' }}"
-  action:
-    service: python_script.notify
-    data:
-      title: "Shelly Motion"
-      message: "Shelly Motion odpowiedziało na announce: {{ now() }}"
-      services:
-        - service: !secret maciek_notify_service
-          type: "android"
 
 - id: shellies_announce
   alias: "Shellies Announce"

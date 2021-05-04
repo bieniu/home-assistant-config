@@ -59,6 +59,7 @@ sensor:
     temperature:
       name: "MH-Z19B Temperature"
       accuracy_decimals: 1
+      device_class: "temperature"
     automatic_baseline_calibration: false
     update_interval: 300s
 
@@ -69,6 +70,7 @@ sensor:
   - platform: wifi_signal
     name: "${device_name} WiFi Signal"
     update_interval: 300s
+    device_class: "signal_strength"
 
 text_sensor:
   - platform: template

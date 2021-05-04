@@ -71,6 +71,7 @@ sensor:
   - platform: wifi_signal
     name: "${device_name} WiFi Signal"
     update_interval: 300s
+    device_class: "signal_strength"
 
 text_sensor:
   - platform: template

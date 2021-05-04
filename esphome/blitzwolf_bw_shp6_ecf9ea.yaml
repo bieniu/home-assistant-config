@@ -82,6 +82,7 @@ sensor:
   - platform: wifi_signal
     name: "${device_name} WiFi Signal"
     update_interval: 300s
+    device_class: "signal_strength"
 
   - platform: hlw8012
     sel_pin:
@@ -95,15 +96,15 @@ sensor:
       name: "${device_name} Current"
       unit_of_measurement: "A"
       accuracy_decimals: 3
-      icon: mdi:flash-outline
+      device_class: "current"
     voltage:
       name: "${device_name} Voltage"
       unit_of_measurement: "V"
-      icon: mdi:flash-outline
+      device_class: "voltage"
     power:
       name: "${device_name} Power"
       unit_of_measurement: "W"
-      icon: mdi:flash-outline
+      device_class: "power"
     change_mode_every: 4
 
 text_sensor:

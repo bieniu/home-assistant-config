@@ -347,4 +347,4 @@ binary_sensor.shelly_1l_acedf2_overtemperature:
   relay: light.double_ceiling_sypialnia
 
 sensor.minecraft_server_players_online:
-  unit_of_measurement: "graczy"
+  unit_of_measurement: " "
