@@ -243,8 +243,6 @@ light.leds_przedpokoj:
   icon: mdi:led-variant-on
 switch.cabinet_antek:
   icon: mdi:locker
-switch.lamp_pracownia:
-  icon: mdi:floor-lamp
 switch.lamp_goscinny:
   icon: mdi:lamp
 switch.lamp_gabinet:

@@ -2440,7 +2440,7 @@
     - condition: state
       entity_id:
         - input_boolean.away_mode
-        - switch.lamp_pracownia
+        - light.lamp_pracownia
       state: "off"
     - condition: numeric_state
       entity_id: sensor.illumination_pracownia
@@ -2459,15 +2459,15 @@
           before: sunrise
           before_offset: "+00:30:00"
   action:
-    - service: switch.turn_on
-      entity_id: switch.lamp_pracownia
+    - service: light.turn_on
+      entity_id: light.lamp_pracownia
     - wait_for_trigger:
         platform: state
         entity_id: binary_sensor.motion_pracownia
         from: "on"
         to: "off"
-    - service: switch.turn_off
-      entity_id: switch.lamp_pracownia
+    - service: light.turn_off
+      entity_id: light.lamp_pracownia
 
 #### GABINET ####
 - id: light_turn_on_gabinet_desk_lamp_when_dark_and_motion
@@ -3137,6 +3137,8 @@
       shelly1l-84CCA8AD365E:
         relay-0: "light"
       shelly1l-84CCA8ACEDF2:
+        relay-0: "light"
+      shelly1-E8DB84D42455:
         relay-0: "light"
 
 - id: frontend_set_theme

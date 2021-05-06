@@ -61,6 +61,8 @@
   icon: mdi:light-switch
 "binary_sensor.shelly_2_*_status":
   icon: mdi:light-switch
+"binary_sensor.shelly_4pro_*_status":
+  icon: mdi:light-switch
 "binary_sensor.shelly_plug_*_status":
   icon: mdi:light-switch
 "binary_sensor.shelly_ht_*_status":

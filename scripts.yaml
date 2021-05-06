@@ -11,7 +11,7 @@ devices_away_mode:
     - light.lightstrip_sypialnia
     - light.lightstrip_antek
     - switch.cabinet_antek
-    - switch.lamp_pracownia
+    - light.lamp_pracownia
     - input_boolean.antek_lamp_night
     - switch.tree_antek
     - light.ceiling_gabinet

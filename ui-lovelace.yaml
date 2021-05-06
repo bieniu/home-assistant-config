@@ -319,7 +319,7 @@ views:
               - binary_sensor.balcony_door_pracownia
               - entity: binary_sensor.motion_pracownia
                 secondary_info: last-changed
-              - switch.lamp_pracownia
+              - light.lamp_pracownia
       - type: vertical-stack
         in_card: true
         cards:
@@ -852,6 +852,7 @@ views:
           - binary_sensor.blitzwolf_bw_shp6_17957c_status
           - binary_sensor.blitzwolf_bw_shp6_173eb6_status
           - binary_sensor.shelly_1_328900_status
+          - binary_sensor.shelly_1_d42455_status
           - binary_sensor.shelly_1l_701559_status
           - binary_sensor.shelly_1l_aceb5f_status
           - binary_sensor.shelly_1l_ad1b60_status
@@ -859,6 +860,7 @@ views:
           - binary_sensor.shelly_1l_ad365e_status
           - binary_sensor.shelly_1l_acedf2_status
           - binary_sensor.shelly_2_5b2604_status
+          - binary_sensor.shelly_4pro_d8b95c_status
           - binary_sensor.shelly_plug_s_7aecf4_status
   - id: energy
     icon: mdi:power-plug
