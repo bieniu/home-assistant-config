@@ -43,7 +43,6 @@
   icon: mdi:tree
 
 "sensor.*_last_restart":
-  device_class: timestamp
   icon: mdi:timer-outline
 
 #### ESPHOME ####

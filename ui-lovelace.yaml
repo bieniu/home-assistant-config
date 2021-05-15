@@ -28,17 +28,6 @@ anchors:
               var(--state-icon-color)
             {% endif %};
         }
-  zwave-entity: &zwave-entity
-    card_mod:
-      style: |
-        :host {
-          --paper-item-icon-color:
-            {% if is_state(config.entity, "dead") %}
-              var(--label-badge-red)
-            {% else %}
-              var(--state-icon-color)
-            {% endif %};
-        }
 title: "Dom"
 views:
   - id: home
@@ -718,28 +707,6 @@ views:
               - sensor.minecraft_server_players_online
               - sensor.minecraft_server_version
       - type: entities
-        title: "Węzły Z-Wave"
-        show_header_toggle: false
-        entities:
-          - entity: zwave.aeotec_zw090_zstick_gen5
-            <<: *zwave-entity
-          - entity: zwave.aeotec_zw175_smart_switch_7
-            <<: *zwave-entity
-          - entity: zwave.aeotec_zwa021_thermostat_kuchnia
-            <<: *zwave-entity
-          - entity: zwave.danfoss_014g0013_thermostat_salon
-            <<: *zwave-entity
-          - entity: zwave.danfoss_014g0013_thermostat_antresola
-            <<: *zwave-entity
-          - entity: zwave.danfoss_014g0013_thermostat_gabinet
-            <<: *zwave-entity
-          - entity: zwave.danfoss_014g0013_thermostat_antek
-            <<: *zwave-entity
-          - entity: zwave.danfoss_014g0013_thermostat_sypialnia
-            <<: *zwave-entity
-          - entity: zwave.danfoss_014g0013_thermostat_lazienka
-            <<: *zwave-entity
-      - type: entities
         title: "Urządzenia sieciowe"
         show_header_toggle: false
         state_color: true
@@ -1204,7 +1171,7 @@ views:
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - entity: air_quality.home
+              - entity: air_quality.outdoor
                 name: PM2.5
               - entity: air_quality.nettigo_air_monitor_sds011
             line_color: "#78909c"
@@ -1212,7 +1179,7 @@ views:
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - entity: air_quality.home
+              - entity: air_quality.outdoor
                 attribute: particulate_matter_10
                 name: PM10
               - entity: air_quality.nettigo_air_monitor_sds011

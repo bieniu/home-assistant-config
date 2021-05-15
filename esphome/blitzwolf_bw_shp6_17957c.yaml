@@ -75,8 +75,18 @@ status_led:
 
 sensor:
   - platform: uptime
-    id: uptime_sec
-    internal: true
+    name: "${device_name} Last Restart"
+    update_interval: 300s
+    device_class: "timestamp"
+    unit_of_measurement: ""
+    filters:
+      - lambda: |-
+          auto time = id(homeassistant_time).now();
+          if (time.is_valid()) {
+            return int(time.timestamp) - int(x);
+          } else {
+            return {};
+          }
 
   - platform: wifi_signal
     name: "${device_name} WiFi Signal"
@@ -105,20 +115,3 @@ sensor:
       unit_of_measurement: "W"
       device_class: "power"
     change_mode_every: 4
-
-text_sensor:
-  - platform: template
-    name: "${device_name} Uptime"
-    update_interval: 300s
-    icon: mdi:timer-outline
-    lambda: |-
-      auto time = id(homeassistant_time).now();
-      if (time.is_valid()) {
-        int uptime_seconds = int(id(uptime_sec).state);
-        int time_timestamp = int(time.timestamp);
-        int uptime_timestamp = { time_timestamp - uptime_seconds };
-        auto uptime_text = id(homeassistant_time).now().from_epoch_local(uptime_timestamp).strftime("%Y-%m-%d %H:%M:%S");
-        return uptime_text;
-      } else {
-        return {};
-      }

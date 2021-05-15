@@ -141,54 +141,52 @@
     attribute: update_available
     to: true
   action:
-    - service: python_script.notify
-      data:
-        title: "Aktualizacja Supervisora"
-        message: "Dostępna jest aktualizacja do wersji {{ state_attr('sensor.supervisor_updates', 'newest_version') }} dla Supervisora."
-        tag: "notification-supervisor-update"
-        group: "aktualizacje"
-        url: "/hassio/dashboard"
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
-            actions:
-              - title: "Zmiany"
-                action: "URI"
-                uri: "https://github.com/home-assistant/supervisor/releases"
+    service: python_script.notify
+    data:
+      title: "Aktualizacja Supervisora"
+      message: "Dostępna jest aktualizacja do wersji {{ state_attr('sensor.supervisor_updates', 'newest_version') }} dla Supervisora."
+      tag: "notification-supervisor-update"
+      group: "aktualizacje"
+      url: "/hassio/dashboard"
+      services:
+        - service: !secret maciek_notify_service
+          type: "android"
+          actions:
+            - title: "Zmiany"
+              action: "URI"
+              uri: "https://github.com/home-assistant/supervisor/releases"
 
 - id: notification_addons_update_available
   alias: "Notification Addons Update Available"
   description: "powiadom o aktualizacji addonów"
   trigger:
-    platform: numeric_state
-    entity_id: sensor.supervisor_updates
-    above: 0
+    platform: state
+    entity_id:
+      - binary_sensor.bitwarden_rs_update_available
+      - binary_sensor.check_home_assistant_configuration_update_available
+      - binary_sensor.chrony_update_available
+      - binary_sensor.esphome_update_available
+      - binary_sensor.mariadb_update_available
+      - binary_sensor.mosquitto_broker_update_available
+      - binary_sensor.rpc_shutdown_update_available
+      - binary_sensor.traccar_update_available
+      - binary_sensor.z_wave_js_update_available
+    from: "off"
+    to: "on"
+  variables:
+    name: "{{ trigger.to_state.attributes.friendly_name.split(':')[0] }}"
+    entity_name: "sensor.{{ trigger.entity_id.split('_update_available')[0].split('.')[1] }}_newest_version"
   action:
-    - service: python_script.notify
-      data:
-        title: >
-          {% if (trigger.to_state.state | int) == 1 %}
-            Aktualizacja dodatku Supervisora
-          {% else %}
-            Aktualizacje dodatków Supervisora
-          {% endif %}
-        message: >
-          {% if trigger.to_state.state | int == 1 %}
-            {%- for repo in state_attr(trigger.entity_id, 'addons') %}
-              Dostępna jest aktualizacja dodatku {{ repo.name }} do wersji {{ repo.version_latest }}.
-            {%- endfor %}
-          {%- else %}
-            Dostępne są aktualizacje dodatków:
-            {%- for repo in state_attr(trigger.entity_id, 'addons') %}
-          <br>- {{ repo.name }} do wersji {{ repo.version }}
-            {%- endfor %}
-          {%- endif %}
-        tag: "notification-addons-update"
-        group: "aktualizacje"
-        url: "/hassio/dashboard"
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
+    service: python_script.notify
+    data:
+      title: "Aktualizacja dodatku Supervisora"
+      message: "Dostępna jest aktualizacja dodatku {{ name }} do wersji {{ states(entity_name) }}."
+      tag: "notification-addons-update"
+      group: "aktualizacje"
+      url: "/hassio/dashboard"
+      services:
+        - service: !secret maciek_notify_service
+          type: "android"
 
 - id: notification_update_available_in_hacs
   alias: "Notification Update Available In HACS"
@@ -503,13 +501,13 @@
     minutes: "/10"
     seconds: 0
   variables:
-    domains: ["light", "switch", "sensor", "zwave", "fan", "binary_sensor", "media_player"]
+    domains: ["light", "switch", "sensor", "fan", "binary_sensor", "media_player"]
     rooms: ["przedpokoj", "goscinny", "pracownia", "kuchnia", "salon", "schody", "antresola", "gabinet", "pralnia", "antek", "sypialnia", "lazienka", "balkon", "indoor", "outdoor"]
     ignored: ["media_player.dune_salon", "media_player.mibox_goscinny", "light.bulb_gabinet"]
   condition: >
     {% macro dead_unavailable_entities() %}
       {% for domain in domains -%}
-        {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
+        {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and item.state == 'unavailable' %}
           {{ item.name }} ({{ item.entity_id }})
         {%- endfor %}
       {%- endfor %}
@@ -522,7 +520,7 @@
         message: >
           {% macro dead_unavailable_entities() %}
             {% for domain in domains -%}
-              {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and (item.state == 'dead' or item.state == 'unavailable') %}
+              {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and item.state == 'unavailable' %}
            <br>- {{ item.name }} ({{ item.entity_id }})
               {%- endfor %}
             {%- endfor %}
@@ -710,8 +708,7 @@
   description: "powiadom o wycieku wodu w kuchni"
   trigger:
     - platform: state
-      entity_id:
-        - binary_sensor.water_leak_kuchnia
+      entity_id: binary_sensor.water_leak_kuchnia
       from: "off"
       to: "on"
   variables:
@@ -1014,7 +1011,7 @@
   condition: >
     {% macro battery_level() %}
       {%- set threshold = 10 -%}
-      {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'lock', 'binary_sensor'] -%}
+      {%- set domains = ['light', 'switch', 'sensor', 'lock', 'binary_sensor'] -%}
       {% for domain in domains -%}
         {% for item in states[domain] if (((item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) or ('battery' in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == 'low' or item.state | lower == 'unknown')))) and not (( 'humidity' in item.entity_id) or ('illumination' in item.entity_id)) -%}
           {% if (item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) %}
@@ -1032,7 +1029,7 @@
         message: >
           {% macro battery_level() %}
             {%- set threshold = 10 -%}
-            {%- set domains = ['light', 'switch', 'sensor', 'zwave', 'lock', 'binary_sensor'] -%}
+            {%- set domains = ['light', 'switch', 'sensor', 'lock', 'binary_sensor'] -%}
             {% for domain in domains -%}
               {% for item in states[domain] if (((item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) or ('battery' in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == 'low' or item.state | lower == 'unknown')))) and not (( 'humidity' in item.entity_id) or ('illumination' in item.entity_id)) -%}
                 {% if (item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) %}

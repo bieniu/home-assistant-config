@@ -1,7 +1,5 @@
 default: warning
 logs:
-  # homeassistant.components.automation: info
-  homeassistant.components.zwave: info
   slixmpp.stringprep: error
   androidtv.adb_manager.adb_manager_async: error
   homeassistant.components.androidtv.media_player: error
