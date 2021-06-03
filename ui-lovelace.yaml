@@ -54,13 +54,16 @@ views:
                   state: home
                 - entity_id: person.jerzy
                   state: home
-          - type: vertical-stack
-            in_card: true
+          - type: custom:stack-in-card
+            <<: *card-header-no-padding-bottom
             title: "Pogoda"
             cards:
               - type: custom:simple-weather-card
-                canary_style:
-                  margin-top: "-24px"
+                card_mod:
+                style: |
+                  ha-card.type-custom-simple-weather-card {
+                    padding-top: 8px;
+                  }
                 entity: weather.dom
                 tap_action:
                   action: navigate
@@ -84,8 +87,7 @@ views:
               - entity: binary_sensor.motion_przedpokoj
                 secondary_info: last-changed
               - light.leds_przedpokoj
-          # - type: vertical-stack
-          #   in_card: true
+          # - type: custom:stack-in-card
           #   cards:
           #     - type: glance
           #       <<: *card-header-no-padding-bottom
@@ -122,8 +124,7 @@ views:
                         {% endif %};
                     }
               - light.ceiling_kuchnia
-      - type: vertical-stack
-        in_card: true
+      - type: custom:stack-in-card
         cards:
           - type: glance
             <<: *card-header-no-padding-bottom
@@ -153,14 +154,11 @@ views:
                     state_not: "off"
                 row:
                   entity: fan.humidifier_salon
-                  secondary_info:
-                    entity: sensor.humidifier_water_level
-                    prefix: "poziom wody: "
-                    postfix: " %"
+                  # type: custom:secondaryinfo-entity-row
+                  # secondary_info: "poziom wody: [[ sensor.humidifier_water_level ]] %"
               - entity: fan.air_purifier_salon
-                secondary_info:
-                  entity: sensor.aqi_attr_salon
-                  prefix: "powietrze: "
+                # type: custom:secondaryinfo-entity-row
+                # secondary_info: "powietrze: {{states('sensor.aqi_attr_salon')}}"
               # - fan.pedestal_salon
               - light.bulbs_salon
               - light.leds_salon
@@ -272,8 +270,7 @@ views:
                         entity_id: media_player.echo_show_salon
                         media_content_type: "SPOTIFY"
                         media_content_id: "in everywhere group playlist Maciek"
-      - type: vertical-stack
-        in_card: true
+      - type: custom:stack-in-card
         cards:
           - type: glance
             <<: *card-header-no-padding-bottom
@@ -290,8 +287,7 @@ views:
               - entity: binary_sensor.motion_toaleta
                 secondary_info: last-changed
               - light.ceiling_toaleta
-      - type: vertical-stack
-        in_card: true
+      - type: custom:stack-in-card
         cards:
           - type: glance
             <<: *card-header-no-padding-bottom
@@ -309,8 +305,7 @@ views:
               - entity: binary_sensor.motion_pracownia
                 secondary_info: last-changed
               - light.lamp_pracownia
-      - type: vertical-stack
-        in_card: true
+      - type: custom:stack-in-card
         cards:
           - type: glance
             <<: *card-header-no-padding-bottom
@@ -342,8 +337,7 @@ views:
                     source: true
                   info: scroll
                   group: true
-      - type: vertical-stack
-        in_card: true
+      - type: custom:stack-in-card
         cards:
           - type: glance
             <<: *card-header-no-padding-bottom
@@ -367,8 +361,7 @@ views:
                 row:
                   entity: climate.thermostat_antresola
               - light.gateway_antresola
-      - type: vertical-stack
-        in_card: true
+      - type: custom:stack-in-card
         cards:
           - type: glance
             <<: *card-header-no-padding-bottom
@@ -394,8 +387,7 @@ views:
               - light.desk_lamp_gabinet
               - light.ceiling_gabinet
               - switch.stacjonarny
-      - type: vertical-stack
-        in_card: true
+      - type: custom:stack-in-card
         cards:
           - type: glance
             <<: *card-header-no-padding-bottom
@@ -433,8 +425,7 @@ views:
                   source: true
                 info: scroll
                 group: true
-      - type: vertical-stack
-        in_card: true
+      - type: custom:stack-in-card
         cards:
           - type: glance
             <<: *card-header-no-padding-bottom
@@ -470,8 +461,7 @@ views:
                   source: true
                 info: scroll
                 group: true
-      - type: vertical-stack
-        in_card: true
+      - type: custom:stack-in-card
         cards:
           - type: glance
             <<: *card-header-no-padding-bottom
@@ -538,8 +528,7 @@ views:
     cards:
       - type: vertical-stack
         cards:
-          - type: vertical-stack
-            in_card: true
+          - type: custom:stack-in-card
             title: "Internet"
             cards:
               - type: horizontal-stack
@@ -576,8 +565,7 @@ views:
                     decimals: 1
                     entities:
                       - sensor.speedtest_upload
-          - type: vertical-stack
-            in_card: true
+          - type: custom:stack-in-card
             title: "Router"
             cards:
               - type: horizontal-stack
@@ -606,8 +594,7 @@ views:
                     decimals: 1
                     entities:
                       - sensor.asuswrt_upload_speed
-          - type: vertical-stack
-            in_card: true
+          - type: custom:stack-in-card
             cards:
               - type: entities
                 title: "Intel NUC"
@@ -644,8 +631,7 @@ views:
                     entities:
                       - sensor.memory_use_percent
                     <<: *GRAPH_COLOR_THRESHOLD
-          - type: vertical-stack
-            in_card: true
+          - type: custom:stack-in-card
             cards:
               - type: entities
                 title: "Raspberry Pi 4B"
@@ -834,8 +820,7 @@ views:
     title: "Energia"
     path: energy
     cards:
-      - type: vertical-stack
-        in_card: true
+      - type: custom:stack-in-card
         cards:
           - type: entities
             title: "UPS"
@@ -1043,16 +1028,17 @@ views:
             tooltip_left_offset: -14
             slot_l1: "wind"
             slot_l2: "pop"
-            slot_l3: "sun_following"
+            slot_l3: "remove"
             slot_l4: "remove"
             slot_l5: "remove"
             slot_r1: "humidity"
             slot_r2: "pressure"
-            slot_r3: "sun_next"
+            slot_r3: "remove"
             slot_r4: "remove"
             slot_r5: "remove"
             old_icon: "true"
             show_decimals: true
+          - type: custom:sun-card
           - type: iframe
             url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates&metricWind=m%2Fs
             aspect_ratio: 61%
