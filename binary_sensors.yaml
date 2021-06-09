@@ -89,6 +89,10 @@
       value_template: "{{ is_state('device_tracker.xbox', 'home') }}"
       friendly_name: "Xbox360"
 
+    thermomix_status:
+      value_template: "{{ is_state('device_tracker.thermomix_tm6', 'home') }}"
+      friendly_name: "Thermomix TM6"
+
     playstation_status:
       value_template: "{{ is_state('device_tracker.playstation', 'home') }}"
       friendly_name: "PlayStation 4 Pro"
@@ -248,6 +252,10 @@
     shelly_1l_ad365e_status:
       friendly_name: "Shelly 1L [AD365E]"
       value_template: "{{ is_state('device_tracker.shelly_1l_ad365e', 'home') }}"
+
+    shelly_1l_aacec4_status:
+      friendly_name: "Shelly 1L [AACEC4]"
+      value_template: "{{ is_state('device_tracker.shelly_1l_aacec4', 'home') }}"
 
     shelly_1l_701559_status:
       friendly_name: "Shelly 1L [701559]"

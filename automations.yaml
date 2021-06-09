@@ -824,6 +824,7 @@
         - binary_sensor.shelly_1l_61c9fd_overtemperature
         - binary_sensor.shelly_1l_ad365e_overtemperature
         - binary_sensor.shelly_1l_acedf2_overtemperature
+        - binary_sensor.shelly_1l_aacec4_overtemperature
         - binary_sensor.shelly_plug_s_7aecf4_overtemperature
       from: "off"
       to: "on"
@@ -1156,16 +1157,16 @@
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.away_mode
-    # - condition: and
-    #   conditions:
-    #     - condition: state
-    #       entity_id: input_boolean.heating_season
-    #       state: "off"
-    #     - condition: numeric_state
-    #       entity_id: sensor.temperature_salon
-    #       above: 26
-    # - service: fan.turn_on
-    #   entity_id: fan.pedestal_salon
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.heating_season
+          state: "off"
+        - condition: numeric_state
+          entity_id: sensor.temperature_salon
+          above: 26
+    - service: fan.turn_on
+      entity_id: fan.pedestal_salon
 
 ##################################################################################################
 
@@ -1276,25 +1277,25 @@
     - service: input_boolean.turn_on
       entity_id: input_boolean.heating_salon_kuchnia_night
 
-# - id: climate_turn_off_fan
-#   alias: "Climate Turn Off Fan"
-#   description: "wyłącz wentylator po wyłączeniu telewizora"
-#   trigger:
-#     platform: state
-#     entity_id: media_player.denon_salon
-#     to: "off"
-#   condition:
-#     - condition: state
-#       entity_id: fan.pedestal_salon
-#       state: "on"
-#     - condition: state
-#       entity_id: input_boolean.heating_season
-#       state: "off"
-#     - condition: time
-#       after: "22:00:00"
-#   action:
-#     service: fan.turn_off
-#     entity_id: fan.pedestal_salon
+- id: climate_turn_off_fan
+  alias: "Climate Turn Off Fan"
+  description: "wyłącz wentylator po wyłączeniu telewizora"
+  trigger:
+    platform: state
+    entity_id: media_player.denon_salon
+    to: "off"
+  condition:
+    - condition: state
+      entity_id: fan.pedestal_salon
+      state: "on"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "off"
+    - condition: time
+      after: "22:00:00"
+  action:
+    service: fan.turn_off
+    entity_id: fan.pedestal_salon
 
 - id: heating_away_mode
   alias: "Heating Away Mode"
@@ -1731,16 +1732,16 @@
         - condition: state
           entity_id: light.lamp_salon
           state: "on"
-        # - condition: state
-        #   entity_id: fan.pedestal_salon
-        #   state: "on"
+        - condition: state
+          entity_id: fan.pedestal_salon
+          state: "on"
   action:
     service: homeassistant.turn_off
     entity_id:
       - light.bulbs_salon
       - light.leds_salon
       - light.lamp_salon
-      # - fan.pedestal_salon
+      - fan.pedestal_salon
 
 - id: light_scene_salon_auto_when_bulbs_turn_on
   alias: "Light Scene Salon Auto When Bulbs Turn On"
@@ -2191,6 +2192,7 @@
   condition:
     - condition: state
       entity_id:
+        - light.ceiling_przedpokoj
         - light.leds_przedpokoj
         - light.bulbs_salon
         - light.leds_salon
@@ -2216,9 +2218,9 @@
     - service: light.turn_off
       entity_id: light.leds_przedpokoj
 
-- id: light_turn_off_przedpokoj_leds_when_no_motion
-  alias: "Light Turn Off Przedpokoj LEDs When No Motion"
-  description: "wyłącz LEDy na przedpokoju jak brak ruchu przez 20 min"
+- id: light_turn_off_przedpokoj_lights_when_no_motion
+  alias: "Light Turn Off Przedpokoj lights When No Motion"
+  description: "wyłącz oświetlenie na przedpokoju jak brak ruchu przez 20 min"
   trigger:
     platform: state
     entity_id: binary_sensor.motion_przedpokoj
@@ -2227,12 +2229,19 @@
     for:
       minutes: 20
   condition:
-    condition: state
-    entity_id: light.leds_przedpokoj
-    state: "on"
+    condition: or
+    conditions:
+      - condition: state
+        entity_id: light.leds_przedpokoj
+        state: "on"
+      - condition: state
+        entity_id: light.ceiling_przedpokoj
+        state: "on"
   action:
     service: light.turn_off
-    entity_id: light.leds_przedpokoj
+    entity_id:
+      - light.leds_przedpokoj
+      - light.ceiling_przedpokoj
 
 ## POKÓJ ANTKA ##
 - id: light_turn_off_antek_lights_when_no_motion
@@ -2301,6 +2310,9 @@
         to: "off"
     - condition: state
       entity_id: input_boolean.antek_lamp_night
+      state: "off"
+    - condition: state
+      entity_id: binary_sensor.laptop_antek_status
       state: "off"
     - service: script.light_turn_off_antek_leds
     - service: switch.turn_off
@@ -2445,9 +2457,6 @@
     - condition: state
       entity_id: input_boolean.light_auto_turn_pracownia
       state: "on"
-    - condition: numeric_state
-      entity_id: sensor.computer_monitor_pracownia
-      below: 4
     - condition: or
       conditions:
         - condition: sun
@@ -2463,6 +2472,9 @@
         entity_id: binary_sensor.motion_pracownia
         from: "on"
         to: "off"
+    - condition: state
+      entity_id: binary_sensor.laptop_edyta_status
+      state: "off"
     - service: light.turn_off
       entity_id: light.lamp_pracownia
 
@@ -2506,6 +2518,9 @@
         entity_id: binary_sensor.motion_gabinet
         from: "on"
         to: "off"
+    - condition: state
+      entity_id: switch.stacjonarny
+      state: "off"
     - service: light.turn_off
       entity_id: light.desk_lamp_gabinet
       data:
@@ -3136,6 +3151,8 @@
       shelly1l-84CCA8ACEDF2:
         relay-0: "light"
       shelly1-E8DB84D42455:
+        relay-0: "light"
+      shelly1l-E8DB84AACEC4:
         relay-0: "light"
 
 - id: frontend_set_theme

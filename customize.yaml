@@ -21,8 +21,6 @@ light.bulb_salon_1:
   friendly_name: "Żarówka salon 1"
 light.bulb_salon_2:
   friendly_name: "Żarówka salon 2"
-light.leds_salon:
-  icon: mdi:led-variant-on
 light.bulbs_salon:
   friendly_name: "Żarówki"
   icon: mdi:lightbulb-multiple
@@ -140,6 +138,8 @@ binary_sensor.yeelight_mjtd01syl_94e1f5_status:
   icon: mdi:desk-lamp
 binary_sensor.yeelight_mjtd01syl_4fbaa2_status:
   icon: mdi:desk-lamp
+binary_sensor.thermomix_status:
+  icon: mdi:pot-steam-outline
 
 #### FANS ####
 fan.humidifier_salon:
@@ -149,6 +149,9 @@ fan.humidifier_salon:
 fan.air_purifier_salon:
   friendly_name: "Oczyszczacz"
   icon: mdi:air-purifier
+
+fan.pedestal_salon:
+  friendly_name: "Wentylator"
 
 sensor.aqi_info_salon:
   icon: "mdi:home-import-outline"
@@ -239,8 +242,6 @@ sensor.printer_page_counter:
 light.lamp_salon:
   friendly_name: "Lampa"
   icon: mdi:floor-lamp
-light.leds_przedpokoj:
-  icon: mdi:led-variant-on
 switch.cabinet_antek:
   icon: mdi:locker
 switch.lamp_goscinny:

@@ -69,11 +69,6 @@
 "binary_sensor.shelly_flood_*_status":
   icon: mdi:water
 
-#### LIGHTS ####
-"light.lightstrip*":
-  friendly_name: "LEDy"
-  icon: mdi:led-variant-on
-
 #### NETWORK DEVICES ####
 "binary_sensor.yeelight_yldd*_status":
   icon: mdi:led-variant-outline

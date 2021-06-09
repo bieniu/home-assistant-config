@@ -85,10 +85,8 @@ lovelace:
       type: module
     - url: /hacsfiles/home-assistant-sun-card/home-assistant-sun-card.js
       type: module
-    - url: /hacsfiles/stack-in-card/stack-in-card.js
+    - url: /hacsfiles/lovelace-canary/canary.js
       type: module
-    # - url: /hacsfiles/secondaryinfo-entity-row/secondaryinfo-entity-row.js
-    #   type: module
 
 media_player: !include media_player.yaml
 
