@@ -152,8 +152,8 @@
       unit_of_measurement: "%"
       value_template: >-
         {% if state_attr('fan.humidifier_salon', 'depth') is number %}
-          {% if state_attr('fan.humidifier_salon', 'depth') < 127 %}
-            {{ (state_attr('fan.humidifier_salon', 'depth') * 0.89 - 11.6) | round | min(100) | max(0) }}
+          {% if state_attr('fan.humidifier_salon', 'depth') <= 125 %}
+            {{ (state_attr('fan.humidifier_salon', 'depth') / 1.25) | round }}
           {% else %}
             0
           {% endif %}

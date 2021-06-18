@@ -56,6 +56,7 @@ sensor:
     id: mhz19_sensor
     co2:
       name: "MH-Z19B Carbon Dioxide"
+      device_class: "carbon_dioxide"
     temperature:
       name: "MH-Z19B Temperature"
       accuracy_decimals: 1

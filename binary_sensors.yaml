@@ -57,9 +57,9 @@
         {{ is_state('binary_sensor.motion_salon_1', 'on')
            or is_state('binary_sensor.motion_salon_2', 'on') }}
 
-    access_point_status:
-      value_template: "{{ is_state('device_tracker.access_point', 'home') }}"
-      friendly_name: "Asus RT-AC68U"
+    lyra_54cf59_status:
+      value_template: "{{ is_state('device_tracker.lyra_trio_54cf59', 'home') }}"
+      friendly_name: "Lyra Trio [54CF59]"
 
     synology_status:
       value_template: "{{ is_state('device_tracker.synology', 'home') }}"
@@ -97,10 +97,6 @@
       value_template: "{{ is_state('device_tracker.playstation', 'home') }}"
       friendly_name: "PlayStation 4 Pro"
 
-    fingbox_status:
-      value_template: "{{ is_state('device_tracker.fingbox', 'home') }}"
-      friendly_name: "Fingbox"
-
     harmony_status:
       value_template: "{{ is_state('device_tracker.harmony', 'home') }}"
       friendly_name: "Logitech Harmony Hub"
@@ -121,8 +117,8 @@
       value_template: "{{ is_state('device_tracker.ipad_air', 'home') }}"
       friendly_name: "iPad Air"
 
-    kindle_status:
-      value_template: "{{ is_state('device_tracker.kindle', 'home') }}"
+    kindle_keyboard_3g_status:
+      value_template: "{{ is_state('device_tracker.kindle_keyboard_3g', 'home') }}"
       friendly_name: "Kindle Keyboard 3G"
 
     kindle_8_status:
@@ -142,12 +138,8 @@
       friendly_name: "Amazon Echo Dot"
 
     inkbook_status:
-      value_template: "{{ is_state('device_tracker.inkbook', 'home') }}"
+      value_template: "{{ is_state('device_tracker.inkbook_classic_2', 'home') }}"
       friendly_name: "inkBook Classic 2"
-
-    lumia_status:
-      value_template: "{{ is_state('device_tracker.lumia_640', 'home') }}"
-      friendly_name: "Lumia 640"
 
     mibox_status:
       value_template: "{{ is_state('device_tracker.mibox', 'home') }}"

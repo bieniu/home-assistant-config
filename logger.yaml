@@ -5,5 +5,3 @@ logs:
   homeassistant.components.androidtv.media_player: error
   custom_components.zadnego_ale: debug
   zadnegoale: debug
-  custom_components.nettigo: debug
-  nettigo: debug
