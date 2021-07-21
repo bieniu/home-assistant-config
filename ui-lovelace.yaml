@@ -61,7 +61,7 @@ views:
               - type: custom:simple-weather-card
                 canary_style:
                   margin-top: "-24px"
-                entity: weather.dom
+                entity: weather.home
                 tap_action:
                   action: navigate
                   navigation_path: /lovelace/climate
@@ -800,7 +800,7 @@ views:
         <<: *network-status-card
         entities:
           - binary_sensor.shelly_ht_e00abd_status
-          - binary_sensor.shelly_motion_97664e_status
+          - binary_sensor.shelly_motion_c67c2a_status
           - binary_sensor.shelly_flood_f2ad1d_status
           - binary_sensor.wemos_d1_mini_1c91ea_status
       - type: entities
@@ -889,7 +889,7 @@ views:
             color: var(--state-icon-color)
         entities:
           - sensor.battery_xiaomi_motion_aq2_przedpokoj
-          - sensor.shelly_motion_97664e_battery
+          - sensor.shelly_motion_c67c2a_battery
           - sensor.battery_xiaomi_motion_salon
           - sensor.battery_xiaomi_motion_aq2_salon
           - sensor.battery_xiaomi_motion_aq2_toaleta
@@ -1004,11 +1004,11 @@ views:
             entity_humidity: sensor.humidity_outdoor
             entity_pressure: sensor.pressure_outdoor
             entity_temperature: sensor.temperature_outdoor
-            entity_apparent_temp: sensor.dom_realfeel_temperature
+            entity_apparent_temp: sensor.realfeel_temperature_home
             entity_wind_bearing: sensor.dark_sky_wind_bearing
             entity_wind_speed: sensor.dark_sky_wind_speed
             entity_pop: sensor.dark_sky_precip_probability
-            entity_pop_intensity: sensor.dom_precipitation
+            entity_pop_intensity: sensor.precipitation_home
             entity_forecast_high_temp_1: sensor.dark_sky_daytime_high_temperature_1d
             entity_forecast_high_temp_2: sensor.dark_sky_daytime_high_temperature_2d
             entity_forecast_high_temp_3: sensor.dark_sky_daytime_high_temperature_3d
@@ -1168,31 +1168,25 @@ views:
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - sensor.pm1_outdoor
+              - sensor.pm1_home
             line_color: "#78909c"
             decimals: 0
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - entity: air_quality.outdoor
-                name: PM2.5
-              - entity: air_quality.nettigo_air_monitor_sds011
+              - entity: sensor.pm25_home
             line_color: "#78909c"
             decimals: 0
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - entity: air_quality.outdoor
-                attribute: particulate_matter_10
-                name: PM10
-              - entity: air_quality.nettigo_air_monitor_sds011
-                attribute: particulate_matter_10
+              - entity: sensor.pm10_home
             line_color: "#78909c"
             decimals: 0
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - sensor.dom_uv_index
+              - sensor.uv_index_home
             line_color: "#ffce57"
             decimals: 0
       - type: custom:auto-entities
@@ -1203,7 +1197,7 @@ views:
           include:
             - entity_id: "sensor.stezenie_*"
           exclude:
-            - state: "brak"
+            - state: "lack"
   - id: misc
     icon: mdi:cog
     title: "Różne"

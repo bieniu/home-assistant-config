@@ -133,17 +133,17 @@
 
     air_quality_info_outdoor:
       friendly_name: "Jakość powietrza zewnętrzenego"
-      availability_template: "{{ not is_state('air_quality.outdoor', 'unavailable') }}"
+      availability_template: "{{ not is_state('sensor.caqi_home', 'unavailable') }}"
       value_template: >-
-        {% if state_attr('air_quality.outdoor', 'air_quality_index') | int <= 25 %}
+        {% if states('sensor.caqi_home') | int <= 25 %}
           bardzo dobra
-        {% elif state_attr('air_quality.outdoor', 'air_quality_index') | int <= 50 %}
+        {% elif states('sensor.caqi_home') | int <= 50 %}
           dobra
-        {% elif state_attr('air_quality.outdoor', 'air_quality_index') | int <= 75 %}
+        {% elif states('sensor.caqi_home') | int <= 75 %}
           średnia
-        {% elif state_attr('air_quality.outdoor', 'air_quality_index') | int <= 100 %}
+        {% elif states('sensor.caqi_home') | int <= 100 %}
           zła
-        {% elif state_attr('air_quality.outdoor', 'air_quality_index') | int > 100 %}
+        {% elif states('sensor.caqi_home') | int > 100 %}
           bardzo zła
         {% endif %}
 

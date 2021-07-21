@@ -23,6 +23,7 @@ devices_away_mode:
     - light.ceiling_antek
     - light.double_ceiling_sypialnia
     - light.ceiling_przedpokoj
+    - fan.pedestal_salon
   mode: single
   alias: 'Devices: away mode'
   icon: mdi:home-export-outline
@@ -103,7 +104,9 @@ heating_night:
     value_template: "{{ is_state(\"input_boolean.guests\", \"off\") and\n   is_state(\"\
       media_player.denon_salon\", \"off\") }}"
   - service: fan.turn_off
-    entity_id: fan.humidifier_salon
+    entity_id:
+      - fan.humidifier_salon
+      - fan.pedestal_salon
   - service: climate.set_temperature
     entity_id:
     - climate.aeotec_thermostat_kuchnia

@@ -41,6 +41,8 @@ web_server:
 time:
   - platform: homeassistant
     id: homeassistant_time
+    on_time_sync:
+      - component.update: last_restart
 
 uart:
   rx_pin: RX
@@ -65,18 +67,20 @@ sensor:
     update_interval: 300s
 
   - platform: uptime
+    id: uptime_sensor
+    internal: true
+
+  - platform: template
     name: "${device_name} Last Restart"
-    update_interval: 300s
+    id: last_restart
     device_class: "timestamp"
-    unit_of_measurement: ""
-    filters:
-      - lambda: |-
-          auto time = id(homeassistant_time).now();
-          if (time.is_valid()) {
-            return int(time.timestamp) - int(x);
-          } else {
-            return {};
-          }
+    accuracy_decimals: 0
+    update_interval: never
+    lambda: |-
+      static float timestamp = (
+        id(homeassistant_time).utcnow().timestamp - id(uptime_sensor).state
+      );
+      return timestamp;
 
   - platform: wifi_signal
     name: "${device_name} WiFi Signal"

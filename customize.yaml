@@ -61,7 +61,7 @@ binary_sensor.raspberry_status:
 binary_sensor.router_status:
   icon: mdi:router-network
   friendly_name: "Asus RT-AC86U"
-binary_sensor.access_point_status:
+binary_sensor.lyra_54cf59_status:
   icon: mdi:access-point-network
 binary_sensor.synology_status:
   icon: mdi:nas
@@ -132,7 +132,7 @@ binary_sensor.yeelight_yldp02yl_f12026_status:
   location: "salon"
 binary_sensor.yeelight_yldp02yl_b1b6aa_status:
   location: "antresola"
-binary_sensor.shelly_motion_97664e_status:
+binary_sensor.shelly_motion_c67c2a_status:
   icon: mdi:motion-sensor
 binary_sensor.yeelight_mjtd01syl_94e1f5_status:
   icon: mdi:desk-lamp
@@ -288,7 +288,7 @@ sensor.servers_gabinet_energy_monthly:
 sensor.computer_gabinet_energy_monthly:
   friendly_name: "Komputer"
 
-sensor.dom_uv_index:
+sensor.uv_index_home:
   unit_of_measurement: " "
 
 #### AIRLY ####
