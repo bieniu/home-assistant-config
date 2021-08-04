@@ -153,11 +153,11 @@ views:
                   - entity: input_boolean.heating_season
                     state_not: "off"
                 row:
-                  entity: fan.humidifier_salon
-                  secondary_info:
-                    entity: sensor.humidifier_water_level
-                    prefix: "poziom wody: "
-                    postfix: " %"
+                  entity: humidifier.xiaomi_salon
+                  # secondary_info:
+                  #   entity: sensor.xiaomi_mi_humidifier_ca1_water_level
+                  #   prefix: "poziom wody: "
+                  #   postfix: " %"
               - entity: fan.air_purifier_salon
                 secondary_info:
                   entity: sensor.aqi_attr_salon
@@ -793,6 +793,7 @@ views:
           - binary_sensor.yeelight_yldd01yl_6707fc_status
           - binary_sensor.yeelight_mjtd01syl_94e1f5_status
           - binary_sensor.yeelight_mjtd01syl_4fbaa2_status
+          - binary_sensor.shelly_duo_5f6fa1_status
       - type: entities
         title: "IoT - sensory"
         show_header_toggle: false
@@ -803,6 +804,7 @@ views:
           - binary_sensor.shelly_motion_c67c2a_status
           - binary_sensor.shelly_flood_f2ad1d_status
           - binary_sensor.wemos_d1_mini_1c91ea_status
+          - binary_sensor.nettigo_air_monitor_status
       - type: entities
         title: "IoT - przekaźniki"
         show_header_toggle: false
@@ -1156,6 +1158,7 @@ views:
               - entity: sensor.co2_salon
             line_color: "#8bc34a"
             decimals: 0
+            icon: "mdi:molecule-co2"
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             name: "AQI wewnętrzne"

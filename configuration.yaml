@@ -90,15 +90,6 @@ lovelace:
 
 media_player: !include media_player.yaml
 
-notify:
-  - platform: nfandroidtv
-    name: "MiBox"
-    host: !secret mibox_hostname
-
-  - platform: nfandroidtv
-    name: "Bravia"
-    host: !secret bravia_hostname
-
 python_script:
 
 recorder: !include recorder.yaml
@@ -111,3 +102,5 @@ sensor: !include sensors.yaml
 
 switch: !include switches.yaml
 
+shell_command:
+  restart_shelly_devices: /config/scripts/restart_shelly_devices.sh

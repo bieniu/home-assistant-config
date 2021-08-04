@@ -123,9 +123,9 @@
   sensors:
     dishwasher_kuchnia:
       friendly_name: "Zmywarka"
-      availability_template: "{{ states('sensor.dishwasher_kuchnia_power') != ('unavailable' or 'unknown') }}"
+      availability_template: "{{ states('sensor.power_dishwasher_kuchnia_power') != ('unavailable' or 'unknown') }}"
       value_template: >-
-        {% if states('sensor.dishwasher_kuchnia_power') | int > 1 %}
+        {% if states('sensor.power_dishwasher_kuchnia') | int > 1 %}
           zmywanie
         {% else %}
           wyłączona
@@ -145,20 +145,6 @@
           zła
         {% elif states('sensor.caqi_home') | int > 100 %}
           bardzo zła
-        {% endif %}
-
-    humidifier_water_level:
-      friendly_name: "Poziom wody"
-      unit_of_measurement: "%"
-      value_template: >-
-        {% if state_attr('fan.humidifier_salon', 'depth') is number %}
-          {% if state_attr('fan.humidifier_salon', 'depth') <= 125 %}
-            {{ (state_attr('fan.humidifier_salon', 'depth') / 1.25) | round }}
-          {% else %}
-            0
-          {% endif %}
-        {% else %}
-          0
         {% endif %}
 
     aqi_salon:

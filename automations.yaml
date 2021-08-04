@@ -281,10 +281,11 @@
         - binary_sensor.shelly_1_328900_firmware_update
         - binary_sensor.shelly_1l_701559_firmware_update
         - binary_sensor.shelly_2_5b2604_firmware_update
-        # - binary_sensor.shelly_flood_f2ad1d_firmware_update
-        # - binary_sensor.shelly_ht_e00abd_firmware_update
+        - binary_sensor.shelly_flood_f2ad1d_firmware_update
+        - binary_sensor.shelly_ht_e00abd_firmware_update
         - binary_sensor.shelly_plug_s_7aecf4_firmware_update
         - binary_sensor.shelly_motion_c67c2a_firmware_update
+        - binary_sensor.shelly_duo_5f6fa1_firmware_update
       from: "off"
       to: "on"
   action:
@@ -351,6 +352,22 @@
                 action: "URI"
                 uri: "https://github.com/caddyserver/caddy/releases"
 
+- id: notification_iphone_11_location_permission
+  alias: "Notification iPhone 11 Location Permission"
+  description: "powiadom o uprawnieniach lokalizacji na iPhone 11"
+  trigger:
+    - platform: template
+      value_template: "{{ as_timestamp(now()) - as_timestamp(states.device_tracker.iphone_11_app.last_changed) > 43200 }}"
+  action:
+    service: python_script.notify
+    data:
+      title: "Brak uprawnień lokalizacji dla aplikacji Home Assistant"
+      message: "Od 12 godzin nie przekazano nowej lokalizacji urządzenia do Home Assistanta. Prawdopodobnie aplikacja nie ma wystarczających uprawnień."
+      tag: "notification-iphone-11-location-permission"
+      services:
+        - service: !secret edyta_notify_service
+          type: "ios"
+
 - id: notification_storm_comming
   alias: "Notification Storm Comming"
   description: "powiadom o zblizającej się burzy"
@@ -398,20 +415,6 @@
           state: "on"
         sequence:
           service: notify.bravia
-          data:
-            title: "{{ notification_title }}"
-            message: "{{ notification_message }}"
-            data:
-              file:
-                url: !secret favicon_url
-              duration: 10
-    - choose:
-        conditions:
-          condition: state
-          entity_id: media_player.mibox_goscinny
-          state: "on"
-        sequence:
-          service: notify.mibox
           data:
             title: "{{ notification_title }}"
             message: "{{ notification_message }}"
@@ -532,93 +535,79 @@
           - service: !secret maciek_notify_service
             type: "android"
 
-- id: notification_humidifier_low_water
-  alias: "Notification Humidifier Low Water"
-  description: "powiadom o małej ilości wody w nawilżaczu"
-  trigger:
-    - platform: numeric_state
-      entity_id: sensor.humidifier_water_level
-      below: 10
-    - platform: numeric_state
-      entity_id: sensor.humidifier_water_level
-      below: 20
-    - platform: numeric_state
-      entity_id: sensor.humidifier_water_level
-      below: 40
-  condition:
-    - condition: or
-      conditions:
-        - condition: state
-          entity_id: person.maciek
-          state: "home"
-        - condition: state
-          entity_id: person.edyta
-          state: "home"
-    - condition: state
-      entity_id: input_boolean.heating_season
-      state: "on"
-    - "{{ states('sensor.humidifier_water_level') | int != 0 }}"
-  variables:
-    notification_title: "Uzupełnij wodę w nawilżaczu"
-    notification_message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-    notification_tag: "notification-humidifier"
-  action:
-    - choose:
-        conditions:
-          condition: state
-          entity_id: person.maciek
-          state: "home"
-        sequence:
-          service: python_script.notify
-          data:
-            title: "{{ notification_title }}"
-            message: "{{ notification_message }}"
-            tag: "{{ notification_tag }}"
-            services:
-              - service: !secret maciek_notify_service
-                type: "android"
-    - choose:
-        conditions:
-          condition: state
-          entity_id: person.edyta
-          state: "home"
-        sequence:
-          service: python_script.notify
-          data:
-            title: "{{ notification_title }}"
-            message: "{{ notification_message }}"
-            tag: "{{ notification_tag }}"
-            services:
-              - service: !secret edyta_notify_service
-                type: "ios"
-    - choose:
-        conditions:
-          condition: state
-          entity_id: media_player.bravia_salon
-          state: "on"
-        sequence:
-          service: notify.bravia
-          data:
-            title: "{{ notification_title }}"
-            message: "{{ notification_message }}"
-            data:
-              file:
-                url: !secret favicon_url
-              duration: 10
-    - choose:
-        conditions:
-          condition: state
-          entity_id: media_player.mibox_goscinny
-          state: "on"
-        sequence:
-          service: notify.mibox
-          data:
-            title: "{{ notification_title }}"
-            message: "{{ notification_message }}"
-            data:
-              file:
-                url: !secret favicon_url
-              duration: 10
+# - id: notification_humidifier_low_water
+#   alias: "Notification Humidifier Low Water"
+#   description: "powiadom o małej ilości wody w nawilżaczu"
+#   trigger:
+#     - platform: numeric_state
+#       entity_id: sensor.humidifier_water_level
+#       below: 10
+#     - platform: numeric_state
+#       entity_id: sensor.humidifier_water_level
+#       below: 20
+#     - platform: numeric_state
+#       entity_id: sensor.humidifier_water_level
+#       below: 40
+#   condition:
+#     - condition: or
+#       conditions:
+#         - condition: state
+#           entity_id: person.maciek
+#           state: "home"
+#         - condition: state
+#           entity_id: person.edyta
+#           state: "home"
+#     - condition: state
+#       entity_id: input_boolean.heating_season
+#       state: "on"
+#     - "{{ states('sensor.humidifier_water_level') | int != 0 }}"
+#   variables:
+#     notification_title: "Uzupełnij wodę w nawilżaczu"
+#     notification_message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+#     notification_tag: "notification-humidifier"
+#   action:
+#     - choose:
+#         conditions:
+#           condition: state
+#           entity_id: person.maciek
+#           state: "home"
+#         sequence:
+#           service: python_script.notify
+#           data:
+#             title: "{{ notification_title }}"
+#             message: "{{ notification_message }}"
+#             tag: "{{ notification_tag }}"
+#             services:
+#               - service: !secret maciek_notify_service
+#                 type: "android"
+#     - choose:
+#         conditions:
+#           condition: state
+#           entity_id: person.edyta
+#           state: "home"
+#         sequence:
+#           service: python_script.notify
+#           data:
+#             title: "{{ notification_title }}"
+#             message: "{{ notification_message }}"
+#             tag: "{{ notification_tag }}"
+#             services:
+#               - service: !secret edyta_notify_service
+#                 type: "ios"
+#     - choose:
+#         conditions:
+#           condition: state
+#           entity_id: media_player.bravia_salon
+#           state: "on"
+#         sequence:
+#           service: notify.bravia
+#           data:
+#             title: "{{ notification_title }}"
+#             message: "{{ notification_message }}"
+#             data:
+#               file:
+#                 url: !secret favicon_url
+#               duration: 10
 
 - id: notification_salon_co2
   alias: "Notification Salon CO2"
@@ -688,20 +677,6 @@
               file:
                 url: !secret favicon_url
               duration: 10
-    - choose:
-        conditions:
-          condition: state
-          entity_id: media_player.mibox_goscinny
-          state: "on"
-        sequence:
-          service: notify.mibox
-          data:
-            title: "{{ notification_title }}"
-            message: "{{ notification_message }}"
-            data:
-              file:
-                url: !secret favicon_url
-              duration: 10
 
 - id: notification_water_leak_kuchnia
   alias: "Notification Water Leak Kuchnia"
@@ -733,20 +708,6 @@
           state: "on"
         sequence:
           service: notify.bravia
-          data:
-            title: "{{ notification_title }}"
-            message: "{{ notification_message }}"
-            data:
-              file:
-                url: !secret favicon_url
-              duration: 10
-    - choose:
-        conditions:
-          condition: state
-          entity_id: media_player.mibox_goscinny
-          state: "on"
-        sequence:
-          service: notify.mibox
           data:
             title: "{{ notification_title }}"
             message: "{{ notification_message }}"
@@ -797,20 +758,6 @@
               file:
                 url: !secret favicon_url
               duration: 10
-    - choose:
-        conditions:
-          condition: state
-          entity_id: media_player.mibox_goscinny
-          state: "on"
-        sequence:
-          service: notify.mibox
-          data:
-            title: "{{ notification_title }}"
-            message: "{{ notification_message }}"
-            data:
-              file:
-                url: !secret favicon_url
-              duration: 10
 
 - id: notification_relay_overheating
   alias: "Notification Relay Overheating"
@@ -852,20 +799,6 @@
           state: "on"
         sequence:
           service: notify.bravia
-          data:
-            title: "{{ notification_title }}"
-            message: "{{ notification_message }}"
-            data:
-              file:
-                url: !secret favicon_url
-              duration: 10
-    - choose:
-        conditions:
-          condition: state
-          entity_id: media_player.mibox_goscinny
-          state: "on"
-        sequence:
-          service: notify.mibox
           data:
             title: "{{ notification_title }}"
             message: "{{ notification_message }}"
@@ -1263,8 +1196,8 @@
         - group.windows
       state: "off"
   action:
-    - service: fan.turn_off
-      entity_id: fan.humidifier_salon
+    - service: humidifier.turn_off
+      entity_id: humidifier.xiaomi_salon
     - condition: state
       entity_id: input_boolean.guests
       state: "off"
@@ -1417,9 +1350,10 @@
           - service: !secret edyta_notify_service
             type: "ios"
     - condition: template
-      value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float and states('sensor.humidifier_water_level') | int > 5 }}"
-    - service: fan.turn_on
-      entity_id: fan.humidifier_salon
+      # value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float and states('sensor.humidifier_water_level') | int > 5 }}"
+      value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float }}"
+    - service: humidifier.turn_on
+      entity_id: humidifier.xiaomi_salon
 
 - id: windows_opened
   alias: "Windows Opened"
@@ -2480,6 +2414,18 @@
       entity_id: light.lamp_pracownia
 
 #### GABINET ####
+- id: light_toggle_gabinet_light
+  alias: "Light Toggle Gabinet Light"
+  description: "włącz/wyłącz oświetlenie w gabinecie"
+  trigger:
+    platform: state
+    entity_id: binary_sensor.switch_light_gabinet
+    from: "off"
+    to: "on"
+  action:
+    service: light.toggle
+    entity_id: light.ceiling_gabinet
+
 - id: light_turn_on_gabinet_desk_lamp_when_dark_and_motion
   alias: "Light Turn On Gabinet Desk Lamp When Dark And Motion"
   description: "włącz lampkę biurkową w gabinecie jak pojawi się ruch i jest ciemno"
@@ -2949,6 +2895,18 @@
 ##################################################################################################
 
 #### CLIMATE ######################################################################################
+- id: humidification_set_target_humidity
+  alias: "Humidification Set Target Humidity"
+  description: "ustaw docelową wilgotność"
+  trigger:
+    platform: state
+    entity_id: input_select.target_humidity
+  action:
+    service: humidifier.set_humidity
+    entity_id: humidifier.xiaomi_salon
+    data:
+      humidity: "{{ states('input_select.target_humidity') }}"
+
 - id: humidification_start
   alias: "Humidification Start"
   description: "włącz nawilżanie jak wilgotność spadnie poniżej ustawionego poziomu"
@@ -2956,9 +2914,9 @@
     platform: template
     value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float }}"
   condition:
-    - condition: numeric_state
-      entity_id: sensor.humidifier_water_level
-      above: 5
+    # - condition: numeric_state
+    #   entity_id: sensor.humidifier_water_level
+    #   above: 5
     - condition: state
       entity_id: input_boolean.heating_season
       state: "on"
@@ -2966,11 +2924,11 @@
       entity_id:
         - input_boolean.heating_airing
         - input_boolean.away_mode
-        - fan.humidifier_salon
+        - humidifier.xiaomi_salon
       state: "off"
   action:
-    service: fan.turn_on
-    entity_id: fan.humidifier_salon
+    service: humidifier.turn_on
+    entity_id: humidifier.xiaomi_salon
 
 - id: humidification_stop
   alias: "Humidification Stop"
@@ -2978,77 +2936,63 @@
   trigger:
     - platform: template
       value_template: "{{ states('sensor.humidity_salon') | float > states('input_select.target_humidity') | float + 1 }}"
-    - platform: numeric_state
-      entity_id: sensor.humidifier_water_level
-      below: 6
+    # - platform: numeric_state
+    #   entity_id: sensor.humidifier_water_level
+    #   below: 6
   condition:
     - condition: state
       entity_id:
         - input_boolean.heating_season
-        - fan.humidifier_salon
+        - humidifier.xiaomi_salon
       state: "on"
   action:
-    - service: fan.turn_off
-      entity_id: fan.humidifier_salon
-    - condition: numeric_state
-      entity_id: sensor.humidifier_water_level
-      below: 6
-    - choose:
-        conditions:
-          condition: state
-          entity_id: person.maciek
-          state: "home"
-        sequence:
-          service: python_script.notify
-          data:
-            title: "Uzupełnij wodę w nawilżaczu"
-            message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-            tag: "notification-humidifier"
-            services:
-              - service: !secret maciek_notify_service
-                type: "android"
-    - choose:
-        conditions:
-          condition: state
-          entity_id: person.edyta
-          state: "home"
-        sequence:
-          service: python_script.notify
-          data:
-            title: "Uzupełnij wodę w nawilżaczu"
-            message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-            tag: "notification-humidifier"
-            services:
-              - service: !secret edyta_notify_service
-                type: "ios"
-    - choose:
-        conditions:
-          condition: state
-          entity_id: media_player.bravia_salon
-          state: "on"
-        sequence:
-          service: notify.bravia
-          data:
-            title: "Uzupełnij wodę w nawilżaczu"
-            message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-            data:
-              file:
-                url: !secret favicon_url
-              duration: 10
-    - choose:
-        conditions:
-          condition: state
-          entity_id: media_player.mibox_goscinny
-          state: "on"
-        sequence:
-          service: notify.mibox
-          data:
-            title: "Uzupełnij wodę w nawilżaczu"
-            message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-            data:
-              file:
-                url: !secret favicon_url
-              duration: 10
+    - service: humidifier.turn_off
+      entity_id: humidifier.xiaomi_salon
+    # - condition: numeric_state
+    #   entity_id: sensor.humidifier_water_level
+    #   below: 6
+    # - choose:
+    #     conditions:
+    #       condition: state
+    #       entity_id: person.maciek
+    #       state: "home"
+    #     sequence:
+    #       service: python_script.notify
+    #       data:
+    #         title: "Uzupełnij wodę w nawilżaczu"
+    #         message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+    #         tag: "notification-humidifier"
+    #         services:
+    #           - service: !secret maciek_notify_service
+    #             type: "android"
+    # - choose:
+    #     conditions:
+    #       condition: state
+    #       entity_id: person.edyta
+    #       state: "home"
+    #     sequence:
+    #       service: python_script.notify
+    #       data:
+    #         title: "Uzupełnij wodę w nawilżaczu"
+    #         message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+    #         tag: "notification-humidifier"
+    #         services:
+    #           - service: !secret edyta_notify_service
+    #             type: "ios"
+    # - choose:
+    #     conditions:
+    #       condition: state
+    #       entity_id: media_player.bravia_salon
+    #       state: "on"
+    #     sequence:
+    #       service: notify.bravia
+    #       data:
+    #         title: "Uzupełnij wodę w nawilżaczu"
+    #         message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
+    #         data:
+    #           file:
+    #             url: !secret favicon_url
+    #           duration: 10
 
 - id: humidification_outdoor_temp_above_10
   alias: "Humidification Outdoor Temp Above 10"
@@ -3139,8 +3083,6 @@
         expire_after: 1320
       shellyflood-F2AD1D:
         expire_after: 95040
-      shelly1l-483FDA701559:
-        relay-0: "light"
       shelly1l-84CCA8ACEB5F:
         relay-0: "light"
       shelly1l-84CCA8AD1B60:

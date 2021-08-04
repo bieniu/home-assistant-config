@@ -140,12 +140,12 @@ binary_sensor.yeelight_mjtd01syl_4fbaa2_status:
   icon: mdi:desk-lamp
 binary_sensor.thermomix_status:
   icon: mdi:pot-steam-outline
+binary_sensor.nettigo_air_monitor_status:
+  icon: mdi:weather-partly-rainy
+binary_sensor.shelly_duo_5f6fa1_status:
+  icon: mdi:lightbulb-outline
 
 #### FANS ####
-fan.humidifier_salon:
-  friendly_name: "Nawilżacz"
-  icon: mdi:air-humidifier
-
 fan.air_purifier_salon:
   friendly_name: "Oczyszczacz"
   icon: mdi:air-purifier
