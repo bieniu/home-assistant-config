@@ -1,5 +1,5 @@
 substitutions:
-  device_name: "BlitzWolf BW-SHP6 2AD05A"
+  device_name: "BlitzWolf BW-SHP6 [2AD05A]"
   device_name_lower: "blitzwolf_bw_shp6_2ad05a"
   device_hostname: "blitzwolf-bw-shp6-2ad05a"
   current_res: "0.00290"

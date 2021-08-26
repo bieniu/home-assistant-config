@@ -1,15 +1,18 @@
 #### SENSORS ####
 "sensor.temperature_*":
   device_class: temperature
+  state_class: "measurement"
 
 "sensor.*_voltage":
   device_class: voltage
 
 "sensor.humidity_*":
   device_class: humidity
+  state_class: "measurement"
 
 "sensor.pressure_*":
   device_class: pressure
+  state_class: "measurement"
 
 "binary_sensor.motion_*":
   device_class: motion

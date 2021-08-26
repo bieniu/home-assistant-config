@@ -1,5 +1,5 @@
 substitutions:
-  device_name: "BlitzWolf BW-SHP6 17957C"
+  device_name: "BlitzWolf BW-SHP6 [17957C]"
   device_name_lower: "blitzwolf_bw_shp6_17957c"
   device_hostname: "blitzwolf-bw-shp6-17957c"
   current_res: "0.00290"
@@ -60,6 +60,7 @@ switch:
     id: relay
     icon: mdi:power-plug
     name: "${device_name} Relay"
+    restore_mode: ALWAYS_ON
     on_turn_on:
       - output.turn_on: led
     on_turn_off:
@@ -114,4 +115,9 @@ sensor:
       name: "${device_name} Power"
       unit_of_measurement: "W"
       device_class: "power"
+    energy:
+      name: "${device_name} Energy"
+      unit_of_measurement: "Wh"
+      device_class: "energy"
+      last_reset_type: "auto"
     change_mode_every: 4

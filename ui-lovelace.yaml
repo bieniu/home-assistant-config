@@ -838,6 +838,8 @@ views:
     title: "Energia"
     path: energy
     cards:
+      - type: energy-devices-graph
+        title: "Zużycie energii"
       - type: vertical-stack
         in_card: true
         cards:

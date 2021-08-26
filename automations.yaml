@@ -164,7 +164,6 @@
     entity_id:
       - binary_sensor.bitwarden_rs_update_available
       - binary_sensor.check_home_assistant_configuration_update_available
-      - binary_sensor.chrony_update_available
       - binary_sensor.esphome_update_available
       - binary_sensor.mariadb_update_available
       - binary_sensor.mosquitto_broker_update_available
@@ -279,7 +278,14 @@
     - platform: state
       entity_id:
         - binary_sensor.shelly_1_328900_firmware_update
+        - binary_sensor.shelly_1_d42455_firmware_update
         - binary_sensor.shelly_1l_701559_firmware_update
+        - binary_sensor.shelly_1l_61c9fd_firmware_update
+        - binary_sensor.shelly_1l_aacec4_firmware_update
+        - binary_sensor.shelly_1l_aceb5f_firmware_update
+        - binary_sensor.shelly_1l_acedf2_firmware_update
+        - binary_sensor.shelly_1l_ad1b60_firmware_update
+        - binary_sensor.shelly_1l_ad365e_firmware_update
         - binary_sensor.shelly_2_5b2604_firmware_update
         - binary_sensor.shelly_flood_f2ad1d_firmware_update
         - binary_sensor.shelly_ht_e00abd_firmware_update
@@ -292,7 +298,7 @@
     - service: python_script.notify
       data:
         title: "Aktualizacja oprogramowania Shelly"
-        message: "Dostępna jest aktualizacja oprogramowania dla {{ trigger.to_state.attributes.friendly_name.split(' [')[0] }}."
+        message: "Dostępna jest aktualizacja oprogramowania dla {{ device_attr(trigger.entity_id, 'name_by_user') }}."
         tag: "notification-{{ trigger.entity_id }}"
         group: "aktualizacje"
         services:
@@ -504,13 +510,13 @@
     minutes: "/10"
     seconds: 0
   variables:
-    domains: ["light", "switch", "sensor", "fan", "binary_sensor", "media_player"]
+    domains: ["light", "switch", "sensor", "fan", "binary_sensor", "media_player", "humidifier"]
     rooms: ["przedpokoj", "goscinny", "pracownia", "kuchnia", "salon", "schody", "antresola", "gabinet", "pralnia", "antek", "sypialnia", "lazienka", "balkon", "indoor", "outdoor"]
-    ignored: ["media_player.dune_salon", "media_player.mibox_goscinny", "light.bulb_gabinet"]
+    ignored: ["media_player.dune_salon", "media_player.mibox_goscinny"]
   condition: >
     {% macro dead_unavailable_entities() %}
       {% for domain in domains -%}
-        {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and item.state == 'unavailable' %}
+        {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and item.state in ('dead', 'unavailable') %}
           {{ item.name }} ({{ item.entity_id }})
         {%- endfor %}
       {%- endfor %}
@@ -519,16 +525,16 @@
   action:
     - service: python_script.notify
       data:
-        title: "Encja z nieprawidłowym stanem"
+        title: "Urządzenie/encja z nieprawidłowym stanem"
         message: >
           {% macro dead_unavailable_entities() %}
             {% for domain in domains -%}
-              {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and item.state == 'unavailable' %}
-           <br>- {{ item.name }} ({{ item.entity_id }})
+              {% for item in states[domain] if (item.entity_id.split('.')[-1].split('_')[-1] in rooms or item.entity_id.split('.')[-1].split('_')[-2] in rooms) and not (item.entity_id in ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state is defined and item.state in ('dead', 'unavailable') %}
+                <br>- {% if device_attr(item.entity_id, 'name_by_user') %}{{ device_attr(item.entity_id, 'name_by_user') }}{% else %}{{ item.name }}{% endif %} ({{ item.entity_id }})
               {%- endfor %}
             {%- endfor %}
           {% endmacro %}
-          Następujące encje mają nieprawidłowe stany: {{ dead_unavailable_entities() }}
+          Następujące urządzenia/encje mają nieprawidłowe stany: {{ dead_unavailable_entities() }}
         tag: "notification-dead-unavailable"
         group: "inne"
         services:
@@ -731,7 +737,7 @@
         minutes: 1
   variables:
     notification_title: "Zbyt duże obciążenie przekaźnika"
-    notification_message: "Przekaźnik {{ state_attr(trigger.to_state.attributes.relay, 'friendly_name') }} ma zbyt duże obciążenie i został wyłączony."
+    notification_message: "Przekaźnik urządzenia {{ device_attr(trigger.entity_id, 'name_by_user') }} ma zbyt duże obciążenie i został wyłączony."
   action:
     - service: python_script.notify
       data:
@@ -765,7 +771,7 @@
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.shelly_1l_701559_overtemperature
+        - binary_sensor.shelly_1l_701559_overheating
         - binary_sensor.shelly_1l_aceb5f_overtemperature
         - binary_sensor.shelly_1l_ad1b60_overtemperature
         - binary_sensor.shelly_1l_61c9fd_overtemperature
@@ -778,8 +784,8 @@
       for:
         minutes: 1
   variables:
-    notification_title: "Przekaźniek się przegrzewa"
-    notification_message: "Przekaźnik {{ state_attr(trigger.to_state.attributes.relay, 'friendly_name') }} się przegrzewa."
+    notification_title: "Urządzenie się przegrzewa"
+    notification_message: "Urządzenie {{ device_attr(trigger.entity_id, 'name_by_user') }} się przegrzewa."
   action:
     - service: python_script.notify
       data:
@@ -945,7 +951,7 @@
   condition: >
     {% macro battery_level() %}
       {%- set threshold = 10 -%}
-      {%- set domains = ['light', 'switch', 'sensor', 'lock', 'binary_sensor'] -%}
+      {%- set domains = ['sensor', 'binary_sensor'] -%}
       {% for domain in domains -%}
         {% for item in states[domain] if (((item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) or ('battery' in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == 'low' or item.state | lower == 'unknown')))) and not (( 'humidity' in item.entity_id) or ('illumination' in item.entity_id)) -%}
           {% if (item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) %}
@@ -963,13 +969,13 @@
         message: >
           {% macro battery_level() %}
             {%- set threshold = 10 -%}
-            {%- set domains = ['light', 'switch', 'sensor', 'lock', 'binary_sensor'] -%}
+            {%- set domains = ['sensor', 'binary_sensor'] -%}
             {% for domain in domains -%}
               {% for item in states[domain] if (((item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) or ('battery' in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == 'low' or item.state | lower == 'unknown')))) and not (( 'humidity' in item.entity_id) or ('illumination' in item.entity_id)) -%}
                 {% if (item.attributes.battery_level is defined and item.attributes['battery_level'] | int < threshold) %}
-           <br>- {{ item.entity_id }} [{{ item.attributes['battery_level'] | round(0) }}%]{% endif -%}
+           <br>- {{ device_attr(item.entity_id, 'name_by_user') }} [{{ item.attributes['battery_level'] | round(0) }}%]{% endif -%}
                 {% if 'battery' in item.name | lower and ((item.state | int < threshold and item.state|int != 0) or item.state | lower == 'low' or item.state | lower == 'unknown') %}
-           <br>- {{ item.entity_id }} [{{ item.state | round(0) }}%]{% endif -%}
+           <br>- {{ device_attr(item.entity_id, 'name_by_user') }} [{{ item.state | round(0) }}%]{% endif -%}
               {% endfor %}
             {%- endfor %}
           {% endmacro %}
@@ -1860,35 +1866,6 @@
       option: "automatyczny"
 
 ## TOALETA ##
-- id: light_turn_on_toaleta_light_when_dark_and_motion
-  alias: "Light Turn On Toaleta Light When Dark And Motion"
-  description: "włącz światło w toalecie jak pojawi się ruch i jest ciemno"
-  max_exceeded: silent
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.motion_toaleta
-      from: "off"
-      to: "on"
-  condition:
-    - condition: state
-      entity_id:
-        - input_boolean.away_mode
-        - light.ceiling_toaleta
-      state: "off"
-    - condition: numeric_state
-      entity_id: sensor.illumination_toaleta
-      below: 40
-  action:
-    - service: light.turn_on
-      entity_id: light.ceiling_toaleta
-    - wait_for_trigger:
-        - platform: state
-          entity_id: binary_sensor.motion_toaleta
-          from: "on"
-          to: "off"
-    - service: light.turn_off
-      entity_id: light.ceiling_toaleta
-
 - id: light_turn_off_toaleta_light_when_no_motion
   alias: "Light Turn Off Toaleta Light When No Motion"
   description: "wyłącz światło w toalecie jak brak ruchu przez 20 min"
@@ -1908,35 +1885,6 @@
     entity_id: light.ceiling_toaleta
 
 ## ŁAZIENKA ##
-- id: light_turn_on_lazienka_light_when_dark_and_motion
-  alias: "Light Turn On Lazienka Light When Dark And Motion"
-  description: "włącz światło w łazience jak pojawi się ruch i jest ciemno"
-  max_exceeded: silent
-  trigger:
-    - platform: state
-      entity_id: binary_sensor.motion_lazienka
-      from: "off"
-      to: "on"
-  condition:
-    - condition: state
-      entity_id:
-        - input_boolean.away_mode
-        - light.ceiling_lazienka
-      state: "off"
-    - condition: numeric_state
-      entity_id: sensor.illumination_lazienka
-      below: 40
-  action:
-    - service: light.turn_on
-      entity_id: light.ceiling_lazienka
-    - wait_for_trigger:
-        - platform: state
-          entity_id: binary_sensor.motion_lazienka
-          from: "on"
-          to: "off"
-    - service: light.turn_off
-      entity_id: light.ceiling_lazienka
-
 - id: light_turn_off_lazienka_light_when_no_motion
   alias: "Light Turn Off Lazienka Light When No Motion"
   description: "wyłącz światło w łazience jak brak ruchu przez 20 min"
@@ -2414,17 +2362,19 @@
       entity_id: light.lamp_pracownia
 
 #### GABINET ####
-- id: light_toggle_gabinet_light
-  alias: "Light Toggle Gabinet Light"
-  description: "włącz/wyłącz oświetlenie w gabinecie"
+- id: light_toggle_desk_lamp
+  alias: "Light Toggle Desk Lamp"
+  description: "włącz/wyłącz lampę biurkową"
   trigger:
-    platform: state
-    entity_id: binary_sensor.switch_light_gabinet
-    from: "off"
-    to: "on"
+    - platform: event
+      event_type: shelly.click
+      event_data:
+        device: "shelly1l-483FDA701559"
+        channel: 1
+        click_type: long
   action:
     service: light.toggle
-    entity_id: light.ceiling_gabinet
+    entity_id: light.desk_lamp_gabinet
 
 - id: light_turn_on_gabinet_desk_lamp_when_dark_and_motion
   alias: "Light Turn On Gabinet Desk Lamp When Dark And Motion"
@@ -3051,10 +3001,19 @@
     - platform: time_pattern
       hours: "/1"
   action:
-    service: mqtt.publish
-    data:
-      topic: "shellies/command"
-      payload: "announce"
+    - service: mqtt.publish
+      data:
+        topic: "shellies/command"
+        payload: "announce"
+    - service: mqtt.publish
+      data:
+        topic: "shellies/shellymotionsensor-60A423C67C2A/command"
+        payload: "announce"
+    - delay:  "00:00:10"
+    - service: mqtt.publish
+      data:
+        topic: "shellies/command"
+        payload: "announce"
 
 - id: shellies_discovery
   alias: "Shellies Discovery"
@@ -3097,6 +3056,18 @@
         relay-0: "light"
       shelly1l-E8DB84AACEC4:
         relay-0: "light"
+      ignored_devices:
+        - shelly1l-483FDA701559
+
+- id: shelly_restart_motion
+  alias: "Shelly Restart Motion"
+  description: "restart Shelly Motion"
+  trigger:
+    platform: homeassistant
+    event: start
+  action:
+    - delay:  "00:01:00"
+    - service: shell_command.restart_shelly_motion
 
 - id: frontend_set_theme
   alias: "Frontend Set Theme"

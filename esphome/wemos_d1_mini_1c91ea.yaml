@@ -1,5 +1,5 @@
 substitutions:
-  device_name: "Wemos D1 mini 1C91EA"
+  device_name: "Wemos D1 mini [1C91EA]"
   device_name_lower: "wemos_d1_mini_1c91ea"
   device_hostname: "wemos-d1-mini-1c91ea"
 

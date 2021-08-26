@@ -314,36 +314,5 @@ zone.home:
 sensor.dark_sky_wind_speed:
   friendly_name: "Prędkość wiatru"
 
-#### RELAYS ####
-binary_sensor.shelly_plug_s_7aecf4_overpower:
-  relay: switch.dishwasher_kuchnia
-
-binary_sensor.shelly_plug_s_7aecf4_overtemperature:
-  relay: switch.dishwasher_kuchnia
-
-binary_sensor.shelly_2_5b2604_overpower_0:
-  relay: switch.bulbs_salon
-
-binary_sensor.shelly_2_5b2604_overpower_1:
-  relay: light.leds_salon
-
-binary_sensor.shelly_1l_ad365e_overtemperature:
-  relay: light.ceiling_antek
-
-binary_sensor.shelly_1l_61c9fd_overtemperature:
-  relay: light.ceiling_wc
-
-binary_sensor.shelly_1l_701559_overtemperature:
-  relay: light.ceiling_gabinet
-
-binary_sensor.shelly_1l_aceb5f_overtemperature:
-  relay: light.ceiling_kuchnia
-
-binary_sensor.shelly_1l_ad1b60_overtemperature:
-  relay: light.ceiling_lazienka
-
-binary_sensor.shelly_1l_acedf2_overtemperature:
-  relay: light.double_ceiling_sypialnia
-
 sensor.minecraft_server_players_online:
   unit_of_measurement: " "

@@ -104,3 +104,5 @@ switch: !include switches.yaml
 
 shell_command:
   restart_shelly_devices: /config/scripts/restart_shelly_devices.sh
+  restart_shelly_motion: /config/scripts/restart_shelly_motion.sh
+  restart_nam: /config/scripts/restart_nam.sh

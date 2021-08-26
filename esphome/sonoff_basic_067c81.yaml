@@ -1,5 +1,5 @@
 substitutions:
-  device_name: "Sonoff Basic 067C81"
+  device_name: "Sonoff Basic [067C81]"
   device_name_lower: "sonoff_basic_067c81"
   device_hostname: "sonoff-basic-067c81"
 
