@@ -1,7 +1,6 @@
 substitutions:
   device_name: "Sonoff Basic [5DFBA8]"
-  device_name_lower: "sonoff_basic_5dfba8"
-  device_hostname: "sonoff-basic-5dfba8"
+  device_name_lower: "sonoff-basic-5dfba8"
 
 esphome:
   name: ${device_name_lower}
@@ -11,7 +10,6 @@ esphome:
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
-  use_address: ${device_hostname}
   domain: !secret local_domain
   ap:
     ssid: ${device_name}
