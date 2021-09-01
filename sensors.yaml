@@ -147,46 +147,33 @@
           bardzo zła
         {% endif %}
 
-    aqi_salon:
-      value_template: >-
-        {% if state_attr('fan.air_purifier_salon', 'aqi') is number %}
-          {% if state_attr('fan.air_purifier_salon', 'aqi') > 1 %}
-            {{ state_attr('fan.air_purifier_salon', 'aqi') }}
-          {% else %}
-            {{ states('sensor.aqi_salon') }}
-          {% endif %}
-        {% else %}
-          {{ states('sensor.aqi_salon') }}
-        {% endif %}
-      unit_of_measurement: " "
-
     aqi_info_salon:
       friendly_name: "Jakość powietrza wewnętrznego"
       value_template: >-
-        {% if states('sensor.aqi_salon') | int <= 25 %}
+        {% if states('sensor.pm25_salon') | int <= 25 %}
           bardzo dobra
-        {% elif states('sensor.aqi_salon') | int <= 50 %}
+        {% elif states('sensor.pm25_salon') | int <= 50 %}
           dobra
-        {% elif states('sensor.aqi_salon') | int <= 100 %}
+        {% elif states('sensor.pm25_salon') | int <= 100 %}
           średnia
-        {% elif states('sensor.aqi_salon') | int <= 150 %}
+        {% elif states('sensor.pm25_salon') | int <= 150 %}
           zła
-        {% elif states('sensor.aqi_salon') | int > 200 %}
+        {% elif states('sensor.pm25_salon') | int > 200 %}
           bardzo zła
         {% endif %}
 
     aqi_attr_salon:
       friendly_name: "Powietrze"
       value_template: >-
-        {% if states('sensor.aqi_salon') | int <= 25 %}
+        {% if states('sensor.pm25_salon') | int <= 25 %}
           bardzo dobre
-        {% elif states('sensor.aqi_salon') | int <= 50 %}
+        {% elif states('sensor.pm25_salon') | int <= 50 %}
           dobre
-        {% elif states('sensor.aqi_salon') | int <= 100 %}
+        {% elif states('sensor.pm25_salon') | int <= 100 %}
           średnie
-        {% elif states('sensor.aqi_salon') | int <= 150 %}
+        {% elif states('sensor.pm25_salon') | int <= 150 %}
           złe
-        {% elif states('sensor.aqi_salon') | int > 200 %}
+        {% elif states('sensor.pm25_salon') | int > 200 %}
           bardzo złe
         {% endif %}
 

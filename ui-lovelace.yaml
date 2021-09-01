@@ -134,6 +134,7 @@ views:
               - sensor.temperature_salon
               - sensor.humidity_salon
               - sensor.co2_salon
+              - sensor.pm25_salon
               - sensor.illumination_salon
           - type: entities
             show_header_toggle: false
@@ -154,10 +155,10 @@ views:
                     state_not: "off"
                 row:
                   entity: humidifier.xiaomi_salon
-                  # secondary_info:
-                  #   entity: sensor.xiaomi_mi_humidifier_ca1_water_level
-                  #   prefix: "poziom wody: "
-                  #   postfix: " %"
+                  secondary_info:
+                    entity: sensor.xiaomi_mi_humidifier_ca1_water_level
+                    prefix: "poziom wody: "
+                    postfix: " %"
               - entity: fan.air_purifier_salon
                 secondary_info:
                   entity: sensor.aqi_attr_salon
@@ -1163,9 +1164,9 @@ views:
             icon: "mdi:molecule-co2"
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
-            name: "AQI wewnętrzne"
+            name: "PM2.5 wewnętrzne"
             entities:
-              - entity: sensor.aqi_salon
+              - entity: sensor.pm25_salon
             line_color: "#78909c"
             decimals: 0
       - type: vertical-stack
@@ -1176,18 +1177,21 @@ views:
               - sensor.pm1_home
             line_color: "#78909c"
             decimals: 0
+            icon: "mdi:molecule"
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
               - entity: sensor.pm25_home
             line_color: "#78909c"
             decimals: 0
+            icon: "mdi:molecule"
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
               - entity: sensor.pm10_home
             line_color: "#78909c"
             decimals: 0
+            icon: "mdi:molecule"
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:

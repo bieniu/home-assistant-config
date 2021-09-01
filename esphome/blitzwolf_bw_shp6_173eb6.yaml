@@ -1,7 +1,6 @@
 substitutions:
   device_name: "BlitzWolf BW-SHP6 [173EB6]"
-  device_name_lower: "blitzwolf_bw_shp6_173eb6"
-  device_hostname: "blitzwolf-bw-shp6-173eb6"
+  device_name_lower: "blitzwolf-bw-shp6-173eb6"
   current_res: "0.00290"
   voltage_div: "940"
 
@@ -13,7 +12,6 @@ esphome:
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
-  use_address: ${device_hostname}
   domain: !secret local_domain
   ap:
     ssid: ${device_name}

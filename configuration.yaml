@@ -32,8 +32,6 @@ device_tracker:
     username: !secret traccar_email
     password: !secret traccar_password
 
-fan: !include fans.yaml
-
 frontend:
   themes: !include_dir_merge_named themes
 

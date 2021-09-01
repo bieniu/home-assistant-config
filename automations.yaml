@@ -1356,8 +1356,7 @@
           - service: !secret edyta_notify_service
             type: "ios"
     - condition: template
-      # value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float and states('sensor.humidifier_water_level') | int > 5 }}"
-      value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float }}"
+      value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float and states('sensor.xiaomi_mi_humidifier_ca1_water_level') | int > 5 }}"
     - service: humidifier.turn_on
       entity_id: humidifier.xiaomi_salon
 
@@ -1399,10 +1398,10 @@
 
 - id: air_quality_turn_on_air_purifier
   alias: "Air Quality Turn On Air Purifier"
-  description: "włącz oczyszczacz gdy AQI większe od 50"
+  description: "włącz oczyszczacz gdy PM2.5 większe od 50"
   trigger:
     platform: numeric_state
-    entity_id: sensor.aqi_salon
+    entity_id: sensor.pm25_salon
     above: 50
     for:
       minutes: 2
@@ -1411,22 +1410,22 @@
     entity_id: group.windows
     state: "off"
   action:
-    service: xiaomi_miio_airpurifier.fan_set_fan_level
+    service: fan.turn_on
     entity_id: fan.air_purifier_salon
     data:
-      level: >-
-        {% if states('sensor.aqi_salon') | int > 100 %}
-          2
+      percentage: >-
+        {% if states('sensor.pm25_salon') | int > 100 %}
+          33
         {% else %}
-          1
+          67
         {% endif %}
 
 - id: air_quality_turn_off_air_purifier
   alias: "Air Quality Turn Off Air Purifier"
-  description: "wyłącz oczyszczacz gdy AQI mniejsze od 50"
+  description: "wyłącz oczyszczacz gdy PM2.5 mniejsze od 50"
   trigger:
     platform: numeric_state
-    entity_id: sensor.aqi_salon
+    entity_id: sensor.pm25_salon
     below: 50
     for:
       minutes: 2
@@ -1439,7 +1438,7 @@
   description: "zmień prędkość wentylatora oczyszczacza na 2"
   trigger:
     platform: numeric_state
-    entity_id: sensor.aqi_salon
+    entity_id: sensor.pm25_salon
     above: 100
     for:
       minutes: 2
@@ -1448,21 +1447,19 @@
       entity_id: fan.air_purifier_salon
       state: "on"
     - condition: numeric_state
-      entity_id: fan.air_purifier_salon
-      attribute: fan_level
+      entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
       below: 2
   action:
-    service: xiaomi_miio_airpurifier.fan_set_fan_level
-    entity_id: fan.air_purifier_salon
-    data:
-      level: 2
+    service: number.set_value
+    entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
+    value: 2
 
 - id: air_quality_air_purifier_switch_fan_level_to_1
   alias: "Air Quality Air Purifier Switch Fan Level To 1"
   description: "zmień prędkość wentylatora oczyszczacza na 1"
   trigger:
     platform: numeric_state
-    entity_id: sensor.aqi_salon
+    entity_id: sensor.pm25_salon
     below: 100
     for:
       minutes: 2
@@ -1471,14 +1468,12 @@
       entity_id: fan.air_purifier_salon
       state: "on"
     - condition: numeric_state
-      entity_id: fan.air_purifier_salon
-      attribute: fan_level
+      entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
       above: 1
   action:
-    service: xiaomi_miio_airpurifier.fan_set_fan_level
-    entity_id: fan.air_purifier_salon
-    data:
-      level: 1
+    service: number.set_value
+    entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
+    value: 1
 
 - id: heating_airing_begin
   alias: "Heating Airing Begin"
@@ -2864,9 +2859,9 @@
     platform: template
     value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float }}"
   condition:
-    # - condition: numeric_state
-    #   entity_id: sensor.humidifier_water_level
-    #   above: 5
+    - condition: numeric_state
+      entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
+      above: 5
     - condition: state
       entity_id: input_boolean.heating_season
       state: "on"
@@ -2886,9 +2881,9 @@
   trigger:
     - platform: template
       value_template: "{{ states('sensor.humidity_salon') | float > states('input_select.target_humidity') | float + 1 }}"
-    # - platform: numeric_state
-    #   entity_id: sensor.humidifier_water_level
-    #   below: 6
+    - platform: numeric_state
+      entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
+      below: 6
   condition:
     - condition: state
       entity_id:
@@ -2898,51 +2893,51 @@
   action:
     - service: humidifier.turn_off
       entity_id: humidifier.xiaomi_salon
-    # - condition: numeric_state
-    #   entity_id: sensor.humidifier_water_level
-    #   below: 6
-    # - choose:
-    #     conditions:
-    #       condition: state
-    #       entity_id: person.maciek
-    #       state: "home"
-    #     sequence:
-    #       service: python_script.notify
-    #       data:
-    #         title: "Uzupełnij wodę w nawilżaczu"
-    #         message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-    #         tag: "notification-humidifier"
-    #         services:
-    #           - service: !secret maciek_notify_service
-    #             type: "android"
-    # - choose:
-    #     conditions:
-    #       condition: state
-    #       entity_id: person.edyta
-    #       state: "home"
-    #     sequence:
-    #       service: python_script.notify
-    #       data:
-    #         title: "Uzupełnij wodę w nawilżaczu"
-    #         message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-    #         tag: "notification-humidifier"
-    #         services:
-    #           - service: !secret edyta_notify_service
-    #             type: "ios"
-    # - choose:
-    #     conditions:
-    #       condition: state
-    #       entity_id: media_player.bravia_salon
-    #       state: "on"
-    #     sequence:
-    #       service: notify.bravia
-    #       data:
-    #         title: "Uzupełnij wodę w nawilżaczu"
-    #         message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-    #         data:
-    #           file:
-    #             url: !secret favicon_url
-    #           duration: 10
+    - condition: numeric_state
+      entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
+      below: 6
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.maciek
+          state: "home"
+        sequence:
+          service: python_script.notify
+          data:
+            title: "Uzupełnij wodę w nawilżaczu"
+            message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.xiaomi_mi_humidifier_ca1_water_level') }}% wody."
+            tag: "notification-humidifier"
+            services:
+              - service: !secret maciek_notify_service
+                type: "android"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.edyta
+          state: "home"
+        sequence:
+          service: python_script.notify
+          data:
+            title: "Uzupełnij wodę w nawilżaczu"
+            message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.xiaomi_mi_humidifier_ca1_water_level') }}% wody."
+            tag: "notification-humidifier"
+            services:
+              - service: !secret edyta_notify_service
+                type: "ios"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: media_player.bravia_salon
+          state: "on"
+        sequence:
+          service: notify.bravia
+          data:
+            title: "Uzupełnij wodę w nawilżaczu"
+            message: "Nawilżacz został wyłączony ponieważ w zbiorniku pozostało {{ states('sensor.xiaomi_mi_humidifier_ca1_water_level') }}% wody."
+            data:
+              file:
+                url: !secret favicon_url
+              duration: 10
 
 - id: humidification_outdoor_temp_above_10
   alias: "Humidification Outdoor Temp Above 10"
@@ -3080,9 +3075,9 @@
     data:
       name: blue-mix
 
-- id: hassio_snapshot
-  alias: "Hassio Snapshot"
-  description: "wykonaj hassio snapshot"
+- id: hassio_backup
+  alias: "Hassio Backup"
+  description: "wykonaj hassio backup"
   trigger:
     platform: time
     at: "02:00:00"
@@ -3091,6 +3086,6 @@
     weekday:
       - sun
   action:
-    service: hassio.snapshot_full
+    service: hassio.backup_full
     data:
       name: "{{ now().strftime('%Y-%m-%d') }}"

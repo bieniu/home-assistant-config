@@ -1,5 +1,0 @@
-- platform: xiaomi_miio_airpurifier
-  name: "Pedestal Salon"
-  model: dmaker.fan.p5
-  host: !secret fan_hostname
-  token: !secret fan_token
