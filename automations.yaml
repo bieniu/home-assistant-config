@@ -541,79 +541,79 @@
           - service: !secret maciek_notify_service
             type: "android"
 
-# - id: notification_humidifier_low_water
-#   alias: "Notification Humidifier Low Water"
-#   description: "powiadom o małej ilości wody w nawilżaczu"
-#   trigger:
-#     - platform: numeric_state
-#       entity_id: sensor.humidifier_water_level
-#       below: 10
-#     - platform: numeric_state
-#       entity_id: sensor.humidifier_water_level
-#       below: 20
-#     - platform: numeric_state
-#       entity_id: sensor.humidifier_water_level
-#       below: 40
-#   condition:
-#     - condition: or
-#       conditions:
-#         - condition: state
-#           entity_id: person.maciek
-#           state: "home"
-#         - condition: state
-#           entity_id: person.edyta
-#           state: "home"
-#     - condition: state
-#       entity_id: input_boolean.heating_season
-#       state: "on"
-#     - "{{ states('sensor.humidifier_water_level') | int != 0 }}"
-#   variables:
-#     notification_title: "Uzupełnij wodę w nawilżaczu"
-#     notification_message: "W zbiorniku nawilżacza pozostało {{ states('sensor.humidifier_water_level') }}% wody."
-#     notification_tag: "notification-humidifier"
-#   action:
-#     - choose:
-#         conditions:
-#           condition: state
-#           entity_id: person.maciek
-#           state: "home"
-#         sequence:
-#           service: python_script.notify
-#           data:
-#             title: "{{ notification_title }}"
-#             message: "{{ notification_message }}"
-#             tag: "{{ notification_tag }}"
-#             services:
-#               - service: !secret maciek_notify_service
-#                 type: "android"
-#     - choose:
-#         conditions:
-#           condition: state
-#           entity_id: person.edyta
-#           state: "home"
-#         sequence:
-#           service: python_script.notify
-#           data:
-#             title: "{{ notification_title }}"
-#             message: "{{ notification_message }}"
-#             tag: "{{ notification_tag }}"
-#             services:
-#               - service: !secret edyta_notify_service
-#                 type: "ios"
-#     - choose:
-#         conditions:
-#           condition: state
-#           entity_id: media_player.bravia_salon
-#           state: "on"
-#         sequence:
-#           service: notify.bravia
-#           data:
-#             title: "{{ notification_title }}"
-#             message: "{{ notification_message }}"
-#             data:
-#               file:
-#                 url: !secret favicon_url
-#               duration: 10
+- id: notification_humidifier_low_water
+  alias: "Notification Humidifier Low Water"
+  description: "powiadom o małej ilości wody w nawilżaczu"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
+      below: 10
+    - platform: numeric_state
+      entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
+      below: 20
+    - platform: numeric_state
+      entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
+      below: 40
+  condition:
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: person.maciek
+          state: "home"
+        - condition: state
+          entity_id: person.edyta
+          state: "home"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
+    - "{{ states('sensor.humidifier_water_level') | int != 0 }}"
+  variables:
+    notification_title: "Uzupełnij wodę w nawilżaczu"
+    notification_message: "W zbiorniku nawilżacza pozostało {{ states('sensor.xiaomi_mi_humidifier_ca1_water_level') }}% wody."
+    notification_tag: "notification-humidifier"
+  action:
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.maciek
+          state: "home"
+        sequence:
+          service: python_script.notify
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
+            tag: "{{ notification_tag }}"
+            services:
+              - service: !secret maciek_notify_service
+                type: "android"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.edyta
+          state: "home"
+        sequence:
+          service: python_script.notify
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
+            tag: "{{ notification_tag }}"
+            services:
+              - service: !secret edyta_notify_service
+                type: "ios"
+    - choose:
+        conditions:
+          condition: state
+          entity_id: media_player.bravia_salon
+          state: "on"
+        sequence:
+          service: notify.bravia
+          data:
+            title: "{{ notification_title }}"
+            message: "{{ notification_message }}"
+            data:
+              file:
+                url: !secret favicon_url
+              duration: 10
 
 - id: notification_salon_co2
   alias: "Notification Salon CO2"
@@ -842,10 +842,10 @@
     service: script.notify_motion
     data:
       title: "Wykryto ruch w pustym mieszkaniu"
-      message: "Pomieszczenie: {{ trigger.to_state.attributes.location }}, godzina {{ now().strftime('%H:%M') }}."
-      tag: "notification-motion-{{ trigger.to_state.attributes.location }}"
+      message: "Pomieszczenie: {{ area_name(trigger.to_state.entity_id) }}, godzina {{ now().strftime('%H:%M') }}."
+      tag: "notification-motion-{{ area_name(trigger.to_state.entity_id) }}"
       datetime: "{{ now().strftime('%Y%m%d%H%M%S') }}"
-      location: "{{ trigger.to_state.attributes.location }}"
+      location: "{{ area_name(trigger.to_state.entity_id) }}"
 
 - id: notification_window_opened_when_away_mode
   alias: "Notification Window Opened When Away Mode"
@@ -872,8 +872,8 @@
     service: python_script.notify
     data:
       title: "Wykryto otwarcie okna w pustym mieszkaniu"
-      message: "Pomieszczenie: {{ trigger.to_state.attributes.location }}, godzina {{ now().strftime('%H:%M') }}."
-      tag: "notification-window-opened-{{ trigger.to_state.attributes.location }}"
+      message: "Pomieszczenie: {{ area_name(trigger.to_state.entity_id) }}, godzina {{ now().strftime('%H:%M') }}."
+      tag: "notification-window-opened-{{ area_name(trigger.to_state.entity_id) }}"
       group: "okna"
       priority: "high"
       services:
@@ -1452,7 +1452,8 @@
   action:
     service: number.set_value
     entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
-    value: 2
+    data:
+      value: 2
 
 - id: air_quality_air_purifier_switch_fan_level_to_1
   alias: "Air Quality Air Purifier Switch Fan Level To 1"
@@ -1473,7 +1474,8 @@
   action:
     service: number.set_value
     entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
-    value: 1
+    data:
+      value: 1
 
 - id: heating_airing_begin
   alias: "Heating Airing Begin"

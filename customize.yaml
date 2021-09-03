@@ -120,18 +120,6 @@ binary_sensor.miairpurifier_status:
   icon: mdi:air-purifier
 binary_sensor.mifan_status:
   icon: mdi:fan
-binary_sensor.yeelight_yldd01yl_6707fc_status:
-  location: "pokój Antka"
-binary_sensor.yeelight_yldd01yl_860cfa_status:
-  location: "sypialnia"
-binary_sensor.yeelight_yldp06yl_7cafc6_status:
-  location: "salon"
-binary_sensor.yeelight_yldp06yl_84be7a_status:
-  location: "salon"
-binary_sensor.yeelight_yldp02yl_f12026_status:
-  location: "salon"
-binary_sensor.yeelight_yldp02yl_b1b6aa_status:
-  location: "antresola"
 binary_sensor.shelly_motion_c67c2a_status:
   icon: mdi:motion-sensor
 binary_sensor.yeelight_mjtd01syl_94e1f5_status:
@@ -179,58 +167,6 @@ binary_sensor.switch_light_salon_2:
 binary_sensor.switch_light_antek:
   friendly_name: "LEDy Antek"
   icon: mdi:led-variant-on
-
-#### XIAOMI MOTION SENSORS ####
-binary_sensor.motion_przedpokoj:
-  location: "przedpokój"
-binary_sensor.motion_pracownia:
-  location: "pracownia"
-binary_sensor.motion_antresola:
-  location: "antresola"
-binary_sensor.motion_salon:
-  location: "salon"
-binary_sensor.motion_antresola_1:
-  location: "antresola"
-binary_sensor.motion_antresola_2:
-  location: "antresola"
-binary_sensor.motion_salon_1:
-  location: "salon"
-binary_sensor.motion_salon_2:
-  location: "salon"
-binary_sensor.motion_sypialnia:
-  location: "sypialnia"
-binary_sensor.motion_antek:
-  location: "pokój Antka"
-binary_sensor.motion_goscinny:
-  location: "pokój gościnny"
-binary_sensor.motion_gabinet:
-  location: "gabinet"
-binary_sensor.motion_kuchnia:
-  location: "kuchnia"
-binary_sensor.motion_lazienka:
-  location: "łazienka"
-binary_sensor.motion_toaleta:
-  location: "toaleta"
-
-#### XIAOMI WINDOW/DOOR SENSORS ####
-binary_sensor.balcony_door_sypialnia:
-  location: "sypialnia"
-binary_sensor.balcony_door_pracownia:
-  location: "pracownia"
-binary_sensor.window_kuchnia:
-  location: "kuchnia"
-binary_sensor.window_salon:
-  location: "salon"
-binary_sensor.window_antresola_1:
-  location: "antresola"
-binary_sensor.window_antresola_2:
-  location: "antresola"
-binary_sensor.window_antek:
-  location: "pokój Antka"
-binary_sensor.window_sypialnia:
-  location: "sypialnia"
-binary_sensor.window_gabinet:
-  location: "gabinet"
 
 #### PRINTER ####
 sensor.printer_last_boot:

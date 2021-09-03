@@ -25,6 +25,10 @@ climate:
 
 default_config:
 
+recorder:
+  db_url: !secret mysql_db_url
+  purge_keep_days: 7
+
 device_tracker:
   - platform: traccar
     host: localhost
@@ -89,8 +93,6 @@ lovelace:
 media_player: !include media_player.yaml
 
 python_script:
-
-recorder: !include recorder.yaml
 
 scene: !include scenes.yaml
 

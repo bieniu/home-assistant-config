@@ -12,9 +12,8 @@ __pycache__/
 *.bak
 *.off
 *.html
-test.py
 OZW_Log.txt
-home-assistant.log
+home-assistant.log*
 appdaemon.log
 home-assistant_v2.db*
 pyozw.sqlite
