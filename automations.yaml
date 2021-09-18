@@ -819,8 +819,10 @@
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.motion_antresola
-        - binary_sensor.motion_salon
+        - binary_sensor.motion_antresola_1
+        - binary_sensor.motion_antresola_2
+        - binary_sensor.motion_salon_1
+        - binary_sensor.motion_salon_2
         - binary_sensor.motion_sypialnia
         - binary_sensor.motion_antek
         - binary_sensor.motion_przedpokoj
@@ -857,7 +859,8 @@
         - binary_sensor.window_sypialnia
         - binary_sensor.window_kuchnia
         - binary_sensor.balcony_door_pracownia
-        - binary_sensor.window_antresola
+        - binary_sensor.window_antresola_1
+        - binary_sensor.window_antresola_2
         - binary_sensor.window_antek
         - binary_sensor.window_sypialnia
       from: "off"
@@ -3002,10 +3005,6 @@
       data:
         topic: "shellies/command"
         payload: "announce"
-    - service: mqtt.publish
-      data:
-        topic: "shellies/shellymotionsensor-60A423C67C2A/command"
-        payload: "announce"
     - delay:  "00:00:10"
     - service: mqtt.publish
       data:
@@ -3036,7 +3035,6 @@
       shellyht-E00ABD:
         powered: "ac"
         force_update_sensors: true
-        expire_after: 1320
       shellyflood-F2AD1D:
         expire_after: 95040
       shelly1l-84CCA8ACEB5F:

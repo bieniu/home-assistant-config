@@ -277,9 +277,9 @@
       friendly_name: "Shelly DUO [5F6FA1]"
       value_template: "{{ is_state('device_tracker.shelly_duo_5f6fa1', 'home') }}"
 
-    shelly_4pro_d8b95c_status:
-      friendly_name: "Shelly 4Pro+ [D8B95C]"
-      value_template: "{{ is_state('device_tracker.shelly_4pro_d8b95c', 'home') }}"
+    shelly_pro_4pm_d8b95c_status:
+      friendly_name: "Shelly Pro 4PM [D8B95C]"
+      value_template: "{{ is_state('device_tracker.shelly_pro_4pm_d8b95c', 'home') }}"
 
     shelly_plug_s_7aecf4_status:
       friendly_name: "Shelly Plug S [7AECF4]"

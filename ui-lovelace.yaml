@@ -134,7 +134,6 @@ views:
               - sensor.temperature_salon
               - sensor.humidity_salon
               - sensor.co2_salon
-              - sensor.pm25_salon
               - sensor.illumination_salon
           - type: entities
             show_header_toggle: false
@@ -617,7 +616,7 @@ views:
                 entities:
                   - sensor.disk_use_percent
                   - sensor.nuc_cpu_temp
-                  - entity: sensor.last_boot
+                  - entity: sensor.last_restart
                     format: relative
                   - entity: sensor.ssl_certificate_expiry_timestamp
                     format: relative
@@ -683,13 +682,13 @@ views:
                     <<: *percent-entity
                   - entity: sensor.printer_toner_remaining
                     <<: *percent-entity
-                  - sensor.printer_uptime
+                  - sensor.printer_last_restart
               - type: entities
                 title: "Synology"
                 show_header_toggle: false
                 entities:
                   - sensor.synology_disk_used
-                  - entity: sensor.synology_last_boot
+                  - entity: sensor.synology_last_restart
                     format: relative
       - type: vertical-stack
         cards:
@@ -832,7 +831,7 @@ views:
           - binary_sensor.shelly_1l_acedf2_status
           - binary_sensor.shelly_1l_aacec4_status
           - binary_sensor.shelly_2_5b2604_status
-          - binary_sensor.shelly_4pro_d8b95c_status
+          - binary_sensor.shelly_pro_4pm_d8b95c_status
           - binary_sensor.shelly_plug_s_7aecf4_status
   - id: energy
     icon: mdi:power-plug

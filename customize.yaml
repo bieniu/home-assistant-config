@@ -37,11 +37,9 @@ sensor.memory_use_percent:
   icon: mdi:chip
 sensor.disk_use_percent:
   friendly_name: "Zajęta przestrzeń dyskowa"
-sensor.last_boot:
+sensor.last_restart:
   icon: mdi:timer-outline
-  friendly_name: "Ostatni restart"
 sensor.nuc_last_boot:
-  friendly_name: "Ostatni restart"
   icon: mdi:timer-outline
 sensor.ha_database_size:
   friendly_name: "Wielkość bazy danych"
@@ -169,8 +167,6 @@ binary_sensor.switch_light_antek:
   icon: mdi:led-variant-on
 
 #### PRINTER ####
-sensor.printer_last_boot:
-  icon: mdi:timer-outline
 sensor.printer_page_counter:
   unit_of_measurement: "str"
 
