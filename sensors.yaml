@@ -119,6 +119,30 @@
     - sensor.humidity_pralnia
   round_digits: 0
 
+- platform: filter
+  name: "Temperature Pralnia"
+  entity_id: sensor.shelly_ht_e00abd_temperature
+  filters:
+    - filter: outlier
+      radius: 10
+      window_size: 3
+
+- platform: filter
+  name: "Humidity Pralnia"
+  entity_id: sensor.shelly_ht_e00abd_humidity
+  filters:
+    - filter: outlier
+      radius: 10
+      window_size: 3
+
+- platform: filter
+  name: "PM25 Salon"
+  entity_id: sensor.xiaomi_mi_air_purifier_3h_pm25
+  filters:
+    - filter: outlier
+      radius: 10
+      window_size: 3
+
 - platform: template
   sensors:
     dishwasher_kuchnia:
@@ -133,17 +157,17 @@
 
     air_quality_info_outdoor:
       friendly_name: "Jakość powietrza zewnętrzenego"
-      availability_template: "{{ not is_state('sensor.caqi_home', 'unavailable') }}"
+      availability_template: "{{ not is_state('sensor.pm25_outdoor', 'unavailable') }}"
       value_template: >-
-        {% if states('sensor.caqi_home') | int <= 25 %}
+        {% if states('sensor.pm25_outdoor') | int <= 25 %}
           bardzo dobra
-        {% elif states('sensor.caqi_home') | int <= 50 %}
+        {% elif states('sensor.pm25_outdoor') | int <= 50 %}
           dobra
-        {% elif states('sensor.caqi_home') | int <= 75 %}
+        {% elif states('sensor.pm25_outdoor') | int <= 100 %}
           średnia
-        {% elif states('sensor.caqi_home') | int <= 100 %}
+        {% elif states('sensor.pm25_outdoor') | int <= 150 %}
           zła
-        {% elif states('sensor.caqi_home') | int > 100 %}
+        {% elif states('sensor.pm25_outdoor') | int > 200 %}
           bardzo zła
         {% endif %}
 

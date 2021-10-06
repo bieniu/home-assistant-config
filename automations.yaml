@@ -288,7 +288,6 @@
         - binary_sensor.shelly_1l_ad365e_firmware_update
         - binary_sensor.shelly_2_5b2604_firmware_update
         - binary_sensor.shelly_flood_f2ad1d_firmware_update
-        - binary_sensor.shelly_ht_e00abd_firmware_update
         - binary_sensor.shelly_plug_s_7aecf4_firmware_update
         - binary_sensor.shelly_motion_c67c2a_firmware_update
         - binary_sensor.shelly_duo_5f6fa1_firmware_update
@@ -304,33 +303,6 @@
         services:
           - service: !secret maciek_notify_service
             type: "android"
-
-- id: notification_esphome_update_available
-  alias: "Notification ESPHome Update Available"
-  description: "powiadom o aktualizacji ESPHome"
-  trigger:
-    platform: state
-    entity_id: sensor.esphome_version_current
-  condition:
-    - "{{ trigger.to_state.state != 'unknown' }}"
-    - "{{ trigger.to_state.state != 'unavailable' }}"
-    - "{{ trigger.from_state.state != 'unknown' }}"
-    - "{{ trigger.from_state.state != 'unavailable' }}"
-  action:
-    - service: python_script.notify
-      data:
-        title: "Aktualizacja ESPHome"
-        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.state }} dla ESPHome."
-        tag: "notification-esphome-update"
-        group: "aktualizacje"
-        url: "/hassio/dashboard"
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
-            actions:
-              - title: "Zmiany"
-                action: "URI"
-                uri: "https://github.com/esphome/esphome/releases"
 
 - id: notification_caddy_update_available
   alias: "Notification Caddy Update Available"
@@ -3053,6 +3025,7 @@
         relay-0: "light"
       ignored_devices:
         - shelly1l-483FDA701559
+        - shellyht-E00ABD
 
 - id: shelly_restart_motion
   alias: "Shelly Restart Motion"

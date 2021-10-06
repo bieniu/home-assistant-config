@@ -1173,21 +1173,21 @@ views:
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - sensor.pm1_home
+              - sensor.pm1_outdoor
             line_color: "#78909c"
             decimals: 0
             icon: "mdi:molecule"
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - entity: sensor.pm25_home
+              - entity: sensor.pm25_outdoor
             line_color: "#78909c"
             decimals: 0
             icon: "mdi:molecule"
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - entity: sensor.pm10_home
+              - entity: sensor.pm10_outdoor
             line_color: "#78909c"
             decimals: 0
             icon: "mdi:molecule"

@@ -28,13 +28,9 @@ default_config:
 recorder:
   db_url: !secret mysql_db_url
   purge_keep_days: 7
-
-device_tracker:
-  - platform: traccar
-    host: localhost
-    port: 18682
-    username: !secret traccar_email
-    password: !secret traccar_password
+  exclude:
+    domains:
+      - device_tracker
 
 frontend:
   themes: !include_dir_merge_named themes

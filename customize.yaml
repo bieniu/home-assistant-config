@@ -248,3 +248,14 @@ sensor.dark_sky_wind_speed:
 
 sensor.minecraft_server_players_online:
   unit_of_measurement: " "
+
+sensor.temperature_pralnia:
+  friendly_name: "Temperatura"
+  icon: "hass:thermometer"
+
+sensor.humidity_pralnia:
+  friendly_name: "Wilgotność"
+  icon: "hass:water-percent"
+
+sensor.pm25_salon:
+  friendly_name: "PM2.5 wewnętrzne"

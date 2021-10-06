@@ -29,6 +29,7 @@
 * Xiaomi Yeelight Color Bulbs [YLDP02YL and YLDP06YL]
 * Xiaomi Yeelight Lightstrips [YLDD01YL]
 * Xiaomi Mi Led Desk Lamp 1S [MJTD01SYL]
+* [Shelly DUO](https://shelly.cloud/products/shelly-duo-smart-home-automation-bulb/)
 
 ## Switches
 
@@ -70,11 +71,10 @@
 
 ## Home Assistant Custom Components
 
-* [Airly](https://github.com/bieniu/ha-airly)
 * [Alexa Media Player](https://github.com/custom-components/alexa_media_player)
-* [GIOS](https://github.com/bieniu/ha-gios)
 * [HACS](https://github.com/custom-components/hacs)
 * [Blitzortung.org Lightning Detector](https://github.com/mrk-its/homeassistant-blitzortung)
+* [Żadnego Ale](https://github.com/bieniu/ha-zadnego-ale)
 
 ## Lovelace Custom Cards
 
@@ -85,7 +85,7 @@
 * [card-mod](https://github.com/thomasloven/lovelace-card-mod)
 * [mini-graph-card](https://github.com/kalkih/mini-graph-card)
 * [mini-media-player](https://github.com/kalkih/mini-media-player)
-* [simple=weather-card](https://github.com/kalkih/simple-weather-card)
+* [simple-weather-card](https://github.com/kalkih/simple-weather-card)
 
 ## Screenshots
 
@@ -94,7 +94,6 @@
 ![HA Energy](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/HA-energy.png)
 ![HA Climate](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/HA-climate.png)
 ![HA Settings](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/HA-settings.png)
-![HA ZWave](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/HA-zwave.png)
 
 [buy-me-a-coffee-shield]: https://img.shields.io/static/v1.svg?label=%20&message=Buy%20me%20a%20coffee&color=6f4e37&logo=buy%20me%20a%20coffee&logoColor=white
 [buy-me-a-coffee]: https://www.buymeacoffee.com/QnLdxeaqO
