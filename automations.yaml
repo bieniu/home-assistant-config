@@ -3000,8 +3000,6 @@
       model: "{{ trigger.payload_json.model }}"
       mode: "{{ trigger.payload_json.mode | default }}"
       qos: 1
-      shelly1-328900:
-        relay-0: "light"
       shellyswitch-5B2604:
         relay-1: "light"
       shellyht-E00ABD:
@@ -3026,6 +3024,7 @@
       ignored_devices:
         - shelly1l-483FDA701559
         - shellyht-E00ABD
+        - shelly1-328900
 
 - id: shelly_restart_motion
   alias: "Shelly Restart Motion"

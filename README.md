@@ -31,15 +31,16 @@
 * Xiaomi Mi Led Desk Lamp 1S [MJTD01SYL]
 * [Shelly DUO](https://shelly.cloud/products/shelly-duo-smart-home-automation-bulb/)
 
-## Switches
+## Relays
 
-* Sonoff Basic Switches [[ESPHome](https://esphome.io) firmware]
+* Sonoff Basic Relays [[ESPHome](https://esphome.io) firmware]
 * Sonoff S26 Plug [[ESPHome](https://esphome.io) firmware]
 * BlitzWolf BW-SHP6 Plugs [[ESPHome](https://esphome.io) firmware]
 * [Shelly 1](https://shelly.cloud/products/shelly-1-smart-home-automation-relay/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Shelly 1L](https://shelly.cloud/products/shelly-1l-single-wire-smart-home-automation-relay/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * Shelly 2 via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Shelly Plug S](https://shelly.cloud/products/shelly-plug-s-smart-home-automation-device/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
+* Shelly Pro 4PM
 
 ## Sensors
 
