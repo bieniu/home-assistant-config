@@ -5,5 +5,5 @@ logs:
   homeassistant.components.androidtv.media_player: error
   custom_components.zadnego_ale: debug
   zadnegoale: debug
-  custom_components.tractive: debug
-  custom_components.xiaomi_miio: info
+  custom_components.nam: debug
+  nettigo_air_monitor: debug

@@ -34,6 +34,8 @@ recorder:
 
 frontend:
   themes: !include_dir_merge_named themes
+  extra_module_url:
+    - /hacsfiles/lovelace-card-mod/card-mod.js
 
 group: !include groups.yaml
 
@@ -67,8 +69,6 @@ logger: !include logger.yaml
 lovelace:
   mode: yaml
   resources:
-    - url: /hacsfiles/lovelace-card-mod/card-mod.js
-      type: module
     - url: /hacsfiles/simple-weather-card/simple-weather-card-bundle.js
       type: module
     - url: /hacsfiles/lovelace-auto-entities/auto-entities.js
@@ -100,5 +100,3 @@ switch: !include switches.yaml
 
 shell_command:
   restart_shelly_devices: /config/scripts/restart_shelly_devices.sh
-  restart_shelly_motion: /config/scripts/restart_shelly_motion.sh
-  restart_nam: /config/scripts/restart_nam.sh

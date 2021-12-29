@@ -71,6 +71,10 @@
   icon: mdi:thermometer-lines
 "binary_sensor.shelly_flood_*_status":
   icon: mdi:water
+"binary_sensor.shelly_valve_*_status":
+  icon: mdi:thermostat
+"binary_sensor.shelly_gas_*_status":
+  icon: mdi:gas-cylinder
 
 #### NETWORK DEVICES ####
 "binary_sensor.yeelight_yldd*_status":
@@ -83,10 +87,11 @@
   device_class: connectivity
 
 "binary_sensor.echo_*_status":
-  icon: mdi:amazon-alexa
+  icon: mdi:speaker
 
 "binary_sensor.laptop*_status":
   icon: mdi:laptop
 
 "binary_sensor.migateway_*_status":
   icon: mdi:zigbee
+

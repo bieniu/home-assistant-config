@@ -12,6 +12,7 @@ blue-mix:
 
   state-icon-color: 'var(--dark-primary-color)'
   state-icon-active-color: '#ffb750'
+  state-climate-heat-color: '#ffb750'
   # state-icon-unavailable-color: 'var(--disabled-text-color)'
 
   # card-background-color: '#ffffff'

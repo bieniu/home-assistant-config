@@ -43,13 +43,6 @@
         {{ is_state('binary_sensor.window_antresola_1', 'on')
             or is_state('binary_sensor.window_antresola_2', 'on') }}
 
-    motion_antresola:
-      friendly_name: "Ruch"
-      device_class: "motion"
-      value_template: >-
-        {{ is_state('binary_sensor.motion_antresola_2', 'on')
-           or is_state('binary_sensor.motion_antresola_1', 'on') }}
-
     motion_salon:
       friendly_name: "Ruch"
       device_class: "motion"
@@ -150,11 +143,15 @@
       friendly_name: "Fire TV Stick 4K"
 
     laptop_edyta_status:
-      value_template: "{{ is_state('device_tracker.laptop_edyta', 'home') }}"
+      value_template: "{{ is_state('device_tracker.dell_latitude_7290', 'home') }}"
       friendly_name: "Dell Latitude 7290"
 
+    laptop_maciek_status:
+      value_template: "{{ is_state('device_tracker.dell_latitude_5400', 'home') }}"
+      friendly_name: "Dell Latitude 5400"
+
     laptop_antek_status:
-      value_template: "{{ is_state('device_tracker.laptop_antek', 'home') }}"
+      value_template: "{{ is_state('device_tracker.lenovo_ideapad_s145', 'home') }}"
       friendly_name: "Lenovo IdeaPad S145"
 
     denon_status:
@@ -162,7 +159,7 @@
       friendly_name: "Denon AVR-X2100W"
 
     laptop_status:
-      value_template: "{{ is_state('device_tracker.laptop', 'home') }}"
+      value_template: "{{ is_state('device_tracker.lenovo_ideapad_z510', 'home') }}"
       friendly_name: "Lenovo IdeaPad Z510"
 
     migateway_cc6f0b_status:
@@ -233,9 +230,28 @@
       friendly_name: "BlitzWolf BW-SHP6 [ED007D]"
       value_template: "{{ is_state('device_tracker.blitzwolf_bw_shp6_ed007d', 'home') }}"
 
+    shelly_plus_i4_09e6ac_status:
+      friendly_name: "Shelly Plus i4 [09E6AC]"
+      value_template: "{{ is_state('device_tracker.shelly_plus_i4_09e6ac', 'home') }}"
+      unique_id: "shelly_plus_i4_09e6ac_status"
+
+    shelly_gas_c6811c_status:
+      friendly_name: "Shelly Gas [C6811C]"
+      value_template: "{{ is_state('device_tracker.shelly_gas_c6811c', 'home') }}"
+      unique_id: "shelly_gas_c6811c_status"
+
+    shelly_valve_2a544_status:
+      friendly_name: "Shelly Valve [72A544]"
+      value_template: "{{ is_state('device_tracker.shelly_valve_72a544', 'home') }}"
+      unique_id: "shelly_valve_2a544_status"
+
     shelly_1_328900_status:
       friendly_name: "Shelly 1 [328900]"
       value_template: "{{ is_state('device_tracker.shelly_1_328900', 'home') }}"
+
+    shelly_1l_4a262c9_status:
+      friendly_name: "Shelly 1L [4A262C]"
+      value_template: "{{ is_state('device_tracker.shelly1l_4a262c9', 'home') }}"
 
     shelly_1_d42455_status:
       friendly_name: "Shelly 1 [D42455]"
@@ -277,9 +293,20 @@
       friendly_name: "Shelly DUO [5F6FA1]"
       value_template: "{{ is_state('device_tracker.shelly_duo_5f6fa1', 'home') }}"
 
+    shelly_duo_rgbw_d4ecd3_status:
+      friendly_name: "Shelly DUO RGBW [D4ECD3]"
+      value_template: "{{ is_state('device_tracker.shelly_duo_rgbw_d4ecd3', 'home') }}"
+      unique_id: "shelly_duo_rgbw_d4ecd3_status"
+
+    shelly_vintage_d10472_status:
+      friendly_name: "Shelly Vintage [D10472]"
+      value_template: "{{ is_state('device_tracker.shelly_vintage_d10472', 'home') }}"
+      unique_id: "shelly_vintage_d10472_status"
+
     shelly_pro_4pm_d8b95c_status:
       friendly_name: "Shelly Pro 4PM [D8B95C]"
       value_template: "{{ is_state('device_tracker.shelly_pro_4pm_d8b95c', 'home') }}"
+      unique_id: "shelly_pro_4pm_d8b95c_status"
 
     shelly_plug_s_7aecf4_status:
       friendly_name: "Shelly Plug S [7AECF4]"

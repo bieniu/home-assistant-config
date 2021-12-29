@@ -1,6 +1,6 @@
 - platform: group
-  name: Bulbs Salon
-  unique_id: "bulbs-salon"
+  name: Ceiling Salon
+  unique_id: "ceiling-salon"
   entities:
     - light.bulb_salon_1
     - light.bulb_salon_2

@@ -23,6 +23,8 @@ logger:
 
 api:
   password: !secret esphome_password
+  encryption:
+    key: !secret encryption_key
 
 ota:
   password: !secret esphome_password
@@ -39,7 +41,7 @@ time:
 
 binary_sensor:
   - platform: gpio
-    id: button
+    id: device_button
     internal: true
     pin:
       number: GPIO13
@@ -58,14 +60,15 @@ switch:
     id: relay
     icon: mdi:power-plug
     name: "${device_name} Relay"
-    restore_mode: ALWAYS_ON
     on_turn_on:
       - output.turn_on: led
     on_turn_off:
       - output.turn_off: led
 
+button:
   - platform: restart
     name: "${device_name} Restart"
+    device_class: "restart"
 
 status_led:
   pin:
@@ -77,12 +80,13 @@ sensor:
     name: "${device_name} Last Restart"
     update_interval: 300s
     device_class: "timestamp"
+    entity_category: "diagnostic"
     unit_of_measurement: ""
     filters:
       - lambda: |-
           auto time = id(homeassistant_time).now();
           if (time.is_valid()) {
-            return int(time.timestamp) - int(x);
+            return time.timestamp - x;
           } else {
             return {};
           }
@@ -91,6 +95,7 @@ sensor:
     name: "${device_name} WiFi Signal"
     update_interval: 300s
     device_class: "signal_strength"
+    entity_category: "diagnostic"
 
   - platform: hlw8012
     sel_pin:

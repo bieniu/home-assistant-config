@@ -104,6 +104,7 @@ views:
               - binary_sensor.window_kuchnia
               - entity: binary_sensor.motion_kuchnia
                 secondary_info: last-changed
+              - binary_sensor.gas_leak_kuchnia
               - binary_sensor.water_leak_kuchnia
               - type: conditional
                 conditions:
@@ -148,6 +149,7 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_salon
+              - switch.ceiling_fan_salon
               - type: conditional
                 conditions:
                   - entity: input_boolean.heating_season
@@ -162,10 +164,11 @@ views:
                 secondary_info:
                   entity: sensor.aqi_attr_salon
                   prefix: "powietrze: "
-              - fan.pedestal_salon
-              - light.bulbs_salon
+              # - fan.pedestal_salon
+              - light.ceiling_salon
               - light.leds_salon
               - light.lamp_salon
+              - switch.christmas_tree_salon
               - input_select.light_scenes_salon
               - input_select.salon_harmony
               - type: custom:mini-media-player
@@ -309,7 +312,13 @@ views:
               - binary_sensor.balcony_door_pracownia
               - entity: binary_sensor.motion_pracownia
                 secondary_info: last-changed
-              - light.lamp_pracownia
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.heating_season
+                    state_not: "off"
+                row:
+                  entity: climate.thermostat_pracownia
+              - switch.lamp_pracownia
       - type: vertical-stack
         in_card: true
         cards:
@@ -327,7 +336,6 @@ views:
             entities:
               - entity: binary_sensor.motion_goscinny
                 secondary_info: last-changed
-              # - switch.lamp_goscinny
               - light.gateway_goscinny
               - type: conditional
                 conditions:
@@ -367,6 +375,7 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_antresola
+              - light.leds_schody
               - light.gateway_antresola
       - type: vertical-stack
         in_card: true
@@ -392,8 +401,10 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_gabinet
-              - light.desk_lamp_gabinet
+              - fan.pedestal_gabinet
               - light.ceiling_gabinet
+              - light.lamp_gabinet
+              - light.desk_lamp_gabinet
               - switch.stacjonarny
       - type: vertical-stack
         in_card: true
@@ -422,7 +433,6 @@ views:
               - light.ceiling_antek
               - light.desk_lamp_antek
               - light.lightstrip_antek
-              - switch.cabinet_antek
               - switch.tree_antek
               - type: custom:mini-media-player
                 entity: media_player.echo_plus_antek
@@ -735,6 +745,7 @@ views:
           - binary_sensor.stacjonarny_status
           - binary_sensor.laptop_status
           - binary_sensor.laptop_edyta_status
+          - binary_sensor.laptop_maciek_status
           - binary_sensor.laptop_antek_status
       - type: entities
         title: "Urządzenia mobilne"
@@ -779,6 +790,7 @@ views:
           - binary_sensor.mifan_status
           - binary_sensor.miairpurifier_status
           - binary_sensor.thermomix_status
+          - binary_sensor.shelly_valve_2a544_status
       - type: entities
         title: "IoT - oświetlenie"
         show_header_toggle: false
@@ -794,6 +806,8 @@ views:
           - binary_sensor.yeelight_mjtd01syl_94e1f5_status
           - binary_sensor.yeelight_mjtd01syl_4fbaa2_status
           - binary_sensor.shelly_duo_5f6fa1_status
+          - binary_sensor.shelly_duo_rgbw_d4ecd3_status
+          - binary_sensor.shelly_vintage_d10472_status
       - type: entities
         title: "IoT - sensory"
         show_header_toggle: false
@@ -803,6 +817,7 @@ views:
           - binary_sensor.shelly_ht_e00abd_status
           - binary_sensor.shelly_motion_c67c2a_status
           - binary_sensor.shelly_flood_f2ad1d_status
+          - binary_sensor.shelly_gas_c6811c_status
           - binary_sensor.wemos_d1_mini_1c91ea_status
           - binary_sensor.nettigo_air_monitor_status
       - type: entities
@@ -830,9 +845,11 @@ views:
           - binary_sensor.shelly_1l_ad365e_status
           - binary_sensor.shelly_1l_acedf2_status
           - binary_sensor.shelly_1l_aacec4_status
+          - binary_sensor.shelly_1l_4a262c9_status
           - binary_sensor.shelly_2_5b2604_status
           - binary_sensor.shelly_pro_4pm_d8b95c_status
           - binary_sensor.shelly_plug_s_7aecf4_status
+          - binary_sensor.shelly_plus_i4_09e6ac_status
   - id: energy
     icon: mdi:power-plug
     title: "Energia"
@@ -899,8 +916,8 @@ views:
           - sensor.battery_xiaomi_motion_aq2_toaleta
           - sensor.battery_xiaomi_motion_aq2_pracownia
           - sensor.battery_xiaomi_motion_aq2_goscinny
-          - sensor.battery_xiaomi_motion_schody
-          - sensor.battery_xiaomi_motion_antresola
+          - sensor.battery_xiaomi_motion_aq2_schody
+          - sensor.battery_xiaomi_motion_aq2_antresola
           - sensor.battery_xiaomi_motion_aq2_gabinet
           - sensor.battery_xiaomi_motion_aq2_antek
           - sensor.battery_xiaomi_motion_aq2_sypialnia
@@ -958,6 +975,7 @@ views:
           - sensor.battery_thermostat_antek
           - sensor.battery_thermostat_sypialnia
           - sensor.battery_thermostat_lazienka
+          - sensor.battery_thermostat_pracownia
       - type: custom:battery-state-card
         name: "Baterie sensorów okien/drzwi"
         tap_action:
@@ -1163,7 +1181,6 @@ views:
             icon: "mdi:molecule-co2"
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
-            name: "PM2.5 wewnętrzne"
             entities:
               - entity: sensor.pm25_salon
             line_color: "#78909c"

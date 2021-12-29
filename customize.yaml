@@ -5,16 +5,16 @@ sensor.moon:
 
 #### DEVICE_TRACKER ####
 device_tracker.oneplus_6_app:
-  icon: mdi:cellphone-android
+  icon: mdi:cellphone
 
 device_tracker.ipad_air_app:
   icon: mdi:tablet-ipad
 
 device_tracker.iphone_8_plus_app:
-  icon: mdi:cellphone-iphone
+  icon: mdi:cellphone
 
 device_tracker.iphone_11_app:
-  icon: mdi:cellphone-iphone
+  icon: mdi:cellphone
 
 #### LIGHTS ####
 light.bulb_salon_1:
@@ -82,11 +82,11 @@ binary_sensor.fingbox_status:
 binary_sensor.harmony_status:
   icon: mdi:remote
 binary_sensor.iphone_8_plus_status:
-  icon: mdi:cellphone-iphone
+  icon: mdi:cellphone
 binary_sensor.iphone_11_status:
-  icon: mdi:cellphone-iphone
+  icon: mdi:cellphone
 binary_sensor.oneplus_status:
-  icon: mdi:cellphone-android
+  icon: mdi:cellphone
 binary_sensor.denon_status:
   icon: mdi:audio-video
 binary_sensor.mibox_status:
@@ -96,7 +96,7 @@ binary_sensor.firetv_status:
 binary_sensor.lumia_status:
   icon: mdi:cellphone
 binary_sensor.ipad_status:
-  icon: mdi:tablet-ipad
+  icon: mdi:tablet
 binary_sensor.kindle_keyboard_3g_status:
   icon: mdi:cellphone-text
 binary_sensor.kindle_8_status:
@@ -258,4 +258,7 @@ sensor.humidity_pralnia:
   icon: "hass:water-percent"
 
 sensor.pm25_salon:
-  friendly_name: "PM2.5 wewnętrzne"
+  icon: "mdi:molecule"
+
+switch.ceiling_fan_salon:
+  assumed_state: false

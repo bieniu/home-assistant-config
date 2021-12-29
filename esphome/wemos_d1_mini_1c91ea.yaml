@@ -22,6 +22,8 @@ logger:
 
 api:
   password: !secret esphome_password
+  encryption:
+    key: !secret encryption_key
   services:
     - service: calibrate
       then:
@@ -39,17 +41,16 @@ web_server:
 time:
   - platform: homeassistant
     id: homeassistant_time
-    on_time_sync:
-      - component.update: last_restart
 
 uart:
   rx_pin: RX
   tx_pin: TX
   baud_rate: 9600
 
-switch:
+button:
   - platform: restart
     name: "${device_name} Restart"
+    device_class: "restart"
 
 sensor:
   - platform: mhz19
@@ -68,19 +69,24 @@ sensor:
     id: uptime_sensor
     internal: true
 
-  - platform: template
+  - platform: uptime
     name: "${device_name} Last Restart"
-    id: last_restart
+    update_interval: 300s
     device_class: "timestamp"
-    accuracy_decimals: 0
-    update_interval: never
-    lambda: |-
-      static float timestamp = (
-        id(homeassistant_time).utcnow().timestamp - id(uptime_sensor).state
-      );
-      return timestamp;
+    entity_category: "diagnostic"
+    unit_of_measurement: ""
+    filters:
+      - lambda: |-
+          auto time = id(homeassistant_time).now();
+          if (time.is_valid()) {
+            return time.timestamp - x;
+          } else {
+            return {};
+          }
 
   - platform: wifi_signal
     name: "${device_name} WiFi Signal"
     update_interval: 300s
     device_class: "signal_strength"
+    entity_category: "diagnostic"
+    

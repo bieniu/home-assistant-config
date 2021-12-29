@@ -119,32 +119,44 @@
     - sensor.humidity_pralnia
   round_digits: 0
 
-- platform: filter
-  name: "Temperature Pralnia"
-  entity_id: sensor.shelly_ht_e00abd_temperature
-  filters:
-    - filter: outlier
-      radius: 10
-      window_size: 3
-
-- platform: filter
-  name: "Humidity Pralnia"
-  entity_id: sensor.shelly_ht_e00abd_humidity
-  filters:
-    - filter: outlier
-      radius: 10
-      window_size: 3
-
-- platform: filter
-  name: "PM25 Salon"
-  entity_id: sensor.xiaomi_mi_air_purifier_3h_pm25
-  filters:
-    - filter: outlier
-      radius: 10
-      window_size: 3
-
 - platform: template
   sensors:
+    pm25_salon:
+      friendly_name: "PM25 wewnątrz"
+      device_class: "pm25"
+      unit_of_measurement: "µg/m³"
+      availability_template: "{{ states('sensor.xiaomi_mi_air_purifier_3h_pm25') != ('unavailable' or 'unknown') }}"
+      value_template: >-
+        {% if states('sensor.xiaomi_mi_air_purifier_3h_pm25') | int(0) > 7 %}
+          {{ states('sensor.xiaomi_mi_air_purifier_3h_pm25') | int(0) }}
+        {% else %}
+          {{ states('sensor.pm25_salon') | int(0) }}
+        {% endif %}
+
+    temperature_pralnia:
+      friendly_name: "Temperature Pralnia"
+      device_class: "temperature"
+      unit_of_measurement: "°C"
+      availability_template: "{{ states('sensor.shelly_ht_e00abd_temperature') != ('unavailable' or 'unknown') }}"
+      value_template: >-
+        {% if states('sensor.shelly_ht_e00abd_temperature') | int != -100 %}
+          {{ states('sensor.shelly_ht_e00abd_temperature') | float }}
+        {% else %}
+          {{ states('sensor.temperature_pralnia') | float }}
+        {% endif %}
+
+    humidity_pralnia:
+      friendly_name: "Humidity Pralnia"
+      device_class: "humidity"
+      unit_of_measurement: "%"
+      availability_template: "{{ states('sensor.shelly_ht_e00abd_humidity') != ('unavailable' or 'unknown') }}"
+      value_template: >-
+        {% if states('sensor.shelly_ht_e00abd_humidity') | int != 0 %}
+          {{ states('sensor.shelly_ht_e00abd_humidity') | float }}
+        {% else %}
+          {{ states('sensor.humidity_pralnia') | float }}
+        {% endif %}
+
     dishwasher_kuchnia:
       friendly_name: "Zmywarka"
       availability_template: "{{ states('sensor.power_dishwasher_kuchnia_power') != ('unavailable' or 'unknown') }}"

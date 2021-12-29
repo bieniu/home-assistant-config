@@ -1,29 +1,14 @@
 devices_away_mode:
   sequence:
+  - service: light.turn_off
+    entity_id: all
   - service: homeassistant.turn_off
     entity_id:
-    - light.bulbs_salon
-    - light.leds_salon
-    - light.lamp_salon
-    - light.leds_przedpokoj
-    - light.gateway_antresola
-    - light.gateway_goscinny
-    - light.lightstrip_sypialnia
-    - light.lightstrip_antek
-    - switch.cabinet_antek
-    - light.lamp_pracownia
-    - input_boolean.antek_lamp_night
-    - switch.tree_antek
-    - light.ceiling_gabinet
-    - light.desk_lamp_gabinet
-    - light.ceiling_kuchnia
-    - light.ceiling_lazienka
-    - light.desk_lamp_antek
-    - light.ceiling_toaleta
-    - light.ceiling_antek
-    - light.double_ceiling_sypialnia
-    - light.ceiling_przedpokoj
-    - fan.pedestal_salon
+      - switch.tree_antek
+      - fan.pedestal_gabinet
+      - humidifier.xiaomi_salon
+      - input_boolean.antek_lamp_night
+      - switch.lamp_pracownia
   mode: single
   alias: 'Devices: away mode'
   icon: mdi:home-export-outline
@@ -42,6 +27,7 @@ heating_fast_warm_up:
     - climate.aeotec_thermostat_kuchnia
     - climate.thermostat_salon
     - climate.custom_thermostat_lazienka
+    - climate.thermostat_pracownia
     data:
       temperature: 24
   - delay: 01:00:00
@@ -60,6 +46,7 @@ heating_day:
     - climate.aeotec_thermostat_kuchnia
     - climate.thermostat_salon
     - climate.thermostat_gabinet
+    - climate.thermostat_pracownia
     data:
       temperature: '{{ states(''input_select.heating_temp_day'') }}'
   - service: climate.set_temperature
@@ -74,9 +61,9 @@ heating_day:
     - input_boolean.heating_salon_kuchnia_night
   - condition: template
     value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity')\
-      \ | float\n   and states('sensor.humidifier_water_level') | int > 5 }}"
-  - service: fan.turn_on
-    entity_id: fan.humidifier_salon
+      \ | float\n   and states('sensor.xiaomi_mi_humidifier_ca1_water_level') | int > 5 }}"
+  - service: humidifier.turn_on
+    entity_id: humidifier.xiaomi_salon
   mode: single
   icon: mdi:radiator
   alias: 'Heating: day'
@@ -88,6 +75,7 @@ heating_night:
     entity_id:
     - climate.thermostat_antresola
     - climate.thermostat_gabinet
+    - climate.thermostat_pracownia
     data:
       temperature: '{{ states(''input_select.heating_temp_night'') }}'
   - service: climate.set_temperature
@@ -103,10 +91,8 @@ heating_night:
   - condition: template
     value_template: "{{ is_state(\"input_boolean.guests\", \"off\") and\n   is_state(\"\
       media_player.denon_salon\", \"off\") }}"
-  - service: fan.turn_off
-    entity_id:
-      - fan.humidifier_salon
-      - fan.pedestal_salon
+  - service: homeassistant.turn_off
+    entity_id: humidifier.xiaomi_salon
   - service: climate.set_temperature
     entity_id:
     - climate.aeotec_thermostat_kuchnia
@@ -129,10 +115,11 @@ heating_away_mode:
     - climate.thermostat_antek
     - climate.thermostat_sypialnia
     - climate.custom_thermostat_lazienka
+    - climate.thermostat_pracownia
     data:
       temperature: '{{ states(''input_select.heating_temp_away'') }}'
-  - service: fan.turn_off
-    entity_id: fan.humidifier_salon
+  - service: humidifier.turn_off
+    entity_id: humidifier.xiaomi_salon
   mode: single
   alias: 'Heating: away'
   icon: mdi:radiator
@@ -146,6 +133,7 @@ heating_season_end:
     - climate.thermostat_antek
     - climate.thermostat_sypialnia
     - climate.custom_thermostat_lazienka
+    - climate.thermostat_pracownia
     data:
       temperature: 4
   - service: climate.turn_off
@@ -166,10 +154,11 @@ heating_airing_begin:
     - climate.thermostat_sypialnia
     - climate.custom_thermostat_lazienka
     - climate.aeotec_thermostat_kuchnia
+    - climate.thermostat_pracownia
     data:
       temperature: 8
-  - service: fan.turn_off
-    entity_id: fan.humidifier_salon
+  - service: humidifier.turn_off
+    entity_id: humidifier.xiaomi_salon
   - condition: state
     entity_id: input_boolean.heating_airing
     state: 'off'
@@ -245,7 +234,6 @@ alexa_toggle_qube:
       command: Włącz/wyłącz
   mode: single
   alias: 'Alexa: toggle qube'
-  icon: mdi:amazon-alexa
 alexa_netflix:
   sequence:
   - delay: 00:00:02
@@ -254,17 +242,15 @@ alexa_netflix:
     data:
       activity: Smart TV
   mode: single
-  icon: mdi:amazon-alexa
   alias: 'Alexa: Netflix'
 alexa_goodnight:
   sequence:
   - service: homeassistant.turn_off
     entity_id:
     - remote.salon
-    - fan.humidifier_salon
+    - humidifier.xiaomi_salon
     - light.leds_salon
-    - light.bulbs_salon
-    - switch.cabinet_antek
+    - switch.bulbs_salon
     - light.desk_lamp_antek
     - light.ceiling_gabinet
     - light.ceiling_kuchnia
@@ -274,7 +260,6 @@ alexa_goodnight:
     - light.ceiling_przedpokoj
   mode: single
   alias: 'Alexa: goodnight'
-  icon: mdi:amazon-alexa
 alexa_tts:
   sequence:
   - service: notify.alexa_media_echo_plus
@@ -283,22 +268,24 @@ alexa_tts:
       data:
         type: tts
   mode: single
-  icon: mdi:amazon-alexa
   alias: 'Alexa: TTS'
-restart_esphome_devices:
-  alias: Restart ESPHome Devices
+restart_wifi_devices:
+  alias: Restart Wi-Fi Devices
   sequence:
-  - service: switch.turn_on
+  - service: button.press
     entity_id:
-    - switch.blitzwolf_bw_shp6_2ad05a_restart
-    - switch.blitzwolf_bw_shp6_3766eb_restart
-    - switch.blitzwolf_bw_shp6_ecf9ea_restart
-    - switch.blitzwolf_bw_shp6_ed007d_restart
-    - switch.sonoff_basic_067c81_restart
-    - switch.sonoff_basic_5dfba8_restart
-    - switch.sonoff_basic_a786cc_restart
-    - switch.sonoff_s26_182475_restart
-    - switch.wemos_d1_mini_1c91ea_restart
+      - button.blitzwolf_bw_shp6_173eb6_restart
+      - button.blitzwolf_bw_shp6_17957c_restart
+      - button.blitzwolf_bw_shp6_3766eb_restart
+      - button.blitzwolf_bw_shp6_ed007d_restart
+      - button.wemos_d1_mini_1c91ea_restart
+      - button.nettigo_air_monitor_restart
+      - button.shelly_1_328900_restart
+      - button.shelly_1l_701559_restart
+      - button.shelly_gas_c6811c_restart
+      - button.shelly_pro_4pm_d8b95c_restart
+      - button.shelly_valve_72a544_restart
+  - service: shell_command.restart_shelly_devices
   mode: single
   icon: mdi:restart
 alexa_open_windows:
@@ -318,4 +305,4 @@ alexa_open_windows:
         type: tts
   mode: single
   alias: 'Alexa: open windows'
-  icon: mdi:amazon-alexa
+  
