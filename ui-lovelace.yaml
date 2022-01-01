@@ -589,17 +589,17 @@ views:
                       - sensor.speedtest_upload
           - type: vertical-stack
             in_card: true
-            title: "Router"
             cards:
+              - type: entities
+                title: "Router"
+                show_header_toggle: false
+                entities:
+                  - sensor.asuswrt_cpu_temperature
+                  - sensor.asuswrt_2_4ghz_temperature
+                  - sensor.asuswrt_5ghz_temperature
               - type: horizontal-stack
                 cards:
                   - type: custom:mini-graph-card
-                    card_mod:
-                      style: |
-                        ha-card.flex {
-                          padding-top: 0px;
-                          padding-bottom: 0px;
-                        }
                     <<: *GRAPH_IN_CARD
                     line_color: "#36a2eb"
                     decimals: 1
@@ -726,6 +726,7 @@ views:
           - binary_sensor.modem_status
           - binary_sensor.router_status
           - binary_sensor.lyra_54cf59_status
+          - binary_sensor.lyra_54cf5d_status
       - type: entities
         title: "Serwery"
         show_header_toggle: false

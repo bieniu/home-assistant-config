@@ -282,7 +282,6 @@
       entity_id:
         - binary_sensor.shelly_1_328900_firmware_update
         - binary_sensor.shelly_1_d42455_firmware_update
-        - binary_sensor.shelly_1l_2ff8f1_firmware_update
         - binary_sensor.shelly_1l_61c9fd_firmware_update
         - binary_sensor.shelly_1l_701559_firmware_update
         - binary_sensor.shelly_1l_aacec4_firmware_update
@@ -731,10 +730,8 @@
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.shelly_1l_2ff8f1_overtemperature
-        - binary_sensor.shelly_1l_4a262c_overheating
         - binary_sensor.shelly_1l_61c9fd_overtemperature
-        - binary_sensor.shelly_1l_701559_overheating
+        - binary_sensor.shelly_1l_701559_overtemperature
         - binary_sensor.shelly_1l_aacec4_overtemperature
         - binary_sensor.shelly_1l_aceb5f_overtemperature
         - binary_sensor.shelly_1l_acedf2_overtemperature
@@ -1612,9 +1609,12 @@
       from: "on"
       to: "off"
   condition:
-    condition: state
-    entity_id: input_boolean.away_mode
-    state: "off"
+    - condition: state
+      entity_id: input_boolean.away_mode
+      state: "off"
+    - condition: time
+      after: "08:00:00"
+      before: "23:59:59"
   action:
     service: switch.turn_on
     entity_id: switch.christmas_tree_salon
@@ -1703,6 +1703,8 @@
     type: button_short_press
     subtype: button_1
     discovery_id: shellyswitch-5B2604-input-0 button_short_press
+  condition:
+    "{{ (now() | as_timestamp) - (states('sensor.home_assistant_last_restart') | as_timestamp) > 10 }}"
   action:
     service: light.toggle
     entity_id: light.ceiling_salon
@@ -1740,9 +1742,7 @@
   max_exceeded: silent
   trigger:
     - platform: state
-      entity_id:
-        - binary_sensor.motion_salon
-        - binary_sensor.motion_antresola_2
+      entity_id: binary_sensor.motion_salon
       from: "off"
       to: "on"
     - platform: state
@@ -1750,7 +1750,7 @@
       from: "on"
       to: "off"
     - platform: state
-      entity_id: light.ciling_salon
+      entity_id: light.ceiling_salon
       from: "on"
       to: "off"
     - platform: state
@@ -1794,8 +1794,6 @@
           to: "on"
     - service: light.turn_off
       entity_id: light.lamp_salon
-      data:
-        transition: 10
 
 - id: light_scene_film
   alias: "Light Scene Film"
@@ -2128,6 +2126,8 @@
     type: button_short_press
     subtype: button_1
     discovery_id: shelly1l-84CCA8AD365E-input-0 button_short_press
+  condition:
+    "{{ (now() | as_timestamp) - (states('sensor.home_assistant_last_restart') | as_timestamp) > 10 }}"
   action:
     service: light.toggle
     entity_id: light.ceiling_antek
@@ -2340,12 +2340,14 @@
   alias: "Light Toggle Ceiling Light"
   description: "włącz/wyłącz oświetlenie sufitowe"
   trigger:
-    - platform: event
-      event_type: shelly.click
-      event_data:
-        device: "shelly1l-483FDA701559"
-        channel: 1
-        click_type: single
+    platform: device
+    domain: mqtt
+    device_id: 8b0d2dd5099fa8d8664ab14cd4a30f87
+    type: button_short_press
+    subtype: button_1
+    discovery_id: shelly1l-483FDA701559-input-0 button_short_press
+  condition:
+    "{{ (now() | as_timestamp) - (states('sensor.home_assistant_last_restart') | as_timestamp) > 10 }}"
   action:
     service: light.toggle
     entity_id: light.ceiling_gabinet
@@ -2354,12 +2356,14 @@
   alias: "Light Toggle Desk Lamp"
   description: "włącz/wyłącz lampę biurkową"
   trigger:
-    - platform: event
-      event_type: shelly.click
-      event_data:
-        device: "shelly1l-483FDA701559"
-        channel: 1
-        click_type: long
+    platform: device
+    domain: mqtt
+    device_id: 8b0d2dd5099fa8d8664ab14cd4a30f87
+    type: button_short_press
+    subtype: button_1
+    discovery_id: shelly1l-483FDA701559-input-0 button_long_press
+  condition:
+    "{{ (now() | as_timestamp) - (states('sensor.home_assistant_last_restart') | as_timestamp) > 10 }}"
   action:
     service: light.toggle
     entity_id: light.desk_lamp_gabinet
@@ -3109,13 +3113,13 @@
         relay-0: "light"
       shelly1l-E8DB84AACEC4:
         relay-0: "light"
+      shelly1-328900:
+        relay-0: "light"
+      shelly1l-483FDA701559:
+        relay-0: "light"
       ignored_devices:
-        - shelly1-328900
-        - shelly1l-483FDA701559
         - shellycolorbulb-E868E7C6811C
-        - shellygas-E868E7C6811C
-        - ShellyVintage-D10472
-
+      
 - id: frontend_set_theme
   alias: "Frontend Set Theme"
   description: "ustaw motyw frontendu"

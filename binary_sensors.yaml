@@ -53,6 +53,12 @@
     lyra_54cf59_status:
       value_template: "{{ is_state('device_tracker.lyra_trio_54cf59', 'home') }}"
       friendly_name: "Lyra Trio [54CF59]"
+      unique_id: "lyra_54cf59_status"
+
+    lyra_54cf5d_status:
+      value_template: "{{ is_state('device_tracker.lyra_trio_54cf5d', 'home') }}"
+      friendly_name: "Lyra Trio [54CF5D]"
+      unique_id: "lyra_54cf5d_status"
 
     synology_status:
       value_template: "{{ is_state('device_tracker.synology', 'home') }}"
