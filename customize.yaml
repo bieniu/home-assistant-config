@@ -3,31 +3,11 @@ sun.sun:
 sensor.moon:
   friendly_name: "Księżyc"
 
-#### DEVICE_TRACKER ####
-device_tracker.oneplus_6_app:
-  icon: mdi:cellphone
-
-device_tracker.ipad_air_app:
-  icon: mdi:tablet-ipad
-
-device_tracker.iphone_8_plus_app:
-  icon: mdi:cellphone
-
-device_tracker.iphone_11_app:
-  icon: mdi:cellphone
-
 #### LIGHTS ####
 light.bulb_salon_1:
   friendly_name: "Żarówka salon 1"
 light.bulb_salon_2:
   friendly_name: "Żarówka salon 2"
-light.bulbs_salon:
-  friendly_name: "Żarówki"
-  icon: mdi:lightbulb-multiple
-
-#### UPS ####
-sensor.ups_status:
-  icon: mdi:server-security
 
 #### INTEL NUC/HA ####
 sensor.processor_use:
@@ -54,106 +34,175 @@ sensor.ha_version_installed:
   icon: mdi:package-down
 
 #### NETWORK DEVICES ####
+binary_sensor.lyra_54cf59_status:
+  friendly_name: "Lyra Trio [54CF59]"
+binary_sensor.lyra_54cf5d_status:
+  friendly_name: "Lyra Trio [54CF5D]"
 binary_sensor.raspberry_status:
-  icon: mdi:raspberry-pi
+  friendly_name: "Raspberry Pi 4B"
 binary_sensor.router_status:
   icon: mdi:router-network
   friendly_name: "Asus RT-AC86U"
-binary_sensor.lyra_54cf59_status:
-  icon: mdi:access-point-network
 binary_sensor.synology_status:
-  icon: mdi:nas
+  friendly_name: "Synology DS110j"
 binary_sensor.nuc_status:
-  icon: mdi:server
+  friendly_name: "Intel NUC 5CPYH"
 binary_sensor.dune_status:
-  icon: mdi:disc-player
+  friendly_name: "Dune BD Prime 3.0"
 binary_sensor.switch_status:
   icon: mdi:switch
 binary_sensor.stacjonarny_status:
-  icon: mdi:desktop-tower
+  friendly_name: "Komputer stacjonarny"
 binary_sensor.xbox_status:
-  icon: mdi:microsoft-xbox
+  friendly_name: "Xbox360"
 binary_sensor.playstation_status:
-  icon: mdi:sony-playstation
+  friendly_name: "PlayStation 4 Pro"
 binary_sensor.bravia_status:
-  icon: mdi:television
+  friendly_name: "Sony KD-55XF8596"
 binary_sensor.fingbox_status:
   icon: mdi:security-network
 binary_sensor.harmony_status:
-  icon: mdi:remote
+  friendly_name: "Logitech Harmony Hub"
 binary_sensor.iphone_8_plus_status:
-  icon: mdi:cellphone
+  friendly_name: "iPhone 8 Plus"
 binary_sensor.iphone_11_status:
-  icon: mdi:cellphone
+  friendly_name: "iPhone 11"
 binary_sensor.oneplus_status:
-  icon: mdi:cellphone
-binary_sensor.denon_status:
-  icon: mdi:audio-video
-binary_sensor.mibox_status:
-  icon: mdi:cast
-binary_sensor.firetv_status:
-  icon: mdi:cast
-binary_sensor.lumia_status:
-  icon: mdi:cellphone
+  friendly_name: "OnePlus 6"
 binary_sensor.ipad_status:
-  icon: mdi:tablet
+  friendly_name: "iPad Air"
 binary_sensor.kindle_keyboard_3g_status:
-  icon: mdi:cellphone-text
+  friendly_name: "Kindle Keyboard 3G"
 binary_sensor.kindle_8_status:
-  icon: mdi:cellphone-text
-binary_sensor.inkbook_status:
-  icon: mdi:cellphone-text
+  friendly_name: "Kindle 8"
 binary_sensor.modem_status:
   friendly_name: "ZTE GPON F660"
   icon: mdi:wan
-binary_sensor.brother_status:
-  icon: mdi:printer
-binary_sensor.dafang_status:
-  icon: mdi:cctv
-binary_sensor.wemos_d1_mini_1c91ea_status:
-  icon: mdi:developer-board
+binary_ensor.yeelight_yldd01yl_6707fc_status:
+  friendly_name: "Yeelight Lightstrip [6707FC]"
+binary_sensor.echo_plus_status:
+  friendly_name: "Amazon Echo Plus"
+binary_sensor.echo_dot_status:
+  friendly_name: "Amazon Echo Dot"
+binary_sensor.echo_show_status:
+  friendly_name: "Amazon Echo Show"
+binary_sensor.inkbook_status:
+  friendly_name: "inkBook Classic 2"
+binary_sensor.mibox_status:
+  friendly_name: "Xiaomi Mi Box 3"
+binary_sensor.firetv_status:
+  friendly_name: "Fire TV Stick 4K"
+binary_sensor.laptop_edyta_status:
+  friendly_name: "Dell Latitude 7290"
+binary_sensor.laptop_maciek_status:
+  friendly_name: "Dell Latitude 5400"
+binary_sensor.laptop_antek_status:
+  friendly_name: "Lenovo IdeaPad S145"
+binary_sensor.denon_status:
+  friendly_name: "Denon AVR-X2100W"
+binary_sensor.laptop_status:
+  friendly_name: "Lenovo IdeaPad Z510"
+binary_sensor.migateway_cc6f0b_status:
+  friendly_name: "Xiaomi Mi Gateway 2 [CC6F0B]"
+binary_sensor.migateway_a0f210_status:
+  friendly_name: "Xiaomi Mi Gateway 2 [A0F210]"
 binary_sensor.mihumidifier_status:
-  icon: mdi:air-humidifier
+  friendly_name: "Xiaomi Mi Humidifier CA1"
 binary_sensor.miairpurifier_status:
-  icon: mdi:air-purifier
+  friendly_name: "Xiaomi Mi Air Purifier 3H"
 binary_sensor.mifan_status:
-  icon: mdi:fan
-binary_sensor.shelly_motion_c67c2a_status:
-  icon: mdi:motion-sensor
-binary_sensor.yeelight_mjtd01syl_94e1f5_status:
-  icon: mdi:desk-lamp
-binary_sensor.yeelight_mjtd01syl_4fbaa2_status:
-  icon: mdi:desk-lamp
-binary_sensor.thermomix_status:
-  icon: mdi:pot-steam-outline
-binary_sensor.nettigo_air_monitor_status:
-  icon: mdi:weather-partly-rainy
+  friendly_name: "Xiaomi Mi Pedestal Fan 1X"
+binary_sensor.brother_status:
+  friendly_name: "Brother HL-L2340DW"
+binary_sensor.dafang_status:
+  friendly_name: "Xiaomi DaFang"
+binary_sensor.sonoff_basic_a786cc_status:
+  friendly_name: "Sonoff Basic [A786CC]"
+binary_sensor.sonoff_basic_067c81_status:
+  friendly_name: "Sonoff Basic [067C81]"
+binary_sensor.sonoff_basic_5dfba8_status:
+  friendly_name: "Sonoff Basic [5DFBA8]"
+binary_sensor.sonoff_s26_182475_status:
+  friendly_name: "Sonoff S26 [182475]"
+binary_sensor.blitzwolf_bw_shp6_2ad05a_status:
+  friendly_name: "BlitzWolf BW-SHP6 [2AD05A]"
+binary_sensor.blitzwolf_bw_shp6_173eb6_status:
+  friendly_name: "BlitzWolf BW-SHP6 [173EB6]"
+binary_sensor.blitzwolf_bw_shp6_17957c_status:
+  friendly_name: "BlitzWolf BW-SHP6 [17957C]"
+binary_sensor.blitzwolf_bw_shp6_3766eb_status:
+  friendly_name: "BlitzWolf BW-SHP6 [3766EB]"
+binary_sensor.blitzwolf_bw_shp6_ecf9ea_status:
+  friendly_name: "BlitzWolf BW-SHP6 [ECF9EA]"
+binary_sensor.blitzwolf_bw_shp6_ed007d_status:
+  friendly_name: "BlitzWolf BW-SHP6 [ED007D]"
+binary_sensor.shelly_plus_i4_09e6ac_status:
+  friendly_name: "Shelly Plus i4 [09E6AC]"
+binary_sensor.shelly_gas_c6811c_status:
+  friendly_name: "Shelly Gas [C6811C]"
+binary_sensor.shelly_valve_2a544_status:
+  friendly_name: "Shelly Valve [72A544]"
+binary_sensor.shelly_1_328900_status:
+  friendly_name: "Shelly 1 [328900]"
+binary_sensor.shelly_1l_4a262c9_status:
+  friendly_name: "Shelly 1L [4A262C]"
+binary_sensor.shelly_1_d42455_status:
+  friendly_name: "Shelly 1 [D42455]"
+binary_sensor.shelly_1l_ad365e_status:
+  friendly_name: "Shelly 1L [AD365E]"
+binary_sensor.shelly_1l_aacec4_status:
+  friendly_name: "Shelly 1L [AACEC4]"
+binary_sensor.shelly_1l_701559_status:
+  friendly_name: "Shelly 1L [701559]"
+binary_sensor.shelly_1l_acedf2_status:
+  friendly_name: "Shelly 1L [ACEDF2]"
+binary_sensor.shelly_1l_61c9fd_status:
+  friendly_name: "Shelly 1L [61C9FD]"
+binary_sensor.shelly_1l_aceb5f_status:
+  friendly_name: "Shelly 1L [ACEB5F]"
+binary_sensor.shelly_1l_ad1b60_status:
+  friendly_name: "Shelly 1L [AD1B60]"
+binary_sensor.shelly_2_5b2604_status:
+  friendly_name: "Shelly 2 [5B2604]"
 binary_sensor.shelly_duo_5f6fa1_status:
-  icon: mdi:lightbulb-outline
-
-#### FANS ####
-fan.air_purifier_salon:
-  friendly_name: "Oczyszczacz"
-  icon: mdi:air-purifier
-
-fan.pedestal_salon:
-  friendly_name: "Wentylator"
-
-sensor.aqi_info_salon:
-  icon: "mdi:home-import-outline"
-
-sensor.aqi_salon:
-  icon: "mdi:blur"
-  friendly_name: "AQI wewnętrzne"
+  friendly_name: "Shelly DUO [5F6FA1]"
+binary_sensor.shelly_duo_rgbw_d4ecd3_status:
+  friendly_name: "Shelly DUO RGBW [D4ECD3]"
+binary_sensor.shelly_vintage_d10472_status:
+  friendly_name: "Shelly Vintage [D10472]"
+binary_sensor.shelly_pro_4pm_d8b95c_status:
+  friendly_name: "Shelly Pro 4PM [D8B95C]"
+binary_sensor.shelly_plug_s_7aecf4_status:
+  friendly_name: "Shelly Plug S [7AECF4]"
+binary_sensor.shelly_ht_e00abd_status:
+  friendly_name: "Shelly H&T [E00ABD]"
+binary_sensor.shelly_flood_f2ad1d_status:
+  friendly_name: "Shelly Flood [F2AD1D]"
+binary_sensor.shelly_motion_c67c2a_status:
+  friendly_name: "Shelly Motion [C67C2A]"
+binary_sensor.wemos_d1_mini_1c91ea_status:
+  friendly_name: "Wemos D1 mini [1C91EA]"
+binary_sensor.nettigo_air_monitor_status:
+  friendly_name: "Nettigo Air Monitor"
+binary_sensor.yeelight_mjtd01syl_94e1f5_status:
+  friendly_name: "Yeelight Desk Lamp 1S [94E1F5]"
+binary_sensor.yeelight_mjtd01syl_4fbaa2_status:
+  friendly_name: "Yeelight Desk Lamp 1S [4FBAA2]"
+binary_sensor.yeelight_yldp06yl_7cafc6_status:
+  friendly_name: "Yeelight Color Bulb 2 [7CAFC6]"
+binary_sensor.yeelight_yldp06yl_84be7a_status:
+  friendly_name: "Yeelight Color Bulb 2 [84BE7A]"
+binary_sensor.yeelight_yldp02yl_b1b6aa_status:
+  friendly_name: "Yeelight Color Bulb [B1B6AA]"
+binary_sensor.yeelight_yldp02yl_f12026_status:
+  friendly_name: "Yeelight Color Bulb [F12026]"
+binary_sensor.yeelight_yldd01yl_860cfa_status:
+  friendly_name: "Yeelight Lightstrip [860CFA]"
 
 #### SWITCHES ####
 switch.stacjonarny:
   friendly_name: "Komputer"
   icon: mdi:desktop-tower
-
-#### XIAOMI SENSORS ####
-sensor.pressure_outdoor:
-  icon: mdi:gauge
 
 #### XIAOMI SWITCHES ####
 binary_sensor.switch_light_salon_1:
@@ -174,26 +223,10 @@ sensor.printer_page_counter:
 light.lamp_salon:
   friendly_name: "Lampa"
   icon: mdi:floor-lamp
-switch.cabinet_antek:
-  icon: mdi:locker
 switch.lamp_goscinny:
   icon: mdi:lamp
 switch.lamp_gabinet:
   icon: mdi:lamp
-script.sonoffs_upgrade:
-  friendly_name: "Aktualizacja Sonoff-ów"
-  icon: mdi:download-network
-
-switch.leds_antresola:
-  icon: mdi:led-strip-variant
-
-sensor.humidity_indoor:
-  friendly_name: "Wilgotność wewnętrzna"
-  icon: mdi:water-percent
-
-sensor.temperature_indoor:
-  friendly_name: "Temperatura wewnętrzna"
-  icon: mdi:thermometer
 
 #### SSL Sensor ####
 sensor.ssl_certificate_expiry:
@@ -223,20 +256,6 @@ sensor.computer_gabinet_energy_monthly:
 sensor.uv_index_home:
   unit_of_measurement: " "
 
-#### AIRLY ####
-sensor.air_quality_info_outdoor:
-  icon: "mdi:home-export-outline"
-
-sensor.pm10_outdoor:
-  icon: "mdi:blur"
-
-sensor.pm2_5_outdoor:
-  icon: "mdi:blur"
-
-#### DISHWASHER ####
-sensor.dishwasher_kuchnia:
-  icon: mdi:dishwasher
-
 sensor.hacs:
   icon: mdi:store
 
@@ -257,8 +276,38 @@ sensor.humidity_pralnia:
   friendly_name: "Wilgotność"
   icon: "hass:water-percent"
 
-sensor.pm25_salon:
-  icon: "mdi:molecule"
-
 switch.ceiling_fan_salon:
   assumed_state: false
+
+sensor.pm25_salon:
+  friendly_name: "PM25 wewnątrz"
+
+sensor.dishwasher_kuchnia:
+  friendly_name: "Zmywarka"
+
+sensor.air_quality_info_outdoor:
+  friendly_name: "Jakość powietrza zewnętrzenego"
+
+sensor.aqi_info_salon:
+  friendly_name: "Jakość powietrza wewnętrznego"
+
+sensor.aqi_attr_salon:
+  friendly_name: "Powietrze"
+
+binary_sensor.ups_status:
+  friendly_name: "Status"
+
+binary_sensor.windows:
+  friendly_name: "Okna"
+
+binary_sensor.windows_antresola:
+  friendly_name: "Okna"
+
+binary_sensor.motion_salon:
+  friendly_name: "Ruch"
+
+sensor.temperature_indoor:
+  friendly_name: "Temperatura wewnętrzna"
+
+sensor.humidity_indoor:
+  friendly_name: "Wilgotność wewnętrzna"

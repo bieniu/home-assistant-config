@@ -13,6 +13,7 @@
   switches:
     ceiling_fan_salon:
       unique_id: "ceiling_fan_salon"
+      friendly_name: "Wentylator"
       turn_on:
         service: remote.send_command
         entity_id: remote.salon

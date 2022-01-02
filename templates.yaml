@@ -1,0 +1,478 @@
+- sensor:
+    - name: pm25_salon
+      unique_id: "pm25_salon"
+      icon: "mdi:molecule"
+      device_class: "pm25"
+      unit_of_measurement: "µg/m³"
+      availability: "{{ states('sensor.xiaomi_mi_air_purifier_3h_pm25') != ('unavailable' or 'unknown') }}"
+      state: >-
+        {% if states('sensor.xiaomi_mi_air_purifier_3h_pm25') | int > 7 %}
+          {{ states('sensor.xiaomi_mi_air_purifier_3h_pm25') | int }}
+        {% else %}
+          {{ states('sensor.pm25_salon') | int(0) }}
+        {% endif %}
+
+    - name: dishwasher_kuchnia
+      unique_id: "dishwasher_kuchnia"
+      icon: "mdi:dishwasher"
+      availability: "{{ states('sensor.power_dishwasher_kuchnia_power') != ('unavailable' or 'unknown') }}"
+      state: >-
+        {% if states('sensor.power_dishwasher_kuchnia') | int > 1 %}
+          zmywanie
+        {% else %}
+          wyłączona
+        {% endif %}
+
+    - name: air_quality_info_outdoor
+      unique_id: "air_quality_info_outdoor"
+      icon: "mdi:home-export-outline"
+      availability: "{{ not is_state('sensor.pm25_outdoor', 'unavailable') }}"
+      state: >-
+        {% if states('sensor.pm25_outdoor') | int <= 25 %}
+          bardzo dobra
+        {% elif states('sensor.pm25_outdoor') | int <= 50 %}
+          dobra
+        {% elif states('sensor.pm25_outdoor') | int <= 100 %}
+          średnia
+        {% elif states('sensor.pm25_outdoor') | int <= 150 %}
+          zła
+        {% elif states('sensor.pm25_outdoor') | int > 200 %}
+          bardzo zła
+        {% endif %}
+
+    - name: aqi_info_salon
+      unique_id: "aqi_info_salon"
+      icon: "mdi:home-import-outline"
+      availability: "{{ states('sensor.pm25_salon') != ('unavailable' or 'unknown') }}"
+      state: >-
+        {% if states('sensor.pm25_salon') | int <= 25 %}
+          bardzo dobra
+        {% elif states('sensor.pm25_salon') | int <= 50 %}
+          dobra
+        {% elif states('sensor.pm25_salon') | int <= 100 %}
+          średnia
+        {% elif states('sensor.pm25_salon') | int <= 150 %}
+          zła
+        {% elif states('sensor.pm25_salon') | int > 200 %}
+          bardzo zła
+        {% endif %}
+
+    - name: aqi_attr_salon
+      unique_id: "aqi_attr_salon"
+      availability: "{{ states('sensor.pm25_salon') != ('unavailable' or 'unknown') }}"
+      state: >-
+        {% if states('sensor.pm25_salon') | int <= 25 %}
+          bardzo dobre
+        {% elif states('sensor.pm25_salon') | int <= 50 %}
+          dobre
+        {% elif states('sensor.pm25_salon') | int <= 100 %}
+          średnie
+        {% elif states('sensor.pm25_salon') | int <= 150 %}
+          złe
+        {% elif states('sensor.pm25_salon') | int > 200 %}
+          bardzo złe
+        {% endif %}
+
+    - name: ups_status
+      unique_id: "ups_status"
+      icon: "mdi:server-security"
+      availability: "{{ not is_state('sensor.cyberpower_dl650elcd_status_data', 'unavailable') }}"
+      state: >-
+        {% if is_state('sensor.cyberpower_dl650elcd_status_data', 'OL') %}
+          zasilanie sieciowe
+        {% elif is_state('sensor.cyberpower_dl650elcd_status_data', 'OL CHRG') or is_state('sensor.cyberpower_dl650elcd_status_data', 'OL CHRG LB')%}
+          ładowanie baterii
+        {% elif is_state('sensor.cyberpower_dl650elcd_status_data', 'OL DISCHRG') %}
+          zasilanie bateryjne
+        {% elif is_state('sensor.cyberpower_dl650elcd_status_data', 'OB DISCHRG') %}
+          zasilanie bateryjne
+        {% elif is_state('sensor.cyberpower_dl650elcd_status_data', 'LB') %}
+          słaba bateria
+        {% elif is_state('sensor.cyberpower_dl650elcd_status_data', 'SD') or is_state('sensor.cyberpower_dl650elcd_status_data', 'FSD OB DISCHRG') %}
+          wyłączanie
+        {% else %}
+          {{ states('sensor.cyberpower_dl650elcd_status_data') }}
+        {% endif %}
+
+- binary_sensor:
+    - name: people_at_home
+      unique_id: "people_at_home"
+      state: >-
+        {{ is_state('group.household', 'home')
+          or is_state('group.family', 'home')
+          or is_state('media_player.denon_salon', 'on')
+          or is_state('input_boolean.guests', 'on') }}
+
+    - name: windows
+      unique_id: "windows"
+      device_class: "window"
+      state: >-
+        {{ is_state('binary_sensor.window_antek', 'on')
+          or is_state('binary_sensor.window_antresola_1', 'on')
+          or is_state('binary_sensor.window_antresola_2', 'on')
+          or is_state('binary_sensor.window_gabinet', 'on')
+          or is_state('binary_sensor.window_kuchnia', 'on')
+          or is_state('binary_sensor.window_salon', 'on')
+          or is_state('binary_sensor.window_sypialnia', 'on')
+          or is_state('binary_sensor.balcony_door_pracownia', 'on')
+          or is_state('binary_sensor.balcony_door_sypialnia', 'on') }}
+
+    - name: windows_antresola
+      unique_id: "windows_antresola"
+      device_class: "window"
+      state: >-
+        {{ is_state('binary_sensor.window_antresola_1', 'on')
+            or is_state('binary_sensor.window_antresola_2', 'on') }}
+
+    - name: motion_salon
+      unique_id: "motion_salon"
+      device_class: "motion"
+      state: >-
+        {{ is_state('binary_sensor.motion_salon_1', 'on')
+          or is_state('binary_sensor.motion_salon_2', 'on') }}
+
+    - name: lyra_54cf59_status
+      unique_id: "lyra_54cf59_status"
+      icon: "mdi:access-point-network"
+      state: "{{ is_state('device_tracker.lyra_trio_54cf59', 'home') }}"
+
+    - name: lyra_54cf5d_status
+      unique_id: "lyra_54cf5d_status"
+      icon: "mdi:access-point-network"
+      state: "{{ is_state('device_tracker.lyra_trio_54cf5d', 'home') }}"
+
+    - name: synology_status
+      unique_id: "synology_status"
+      icon: mdi:nas
+      state: "{{ is_state('device_tracker.synology', 'home') }}"
+
+    - name: nuc_status
+      unique_id: "nuc_status"
+      icon: mdi:server
+      state: "{{ is_state('device_tracker.nuc', 'home') }}"
+
+    - name: raspberry_status
+      unique_id: "raspberry_status"
+      icon: mdi:raspberry-pi
+      state: "{{ is_state('device_tracker.raspberry', 'home') }}"
+
+    - name: stacjonarny_status
+      unique_id: "stacjonarny_status"
+      icon: mdi:desktop-tower
+      state: "{{ is_state('device_tracker.stacjonarny', 'home') }}"
+
+    - name: dune_status
+      unique_id: "dune_status"
+      icon: mdi:disc-player
+      state: "{{ is_state('device_tracker.dune', 'home') }}"
+
+    - name: bravia_status
+      unique_id: "bravia_status"
+      icon: mdi:television
+      state: "{{ is_state('device_tracker.bravia', 'home') }}"
+
+    - name: xbox_status
+      unique_id: "xbox_status"
+      icon: mdi:microsoft-xbox
+      state: "{{ is_state('device_tracker.xbox', 'home') }}"
+
+    - name: thermomix_status
+      unique_id: "thermomix_status"
+      icon: mdi:pot-steam-outline
+      state: "{{ is_state('device_tracker.thermomix_tm6', 'home') }}"
+
+    - name: playstation_status
+      unique_id: "playstation_status"
+      icon: mdi:sony-playstation
+      state: "{{ is_state('device_tracker.playstation', 'home') }}"
+
+    - name: harmony_status
+      unique_id: "harmony_status"
+      icon: mdi:remote
+      state: "{{ is_state('device_tracker.harmony', 'home') }}"
+
+    - name: oneplus_status
+      unique_id: "oneplus_status"
+      icon: mdi:cellphone
+      state: "{{ is_state('device_tracker.oneplus_6', 'home') }}"
+
+    - name: iphone_8_plus_status
+      unique_id: "iphone_8_plus_status"
+      icon: mdi:cellphone
+      state: "{{ is_state('device_tracker.iphone_8_plus', 'home') }}"
+
+    - name: iphone_11_status
+      unique_id: "iphone_11_status"
+      icon: mdi:cellphone
+      state: "{{ is_state('device_tracker.iphone_11', 'home') }}"
+
+    - name: ipad_status
+      unique_id: "ipad_status"
+      icon: mdi:tablet
+      state: "{{ is_state('device_tracker.ipad_air', 'home') }}"
+
+    - name: kindle_keyboard_3g_status
+      unique_id: "kindle_keyboard_3g_status"
+      icon: mdi:cellphone-text
+      state: "{{ is_state('device_tracker.kindle_keyboard_3g', 'home') }}"
+
+    - name: kindle_8_status
+      unique_id: "kindle_8_status"
+      icon: mdi:cellphone-text
+      state: "{{ is_state('device_tracker.kindle_8', 'home') }}"
+
+    - name: echo_plus_status
+      unique_id: "echo_plus_status"
+      icon: mdi:speaker
+      state: "{{ is_state('device_tracker.echo_plus', 'home') }}"
+
+    - name: echo_show_status
+      unique_id: "echo_show_status"
+      icon: mdi:speaker
+      state: "{{ is_state('device_tracker.echo_show', 'home') }}"
+
+    - name: echo_dot_status
+      unique_id: "echo_dot_status"
+      icon: mdi:speaker
+      state: "{{ is_state('device_tracker.echo_dot', 'home') }}"
+
+    - name: inkbook_status
+      unique_id: "inkbook_status"
+      state: "{{ is_state('device_tracker.inkbook_classic_2', 'home') }}"
+      icon: mdi:cellphone-text
+
+    - name: mibox_status
+      unique_id: "mibox_status"
+      icon: mdi:cast
+      state: "{{ is_state('device_tracker.mibox', 'home') }}"
+
+    - name: firetv_status
+      unique_id: "firetv_status"
+      icon: mdi:cast
+      state: "{{ is_state('device_tracker.firetv', 'home') }}"
+
+    - name: laptop_edyta_status
+      unique_id: "laptop_edyta_status"
+      state: "{{ is_state('device_tracker.dell_latitude_7290', 'home') }}"
+
+    - name: laptop_maciek_status
+      unique_id: "laptop_maciek_status"
+      state: "{{ is_state('device_tracker.dell_latitude_5400', 'home') }}"
+
+    - name: laptop_antek_status
+      unique_id: "laptop_antek_status"
+      state: "{{ is_state('device_tracker.lenovo_ideapad_s145', 'home') }}"
+
+    - name: denon_status
+      unique_id: "denon_status"
+      icon: mdi:audio-video
+      state: "{{ is_state('device_tracker.denon', 'home') }}"
+
+    - name: laptop_status
+      unique_id: "laptop_status"
+      state: "{{ is_state('device_tracker.lenovo_ideapad_z510', 'home') }}"
+
+    - name: migateway_cc6f0b_status
+      unique_id: "migateway_cc6f0b_status"
+      state: "{{ is_state('device_tracker.migateway_cc6f0b', 'home') }}"
+
+    - name: migateway_a0f210_status
+      unique_id: "migateway_a0f210_status"
+      state: "{{ is_state('device_tracker.migateway_a0f210', 'home') }}"
+
+    - name: mihumidifier_status
+      unique_id: "mihumidifier_status"
+      state: "{{ is_state('device_tracker.mihumidifier', 'home') }}"
+      icon: mdi:air-humidifier
+
+    - name: miairpurifier_status
+      unique_id: "miairpurifier_status"
+      state: "{{ is_state('device_tracker.miairpurifier', 'home') }}"
+      icon: mdi:air-purifier
+
+    - name: mifan_status
+      unique_id: "mifan_status"
+      state: "{{ is_state('device_tracker.mifan', 'home') }}"
+      icon: mdi:fan
+
+    - name: brother_status
+      unique_id: "brother_status"
+      state: "{{ is_state('device_tracker.brother', 'home') }}"
+      icon: mdi:printer
+
+    - name: dafang_status
+      unique_id: "dafang_status"
+      icon: mdi:cctv
+      state: "{{ is_state('device_tracker.dafang', 'home') }}"
+
+    - name: sonoff_basic_a786cc_status
+      unique_id: "sonoff_basic_a786cc_status"
+      state: "{{ is_state('device_tracker.sonoff_basic_a786cc', 'home') }}"
+
+    - name: sonoff_basic_067c81_status
+      unique_id: "sonoff_basic_067c81_status"
+      state: "{{ is_state('device_tracker.sonoff_basic_067c81', 'home') }}"
+
+    - name: sonoff_basic_5dfba8_status
+      unique_id: "sonoff_basic_5dfba8_status"
+      state: "{{ is_state('device_tracker.sonoff_basic_5dfba8', 'home') }}"
+
+    - name: sonoff_s26_182475_status
+      unique_id: "sonoff_s26_182475_status"
+      state: "{{ is_state('device_tracker.sonoff_s26_182475', 'home') }}"
+
+    - name: blitzwolf_bw_shp6_2ad05a_status
+      unique_id: "blitzwolf_bw_shp6_2ad05a_status"
+      state: "{{ is_state('device_tracker.blitzwolf_bw_shp6_2ad05a', 'home') }}"
+
+    - name: blitzwolf_bw_shp6_173eb6_status
+      unique_id: "blitzwolf_bw_shp6_173eb6_status"
+      state: "{{ is_state('device_tracker.blitzwolf_bw_shp6_173eb6', 'home') }}"
+
+    - name: blitzwolf_bw_shp6_17957c_status
+      unique_id: "blitzwolf_bw_shp6_17957c_status"
+      state: "{{ is_state('device_tracker.blitzwolf_bw_shp6_17957c', 'home') }}"
+
+    - name: blitzwolf_bw_shp6_3766eb_status
+      unique_id: "blitzwolf_bw_shp6_3766eb_status"
+      state: "{{ is_state('device_tracker.blitzwolf_bw_shp6_3766eb', 'home') }}"
+
+    - name: blitzwolf_bw_shp6_ecf9ea_status
+      unique_id: "blitzwolf_bw_shp6_ecf9ea_status"
+      state: "{{ is_state('device_tracker.blitzwolf_bw_shp6_ecf9ea', 'home') }}"
+
+    - name: blitzwolf_bw_shp6_ed007d_status
+      unique_id: "blitzwolf_bw_shp6_ed007d_status"
+      state: "{{ is_state('device_tracker.blitzwolf_bw_shp6_ed007d', 'home') }}"
+
+    - name: shelly_plus_i4_09e6ac_status
+      unique_id: "shelly_plus_i4_09e6ac_status"
+      state: "{{ is_state('device_tracker.shelly_plus_i4_09e6ac', 'home') }}"
+
+    - name: shelly_gas_c6811c_status
+      unique_id: "shelly_gas_c6811c_status"
+      state: "{{ is_state('device_tracker.shelly_gas_c6811c', 'home') }}"
+
+    - name: shelly_valve_2a544_status
+      unique_id: "shelly_valve_2a544_status"
+      state: "{{ is_state('device_tracker.shelly_valve_72a544', 'home') }}"
+
+    - name: shelly_1_328900_status
+      unique_id: "shelly_1_328900_status"
+      state: "{{ is_state('device_tracker.shelly_1_328900', 'home') }}"
+
+    - name: shelly_1l_4a262c9_status
+      unique_id: "shelly_1l_4a262c9_status"
+      state: "{{ is_state('device_tracker.shelly1l_4a262c9', 'home') }}"
+
+    - name: shelly_1_d42455_status
+      unique_id: "shelly_1_d42455_status"
+      state: "{{ is_state('device_tracker.shelly_1_d42455', 'home') }}"
+
+    - name: shelly_1l_ad365e_status
+      unique_id: "shelly_1l_ad365e_status"
+      state: "{{ is_state('device_tracker.shelly_1l_ad365e', 'home') }}"
+
+    - name: shelly_1l_aacec4_status
+      unique_id: "shelly_1l_aacec4_status"
+      state: "{{ is_state('device_tracker.shelly_1l_aacec4', 'home') }}"
+
+    - name: shelly_1l_701559_status
+      unique_id: "shelly_1l_701559_status"
+      state: "{{ is_state('device_tracker.shelly_1l_701559', 'home') }}"
+
+    - name: shelly_1l_acedf2_status
+      unique_id: "shelly_1l_acedf2_status"
+      state: "{{ is_state('device_tracker.shelly_1l_acedf2', 'home') }}"
+
+    - name: shelly_1l_61c9fd_status
+      unique_id: "shelly_1l_61c9fd_status"
+      state: "{{ is_state('device_tracker.shelly_1l_61c9fd', 'home') }}"
+
+    - name: shelly_1l_aceb5f_status
+      unique_id: "shelly_1l_aceb5f_status"
+      state: "{{ is_state('device_tracker.shelly_1l_aceb5f', 'home') }}"
+
+    - name: shelly_1l_ad1b60_status
+      unique_id: "shelly_1l_ad1b60_status"
+      state: "{{ is_state('device_tracker.shelly_1l_ad1b60', 'home') }}"
+
+    - name: shelly_2_5b2604_status
+      unique_id: "shelly_2_5b2604_status"
+      state: "{{ is_state('device_tracker.shelly_2_5b2604', 'home') }}"
+
+    - name: shelly_duo_5f6fa1_status
+      unique_id: "shelly_duo_5f6fa1_status"
+      icon: mdi:lightbulb-outline
+      state: "{{ is_state('device_tracker.shelly_duo_5f6fa1', 'home') }}"
+
+    - name: shelly_duo_rgbw_d4ecd3_status
+      unique_id: "shelly_duo_rgbw_d4ecd3_status"
+      state: "{{ is_state('device_tracker.shelly_duo_rgbw_d4ecd3', 'home') }}"
+
+    - name: shelly_vintage_d10472_status
+      unique_id: "shelly_vintage_d10472_status"
+      state: "{{ is_state('device_tracker.shelly_vintage_d10472', 'home') }}"
+
+    - name: shelly_pro_4pm_d8b95c_status
+      unique_id: "shelly_pro_4pm_d8b95c_status"
+      state: "{{ is_state('device_tracker.shelly_pro_4pm_d8b95c', 'home') }}"
+
+    - name: shelly_plug_s_7aecf4_status
+      unique_id: "shelly_plug_s_7aecf4_status"
+      state: "{{ is_state('device_tracker.shelly_plug_s_7aecf4', 'home') }}"
+
+    - name: shelly_ht_e00abd_status
+      unique_id: "shelly_ht_e00abd_status"
+      state: "{{ is_state('device_tracker.shelly_ht_e00abd', 'home') }}"
+
+    - name: shelly_flood_f2ad1d_status
+      unique_id: "shelly_flood_f2ad1d_status"
+      state: "{{ is_state('device_tracker.shelly_flood_f2ad1d', 'home') }}"
+
+    - name: shelly_motion_c67c2a_status
+      unique_id: "shelly_motion_c67c2a_status"
+      icon: mdi:motion-sensor
+      state: "{{ is_state('device_tracker.shelly_motion_c67c2a', 'home') }}"
+
+    - name: wemos_d1_mini_1c91ea_status
+      unique_id: "wemos_d1_mini_1c91ea_status"
+      icon: mdi:developer-board
+      state: "{{ is_state('device_tracker.wemos_d1_mini_1c91ea', 'home') }}"
+
+    - name: nettigo_air_monitor_status
+      unique_id: "nettigo_air_monitor_status"
+      icon: mdi:weather-partly-rainy
+      state: "{{ is_state('device_tracker.nettigo_air_monitor', 'home') }}"
+
+    - name: yeelight_mjtd01syl_94e1f5_status
+      unique_id: "yeelight_mjtd01syl_94e1f5_status"
+      state: "{{ is_state('device_tracker.yeelight_mjtd01syl_94e1f5', 'home') }}"
+
+    - name: yeelight_mjtd01syl_4fbaa2_status
+      unique_id: "yeelight_mjtd01syl_4fbaa2_status"
+      state: "{{ is_state('device_tracker.yeelight_mjtd01syl_4fbaa2', 'home') }}"
+
+    - name: yeelight_yldp06yl_7cafc6_status
+      unique_id: "yeelight_yldp06yl_7cafc6_status"
+      state: "{{ is_state('device_tracker.yeelight_yldp06yl_7cafc6', 'home') }}"
+
+    - name: yeelight_yldp06yl_84be7a_status
+      unique_id: "yeelight_yldp06yl_84be7a_status"
+      state: "{{ is_state('device_tracker.yeelight_yldp06yl_84be7a', 'home') }}"
+
+    - name: yeelight_yldp02yl_b1b6aa_status
+      unique_id: "yeelight_yldp02yl_b1b6aa_status"
+      state: "{{ is_state('device_tracker.yeelight_yldp02yl_b1b6aa', 'home') }}"
+
+    - name: yeelight_yldp02yl_f12026_status
+      unique_id: "yeelight_yldp02yl_f12026_status"
+      state: "{{ is_state('device_tracker.yeelight_yldp02yl_f12026', 'home') }}"
+
+    - name: yeelight_yldd01yl_860cfa_status
+      unique_id: "yeelight_yldd01yl_860cfa_status"
+      state: "{{ is_state('device_tracker.yeelight_yldd01yl_860cfa', 'home') }}"
+
+    - name: yeelight_yldd01yl_6707fc_status
+      unique_id: "yeelight_yldd01yl_6707fc_status"
+      state: "{{ is_state('device_tracker.yeelight_yldd01yl_6707fc', 'home') }}"

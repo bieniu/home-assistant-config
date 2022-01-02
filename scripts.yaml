@@ -250,7 +250,7 @@ alexa_goodnight:
     - remote.salon
     - humidifier.xiaomi_salon
     - light.leds_salon
-    - switch.bulbs_salon
+    - light.ceiling_salon
     - light.desk_lamp_antek
     - light.ceiling_gabinet
     - light.ceiling_kuchnia

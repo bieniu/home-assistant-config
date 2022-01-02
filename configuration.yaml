@@ -98,5 +98,7 @@ sensor: !include sensors.yaml
 
 switch: !include switches.yaml
 
+template: !include templates.yaml
+
 shell_command:
   restart_shelly_devices: /config/scripts/restart_shelly_devices.sh

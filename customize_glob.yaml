@@ -75,6 +75,8 @@
   icon: mdi:thermostat
 "binary_sensor.shelly_gas_*_status":
   icon: mdi:gas-cylinder
+"binary_sensor.yeelight_mjtd01syl_*_status":
+  icon: mdi:desk-lamp
 
 #### NETWORK DEVICES ####
 "binary_sensor.yeelight_yldd*_status":
@@ -85,9 +87,6 @@
 
 "binary_sensor.*_status":
   device_class: connectivity
-
-"binary_sensor.echo_*_status":
-  icon: mdi:speaker
 
 "binary_sensor.laptop*_status":
   icon: mdi:laptop
