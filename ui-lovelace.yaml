@@ -84,7 +84,13 @@ views:
               - entity: binary_sensor.motion_przedpokoj
                 secondary_info: last-changed
               - light.leds_przedpokoj
-              - light.ceiling_przedpokoj
+              - light.ceiling_przedpokoj_1
+          - type: entities
+            title: "Przedpokój mały"
+            show_header_toggle: false
+            state_color: true
+            entities:
+              - light.ceiling_przedpokoj_2
           # - type: vertical-stack
           #   in_card: true
           #   cards:
@@ -164,11 +170,9 @@ views:
                 secondary_info:
                   entity: sensor.aqi_attr_salon
                   prefix: "powietrze: "
-              # - fan.pedestal_salon
               - light.ceiling_salon
               - light.leds_salon
               - light.lamp_salon
-              - switch.christmas_tree_salon
               - input_select.light_scenes_salon
               - input_select.salon_harmony
               - type: custom:mini-media-player
@@ -376,6 +380,7 @@ views:
                 row:
                   entity: climate.thermostat_antresola
               - light.leds_schody
+              - light.scone_schody
               - light.gateway_antresola
       - type: vertical-stack
         in_card: true
@@ -606,12 +611,6 @@ views:
                     entities:
                       - sensor.asuswrt_download_speed
                   - type: custom:mini-graph-card
-                    card_mod:
-                      style: |
-                        ha-card.flex {
-                          padding-top: 0px;
-                          padding-bottom: 0px;
-                        }
                     <<: *GRAPH_IN_CARD
                     line_color: "#ffce57"
                     decimals: 1
@@ -837,20 +836,16 @@ views:
           - binary_sensor.blitzwolf_bw_shp6_3766eb_status
           - binary_sensor.blitzwolf_bw_shp6_17957c_status
           - binary_sensor.blitzwolf_bw_shp6_173eb6_status
-          - binary_sensor.shelly_1_328900_status
-          - binary_sensor.shelly_1_d42455_status
-          - binary_sensor.shelly_1l_701559_status
-          - binary_sensor.shelly_1l_aceb5f_status
-          - binary_sensor.shelly_1l_ad1b60_status
+          - binary_sensor.shelly_1l_253d92_status
           - binary_sensor.shelly_1l_61c9fd_status
-          - binary_sensor.shelly_1l_ad365e_status
+          - binary_sensor.shelly_1l_701559_status
+          - binary_sensor.shelly_1l_aacec4_status 
+          - binary_sensor.shelly_1l_aceb5f_status
           - binary_sensor.shelly_1l_acedf2_status
-          - binary_sensor.shelly_1l_aacec4_status
-          - binary_sensor.shelly_1l_4a262c9_status
-          - binary_sensor.shelly_2_5b2604_status
-          - binary_sensor.shelly_pro_4pm_d8b95c_status
+          - binary_sensor.shelly_1l_ad365e_status
+          - binary_sensor.shelly_25_77dbe5_status
           - binary_sensor.shelly_plug_s_7aecf4_status
-          - binary_sensor.shelly_plus_i4_09e6ac_status
+          - binary_sensor.shelly_plus_1pm_b22864_status
   - id: energy
     icon: mdi:power-plug
     title: "Energia"
@@ -899,7 +894,7 @@ views:
                 line_color: "#36a2eb"
                 lower_bound: 0
       - type: custom:battery-state-card
-        name: "Baterie sensorów ruchu"
+        title: "Baterie sensorów ruchu"
         tap_action:
           action: more-info
         color_thresholds:
@@ -924,7 +919,7 @@ views:
           - sensor.battery_xiaomi_motion_aq2_sypialnia
           - sensor.battery_xiaomi_motion_aq2_lazienka
       - type: custom:battery-state-card
-        name: "Baterie sensorów temperatury"
+        title: "Baterie sensorów temperatury"
         tap_action:
           action: more-info
         color_thresholds:
@@ -945,7 +940,7 @@ views:
           - sensor.battery_xiaomi_ht_sypialnia
           - sensor.battery_xiaomi_ht_lazienka
       - type: custom:battery-state-card
-        name: "Baterie sensorów wody"
+        title: "Baterie sensorów wody"
         tap_action:
           action: more-info
         color_thresholds:
@@ -958,7 +953,7 @@ views:
         entities:
           - sensor.shelly_flood_f2ad1d_battery
       - type: custom:battery-state-card
-        name: "Baterie termostatów"
+        title: "Baterie termostatów"
         tap_action:
           action: more-info
         color_thresholds:
@@ -978,7 +973,7 @@ views:
           - sensor.battery_thermostat_lazienka
           - sensor.battery_thermostat_pracownia
       - type: custom:battery-state-card
-        name: "Baterie sensorów okien/drzwi"
+        title: "Baterie sensorów okien/drzwi"
         tap_action:
           action: more-info
         color_thresholds:
@@ -999,7 +994,7 @@ views:
           - sensor.battery_xiaomi_magnet_window_sypialnia
           - sensor.battery_xiaomi_magnet_door_sypialnia
       - type: custom:battery-state-card
-        name: "Baterie przełączników"
+        title: "Baterie przełączników"
         tap_action:
           action: more-info
         color_thresholds:

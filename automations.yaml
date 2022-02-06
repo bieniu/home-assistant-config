@@ -280,16 +280,15 @@
   trigger:
     - platform: state
       entity_id:
-        - binary_sensor.shelly_1_328900_firmware_update
-        - binary_sensor.shelly_1_d42455_firmware_update
+        - binary_sensor.shelly_1l_253d92_firmware_update
         - binary_sensor.shelly_1l_61c9fd_firmware_update
         - binary_sensor.shelly_1l_701559_firmware_update
         - binary_sensor.shelly_1l_aacec4_firmware_update
         - binary_sensor.shelly_1l_aceb5f_firmware_update
         - binary_sensor.shelly_1l_acedf2_firmware_update
-        - binary_sensor.shelly_1l_ad1b60_firmware_update
         - binary_sensor.shelly_1l_ad365e_firmware_update
-        - binary_sensor.shelly_2_5b2604_firmware_update
+        - binary_sensor.shelly_1pm_5fd486_firmware_update
+        - binary_sensor.shelly_25_77dbe5_firmware_update
         - binary_sensor.shelly_duo_5f6fa1_firmware_update
         - binary_sensor.shelly_duo_rgbw_d4ecd3_firmware_update
         - binary_sensor.shelly_flood_f2ad1d_firmware_update
@@ -299,7 +298,8 @@
         - binary_sensor.shelly_plug_s_7aecf4_firmware_update
         - binary_sensor.shelly_valve_72a544_firmware_update
         - binary_sensor.shelly_vintage_d10472_firmware_update
-        - binary_sensor.shellypro4pm_d8b95c_firmware_update
+        - binary_sensor.shelly_plus_1pm_948ff8_firmware_update
+        - binary_sensor.shelly_plus_1pm_b22864_firmware_update
       from: "off"
       to: "on"
   action:
@@ -465,7 +465,7 @@
     minutes: "/10"
     seconds: 0
   variables:
-    domains: ["light", "switch", "sensor", "fan", "binary_sensor", "media_player", "humidifier"]
+    domains: ["climate", "light", "switch", "sensor", "fan", "binary_sensor", "media_player", "humidifier"]
     rooms: ["przedpokoj", "goscinny", "pracownia", "kuchnia", "salon", "schody", "antresola", "gabinet", "pralnia", "antek", "sypialnia", "lazienka", "balkon", "indoor", "outdoor"]
     ignored: ["media_player.dune_salon", "media_player.mibox_goscinny"]
   condition: >
@@ -688,8 +688,9 @@
     - platform: state
       entity_id:
         - binary_sensor.shelly_plug_s_7aecf4_overpower
-        - binary_sensor.shelly_2_5b2604_overpower_0
-        - binary_sensor.shelly_2_5b2604_overpower_1
+        - binary_sensor.shelly_25_77dbe5_overpower_0
+        - binary_sensor.shelly_25_77dbe5_overpower_1
+        - binary_sensor.shelly_1pm_5fd486_overpower
       from: "off"
       to: "on"
       for:
@@ -730,13 +731,16 @@
   trigger:
     - platform: state
       entity_id:
+        - binary_sensor.shelly_1l_253d92_overtemperature
         - binary_sensor.shelly_1l_61c9fd_overtemperature
         - binary_sensor.shelly_1l_701559_overtemperature
         - binary_sensor.shelly_1l_aacec4_overtemperature
         - binary_sensor.shelly_1l_aceb5f_overtemperature
         - binary_sensor.shelly_1l_acedf2_overtemperature
-        - binary_sensor.shelly_1l_ad1b60_overtemperature
         - binary_sensor.shelly_1l_ad365e_overtemperature
+        - binary_sensor.shelly_1l_e361a5_overtemperature
+        - binary_sensor.shelly_1pm_5fd486_overtemperature
+        - binary_sensor.shelly_25_77dbe5_overtemperature
         - binary_sensor.shelly_plug_s_7aecf4_overtemperature
       from: "off"
       to: "on"
@@ -1052,16 +1056,6 @@
   action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.away_mode
-    # - condition: and
-    #   conditions:
-    #     - condition: state
-    #       entity_id: input_boolean.heating_season
-    #       state: "off"
-    #     - condition: numeric_state
-    #       entity_id: sensor.temperature_salon
-    #       above: 26
-    # - service: fan.turn_on
-    #   entity_id: fan.pedestal_salon
 
 ##################################################################################################
 
@@ -1171,27 +1165,6 @@
         temperature: "{{ states('input_select.heating_temp_night') }}"
     - service: input_boolean.turn_on
       entity_id: input_boolean.heating_salon_kuchnia_night
-
-# - id: climate_turn_off_fan
-#   alias: "Climate Turn Off Fan"
-#   description: "wyłącz wentylator po wyłączeniu telewizora"
-#   trigger:
-#     platform: state
-#     entity_id: media_player.denon_salon
-#     to: "off"
-#   condition:
-#     - condition: state
-#       entity_id: fan.pedestal_salon
-#       state: "on"
-#     - condition: state
-#       entity_id: input_boolean.heating_season
-#       state: "off"
-#     - condition: time
-#       after: "22:00:00"
-#       before: "05:00:00"
-#   action:
-#     service: fan.turn_off
-#     entity_id: fan.pedestal_salon
 
 - id: heating_away_mode
   alias: "Heating Away Mode"
@@ -1358,7 +1331,7 @@
   trigger:
     platform: numeric_state
     entity_id: sensor.pm25_salon
-    above: 40
+    above: 50
     for:
       minutes: 2
   condition:
@@ -1382,7 +1355,7 @@
   trigger:
     platform: numeric_state
     entity_id: sensor.pm25_salon
-    below: 40
+    below: 50
     for:
       minutes: 2
   action:
@@ -1573,66 +1546,6 @@
     service: script.devices_away_mode
 
 ## SALON ##
-# - id: light_restart_bulbs_salon_when_unavailable
-#   alias: "Light Restart Bulbs Salon When Unavailable"
-#   description: "zrestartuj żarówki w salonie gdy staną się niedostępne"
-#   trigger:
-#     - platform: state
-#       entity_id: light.bulb_salon_1
-#       to: "unavailable"
-#       for:
-#         minutes: 5
-#     - platform: state
-#       entity_id: light.bulb_salon_2
-#       to: "unavailable"
-#       for:
-#         minutes: 5
-#   action:
-#     - service: switch.turn_off
-#       entity_id: switch.bulbs_salon
-#     - delay: "00:00:05"
-#     - service: switch.turn_on
-#       entity_id: switch.bulbs_salon
-#     - condition: template
-#       value_template: "{{ trigger.from_state.state == 'off' }}"
-#     - wait_template: "{{ is_state('light.bulb_salon_1', 'on') and is_state('light.bulb_salon_2', 'on') }}"
-#     - service: light.turn_off
-#       entity_id: light.bulbs_salon
-
-- id: light_turn_on_christmas_tree
-  alias: "Light Turn On Christmas Tree"
-  trigger:
-    - platform: time
-      at: "08:00:00"
-    - platform: state
-      entity_id: input_boolean.away_mode
-      from: "on"
-      to: "off"
-  condition:
-    - condition: state
-      entity_id: input_boolean.away_mode
-      state: "off"
-    - condition: time
-      after: "08:00:00"
-      before: "23:59:59"
-  action:
-    service: switch.turn_on
-    entity_id: switch.christmas_tree_salon
-
-- id: light_turn_off_christmas_tree
-  alias: "Light Turn Off Christmas Tree"
-  trigger:
-    - platform: time
-      at: "00:00:00"
-    - platform: state
-      entity_id: input_boolean.away_mode
-      from: "off"
-      to: "on"
-  action:
-    service: switch.turn_off
-    entity_id: switch.christmas_tree_salon
-
-
 - id: devices_turn_off_in_salon_when_no_motion_and_after_midnight
   alias: "Devices Turn Off In Salon When No Motion And After Midnight"
   description: "wyłącz urządzenia w salonie jeśli nie ma ruchu przez 30 min i jest po północy"
@@ -1699,12 +1612,10 @@
   trigger:
     platform: device
     domain: mqtt
-    device_id: 318c94925312616beaa81508d6f93139
+    device_id: 52237db1203926d98cf2fa58e2ec8d6c
     type: button_short_press
     subtype: button_1
-    discovery_id: shellyswitch-5B2604-input-0 button_short_press
-  condition:
-    "{{ (now() | as_timestamp) - (states('sensor.home_assistant_last_restart') | as_timestamp) > 10 }}"
+    discovery_id: shellyswitch25-C45BBE77DBE5-input-0 button_short_press
   action:
     service: light.toggle
     entity_id: light.ceiling_salon
@@ -1775,7 +1686,7 @@
           after: sunset
         - condition: sun
           before: sunrise
-          before_offset: "+00:30:00"
+          before_offset: "+00:10:00"
   action:
     - service: light.turn_on
       entity_id: light.lamp_salon
@@ -1920,7 +1831,7 @@
           after: sunset
         - condition: sun
           before: sunrise
-          before_offset: "+00:30:00"
+          before_offset: "+00:10:00"
   action:
     - service: light.turn_on
       entity_id: light.ceiling_kuchnia
@@ -1974,7 +1885,7 @@
           after: sunset
         - condition: sun
           before: sunrise
-          before_offset: "+00:30:00"
+          before_offset: "+00:10:00"
   action:
     - service: light.turn_on
       entity_id: light.gateway_antresola
@@ -2036,7 +1947,7 @@
           after: sunset
         - condition: sun
           before: sunrise
-          before_offset: "+00:30:00"
+          before_offset: "+00:10:00"
   action:
     - service: light.turn_on
       entity_id: light.lightstrip_sypialnia
@@ -2065,7 +1976,8 @@
   condition:
     - condition: state
       entity_id:
-        - light.ceiling_przedpokoj
+        - light.ceiling_przedpokoj_1
+        - light.ceiling_przedpokoj_2
         - light.leds_przedpokoj
         - light.ceiling_salon
         - light.leds_salon
@@ -2079,7 +1991,7 @@
           after: sunset
         - condition: sun
           before: sunrise
-          before_offset: "+00:30:00"
+          before_offset: "+00:10:00"
   action:
     - service: light.turn_on
       entity_id: light.leds_przedpokoj
@@ -2108,13 +2020,17 @@
         entity_id: light.leds_przedpokoj
         state: "on"
       - condition: state
-        entity_id: light.ceiling_przedpokoj
+        entity_id: light.ceiling_przedpokoj_1
+        state: "on"
+      - condition: state
+        entity_id: light.ceiling_przedpokoj_2
         state: "on"
   action:
     service: light.turn_off
     entity_id:
       - light.leds_przedpokoj
-      - light.ceiling_przedpokoj
+      - light.ceiling_przedpokoj_1
+      - light.ceiling_przedpokoj_2
 
 ## POKÓJ ANTKA ##
 - id: light_toggle_ceiling_antek
@@ -2126,8 +2042,6 @@
     type: button_short_press
     subtype: button_1
     discovery_id: shelly1l-84CCA8AD365E-input-0 button_short_press
-  condition:
-    "{{ (now() | as_timestamp) - (states('sensor.home_assistant_last_restart') | as_timestamp) > 10 }}"
   action:
     service: light.toggle
     entity_id: light.ceiling_antek
@@ -2155,11 +2069,15 @@
         - condition: state
           entity_id: light.ceiling_antek
           state: "on"
+        - condition: state
+          entity_id: light.lightstrip_antek
+          state: "on"
   action:
     service: light.turn_off
     entity_id:
       - light.desk_lamp_antek
       - light.ceiling_antek
+      - light.lightstrip_antek
 
 - id: light_turn_on_antek_leds_and_cabinet_when_dark_and_motion
   alias: "Light Turn On Antek LEDs And Cabinet When Dark And Motion"
@@ -2186,7 +2104,7 @@
           after: sunset
         - condition: sun
           before: sunrise
-          before_offset: "+00:30:00"
+          before_offset: "+00:10:00"
   action:
     - service: script.light_turn_on_antek_leds
     - wait_for_trigger:
@@ -2320,7 +2238,7 @@
           after: sunset
         - condition: sun
           before: sunrise
-          before_offset: "+00:30:00"
+          before_offset: "+00:10:00"
   action:
     - service: switch.turn_on
       entity_id: switch.lamp_pracownia
@@ -2329,15 +2247,12 @@
         entity_id: binary_sensor.motion_pracownia
         from: "on"
         to: "off"
-    - condition: state
-      entity_id: binary_sensor.laptop_edyta_status
-      state: "off"
     - service: switch.turn_off
       entity_id: switch.lamp_pracownia
 
 #### GABINET ####
-- id: light_toggle_ceiling_light
-  alias: "Light Toggle Ceiling Light"
+- id: light_toggle_gabinet_ceiling_light_
+  alias: "Light Toggle Gabinet Ceiling Light"
   description: "włącz/wyłącz oświetlenie sufitowe"
   trigger:
     platform: device
@@ -2346,27 +2261,23 @@
     type: button_short_press
     subtype: button_1
     discovery_id: shelly1l-483FDA701559-input-0 button_short_press
-  condition:
-    "{{ (now() | as_timestamp) - (states('sensor.home_assistant_last_restart') | as_timestamp) > 10 }}"
   action:
     service: light.toggle
     entity_id: light.ceiling_gabinet
 
-- id: light_toggle_desk_lamp
-  alias: "Light Toggle Desk Lamp"
-  description: "włącz/wyłącz lampę biurkową"
+- id: light_toggle_gabinet_lamp
+  alias: "Light Toggle Gabinet Lamp"
+  description: "włącz/wyłącz lampę"
   trigger:
     platform: device
     domain: mqtt
     device_id: 8b0d2dd5099fa8d8664ab14cd4a30f87
-    type: button_short_press
+    type: button_long_press
     subtype: button_1
     discovery_id: shelly1l-483FDA701559-input-0 button_long_press
-  condition:
-    "{{ (now() | as_timestamp) - (states('sensor.home_assistant_last_restart') | as_timestamp) > 10 }}"
   action:
     service: light.toggle
-    entity_id: light.desk_lamp_gabinet
+    entity_id: light.lamp_gabinet
 
 - id: light_turn_on_gabinet_lamp_when_dark_and_motion
   alias: "Light Turn On Gabinet Lamp When Dark And Motion"
@@ -2396,7 +2307,7 @@
           after: sunset
         - condition: sun
           before: sunrise
-          before_offset: "+00:30:00"
+          before_offset: "+00:10:00"
   action:
     - service: light.turn_on
       entity_id: light.lamp_gabinet
@@ -2426,16 +2337,41 @@
       minutes: 20
   condition:
     - condition: state
-      entity_id: light.ceiling_gabinet
-      state: "on"
-    - condition: state
       entity_id: switch.stacjonarny
       state: "off"
+    - condition: or
+      conditions:
+        - condition: state
+          entity_id: light.ceiling_gabinet
+          state: "on"
+        - condition: state
+          entity_id: light.lamp_gabinet
+          state: "on"
+        - condition: state
+          entity_id: light.desk_lamp_gabinet
+          state: "on"
   action:
     service: light.turn_off
-    entity_id: light.ceiling_gabinet
+    entity_id:
+      - light.ceiling_gabinet
+      - light.lamp_gabinet
+      - light.desk_lamp_gabinet
 
 #### SCHODY ####
+- id: light_toggle_schody_leds
+  alias: "Light Toggle Schody LEDs"
+  description: "włącz/wyłącz LEDy na schodach"
+  trigger:
+    platform: device
+    domain: mqtt
+    device_id: f005f9684c07d6ff46619c42b448bf38
+    type: button_short_press
+    subtype: button_2
+    discovery_id: shelly1l-98CDAC253D92-input-1 button_short_press
+  action:
+    service: light.toggle
+    entity_id: light.leds_schody
+
 - id: light_turn_on_schody_leds_when_motion_at_night
   alias: "Light Turn On Schody LEDs When Motion At Night"
   description: "włącz ledy na schodach jak pojawi się ruch i jest noc"
@@ -2456,10 +2392,9 @@
       conditions:
         - condition: sun
           after: sunset
-          after_offset: "+00:30:00"
         - condition: sun
           before: sunrise
-          before_offset: "+00:30:00"
+          before_offset: "+00:10:00"
   action:
     - service: light.turn_on
       entity_id: light.leds_schody
@@ -2477,7 +2412,6 @@
   trigger:
     platform: sun
     event: sunset
-    offset: "+00:30:00"
   condition:
     condition: state
     entity_id:
@@ -2526,7 +2460,7 @@
           after: sunset
         - condition: sun
           before: sunrise
-          before_offset: "+00:30:00"
+          before_offset: "+00:10:00"
   action:
     - service: light.turn_on
       entity_id: light.gateway_goscinny
@@ -3094,7 +3028,9 @@
       mode: "{{ trigger.payload_json.mode | default }}"
       host: "{{ trigger.payload_json.ip }}"
       qos: 1
-      shellyswitch-5B2604:
+      shelly1pm-8CAAB55FD486:
+        relay-0: "light"
+      shellyswitch25-C45BBE77DBE5:
         relay-1: "light"
       shellyflood-F2AD1D:
         expire_after: 95040
@@ -3109,13 +3045,15 @@
         relay-0: "light"
       shelly1l-84CCA8ACEDF2:
         relay-0: "light"
-      shelly1-E8DB84D42455:
-        relay-0: "light"
       shelly1l-E8DB84AACEC4:
         relay-0: "light"
       shelly1-328900:
         relay-0: "light"
       shelly1l-483FDA701559:
+        relay-0: "light"
+      shelly1l-98CDAC253D92:
+        relay-0: "light"
+      shelly1l-3C6105E361A5:
         relay-0: "light"
       ignored_devices:
         - shellycolorbulb-E868E7C6811C

@@ -21,8 +21,6 @@ logger:
 
 api:
   password: !secret esphome_password
-  encryption:
-    key: !secret encryption_key
 
 ota:
   password: !secret esphome_password

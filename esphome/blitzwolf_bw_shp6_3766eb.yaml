@@ -3,6 +3,7 @@ substitutions:
   device_name_lower: "blitzwolf-bw-shp6-3766eb"
   current_res: "0.00290"
   voltage_div: "940"
+  max_power: "2300"
 
 esphome:
   name: ${device_name_lower}
@@ -104,21 +105,16 @@ sensor:
     cf1_pin: GPIO14
     current_resistor: ${current_res}
     voltage_divider: ${voltage_div}
-    current:
-      name: "${device_name} Current"
-      unit_of_measurement: "A"
-      accuracy_decimals: 3
-      device_class: "current"
-    voltage:
-      name: "${device_name} Voltage"
-      unit_of_measurement: "V"
-      device_class: "voltage"
     power:
       name: "${device_name} Power"
       unit_of_measurement: "W"
       device_class: "power"
+      on_value_range:
+        - above: ${max_power}
+          then:
+            - output.turn_off: led
+            - switch.turn_off: relay
     energy:
       name: "${device_name} Energy"
       unit_of_measurement: "Wh"
       device_class: "energy"
-    change_mode_every: 4

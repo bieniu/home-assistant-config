@@ -13,19 +13,6 @@
     Content-Type: application/json
     User-Agent: Home Assistant REST sensor
 
-- platform: rest
-  name: "Caddy Version Current"
-  resource: "https://api.github.com/repos/mholt/caddy/releases/latest"
-  value_template: "{{ value_json.tag_name | default | replace('v', '') }}"
-  username: !secret github_username
-  password: !secret github_token_access
-  authentication: basic
-  scan_interval: 7200
-  headers:
-    Accept: application/vnd.github.v3+json
-    Content-Type: application/json
-    User-Agent: Home Assistant REST sensor
-
 - platform: command_line
   name: "Supervisor Updates"
   command: 'curl http://supervisor/supervisor/info -H "Authorization: Bearer $(printenv SUPERVISOR_TOKEN)" | jq ''{"newest_version":.data.version_latest,"current_version":.data.version,"update_available":.data.update_available,"addons":[.data.addons[] | select(.update_available)]}'''
@@ -44,14 +31,6 @@
       query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1024 / 1024, 1) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'
       column: "value"
       unit_of_measurement: "MB"
-
-- platform: version
-  name: "HA Version Installed"
-
-- platform: version
-  name: "HA Version Current"
-  source: hassio
-  image: intel-nuc
 
 - platform: uptime
   name: "Home Assistant Last Restart"

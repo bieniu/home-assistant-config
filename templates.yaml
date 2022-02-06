@@ -345,10 +345,6 @@
       unique_id: "blitzwolf_bw_shp6_ed007d_status"
       state: "{{ is_state('device_tracker.blitzwolf_bw_shp6_ed007d', 'home') }}"
 
-    - name: shelly_plus_i4_09e6ac_status
-      unique_id: "shelly_plus_i4_09e6ac_status"
-      state: "{{ is_state('device_tracker.shelly_plus_i4_09e6ac', 'home') }}"
-
     - name: shelly_gas_c6811c_status
       unique_id: "shelly_gas_c6811c_status"
       state: "{{ is_state('device_tracker.shelly_gas_c6811c', 'home') }}"
@@ -357,49 +353,45 @@
       unique_id: "shelly_valve_2a544_status"
       state: "{{ is_state('device_tracker.shelly_valve_72a544', 'home') }}"
 
-    - name: shelly_1_328900_status
-      unique_id: "shelly_1_328900_status"
-      state: "{{ is_state('device_tracker.shelly_1_328900', 'home') }}"
-
-    - name: shelly_1l_4a262c9_status
-      unique_id: "shelly_1l_4a262c9_status"
-      state: "{{ is_state('device_tracker.shelly1l_4a262c9', 'home') }}"
-
-    - name: shelly_1_d42455_status
-      unique_id: "shelly_1_d42455_status"
-      state: "{{ is_state('device_tracker.shelly_1_d42455', 'home') }}"
-
-    - name: shelly_1l_ad365e_status
-      unique_id: "shelly_1l_ad365e_status"
-      state: "{{ is_state('device_tracker.shelly_1l_ad365e', 'home') }}"
-
-    - name: shelly_1l_aacec4_status
-      unique_id: "shelly_1l_aacec4_status"
-      state: "{{ is_state('device_tracker.shelly_1l_aacec4', 'home') }}"
-
-    - name: shelly_1l_701559_status
-      unique_id: "shelly_1l_701559_status"
-      state: "{{ is_state('device_tracker.shelly_1l_701559', 'home') }}"
-
-    - name: shelly_1l_acedf2_status
-      unique_id: "shelly_1l_acedf2_status"
-      state: "{{ is_state('device_tracker.shelly_1l_acedf2', 'home') }}"
+    - name: shelly_1l_253d92_status
+      unique_id: "shelly_1l_253d92_status"
+      state: "{{ is_state('device_tracker.shelly_1l_253d92', 'home') }}"
 
     - name: shelly_1l_61c9fd_status
       unique_id: "shelly_1l_61c9fd_status"
       state: "{{ is_state('device_tracker.shelly_1l_61c9fd', 'home') }}"
+    
+    - name: shelly_1l_701559_status
+      unique_id: "shelly_1l_701559_status"
+      state: "{{ is_state('device_tracker.shelly_1l_701559', 'home') }}"
+    
+    - name: shelly_1l_aacec4_status
+      unique_id: "shelly_1l_aacec4_status"
+      state: "{{ is_state('device_tracker.shelly_1l_aacec4', 'home') }}"
 
     - name: shelly_1l_aceb5f_status
       unique_id: "shelly_1l_aceb5f_status"
       state: "{{ is_state('device_tracker.shelly_1l_aceb5f', 'home') }}"
+    
+    - name: shelly_1l_acedf2_status
+      unique_id: "shelly_1l_acedf2_status"
+      state: "{{ is_state('device_tracker.shelly_1l_acedf2', 'home') }}"
+    
+    - name: shelly_1l_ad365e_status
+      unique_id: "shelly_1l_ad365e_status"
+      state: "{{ is_state('device_tracker.shelly_1l_ad365e', 'home') }}"
 
-    - name: shelly_1l_ad1b60_status
-      unique_id: "shelly_1l_ad1b60_status"
-      state: "{{ is_state('device_tracker.shelly_1l_ad1b60', 'home') }}"
+    - name: shelly_1l_e361a5_status
+      unique_id: "shelly_1l_e361a5_status"
+      state: "{{ is_state('device_tracker.shelly_1l_e361a5', 'home') }}"
 
-    - name: shelly_2_5b2604_status
-      unique_id: "shelly_2_5b2604_status"
-      state: "{{ is_state('device_tracker.shelly_2_5b2604', 'home') }}"
+    - name: shelly_plus_1pm_b22864_status
+      unique_id: "shelly_plus_1pm_b22864_status"
+      state: "{{ is_state('device_tracker.shelly_plus_1pm_b22864', 'home') }}"
+
+    - name: shelly_25_77dbe5_status
+      unique_id: "shelly_25_77dbe5_status"
+      state: "{{ is_state('device_tracker.shelly_25_77dbe5', 'home') }}"
 
     - name: shelly_duo_5f6fa1_status
       unique_id: "shelly_duo_5f6fa1_status"
@@ -413,10 +405,6 @@
     - name: shelly_vintage_d10472_status
       unique_id: "shelly_vintage_d10472_status"
       state: "{{ is_state('device_tracker.shelly_vintage_d10472', 'home') }}"
-
-    - name: shelly_pro_4pm_d8b95c_status
-      unique_id: "shelly_pro_4pm_d8b95c_status"
-      state: "{{ is_state('device_tracker.shelly_pro_4pm_d8b95c', 'home') }}"
 
     - name: shelly_plug_s_7aecf4_status
       unique_id: "shelly_plug_s_7aecf4_status"

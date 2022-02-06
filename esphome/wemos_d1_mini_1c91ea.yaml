@@ -22,8 +22,6 @@ logger:
 
 api:
   password: !secret esphome_password
-  encryption:
-    key: !secret encryption_key
   services:
     - service: calibrate
       then:

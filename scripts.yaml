@@ -257,7 +257,9 @@ alexa_goodnight:
     - light.ceiling_lazienka
     - light.ceiling_toaleta
     - light.ceiling_antek
-    - light.ceiling_przedpokoj
+    - light.ceiling_przedpokoj_1
+    - light.ceiling_przedpokoj_2
+    - light.scone_schody
   mode: single
   alias: 'Alexa: goodnight'
 alexa_tts:
@@ -280,10 +282,9 @@ restart_wifi_devices:
       - button.blitzwolf_bw_shp6_ed007d_restart
       - button.wemos_d1_mini_1c91ea_restart
       - button.nettigo_air_monitor_restart
-      - button.shelly_1_328900_restart
-      - button.shelly_1l_701559_restart
-      - button.shelly_gas_c6811c_restart
-      - button.shelly_pro_4pm_d8b95c_restart
+      - button.shelly_plus_1pm_948ff8_restart
+      - button.shelly_plus_1pm_b22864_restart
+      - button.shelly_duo_rgbw_d4ecd3_restart
       - button.shelly_valve_72a544_restart
   - service: shell_command.restart_shelly_devices
   mode: single

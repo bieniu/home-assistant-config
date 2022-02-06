@@ -78,7 +78,7 @@ binary_sensor.kindle_8_status:
 binary_sensor.modem_status:
   friendly_name: "ZTE GPON F660"
   icon: mdi:wan
-binary_ensor.yeelight_yldd01yl_6707fc_status:
+binary_sensor.yeelight_yldd01yl_6707fc_status:
   friendly_name: "Yeelight Lightstrip [6707FC]"
 binary_sensor.echo_plus_status:
   friendly_name: "Amazon Echo Plus"
@@ -198,6 +198,8 @@ binary_sensor.yeelight_yldp02yl_f12026_status:
   friendly_name: "Yeelight Color Bulb [F12026]"
 binary_sensor.yeelight_yldd01yl_860cfa_status:
   friendly_name: "Yeelight Lightstrip [860CFA]"
+binary_sensor.thermomix_status:
+  friendly_name: "Thermomix TM6"
 
 #### SWITCHES ####
 switch.stacjonarny:
@@ -308,6 +310,8 @@ binary_sensor.motion_salon:
 
 sensor.temperature_indoor:
   friendly_name: "Temperatura wewnętrzna"
+  icon: "hass:thermometer"
 
 sensor.humidity_indoor:
   friendly_name: "Wilgotność wewnętrzna"
+  icon: "hass:water-percent"
