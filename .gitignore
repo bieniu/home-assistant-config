@@ -28,7 +28,7 @@ travis_secrets.yaml
 known_devices.yaml
 WIP*.py
 panels
-python_scripts/shellies_discovery.py
+python_scripts/shellies_discovery*
 themes/*/*.*
 adb/*
 !.gitignore
@@ -37,3 +37,4 @@ core
 image
 debug.log
 blueprints
+watchman_report.txt

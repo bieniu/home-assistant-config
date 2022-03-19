@@ -76,6 +76,13 @@ views:
                   - humidity: sensor.humidity_outdoor
                   - pressure: sensor.pressure_outdoor
                   - precipitation_probability: sensor.dark_sky_precip_probability
+          - type: glance
+            title: "Samochód"
+            show_name: false
+            entities:
+              - person.bmw
+              - sensor.bmw_x1_xdrive20i_remaining_fuel
+              - sensor.bmw_x1_xdrive20i_remaining_range_fuel
           - type: entities
             title: "Przedpokój"
             show_header_toggle: false
@@ -90,46 +97,46 @@ views:
             show_header_toggle: false
             state_color: true
             entities:
-              - light.ceiling_przedpokoj_2
-          # - type: vertical-stack
-          #   in_card: true
-          #   cards:
-          #     - type: glance
-          #       <<: *card-header-no-padding-bottom
-          #       title: "Kuchnia"
-          #       show_name: false
-          #       entities:
-          #         - sensor.temperature_salon
-          #         - sensor.humidity_salon
-          #         - sensor.illumination_kuchnia
-          - type: entities
-            title: "Kuchnia"
-            show_header_toggle: false
-            state_color: true
-            entities:
-              - binary_sensor.window_kuchnia
-              - entity: binary_sensor.motion_kuchnia
+              - entity: binary_sensor.motion_przedpokoj_2
                 secondary_info: last-changed
-              - binary_sensor.gas_leak_kuchnia
-              - binary_sensor.water_leak_kuchnia
-              - type: conditional
-                conditions:
-                  - entity: input_boolean.heating_season
-                    state_not: "off"
-                row:
-                  entity: climate.aeotec_thermostat_kuchnia
-              - entity: sensor.dishwasher_kuchnia
-                card_mod:
-                  style: |
-                    :host {
-                      --paper-item-icon-color:
-                        {% if is_state(config.entity, "zmywanie") %}
-                          var(--state-icon-active-color)
-                        {% else %}
-                          var(--state-icon-color)
-                        {% endif %};
-                    }
-              - light.ceiling_kuchnia
+              - light.ceiling_przedpokoj_2
+          - type: vertical-stack
+            in_card: true
+            cards:
+              - type: glance
+                <<: *card-header-no-padding-bottom
+                title: "Kuchnia"
+                show_name: false
+                entities:
+                  - sensor.temperature_kuchnia
+                  - sensor.illumination_kuchnia
+              - type: entities
+                show_header_toggle: false
+                state_color: true
+                entities:
+                  - binary_sensor.window_kuchnia
+                  - entity: binary_sensor.motion_kuchnia
+                    secondary_info: last-changed
+                  - binary_sensor.gas_leak_kuchnia
+                  - binary_sensor.water_leak_kuchnia
+                  - type: conditional
+                    conditions:
+                      - entity: input_boolean.heating_season
+                        state_not: "off"
+                    row:
+                      entity: climate.aeotec_thermostat_kuchnia
+                  - entity: sensor.dishwasher_kuchnia
+                    card_mod:
+                      style: |
+                        :host {
+                          --paper-item-icon-color:
+                            {% if is_state(config.entity, "zmywanie") %}
+                              var(--state-icon-active-color)
+                            {% else %}
+                              var(--state-icon-color)
+                            {% endif %};
+                        }
+                  - light.ceiling_kuchnia
       - type: vertical-stack
         in_card: true
         cards:
@@ -199,7 +206,7 @@ views:
                     state_not: "unavailable"
                 row:
                   type: custom:mini-media-player
-                  entity: media_player.dune
+                  entity: media_player.dune_salon
                   hide:
                     volume: true
                     controls: true
@@ -411,6 +418,47 @@ views:
               - light.lamp_gabinet
               - light.desk_lamp_gabinet
               - switch.stacjonarny
+              - type: custom:mini-media-player
+                entity: media_player.echo_dot_gabinet
+                hide:
+                  controls: true
+                  volume: true
+                  power: true
+                  progress: true
+                  source: true
+                info: scroll
+                group: true
+                shortcuts:
+                  label: "Skróty"
+                  list:
+                    - name: "RMF FM"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_dot_gabinet
+                        media_content_type: "TUNEIN"
+                        media_content_id: "RMF FM"
+                    - name: "MUZO FM"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_dot_gabinet
+                        media_content_type: "TUNEIN"
+                        media_content_id: "MUZO FM"
+                    - name: "Radio ZET"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_dot_gabinet
+                        media_content_type: "TUNEIN"
+                        media_content_id: "Radio ZET"
+                    - name: "Spotify"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_dot_gabinet
+                        media_content_type: "SPOTIFY"
+                        media_content_id: "playlist Maciek"
       - type: vertical-stack
         in_card: true
         cards:
@@ -449,6 +497,37 @@ views:
                   source: true
                 info: scroll
                 group: true
+                shortcuts:
+                  label: "Skróty"
+                  list:
+                    - name: "RMF FM"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_plus_antek
+                        media_content_type: "TUNEIN"
+                        media_content_id: "RMF FM"
+                    - name: "MUZO FM"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_plus_antek
+                        media_content_type: "TUNEIN"
+                        media_content_id: "MUZO FM"
+                    - name: "Radio ZET"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_plus_antek
+                        media_content_type: "TUNEIN"
+                        media_content_id: "Radio ZET"
+                    - name: "Spotify"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_plus_antek
+                        media_content_type: "SPOTIFY"
+                        media_content_id: "playlist Antek"
       - type: vertical-stack
         in_card: true
         cards:
@@ -474,18 +553,7 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_sypialnia
-              - light.double_ceiling_sypialnia
               - light.lightstrip_sypialnia
-              - type: custom:mini-media-player
-                entity: media_player.echo_dot_sypialnia
-                hide:
-                  controls: true
-                  volume: true
-                  power: true
-                  progress: true
-                  source: true
-                info: scroll
-                group: true
       - type: vertical-stack
         in_card: true
         cards:
@@ -537,6 +605,7 @@ views:
           - person.maciek
           - person.antek
           - person.karmel
+          - person.bmw
           - zone.home
           - zone.grandparents
           - zone.grandmother
@@ -545,7 +614,6 @@ views:
           - zone.work_edyta_lodz
           - zone.work_edyta_warszawa
           - zone.work_edyta_wroclaw
-          - zone.work_maciek_warszawa
           - zone.skaratki_horses
   - id: network
     icon: mdi:ethernet
@@ -705,8 +773,8 @@ views:
             title: "Home Assistant"
             show_header_toggle: false
             entities:
-              - sensor.ha_version_current
-              - sensor.ha_version_installed
+              - sensor.ha_current_version
+              - sensor.ha_installed_version
               - entity: sensor.home_assistant_last_restart
                 format: relative
               - sensor.ha_database_size
@@ -816,6 +884,7 @@ views:
         entities:
           - binary_sensor.shelly_ht_e00abd_status
           - binary_sensor.shelly_motion_c67c2a_status
+          - binary_sensor.shelly_motion_2_72a6a4_status
           - binary_sensor.shelly_flood_f2ad1d_status
           - binary_sensor.shelly_gas_c6811c_status
           - binary_sensor.wemos_d1_mini_1c91ea_status
@@ -841,11 +910,12 @@ views:
           - binary_sensor.shelly_1l_701559_status
           - binary_sensor.shelly_1l_aacec4_status 
           - binary_sensor.shelly_1l_aceb5f_status
-          - binary_sensor.shelly_1l_acedf2_status
           - binary_sensor.shelly_1l_ad365e_status
+          - binary_sensor.shelly_1l_e361a5_status
           - binary_sensor.shelly_25_77dbe5_status
           - binary_sensor.shelly_plug_s_7aecf4_status
           - binary_sensor.shelly_plus_1pm_b22864_status
+          - binary_sensor.shelly_plus_1pm_948ff8_status
   - id: energy
     icon: mdi:power-plug
     title: "Energia"
@@ -907,6 +977,7 @@ views:
         entities:
           - sensor.battery_xiaomi_motion_aq2_przedpokoj
           - sensor.shelly_motion_c67c2a_battery
+          - sensor.shelly_motion_2_72a6a4_battery
           - sensor.battery_xiaomi_motion_salon
           - sensor.battery_xiaomi_motion_aq2_salon
           - sensor.battery_xiaomi_motion_aq2_toaleta

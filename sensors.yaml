@@ -72,6 +72,7 @@
   entity_ids:
     - sensor.temperature_toaleta
     - sensor.temperature_salon
+    - sensor.temperature_kuchnia
     - sensor.temperature_antresola
     - sensor.temperature_gabinet
     - sensor.temperature_antek

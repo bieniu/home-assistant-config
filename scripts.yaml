@@ -1,14 +1,38 @@
 devices_away_mode:
   sequence:
   - service: light.turn_off
-    entity_id: all
+    data: {}
+    target:
+      entity_id:
+        - light.ceiling_antek
+        - light.ceiling_gabinet
+        - light.ceiling_kuchnia
+        - light.ceiling_lazienka
+        - light.ceiling_przedpokoj_1
+        - light.ceiling_przedpokoj_2
+        - light.ceiling_salon
+        - light.ceiling_toaleta
+        - light.desk_lamp_antek
+        - light.desk_lamp_gabinet
+        - light.gateway_antresola
+        - light.gateway_goscinny
+        - light.lamp_gabinet
+        - light.lamp_salon
+        - light.leds_przedpokoj
+        - light.leds_salon
+        - light.leds_schody
+        - light.lightstrip_antek
+        - light.lightstrip_sypialnia
+        - light.scone_schody
   - service: homeassistant.turn_off
-    entity_id:
+    target:
+      entity_id:
       - switch.tree_antek
       - fan.pedestal_gabinet
       - humidifier.xiaomi_salon
       - input_boolean.antek_lamp_night
       - switch.lamp_pracownia
+    data: {}
   mode: single
   alias: 'Devices: away mode'
   icon: mdi:home-export-outline
@@ -61,7 +85,8 @@ heating_day:
     - input_boolean.heating_salon_kuchnia_night
   - condition: template
     value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity')\
-      \ | float\n   and states('sensor.xiaomi_mi_humidifier_ca1_water_level') | int > 5 }}"
+      \ | float\n   and states('sensor.xiaomi_mi_humidifier_ca1_water_level') | int\
+      \ > 5 }}"
   - service: humidifier.turn_on
     entity_id: humidifier.xiaomi_salon
   mode: single
@@ -92,7 +117,8 @@ heating_night:
     value_template: "{{ is_state(\"input_boolean.guests\", \"off\") and\n   is_state(\"\
       media_player.denon_salon\", \"off\") }}"
   - service: homeassistant.turn_off
-    entity_id: humidifier.xiaomi_salon
+    target:
+      entity_id: humidifier.xiaomi_salon
   - service: climate.set_temperature
     entity_id:
     - climate.aeotec_thermostat_kuchnia
@@ -172,7 +198,8 @@ light_turn_off_antek_leds:
   - service: input_boolean.turn_off
     entity_id: input_boolean.antek_lamp_night
   - service: light.turn_off
-    entity_id: light.lightstrip_antek
+    target:
+      entity_id: light.lightstrip_antek
     data:
       transition: 10
   mode: single
@@ -181,7 +208,8 @@ light_turn_off_antek_leds:
 light_turn_on_antek_leds:
   sequence:
   - service: light.turn_on
-    entity_id: light.lightstrip_antek
+    target:
+      entity_id: light.lightstrip_antek
     data:
       brightness: 150
       rgb_color:
@@ -246,25 +274,26 @@ alexa_netflix:
 alexa_goodnight:
   sequence:
   - service: homeassistant.turn_off
-    entity_id:
-    - remote.salon
-    - humidifier.xiaomi_salon
-    - light.leds_salon
-    - light.ceiling_salon
-    - light.desk_lamp_antek
-    - light.ceiling_gabinet
-    - light.ceiling_kuchnia
-    - light.ceiling_lazienka
-    - light.ceiling_toaleta
-    - light.ceiling_antek
-    - light.ceiling_przedpokoj_1
-    - light.ceiling_przedpokoj_2
-    - light.scone_schody
+    target:
+      entity_id:
+      - remote.salon
+      - humidifier.xiaomi_salon
+      - light.leds_salon
+      - light.ceiling_salon
+      - light.desk_lamp_antek
+      - light.ceiling_gabinet
+      - light.ceiling_kuchnia
+      - light.ceiling_lazienka
+      - light.ceiling_toaleta
+      - light.ceiling_antek
+      - light.ceiling_przedpokoj_1
+      - light.ceiling_przedpokoj_2
+      - light.scone_schody
   mode: single
   alias: 'Alexa: goodnight'
 alexa_tts:
   sequence:
-  - service: notify.alexa_media_echo_plus
+  - service: notify.alexa_media_echo_plus_antek
     data:
       message: '{{ message }}'
       data:
@@ -276,22 +305,33 @@ restart_wifi_devices:
   sequence:
   - service: button.press
     entity_id:
-      - button.blitzwolf_bw_shp6_173eb6_restart
-      - button.blitzwolf_bw_shp6_17957c_restart
-      - button.blitzwolf_bw_shp6_3766eb_restart
-      - button.blitzwolf_bw_shp6_ed007d_restart
-      - button.wemos_d1_mini_1c91ea_restart
-      - button.nettigo_air_monitor_restart
-      - button.shelly_plus_1pm_948ff8_restart
-      - button.shelly_plus_1pm_b22864_restart
-      - button.shelly_duo_rgbw_d4ecd3_restart
-      - button.shelly_valve_72a544_restart
+    - button.blitzwolf_bw_shp6_3766eb_restart
+    - button.blitzwolf_bw_shp6_ed007d_restart
+    - button.wemos_d1_mini_1c91ea_restart
+    - button.nettigo_air_monitor_restart
+    - button.shelly_1l_253d92_restart
+    - button.shelly_1l_61c9fd_restart
+    - button.shelly_1l_701559_restart
+    - button.shelly_1l_aacec4_restart
+    - button.shelly_1l_aceb5f_restart
+    - button.shelly_1l_ad365e_restart
+    - button.shelly_1l_e361a5_restart
+    - button.shelly_1pm_5fd486_restart
+    - button.shelly_25_77dbe5_restart
+    - button.shelly_duo_5f6fa1_restart
+    - button.shelly_duo_rgbw_d4ecd3_restart
+    - button.shelly_gas_c6811c_restart
+    - button.shelly_plug_s_7aecf4_restart
+    - button.shelly_plus_1pm_948ff8_restart
+    - button.shelly_plus_1pm_b22864_restart
+    - button.shelly_valve_72a544_restart
+    - button.shelly_vintage_d10472_restart
   - service: shell_command.restart_shelly_devices
   mode: single
   icon: mdi:restart
 alexa_open_windows:
   sequence:
-  - service: notify.alexa_media_echo_show
+  - service: notify.alexa_media_echo_show_salon
     data:
       message: "{% set ns = namespace(open_windows=[]) %}\n  {% for entity in state_attr('group.windows',\
         \ 'entity_id') %}\n    {% if is_state(entity, 'on') %}\n      {% set ns.open_windows\
@@ -306,4 +346,3 @@ alexa_open_windows:
         type: tts
   mode: single
   alias: 'Alexa: open windows'
-  

@@ -19,19 +19,12 @@ sensor.disk_use_percent:
   friendly_name: "Zajęta przestrzeń dyskowa"
 sensor.last_restart:
   icon: mdi:timer-outline
-sensor.nuc_last_boot:
-  icon: mdi:timer-outline
 sensor.ha_database_size:
   friendly_name: "Wielkość bazy danych"
   icon: mdi:database
 sensor.home_assistant_last_restart:
   friendly_name: "Ostatni restart"
   icon: mdi:timer-outline
-sensor.ha_version_current:
-  friendly_name: "Najnowsza wersja"
-sensor.ha_version_installed:
-  friendly_name: "Zainstalowana wersja"
-  icon: mdi:package-down
 
 #### NETWORK DEVICES ####
 binary_sensor.lyra_54cf59_status:
@@ -49,8 +42,6 @@ binary_sensor.nuc_status:
   friendly_name: "Intel NUC 5CPYH"
 binary_sensor.dune_status:
   friendly_name: "Dune BD Prime 3.0"
-binary_sensor.switch_status:
-  icon: mdi:switch
 binary_sensor.stacjonarny_status:
   friendly_name: "Komputer stacjonarny"
 binary_sensor.xbox_status:
@@ -59,8 +50,6 @@ binary_sensor.playstation_status:
   friendly_name: "PlayStation 4 Pro"
 binary_sensor.bravia_status:
   friendly_name: "Sony KD-55XF8596"
-binary_sensor.fingbox_status:
-  icon: mdi:security-network
 binary_sensor.harmony_status:
   friendly_name: "Logitech Harmony Hub"
 binary_sensor.iphone_8_plus_status:
@@ -154,8 +143,6 @@ binary_sensor.shelly_1l_aacec4_status:
   friendly_name: "Shelly 1L [AACEC4]"
 binary_sensor.shelly_1l_701559_status:
   friendly_name: "Shelly 1L [701559]"
-binary_sensor.shelly_1l_acedf2_status:
-  friendly_name: "Shelly 1L [ACEDF2]"
 binary_sensor.shelly_1l_61c9fd_status:
   friendly_name: "Shelly 1L [61C9FD]"
 binary_sensor.shelly_1l_aceb5f_status:
@@ -225,15 +212,6 @@ sensor.printer_page_counter:
 light.lamp_salon:
   friendly_name: "Lampa"
   icon: mdi:floor-lamp
-switch.lamp_goscinny:
-  icon: mdi:lamp
-switch.lamp_gabinet:
-  icon: mdi:lamp
-
-#### SSL Sensor ####
-sensor.ssl_certificate_expiry:
-  friendly_name: "Ważność certyfikatu SSL"
-  unit_of_measurement: "dni"
 
 #### CAMERA ####
 switch.camera_move_up:
@@ -244,17 +222,7 @@ switch.camera_move_left:
   icon: mdi:chevron-double-left
 switch.camera_move_right:
   icon: mdi:chevron-double-right
-
-#### ENERGIA ####
-sensor.light_salon_energy_monthly:
-  friendly_name: "Oświetlenie salonu"
-sensor.dishwasher_kuchnia_energy_monthly:
-  friendly_name: "Zmywarka"
-sensor.servers_gabinet_energy_monthly:
-  friendly_name: "Serwery"
-sensor.computer_gabinet_energy_monthly:
-  friendly_name: "Komputer"
-
+  
 sensor.uv_index_home:
   unit_of_measurement: " "
 
@@ -296,9 +264,6 @@ sensor.aqi_info_salon:
 sensor.aqi_attr_salon:
   friendly_name: "Powietrze"
 
-binary_sensor.ups_status:
-  friendly_name: "Status"
-
 binary_sensor.windows:
   friendly_name: "Okna"
 
@@ -315,3 +280,6 @@ sensor.temperature_indoor:
 sensor.humidity_indoor:
   friendly_name: "Wilgotność wewnętrzna"
   icon: "hass:water-percent"
+
+sensor.bmw_x1_xdrive20i_remaining_fuel:
+  unit_of_measurement: "l"

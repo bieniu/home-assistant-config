@@ -15,7 +15,7 @@
     - name: dishwasher_kuchnia
       unique_id: "dishwasher_kuchnia"
       icon: "mdi:dishwasher"
-      availability: "{{ states('sensor.power_dishwasher_kuchnia_power') != ('unavailable' or 'unknown') }}"
+      availability: "{{ states('sensor.power_dishwasher_kuchnia') != ('unavailable' or 'unknown') }}"
       state: >-
         {% if states('sensor.power_dishwasher_kuchnia') | int > 1 %}
           zmywanie
@@ -373,10 +373,6 @@
       unique_id: "shelly_1l_aceb5f_status"
       state: "{{ is_state('device_tracker.shelly_1l_aceb5f', 'home') }}"
     
-    - name: shelly_1l_acedf2_status
-      unique_id: "shelly_1l_acedf2_status"
-      state: "{{ is_state('device_tracker.shelly_1l_acedf2', 'home') }}"
-    
     - name: shelly_1l_ad365e_status
       unique_id: "shelly_1l_ad365e_status"
       state: "{{ is_state('device_tracker.shelly_1l_ad365e', 'home') }}"
@@ -388,6 +384,10 @@
     - name: shelly_plus_1pm_b22864_status
       unique_id: "shelly_plus_1pm_b22864_status"
       state: "{{ is_state('device_tracker.shelly_plus_1pm_b22864', 'home') }}"
+
+    - name: shelly_plus_1pm_948ff8_status
+      unique_id: "shelly_plus_1pm_948ff8_status"
+      state: "{{ is_state('device_tracker.shelly_plus_1pm_948ff8', 'home') }}"
 
     - name: shelly_25_77dbe5_status
       unique_id: "shelly_25_77dbe5_status"
@@ -422,6 +422,11 @@
       unique_id: "shelly_motion_c67c2a_status"
       icon: mdi:motion-sensor
       state: "{{ is_state('device_tracker.shelly_motion_c67c2a', 'home') }}"
+
+    - name: shelly_motion_2_72a6a4_status
+      unique_id: "shelly_motion_2_72a6a4_status"
+      icon: mdi:motion-sensor
+      state: "{{ is_state('device_tracker.shelly_motion_2_72a6a4', 'home') }}"
 
     - name: wemos_d1_mini_1c91ea_status
       unique_id: "wemos_d1_mini_1c91ea_status"
