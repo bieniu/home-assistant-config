@@ -1,29 +1,3 @@
-- platform: moon
-
-- platform: rest
-  name: "ESPHome Version Current"
-  resource: "https://api.github.com/repos/esphome/esphome/releases/latest"
-  value_template: "{{ value_json.tag_name | default | replace('v', '') }}"
-  username: !secret github_username
-  password: !secret github_token_access
-  authentication: basic
-  scan_interval: 7200
-  headers:
-    Accept: application/vnd.github.v3+json
-    Content-Type: application/json
-    User-Agent: Home Assistant REST sensor
-
-- platform: command_line
-  name: "Supervisor Updates"
-  command: 'curl http://supervisor/supervisor/info -H "Authorization: Bearer $(printenv SUPERVISOR_TOKEN)" | jq ''{"newest_version":.data.version_latest,"current_version":.data.version,"update_available":.data.update_available,"addons":[.data.addons[] | select(.update_available)]}'''
-  value_template: "{{ value_json.addons | length }}"
-  unit_of_measurement: "pending update(s)"
-  json_attributes:
-    - update_available
-    - newest_version
-    - current_version
-    - addons
-
 - platform: sql
   db_url: !secret mysql_db_url
   queries:
@@ -31,9 +5,6 @@
       query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1024 / 1024, 1) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'
       column: "value"
       unit_of_measurement: "MB"
-
-- platform: uptime
-  name: "Home Assistant Last Restart"
 
 - platform: systemmonitor
   resources:
@@ -65,36 +36,3 @@
     - precip_probability
     - precip_intensity_max
     - daily_summary
-
-- platform: min_max
-  type: mean
-  name: "Temperature Indoor"
-  entity_ids:
-    - sensor.temperature_toaleta
-    - sensor.temperature_salon
-    - sensor.temperature_kuchnia
-    - sensor.temperature_antresola
-    - sensor.temperature_gabinet
-    - sensor.temperature_antek
-    - sensor.temperature_sypialnia
-    - sensor.temperature_lazienka
-    - sensor.temperature_goscinny
-    - sensor.temperature_pracownia
-    - sensor.temperature_pralnia
-  round_digits: 1
-
-- platform: min_max
-  type: mean
-  name: "Humidity Indoor"
-  entity_ids:
-    - sensor.humidity_toaleta
-    - sensor.humidity_salon
-    - sensor.humidity_antresola
-    - sensor.humidity_gabinet
-    - sensor.humidity_antek
-    - sensor.humidity_sypialnia
-    - sensor.humidity_lazienka
-    - sensor.humidity_goscinny
-    - sensor.humidity_pracownia
-    - sensor.humidity_pralnia
-  round_digits: 0

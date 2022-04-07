@@ -1,6 +1,0 @@
-- platform: group
-  name: Ceiling Salon
-  unique_id: "ceiling-salon"
-  entities:
-    - light.bulb_salon_1
-    - light.bulb_salon_2

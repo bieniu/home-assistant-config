@@ -91,15 +91,15 @@ views:
               - entity: binary_sensor.motion_przedpokoj
                 secondary_info: last-changed
               - light.leds_przedpokoj
-              - light.ceiling_przedpokoj_1
+              - light.ceiling_przedpokoj
           - type: entities
-            title: "Przedpokój mały"
+            title: "Korytarz"
             show_header_toggle: false
             state_color: true
             entities:
-              - entity: binary_sensor.motion_przedpokoj_2
+              - entity: binary_sensor.motion_korytarz
                 secondary_info: last-changed
-              - light.ceiling_przedpokoj_2
+              - light.ceiling_korytarz
           - type: vertical-stack
             in_card: true
             cards:
@@ -153,7 +153,7 @@ views:
             show_header_toggle: false
             state_color: true
             entities:
-              - binary_sensor.window_salon
+              - binary_sensor.windows_salon
               - entity: binary_sensor.motion_salon
                 secondary_info: last-changed
               - type: conditional
@@ -345,6 +345,7 @@ views:
             show_header_toggle: false
             state_color: true
             entities:
+              - binary_sensor.window_goscinny
               - entity: binary_sensor.motion_goscinny
                 secondary_info: last-changed
               - light.gateway_goscinny
@@ -486,7 +487,7 @@ views:
               - light.ceiling_antek
               - light.desk_lamp_antek
               - light.lightstrip_antek
-              - switch.tree_antek
+              - light.tree_antek
               - type: custom:mini-media-player
                 entity: media_player.echo_plus_antek
                 hide:
@@ -1057,9 +1058,12 @@ views:
         entities:
           - sensor.battery_xiaomi_magnet_kuchnia
           - sensor.battery_xiaomi_magnet_salon
+          - sensor.battery_aqara_magnet_salon
           - sensor.battery_xiaomi_magnet_pracownia
+          - sensor.battery_aqara_magnet_goscinny
           - sensor.battery_xiaomi_magnet_antresola_1
           - sensor.battery_xiaomi_magnet_antresola_2
+          - sensor.battery_aqara_magnet_antresola
           - sensor.battery_xiaomi_magnet_gabinet
           - sensor.battery_xiaomi_magnet_antek
           - sensor.battery_xiaomi_magnet_window_sypialnia

@@ -1,17 +1,4 @@
 - sensor:
-    - name: pm25_salon
-      unique_id: "pm25_salon"
-      icon: "mdi:molecule"
-      device_class: "pm25"
-      unit_of_measurement: "µg/m³"
-      availability: "{{ states('sensor.xiaomi_mi_air_purifier_3h_pm25') != ('unavailable' or 'unknown') }}"
-      state: >-
-        {% if states('sensor.xiaomi_mi_air_purifier_3h_pm25') | int > 7 %}
-          {{ states('sensor.xiaomi_mi_air_purifier_3h_pm25') | int }}
-        {% else %}
-          {{ states('sensor.pm25_salon') | int(0) }}
-        {% endif %}
-
     - name: dishwasher_kuchnia
       unique_id: "dishwasher_kuchnia"
       icon: "mdi:dishwasher"
@@ -102,34 +89,6 @@
           or is_state('group.family', 'home')
           or is_state('media_player.denon_salon', 'on')
           or is_state('input_boolean.guests', 'on') }}
-
-    - name: windows
-      unique_id: "windows"
-      device_class: "window"
-      state: >-
-        {{ is_state('binary_sensor.window_antek', 'on')
-          or is_state('binary_sensor.window_antresola_1', 'on')
-          or is_state('binary_sensor.window_antresola_2', 'on')
-          or is_state('binary_sensor.window_gabinet', 'on')
-          or is_state('binary_sensor.window_kuchnia', 'on')
-          or is_state('binary_sensor.window_salon', 'on')
-          or is_state('binary_sensor.window_sypialnia', 'on')
-          or is_state('binary_sensor.balcony_door_pracownia', 'on')
-          or is_state('binary_sensor.balcony_door_sypialnia', 'on') }}
-
-    - name: windows_antresola
-      unique_id: "windows_antresola"
-      device_class: "window"
-      state: >-
-        {{ is_state('binary_sensor.window_antresola_1', 'on')
-            or is_state('binary_sensor.window_antresola_2', 'on') }}
-
-    - name: motion_salon
-      unique_id: "motion_salon"
-      device_class: "motion"
-      state: >-
-        {{ is_state('binary_sensor.motion_salon_1', 'on')
-          or is_state('binary_sensor.motion_salon_2', 'on') }}
 
     - name: lyra_54cf59_status
       unique_id: "lyra_54cf59_status"
@@ -253,7 +212,7 @@
 
     - name: laptop_edyta_status
       unique_id: "laptop_edyta_status"
-      state: "{{ is_state('device_tracker.dell_latitude_7290', 'home') }}"
+      state: "{{ is_state('device_tracker.dell_latitude_7320', 'home') }}"
 
     - name: laptop_maciek_status
       unique_id: "laptop_maciek_status"

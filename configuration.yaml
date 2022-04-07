@@ -2,13 +2,6 @@ automation: !include automations.yaml
 
 binary_sensor: !include binary_sensors.yaml
 
-camera:
-  - platform: generic
-    name: 'Salon'
-    still_image_url: !secret dafang_still_mage_url
-    stream_source: !secret dafang_rtsp_url
-    scan_interval: 5
-
 climate:
   - platform: generic_thermostat
     name: "Custom Thermostat Lazienka"
@@ -50,8 +43,6 @@ http:
   login_attempts_threshold: 3
   use_x_forwarded_for: true
   trusted_proxies: !secret http_trusted_proxies
-
-light: !include lights.yaml
 
 logbook:
   exclude:

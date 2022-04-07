@@ -1,13 +1,5 @@
 sun.sun:
   friendly_name: "Słońce"
-sensor.moon:
-  friendly_name: "Księżyc"
-
-#### LIGHTS ####
-light.bulb_salon_1:
-  friendly_name: "Żarówka salon 1"
-light.bulb_salon_2:
-  friendly_name: "Żarówka salon 2"
 
 #### INTEL NUC/HA ####
 sensor.processor_use:
@@ -17,14 +9,9 @@ sensor.memory_use_percent:
   icon: mdi:chip
 sensor.disk_use_percent:
   friendly_name: "Zajęta przestrzeń dyskowa"
-sensor.last_restart:
-  icon: mdi:timer-outline
 sensor.ha_database_size:
   friendly_name: "Wielkość bazy danych"
   icon: mdi:database
-sensor.home_assistant_last_restart:
-  friendly_name: "Ostatni restart"
-  icon: mdi:timer-outline
 
 #### NETWORK DEVICES ####
 binary_sensor.lyra_54cf59_status:
@@ -82,7 +69,7 @@ binary_sensor.mibox_status:
 binary_sensor.firetv_status:
   friendly_name: "Fire TV Stick 4K"
 binary_sensor.laptop_edyta_status:
-  friendly_name: "Dell Latitude 7290"
+  friendly_name: "Dell Latitude 7320"
 binary_sensor.laptop_maciek_status:
   friendly_name: "Dell Latitude 5400"
 binary_sensor.laptop_antek_status:
@@ -188,30 +175,9 @@ binary_sensor.yeelight_yldd01yl_860cfa_status:
 binary_sensor.thermomix_status:
   friendly_name: "Thermomix TM6"
 
-#### SWITCHES ####
-switch.stacjonarny:
-  friendly_name: "Komputer"
-  icon: mdi:desktop-tower
-
-#### XIAOMI SWITCHES ####
-binary_sensor.switch_light_salon_1:
-  friendly_name: "Światło salon 1"
-  icon: mdi:lamp
-binary_sensor.switch_light_salon_2:
-  friendly_name: "Światło salon 2"
-  icon: mdi:lamp
-binary_sensor.switch_light_antek:
-  friendly_name: "LEDy Antek"
-  icon: mdi:led-variant-on
-
 #### PRINTER ####
 sensor.printer_page_counter:
   unit_of_measurement: "str"
-
-#### SONOFF/WEMOS ####
-light.lamp_salon:
-  friendly_name: "Lampa"
-  icon: mdi:floor-lamp
 
 #### CAMERA ####
 switch.camera_move_up:
@@ -238,19 +204,8 @@ sensor.dark_sky_wind_speed:
 sensor.minecraft_server_players_online:
   unit_of_measurement: " "
 
-sensor.temperature_pralnia:
-  friendly_name: "Temperatura"
-  icon: "hass:thermometer"
-
-sensor.humidity_pralnia:
-  friendly_name: "Wilgotność"
-  icon: "hass:water-percent"
-
 switch.ceiling_fan_salon:
   assumed_state: false
-
-sensor.pm25_salon:
-  friendly_name: "PM25 wewnątrz"
 
 sensor.dishwasher_kuchnia:
   friendly_name: "Zmywarka"
@@ -263,23 +218,6 @@ sensor.aqi_info_salon:
 
 sensor.aqi_attr_salon:
   friendly_name: "Powietrze"
-
-binary_sensor.windows:
-  friendly_name: "Okna"
-
-binary_sensor.windows_antresola:
-  friendly_name: "Okna"
-
-binary_sensor.motion_salon:
-  friendly_name: "Ruch"
-
-sensor.temperature_indoor:
-  friendly_name: "Temperatura wewnętrzna"
-  icon: "hass:thermometer"
-
-sensor.humidity_indoor:
-  friendly_name: "Wilgotność wewnętrzna"
-  icon: "hass:water-percent"
 
 sensor.bmw_x1_xdrive20i_remaining_fuel:
   unit_of_measurement: "l"
