@@ -17,6 +17,7 @@ devices_away_mode:
         - light.gateway_antresola
         - light.gateway_goscinny
         - light.lamp_gabinet
+        - light.lamp_pracownia
         - light.lamp_salon
         - light.leds_przedpokoj
         - light.leds_salon
@@ -31,7 +32,6 @@ devices_away_mode:
       - fan.pedestal_gabinet
       - humidifier.xiaomi_salon
       - input_boolean.antek_lamp_night
-      - switch.lamp_pracownia
     data: {}
   mode: single
   alias: 'Devices: away mode'
@@ -219,31 +219,6 @@ light_turn_on_antek_leds:
   mode: single
   icon: mdi:lightbulb-outline
   alias: 'Light: turn on Antek''s LEDs'
-notify_motion:
-  mode: queued
-  sequence:
-  - service: camera.snapshot
-    entity_id: camera.salon
-    data:
-      filename: /media/camera_snapshots/{{ datetime }}.jpg
-  - delay: 00:00:01
-  - service: python_script.notify
-    data:
-      title: '{{ title }}'
-      message: '{{ message }}'
-      tag: '{{ tag }}'
-      group: ruch
-      priority: high
-      image: "{% if location in ['salon', 'kuchnia', 'przedpokój'] %}\n  /media/local/camera_snapshots/{{\
-        \ datetime }}.jpg\n{% else %}\n  None\n{% endif %}"
-      services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
-      - service: notify.mobile_app_iphone_11
-        type: ios
-  max: 10
-  alias: 'Notify: motion'
-  icon: mdi:bell-ring
 camera_move:
   sequence:
   - service: mqtt.publish

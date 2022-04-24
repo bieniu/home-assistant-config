@@ -329,7 +329,7 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_pracownia
-              - switch.lamp_pracownia
+              - light.lamp_pracownia
       - type: vertical-stack
         in_card: true
         cards:

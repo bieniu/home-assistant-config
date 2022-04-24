@@ -116,8 +116,8 @@
         title: "Aktualizacja Home Assistanta"
         message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.attributes.latest_version }} dla Home Assistanta."
         tag: "notification-ha-update"
-        group: "aktualizacje"
-        url: "/hassio/dashboard"
+        group: "updates"
+        url: "entityId:{{ trigger.entity_id }}"
         actions:
           - title: "Zmiany"
             action: "URI"
@@ -143,15 +143,15 @@
       title: "Aktualizacja Supervisora"
       message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.attributes.latest_version }} dla Supervisora."
       tag: "notification-supervisor-update"
-      group: "aktualizacje"
-      url: "/hassio/dashboard"
+      group: "updates"
+      url: "entityId:{{ trigger.entity_id }}"
+      actions:
+        - title: "Zmiany"
+          action: "URI"
+          uri: "{{ trigger.to_state.attributes.release_url }}"
       services:
         - service: !secret maciek_notify_service
           type: "android"
-          actions:
-            - title: "Zmiany"
-              action: "URI"
-              uri: "{{ trigger.to_state.attributes.release_url }}"
 
 - id: notification_addons_update_available
   alias: "Notification Addons Update Available"
@@ -159,13 +159,13 @@
   trigger:
     platform: state
     entity_id:
-      - update.vaultwarden_bitwarden
+      - update.caddy_2
       - update.check_home_assistant_configuration
       - update.esphome
       - update.mariadb
       - update.mosquitto_broker
       - update.rpc_shutdown
-      - update.caddy_2
+      - update.vaultwarden_bitwarden
       - update.z_wave_js
     from: "off"
     to: "on"
@@ -177,8 +177,12 @@
       title: "Aktualizacja dodatku Supervisora"
       message: "Dostępna jest aktualizacja dodatku {{ name }} do wersji {{ trigger.to_state.attributes.latest_version }}."
       tag: "notification-addons-update"
-      group: "aktualizacje"
-      url: "/hassio/dashboard"
+      group: "updates"
+      url: "entityId:{{ trigger.entity_id }}"
+      actions:
+        - title: "Zmiany"
+          action: "URI"
+          uri: "{{ trigger.to_state.attributes.release_url }}"
       services:
         - service: !secret maciek_notify_service
           type: "android"
@@ -217,7 +221,7 @@
           {%- endfor %}
         {%- endif %}
       tag: "notification-hacs"
-      group: "aktualizacje"
+      group: "updates"
       url: "/hacs/entry"
       services:
         - service: !secret maciek_notify_service
@@ -238,7 +242,7 @@
       title: "Wysokie użycie pamięci RAM"
       message: "Serwer Home Assistant używa obecnie {{ states('sensor.memory_use_percent') }}% pamięci RAM."
       tag: "notification-high-ram-usage"
-      group: "inne"
+      group: "other"
       priority: "high"
       services:
         - service: !secret maciek_notify_service
@@ -262,7 +266,7 @@
         title: "Wygasa certyfikat SSL"
         message: "Za {{ states('sensor.ssl_certificate_expiry_timestamp') }} dni wygaśnie certyfikat SSL serwera WWW."
         tag: "notification-ssl"
-        group: "inne"
+        group: "other"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -286,7 +290,7 @@
         - binary_sensor.shelly_duo_rgbw_d4ecd3_firmware
         - binary_sensor.shelly_flood_f2ad1d_firmware
         - binary_sensor.shelly_gas_c6811c_firmware
-        # - binary_sensor.shelly_ht_e00abd_firmware
+        - binary_sensor.shelly_ht_e00abd_firmware
         - binary_sensor.shelly_motion_c67c2a_firmware
         - binary_sensor.shelly_motion_2_72a6a4_firmware
         - binary_sensor.shelly_plug_s_7aecf4_firmware
@@ -302,7 +306,7 @@
         title: "Aktualizacja oprogramowania Shelly"
         message: "Dostępna jest aktualizacja oprogramowania dla {{ device_attr(trigger.entity_id, 'name_by_user') }}."
         tag: "notification-{{ trigger.entity_id }}"
-        group: "aktualizacje"
+        group: "updates"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -395,7 +399,7 @@
       title: "Koniec zmywania"
       message: "Zmywarka zakończyła zmywanie naczyń."
       tag: "notification-dishwasher"
-      group: "inne"
+      group: "other"
       services:
         - service: !secret maciek_notify_service
           type: "android"
@@ -423,7 +427,7 @@
       title: "Komputer stacjonarny włączony"
       message: "Komputer stacjonarny jest włączony. Czy chcesz go wyłączyć?"
       tag: "notification-desktop-computer"
-      group: "inne"
+      group: "other"
       actions:
         - title: "Wyłącz"
           action: "TURN_OFF_DESKTOP_COMPUTER"
@@ -457,8 +461,7 @@
   description: "powiadom o encji ze stanem dead/unavailable"
   trigger:
     platform: time_pattern
-    minutes: "/10"
-    seconds: 0
+    minutes: "/15"
   variables:
     domains: ["climate", "light", "switch", "sensor", "fan", "binary_sensor", "media_player", "humidifier"]
     rooms: ["korytarz", "przedpokoj", "goscinny", "pracownia", "kuchnia", "salon", "schody", "antresola", "gabinet", "pralnia", "antek", "sypialnia", "lazienka", "balkon", "indoor", "outdoor"]
@@ -467,12 +470,12 @@
   condition: >
     {% macro dead_unavailable_entities() %}
       {% for domain in domains %}
-        {% for item in states[domain] if (item.entity_id.split(".")[-1].split("_")[-1] in rooms or item.entity_id.split(".")[-1].split("_")[-2] in rooms) and not (item.entity_id in ignored or "battery" in item.entity_id or "status" in item.entity_id) and item.state is defined and item.state in dead_unavailable_states %}
+        {% for item in states[domain] if (item.entity_id.split(".")[-1].split("_")[-1] in rooms or item.entity_id.split(".")[-1].split("_")[-2] in rooms or "node" in item.entity_id) and not (item.entity_id in ignored or "battery" in item.entity_id or "status" in item.entity_id) and item.state is defined and item.state in dead_unavailable_states %}
           {{ item.entity_id }}
         {% endfor %}
       {% endfor %}
     {% endmacro %}
-    {{ dead_unavailable_entities()  | trim != "" }}
+    {{ dead_unavailable_entities() | trim != "" }}
   action:
     - service: python_script.notify
       data:
@@ -480,7 +483,7 @@
         message: >-
           {%- macro dead_unavailable_entities() -%}
             {%- for domain in domains -%}
-              {%- for item in states[domain] if (item.entity_id.split(".")[-1].split("_")[-1] in rooms or item.entity_id.split(".")[-1].split("_")[-2] in rooms) and not (item.entity_id in ignored or "battery" in item.entity_id or "status" in item.entity_id) and item.state is defined and item.state in dead_unavailable_states -%}
+              {%- for item in states[domain] if (item.entity_id.split(".")[-1].split("_")[-1] in rooms or item.entity_id.split(".")[-1].split("_")[-2] in rooms or "node" in item.entity_id) and not (item.entity_id in ignored or "battery" in item.entity_id or "status" in item.entity_id) and item.state is defined and item.state in dead_unavailable_states -%}
                 {%- if device_attr(item.entity_id, "name_by_user") -%}
                   {{ device_attr(item.entity_id, "name_by_user") }}{% if area_name(item.entity_id) %}, {{ area_name(item.entity_id) }}{% endif %}|
                 {%- else -%}
@@ -495,7 +498,7 @@
             {% if entity %}<br>- {{ entity }}{% endif %}
           {% endfor %} 
         tag: "notification-dead-unavailable"
-        group: "inne"
+        group: "other"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -802,13 +805,24 @@
     for:
       minutes: 10
   action:
-    service: script.notify_motion
+    service: python_script.notify
     data:
       title: "Wykryto ruch w pustym mieszkaniu"
       message: "Pomieszczenie: {{ area_name(trigger.to_state.entity_id) }}, godzina {{ now().strftime('%H:%M') }}."
       tag: "notification-motion-{{ area_name(trigger.to_state.entity_id) }}"
-      datetime: "{{ now().strftime('%Y%m%d%H%M%S') }}"
-      location: "{{ area_name(trigger.to_state.entity_id) }}"
+      group: "motion"
+      priority: "high"
+      image: >-
+        {% if area_name(trigger.to_state.entity_id) in ['salon', 'kuchnia', 'przedpokój'] %}
+          "/api/camera_proxy/camera.salon"
+        {% else %}
+          None
+        {% endif %}
+      services:
+        - service: !secret maciek_notify_service
+          type: "android"
+        - service: !secret edyta_notify_service
+          type: "ios"
 
 - id: notification_window_opened_when_away_mode
   alias: "Notification Window Opened When Away Mode"
@@ -839,7 +853,7 @@
       title: "Wykryto otwarcie okna w pustym mieszkaniu"
       message: "Pomieszczenie: {{ area_name(trigger.to_state.entity_id) }}, godzina {{ now().strftime('%H:%M') }}."
       tag: "notification-window-opened-{{ area_name(trigger.to_state.entity_id) }}"
-      group: "okna"
+      group: "windows"
       priority: "high"
       services:
         - service: !secret maciek_notify_service
@@ -865,7 +879,7 @@
       message: "Domownicy opuścili mieszkanie, a drzwi balkonowe w pracowni nie są zamknięte."
       tag: "notification-balcony-door-pracownia"
       priority: "high"
-      group: "okna"
+      group: "windows"
       services:
         - service: !secret maciek_notify_service
           type: "android"
@@ -885,7 +899,7 @@
         title: "Mało miejsca na dysku Synology"
         message: "Dysk Synology jest zapełniony w {{ trigger.to_state.state }}%."
         tag: "notification-synology-low-space"
-        group: "inne"
+        group: "other"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -902,7 +916,7 @@
         title: "Nowe urządzenie"
         message: "Wykryto nowe urządzenie o nazwie {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}})."
         tag: "notification-new-device"
-        group: "inne"
+        group: "other"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -940,7 +954,7 @@
           {% endmacro %}
           W następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level() }}
         tag: "notification-low-battery"
-        group: "inne"
+        group: "other"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -1037,7 +1051,7 @@
         title: "Otwarte okna"
         message: "Okna w pustym mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów wynosi {{ states('sensor.dark_sky_precip_probability') }}%."
         tag: "notification-windows-weather"
-        group: "okna"
+        group: "windows"
         priority: "high"
         services:
           - service: !secret maciek_notify_service
@@ -1276,7 +1290,7 @@
         title: "Włączono szybkie dogrzanie"
         message: "Włączono szybie dogrzanie pomieszczeń po długiej nieobecności domowników."
         tag: "notification-fast-warm-up"
-        group: "ogrzewanie"
+        group: "heating"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -1448,7 +1462,7 @@
         title: "Koniec przewietrzania"
         message: "Wyłączono tryb przewietrzania. Proszę zamknąć okna!"
         tag: "notification-airing-end"
-        group: "ogrzewanie"
+        group: "heating"
         priority: "high"
         services:
           - service: !secret maciek_notify_service
@@ -2283,7 +2297,7 @@
     - condition: state
       entity_id:
         - input_boolean.away_mode
-        - switch.lamp_pracownia
+        - light.lamp_pracownia
       state: "off"
     - condition: numeric_state
       entity_id: sensor.illumination_pracownia
@@ -2299,17 +2313,17 @@
           before: sunrise
           before_offset: "+00:10:00"
   action:
-    - service: switch.turn_on
+    - service: light.turn_on
       target:
-        entity_id: switch.lamp_pracownia
+        entity_id: light.lamp_pracownia
     - wait_for_trigger:
         platform: state
         entity_id: binary_sensor.motion_pracownia
         from: "on"
         to: "off"
-    - service: switch.turn_off
+    - service: light.turn_off
       target:
-        entity_id: switch.lamp_pracownia
+        entity_id: light.lamp_pracownia
 
 #### GABINET ####
 - id: light_toggle_gabinet_ceiling_light_
@@ -3060,7 +3074,10 @@
     platform: state
     entity_id: sensor.temperature_pracownia
   condition:
-    "{{ is_number(trigger.to_state.state) }}"
+    - "{{ is_number(trigger.to_state.state) }}"
+    - condition: state
+      entity_id: input_boolean.heating_season
+      state: "on"
   action:
     service: mqtt.publish
     data:
