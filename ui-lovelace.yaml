@@ -1,5 +1,3 @@
-background: "#e5e5e5"
-
 anchors:
   card-header-no-padding-bottom: &card-header-no-padding-bottom
     card_mod:
@@ -913,6 +911,7 @@ views:
           - binary_sensor.shelly_1l_aceb5f_status
           - binary_sensor.shelly_1l_ad365e_status
           - binary_sensor.shelly_1l_e361a5_status
+          - binary_sensor.shelly_1pm_5fd486_status
           - binary_sensor.shelly_25_77dbe5_status
           - binary_sensor.shelly_plug_s_7aecf4_status
           - binary_sensor.shelly_plus_1pm_b22864_status
@@ -1148,6 +1147,7 @@ views:
             slot_r5: "remove"
             old_icon: "true"
             show_decimals: true
+            use_old_column_format: true
           - type: custom:sun-card
           - type: iframe
             url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates&metricWind=m%2Fs

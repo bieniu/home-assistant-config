@@ -98,131 +98,58 @@
     data:
       notification_id: "{{ trigger.event.context.id }}"
 
-- id: notification_home_assistant_update_available
-  alias: "Notification Home Assistant Update Available"
-  description: "powiadom o aktualizacji HA"
-  trigger:
-    platform: state
-    entity_id: update.home_assistant
-    from: "off"
-    to: "on"
-  action:
-    - service: hassio.addon_start
-      data:
-        addon: core_check_config
-    - delay:  "00:05:00"
-    - service: python_script.notify
-      data:
-        title: "Aktualizacja Home Assistanta"
-        message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.attributes.latest_version }} dla Home Assistanta."
-        tag: "notification-ha-update"
-        group: "updates"
-        url: "entityId:{{ trigger.entity_id }}"
-        actions:
-          - title: "Zmiany"
-            action: "URI"
-            uri: "{{ trigger.to_state.attributes.release_url }}"
-          - title: "Konfiguracja"
-            action: "URI"
-            uri: "/hassio/addon/core_check_config/logs"
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
-
-- id: notification_supervisor_update_available
-  alias: "Notification Supervisor Update Available"
-  description: "powiadom o aktualizacji Supervisora"
-  trigger:
-    platform: state
-    entity_id: update.supervisor
-    from: "off"
-    to: "on"
-  action:
-    service: python_script.notify
-    data:
-      title: "Aktualizacja Supervisora"
-      message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.attributes.latest_version }} dla Supervisora."
-      tag: "notification-supervisor-update"
-      group: "updates"
-      url: "entityId:{{ trigger.entity_id }}"
-      actions:
-        - title: "Zmiany"
-          action: "URI"
-          uri: "{{ trigger.to_state.attributes.release_url }}"
-      services:
-        - service: !secret maciek_notify_service
-          type: "android"
-
-- id: notification_addons_update_available
-  alias: "Notification Addons Update Available"
-  description: "powiadom o aktualizacji addonów"
+- id: notification_update_platform
+  alias: "Notification Update Platform"
   trigger:
     platform: state
     entity_id:
+      - update.adaptive_lighting
+      - update.alexa_media_player
+      - update.auto_entities
+      - update.battery_state_card_entity_row
+      - update.blitzortung_org_lightning_detector
       - update.caddy_2
+      - update.canary
+      - update.card_mod
       - update.check_home_assistant_configuration
+      - update.clear_theme
+      - update.custom_animated_weather_card
       - update.esphome
+      - update.google_theme
+      - update.hacs
+      - update.home_assistant
+      - update.ios_theme
       - update.mariadb
+      - update.midnight_theme
+      - update.mini_graph_card
+      - update.mini_media_player
       - update.mosquitto_broker
+      - update.noctis
+      - update.nordic_theme
       - update.rpc_shutdown
+      - update.shellies_discovery
+      - update.shellies_discovery_gen2
+      - update.simple_weather_card
+      - update.sun_card
+      - update.supervisor
       - update.vaultwarden_bitwarden
+      - update.watchman
       - update.z_wave_js
+      - update.zadnego_ale
     from: "off"
     to: "on"
-  variables:
-    name: "{{ trigger.to_state.attributes.friendly_name.split(':')[0] }}"
   action:
     service: python_script.notify
     data:
-      title: "Aktualizacja dodatku Supervisora"
-      message: "Dostępna jest aktualizacja dodatku {{ name }} do wersji {{ trigger.to_state.attributes.latest_version }}."
-      tag: "notification-addons-update"
+      title: "Dostępna aktualizacja"
+      message: "{{ trigger.to_state.name }}: dostępna jest aktualizacja do wersji {{ trigger.to_state.attributes.latest_version }}."
+      tag: "notification-update"
       group: "updates"
       url: "entityId:{{ trigger.entity_id }}"
       actions:
         - title: "Zmiany"
           action: "URI"
           uri: "{{ trigger.to_state.attributes.release_url }}"
-      services:
-        - service: !secret maciek_notify_service
-          type: "android"
-
-- id: notification_update_available_in_hacs
-  alias: "Notification Update Available In HACS"
-  description: "powiadom o aktualizacji dodatków z HACS"
-  trigger:
-    platform: state
-    entity_id: sensor.hacs
-    to: ~
-  condition:
-    - "{{ trigger.from_state.state != 'unknown' }}"
-    - "{{ trigger.from_state.state != 'unavailable' }}"
-    - "{{ trigger.to_state.state != 'unknown' }}"
-    - "{{ trigger.to_state.state != 'unavailable' }}"
-    - "{{ trigger.from_state.state | int < trigger.to_state.state | int }}"
-  action:
-    service: python_script.notify
-    data:
-      title: >
-        {% if (trigger.to_state.state | int) == 1 %}
-          Aktualizacja dodatku z HACS
-        {% else %}
-          Aktualizacje dodatków z HACS
-        {% endif %}
-      message: >
-        {% if trigger.to_state.state | int == 1 %}
-          {%- for repo in state_attr(trigger.entity_id, 'repositories') %}
-            Dostępna jest aktualizacja dodatku {{ repo.display_name }} do wersji {{ repo.available_version }}.
-          {%- endfor %}
-        {%- else %}
-          Dostępne są aktualizacje dodatków:
-          {%- for repo in state_attr(trigger.entity_id, 'repositories') %}
-         <br>- {{ repo.display_name }} do wersji {{ repo.available_version }}
-          {%- endfor %}
-        {%- endif %}
-      tag: "notification-hacs"
-      group: "updates"
-      url: "/hacs/entry"
       services:
         - service: !secret maciek_notify_service
           type: "android"
@@ -461,7 +388,7 @@
   description: "powiadom o encji ze stanem dead/unavailable"
   trigger:
     platform: time_pattern
-    minutes: "/15"
+    minutes: "/10"
   variables:
     domains: ["climate", "light", "switch", "sensor", "fan", "binary_sensor", "media_player", "humidifier"]
     rooms: ["korytarz", "przedpokoj", "goscinny", "pracownia", "kuchnia", "salon", "schody", "antresola", "gabinet", "pralnia", "antek", "sypialnia", "lazienka", "balkon", "indoor", "outdoor"]
@@ -525,7 +452,7 @@
     - condition: state
       entity_id: input_boolean.heating_season
       state: "on"
-    - "{{ states('sensor.xiaomi_mi_humidifier_ca1_water_level') | int != 0 }}"
+    - "{{ states('sensor.xiaomi_mi_humidifier_ca1_water_level') | int(999) != 0 }}"
   variables:
     notification_title: "Uzupełnij wodę w nawilżaczu"
     notification_message: "W zbiorniku nawilżacza pozostało {{ states('sensor.xiaomi_mi_humidifier_ca1_water_level') }}% wody."
@@ -886,6 +813,44 @@
         - service: !secret edyta_notify_service
           type: "ios"
 
+- id: notification_gas_leak_kuchnia
+  alias: "Notification Gas Leak Kuchnia"
+  description: "powiadom o wycieku gazu w kuchni"
+  trigger:
+    platform: state
+    entity_id: binary_sensor.gas_leak_kuchnia
+    from: "off"
+    to: "on"
+  action:
+    - service: python_script.notify
+      data:
+        title: "Wyciek gazu"
+        message: "Uwaga! Wykryto wyciek gazu w kuchni!"
+        tag: "notification-gas-leak"
+        priority: "high"
+        group: "gas"
+        services:
+          - service: !secret maciek_notify_service
+            type: "android"
+          - service: !secret edyta_notify_service
+            type: "ios"
+          - service: !secret antek_notify_service
+            type: "ios"
+    - condition: state
+      entity_id: input_boolean.away_mode
+      state: "off"
+    - service: xiaomi_aqara.play_ringtone
+      data: 
+        gw_mac: f0b429cc6f0b
+        ringtone_id: 2
+        ringtone_vol: 20
+    - delay: "00:00:05"
+    - service: xiaomi_aqara.play_ringtone
+      data: 
+        gw_mac: f0b429cc6f0b
+        ringtone_id: 2
+        ringtone_vol: 20
+
 - id: notification_low_disk_space_on_synology
   alias: "Notification Low Disk Space On Synology"
   description: "powiadom o małej ilości miejsca na Synology"
@@ -932,7 +897,7 @@
       {%- set threshold = 10 -%}
       {%- set domains = ['sensor', 'binary_sensor'] -%}
       {% for domain in domains -%}
-        {% for item in states[domain] if item.attributes.device_class == "battery" and item.attributes.unit_of_measurement == "%" and item.state | int < threshold -%}
+        {% for item in states[domain] if item.attributes.device_class == "battery" and item.attributes.unit_of_measurement == "%" and item.state | int(0) < threshold -%}
           {{ item.entity_id }}
         {% endfor %}
       {%- endfor %}
@@ -947,8 +912,8 @@
             {%- set threshold = 10 -%}
             {%- set domains = ['sensor'] -%}
             {% for domain in domains -%}
-              {% for item in states[domain] if item.attributes.device_class == "battery" and item.attributes.unit_of_measurement == "%" and item.state | int < threshold -%}
-                <br>- {{ device_attr(item.entity_id, 'name_by_user') }}{% if area_name(item.entity_id) %}, {{ area_name(item.entity_id) }}{% endif %} [{{ item.state | round(0) }}%]
+              {% for item in states[domain] if item.attributes.device_class == "battery" and item.attributes.unit_of_measurement == "%" and item.state | int(0) < threshold -%}
+                <br>- {{ device_attr(item.entity_id, 'name_by_user') }}{% if area_name(item.entity_id) %}, {{ area_name(item.entity_id) }}{% endif %} [{{ item.state | round(0, 'unknown') }}%]
               {% endfor %}
             {%- endfor %}
           {% endmacro %}
@@ -1296,7 +1261,7 @@
             type: "android"
           - service: !secret edyta_notify_service
             type: "ios"
-    - condition: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float and states('sensor.xiaomi_mi_humidifier_ca1_water_level') | int > 5 }}"
+    - condition: "{{ states('sensor.humidity_salon') | float(0) < states('input_select.target_humidity') | float(0) and states('sensor.xiaomi_mi_humidifier_ca1_water_level') | int(0) > 5 }}"
     - service: humidifier.turn_on
       entity_id: humidifier.xiaomi_salon
 
@@ -1354,7 +1319,7 @@
     entity_id: fan.air_purifier_salon
     data:
       percentage: >-
-        {% if states('sensor.pm25_salon') | int > 100 %}
+        {% if states('sensor.pm25_salon') | int(0) > 100 %}
           66
         {% else %}
           33
@@ -2949,7 +2914,7 @@
   description: "włącz nawilżanie jak wilgotność spadnie poniżej ustawionego poziomu"
   trigger:
     platform: template
-    value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity') | float }}"
+    value_template: "{{ states('sensor.humidity_salon') | float(0) < states('input_select.target_humidity') | float(0) }}"
   condition:
     - condition: numeric_state
       entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
@@ -2972,7 +2937,7 @@
   description: "wyłącz nawilżanie jak wilgotność wzroścnie powyżej ustawionego poziomu lub zbiornik pusty"
   trigger:
     - platform: template
-      value_template: "{{ states('sensor.humidity_salon') | float > states('input_select.target_humidity') | float + 1 }}"
+      value_template: "{{ states('sensor.humidity_salon') | float(0) > states('input_select.target_humidity') | float(0) + 1 }}"
     - platform: numeric_state
       entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
       below: 6
@@ -3082,7 +3047,7 @@
     service: mqtt.publish
     data:
       topic: "shellies/shellytrv-84FD2772A544/thermostat/0/command/ext_t"
-      payload: "{{ trigger.to_state.state | float }}"
+      payload: "{{ trigger.to_state.state | float(0) }}"
 
 ##################################################################################################
 
@@ -3197,17 +3162,6 @@
     data:
       topic: shellyplus1pm-a8032ab22864/rpc
       payload: "{{ {'id': 1, 'src':'shellyplus1pm-a8032ab22864/status', 'method':'Shelly.GetStatus'} | to_json }}"
-
-- id: frontend_set_theme
-  alias: "Frontend Set Theme"
-  description: "ustaw motyw frontendu"
-  trigger:
-    platform: homeassistant
-    event: start
-  action:
-    service: frontend.set_theme
-    data:
-      name: blue-mix
 
 - id: hassio_backup
   alias: "Hassio Backup"
