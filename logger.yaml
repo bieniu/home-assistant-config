@@ -3,7 +3,3 @@ logs:
   slixmpp.stringprep: error
   androidtv.adb_manager.adb_manager_async: error
   homeassistant.components.androidtv.media_player: error
-  nettigo_air_monitor: debug
-  homeassistant.components.nam: debug
-  nam: debug
-  custom_components.nam: debug

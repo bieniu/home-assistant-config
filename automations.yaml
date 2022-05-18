@@ -1,3 +1,31 @@
+- id: run_watchman
+  alias: "Run Watchman"
+  description: "uruchom Watchman"
+  trigger:
+    platform: time
+    at: "16:00:00"
+  action:
+    service: watchman.report
+
+- id: notification_watchman_missing_entities
+  alias: "Notification Watchman Missing Entities"
+  description: "powiadom o zagubionych encjach"
+  trigger:
+    platform: numeric_state
+    entity_id: sensor.watchman_missing_entities
+    above: 0
+  action:
+    service: python_script.notify
+    data:
+      title: "Nieprawidłowe encje w konfiguracji"
+      message: "Watchman odnalazł w konfiguracji zagubione lub nieprawidłowe encje."
+      tag: "notification-watchman-missing-entities"
+      group: "other"
+      priority: "high"
+      services:
+        - service: !secret maciek_notify_service
+          type: "android"
+
 - id: minecraft_server_players_online_notification
   alias: "Minecraft Server Players Online Notification"
   description: "powiadomienie o aktywnych graczach na serwerze Minecraft"
@@ -11,7 +39,7 @@
       title: "Gracze na serwerze Minecraft"
       message: >-
         {% if trigger.to_state.state == 1 %}
-          Na serwerze Minecraft gra obecnie {{ trigger.to_state.state }} gracz.
+          Na serwerze Minecraft gra obecnie jeden gracz.
         {% else %}
           Na serwerze Minecraft gra obecnie {{ trigger.to_state.state }} graczy.
         {% endif %}
@@ -142,14 +170,10 @@
     service: python_script.notify
     data:
       title: "Dostępna aktualizacja"
-      message: "{{ trigger.to_state.name }}: dostępna jest aktualizacja do wersji {{ trigger.to_state.attributes.latest_version }}."
-      tag: "notification-update"
+      message: "Dostępna jest aktualizacja do wersji {{ trigger.to_state.attributes.latest_version | replace('v.', '') | replace('v', '') }} dla {{ trigger.to_state.attributes.title or trigger.to_state.name }}."
+      tag: "notification-update-{{ trigger.entity_id }}"
       group: "updates"
       url: "entityId:{{ trigger.entity_id }}"
-      actions:
-        - title: "Zmiany"
-          action: "URI"
-          uri: "{{ trigger.to_state.attributes.release_url }}"
       services:
         - service: !secret maciek_notify_service
           type: "android"
@@ -167,7 +191,7 @@
     service: python_script.notify
     data:
       title: "Wysokie użycie pamięci RAM"
-      message: "Serwer Home Assistant używa obecnie {{ states('sensor.memory_use_percent') }}% pamięci RAM."
+      message: "Serwer Home Assistant używa obecnie {{ trigger.to_state.state }}% pamięci RAM."
       tag: "notification-high-ram-usage"
       group: "other"
       priority: "high"
@@ -179,19 +203,17 @@
   alias: "Notification SSL Cert Expiry"
   description: "powiadom o wygasającym certyfikacie SSL"
   trigger:
-    platform: template
-    value_template: "{{ states('sensor.ssl_certificate_expiry_timestamp') | int(999) < 11 }}"
+    platform: state
+    entity_id: sensor.ssl_certificate_expiry
+    variables:
+        days: "{{ trigger.to_state.state | as_timestamp(0) - now() | as_timestamp // 86400 }}"
   condition:
-    - condition: not
-      conditions:
-        condition: state
-        entity_id: sensor.ssl_certificate_expiry_timestamp
-        state: "unavailable"
+    - "{{ 0 <= days < 14 }}"
   action:
     - service: python_script.notify
       data:
         title: "Wygasa certyfikat SSL"
-        message: "Za {{ states('sensor.ssl_certificate_expiry_timestamp') }} dni wygaśnie certyfikat SSL serwera WWW."
+        message: "Za {{ days }} dni wygaśnie certyfikat SSL serwera WWW."
         tag: "notification-ssl"
         group: "other"
         services:
@@ -228,31 +250,15 @@
       from: "off"
       to: "on"
   action:
-    - service: python_script.notify
-      data:
-        title: "Aktualizacja oprogramowania Shelly"
-        message: "Dostępna jest aktualizacja oprogramowania dla {{ device_attr(trigger.entity_id, 'name_by_user') }}."
-        tag: "notification-{{ trigger.entity_id }}"
-        group: "updates"
-        services:
-          - service: !secret maciek_notify_service
-            type: "android"
-
-- id: notification_iphone_11_location_permission
-  alias: "Notification iPhone 11 Location Permission"
-  description: "powiadom o uprawnieniach lokalizacji na iPhone 11"
-  trigger:
-    - platform: template
-      value_template: "{{ as_timestamp(now()) - as_timestamp(states.device_tracker.iphone_11_app.last_changed) > 43200 }}"
-  action:
     service: python_script.notify
     data:
-      title: "Brak uprawnień lokalizacji dla aplikacji Home Assistant"
-      message: "Od 12 godzin nie przekazano nowej lokalizacji urządzenia do Home Assistanta. Prawdopodobnie aplikacja nie ma wystarczających uprawnień."
-      tag: "notification-iphone-11-location-permission"
+      title: "Aktualizacja oprogramowania Shelly"
+      message: "Dostępna jest aktualizacja oprogramowania dla {{ device_attr(trigger.entity_id, 'name_by_user') }}."
+      tag: "notification-{{ trigger.entity_id }}"
+      group: "updates"
       services:
-        - service: !secret edyta_notify_service
-          type: "ios"
+        - service: !secret maciek_notify_service
+          type: "android"
 
 - id: notification_storm_comming
   alias: "Notification Storm Comming"
@@ -266,12 +272,12 @@
     notification_message: "Wyładowania atmosferyczne występują {{ states('sensor.lightning_distance') }} km od domu."
     notification_tag: "notification-storm-comming"
   action:
-    - choose:
-        conditions:
+    parallel:
+      - if:
           condition: state
           entity_id: person.maciek
           state: "home"
-        sequence:
+        then:
           service: python_script.notify
           data:
             title: "{{ notification_title }}"
@@ -280,12 +286,11 @@
             services:
               - service: !secret maciek_notify_service
                 type: "android"
-    - choose:
-        conditions:
+      - if:
           condition: state
           entity_id: person.edyta
           state: "home"
-        sequence:
+        then:
           service: python_script.notify
           data:
             title: "{{ notification_title }}"
@@ -294,12 +299,11 @@
             services:
               - service: !secret edyta_notify_service
                 type: "ios"
-    - choose:
-        conditions:
+      - if:
           condition: state
           entity_id: media_player.bravia_salon
           state: "on"
-        sequence:
+        then:
           service: notify.bravia
           data:
             title: "{{ notification_title }}"
@@ -308,7 +312,6 @@
               file:
                 url: !secret favicon_url
               duration: 10
-    - delay: "00:15:00"
 
 - id: notification_dishwasher_end
   alias: "Notification Dishwasher End"
@@ -348,37 +351,36 @@
     condition: state
     entity_id: switch.stacjonarny
     state: "on"
+  variables:
+    turn_off_action: "TURN_OFF_DESKTOP"
+    notification_title: "Komputer stacjonarny włączony"
+    notification_tag: "notification-desktop-computer"
   action:
-    service: python_script.notify
-    data:
-      title: "Komputer stacjonarny włączony"
-      message: "Komputer stacjonarny jest włączony. Czy chcesz go wyłączyć?"
-      tag: "notification-desktop-computer"
-      group: "other"
-      actions:
-        - title: "Wyłącz"
-          action: "TURN_OFF_DESKTOP_COMPUTER"
-      services:
-        - service: !secret maciek_notify_service
-          type: "android"
-
-- id: notification_turn_off_desktop_computer
-  alias: "Notification Turn Off Desktop Computer"
-  description: "wyłącz komputer z akcji powiadomienia"
-  trigger:
-    platform: event
-    event_type: mobile_app_notification_action
-    event_data:
-      action: "TURN_OFF_DESKTOP_COMPUTER"
-  action:
+    - service: python_script.notify
+      data:
+        title: "{{ notification_title }}"
+        message: "Komputer stacjonarny jest włączony. Czy chcesz go wyłączyć?"
+        tag: "{{ notification_tag }}"
+        group: "other"
+        actions:
+          - title: "Wyłącz"
+            action: "{{ turn_off_action }}"
+        services:
+          - service: !secret maciek_notify_service
+            type: "android"
+    - wait_for_trigger:
+        platform: event
+        event_type: mobile_app_notification_action
+        event_data:
+          action: "{{ turn_off_action }}"
     - service: switch.turn_off
       target:
         entity_id: switch.stacjonarny
     - service: python_script.notify
       data:
-        title: "{{ trigger.event.data.title }}"
+        title: "{{ notification_title }}"
         message: "clear_notification"
-        tag: "{{ trigger.event.data.tag }}"
+        tag: "{{ notification_tag }}"
         services:
           - service: !secret maciek_notify_service
             type: "android"
@@ -735,13 +737,13 @@
     service: python_script.notify
     data:
       title: "Wykryto ruch w pustym mieszkaniu"
-      message: "Pomieszczenie: {{ area_name(trigger.to_state.entity_id) }}, godzina {{ now().strftime('%H:%M') }}."
-      tag: "notification-motion-{{ area_name(trigger.to_state.entity_id) }}"
+      message: "Pomieszczenie: {{ area_name(trigger.entity_id) }}, godzina {{ now().strftime('%H:%M') }}."
+      tag: "notification-motion-{{ area_name(trigger.entity_id) }}"
       group: "motion"
       priority: "high"
       image: >-
-        {% if area_name(trigger.to_state.entity_id) in ['salon', 'kuchnia', 'przedpokój'] %}
-          "/api/camera_proxy/camera.salon"
+        {% if area_name(trigger.entity_id) in ["salon", "kuchnia", "przedpokój"] %}
+          /api/camera_proxy/camera.salon
         {% else %}
           None
         {% endif %}
@@ -1825,10 +1827,10 @@
       target:
         entity_id: light.ceiling_kuchnia
     - wait_for_trigger:
-        - platform: state
-          entity_id: binary_sensor.motion_kuchnia
-          from: "on"
-          to: "off"
+        platform: state
+        entity_id: binary_sensor.motion_kuchnia
+        from: "on"
+        to: "off"
     - service: light.turn_off
       target:
         entity_id: light.ceiling_kuchnia

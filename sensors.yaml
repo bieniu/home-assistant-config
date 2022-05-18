@@ -1,11 +1,3 @@
-- platform: sql
-  db_url: !secret mysql_db_url
-  queries:
-    - name: "HA Database Size"
-      query: 'SELECT table_schema "database", Round(Sum(data_length + index_length) / 1024 / 1024, 1) "value" FROM information_schema.tables WHERE table_schema="homeassistant" GROUP BY table_schema;'
-      column: "value"
-      unit_of_measurement: "MB"
-
 - platform: systemmonitor
   resources:
     - type: disk_use_percent

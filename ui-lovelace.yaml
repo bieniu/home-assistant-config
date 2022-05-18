@@ -52,6 +52,7 @@ views:
                   state: home
                 - entity_id: person.jerzy
                   state: home
+                - entity_id: person.karmel
           - type: vertical-stack
             in_card: true
             title: "Pogoda"
@@ -694,7 +695,7 @@ views:
                   - sensor.nuc_cpu_temp
                   - entity: sensor.last_restart
                     format: relative
-                  - entity: sensor.ssl_certificate_expiry_timestamp
+                  - entity: sensor.ssl_certificate_expiry
                     format: relative
               - type: horizontal-stack
                 cards:

@@ -9,9 +9,6 @@ sensor.memory_use_percent:
   icon: mdi:chip
 sensor.disk_use_percent:
   friendly_name: "Zajęta przestrzeń dyskowa"
-sensor.ha_database_size:
-  friendly_name: "Wielkość bazy danych"
-  icon: mdi:database
 
 #### NETWORK DEVICES ####
 binary_sensor.lyra_54cf59_status:
@@ -112,18 +109,10 @@ binary_sensor.blitzwolf_bw_shp6_ecf9ea_status:
   friendly_name: "BlitzWolf BW-SHP6 [ECF9EA]"
 binary_sensor.blitzwolf_bw_shp6_ed007d_status:
   friendly_name: "BlitzWolf BW-SHP6 [ED007D]"
-binary_sensor.shelly_plus_i4_09e6ac_status:
-  friendly_name: "Shelly Plus i4 [09E6AC]"
 binary_sensor.shelly_gas_c6811c_status:
   friendly_name: "Shelly Gas [C6811C]"
 binary_sensor.shelly_valve_2a544_status:
   friendly_name: "Shelly Valve [72A544]"
-binary_sensor.shelly_1_328900_status:
-  friendly_name: "Shelly 1 [328900]"
-binary_sensor.shelly_1l_4a262c9_status:
-  friendly_name: "Shelly 1L [4A262C]"
-binary_sensor.shelly_1_d42455_status:
-  friendly_name: "Shelly 1 [D42455]"
 binary_sensor.shelly_1l_ad365e_status:
   friendly_name: "Shelly 1L [AD365E]"
 binary_sensor.shelly_1l_aacec4_status:
@@ -134,18 +123,12 @@ binary_sensor.shelly_1l_61c9fd_status:
   friendly_name: "Shelly 1L [61C9FD]"
 binary_sensor.shelly_1l_aceb5f_status:
   friendly_name: "Shelly 1L [ACEB5F]"
-binary_sensor.shelly_1l_ad1b60_status:
-  friendly_name: "Shelly 1L [AD1B60]"
-binary_sensor.shelly_2_5b2604_status:
-  friendly_name: "Shelly 2 [5B2604]"
 binary_sensor.shelly_duo_5f6fa1_status:
   friendly_name: "Shelly DUO [5F6FA1]"
 binary_sensor.shelly_duo_rgbw_d4ecd3_status:
   friendly_name: "Shelly DUO RGBW [D4ECD3]"
 binary_sensor.shelly_vintage_d10472_status:
   friendly_name: "Shelly Vintage [D10472]"
-binary_sensor.shelly_pro_4pm_d8b95c_status:
-  friendly_name: "Shelly Pro 4PM [D8B95C]"
 binary_sensor.shelly_plug_s_7aecf4_status:
   friendly_name: "Shelly Plug S [7AECF4]"
 binary_sensor.shelly_ht_e00abd_status:
