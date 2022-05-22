@@ -1,18 +1,18 @@
 include:
   entities:
     - input_boolean.away_mode
-    - person.edyta
-    - person.maciek
     - person.antek
+    - person.edyta
     - person.grazyna
     - person.jerzy
+    - person.maciek
     - person.romana
+    - sensor.co2_salon
     - sensor.dark_sky_precip_probability
-    - sensor.humidity_outdoor
-    - sensor.pressure_outdoor
-    - sensor.temperature_outdoor
     - sensor.dark_sky_wind_speed
     - sensor.ha_database_size
-    - sensor.temperature_indoor
     - sensor.humidity_indoor
-    - sensor.co2_salon
+    - sensor.humidity_outdoor
+    - sensor.pressure_outdoor
+    - sensor.temperature_indoor
+    - sensor.temperature_outdoor
