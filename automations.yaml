@@ -206,7 +206,7 @@
     platform: state
     entity_id: sensor.ssl_certificate_expiry
     variables:
-        days: "{{ trigger.to_state.state | as_timestamp(0) - now() | as_timestamp // 86400 }}"
+      days: "{{ trigger.to_state.state | as_timestamp(0) - now() | as_timestamp // 86400 }}"
   condition:
     - "{{ 0 <= days < 14 }}"
   action:
@@ -392,8 +392,36 @@
     platform: time_pattern
     minutes: "/10"
   variables:
-    domains: ["climate", "light", "switch", "sensor", "fan", "binary_sensor", "media_player", "humidifier"]
-    rooms: ["korytarz", "przedpokoj", "goscinny", "pracownia", "kuchnia", "salon", "schody", "antresola", "gabinet", "pralnia", "antek", "sypialnia", "lazienka", "balkon", "indoor", "outdoor"]
+    domains:
+      [
+        "climate",
+        "light",
+        "switch",
+        "sensor",
+        "fan",
+        "binary_sensor",
+        "media_player",
+        "humidifier",
+      ]
+    rooms:
+      [
+        "korytarz",
+        "przedpokoj",
+        "goscinny",
+        "pracownia",
+        "kuchnia",
+        "salon",
+        "schody",
+        "antresola",
+        "gabinet",
+        "pralnia",
+        "antek",
+        "sypialnia",
+        "lazienka",
+        "balkon",
+        "indoor",
+        "outdoor",
+      ]
     ignored: ["media_player.dune_salon", "media_player.mibox_goscinny"]
     dead_unavailable_states: ["dead", "unavailable"]
   condition: >
@@ -425,7 +453,7 @@
           Następujące urządzenia/encje mają nieprawidłowe stany:
           {% for entity in entities %}
             {% if entity %}<br>- {{ entity }}{% endif %}
-          {% endfor %} 
+          {% endfor %}
         tag: "notification-dead-unavailable"
         group: "other"
         services:
@@ -842,13 +870,13 @@
       entity_id: input_boolean.away_mode
       state: "off"
     - service: xiaomi_aqara.play_ringtone
-      data: 
+      data:
         gw_mac: f0b429cc6f0b
         ringtone_id: 2
         ringtone_vol: 20
     - delay: "00:00:05"
     - service: xiaomi_aqara.play_ringtone
-      data: 
+      data:
         gw_mac: f0b429cc6f0b
         ringtone_id: 2
         ringtone_vol: 20
@@ -1016,7 +1044,7 @@
     - service: python_script.notify
       data:
         title: "Otwarte okna"
-        message: "Okna w pustym mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów wynosi {{ states('sensor.dark_sky_precip_probability') }}%."
+        message: "Okna w pustym mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów wynosi {{ states('sensor.dark_sky_precip_probability') | int }}%."
         tag: "notification-windows-weather"
         group: "windows"
         priority: "high"
@@ -1498,7 +1526,6 @@
     service: light.turn_off
     target:
       entity_id: light.tree_antek
-
 
 - id: light_turn_on_adaptive_lightning_at_start
   alias: "Light Turn On Adaptive Lightning At Start"
@@ -2083,7 +2110,6 @@
     target:
       entity_id: light.ceiling_antek
 
-
 - id: light_turn_off_antek_lights_when_no_motion
   alias: "Light Turn Off Antek Lights When No Motion"
   description: "wyłącz światła w pokoju Antka jak brak ruchu przez 20 min"
@@ -2614,7 +2640,7 @@
     - condition: state
       entity_id: media_player.playstation_salon
       state: "idle"
-    - service:  media_player.turn_off
+    - service: media_player.turn_off
       target:
         entity_id: media_player.playstation_salon
 
@@ -3132,38 +3158,38 @@
     - platform: homeassistant
       event: start
   variables:
-    device_info_payload:  "{{ {'id': 1, 'src':'shellies_discovery', 'method':'Shelly.GetConfig'} | to_json }}"
+    device_info_payload: "{{ {'id': 1, 'src':'shellies_discovery', 'method':'Shelly.GetConfig'} | to_json }}"
   action:
     - service: mqtt.publish
       data:
         topic: "shellyplus1pm-a8032ab22864/rpc"
         payload: "{{ device_info_payload }}"
-      
+
 - id: shellies_discovery_gen2
   alias: "Shellies Discovery Gen2"
   mode: queued
   max: 999
   trigger:
-  - platform: mqtt
-    topic: shellies_discovery/rpc
+    - platform: mqtt
+      topic: shellies_discovery/rpc
   action:
-  - service: python_script.shellies_discovery_gen2
-    data:
-      id: "{{ trigger.payload_json.src }}"
-      device_config: "{{ trigger.payload_json.result }}"
+    - service: python_script.shellies_discovery_gen2
+      data:
+        id: "{{ trigger.payload_json.src }}"
+        device_config: "{{ trigger.payload_json.result }}"
 
 - id: shellies_status_gen2
   alias: "Shellies Status Gen2"
   trigger:
-  - platform: time_pattern
-    minutes: "/15"
-  - platform: homeassistant
-    event: start
+    - platform: time_pattern
+      minutes: "/15"
+    - platform: homeassistant
+      event: start
   action:
-  - service: mqtt.publish
-    data:
-      topic: shellyplus1pm-a8032ab22864/rpc
-      payload: "{{ {'id': 1, 'src':'shellyplus1pm-a8032ab22864/status', 'method':'Shelly.GetStatus'} | to_json }}"
+    - service: mqtt.publish
+      data:
+        topic: shellyplus1pm-a8032ab22864/rpc
+        payload: "{{ {'id': 1, 'src':'shellyplus1pm-a8032ab22864/status', 'method':'Shelly.GetStatus'} | to_json }}"
 
 - id: hassio_backup
   alias: "Hassio Backup"

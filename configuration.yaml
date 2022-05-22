@@ -77,8 +77,6 @@ lovelace:
     - url: /hacsfiles/lovelace-canary/canary.js
       type: module
 
-media_player: !include media_player.yaml
-
 python_script:
 
 scene: !include scenes.yaml

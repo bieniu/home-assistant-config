@@ -166,7 +166,6 @@ for item in services:
             service_data[ATTR_DATA][ATTR_IMAGE] = image
 
         logger.debug(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
-        logger.error(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
 
         if not develop:
             hass.services.call(
