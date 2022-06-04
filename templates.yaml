@@ -352,6 +352,10 @@
       unique_id: "shelly_plus_1pm_948ff8_status"
       state: "{{ is_state('device_tracker.shelly_plus_1pm_948ff8', 'home') }}"
 
+    - name: shelly_pro_1pm_80e0c0_status
+      unique_id: "shelly_pro_1pm_80e0c0_status"
+      state: "{{ is_state('device_tracker.shelly_pro_1pm_80e0c0', 'home') }}"
+
     - name: shelly_25_77dbe5_status
       unique_id: "shelly_25_77dbe5_status"
       state: "{{ is_state('device_tracker.shelly_25_77dbe5', 'home') }}"

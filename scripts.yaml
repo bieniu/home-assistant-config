@@ -4,28 +4,28 @@ devices_away_mode:
     data: {}
     target:
       entity_id:
-        - light.ceiling_antek
-        - light.ceiling_gabinet
-        - light.ceiling_korytarz
-        - light.ceiling_kuchnia
-        - light.ceiling_lazienka
-        - light.ceiling_przedpokoj
-        - light.ceiling_salon
-        - light.ceiling_toaleta
-        - light.desk_lamp_antek
-        - light.desk_lamp_gabinet
-        - light.gateway_antresola
-        - light.gateway_goscinny
-        - light.lamp_gabinet
-        - light.lamp_pracownia
-        - light.lamp_salon
-        - light.leds_przedpokoj
-        - light.leds_salon
-        - light.leds_schody
-        - light.lightstrip_antek
-        - light.lightstrip_sypialnia
-        - light.scone_schody
-        - light.tree_antek
+      - light.ceiling_antek
+      - light.ceiling_gabinet
+      - light.ceiling_korytarz
+      - light.ceiling_kuchnia
+      - light.ceiling_lazienka
+      - light.ceiling_przedpokoj
+      - light.ceiling_salon
+      - light.ceiling_toaleta
+      - light.desk_lamp_antek
+      - light.desk_lamp_gabinet
+      - light.gateway_antresola
+      - light.gateway_goscinny
+      - light.lamp_gabinet
+      - light.lamp_pracownia
+      - light.lamp_salon
+      - light.leds_przedpokoj
+      - light.leds_salon
+      - light.leds_schody
+      - light.lightstrip_antek
+      - light.lightstrip_sypialnia
+      - light.scone_schody
+      - light.tree_antek
   - service: homeassistant.turn_off
     target:
       entity_id:
