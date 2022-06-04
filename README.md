@@ -6,15 +6,12 @@
 
 ## Server
 
-* Intel NUC NUC5CPYH [Debian Buster]
+* Intel NUC NUC5CPYH [Debian]
 * Home Assistant Supervised installation
 
 ## Z-Wave Devices
 
 * Aeotec ZW090 Z-Stick Gen5
-* Aeotec ZW175 Smart Switch 7
-* Aeotec ZWA021 Thermostat
-* Danfoss 014G0013 Thermostats
 
 ## Xiaomi ZigBee Devices
 
@@ -30,17 +27,21 @@
 * Xiaomi Yeelight Lightstrips [YLDD01YL]
 * Xiaomi Mi Led Desk Lamp 1S [MJTD01SYL]
 * [Shelly DUO](https://shelly.cloud/products/shelly-duo-smart-home-automation-bulb/)
+* [Shelly DUO RGBW](https://shelly.cloud/products/shelly-bulb-smart-home-automation-device/)
+* [Shelly Vintage](https://shelly.cloud/products/shelly-vintage-smart-home-automation-bulb/)
 
 ## Relays
 
+* Aeotec ZW175 Smart Switch 7
 * Sonoff Basic Relays [[ESPHome](https://esphome.io) firmware]
 * Sonoff S26 Plug [[ESPHome](https://esphome.io) firmware]
 * BlitzWolf BW-SHP6 Plugs [[ESPHome](https://esphome.io) firmware]
-* [Shelly 1](https://shelly.cloud/products/shelly-1-smart-home-automation-relay/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
+* [Shelly 1PM](https://shelly.cloud/products/shelly-1pm-smart-home-automation-relay/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Shelly 1L](https://shelly.cloud/products/shelly-1l-single-wire-smart-home-automation-relay/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
-* Shelly 2 via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
+* [Shelly 2.5](https://shelly.cloud/products/shelly-25-smart-home-automation-relay/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Shelly Plug S](https://shelly.cloud/products/shelly-plug-s-smart-home-automation-device/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
-* Shelly Pro 4PM
+* [Shelly Pro 1PM](https://shelly.cloud/shelly-pro-smart-home-automation-solution/#Pro-1PM) via [Shellies Discovery Gen2](https://github.com/bieniu/ha-shellies-discovery-gen2)
+* [Shelly Plus 1PM](https://shelly.cloud/shelly-plus-1pm/) via [Shellies Discovery Gen2](https://github.com/bieniu/ha-shellies-discovery-gen2)
 
 ## Sensors
 
@@ -48,7 +49,14 @@
 * [Shelly H&T](https://shelly.cloud/products/shelly-humidity-temperature-smart-home-automation-sensor/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Shelly Flood](https://shelly.cloud/products/shelly-flood-smart-home-automation-sensor/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Shelly Motion](https://shelly.cloud/ifa-2020-products/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
+* [Shelly Gas](https://shelly.cloud/products/shelly-gas-smart-home-automation-sensor/)
 * [Nettigo Air Monitor](https://air.nettigo.pl/?lang=en)
+
+## Thermostats
+
+* Aeotec ZWA021
+* Danfoss 014G0013
+* [Shelly Valve](https://shelly.cloud/shelly-thermostatic-radiator-valve/)
 
 ## Other Integrated Devices
 
@@ -69,6 +77,8 @@
 * Xiaomi DaFang [camera with [custom firmware](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks)]
 * Sony Bravia TV
 * Amazon Echo Plus/Dot/Show [via Home Assistant Cloud]
+* Tractive tracker for dog
+* BMW car
 
 ## Home Assistant Custom Components
 
