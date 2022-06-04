@@ -49,14 +49,14 @@
 * [Shelly H&T](https://shelly.cloud/products/shelly-humidity-temperature-smart-home-automation-sensor/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Shelly Flood](https://shelly.cloud/products/shelly-flood-smart-home-automation-sensor/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Shelly Motion](https://shelly.cloud/ifa-2020-products/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
-* [Shelly Gas](https://shelly.cloud/products/shelly-gas-smart-home-automation-sensor/)
+* [Shelly Gas](https://shelly.cloud/products/shelly-gas-smart-home-automation-sensor/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Nettigo Air Monitor](https://air.nettigo.pl/?lang=en)
 
 ## Thermostats
 
 * Aeotec ZWA021
 * Danfoss 014G0013
-* [Shelly Valve](https://shelly.cloud/shelly-thermostatic-radiator-valve/)
+* [Shelly Valve](https://shelly.cloud/shelly-thermostatic-radiator-valve/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 
 ## Other Integrated Devices
 
