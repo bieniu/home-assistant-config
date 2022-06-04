@@ -79,6 +79,7 @@
 * Amazon Echo Plus/Dot/Show [via Home Assistant Cloud]
 * Tractive tracker for dog
 * BMW car
+* Asus RT-AC86U router
 
 ## Home Assistant Custom Components
 
