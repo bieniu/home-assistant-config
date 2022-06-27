@@ -87,6 +87,8 @@ sensor: !include sensors.yaml
 
 switch: !include switches.yaml
 
+fan: !include fans.yaml
+
 template: !include templates.yaml
 
 shell_command:

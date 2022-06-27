@@ -379,8 +379,38 @@
   alias: Notification dead or unavailable
   description: powiadom o encji ze stanem dead/unavailable
   trigger:
-    platform: time_pattern
+  - platform: time_pattern
     minutes: /10
+  condition:
+  - condition: template
+    value_template: "{% macro dead_unavailable_entities() %}\n  {% for domain in domains\
+      \ %}\n    {% for room in rooms %}\n      {% for item in states[domain] if (room\
+      \ in item.entity_id or 'node' in item.entity_id) and not (item.entity_id in\
+      \ ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and\
+      \ item.state is defined and item.state in reported_states %}\n        {{ item.entity_id\
+      \ }}\n      {% endfor %}\n    {% endfor %}\n  {% endfor %}\n{% endmacro %} {{\
+      \ dead_unavailable_entities() | trim != \"\" }}\n"
+  action:
+  - service: python_script.notify
+    data:
+      title: Urządzenie/encja z nieprawidłowym stanem
+      message: '{% macro dead_unavailable_entities() %}{% for domain in domains %}{%
+        for room in rooms %}{% for item in states[domain] if (room in item.entity_id
+        or ''node'' in item.entity_id) and not (item.entity_id in ignored or ''battery''
+        in item.entity_id or ''status'' in item.entity_id) and item.state is defined
+        and item.state in reported_states %}{% if device_attr(item.entity_id, ''name_by_user'')
+        %}{{ device_attr(item.entity_id, ''name_by_user'') }}{% if area_name(item.entity_id)
+        %}, {{ area_name(item.entity_id) }}{% endif %}|{% else %}{{ item.name }}{%
+        if area_name(item.entity_id) %}, {{ area_name(item.entity_id) }}{% endif %}
+        ({{ item.entity_id }})|{% endif %}{% endfor %}{% endfor %}{% endfor %}{% endmacro
+        %}{% set entities = dead_unavailable_entities().split(''|'') | unique | list
+        %} Następujące urządzenia/encje mają nieprawidłowe stany: {% for entity in
+        entities %}{% if entity %}<br> - {{ entity }}{% endif %}{% endfor %}'
+      tag: notification-dead-unavailable
+      group: other
+      services:
+      - service: notify.mobile_app_oneplus_6
+        type: android
   variables:
     domains:
     - climate
@@ -411,41 +441,10 @@
     ignored:
     - media_player.dune_salon
     - media_player.mibox_goscinny
-    dead_unavailable_states:
+    reported_states:
     - dead
     - unavailable
-  condition: "{% macro dead_unavailable_entities() %}\n  {% for domain in domains\
-    \ %}\n    {% for item in states[domain] if (item.entity_id.split(\".\")[-1].split(\"\
-    _\")[-1] in rooms or item.entity_id.split(\".\")[-1].split(\"_\")[-2] in rooms\
-    \ or \"node\" in item.entity_id) and not (item.entity_id in ignored or \"battery\"\
-    \ in item.entity_id or \"status\" in item.entity_id) and item.state is defined\
-    \ and item.state in dead_unavailable_states %}\n      {{ item.entity_id }}\n \
-    \   {% endfor %}\n  {% endfor %}\n{% endmacro %} {{ dead_unavailable_entities()\
-    \ | trim != \"\" }}\n"
-  action:
-  - service: python_script.notify
-    data:
-      title: Urządzenie/encja z nieprawidłowym stanem
-      message: "{%- macro dead_unavailable_entities() -%}\n  {%- for domain in domains\
-        \ -%}\n    {%- for item in states[domain] if (item.entity_id.split(\".\")[-1].split(\"\
-        _\")[-1] in rooms or item.entity_id.split(\".\")[-1].split(\"_\")[-2] in rooms\
-        \ or \"node\" in item.entity_id) and not (item.entity_id in ignored or \"\
-        battery\" in item.entity_id or \"status\" in item.entity_id) and item.state\
-        \ is defined and item.state in dead_unavailable_states -%}\n      {%- if device_attr(item.entity_id,\
-        \ \"name_by_user\") -%}\n        {{ device_attr(item.entity_id, \"name_by_user\"\
-        ) }}{% if area_name(item.entity_id) %}, {{ area_name(item.entity_id) }}{%\
-        \ endif %}|\n      {%- else -%}\n        {{ item.name }}{% if area_name(item.entity_id)\
-        \ %}, {{ area_name(item.entity_id) }}{% endif %} ({{ item.entity_id }})|\n\
-        \      {%- endif -%}\n    {%- endfor -%}\n  {%- endfor -%}\n{%- endmacro -%}\
-        \ {%- set entities = dead_unavailable_entities().split(\"|\") | unique | list\
-        \ -%} Następujące urządzenia/encje mają nieprawidłowe stany: {% for entity\
-        \ in entities %}\n  {% if entity %}<br>- {{ entity }}{% endif %}\n{% endfor\
-        \ %}"
-      tag: notification-dead-unavailable
-      group: other
-      services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+    - unknown
 - id: notification_humidifier_low_water
   alias: Notification Humidifier Low Water
   description: powiadom o małej ilości wody w nawilżaczu
@@ -900,31 +899,32 @@
   alias: Notification Low Battery
   description: powiadom o niskim poziomie naładowania baterii
   trigger:
-    platform: time
+  - platform: time
     at: '18:00:00'
-  condition: "{% macro battery_level() %}\n  {%- set threshold = 10 -%}\n  {%- set\
-    \ domains = ['sensor', 'binary_sensor'] -%}\n  {% for domain in domains -%}\n\
-    \    {% for item in states[domain] if item.attributes.device_class == \"battery\"\
-    \ and item.attributes.unit_of_measurement == \"%\" and item.state | int(0) < threshold\
-    \ -%}\n      {{ item.entity_id }}\n    {% endfor %}\n  {%- endfor %}\n{% endmacro\
-    \ %} {{ battery_level() | trim != '' }}\n"
+  condition:
+  - condition: template
+    value_template: "{% macro battery_level() %}\n  {% for item in states['sensor']\
+      \ if item.attributes.device_class == 'battery' and item.attributes.unit_of_measurement\
+      \ == '%' and item.state | int(0) < threshold %}\n    {{ item.entity_id }}\n\
+      \  {% endfor %}\n{% endmacro %} {{ battery_level() | trim != '' }}\n"
   action:
   - service: python_script.notify
     data:
       title: Niski poziom naładowania baterii
-      message: "{% macro battery_level() %}\n  {%- set threshold = 10 -%}\n  {%- set\
-        \ domains = ['sensor'] -%}\n  {% for domain in domains -%}\n    {% for item\
-        \ in states[domain] if item.attributes.device_class == \"battery\" and item.attributes.unit_of_measurement\
-        \ == \"%\" and item.state | int(0) < threshold -%}\n      <br>- {{ device_attr(item.entity_id,\
-        \ 'name_by_user') }}{% if area_name(item.entity_id) %}, {{ area_name(item.entity_id)\
-        \ }}{% endif %} [{{ item.state | round(0, 'unknown') }}%]\n    {% endfor %}\n\
-        \  {%- endfor %}\n{% endmacro %} W następujących urządzeniach jest niski poziom\
-        \ naładowania baterii: {{ battery_level() }}\n"
+      message: '{% macro battery_level() %}{% for item in states[''sensor''] if item.attributes.device_class
+        == ''battery'' and item.attributes.unit_of_measurement == ''%'' and item.state
+        | int(0) < threshold %}<br> - {{ device_attr(item.entity_id, ''name_by_user'')
+        }}{% if area_name(item.entity_id) %}, {{ area_name(item.entity_id) }}{% endif
+        %} [{{ item.state | round(0, ''unknown'') }}%]{% endfor %}{% endmacro %} W
+        następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level()
+        }}'
       tag: notification-low-battery
       group: other
       services:
       - service: notify.mobile_app_oneplus_6
         type: android
+  variables:
+    threshold: 20
 - id: presence_edyta_far_from_home
   alias: Presence Edyta Far From Home
   description: Edyta daleko od domu
@@ -1102,6 +1102,26 @@
     state: 'off'
   action:
     service: script.heating_night
+- id: turn_off_ceiling_fan_for_night
+  alias: Turn Off Ceiling Fan For Night
+  description: wyłącz wentylator sufirowy na noc
+  trigger:
+    platform: state
+    entity_id: light.ceiling_salon
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: fan.ceiling_salon
+    state: 'on'
+  - condition: state
+    entity_id: media_player.denon_salon
+    state: 'off'
+  - condition: state
+    entity_id: media_player.bravia_salon
+    state: 'off'
+  action:
+  - service: fan.turn_off
+    entity_id: fan.ceiling_salon
 - id: heating_night_salon_and_kuchnia
   alias: Heating Night Salon and Kuchnia
   description: przejdź na ogrzewanie nocne po wyłączeniu telewizora
@@ -1518,13 +1538,17 @@
     - condition: state
       entity_id: light.lamp_salon
       state: 'on'
+    - condition: state
+      entity_id: fan.ceiling_salon
+      state: 'on'
   action:
-    service: light.turn_off
+    service: homeassistant.turn_off
     target:
       entity_id:
       - light.ceiling_salon
       - light.leds_salon
       - light.lamp_salon
+      - fan.ceiling_salon
 - id: light_scene_salon_auto_when_bulbs_turn_on
   alias: Light Scene Salon Auto When Bulbs Turn On
   description: wybierz automatyczną scenę oświetlenia w salonie po włączeniu światła
@@ -1589,9 +1613,9 @@
           entity_id: light.ceiling_salon
     - conditions: '{{ trigger.event.data.click_type == ''hold'' }}'
       sequence:
-        service: light.toggle
+        service: fan.toggle
         target:
-          entity_id: light.leds_salon
+          entity_id: fan.ceiling_salon
 - id: light_turn_on_salon_lamp_when_dark_and_motion
   alias: Light Turn On Salon Lamp When Dark And Motion
   description: włącz lampę w salonie jak pojawi się ruch i jest ciemno

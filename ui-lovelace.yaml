@@ -161,7 +161,7 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_salon
-              - switch.ceiling_fan_salon
+              - fan.ceiling_salon
               - type: conditional
                 conditions:
                   - entity: input_boolean.heating_season
@@ -413,7 +413,6 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_gabinet
-              - fan.pedestal_gabinet
               - light.ceiling_gabinet
               - light.lamp_gabinet
               - light.desk_lamp_gabinet
@@ -483,6 +482,7 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_antek
+              - fan.pedestal_antek
               - light.ceiling_antek
               - light.desk_lamp_antek
               - light.lightstrip_antek

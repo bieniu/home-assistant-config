@@ -187,9 +187,6 @@ sensor.dark_sky_wind_speed:
 sensor.minecraft_server_players_online:
   unit_of_measurement: " "
 
-switch.ceiling_fan_salon:
-  assumed_state: false
-
 sensor.dishwasher_kuchnia:
   friendly_name: "Zmywarka"
 

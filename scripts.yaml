@@ -1,6 +1,6 @@
 devices_away_mode:
   sequence:
-  - service: light.turn_off
+  - service: homeassistant.turn_off
     data: {}
     target:
       entity_id:
@@ -26,13 +26,10 @@ devices_away_mode:
       - light.lightstrip_sypialnia
       - light.scone_schody
       - light.tree_antek
-  - service: homeassistant.turn_off
-    target:
-      entity_id:
-      - fan.pedestal_gabinet
+      - fan.pedestal_antek
+      - fan.ceiling_salon
       - humidifier.xiaomi_salon
       - input_boolean.antek_lamp_night
-    data: {}
   mode: single
   alias: 'Devices: away mode'
   icon: mdi:home-export-outline
@@ -280,9 +277,11 @@ restart_wifi_devices:
   sequence:
   - service: button.press
     entity_id:
+    - button.blitzwolf_bw_shp6_17957c_restart
+    - button.blitzwolf_bw_shp6_2ad05a_restart
     - button.blitzwolf_bw_shp6_3766eb_restart
+    - button.blitzwolf_bw_shp6_ecf9ea_restart
     - button.blitzwolf_bw_shp6_ed007d_restart
-    - button.wemos_d1_mini_1c91ea_restart
     - button.nettigo_air_monitor_restart
     - button.shelly_1l_253d92_restart
     - button.shelly_1l_61c9fd_restart
@@ -296,11 +295,13 @@ restart_wifi_devices:
     - button.shelly_duo_5f6fa1_restart
     - button.shelly_duo_rgbw_d4ecd3_restart
     - button.shelly_gas_c6811c_restart
+    - button.shelly_motion_2_72a6a4_restart
+    - button.shelly_motion_c67c2a_restart
     - button.shelly_plug_s_7aecf4_restart
-    - button.shelly_plus_1pm_948ff8_restart
     - button.shelly_plus_1pm_b22864_restart
+    - button.shelly_pro_1pm_80e0c0_restart
     - button.shelly_valve_72a544_restart
     - button.shelly_vintage_d10472_restart
-  - service: shell_command.restart_shelly_devices
+    - button.wemos_d1_mini_1c91ea_restart
   mode: single
   icon: mdi:restart

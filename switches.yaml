@@ -11,22 +11,6 @@
 
 - platform: template
   switches:
-    ceiling_fan_salon:
-      unique_id: "ceiling_fan_salon"
-      friendly_name: "Wentylator"
-      turn_on:
-        service: remote.send_command
-        entity_id: remote.salon
-        data:
-          device: "Wentylator"
-          command: "Speed 1"
-      turn_off:
-        service: remote.send_command
-        entity_id: remote.salon
-        data:
-          device: "Wentylator"
-          command: "Stop"
-
     heater_lazienka:
       value_template: "{{ is_state_attr('climate.thermostat_lazienka', 'temperature', 28) }}"
       turn_on:

@@ -3,3 +3,5 @@ logs:
   slixmpp.stringprep: error
   androidtv.adb_manager.adb_manager_async: error
   homeassistant.components.androidtv.media_player: error
+  custom_components.nextdns: debug
+  nextdns: info

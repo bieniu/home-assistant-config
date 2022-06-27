@@ -1,0 +1,50 @@
+- platform: template
+  fans:
+    ceiling_salon:
+      unique_id: "ceiling_salon"
+      friendly_name: "Wentylator"
+      value_template: >-
+        {% if states("sensor.power_ceiling_fan_salon") | int(0) >= 25 %}
+          on
+        {% else %}
+          off
+        {% endif %}
+      percentage_template: >-
+        {% set fan_power = states("sensor.power_ceiling_fan_salon") | int(0) %}
+        {% if fan_power < 25 %}
+          0
+        {% elif fan_power >= 25 and fan_power <= 27 or fan_power >= 33 and fan_power <= 45 %}
+          33
+        {% elif fan_power >= 53 and fan_power <= 58 or fan_power >= 61 and fan_power <= 73 %}
+          66
+        {% elif fan_power >= 94 %}
+          100
+        {% endif %}
+      turn_on:
+        service: remote.send_command
+        entity_id: remote.salon
+        data:
+          device: "Wentylator"
+          command: "Speed 1"
+      turn_off:
+        service: remote.send_command
+        entity_id: remote.salon
+        data:
+          device: "Wentylator"
+          command: "Stop"
+      set_percentage:
+        service: remote.send_command
+        entity_id: remote.salon
+        data:
+          device: "Wentylator"
+          command: >-
+            {% if percentage == 0 %}
+              Stop
+            {% elif percentage == 33 %}
+              Speed 1
+            {% elif percentage == 66 %}
+              Speed 2
+            {% elif percentage == 100 %}
+              Speed 3
+            {% endif %}
+      speed_count: 3
