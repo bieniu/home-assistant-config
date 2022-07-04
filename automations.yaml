@@ -65,57 +65,6 @@
   action:
     service: remote.turn_off
     entity_id: remote.salon
-- id: notification_forward_persistant_notification_to_the_phone
-  alias: Notification Forward Persistant Notification To The Phone
-  description: przekaż persitant_notification na telefon
-  trigger:
-    platform: event
-    event_type: call_service
-    event_data:
-      domain: persistent_notification
-      service: create
-  action:
-    service: python_script.notify
-    data:
-      title: '{{ trigger.event.data.service_data.title }}'
-      message: '{{ trigger.event.data.service_data.message }}'
-      tag: '{{ trigger.event.data.service_data.notification_id }}'
-      group: persistan_notification
-      services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
-- id: notification_dismiss_forwarded_persistant_notification_on_the_phone
-  alias: Notification Dismiss Forwarded Persistant Notification On The Phone
-  description: usuń przekazane persitant_notification z telefonu
-  trigger:
-    platform: event
-    event_type: call_service
-    event_data:
-      domain: persistent_notification
-      service: dismiss
-  condition: '{{ trigger.event.data.service_data.notification_id != ''config_entry_discovery''
-    }}'
-  action:
-    service: python_script.notify
-    data:
-      title: clear_notification
-      message: clear_notification
-      tag: '{{ trigger.event.data.service_data.notification_id }}'
-      services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
-- id: notification_dismiss_persistant_notification_after_dismiss_on_the_phone
-  alias: Notification Dismiss Persistant Notification After Dimiss On The Phone
-  description: usuń persitant_notification po usunięciu na telefonie
-  trigger:
-    platform: event
-    event_type: mobile_app_notification_cleared
-    event_data:
-      device_id: 9d5ca9a741416fa4
-  action:
-    service: persistent_notification.dismiss
-    data:
-      notification_id: '{{ trigger.event.context.id }}'
 - id: notification_update_platform
   alias: Notification Update Platform
   trigger:
@@ -3031,27 +2980,47 @@
         relay-0: light
       ignored_devices:
       - shellycolorbulb-E868E7C6811C
-- id: shellies_announce_gen2
-  alias: Shellies Announce Gen2
+- id: shellies_announce_status_gen2
+  alias: Shellies Announce and Status Gen2
   trigger:
   - platform: homeassistant
     event: start
+    id: homeassistant_start
+  - platform: time_pattern
+    minutes: /15
+    id: interval
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: homeassistant_start
+      sequence:
+      - repeat:
+          for_each: '{{ device_ids }}'
+          sequence:
+          - service: mqtt.publish
+            data:
+              topic: '{{ repeat.item }}/rpc'
+              payload: '{{ device_info_payload }}'
+    - conditions:
+      - condition: trigger
+        id: interval
+      sequence:
+      - repeat:
+          for_each: '{{ device_ids }}'
+          sequence:
+          - service: mqtt.publish
+            data:
+              topic: '{{ repeat.item }}/rpc'
+              payload: '{{ {''id'': 1, ''src'': repeat.item + ''/status'', ''method'':''Shelly.GetStatus''}
+                | to_json }}'
   variables:
     device_info_payload: '{{ {''id'': 1, ''src'':''shellies_discovery'', ''method'':''Shelly.GetConfig''}
       | to_json }}'
-  action:
-  - service: mqtt.publish
-    data:
-      topic: shellyplus1pm-a8032ab22864/rpc
-      payload: '{{ device_info_payload }}'
-  - service: mqtt.publish
-    data:
-      topic: shellyplusht-30839809e018/rpc
-      payload: '{{ device_info_payload }}'
-  - service: mqtt.publish
-    data:
-      topic: shellypro1pm-30c6f780e0c0/rpc
-      payload: '{{ device_info_payload }}'
+    device_ids:
+    - shellyplus1pm-a8032ab22864
+    - shellyplusht-30839809e018
+    - shellypro1pm-30c6f780e0c0
 - id: shellies_discovery_gen2
   alias: Shellies Discovery Gen2
   mode: queued
@@ -3064,24 +3033,6 @@
     data:
       id: '{{ trigger.payload_json.src }}'
       device_config: '{{ trigger.payload_json.result }}'
-- id: shellies_status_gen2
-  alias: Shellies Status Gen2
-  trigger:
-  - platform: time_pattern
-    minutes: /15
-  - platform: homeassistant
-    event: start
-  action:
-  - service: mqtt.publish
-    data:
-      topic: shellyplus1pm-a8032ab22864/rpc
-      payload: '{{ {''id'': 1, ''src'':''shellyplus1pm-a8032ab22864/status'', ''method'':''Shelly.GetStatus''}
-        | to_json }}'
-  - service: mqtt.publish
-    data:
-      topic: shellypro1pm-30c6f780e0c0/rpc
-      payload: '{{ {''id'': 1, ''src'':''shellypro1pm-30c6f780e0c0/status'', ''method'':''Shelly.GetStatus''}
-        | to_json }}'
 - id: hassio_backup
   alias: Hassio Backup
   description: wykonaj hassio backup
