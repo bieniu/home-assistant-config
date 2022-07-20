@@ -25,6 +25,7 @@ data:
 """
 ATTR_ACTIONS = "actions"
 ATTR_ANDROID = "android"
+ATTR_BADGE = "badge"
 ATTR_APNS_COLLAPSE_ID = "apns-collapse-id"
 ATTR_APNS_HEADERS = "apns_headers"
 ATTR_ATTACHMENT = "attachment"
@@ -44,6 +45,7 @@ ATTR_PUSH = "push"
 ATTR_RECIPIENT = "recipient"
 ATTR_SMS = "sms"
 ATTR_SERVICE = "service"
+ATTR_SOUND = "sound"
 ATTR_TAG = "tag"
 ATTR_THREAD_ID = "thread-id"
 ATTR_TITLE = "title"
@@ -102,28 +104,24 @@ if data.get(CONF_DEVELOP) == True:
 for item in services:
     if item[ATTR_TYPE] == ATTR_IOS:
         service_data = {ATTR_TITLE: title, ATTR_MESSAGE: message}
+        service_data[ATTR_DATA] = {}
+        service_data[ATTR_DATA][ATTR_PUSH] = {}
+        service_data[ATTR_DATA][ATTR_PUSH][ATTR_BADGE] = 1
+        service_data[ATTR_DATA][ATTR_PUSH][ATTR_SOUND] = "Warsaw_Haptic.caf"
+
         if image:
-            if not service_data.get(ATTR_DATA):
-                service_data[ATTR_DATA] = {}
             service_data[ATTR_DATA][ATTR_ATTACHMENT] = {}
             service_data[ATTR_DATA][ATTR_ATTACHMENT][ATTR_URL] = image
             service_data[ATTR_DATA][ATTR_ATTACHMENT][ATTR_HIDE_THUMBNAIL] = ATTR_FALSE
         if group:
-            if not service_data.get(ATTR_DATA):
-                service_data[ATTR_DATA] = {}
-            service_data[ATTR_DATA][ATTR_PUSH] = {}
             service_data[ATTR_DATA][ATTR_PUSH][ATTR_THREAD_ID] = group
         if tag:
-            if not service_data.get(ATTR_DATA):
-                service_data[ATTR_DATA] = {}
             service_data[ATTR_DATA][ATTR_APNS_HEADERS] = {}
             service_data[ATTR_DATA][ATTR_APNS_HEADERS][ATTR_APNS_COLLAPSE_ID] = tag
         if url:
-            if not service_data.get(ATTR_DATA):
-                service_data[ATTR_DATA] = {}
             service_data[ATTR_DATA][ATTR_URL] = url
 
-        logger.debug(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
+        logger.error(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
 
         if not develop:
             hass.services.call(

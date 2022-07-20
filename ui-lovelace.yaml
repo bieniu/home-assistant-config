@@ -821,7 +821,7 @@ views:
         state_color: true
         <<: *network-status-card
         entities:
-          - binary_sensor.oneplus_status
+          - binary_sensor.iphone_13_status
           - binary_sensor.iphone_11_status
           - binary_sensor.iphone_8_plus_status
           - binary_sensor.ipad_status
@@ -1354,3 +1354,9 @@ views:
             show_header_toggle: false
             entities:
               - input_select.log_level
+          - type: statistics-graph
+            entities:
+              - sensor.dabrowskiego_dns_over_tls_queries
+          - type: statistics-graph
+            entities:
+              - sensor.dabrowskiego_dns_queries

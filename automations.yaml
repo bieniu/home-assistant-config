@@ -22,8 +22,8 @@
       group: other
       priority: high
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
 - id: minecraft_server_players_online_notification
   alias: Minecraft Server Players Online Notification
   description: powiadomienie o aktywnych graczach na serwerze Minecraft
@@ -35,9 +35,9 @@
     service: python_script.notify
     data:
       title: Gracze na serwerze Minecraft
-      message: "{% if trigger.to_state.state == 1 %}\n  Na serwerze Minecraft gra\
-        \ obecnie jeden gracz.\n{% else %}\n  Na serwerze Minecraft gra obecnie {{\
-        \ trigger.to_state.state }} graczy.\n{% endif %}"
+      message: "{% if trigger.to_state.state == 1 %}\n  Na serwerze Minecraft gra
+        obecnie jeden gracz.\n{% else %}\n  Na serwerze Minecraft gra obecnie {{ trigger.to_state.state
+        }} graczy.\n{% endif %}"
       tag: minecraft-server
       services:
       - service: notify.mobile_app_iphone_8_plus
@@ -116,8 +116,8 @@
       group: updates
       url: entityId:{{ trigger.entity_id }}
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
 - id: notification_high_ram_usage
   alias: Notification High RAM Usage
   description: powiadom o wysokim użyciu pamięci RAM
@@ -137,8 +137,8 @@
       group: other
       priority: high
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
 - id: notification_ssl_cert_expiry
   alias: Notification SSL Cert Expiry
   description: powiadom o wygasającym certyfikacie SSL
@@ -158,8 +158,8 @@
       tag: notification-ssl
       group: other
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
 - id: notification_shelly_update_available
   alias: Notification Shelly Update Available
   description: powiadom o aktualizacji oprogramowania Shelly
@@ -198,8 +198,8 @@
       tag: notification-{{ trigger.entity_id }}
       group: updates
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
 - id: notification_storm_comming
   alias: Notification Storm Comming
   description: powiadom o zblizającej się burzy
@@ -225,8 +225,8 @@
           message: '{{ notification_message }}'
           tag: '{{ notification_tag }}'
           services:
-          - service: notify.mobile_app_oneplus_6
-            type: android
+          - service: notify.mobile_app_iphone_13
+            type: ios
     - if:
         condition: state
         entity_id: person.edyta
@@ -271,8 +271,8 @@
       tag: notification-dishwasher
       group: other
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
       - service: notify.mobile_app_iphone_11
         type: ios
 - id: notification_desktop_computer_turned_on
@@ -301,8 +301,8 @@
       - title: Wyłącz
         action: '{{ turn_off_action }}'
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
   - wait_for_trigger:
       platform: event
       event_type: mobile_app_notification_action
@@ -318,8 +318,8 @@
       message: clear_notification
       tag: '{{ notification_tag }}'
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
   variables:
     turn_off_action: TURN_OFF_DESKTOP
     notification_title: Komputer stacjonarny włączony
@@ -332,34 +332,34 @@
     minutes: /10
   condition:
   - condition: template
-    value_template: "{% macro dead_unavailable_entities() %}\n  {% for domain in domains\
-      \ %}\n    {% for room in rooms %}\n      {% for item in states[domain] if (room\
-      \ in item.entity_id or 'node' in item.entity_id) and not (item.entity_id in\
-      \ ignored or 'battery' in item.entity_id or 'status' in item.entity_id) and\
-      \ item.state is defined and item.state in reported_states %}\n        {{ item.entity_id\
-      \ }}\n      {% endfor %}\n    {% endfor %}\n  {% endfor %}\n{% endmacro %} {{\
-      \ dead_unavailable_entities() | trim != \"\" }}\n"
+    value_template: "{% macro dead_unavailable_entities() %}\n  {% for domain in domains
+      %}\n    {% for room in rooms %}\n      {% for item in states[domain] if (room
+      in item.entity_id or 'node' in item.entity_id) and not (item.entity_id in ignored
+      or 'battery' in item.entity_id or 'status' in item.entity_id) and item.state
+      is defined and item.state in reported_states %}\n        {{ item.entity_id }}\n
+      \     {% endfor %}\n    {% endfor %}\n  {% endfor %}\n{% endmacro %} {{ dead_unavailable_entities()
+      | trim != \"\" }}\n"
   action:
   - service: python_script.notify
     data:
       title: Urządzenie/encja z nieprawidłowym stanem
-      message: '{% macro dead_unavailable_entities() %}{% for domain in domains %}{%
+      message: "{% macro dead_unavailable_entities() %}{% for domain in domains %}{%
         for room in rooms %}{% for item in states[domain] if (room in item.entity_id
-        or ''node'' in item.entity_id) and not (item.entity_id in ignored or ''battery''
-        in item.entity_id or ''status'' in item.entity_id) and item.state is defined
-        and item.state in reported_states %}{% if device_attr(item.entity_id, ''name_by_user'')
-        %}{{ device_attr(item.entity_id, ''name_by_user'') }}{% if area_name(item.entity_id)
+        or 'node' in item.entity_id) and not (item.entity_id in ignored or 'battery'
+        in item.entity_id or 'status' in item.entity_id) and item.state is defined
+        and item.state in reported_states %}{% if device_attr(item.entity_id, 'name_by_user')
+        %}{{ device_attr(item.entity_id, 'name_by_user') }}{% if area_name(item.entity_id)
         %}, {{ area_name(item.entity_id) }}{% endif %}|{% else %}{{ item.name }}{%
         if area_name(item.entity_id) %}, {{ area_name(item.entity_id) }}{% endif %}
         ({{ item.entity_id }})|{% endif %}{% endfor %}{% endfor %}{% endfor %}{% endmacro
-        %}{% set entities = dead_unavailable_entities().split(''|'') | unique | list
+        %}{% set entities = dead_unavailable_entities().split('|') | unique | list
         %} Następujące urządzenia/encje mają nieprawidłowe stany: {% for entity in
-        entities %}{% if entity %}<br> - {{ entity }}{% endif %}{% endfor %}'
+        entities %}{% if entity %}\n - {{ entity }}{% endif %}{% endfor %}"
       tag: notification-dead-unavailable
       group: other
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
   variables:
     domains:
     - climate
@@ -435,8 +435,8 @@
           message: '{{ notification_message }}'
           tag: '{{ notification_tag }}'
           services:
-          - service: notify.mobile_app_oneplus_6
-            type: android
+          - service: notify.mobile_app_iphone_13
+            type: ios
   - choose:
       conditions:
         condition: state
@@ -504,8 +504,8 @@
           message: '{{ notification_message }}'
           tag: '{{ notification_tag }}'
           services:
-          - service: notify.mobile_app_oneplus_6
-            type: android
+          - service: notify.mobile_app_iphone_13
+            type: ios
   - choose:
       conditions:
         condition: state
@@ -553,8 +553,8 @@
       tag: notification-water-leak
       priority: high
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
       - service: notify.mobile_app_iphone_11
         type: ios
   - choose:
@@ -599,8 +599,8 @@
       tag: notification-relay-overpower-{{ trigger.entity_id }}
       priority: high
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
       - service: notify.mobile_app_iphone_11
         type: ios
   - choose:
@@ -651,8 +651,8 @@
       tag: notification-relay-overheating-{{ trigger.entity_id }}
       priority: high
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
       - service: notify.mobile_app_iphone_11
         type: ios
   - choose:
@@ -705,11 +705,11 @@
       tag: notification-motion-{{ area_name(trigger.entity_id) }}
       group: motion
       priority: high
-      image: "{% if area_name(trigger.entity_id) in [\"salon\", \"kuchnia\", \"przedpokój\"\
-        ] %}\n  /api/camera_proxy/camera.salon\n{% else %}\n  None\n{% endif %}"
+      image: "{% if area_name(trigger.entity_id) in [\"salon\", \"kuchnia\", \"przedpokój\"]
+        %}\n  /api/camera_proxy/camera.salon\n{% else %}\n  None\n{% endif %}"
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
       - service: notify.mobile_app_iphone_11
         type: ios
 - id: notification_window_opened_when_away_mode
@@ -745,8 +745,8 @@
       group: windows
       priority: high
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
       - service: notify.mobile_app_iphone_11
         type: ios
 - id: notification_balcony_door_pracownia_opened
@@ -770,8 +770,8 @@
       priority: high
       group: windows
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
       - service: notify.mobile_app_iphone_11
         type: ios
 - id: notification_gas_leak_kuchnia
@@ -791,8 +791,8 @@
       priority: high
       group: gas
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
       - service: notify.mobile_app_iphone_11
         type: ios
       - service: notify.mobile_app_iphone_8_plus
@@ -826,8 +826,8 @@
       tag: notification-synology-low-space
       group: other
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
 - id: notification_new_device
   alias: Notification New Device
   description: powiadom o wykryciu nowego urządzenia
@@ -842,8 +842,8 @@
       tag: notification-new-device
       group: other
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
 - id: notification_low_battery
   alias: Notification Low Battery
   description: powiadom o niskim poziomie naładowania baterii
@@ -852,26 +852,25 @@
     at: '18:00:00'
   condition:
   - condition: template
-    value_template: "{% macro battery_level() %}\n  {% for item in states['sensor']\
-      \ if item.attributes.device_class == 'battery' and item.attributes.unit_of_measurement\
-      \ == '%' and item.state | int(0) < threshold %}\n    {{ item.entity_id }}\n\
-      \  {% endfor %}\n{% endmacro %} {{ battery_level() | trim != '' }}\n"
+    value_template: "{% macro battery_level() %}\n  {% for item in states['sensor']
+      if item.attributes.device_class == 'battery' and item.attributes.unit_of_measurement
+      == '%' and item.state | int(0) < threshold %}\n    {{ item.entity_id }}\n  {%
+      endfor %}\n{% endmacro %} {{ battery_level() | trim != '' }}\n"
   action:
   - service: python_script.notify
     data:
       title: Niski poziom naładowania baterii
-      message: '{% macro battery_level() %}{% for item in states[''sensor''] if item.attributes.device_class
-        == ''battery'' and item.attributes.unit_of_measurement == ''%'' and item.state
-        | int(0) < threshold %}<br> - {{ device_attr(item.entity_id, ''name_by_user'')
+      message: "{% macro battery_level() %}{% for item in states['sensor'] if item.attributes.device_class
+        == 'battery' and item.attributes.unit_of_measurement == '%' and item.state
+        | int(0) < threshold %}\n - {{ device_attr(item.entity_id, 'name_by_user')
         }}{% if area_name(item.entity_id) %}, {{ area_name(item.entity_id) }}{% endif
-        %} [{{ item.state | round(0, ''unknown'') }}%]{% endfor %}{% endmacro %} W
-        następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level()
-        }}'
+        %} [{{ item.state | round(0, 'unknown') }}%]{% endfor %}{% endmacro %}W następujących
+        urządzeniach jest niski poziom naładowania baterii: {{ battery_level() }}"
       tag: notification-low-battery
       group: other
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
   variables:
     threshold: 20
 - id: presence_edyta_far_from_home
@@ -963,8 +962,8 @@
       group: windows
       priority: high
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
       - service: notify.mobile_app_iphone_11
         type: ios
 - id: presence_peoples_back
@@ -1213,8 +1212,8 @@
       tag: notification-fast-warm-up
       group: heating
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
       - service: notify.mobile_app_iphone_11
         type: ios
   - condition: '{{ states(''sensor.humidity_salon'') | float(0) < states(''input_select.target_humidity'')
@@ -1273,8 +1272,8 @@
     service: fan.turn_on
     entity_id: fan.air_purifier_salon
     data:
-      percentage: "{% if states('sensor.pm25_salon') | int(0) > 100 %}\n  66\n{% else\
-        \ %}\n  33\n{% endif %}"
+      percentage: "{% if states('sensor.pm25_salon') | int(0) > 100 %}\n  66\n{% else
+        %}\n  33\n{% endif %}"
 - id: air_quality_turn_off_air_purifier
   alias: Air Quality Turn Off Air Purifier
   description: wyłącz oczyszczacz gdy PM2.5 mniejsze od 40
@@ -1376,8 +1375,8 @@
       group: heating
       priority: high
       services:
-      - service: notify.mobile_app_oneplus_6
-        type: android
+      - service: notify.mobile_app_iphone_13
+        type: ios
       - service: notify.mobile_app_iphone_11
         type: ios
 - id: heating_season_begin
@@ -2438,24 +2437,24 @@
   - service: media_player.select_source
     entity_id: media_player.denon_salon
     data:
-      source: "{% if trigger.to_state.attributes.current_activity == 'Telewizja' %}\n\
-        \  CBL\n{% elif trigger.to_state.attributes.current_activity == 'Filmy' %}\n\
-        \  DUNE\n{% elif trigger.to_state.attributes.current_activity == 'PlayStation'\
-        \ %}\n  TV\n{% elif trigger.to_state.attributes.current_activity == 'Xbox'\
-        \ %}\n  XBOX\n{% elif trigger.to_state.attributes.current_activity == 'Muzyka'\
-        \ %}\n  Online Music\n{% elif trigger.to_state.attributes.current_activity\
-        \ == 'Smart TV' %}\n  TV\n{% elif trigger.to_state.attributes.current_activity\
-        \ == 'Fire TV' %}\n  TV\n{% endif %}\n"
+      source: "{% if trigger.to_state.attributes.current_activity == 'Telewizja' %}\n
+        \ CBL\n{% elif trigger.to_state.attributes.current_activity == 'Filmy' %}\n
+        \ DUNE\n{% elif trigger.to_state.attributes.current_activity == 'PlayStation'
+        %}\n  TV\n{% elif trigger.to_state.attributes.current_activity == 'Xbox' %}\n
+        \ XBOX\n{% elif trigger.to_state.attributes.current_activity == 'Muzyka' %}\n
+        \ Online Music\n{% elif trigger.to_state.attributes.current_activity == 'Smart
+        TV' %}\n  TV\n{% elif trigger.to_state.attributes.current_activity == 'Fire
+        TV' %}\n  TV\n{% endif %}\n"
   - service: media_player.select_source
     entity_id: media_player.bravia_salon
     data:
-      source: "{% if trigger.to_state.attributes.current_activity == 'Telewizja' %}\n\
-        \  HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity == 'Filmy'\
-        \ %}\n  HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity ==\
-        \ 'PlayStation' %}\n  HDMI 2\n{% elif trigger.to_state.attributes.current_activity\
-        \ == 'Xbox' %}\n  HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity\
-        \ == 'Muzyka' %}\n  HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity\
-        \ == 'Fire TV' %}\n  HDMI 1\n{% endif %}\n"
+      source: "{% if trigger.to_state.attributes.current_activity == 'Telewizja' %}\n
+        \ HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity == 'Filmy'
+        %}\n  HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity ==
+        'PlayStation' %}\n  HDMI 2\n{% elif trigger.to_state.attributes.current_activity
+        == 'Xbox' %}\n  HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity
+        == 'Muzyka' %}\n  HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity
+        == 'Fire TV' %}\n  HDMI 1\n{% endif %}\n"
 - id: harmony_turn_off_television
   alias: Harmony Turn Off Television
   description: wyłącz telewizor jeśli nie wyłączył go Harmony
@@ -2829,8 +2828,8 @@
             }}% wody.
           tag: notification-humidifier
           services:
-          - service: notify.mobile_app_oneplus_6
-            type: android
+          - service: notify.mobile_app_iphone_13
+            type: ios
   - choose:
       conditions:
         condition: state
@@ -2980,40 +2979,19 @@
         relay-0: light
       ignored_devices:
       - shellycolorbulb-E868E7C6811C
-- id: shellies_announce_status_gen2
-  alias: Shellies Announce and Status Gen2
+- id: shellies_announce_gen2
+  alias: Shellies Announce Gen2
   trigger:
   - platform: homeassistant
     event: start
-    id: homeassistant_start
-  - platform: time_pattern
-    minutes: /15
-    id: interval
   action:
-  - choose:
-    - conditions:
-      - condition: trigger
-        id: homeassistant_start
+  - repeat:
+      for_each: '{{ device_ids }}'
       sequence:
-      - repeat:
-          for_each: '{{ device_ids }}'
-          sequence:
-          - service: mqtt.publish
-            data:
-              topic: '{{ repeat.item }}/rpc'
-              payload: '{{ device_info_payload }}'
-    - conditions:
-      - condition: trigger
-        id: interval
-      sequence:
-      - repeat:
-          for_each: '{{ device_ids }}'
-          sequence:
-          - service: mqtt.publish
-            data:
-              topic: '{{ repeat.item }}/rpc'
-              payload: '{{ {''id'': 1, ''src'': repeat.item + ''/status'', ''method'':''Shelly.GetStatus''}
-                | to_json }}'
+      - service: mqtt.publish
+        data:
+          topic: '{{ repeat.item }}/rpc'
+          payload: '{{ device_info_payload }}'
   variables:
     device_info_payload: '{{ {''id'': 1, ''src'':''shellies_discovery'', ''method'':''Shelly.GetConfig''}
       | to_json }}'

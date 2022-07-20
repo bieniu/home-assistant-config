@@ -150,10 +150,10 @@
       icon: mdi:remote
       state: "{{ is_state('device_tracker.harmony', 'home') }}"
 
-    - name: oneplus_status
-      unique_id: "oneplus_status"
+    - name: iphone_13_status
+      unique_id: "iphone_13_status"
       icon: mdi:cellphone
-      state: "{{ is_state('device_tracker.oneplus_6', 'home') }}"
+      state: "{{ is_state('device_tracker.iphone_13', 'home') }}"
 
     - name: iphone_8_plus_status
       unique_id: "iphone_8_plus_status"
