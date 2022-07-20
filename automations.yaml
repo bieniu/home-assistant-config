@@ -68,7 +68,7 @@
 - id: notification_update_platform
   alias: Notification Update Platform
   trigger:
-    platform: state
+  - platform: state
     entity_id:
     - update.adaptive_lighting
     - update.alexa_media_player
@@ -106,7 +106,7 @@
     from: 'off'
     to: 'on'
   action:
-    service: python_script.notify
+  - service: python_script.notify
     data:
       title: Dostępna aktualizacja
       message: Dostępna jest aktualizacja do wersji {{ trigger.to_state.attributes.latest_version
@@ -114,7 +114,7 @@
         or trigger.to_state.name }}.
       tag: notification-update-{{ trigger.entity_id }}
       group: updates
-      url: entityId:{{ trigger.entity_id }}
+      url: /config/updates
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
