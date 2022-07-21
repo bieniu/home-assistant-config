@@ -1354,9 +1354,3 @@ views:
             show_header_toggle: false
             entities:
               - input_select.log_level
-          - type: statistics-graph
-            entities:
-              - sensor.dabrowskiego_dns_over_tls_queries
-          - type: statistics-graph
-            entities:
-              - sensor.dabrowskiego_dns_queries
