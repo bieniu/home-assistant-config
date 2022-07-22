@@ -121,7 +121,7 @@ for item in services:
         if url:
             service_data[ATTR_DATA][ATTR_URL] = url
 
-        logger.error(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
+        logger.debug(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
 
         if not develop:
             hass.services.call(
