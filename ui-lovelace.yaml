@@ -108,6 +108,7 @@ views:
                 show_name: false
                 entities:
                   - sensor.temperature_kuchnia
+                  - sensor.humidity_kuchnia
                   - sensor.illumination_kuchnia
               - type: entities
                 show_header_toggle: false
@@ -1004,11 +1005,12 @@ views:
             color: var(--state-icon-color)
         entities:
           - sensor.battery_xiaomi_ht_salon
+          - sensor.battery_xiaomi_ht_kuchnia
           - sensor.battery_xiaomi_weather_v1_toaleta
           - sensor.battery_xiaomi_ht_pracownia
           - sensor.battery_xiaomi_ht_goscinny
           - sensor.battery_xiaomi_ht_antresola
-          - sensor.battery_xiaomi_ht_gabinet
+          - sensor.shelly_plus_ht_09e018_battery
           - sensor.battery_xiaomi_ht_antek
           - sensor.battery_xiaomi_ht_sypialnia
           - sensor.battery_xiaomi_ht_lazienka
