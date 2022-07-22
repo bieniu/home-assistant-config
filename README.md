@@ -47,6 +47,7 @@
 
 * Wemos D1 mini + MH-Z19B [[ESPHome](https://esphome.io) firmware]
 * [Shelly H&T](https://shelly.cloud/products/shelly-humidity-temperature-smart-home-automation-sensor/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
+* [Shelly Plus H&T](https://shelly.cloud/shelly_plus_h-t/) via [Shellies Discovery Gen2](https://github.com/bieniu/ha-shellies-discovery-gen2)
 * [Shelly Flood](https://shelly.cloud/products/shelly-flood-smart-home-automation-sensor/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Shelly Motion](https://shelly.cloud/ifa-2020-products/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Shelly Gas](https://shelly.cloud/products/shelly-gas-smart-home-automation-sensor/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
@@ -72,7 +73,6 @@
 * Synology DS110j
 * Brother HL-L2340D
 * iPhone/iPad [iOS [Home Assistant](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401) app]
-* OnePlus 6 [Android [Home Assistant](https://play.google.com/store/apps/details?id=io.homeassistant.companion.android) app]
 * CyberPower DL650ELCD
 * Xiaomi DaFang [camera with [custom firmware](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks)]
 * Sony Bravia TV
