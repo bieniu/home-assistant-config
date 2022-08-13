@@ -32,6 +32,7 @@ ATTR_ATTACHMENT = "attachment"
 ATTR_CLICK_ACTION = "clickAction"
 ATTR_COLOR = "color"
 ATTR_DATA = "data"
+ATTR_ENTITY_ID = "entity_id"
 ATTR_FALSE = False
 ATTR_FRONTEND = "frontend"
 ATTR_HIDE_THUMBNAIL = "hide-thumbnail"
@@ -56,6 +57,7 @@ ATTR_URL = "url"
 CONF_ACTIONS = "actions"
 CONF_COLOR = "color"
 CONF_DEVELOP = "develop"
+CONF_ENTITY_ID = "entity_id"
 CONF_GROUP = "group"
 CONF_IMAGE = "image"
 CONF_MESSAGE = "message"
@@ -93,6 +95,7 @@ if not priority in PRIORITIES:
 actions = data.get(CONF_ACTIONS)
 group = data.get(CONF_GROUP)
 image = data.get(CONF_IMAGE)
+entity_id = data.get(CONF_ENTITY_ID)
 tag = data.get(CONF_TAG)
 url = data.get(CONF_URL)
 color = data.get(CONF_COLOR)
@@ -120,6 +123,8 @@ for item in services:
             service_data[ATTR_DATA][ATTR_APNS_HEADERS][ATTR_APNS_COLLAPSE_ID] = tag
         if url:
             service_data[ATTR_DATA][ATTR_URL] = url
+        if entity_id:
+            service_data[ATTR_DATA][ATTR_ENTITY_ID] = entity_id
 
         logger.debug(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
 

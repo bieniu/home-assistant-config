@@ -691,13 +691,13 @@
     from: 'off'
     to: 'on'
   condition:
-    condition: state
+  - condition: state
     entity_id: input_boolean.away_mode
     state: 'on'
     for:
       minutes: 10
   action:
-    service: python_script.notify
+  - service: python_script.notify
     data:
       title: Wykryto ruch w pustym mieszkaniu
       message: 'Pomieszczenie: {{ area_name(trigger.entity_id) }}, godzina {{ now().strftime(''%H:%M'')
@@ -705,8 +705,8 @@
       tag: notification-motion-{{ area_name(trigger.entity_id) }}
       group: motion
       priority: high
-      image: "{% if area_name(trigger.entity_id) in [\"salon\", \"kuchnia\", \"przedpokój\"]
-        %}\n  /api/camera_proxy/camera.salon\n{% else %}\n  None\n{% endif %}"
+      entity_id: "{% if area_name(trigger.entity_id) in [\"salon\", \"kuchnia\", \"przedpokój\"]
+        %}\n  camera.salon\n{% else %}\n  None\n{% endif %}"
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
@@ -2998,6 +2998,7 @@
     device_ids:
     - shellyplus1pm-a8032ab22864
     - shellyplusht-30839809e018
+    - shellyplusht-7c87ce6b3e3c
     - shellypro1pm-30c6f780e0c0
 - id: shellies_discovery_gen2
   alias: Shellies Discovery Gen2
@@ -3025,3 +3026,54 @@
     service: hassio.backup_full
     data:
       name: '{{ now().strftime(''%Y-%m-%d'') }}'
+- id: '1658514116580'
+  alias: Climate Toggle Salon Fan
+  description: włącz/wyłącz wentylator w salonie
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 52237db1203926d98cf2fa58e2ec8d6c
+    type: button_long_press
+    subtype: button_1
+    discovery_id: shellyswitch25-C45BBE77DBE5-input-0 button_long_press
+  condition: []
+  action:
+  - service: fan.toggle
+    data: {}
+    target:
+      entity_id: fan.ceiling_salon
+  mode: single
+- id: '1658514193572'
+  alias: Light  Toggle Salon Lamp
+  description: włącz/wyłącz lampę w salonie
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 52237db1203926d98cf2fa58e2ec8d6c
+    type: button_long_press
+    subtype: button_2
+    discovery_id: shellyswitch25-C45BBE77DBE5-input-1 button_long_press
+  condition: []
+  action:
+  - service: light.toggle
+    data: {}
+    target:
+      entity_id: light.lamp_salon
+  mode: single
+- id: '1658522979417'
+  alias: Light Toggle Antek Tree
+  description: włącz/wyłącz drzewko w pokoju Antka
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: d9bac82dff0257d63401f912e99b205c
+    type: button_long_press
+    subtype: button_1
+    discovery_id: shelly1l-84CCA8AD365E-input-0 button_long_press
+  condition: []
+  action:
+  - service: light.toggle
+    data: {}
+    target:
+      entity_id: light.tree_antek
+  mode: single

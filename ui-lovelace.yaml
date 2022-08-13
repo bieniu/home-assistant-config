@@ -82,15 +82,25 @@ views:
               - person.bmw
               - sensor.bmw_x1_xdrive20i_remaining_fuel
               - sensor.bmw_x1_xdrive20i_remaining_range_fuel
-          - type: entities
-            title: "Przedpokój"
-            show_header_toggle: false
-            state_color: true
-            entities:
-              - entity: binary_sensor.motion_przedpokoj
-                secondary_info: last-changed
-              - light.leds_przedpokoj
-              - light.ceiling_przedpokoj
+          - type: vertical-stack
+            in_card: true
+            cards:
+              - type: glance
+                <<: *card-header-no-padding-bottom
+                title: "Przedpokój"
+                show_name: false
+                entities:
+                  - sensor.temperature_przedpokoj
+                  - sensor.humidity_przedpokoj
+                  - sensor.illumination_przedpokoj
+              - type: entities
+                show_header_toggle: false
+                state_color: true
+                entities:
+                  - entity: binary_sensor.motion_przedpokoj
+                    secondary_info: last-changed
+                  - light.leds_przedpokoj
+                  - light.ceiling_przedpokoj
           - type: entities
             title: "Korytarz"
             show_header_toggle: false
@@ -687,6 +697,49 @@ views:
                       - sensor.asuswrt_upload_speed
           - type: vertical-stack
             in_card: true
+            title: "NextDNS"
+            cards:
+              - type: custom:mini-graph-card
+                card_mod:
+                  style: |
+                    ha-card.flex {
+                      padding-top: 0px;
+                      padding-bottom: 0px;
+                    }
+                hour24: true
+                animate: true
+                font_size: 90
+                decimals: 0
+                line_width: 2
+                show:
+                  icon: false
+                  fill: false
+                  labels: false
+                  points: false
+                  name: false
+                entities:
+                  - entity: sensor.dom_dns_queries
+                    color: "#36a2eb"
+                    unit: "zapytań"
+              - type: entities
+                show_header_toggle: false
+                entities:
+                  - entity: sensor.dom_dns_queries_blocked_ratio
+                    name: "Zablokowane"
+                  - entity: sensor.dom_dns_over_https_queries_ratio
+                    name: "DNS-over-HTTPS"
+                  - entity: sensor.dom_dns_over_http_3_queries_ratio
+                    name: "DNS-over-HTTP/3"
+                  - entity: sensor.dom_dns_over_quic_queries_ratio
+                    name: "DNS-over-QUIC"
+                  - entity: sensor.dom_dns_over_tls_queries_ratio
+                    name: "DNS-over-TLS"
+                  - entity: sensor.dom_tcp_queries_ratio
+                    name: "TCP"
+                  - entity: sensor.dom_udp_queries_ratio
+                    name: "UDP"
+          - type: vertical-stack
+            in_card: true
             cards:
               - type: entities
                 title: "Intel NUC"
@@ -884,6 +937,8 @@ views:
         <<: *network-status-card
         entities:
           - binary_sensor.shelly_ht_e00abd_status
+          - binary_sensor.shelly_plus_ht_09e018_status
+          - binary_sensor.shelly_plus_ht_6b3e3c_status
           - binary_sensor.shelly_motion_c67c2a_status
           - binary_sensor.shelly_motion_2_72a6a4_status
           - binary_sensor.shelly_flood_f2ad1d_status
@@ -1004,8 +1059,9 @@ views:
           - value: 100
             color: var(--state-icon-color)
         entities:
-          - sensor.battery_xiaomi_ht_salon
+          - sensor.battery_xiaomi_ht_przedpokoj
           - sensor.battery_xiaomi_ht_kuchnia
+          - sensor.shelly_plus_ht_6b3e3c_battery
           - sensor.battery_xiaomi_weather_v1_toaleta
           - sensor.battery_xiaomi_ht_pracownia
           - sensor.battery_xiaomi_ht_goscinny

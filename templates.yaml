@@ -377,6 +377,14 @@
       unique_id: "shelly_plug_s_7aecf4_status"
       state: "{{ is_state('device_tracker.shelly_plug_s_7aecf4', 'home') }}"
 
+    - name: shelly_plus_ht_09e018_status
+      unique_id: "shelly_plus_ht_09e018_status"
+      state: "{{ is_state('device_tracker.shelly_plus_ht_09e018', 'home') }}"
+
+    - name: shelly_plus_ht_6b3e3c_status
+      unique_id: "shelly_plus_ht_6b3e3c_status"
+      state: "{{ is_state('device_tracker.shelly_plus_ht_6b3e3c', 'home') }}"
+
     - name: shelly_ht_e00abd_status
       unique_id: "shelly_ht_e00abd_status"
       state: "{{ is_state('device_tracker.shelly_ht_e00abd', 'home') }}"
