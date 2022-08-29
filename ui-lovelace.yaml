@@ -597,6 +597,611 @@ views:
           - switch.camera_move_up
           - switch.camera_move_down
         camera_image: camera.salon
+  - id: remote
+    icon: mdi:remote
+    title: "Zdalne starowanie"
+    path: remote
+    cards:
+      - type: conditional
+        conditions:
+          - entity: select.harmony_activities
+            state: "PowerOff"
+        card:
+          type: custom:tv-card
+          entity: media_player.denon_salon
+          source_row:
+            - tv
+            - smart-tv
+            - fire-tv
+            - playstation
+          custom_keys:
+          <<: &COMMON_CUSTOM_KEYS
+            power:
+              icon: mdi:power
+              service: remote.toggle
+              service_data:
+                entity_id: remote.salon
+            volume_up:
+              icon: mdi:volume-plus
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Amplituner
+                command: VolumeUp
+            volume_down:
+              icon: mdi:volume-minus
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Amplituner
+                command: VolumeDown
+            volume_mute:
+              icon: mdi:volume-mute
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Amplituner
+                command: Mute
+          custom_sources:
+            tv:
+              icon: mdi:television-box
+              service: select.select_option
+              service_data:
+                entity_id: select.harmony_activities
+                option: telewizja
+            smart-tv:
+              icon: mdi:television-play
+              service: select.select_option
+              service_data:
+                entity_id: select.harmony_activities
+                option: Smart TV
+            fire-tv:
+              icon: mdi:television-shimmer
+              service: select.select_option
+              service_data:
+                entity_id: select.harmony_activities
+                option: Fire TV
+            playstation:
+              icon: mdi:sony-playstation
+              service: select.select_option
+              service_data:
+                entity_id: select.harmony_activities
+                option: PlayStation
+            xbox:
+              icon: mdi:microsoft-xbox
+              service: select.select_option
+              service_data:
+                entity_id: select.harmony_activities
+                option: Xbox
+            music:
+              icon: mdi:music
+              service: select.select_option
+              service_data:
+                entity_id: select.harmony_activities
+                option: muzyka
+            movies:
+              icon: mdi:movie
+              service: switch.turn_on
+              service_data:
+                entity_id: select.harmony_activities
+                option: filmy
+      - type: conditional
+        conditions:
+          - entity: select.harmony_activities
+            state: "telewizja"
+        card:
+          type: custom:tv-card
+          entity: media_player.denon_salon
+          power_row:
+            - power
+          source_row:
+            - smart-tv
+            - fire-tv
+            - playstation
+          channel_row:
+            - channel_up
+            - channel_down
+          volume_row: buttons
+          navigation_row: buttons
+          apps_row:
+            - home
+            - guide
+            - back
+          media_control_row:
+            - rewind
+            - play
+            - pause
+            - fast-forward
+            - record
+          custom_sources:
+            smart-tv:
+              icon: mdi:television-play
+              service: select.select_option
+              service_data:
+                entity_id: select.harmony_activities
+                option: Smart TV
+            fire-tv:
+              icon: mdi:television-shimmer
+              service: select.select_option
+              service_data:
+                entity_id: select.harmony_activities
+                option: Fire TV
+            playstation:
+              icon: mdi:sony-playstation
+              service: select.select_option
+              service_data:
+                entity_id: select.harmony_activities
+                option: PlayStation
+          custom_keys:
+            <<: *COMMON_CUSTOM_KEYS
+            channel_up:
+              icon: mdi:arrow-up
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Dekoder
+                command: ChannelUp
+            channel_down:
+              icon: mdi:arrow-down
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Dekoder
+                command: ChannelDown
+            guide:
+              icon: mdi:television-guide
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Dekoder
+                command: Guide
+            up:
+              icon: mdi:chevron-up
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Dekoder
+                command: DirectionUp
+            down:
+              icon: mdi:chevron-down
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Dekoder
+                command: DirectionDown
+            left:
+              icon: mdi:chevron-left
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Dekoder
+                command: DirectionLeft
+            right:
+              icon: mdi:chevron-right
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Dekoder
+                command: DirectionRight
+            enter:
+              icon: mdi:checkbox-blank-circle
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Dekoder
+                command: OK
+            back:
+              icon: mdi:arrow-u-left-top
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Dekoder
+                command: Back
+            home:
+              icon: mdi:home
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Dekoder
+                command: Home
+            rewind:
+              icon: mdi:rewind
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Dekoder
+                command: Rewind
+            fast-forward:
+              icon: mdi:fast-forward
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Dekoder
+                command: FastForward
+            play:
+              icon: mdi:play
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Dekoder
+                command: Play
+            pause:
+              icon: mdi:pause
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Dekoder
+                command: Pause
+            record:
+              icon: mdi:record-rec
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Dekoder
+                command: Record
+      - type: conditional
+        conditions:
+          - entity: select.harmony_activities
+            state: "Smart TV"
+        card:
+          type: custom:tv-card
+          entity: media_player.denon_salon
+          power_row:
+            - power
+          source_row:
+            - tv
+            - fire-tv
+            - playstation
+          volume_row: buttons
+          navigation_row: buttons
+          apps_row:
+          - home
+          - back          
+          media_control_row:
+            - rewind
+            - play
+            - pause
+            - fast-forward
+          custom_sources:
+          tv:
+            icon: mdi:television-box
+            service: select.select_option
+            service_data:
+              entity_id: select.harmony_activities
+              option: telewizja
+          fire-tv:
+            icon: mdi:television-shimmer
+            service: select.select_option
+            service_data:
+              entity_id: select.harmony_activities
+              option: Fire TV
+          playstation:
+            icon: mdi:sony-playstation
+            service: select.select_option
+            service_data:
+              entity_id: select.harmony_activities
+              option: PlayStation
+          custom_keys:
+            <<: *COMMON_CUSTOM_KEYS
+            up:
+              icon: mdi:chevron-up
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Telewizor
+                command: DirectionUp
+            down:
+              icon: mdi:chevron-down
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Telewizor
+                command: DirectionDown
+            left:
+              icon: mdi:chevron-left
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Telewizor
+                command: DirectionLeft
+            right:
+              icon: mdi:chevron-right
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Telewizor
+                command: DirectionRight
+            enter:
+              icon: mdi:checkbox-blank-circle
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Telewizor
+                command: Select
+            back:
+              icon: mdi:arrow-u-left-top
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Telewizor
+                command: Back
+            home:
+              icon: mdi:home
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Telewizor
+                command: Home
+            rewind:
+              icon: mdi:rewind
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Telewizor
+                command: Rewind
+            fast-forward:
+              icon: mdi:fast-forward
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Telewizor
+                command: FastForward
+            play:
+              icon: mdi:play
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Telewizor
+                command: Play
+            pause:
+              icon: mdi:pause
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Telewizor
+                command: Pause
+      - type: conditional
+        conditions:
+          - entity: select.harmony_activities
+            state: "Fire TV"
+        card:
+          type: custom:tv-card
+          entity: media_player.denon_salon
+          power_row:
+            - power
+          source_row:
+            - tv
+            - smart-tv
+            - playstation
+          volume_row: buttons
+          navigation_row: buttons
+          apps_row:
+          - home
+          - back          
+          media_control_row:
+            - rewind
+            - play
+            - pause
+            - fast-forward
+          custom_sources:
+            tv:
+              icon: mdi:television-box
+              service: select.select_option
+              service_data:
+                entity_id: select.harmony_activities
+                option: telewizja
+            smart-tv:
+              icon: mdi:television-play
+              service: select.select_option
+              service_data:
+                entity_id: select.harmony_activities
+                option: Smart TV
+            playstation:
+              icon: mdi:sony-playstation
+              service: select.select_option
+              service_data:
+                entity_id: select.harmony_activities
+                option: PlayStation
+          custom_keys:
+            <<: *COMMON_CUSTOM_KEYS
+            up:
+              icon: mdi:chevron-up
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Fire TV Stick
+                command: DirectionUp
+            down:
+              icon: mdi:chevron-down
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Fire TV Stick
+                command: DirectionDown
+            left:
+              icon: mdi:chevron-left
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Fire TV Stick
+                command: DirectionLeft
+            right:
+              icon: mdi:chevron-right
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Fire TV Stick
+                command: DirectionRight
+            enter:
+              icon: mdi:checkbox-blank-circle
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Fire TV Stick
+                command: OK
+            back:
+              icon: mdi:arrow-u-left-top
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Fire TV Stick
+                command: Back
+            home:
+              icon: mdi:home
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Fire TV Stick
+                command: Home
+            rewind:
+              icon: mdi:rewind
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Fire TV Stick
+                command: Rewind
+            fast-forward:
+              icon: mdi:fast-forward
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Fire TV Stick
+                command: FastForward
+            play:
+              icon: mdi:play
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Fire TV Stick
+                command: Play
+            pause:
+              icon: mdi:pause
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: Fire TV Stick
+                command: Pause
+      - type: conditional
+        conditions:
+          - entity: select.harmony_activities
+            state: "PlayStation"
+        card:
+          type: custom:tv-card
+          entity: media_player.denon_salon
+          power_row:
+            - power
+          source_row:
+            - tv
+            - smart-tv
+            - fire-tv
+          volume_row: buttons
+          navigation_row: buttons
+          apps_row:
+          - home
+          - back          
+          media_control_row:
+            - rewind
+            - play
+            - pause
+            - fast-forward
+          custom_sources:
+            tv:
+              icon: mdi:television-box
+              service: select.select_option
+              service_data:
+                entity_id: select.harmony_activities
+                option: telewizja
+            smart-tv:
+              icon: mdi:television-play
+              service: select.select_option
+              service_data:
+                entity_id: select.harmony_activities
+                option: Smart TV
+            fire-tv:
+              icon: mdi:television-shimmer
+              service: select.select_option
+              service_data:
+                entity_id: select.harmony_activities
+                option: Fire TV
+          custom_keys:
+            <<: *COMMON_CUSTOM_KEYS
+            up:
+              icon: mdi:chevron-up
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: PS4
+                command: DirectionUp
+            down:
+              icon: mdi:chevron-down
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: PS4
+                command: DirectionDown
+            left:
+              icon: mdi:chevron-left
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: PS4
+                command: DirectionLeft
+            right:
+              icon: mdi:chevron-right
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: PS4
+                command: DirectionRight
+            enter:
+              icon: mdi:checkbox-blank-circle
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: PS4
+                command: OK
+            back:
+              icon: mdi:arrow-u-left-top
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: PS4
+                command: Back
+            home:
+              icon: mdi:home
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: PS4
+                command: PS
+            rewind:
+              icon: mdi:rewind
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: PS4
+                command: Rewind
+            fast-forward:
+              icon: mdi:fast-forward
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: PS4
+                command: FastForward
+            play:
+              icon: mdi:play
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: PS4
+                command: Play
+            pause:
+              icon: mdi:pause
+              service: remote.send_command
+              service_data:
+                entity_id: remote.salon
+                device: PS4
+                command: Pause          
   - id: map
     icon: mdi:map
     title: "Mapa"
@@ -972,7 +1577,6 @@ views:
           - binary_sensor.shelly_25_77dbe5_status
           - binary_sensor.shelly_plug_s_7aecf4_status
           - binary_sensor.shelly_plus_1pm_b22864_status
-          - binary_sensor.shelly_plus_1pm_948ff8_status
           - binary_sensor.shelly_pro_1pm_80e0c0_status
   - id: energy
     icon: mdi:power-plug

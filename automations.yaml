@@ -51,9 +51,10 @@
     event_data:
       actionName: turn_on_tv
   action:
-    service: switch.turn_on
-    target:
-      entity_id: switch.harmony_telewizja
+    service: select.select_option
+    data:
+      entity_id: select.harmony_activities
+      option: telewizja
 - id: ios_turn_off_tv
   alias: iOS Turn Off TV
   description: wyłącz TV via iOS
@@ -103,6 +104,7 @@
     - update.watchman
     - update.z_wave_js
     - update.zadnego_ale
+    - update.tv_remote_card
     from: 'off'
     to: 'on'
   action:
@@ -180,6 +182,8 @@
     - binary_sensor.shelly_flood_f2ad1d_firmware
     - binary_sensor.shelly_gas_c6811c_firmware
     - binary_sensor.shelly_ht_e00abd_firmware
+    - binary_sensor.shelly_plus_ht_09e018_firmware
+    - binary_sensor.shelly_plus_1pm_b22864_firmware
     - binary_sensor.shelly_motion_2_72a6a4_firmware
     - binary_sensor.shelly_motion_c67c2a_firmware
     - binary_sensor.shelly_plug_s_7aecf4_firmware
@@ -280,7 +284,7 @@
   description: powiadom o włączonym komputerze
   trigger:
   - platform: time
-    at: '22:45:00'
+    at: '22:00:00'
   - platform: state
     entity_id: person.maciek
     to: not_home
@@ -2437,23 +2441,23 @@
   - service: media_player.select_source
     entity_id: media_player.denon_salon
     data:
-      source: "{% if trigger.to_state.attributes.current_activity == 'Telewizja' %}\n
-        \ CBL\n{% elif trigger.to_state.attributes.current_activity == 'Filmy' %}\n
+      source: "{% if trigger.to_state.attributes.current_activity == 'telewizja' %}\n
+        \ CBL\n{% elif trigger.to_state.attributes.current_activity == 'filmy' %}\n
         \ DUNE\n{% elif trigger.to_state.attributes.current_activity == 'PlayStation'
         %}\n  TV\n{% elif trigger.to_state.attributes.current_activity == 'Xbox' %}\n
-        \ XBOX\n{% elif trigger.to_state.attributes.current_activity == 'Muzyka' %}\n
+        \ XBOX\n{% elif trigger.to_state.attributes.current_activity == 'muzyka' %}\n
         \ Online Music\n{% elif trigger.to_state.attributes.current_activity == 'Smart
         TV' %}\n  TV\n{% elif trigger.to_state.attributes.current_activity == 'Fire
         TV' %}\n  TV\n{% endif %}\n"
   - service: media_player.select_source
     entity_id: media_player.bravia_salon
     data:
-      source: "{% if trigger.to_state.attributes.current_activity == 'Telewizja' %}\n
-        \ HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity == 'Filmy'
+      source: "{% if trigger.to_state.attributes.current_activity == 'telewizja' %}\n
+        \ HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity == 'filmy'
         %}\n  HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity ==
         'PlayStation' %}\n  HDMI 2\n{% elif trigger.to_state.attributes.current_activity
         == 'Xbox' %}\n  HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity
-        == 'Muzyka' %}\n  HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity
+        == 'muzyka' %}\n  HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity
         == 'Fire TV' %}\n  HDMI 1\n{% endif %}\n"
 - id: harmony_turn_off_television
   alias: Harmony Turn Off Television
@@ -2499,8 +2503,7 @@
   description: Harmony zmienia aktywność na PowerOff
   trigger:
     platform: state
-    entity_id: remote.salon
-    attribute: current_activity
+    entity_id: select.harmony_activities
     to: PowerOff
   action:
   - service: input_boolean.turn_on
@@ -2511,126 +2514,20 @@
       option: wyłączony
   - service: input_boolean.turn_off
     entity_id: input_boolean.harmony_command
-- id: harmony_starts_telewizja
-  alias: Harmony Starts Telewizja
-  description: Harmony zmienia aktywność na Telewizja
+- id: harmony_starts_activity
+  alias: Harmony Starts Activity
+  description: Harmony zmienia aktywność
   trigger:
     platform: state
-    entity_id: remote.salon
-    attribute: current_activity
-    to: Telewizja
+    entity_id: select.harmony_activities
+    not_to: PowerOff
   action:
   - service: input_boolean.turn_on
     entity_id: input_boolean.harmony_command
   - service: input_select.select_option
     entity_id: input_select.salon_harmony
     data:
-      option: telewizja
-  - service: input_boolean.turn_off
-    entity_id: input_boolean.harmony_command
-- id: harmony_starts_filmy
-  alias: Harmony Starts Filmy
-  description: Harmony zmienia aktywność na Filmy
-  trigger:
-    platform: state
-    entity_id: remote.salon
-    attribute: current_activity
-    to: Filmy
-  action:
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.harmony_command
-  - service: input_select.select_option
-    entity_id: input_select.salon_harmony
-    data:
-      option: filmy
-  - service: input_boolean.turn_off
-    entity_id: input_boolean.harmony_command
-- id: harmony_starts_muzyka
-  alias: Harmony Starts Muzyka
-  description: Harmony zmienia aktywność na Muzyka
-  trigger:
-    platform: state
-    entity_id: remote.salon
-    attribute: current_activity
-    to: Muzyka
-  action:
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.harmony_command
-  - service: input_select.select_option
-    entity_id: input_select.salon_harmony
-    data:
-      option: muzyka
-  - service: input_boolean.turn_off
-    entity_id: input_boolean.harmony_command
-- id: harmony_starts_smart_tv
-  alias: Harmony Starts Smart TV
-  description: Harmony zmienia aktywność na Smart TV
-  trigger:
-    platform: state
-    entity_id: remote.salon
-    attribute: current_activity
-    to: Smart TV
-  action:
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.harmony_command
-  - service: input_select.select_option
-    entity_id: input_select.salon_harmony
-    data:
-      option: Smart TV
-  - service: input_boolean.turn_off
-    entity_id: input_boolean.harmony_command
-- id: harmony_starts_fire_tv
-  alias: Harmony Starts Fire TV
-  description: Harmony zmienia aktywność na Fire TV
-  trigger:
-    platform: state
-    entity_id: remote.salon
-    attribute: current_activity
-    to: Fire TV
-  action:
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.harmony_command
-  - service: input_select.select_option
-    entity_id: input_select.salon_harmony
-    data:
-      option: Fire TV
-  - service: input_boolean.turn_off
-    entity_id: input_boolean.harmony_command
-- id: harmony_starts_playstation
-  alias: Harmony Starts PlayStation
-  description: Harmony zmienia aktywność na PlayStation
-  trigger:
-    platform: state
-    entity_id: remote.salon
-    attribute: current_activity
-    to: PlayStation
-  action:
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.harmony_command
-  - service: input_select.select_option
-    entity_id: input_select.salon_harmony
-    data:
-      option: PlayStation
-  - service: input_boolean.turn_off
-    entity_id: input_boolean.harmony_command
-  - service: media_player.turn_on
-    target:
-      entity_id: media_player.playstation_salon
-- id: harmony_starts_xbox
-  alias: Harmony Starts Xbox
-  description: Harmony zmienia aktywność na Xbox
-  trigger:
-    platform: state
-    entity_id: remote.salon
-    attribute: current_activity
-    to: Xbox
-  action:
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.harmony_command
-  - service: input_select.select_option
-    entity_id: input_select.salon_harmony
-    data:
-      option: Xbox
+      option: "{{ trigger.to_state.state }}"
   - service: input_boolean.turn_off
     entity_id: input_boolean.harmony_command
 - id: ha_turns_off_tv
@@ -2647,114 +2544,22 @@
   action:
     service: remote.turn_off
     entity_id: remote.salon
-- id: ha_starts_telewizja
-  alias: HA Starts Telewizja
-  description: HA zmienia aktywność na Telewizja
+- id: ha_starts_activity
+  alias: HA Starts Activity
+  description: HA zmienia aktywność
   trigger:
     platform: state
     entity_id: input_select.salon_harmony
-    to: telewizja
+    not_to: PowerOff
   condition:
     condition: state
     entity_id: input_boolean.harmony_command
     state: 'off'
   action:
-    service: switch.turn_on
-    target:
-      entity_id: switch.harmony_telewizja
-- id: ha_starts_filmy
-  alias: HA Starts Filmy
-  description: HA zmienia aktywność na Filmy
-  trigger:
-    platform: state
-    entity_id: input_select.salon_harmony
-    to: filmy
-  condition:
-    condition: state
-    entity_id: input_boolean.harmony_command
-    state: 'off'
-  action:
-    service: switch.turn_on
-    target:
-      entity_id: switch.harmony_filmy
-- id: ha_starts_muzyka
-  alias: HA Starts Muzyka
-  description: HA zmienia aktywność na Muzyka
-  trigger:
-    platform: state
-    entity_id: input_select.salon_harmony
-    to: muzyka
-  condition:
-    condition: state
-    entity_id: input_boolean.harmony_command
-    state: 'off'
-  action:
-    service: switch.turn_on
-    target:
-      entity_id: switch.harmony_muzyka
-- id: ha_starts_smart_tv
-  alias: HA Starts Smart TV
-  description: HA zmienia aktywność na Smart TV
-  trigger:
-    platform: state
-    entity_id: input_select.salon_harmony
-    to: Smart TV
-  condition:
-    condition: state
-    entity_id: input_boolean.harmony_command
-    state: 'off'
-  action:
-    service: switch.turn_on
-    target:
-      entity_id: switch.harmony_smart_tv
-- id: ha_starts_fire_tv
-  alias: HA Starts Fire TV
-  description: HA zmienia aktywność na Fire TV
-  trigger:
-    platform: state
-    entity_id: input_select.salon_harmony
-    to: Fire TV
-  condition:
-    condition: state
-    entity_id: input_boolean.harmony_command
-    state: 'off'
-  action:
-    service: switch.turn_on
-    target:
-      entity_id: switch.harmony_fire_tv
-- id: ha_starts_playstation
-  alias: HA Starts PlayStation
-  description: HA zmienia aktywność na PalyStation
-  trigger:
-    platform: state
-    entity_id: input_select.salon_harmony
-    to: PlayStation
-  condition:
-    condition: state
-    entity_id: input_boolean.harmony_command
-    state: 'off'
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id: switch.harmony_playstation
-  - service: media_player.turn_on
-    target:
-      entity_id: media_player.playstation_salon
-- id: ha_starts_xbox
-  alias: HA Starts Xbox
-  description: HA zmienia aktywność na Xbox
-  trigger:
-    platform: state
-    entity_id: input_select.salon_harmony
-    to: Xbox
-  condition:
-    condition: state
-    entity_id: input_boolean.harmony_command
-    state: 'off'
-  action:
-    service: switch.turn_on
-    target:
-      entity_id: switch.harmony_xbox
+    service: select.select_option
+    data_template:
+      entity_id: select.harmony_activities
+      option: "{{ trigger.to_state.state }}"
 - id: humidification_set_target_humidity
   alias: Humidification Set Target Humidity
   description: ustaw docelową wilgotność

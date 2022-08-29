@@ -76,6 +76,8 @@ lovelace:
       type: module
     - url: /hacsfiles/lovelace-canary/canary.js
       type: module
+    - url: /hacsfiles/tv-card/tv-card.js
+      type: module
 
 python_script:
 

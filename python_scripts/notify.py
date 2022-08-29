@@ -112,6 +112,8 @@ for item in services:
         service_data[ATTR_DATA][ATTR_PUSH][ATTR_BADGE] = 1
         service_data[ATTR_DATA][ATTR_PUSH][ATTR_SOUND] = "Warsaw_Haptic.caf"
 
+        if actions:
+            service_data[ATTR_DATA][ATTR_ACTIONS] = actions
         if image:
             service_data[ATTR_DATA][ATTR_ATTACHMENT] = {}
             service_data[ATTR_DATA][ATTR_ATTACHMENT][ATTR_URL] = image

@@ -19,6 +19,7 @@ blue-mix:
       ha-card-border-radius: '10px'
       light-primary-color: '#89c4ff'
       primary-background-color: '#383C45'
+      card-background-color: 'var(--primary-background-color)'
       primary-color: '#5294e2'
       sidebar-background-color: '#2E333A'
       state-climate-heat-color: 'var(--accent-color)'

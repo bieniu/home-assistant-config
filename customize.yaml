@@ -40,8 +40,6 @@ binary_sensor.iphone_8_plus_status:
   friendly_name: "iPhone 8 Plus"
 binary_sensor.iphone_11_status:
   friendly_name: "iPhone 11"
-binary_sensor.oneplus_status:
-  friendly_name: "OnePlus 6"
 binary_sensor.ipad_status:
   friendly_name: "iPad Air"
 binary_sensor.kindle_keyboard_3g_status:
