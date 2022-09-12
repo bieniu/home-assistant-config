@@ -13,17 +13,17 @@
     - name: air_quality_info_outdoor
       unique_id: "air_quality_info_outdoor"
       icon: "mdi:home-export-outline"
-      availability: "{{ not is_state('sensor.pm25_outdoor', 'unavailable') }}"
+      availability: "{{ not is_state('sensor.caqi_level_outdoor', 'unavailable') }}"
       state: >-
-        {% if states('sensor.pm25_outdoor') | int <= 25 %}
+        {% if is_state('sensor.caqi_level_outdoor', 'very low') %}
           bardzo dobra
-        {% elif states('sensor.pm25_outdoor') | int <= 50 %}
+        {% elif is_state('sensor.caqi_level_outdoor', 'low') %}
           dobra
-        {% elif states('sensor.pm25_outdoor') | int <= 100 %}
+        {% elif is_state('sensor.caqi_level_outdoor', 'medium') %}
           średnia
-        {% elif states('sensor.pm25_outdoor') | int <= 150 %}
+        {% elif is_state('sensor.caqi_level_outdoor', 'high') %}
           zła
-        {% elif states('sensor.pm25_outdoor') | int > 200 %}
+        {% elif is_state('sensor.caqi_level_outdoor', 'very high') %}
           bardzo zła
         {% endif %}
 

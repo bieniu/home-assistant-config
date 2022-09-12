@@ -78,6 +78,8 @@ lovelace:
       type: module
     - url: /hacsfiles/tv-card/tv-card.js
       type: module
+    - url: /hacsfiles/lovelace-mushroom/mushroom.js
+      type: module
 
 python_script:
 
@@ -92,6 +94,3 @@ switch: !include switches.yaml
 fan: !include fans.yaml
 
 template: !include templates.yaml
-
-shell_command:
-  restart_shelly_devices: /config/scripts/restart_shelly_devices.sh
