@@ -120,20 +120,10 @@
       icon: mdi:desktop-tower
       state: "{{ is_state('device_tracker.stacjonarny', 'home') }}"
 
-    - name: dune_status
-      unique_id: "dune_status"
-      icon: mdi:disc-player
-      state: "{{ is_state('device_tracker.dune', 'home') }}"
-
     - name: bravia_status
       unique_id: "bravia_status"
       icon: mdi:television
       state: "{{ is_state('device_tracker.bravia', 'home') }}"
-
-    - name: xbox_status
-      unique_id: "xbox_status"
-      icon: mdi:microsoft-xbox
-      state: "{{ is_state('device_tracker.xbox', 'home') }}"
 
     - name: thermomix_status
       unique_id: "thermomix_status"
@@ -319,11 +309,11 @@
     - name: shelly_1l_61c9fd_status
       unique_id: "shelly_1l_61c9fd_status"
       state: "{{ is_state('device_tracker.shelly_1l_61c9fd', 'home') }}"
-    
+
     - name: shelly_1l_701559_status
       unique_id: "shelly_1l_701559_status"
       state: "{{ is_state('device_tracker.shelly_1l_701559', 'home') }}"
-    
+
     - name: shelly_1l_aacec4_status
       unique_id: "shelly_1l_aacec4_status"
       state: "{{ is_state('device_tracker.shelly_1l_aacec4', 'home') }}"
@@ -331,7 +321,7 @@
     - name: shelly_1l_aceb5f_status
       unique_id: "shelly_1l_aceb5f_status"
       state: "{{ is_state('device_tracker.shelly_1l_aceb5f', 'home') }}"
-    
+
     - name: shelly_1l_ad365e_status
       unique_id: "shelly_1l_ad365e_status"
       state: "{{ is_state('device_tracker.shelly_1l_ad365e', 'home') }}"
@@ -347,6 +337,10 @@
     - name: shelly_plus_1pm_b22864_status
       unique_id: "shelly_plus_1pm_b22864_status"
       state: "{{ is_state('device_tracker.shelly_plus_1pm_b22864', 'home') }}"
+
+    - name: shelly_plus_1pm_948ff8_status
+      unique_id: "shelly_plus_1pm_948ff8_status"
+      state: "{{ is_state('device_tracker.shelly_plus_1pm_948ff8', 'home') }}"
 
     - name: shelly_pro_1pm_80e0c0_status
       unique_id: "shelly_pro_1pm_80e0c0_status"

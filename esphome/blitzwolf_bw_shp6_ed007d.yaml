@@ -1,12 +1,12 @@
 substitutions:
   device_name: "BlitzWolf BW-SHP6 [ED007D]"
-  device_name_lower: "blitzwolf-bw-shp6-ed007d"
+  host_name: "blitzwolf-bw-shp6-ed007d"
   current_res: "0.00290"
   voltage_div: "940"
   max_power: "2300"
 
 esphome:
-  name: ${device_name_lower}
+  name: ${host_name}
   platform: ESP8266
   board: esp8285
 
@@ -77,7 +77,7 @@ status_led:
 
 sensor:
   - platform: uptime
-    name: "${device_name} Last Restart"
+    name: "${device_name} Last restart"
     update_interval: 300s
     device_class: "timestamp"
     entity_category: "diagnostic"
@@ -92,7 +92,7 @@ sensor:
           }
 
   - platform: wifi_signal
-    name: "${device_name} WiFi Signal"
+    name: "${device_name} WiFi signal"
     update_interval: 300s
     device_class: "signal_strength"
     entity_category: "diagnostic"

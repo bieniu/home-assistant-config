@@ -191,7 +191,7 @@ views:
               - light.leds_salon
               - light.lamp_salon
               - input_select.light_scenes_salon
-              - input_select.salon_harmony 
+              - input_select.salon_harmony
               - type: custom:mini-media-player
                 entity: media_player.bravia_salon
                 hide:
@@ -210,20 +210,6 @@ views:
                   progress: true
                 info: scroll
                 group: true
-              - type: conditional
-                conditions:
-                  - entity: media_player.dune_salon
-                    state_not: "unavailable"
-                row:
-                  type: custom:mini-media-player
-                  entity: media_player.dune_salon
-                  hide:
-                    volume: true
-                    controls: true
-                    power: true
-                    source: true
-                  info: scroll
-                  group: true
               - type: custom:mini-media-player
                 entity: media_player.firetv_salon
                 hide:
@@ -358,21 +344,8 @@ views:
               - binary_sensor.window_goscinny
               - entity: binary_sensor.motion_goscinny
                 secondary_info: last-changed
+              - light.ceiling_goscinny
               - light.gateway_goscinny
-              - type: conditional
-                conditions:
-                  - entity: media_player.mibox_goscinny
-                    state_not: "unavailable"
-                row:
-                  type: custom:mini-media-player
-                  entity: media_player.mibox_goscinny
-                  name: "Mi Box"
-                  hide:
-                    controls: true
-                    power: true
-                    source: true
-                  info: scroll
-                  group: true
       - type: vertical-stack
         in_card: true
         cards:
@@ -493,7 +466,6 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_antek
-              - fan.pedestal_antek
               - light.ceiling_antek
               - light.desk_lamp_antek
               - light.lightstrip_antek
@@ -891,11 +863,9 @@ views:
         entities:
           - binary_sensor.bravia_status
           - binary_sensor.denon_status
-          - binary_sensor.dune_status
           - binary_sensor.mibox_status
           - binary_sensor.firetv_status
           - binary_sensor.playstation_status
-          - binary_sensor.xbox_status
           - binary_sensor.echo_show_status
           - binary_sensor.echo_plus_status
           - binary_sensor.echo_dot_status
@@ -972,6 +942,7 @@ views:
           - binary_sensor.shelly_1pm_5fd486_status
           - binary_sensor.shelly_25_77dbe5_status
           - binary_sensor.shelly_plug_s_7aecf4_status
+          - binary_sensor.shelly_plus_1pm_948ff8_status
           - binary_sensor.shelly_plus_1pm_b22864_status
           - binary_sensor.shelly_pro_1pm_80e0c0_status
   - id: energy
@@ -1034,8 +1005,14 @@ views:
             color: var(--state-icon-color)
         entities:
           - sensor.battery_xiaomi_motion_aq2_przedpokoj
-          - sensor.shelly_motion_c67c2a_battery
-          - sensor.shelly_motion_2_72a6a4_battery
+          - entity: sensor.shelly_motion_c67c2a_battery
+            charging_state:
+              entity_id: binary_sensor.shelly_motion_c67c2a_charger
+              state: "on"
+          - entity: sensor.shelly_motion_2_72a6a4_battery
+            charging_state:
+              entity_id: binary_sensor.shelly_motion_2_72a6a4_charger
+              state: "on"
           - sensor.battery_xiaomi_motion_salon
           - sensor.battery_xiaomi_motion_aq2_salon
           - sensor.battery_xiaomi_motion_aq2_toaleta
@@ -1085,6 +1062,7 @@ views:
           - sensor.shelly_flood_f2ad1d_battery
       - type: custom:battery-state-card
         title: "Baterie termostatów"
+        round: 0
         tap_action:
           action: more-info
         color_thresholds:
@@ -1097,7 +1075,10 @@ views:
         entities:
           - sensor.battery_thermostat_salon
           - sensor.battery_thermostat_kuchnia
-          - sensor.battery_thermostat_antresola
+          - entity: sensor.shelly_valve_72a544_battery
+            charging_state:
+              entity_id: binary_sensor.shelly_valve_72a544_charger
+              state: "on"
           - sensor.battery_thermostat_gabinet
           - sensor.battery_thermostat_antek
           - sensor.battery_thermostat_sypialnia
@@ -1373,7 +1354,7 @@ views:
               - input_boolean.heating_airing
               - input_boolean.away_mode
               - input_boolean.guests
-              - schedule.heating    
+              - schedule.heating
       - type: entities
         title: "Temperatury ogrzewania"
         show_header_toggle: false

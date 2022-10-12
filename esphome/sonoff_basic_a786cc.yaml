@@ -1,9 +1,9 @@
 substitutions:
   device_name: "Sonoff Basic [A786CC]"
-  device_name_lower: "sonoff-basic-a786cc"
+  host_name: "sonoff-basic-a786cc"
 
 esphome:
-  name: ${device_name_lower}
+  name: ${host_name}
   platform: ESP8266
   board: esp01_1m
 
@@ -64,7 +64,7 @@ status_led:
 
 sensor:
   - platform: uptime
-    name: "${device_name} Last Restart"
+    name: "${device_name} Last restart"
     update_interval: 300s
     device_class: "timestamp"
     entity_category: "diagnostic"
@@ -79,6 +79,6 @@ sensor:
           }
 
   - platform: wifi_signal
-    name: "${device_name} WiFi Signal"
+    name: "${device_name} WiFi signal"
     update_interval: 300s
     device_class: "signal_strength"

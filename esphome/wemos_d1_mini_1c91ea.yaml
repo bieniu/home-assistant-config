@@ -1,9 +1,9 @@
 substitutions:
   device_name: "Wemos D1 mini [1C91EA]"
-  device_name_lower: "wemos-d1-mini-1c91ea"
+  host_name: "wemos-d1-mini-1c91ea"
 
 esphome:
-  name: ${device_name_lower}
+  name: ${host_name}
   platform: ESP8266
   board: d1_mini
 
@@ -68,7 +68,7 @@ sensor:
     internal: true
 
   - platform: uptime
-    name: "${device_name} Last Restart"
+    name: "${device_name} Last restart"
     update_interval: 300s
     device_class: "timestamp"
     entity_category: "diagnostic"
@@ -83,7 +83,7 @@ sensor:
           }
 
   - platform: wifi_signal
-    name: "${device_name} WiFi Signal"
+    name: "${device_name} WiFi signal"
     update_interval: 300s
     device_class: "signal_strength"
     entity_category: "diagnostic"

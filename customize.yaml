@@ -24,12 +24,8 @@ binary_sensor.synology_status:
   friendly_name: "Synology DS110j"
 binary_sensor.nuc_status:
   friendly_name: "Intel NUC 5CPYH"
-binary_sensor.dune_status:
-  friendly_name: "Dune BD Prime 3.0"
 binary_sensor.stacjonarny_status:
   friendly_name: "Komputer stacjonarny"
-binary_sensor.xbox_status:
-  friendly_name: "Xbox360"
 binary_sensor.playstation_status:
   friendly_name: "PlayStation 4 Pro"
 binary_sensor.bravia_status:
@@ -169,7 +165,7 @@ switch.camera_move_left:
   icon: mdi:chevron-double-left
 switch.camera_move_right:
   icon: mdi:chevron-double-right
-  
+
 sensor.uv_index_home:
   unit_of_measurement: " "
 

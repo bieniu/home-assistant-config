@@ -6,6 +6,7 @@ devices_away_mode:
       entity_id:
       - light.ceiling_antek
       - light.ceiling_gabinet
+      - light.ceiling_goscinny
       - light.ceiling_korytarz
       - light.ceiling_kuchnia
       - light.ceiling_lazienka
@@ -26,7 +27,6 @@ devices_away_mode:
       - light.lightstrip_sypialnia
       - light.scone_schody
       - light.tree_antek
-      - fan.pedestal_antek
       - fan.ceiling_salon
       - humidifier.xiaomi_salon
       - input_boolean.antek_lamp_night
@@ -77,13 +77,11 @@ heating_day:
     data:
       temperature: '{{ states(''input_select.heating_temp_bedroom_day'') }}'
   - service: input_boolean.turn_off
-    entity_id:
-    - input_boolean.heating_night
-    - input_boolean.heating_salon_kuchnia_night
+    entity_id: input_boolean.heating_night
   - condition: template
-    value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity')\
-      \ | float\n   and states('sensor.xiaomi_mi_humidifier_ca1_water_level') | int\
-      \ > 5 }}"
+    value_template: "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity')
+      | float\n   and states('sensor.xiaomi_mi_humidifier_ca1_water_level') | int
+      > 5 }}"
   - service: humidifier.turn_on
     entity_id: humidifier.xiaomi_salon
   mode: single
@@ -111,19 +109,17 @@ heating_night:
     data:
       temperature: '{{ states(''input_select.heating_temp_bathroom_night'') }}'
   - condition: template
-    value_template: "{{ is_state(\"input_boolean.guests\", \"off\") and\n   is_state(\"\
-      media_player.denon_salon\", \"off\") }}"
+    value_template: '{{ is_state(''input_boolean.guests'', ''off'') }}'
   - service: homeassistant.turn_off
     target:
       entity_id: humidifier.xiaomi_salon
+    data: {}
   - service: climate.set_temperature
     entity_id:
     - climate.aeotec_thermostat_kuchnia
     - climate.thermostat_salon
     data:
       temperature: '{{ states(''input_select.heating_temp_night'') }}'
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.heating_salon_kuchnia_night
   mode: single
   alias: 'Heating: night'
   icon: mdi:radiator
@@ -254,6 +250,7 @@ alexa_goodnight:
       - light.ceiling_salon
       - light.desk_lamp_antek
       - light.ceiling_gabinet
+      - light.ceiling_goscinny
       - light.ceiling_kuchnia
       - light.ceiling_lazienka
       - light.ceiling_toaleta
@@ -299,6 +296,7 @@ restart_wifi_devices:
     - button.shelly_motion_c67c2a_restart
     - button.shelly_plug_s_7aecf4_restart
     - button.shelly_plus_1pm_b22864_restart
+    - button.shelly_plus_1pm_948ff8_restart
     - button.shelly_pro_1pm_80e0c0_restart
     - button.shelly_valve_72a544_restart
     - button.shelly_vintage_d10472_restart
