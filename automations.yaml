@@ -123,7 +123,27 @@
     - update.watchman
     - update.z_wave_js
     - update.zadnego_ale
-    - update.shelly_duo_rgbw_d4ecd3
+    - update.shelly_1l_253d92_firmware
+    - update.shelly_1l_61c9fd_firmware
+    - update.shelly_1l_701559_firmware
+    - update.shelly_1l_aacec4_firmware
+    - update.shelly_1l_aceb5f_firmware
+    - update.shelly_1l_ad365e_firmware
+    - update.shelly_1l_e361a5_firmware
+    - update.shelly_25_77dbe5_firmware
+    - update.shelly_duo_55f6fa1_firmware
+    - update.shelly_duo_rgbw_d4ecd3_firmware
+    - update.shelly_flood_f2ad1d_firmware
+    - update.shelly_gas_c6811c_firmware
+    - update.shelly_ht_e00abd_firmware
+    - update.shelly_motion_2_72a6a4_firmware
+    - update.shelly_motion_c67c2a_firmware
+    - update.shelly_plug_s_7aecf4_firmware
+    - update.shelly_valve_72a544_firmware
+    - update.shelly_vintage_d10472_firmware
+    - update.shelly_pro_1pm_80e0c0_firmware
+    - update.shelly_plus_1pm_948ff8_firmware
+    - update.shelly_plus_1pm_b22864_firmware
     from: 'off'
     to: 'on'
   action:
@@ -180,49 +200,6 @@
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
-- id: notification_shelly_update_available
-  alias: Notification Shelly Update Available
-  description: powiadom o aktualizacji oprogramowania Shelly
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.shelly_1l_253d92_firmware
-    - binary_sensor.shelly_1l_61c9fd_firmware
-    - binary_sensor.shelly_1l_701559_firmware
-    - binary_sensor.shelly_1l_aacec4_firmware
-    - binary_sensor.shelly_1l_aceb5f_firmware
-    - binary_sensor.shelly_1l_ad365e_firmware
-    - binary_sensor.shelly_1pm_5fd486_firmware
-    - binary_sensor.shelly_25_77dbe5_firmware
-    - binary_sensor.shelly_duo_5f6fa1_firmware
-    - binary_sensor.shelly_flood_f2ad1d_firmware
-    - binary_sensor.shelly_gas_c6811c_firmware
-    - binary_sensor.shelly_ht_e00abd_firmware
-    - binary_sensor.shelly_plus_ht_09e018_firmware
-    - binary_sensor.shelly_plus_ht_6b3e3c_firmware
-    - binary_sensor.shelly_plus_1pm_948ff8_firmware
-    - binary_sensor.shelly_plus_1pm_b22864_firmware
-    - binary_sensor.shelly_motion_2_72a6a4_firmware
-    - binary_sensor.shelly_motion_c67c2a_firmware
-    - binary_sensor.shelly_plug_s_7aecf4_firmware
-    - binary_sensor.shelly_plus_1pm_b22864_firmware
-    - binary_sensor.shelly_pro_1pm_80e0c0_firmware
-    - binary_sensor.shelly_valve_72a544_firmware
-    - binary_sensor.shelly_vintage_d10472_firmware
-    from: 'off'
-    to: 'on'
-  action:
-  - service: python_script.notify
-    data:
-      title: Aktualizacja oprogramowania Shelly
-      message: Dostępna jest aktualizacja oprogramowania dla {{ device_attr(trigger.entity_id,
-        'name_by_user') }}.
-      tag: notification-{{ trigger.entity_id }}
-      group: updates
-      services:
-      - service: notify.mobile_app_iphone_13
-        type: ios
-  mode: queued
 - id: notification_storm_comming
   alias: Notification Storm Comming
   description: powiadom o zblizającej się burzy

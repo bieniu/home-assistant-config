@@ -300,6 +300,6 @@ restart_wifi_devices:
     - button.shelly_pro_1pm_80e0c0_restart
     - button.shelly_valve_72a544_restart
     - button.shelly_vintage_d10472_restart
-    - button.wemos_d1_mini_1c91ea_restart
+    - button.wemos_lolin32_8cbf7c_restart
   mode: single
   icon: mdi:restart

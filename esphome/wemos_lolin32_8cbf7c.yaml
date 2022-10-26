@@ -14,6 +14,10 @@ logger:
 
 api:
   password: !secret esphome_password
+  services:
+    - service: calibrate
+      then:
+        - mhz19.calibrate_zero: mhz19_sensor
 
 ota:
   password: !secret esphome_password
@@ -38,6 +42,7 @@ web_server:
 esp32_ble_tracker:
 
 bluetooth_proxy:
+  active: true
 
 time:
   - platform: homeassistant
@@ -48,7 +53,24 @@ button:
     name: "${device_name} Restart"
     device_class: "restart"
 
+uart:
+  rx_pin: GPIO21
+  tx_pin: GPIO22
+  baud_rate: 9600
+
 sensor:
+  - platform: mhz19
+    id: mhz19_sensor
+    co2:
+      name: "MH-Z19B Carbon Dioxide"
+      device_class: "carbon_dioxide"
+    temperature:
+      name: "MH-Z19B Temperature"
+      accuracy_decimals: 1
+      device_class: "temperature"
+    automatic_baseline_calibration: false
+    update_interval: 300s
+
   - platform: uptime
     id: uptime_sensor
     internal: true
