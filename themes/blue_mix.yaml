@@ -3,7 +3,6 @@ blue-mix:
     light:
       accent-color: '#ffb750'
       dark-primary-color: '#0067b0'
-      ha-card-border-radius: '10px'
       light-primary-color: '#89c4ff'
       primary-background-color: '#e5e5e5'
       primary-color: '#5294e2'
@@ -16,7 +15,6 @@ blue-mix:
       app-header-background-color: 'var(--primary-color)'
       dark-primary-color: '#0067b0'
       ha-card-background: '#434954'
-      ha-card-border-radius: '10px'
       light-primary-color: '#89c4ff'
       primary-background-color: '#383C45'
       card-background-color: 'var(--primary-background-color)'

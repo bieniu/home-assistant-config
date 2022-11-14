@@ -144,6 +144,7 @@
     - update.shelly_pro_1pm_80e0c0_firmware
     - update.shelly_plus_1pm_948ff8_firmware
     - update.shelly_plus_1pm_b22864_firmware
+    - update.asus_rt_ac86u_firmware
     from: 'off'
     to: 'on'
   action:
@@ -2442,15 +2443,15 @@
   alias: HA Starts Activity
   description: HA zmienia aktywność
   trigger:
-    platform: state
+  - platform: state
     entity_id: input_select.salon_harmony
-    not_to: PowerOff
+    not_to: wyłączony
   condition:
-    condition: state
+  - condition: state
     entity_id: input_boolean.harmony_command
     state: 'off'
   action:
-    service: select.select_option
+  - service: select.select_option
     data_template:
       entity_id: select.harmony_activities
       option: '{{ trigger.to_state.state }}'
@@ -2593,7 +2594,7 @@
     data:
       entity_id: input_select.target_humidity
       option: '40'
-- id: climate_pracownia_external_temperature_sensor
+- id: climate_anresola_external_temperature_sensor
   alias: Heating Antresola External Temperature Sensor
   description: Przekazuje temperaturę z sensora do termostatu
   trigger:
@@ -2610,6 +2611,7 @@
     data:
       topic: shellies/shellytrv-84FD2772A544/thermostat/0/command/ext_t
       payload: '{{ trigger.to_state.state | float(0) }}'
+  mode: restart
 - id: log_level
   alias: Log Level
   description: ustaw poziom logowania
@@ -2637,13 +2639,11 @@
 - id: shellies_discovery
   alias: Shellies Discovery
   description: uruchom skrypt Shellies Discovery
-  mode: queued
-  max: 999
   trigger:
-    platform: mqtt
+  - platform: mqtt
     topic: shellies/announce
   action:
-    service: python_script.shellies_discovery
+  - service: python_script.shellies_discovery
     data:
       id: '{{ trigger.payload_json.id }}'
       mac: '{{ trigger.payload_json.mac }}'
@@ -2653,32 +2653,60 @@
       host: '{{ trigger.payload_json.ip }}'
       qos: 1
       shelly1pm-8CAAB55FD486:
+        device_name: Shelly 1PM [5FD486]
         relay-0: light
       shellyswitch25-C45BBE77DBE5:
+        device_name: Shelly 2.5 [77DBE5]
         relay-1: light
       shellyflood-F2AD1D:
+        device_name: Shelly Flood [F2AD1D]
         expire_after: 95040
       shellyht-E00ABD:
+        device_name: Shelly H&T [E00ABD]
         powered: ac
         force_update_sensors: true
       shelly1l-84CCA8ACEB5F:
+        device_name: Shelly 1L [ACEB5F]
         relay-0: light
       shelly1l-84CCA8AD1B60:
+        device_name: Shelly 1L [AD1B60]
         relay-0: light
       shelly1l-8CAAB561C9FD:
+        device_name: Shelly 1L [61C9FD]
         relay-0: light
       shelly1l-84CCA8ACEDF2:
+        device_name: Shelly 1L [ACEDF2]
         relay-0: light
       shelly1l-E8DB84AACEC4:
+        device_name: Shelly 1L [AACEC4]
         relay-0: light
       shelly1-328900:
+        device_name: Shelly 1 [328900]
         relay-0: light
       shelly1l-98CDAC253D92:
+        device_name: Shelly 1L [253D92]
         relay-0: light
       shelly1l-3C6105E361A5:
+        device_name: Shelly 1L [E361A5]
         relay-0: light
+      ShellyVintage-D10472:
+        device_name: Shelly Vintage [D10472]
+      shellytrv-84FD2772A544:
+        device_name: Shelly Valve [72A544]
+      shellyplug-s-7AECF4:
+        device_name: Shelly Plug S [7AECF4]
+      shellymotion2-84FD2772A6A4:
+        device_name: Shelly Motion 2 [72A6A4]
+      shellymotionsensor-60A423C67C2A:
+        device_name: Shelly Motion [C67C2A]
+      shellygas-E868E7C6811C:
+        device_name: Shelly Gas [C6811C]
+      ShellyBulbDuo-8CAAB55F6FA1:
+        device_name: Shelly DUO [5F6FA1]
       ignored_devices:
       - shellycolorbulb-E868E7C6811C
+  mode: queued
+  max: 999
 - id: shellies_announce_gen2
   alias: Shellies Announce Gen2
   trigger:
@@ -2812,3 +2840,16 @@
     service: light.turn_off
     target:
       entity_id: light.ceiling_goscinny
+- id: '1667468796238'
+  alias: Log Shelly Valve info payloads
+  description: ''
+  trigger:
+  - platform: mqtt
+    topic: shellies/shellytrv-84FD2772A544/info
+  condition: []
+  action:
+  - service: system_log.write
+    data:
+      level: warning
+      message: '{{ trigger.payload | string }}'
+  mode: single

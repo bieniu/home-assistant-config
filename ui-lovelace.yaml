@@ -59,7 +59,8 @@ views:
             cards:
               - type: custom:simple-weather-card
                 canary_style:
-                  margin-top: "-24px"
+                  margin-top: "-22px"
+                  border-style: none
                 entity: weather.home
                 tap_action:
                   action: navigate
@@ -76,6 +77,7 @@ views:
                   - pressure: sensor.pressure_outdoor
                   - precipitation_probability: sensor.dark_sky_precip_probability
           - type: glance
+            <<: *card-header-no-padding-bottom
             title: "Samochód"
             show_name: false
             entities:
@@ -86,6 +88,8 @@ views:
             in_card: true
             cards:
               - type: glance
+                canary_style:
+                  border-style: none
                 <<: *card-header-no-padding-bottom
                 title: "Przedpokój"
                 show_name: false
@@ -94,6 +98,8 @@ views:
                   - sensor.humidity_przedpokoj
                   - sensor.illumination_przedpokoj
               - type: entities
+                canary_style:
+                  border-style: none
                 show_header_toggle: false
                 state_color: true
                 entities:
@@ -113,6 +119,8 @@ views:
             in_card: true
             cards:
               - type: glance
+                canary_style:
+                  border-style: none
                 <<: *card-header-no-padding-bottom
                 title: "Kuchnia"
                 show_name: false
@@ -121,6 +129,8 @@ views:
                   - sensor.humidity_kuchnia
                   - sensor.illumination_kuchnia
               - type: entities
+                canary_style:
+                  border-style: none
                 show_header_toggle: false
                 state_color: true
                 entities:
@@ -151,6 +161,8 @@ views:
         in_card: true
         cards:
           - type: glance
+            canary_style:
+              border-style: none
             <<: *card-header-no-padding-bottom
             title: "Salon"
             show_name: false
@@ -160,6 +172,8 @@ views:
               - sensor.co2_salon
               - sensor.illumination_salon
           - type: entities
+            canary_style:
+              border-style: none
             show_header_toggle: false
             state_color: true
             entities:
@@ -193,6 +207,8 @@ views:
               - input_select.light_scenes_salon
               - input_select.salon_harmony
               - type: custom:mini-media-player
+                canary_style:
+                  border-style: none
                 entity: media_player.bravia_salon
                 hide:
                   controls: true
@@ -202,6 +218,8 @@ views:
                 info: scroll
                 group: true
               - type: custom:mini-media-player
+                canary_style:
+                  border-style: none
                 entity: media_player.denon_salon
                 hide:
                   controls: true
@@ -211,6 +229,8 @@ views:
                 info: scroll
                 group: true
               - type: custom:mini-media-player
+                canary_style:
+                  border-style: none
                 entity: media_player.firetv_salon
                 hide:
                   volume: true
@@ -220,6 +240,8 @@ views:
                 info: scroll
                 group: true
               - type: custom:mini-media-player
+                canary_style:
+                  border-style: none
                 entity: media_player.playstation_salon
                 hide:
                   controls: true
@@ -230,6 +252,8 @@ views:
                 info: scroll
                 group: true
               - type: custom:mini-media-player
+                canary_style:
+                  border-style: none
                 entity: media_player.echo_show_salon
                 hide:
                   controls: true
@@ -287,6 +311,8 @@ views:
         in_card: true
         cards:
           - type: glance
+            canary_style:
+              border-style: none
             <<: *card-header-no-padding-bottom
             title: "Toaleta"
             show_name: false
@@ -295,6 +321,8 @@ views:
               - sensor.humidity_toaleta
               - sensor.illumination_toaleta
           - type: entities
+            canary_style:
+              border-style: none
             show_header_toggle: false
             state_color: true
             entities:
@@ -305,6 +333,8 @@ views:
         in_card: true
         cards:
           - type: glance
+            canary_style:
+              border-style: none
             <<: *card-header-no-padding-bottom
             title: "Pracownia"
             show_name: false
@@ -313,6 +343,8 @@ views:
               - sensor.humidity_pracownia
               - sensor.illumination_pracownia
           - type: entities
+            canary_style:
+              border-style: none
             show_header_toggle: false
             state_color: true
             entities:
@@ -330,6 +362,8 @@ views:
         in_card: true
         cards:
           - type: glance
+            canary_style:
+              border-style: none
             <<: *card-header-no-padding-bottom
             title: "Pokój gościnny"
             show_name: false
@@ -338,6 +372,8 @@ views:
               - sensor.humidity_goscinny
               - sensor.illumination_goscinny
           - type: entities
+            canary_style:
+              border-style: none
             show_header_toggle: false
             state_color: true
             entities:
@@ -350,6 +386,8 @@ views:
         in_card: true
         cards:
           - type: glance
+            canary_style:
+              border-style: none
             <<: *card-header-no-padding-bottom
             title: "Antresola"
             show_name: false
@@ -358,6 +396,8 @@ views:
               - sensor.humidity_antresola
               - sensor.illumination_antresola
           - type: entities
+            canary_style:
+              border-style: none
             show_header_toggle: false
             state_color: true
             entities:
@@ -377,6 +417,8 @@ views:
         in_card: true
         cards:
           - type: glance
+            canary_style:
+              border-style: none
             <<: *card-header-no-padding-bottom
             title: "Gabinet"
             show_name: false
@@ -385,6 +427,8 @@ views:
               - sensor.humidity_gabinet
               - sensor.illumination_gabinet
           - type: entities
+            canary_style:
+              border-style: none
             show_header_toggle: false
             state_color: true
             entities:
@@ -402,6 +446,8 @@ views:
               - light.desk_lamp_gabinet
               - switch.stacjonarny
               - type: custom:mini-media-player
+                canary_style:
+                  border-style: none
                 entity: media_player.echo_dot_gabinet
                 hide:
                   controls: true
@@ -446,6 +492,8 @@ views:
         in_card: true
         cards:
           - type: glance
+            canary_style:
+              border-style: none
             <<: *card-header-no-padding-bottom
             title: "Pokój Antka"
             show_name: false
@@ -454,6 +502,8 @@ views:
               - sensor.humidity_antek
               - sensor.illumination_antek
           - type: entities
+            canary_style:
+              border-style: none
             show_header_toggle: false
             state_color: true
             entities:
@@ -471,6 +521,8 @@ views:
               - light.lightstrip_antek
               - light.tree_antek
               - type: custom:mini-media-player
+                canary_style:
+                  border-style: none
                 entity: media_player.echo_plus_antek
                 hide:
                   controls: true
@@ -515,6 +567,8 @@ views:
         in_card: true
         cards:
           - type: glance
+            canary_style:
+              border-style: none
             <<: *card-header-no-padding-bottom
             title: "Sypialnia"
             show_name: false
@@ -523,6 +577,8 @@ views:
               - sensor.humidity_sypialnia
               - sensor.illumination_sypialnia
           - type: entities
+            canary_style:
+              border-style: none
             show_header_toggle: false
             state_color: true
             entities:
@@ -541,6 +597,8 @@ views:
         in_card: true
         cards:
           - type: glance
+            canary_style:
+              border-style: none
             <<: *card-header-no-padding-bottom
             title: "Łazienka"
             show_name: false
@@ -549,6 +607,8 @@ views:
               - sensor.humidity_lazienka
               - sensor.illumination_lazienka
           - type: entities
+            canary_style:
+              border-style: none
             show_header_toggle: false
             state_color: true
             entities:
@@ -617,6 +677,7 @@ views:
                         ha-card.flex {
                           padding-top: 0px;
                           padding-bottom: 0px;
+                          border-style: none;
                         }
                     <<: &GRAPH_IN_CARD
                       hour24: true
@@ -637,6 +698,7 @@ views:
                         ha-card.flex {
                           padding-top: 0px;
                           padding-bottom: 0px;
+                          border-style: none;
                         }
                     <<: *GRAPH_IN_CARD
                     line_color: "#ffce57"
@@ -647,6 +709,8 @@ views:
             in_card: true
             cards:
               - type: entities
+                canary_style:
+                  border-style: none
                 title: "Router"
                 show_header_toggle: false
                 entities:
@@ -656,12 +720,16 @@ views:
               - type: horizontal-stack
                 cards:
                   - type: custom:mini-graph-card
+                    canary_style:
+                      border-style: none
                     <<: *GRAPH_IN_CARD
                     line_color: "#36a2eb"
                     decimals: 1
                     entities:
                       - sensor.asuswrt_download_speed
                   - type: custom:mini-graph-card
+                    canary_style:
+                      border-style: none
                     <<: *GRAPH_IN_CARD
                     line_color: "#ffce57"
                     decimals: 1
@@ -677,6 +745,7 @@ views:
                     ha-card.flex {
                       padding-top: 0px;
                       padding-bottom: 0px;
+                      border-style: none;
                     }
                 hour24: true
                 animate: true
@@ -694,6 +763,8 @@ views:
                     color: "#36a2eb"
                     unit: "zapytań"
               - type: entities
+                canary_style:
+                  border-style: none
                 show_header_toggle: false
                 entities:
                   - entity: sensor.dom_dns_queries_blocked_ratio
@@ -714,6 +785,8 @@ views:
             in_card: true
             cards:
               - type: entities
+                canary_style:
+                  border-style: none
                 title: "Intel NUC"
                 show_header_toggle: false
                 entities:
@@ -727,6 +800,8 @@ views:
               - type: horizontal-stack
                 cards:
                   - type: custom:mini-graph-card
+                    canary_style:
+                      border-style: none
                     <<: *GRAPH_IN_CARD
                     decimals: 0
                     entities:
@@ -744,6 +819,8 @@ views:
                         - value: 85
                           color: "#d81b60"
                   - type: custom:mini-graph-card
+                    canary_style:
+                      border-style: none
                     <<: *GRAPH_IN_CARD
                     decimals: 1
                     entities:
@@ -753,6 +830,8 @@ views:
             in_card: true
             cards:
               - type: entities
+                canary_style:
+                  border-style: none
                 title: "Raspberry Pi 4B"
                 show_header_toggle: false
                 entities:
@@ -763,12 +842,16 @@ views:
               - type: horizontal-stack
                 cards:
                   - type: custom:mini-graph-card
+                    canary_style:
+                      border-style: none
                     <<: *GRAPH_IN_CARD
                     decimals: 0
                     entities:
                       - sensor.raspberry_processor_use
                     <<: *GRAPH_COLOR_THRESHOLD
                   - type: custom:mini-graph-card
+                    canary_style:
+                      border-style: none
                     <<: *GRAPH_IN_CARD
                     decimals: 1
                     entities:
@@ -915,6 +998,7 @@ views:
           - binary_sensor.shelly_flood_f2ad1d_status
           - binary_sensor.shelly_gas_c6811c_status
           - binary_sensor.wemos_d1_mini_1c91ea_status
+          - binary_sensor.wemos_lolin32_8cbf7c_status
           - binary_sensor.nettigo_air_monitor_status
       - type: entities
         title: "IoT - przekaźniki"
@@ -956,6 +1040,8 @@ views:
         in_card: true
         cards:
           - type: entities
+            canary_style:
+              border-style: none
             title: "UPS"
             show_header_toggle: false
             entities:
@@ -978,6 +1064,8 @@ views:
           - type: horizontal-stack
             cards:
               - type: custom:mini-graph-card
+                canary_style:
+                  border-style: none
                 <<: *GRAPH_IN_CARD
                 icon: mdi:sine-wave
                 decimals: 0
@@ -985,6 +1073,8 @@ views:
                   - sensor.cyberpower_dl650elcd_input_voltage
                 line_color: "#ef5350"
               - type: custom:mini-graph-card
+                canary_style:
+                  border-style: none
                 <<: *GRAPH_IN_CARD
                 icon: mdi:sine-wave
                 decimals: 0

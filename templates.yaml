@@ -398,6 +398,11 @@
       icon: mdi:developer-board
       state: "{{ is_state('device_tracker.wemos_d1_mini_1c91ea', 'home') }}"
 
+    - name: wemos_lolin32_8cbf7c_status
+      unique_id: "wemos_lolin32_8cbf7c_status"
+      icon: mdi:developer-board
+      state: "{{ is_state('device_tracker.wemos_lolin32_8cbf7c', 'home') }}"
+
     - name: nettigo_air_monitor_status
       unique_id: "nettigo_air_monitor_status"
       icon: mdi:weather-partly-rainy
