@@ -77,6 +77,7 @@
 * Xiaomi DaFang [camera with [custom firmware](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks)]
 * Sony Bravia TV
 * Amazon Echo Plus/Dot/Show [via Home Assistant Cloud]
+* Sonos One
 * Tractive tracker for dog
 * BMW car
 * Asus RT-AC86U router
