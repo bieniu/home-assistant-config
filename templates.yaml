@@ -160,6 +160,11 @@
       icon: mdi:tablet
       state: "{{ is_state('device_tracker.ipad_air', 'home') }}"
 
+    - name: remarkable_2_status
+      unique_id: "remarkable_2_status"
+      icon: mdi:book-open
+      state: "{{ is_state('device_tracker.remarkable_2', 'home') }}"
+
     - name: kindle_keyboard_3g_status
       unique_id: "kindle_keyboard_3g_status"
       icon: mdi:cellphone-text
@@ -184,6 +189,11 @@
       unique_id: "echo_dot_status"
       icon: mdi:speaker
       state: "{{ is_state('device_tracker.echo_dot', 'home') }}"
+
+    - name: sonos_one_status
+      unique_id: "echo_one_status"
+      icon: mdi:cast-audio
+      state: "{{ is_state('device_tracker.sonos_one', 'home') }}"
 
     - name: inkbook_status
       unique_id: "inkbook_status"

@@ -42,7 +42,6 @@ web_server:
 esp32_ble_tracker:
 
 bluetooth_proxy:
-  active: true
 
 time:
   - platform: homeassistant

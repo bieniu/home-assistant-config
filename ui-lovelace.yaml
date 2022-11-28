@@ -257,7 +257,6 @@ views:
                 entity: media_player.echo_show_salon
                 hide:
                   controls: true
-                  volume: true
                   power: true
                   progress: true
                 info: scroll
@@ -448,13 +447,11 @@ views:
               - type: custom:mini-media-player
                 canary_style:
                   border-style: none
-                entity: media_player.echo_dot_gabinet
+                entity: media_player.sonos_one_gabinet
                 hide:
                   controls: true
-                  volume: true
                   power: true
                   progress: true
-                  source: true
                 info: scroll
                 group: true
                 shortcuts:
@@ -464,30 +461,30 @@ views:
                       type: "service"
                       id: media_player.play_media
                       data:
-                        entity_id: media_player.echo_dot_gabinet
-                        media_content_type: "TUNEIN"
-                        media_content_id: "RMF FM"
+                        entity_id: media_player.sonos_one_gabinet
+                        media_content_type: "favorite_item_id"
+                        media_content_id: "FV:2/2"
                     - name: "MUZO FM"
                       type: "service"
                       id: media_player.play_media
                       data:
-                        entity_id: media_player.echo_dot_gabinet
-                        media_content_type: "TUNEIN"
-                        media_content_id: "MUZO FM"
-                    - name: "Radio ZET"
+                        entity_id: media_player.sonos_one_gabinet
+                        media_content_type: "favorite_item_id"
+                        media_content_id: "FV:2/3"
+                    - name: "Eska ROCK"
                       type: "service"
                       id: media_player.play_media
                       data:
-                        entity_id: media_player.echo_dot_gabinet
-                        media_content_type: "TUNEIN"
-                        media_content_id: "Radio ZET"
+                        entity_id: media_player.sonos_one_gabinet
+                        media_content_type: "favorite_item_id"
+                        media_content_id: "FV:2/4"
                     - name: "Spotify"
                       type: "service"
                       id: media_player.play_media
                       data:
-                        entity_id: media_player.echo_dot_gabinet
-                        media_content_type: "SPOTIFY"
-                        media_content_id: "playlist Maciek"
+                        entity_id: media_player.sonos_one_gabinet
+                        media_content_type: "favorite_item_id"
+                        media_content_id: "FV:2/1"
       - type: vertical-stack
         in_card: true
         cards:
@@ -526,7 +523,6 @@ views:
                 entity: media_player.echo_plus_antek
                 hide:
                   controls: true
-                  volume: true
                   power: true
                   progress: true
                   source: true
@@ -593,6 +589,41 @@ views:
                 row:
                   entity: climate.thermostat_sypialnia
               - light.lightstrip_sypialnia
+              - type: custom:mini-media-player
+                canary_style:
+                  border-style: none
+                entity: media_player.echo_dot_sypialnia
+                hide:
+                  controls: true
+                  power: true
+                  progress: true
+                  source: true
+                info: scroll
+                group: true
+                shortcuts:
+                  label: "Skróty"
+                  list:
+                    - name: "RMF FM"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_dot_sypialnia
+                        media_content_type: "TUNEIN"
+                        media_content_id: "RMF FM"
+                    - name: "MUZO FM"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_dot_sypialnia
+                        media_content_type: "TUNEIN"
+                        media_content_id: "MUZO FM"
+                    - name: "Radio ZET"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_dot_sypialnia
+                        media_content_type: "TUNEIN"
+                        media_content_id: "Radio ZET"
       - type: vertical-stack
         in_card: true
         cards:
@@ -938,6 +969,7 @@ views:
           - binary_sensor.kindle_keyboard_3g_status
           - binary_sensor.kindle_8_status
           - binary_sensor.inkbook_status
+          - binary_sensor.remarkable_2_status
       - type: entities
         title: "Urządzenia RTV"
         show_header_toggle: false
@@ -952,6 +984,7 @@ views:
           - binary_sensor.echo_show_status
           - binary_sensor.echo_plus_status
           - binary_sensor.echo_dot_status
+          - binary_sensor.sonos_one_status
           - binary_sensor.harmony_status
       - type: entities
         title: "IoT - inne"

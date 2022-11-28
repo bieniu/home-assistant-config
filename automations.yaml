@@ -86,8 +86,8 @@
   - platform: state
     entity_id:
     - update.adaptive_lighting
-    - update.aeotec_zw175_smart_switch_7
-    - update.aeotec_zwa021_thermostat
+    - update.aeotec_zw175_smart_switch_7_firmware
+    - update.aeotec_zwa021_thermostat_firmware
     - update.alexa_media_player
     - update.auto_entities
     - update.battery_state_card_entity_row
@@ -95,7 +95,6 @@
     - update.caddy_2
     - update.canary
     - update.card_mod
-    - update.check_home_assistant_configuration
     - update.clear_theme
     - update.custom_animated_weather_card
     - update.esphome
