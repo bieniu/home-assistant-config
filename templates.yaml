@@ -155,6 +155,11 @@
       icon: mdi:cellphone
       state: "{{ is_state('device_tracker.iphone_11', 'home') }}"
 
+    - name: iphone_12_status
+      unique_id: "iphone_12_status"
+      icon: mdi:cellphone
+      state: "{{ is_state('device_tracker.iphone_12', 'home') }}"
+
     - name: ipad_status
       unique_id: "ipad_status"
       icon: mdi:tablet

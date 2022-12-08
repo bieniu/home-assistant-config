@@ -5,27 +5,6 @@ anchors:
         h1.card-header {
           padding-bottom: 0px;
         }
-  network-status-card: &network-status-card
-    card_mod:
-      style: |
-        div#states.card-content {
-          --paper-item-icon-active-color: var(--state-icon-color);
-          --paper-item-icon-color: var(--disabled-text-color);
-        }
-  percent-entity: &percent-entity
-    card_mod:
-      style: |
-        :host {
-          --paper-item-icon-color:
-            {% set percent = states(config.entity) %}
-            {% if percent | int < 15 %}
-              var(--label-badge-red)
-            {% elif percent | int < 30 %}
-              var(--label-badge-yellow)
-            {% else %}
-              var(--state-icon-color)
-            {% endif %};
-        }
 title: "Dom"
 views:
   - id: home
@@ -151,8 +130,8 @@ views:
                         :host {
                           --paper-item-icon-color:
                             {% if is_state(config.entity, "zmywanie") %}
-                              var(--state-icon-active-color)
-                            {% else %}
+                              var(--state-on-color)
+                            {% elif is_state(config.entity, "wyłączona") %}
                               var(--state-icon-color)
                             {% endif %};
                         }
@@ -205,7 +184,7 @@ views:
               - light.leds_salon
               - light.lamp_salon
               - input_select.light_scenes_salon
-              - input_select.salon_harmony
+              - select.harmony_activities
               - type: custom:mini-media-player
                 canary_style:
                   border-style: none
@@ -896,10 +875,8 @@ views:
                 entities:
                   - sensor.printer_status
                   - sensor.printer_page_counter
-                  - entity: sensor.printer_drum_remaining_life
-                    <<: *percent-entity
-                  - entity: sensor.printer_toner_remaining
-                    <<: *percent-entity
+                  - sensor.printer_drum_remaining_life
+                  - sensor.printer_toner_remaining
                   - sensor.printer_last_restart
               - type: entities
                 title: "Synology"
@@ -929,7 +906,6 @@ views:
         title: "Urządzenia sieciowe"
         show_header_toggle: false
         state_color: true
-        <<: *network-status-card
         entities:
           - binary_sensor.modem_status
           - binary_sensor.router_status
@@ -939,7 +915,6 @@ views:
         title: "Serwery"
         show_header_toggle: false
         state_color: true
-        <<: *network-status-card
         entities:
           - binary_sensor.synology_status
           - binary_sensor.nuc_status
@@ -949,7 +924,6 @@ views:
         title: "Komputery"
         show_header_toggle: false
         state_color: true
-        <<: *network-status-card
         entities:
           - binary_sensor.stacjonarny_status
           - binary_sensor.laptop_status
@@ -960,10 +934,10 @@ views:
         title: "Urządzenia mobilne"
         show_header_toggle: false
         state_color: true
-        <<: *network-status-card
         entities:
           - binary_sensor.iphone_13_status
-          - binary_sensor.iphone_11_status
+          - binary_sensor.iphone_12_status
+          # - binary_sensor.iphone_11_status
           - binary_sensor.iphone_8_plus_status
           - binary_sensor.ipad_status
           - binary_sensor.kindle_keyboard_3g_status
@@ -974,7 +948,6 @@ views:
         title: "Urządzenia RTV"
         show_header_toggle: false
         state_color: true
-        <<: *network-status-card
         entities:
           - binary_sensor.bravia_status
           - binary_sensor.denon_status
@@ -990,7 +963,6 @@ views:
         title: "IoT - inne"
         show_header_toggle: false
         state_color: true
-        <<: *network-status-card
         entities:
           - binary_sensor.migateway_cc6f0b_status
           - binary_sensor.migateway_a0f210_status
@@ -1004,7 +976,6 @@ views:
         title: "IoT - oświetlenie"
         show_header_toggle: false
         state_color: true
-        <<: *network-status-card
         entities:
           - binary_sensor.yeelight_yldp06yl_84be7a_status
           - binary_sensor.yeelight_yldp06yl_7cafc6_status
@@ -1021,7 +992,6 @@ views:
         title: "IoT - sensory"
         show_header_toggle: false
         state_color: true
-        <<: *network-status-card
         entities:
           - binary_sensor.shelly_ht_e00abd_status
           - binary_sensor.shelly_plus_ht_09e018_status
@@ -1037,7 +1007,6 @@ views:
         title: "IoT - przekaźniki"
         show_header_toggle: false
         state_color: true
-        <<: *network-status-card
         entities:
           - binary_sensor.sonoff_basic_a786cc_status
           - binary_sensor.sonoff_basic_067c81_status
@@ -1080,19 +1049,7 @@ views:
             entities:
               - sensor.ups_status
               - entity: sensor.cyberpower_dl650elcd_battery_charge
-                card_mod:
-                  style: |
-                    :host {
-                      --paper-item-icon-color:
-                        {% set battery = states(config.entity) %}
-                        {% if battery | int < 20 %}
-                          var(--label-badge-red)
-                        {% elif battery | int < 40 %}
-                          var(--label-badge-yellow)
-                        {% else %}
-                          var(--state-icon-color)
-                        {% endif %};
-                    }
+                state_color: true
               - sensor.cyberpower_dl650elcd_load
           - type: horizontal-stack
             cards:
@@ -1115,27 +1072,13 @@ views:
                   - sensor.cyberpower_dl650elcd_battery_voltage
                 line_color: "#36a2eb"
                 lower_bound: 0
-      - type: custom:battery-state-card
+      - type: entities
         title: "Baterie sensorów ruchu"
-        tap_action:
-          action: more-info
-        color_thresholds:
-          - value: 20
-            color: var(--label-badge-red)
-          - value: 40
-            color: var(--label-badge-yellow)
-          - value: 100
-            color: var(--state-icon-color)
+        state_color: true
         entities:
           - sensor.battery_xiaomi_motion_aq2_przedpokoj
-          - entity: sensor.shelly_motion_c67c2a_battery
-            charging_state:
-              entity_id: binary_sensor.shelly_motion_c67c2a_charger
-              state: "on"
-          - entity: sensor.shelly_motion_2_72a6a4_battery
-            charging_state:
-              entity_id: binary_sensor.shelly_motion_2_72a6a4_charger
-              state: "on"
+          - sensor.shelly_motion_c67c2a_battery
+          - sensor.shelly_motion_2_72a6a4_battery
           - sensor.battery_xiaomi_motion_salon
           - sensor.battery_xiaomi_motion_aq2_salon
           - sensor.battery_xiaomi_motion_aq2_toaleta
@@ -1147,17 +1090,9 @@ views:
           - sensor.battery_xiaomi_motion_aq2_antek
           - sensor.battery_xiaomi_motion_aq2_sypialnia
           - sensor.battery_xiaomi_motion_aq2_lazienka
-      - type: custom:battery-state-card
+      - type: entities
         title: "Baterie sensorów temperatury"
-        tap_action:
-          action: more-info
-        color_thresholds:
-          - value: 20
-            color: var(--label-badge-red)
-          - value: 40
-            color: var(--label-badge-yellow)
-          - value: 100
-            color: var(--state-icon-color)
+        state_color: true
         entities:
           - sensor.battery_xiaomi_ht_przedpokoj
           - sensor.battery_xiaomi_ht_kuchnia
@@ -1170,54 +1105,26 @@ views:
           - sensor.battery_xiaomi_ht_antek
           - sensor.battery_xiaomi_ht_sypialnia
           - sensor.battery_xiaomi_ht_lazienka
-      - type: custom:battery-state-card
+      - type: entities
         title: "Baterie sensorów wody"
-        tap_action:
-          action: more-info
-        color_thresholds:
-          - value: 20
-            color: var(--label-badge-red)
-          - value: 40
-            color: var(--label-badge-yellow)
-          - value: 100
-            color: var(--state-icon-color)
+        state_color: true
         entities:
           - sensor.shelly_flood_f2ad1d_battery
-      - type: custom:battery-state-card
+      - type: entities
         title: "Baterie termostatów"
-        round: 0
-        tap_action:
-          action: more-info
-        color_thresholds:
-          - value: 20
-            color: var(--label-badge-red)
-          - value: 40
-            color: var(--label-badge-yellow)
-          - value: 100
-            color: var(--state-icon-color)
+        state_color: true
         entities:
           - sensor.battery_thermostat_salon
           - sensor.battery_thermostat_kuchnia
-          - entity: sensor.shelly_valve_72a544_battery
-            charging_state:
-              entity_id: binary_sensor.shelly_valve_72a544_charger
-              state: "on"
+          - sensor.shelly_valve_72a544_battery
           - sensor.battery_thermostat_gabinet
           - sensor.battery_thermostat_antek
           - sensor.battery_thermostat_sypialnia
           - sensor.battery_thermostat_lazienka
           - sensor.battery_thermostat_pracownia
-      - type: custom:battery-state-card
+      - type: entities
         title: "Baterie sensorów okien/drzwi"
-        tap_action:
-          action: more-info
-        color_thresholds:
-          - value: 20
-            color: var(--label-badge-red)
-          - value: 40
-            color: var(--label-badge-yellow)
-          - value: 100
-            color: var(--state-icon-color)
+        state_color: true
         entities:
           - sensor.battery_xiaomi_magnet_kuchnia
           - sensor.battery_xiaomi_magnet_salon
@@ -1231,20 +1138,12 @@ views:
           - sensor.battery_xiaomi_magnet_antek
           - sensor.battery_xiaomi_magnet_window_sypialnia
           - sensor.battery_xiaomi_magnet_door_sypialnia
-      - type: custom:battery-state-card
+      - type: entities
         title: "Baterie przełączników"
-        tap_action:
-          action: more-info
-        color_thresholds:
-          - value: 20
-            color: var(--label-badge-red)
-          - value: 40
-            color: var(--label-badge-yellow)
-          - value: 100
-            color: var(--state-icon-color)
+        state_color: true
         entities:
-          - sensor.battery_xiaomi_switch_salon_1
-          - sensor.battery_xiaomi_switch_salon_2
+          - sensor.battery_xiaomi_switch_salon
+          - sensor.battery_xiaomi_switch_gabinet
           - sensor.battery_xiaomi_switch_antek
   - id: climate
     icon: mdi:cloud
