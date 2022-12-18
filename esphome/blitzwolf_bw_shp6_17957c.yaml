@@ -59,7 +59,6 @@ switch:
     id: relay
     icon: mdi:power-plug
     name: "${device_name} Relay"
-    restore_mode: ALWAYS_ON
     on_turn_on:
       - output.turn_on: led
     on_turn_off:
