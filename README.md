@@ -1,6 +1,7 @@
 ![Home Assistant Logo](https://github.com/brianjking/hass-config/blob/master/images/hass.png "Home Assistant Logo")
 
 # Home Assistant Configuration
+
 [![Buy me a coffee][buy-me-a-coffee-shield]][buy-me-a-coffee]
 [![PayPal_Me][paypal-me-shield]][paypal-me]
 
@@ -9,17 +10,13 @@
 * Intel NUC NUC5CPYH [Debian]
 * Home Assistant Supervised installation
 
-## Z-Wave Devices
+## Z-Wave Controller
 
 * Aeotec ZW090 Z-Stick Gen5
 
-## Xiaomi ZigBee Devices
+## Zigbee Controller
 
-* Xiaomi Mi Smart Home Gateway 2
-* Xiaomi Temperature/Humidity/Pressure Sensors
-* Xiaomi Motion/Illumination Sensors
-* Xiaomi Window/Door Sensors
-* Xiaomi Switches
+* [SkyConnect](https://www.home-assistant.io/skyconnect/)
 
 ## Lights
 
@@ -33,7 +30,6 @@
 ## Relays
 
 * Aeotec ZW175 Smart Switch 7
-* Sonoff Basic Relays [[ESPHome](https://esphome.io) firmware]
 * Sonoff S26 Plug [[ESPHome](https://esphome.io) firmware]
 * BlitzWolf BW-SHP6 Plugs [[ESPHome](https://esphome.io) firmware]
 * [Shelly 1PM](https://shelly.cloud/products/shelly-1pm-smart-home-automation-relay/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
@@ -42,6 +38,10 @@
 * [Shelly Plug S](https://shelly.cloud/products/shelly-plug-s-smart-home-automation-device/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Shelly Pro 1PM](https://shelly.cloud/shelly-pro-smart-home-automation-solution/#Pro-1PM) via [Shellies Discovery Gen2](https://github.com/bieniu/ha-shellies-discovery-gen2)
 * [Shelly Plus 1PM](https://shelly.cloud/shelly-plus-1pm/) via [Shellies Discovery Gen2](https://github.com/bieniu/ha-shellies-discovery-gen2)
+
+## Switches
+
+* Aqara Switches
 
 ## Sensors
 
@@ -52,6 +52,9 @@
 * [Shelly Motion](https://shelly.cloud/ifa-2020-products/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Shelly Gas](https://shelly.cloud/products/shelly-gas-smart-home-automation-sensor/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 * [Nettigo Air Monitor](https://air.nettigo.pl/?lang=en)
+* Aqara Temperature/Humidity/Pressure Sensors
+* Aqara Motion/Illumination Sensors
+* Aqara Window/Door Sensors
 
 ## Thermostats
 
@@ -61,6 +64,7 @@
 
 ## Other Integrated Devices
 
+* Xiaomi Mi Smart Home Gateway 2
 * Logitech Harmony Ultimate
 * Denon AVR-X2100W
 * PlayStation 4 Pro
@@ -103,10 +107,6 @@
 ## Screenshots
 
 ![HA Overview](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/HA-overview.png)
-![HA Network](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/HA-network.png)
-![HA Energy](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/HA-energy.png)
-![HA Climate](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/HA-climate.png)
-![HA Settings](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/HA-settings.png)
 
 [buy-me-a-coffee-shield]: https://img.shields.io/static/v1.svg?label=%20&message=Buy%20me%20a%20coffee&color=6f4e37&logo=buy%20me%20a%20coffee&logoColor=white
 [buy-me-a-coffee]: https://www.buymeacoffee.com/QnLdxeaqO
