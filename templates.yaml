@@ -240,13 +240,14 @@
       unique_id: "migateway_cc6f0b_status"
       state: "{{ is_state('device_tracker.migateway_cc6f0b', 'home') }}"
 
-    - name: migateway_a0f210_status
-      unique_id: "migateway_a0f210_status"
-      state: "{{ is_state('device_tracker.migateway_a0f210', 'home') }}"
+    - name: mihumidifier_ca1_status
+      unique_id: "mihumidifier_ca1_status"
+      state: "{{ is_state('device_tracker.xiaomi_mi_humidifier_ca1', 'home') }}"
+      icon: mdi:air-humidifier
 
-    - name: mihumidifier_status
-      unique_id: "mihumidifier_status"
-      state: "{{ is_state('device_tracker.mihumidifier', 'home') }}"
+    - name: mihumidifier_cb1_status
+      unique_id: "mihumidifier_cb1_status"
+      state: "{{ is_state('device_tracker.xiaomi_mi_humidifier_cb1', 'home') }}"
       icon: mdi:air-humidifier
 
     - name: miairpurifier_status
@@ -268,18 +269,6 @@
       unique_id: "dafang_status"
       icon: mdi:cctv
       state: "{{ is_state('device_tracker.dafang', 'home') }}"
-
-    - name: sonoff_basic_a786cc_status
-      unique_id: "sonoff_basic_a786cc_status"
-      state: "{{ is_state('device_tracker.sonoff_basic_a786cc', 'home') }}"
-
-    - name: sonoff_basic_067c81_status
-      unique_id: "sonoff_basic_067c81_status"
-      state: "{{ is_state('device_tracker.sonoff_basic_067c81', 'home') }}"
-
-    - name: sonoff_basic_5dfba8_status
-      unique_id: "sonoff_basic_5dfba8_status"
-      state: "{{ is_state('device_tracker.sonoff_basic_5dfba8', 'home') }}"
 
     - name: sonoff_s26_182475_status
       unique_id: "sonoff_s26_182475_status"
@@ -438,10 +427,6 @@
     - name: yeelight_yldp06yl_84be7a_status
       unique_id: "yeelight_yldp06yl_84be7a_status"
       state: "{{ is_state('device_tracker.yeelight_yldp06yl_84be7a', 'home') }}"
-
-    - name: yeelight_yldp02yl_b1b6aa_status
-      unique_id: "yeelight_yldp02yl_b1b6aa_status"
-      state: "{{ is_state('device_tracker.yeelight_yldp02yl_b1b6aa', 'home') }}"
 
     - name: yeelight_yldp02yl_f12026_status
       unique_id: "yeelight_yldp02yl_f12026_status"

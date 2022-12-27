@@ -174,7 +174,7 @@ views:
                   secondary_info:
                     entity: sensor.xiaomi_mi_humidifier_ca1_water_level
                     prefix: "poziom wody: "
-                    postfix: " %"
+                    postfix: "%"
               - entity: fan.air_purifier_salon
                 secondary_info:
                   entity: sensor.aqi_attr_salon
@@ -183,6 +183,7 @@ views:
               - light.ceiling_salon
               - light.leds_salon
               - light.lamp_salon
+              - light.christmas_tree_salon
               - input_select.light_scenes_salon
               - select.harmony_activities
               - type: custom:mini-media-player
@@ -336,6 +337,7 @@ views:
                 row:
                   entity: climate.thermostat_pracownia
               - light.lamp_pracownia
+              - light.christmas_lights_pracownia
       - type: vertical-stack
         in_card: true
         cards:
@@ -359,7 +361,7 @@ views:
               - entity: binary_sensor.motion_goscinny
                 secondary_info: last-changed
               - light.ceiling_goscinny
-              - light.gateway_goscinny
+              - light.lamp_goscinny
       - type: vertical-stack
         in_card: true
         cards:
@@ -391,6 +393,7 @@ views:
               - light.leds_schody
               - light.scone_schody
               - light.gateway_antresola
+              - light.christmas_lights_schody
       - type: vertical-stack
         in_card: true
         cards:
@@ -492,6 +495,16 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_antek
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.heating_season
+                    state_not: "off"
+                row:
+                  entity: humidifier.xiaomi_antek
+                  secondary_info:
+                    entity: sensor.xiaomi_mi_humidifier_cb1_water_level
+                    prefix: "poziom wody: "
+                    postfix: "%"
               - light.ceiling_antek
               - light.desk_lamp_antek
               - light.lightstrip_antek
@@ -568,6 +581,7 @@ views:
                 row:
                   entity: climate.thermostat_sypialnia
               - light.lightstrip_sypialnia
+              - light.christmas_lights_sypialnia
               - type: custom:mini-media-player
                 canary_style:
                   border-style: none
@@ -965,9 +979,9 @@ views:
         state_color: true
         entities:
           - binary_sensor.migateway_cc6f0b_status
-          - binary_sensor.migateway_a0f210_status
           - binary_sensor.dafang_status
-          - binary_sensor.mihumidifier_status
+          - binary_sensor.mihumidifier_ca1_status
+          - binary_sensor.mihumidifier_cb1_status
           - binary_sensor.mifan_status
           - binary_sensor.miairpurifier_status
           - binary_sensor.thermomix_status
@@ -980,7 +994,6 @@ views:
           - binary_sensor.yeelight_yldp06yl_84be7a_status
           - binary_sensor.yeelight_yldp06yl_7cafc6_status
           - binary_sensor.yeelight_yldp02yl_f12026_status
-          - binary_sensor.yeelight_yldp02yl_b1b6aa_status
           - binary_sensor.yeelight_yldd01yl_860cfa_status
           - binary_sensor.yeelight_yldd01yl_6707fc_status
           - binary_sensor.yeelight_mjtd01syl_94e1f5_status
@@ -1008,9 +1021,6 @@ views:
         show_header_toggle: false
         state_color: true
         entities:
-          - binary_sensor.sonoff_basic_a786cc_status
-          - binary_sensor.sonoff_basic_067c81_status
-          - binary_sensor.sonoff_basic_5dfba8_status
           - binary_sensor.sonoff_s26_182475_status
           - binary_sensor.blitzwolf_bw_shp6_2ad05a_status
           - binary_sensor.blitzwolf_bw_shp6_ed007d_status
@@ -1076,52 +1086,82 @@ views:
         title: "Baterie sensorów ruchu"
         state_color: true
         entities:
-          - sensor.battery_xiaomi_motion_aq2_przedpokoj
-          - sensor.shelly_motion_c67c2a_battery
-          - sensor.shelly_motion_2_72a6a4_battery
+          - entity: sensor.lumi_motion_sensor_aq2_e16358_battery
+            name: przedpokój
+          - entity: sensor.shelly_motion_c67c2a_battery
+            name: korytarz
+          - entity: sensor.shelly_motion_2_72a6a4_battery
+            name: kuchnia
           - sensor.battery_xiaomi_motion_salon
           - sensor.battery_xiaomi_motion_aq2_salon
-          - sensor.battery_xiaomi_motion_aq2_toaleta
-          - sensor.battery_xiaomi_motion_aq2_pracownia
-          - sensor.battery_xiaomi_motion_aq2_goscinny
+          - entity: sensor.lumi_motion_sensor_aq2_0527db_battery
+            name: toaleta
+          - entity: sensor.lumi_motion_sensor_aq2_b935e7_battery
+            name: pracownia
+          - entity: sensor.lumi_motion_sensor_aq2_e2746a_battery
+            name: pokój gościnny
           - sensor.battery_xiaomi_motion_aq2_schody
-          - sensor.battery_xiaomi_motion_aq2_antresola
-          - sensor.battery_xiaomi_motion_aq2_gabinet
-          - sensor.battery_xiaomi_motion_aq2_antek
-          - sensor.battery_xiaomi_motion_aq2_sypialnia
+          - entity: sensor.lumi_motion_sensor_aq2_d3ec74_battery
+            name: antresola
+          - entity: sensor.lumi_motion_sensor_aq2_f8d7e3_battery
+            name: gabinet
+          - entity: sensor.lumi_motion_sensor_4d0a27_battery
+            name: pralnia
+          - entity: sensor.lumi_motion_sensor_aq2_6612fb_battery
+            name: pokój Antka
+          - entity: sensor.lumi_motion_sensor_aq2_65ffb8_battery
+            name: sypialnia
           - sensor.battery_xiaomi_motion_aq2_lazienka
       - type: entities
         title: "Baterie sensorów temperatury"
         state_color: true
         entities:
-          - sensor.battery_xiaomi_ht_przedpokoj
-          - sensor.battery_xiaomi_ht_kuchnia
-          - sensor.shelly_plus_ht_6b3e3c_battery
-          - sensor.battery_xiaomi_weather_v1_toaleta
-          - sensor.battery_xiaomi_ht_pracownia
-          - sensor.battery_xiaomi_ht_goscinny
-          - sensor.battery_xiaomi_ht_antresola
-          - sensor.shelly_plus_ht_09e018_battery
-          - sensor.battery_xiaomi_ht_antek
+          - entity: sensor.lumi_ht_sensor_0fb340_battery
+            name: przedpokój
+          - entity: sensor.lumi_ht_sensor_866f20_battery
+            name: kuchnia
+          - entity: sensor.shelly_plus_ht_6b3e3c_battery
+            name: salon
+          - entity: sensor.lumi_weather_sensor_273538_battery
+            name: toaleta
+          - entity: sensor.lumi_ht_sensor_01d5d5_battery
+            name: pracownia
+          - entity: sensor.lumi_ht_sensor_c09930_battery
+            name: pokój gościnny
+          - entity: sensor.lumi_ht_sensor_49cc8c_battery
+            name: antresola
+          - entity: sensor.shelly_plus_ht_09e018_battery
+            name: gabinet
+          - entity: sensor.lumi_ht_sensor_0fb2cd_battery
+            name: pokój Antka
           - sensor.battery_xiaomi_ht_sypialnia
           - sensor.battery_xiaomi_ht_lazienka
       - type: entities
         title: "Baterie sensorów wody"
         state_color: true
         entities:
-          - sensor.shelly_flood_f2ad1d_battery
+          - entity: sensor.shelly_flood_f2ad1d_battery
+            name: kuchnia
       - type: entities
         title: "Baterie termostatów"
         state_color: true
         entities:
-          - sensor.battery_thermostat_salon
-          - sensor.battery_thermostat_kuchnia
-          - sensor.shelly_valve_72a544_battery
-          - sensor.battery_thermostat_gabinet
-          - sensor.battery_thermostat_antek
-          - sensor.battery_thermostat_sypialnia
-          - sensor.battery_thermostat_lazienka
-          - sensor.battery_thermostat_pracownia
+          - entity: sensor.battery_thermostat_salon
+            name: salon
+          - entity: sensor.aeotec_zwa021_thermostat_021_battery
+            name: kuchnia
+          - entity: sensor.shelly_valve_72a544_battery
+            name: antresola
+          - entity: sensor.battery_thermostat_gabinet
+            name: gabinet
+          - entity: sensor.battery_thermostat_antek
+            name: pokój Antka
+          - entity: sensor.battery_thermostat_sypialnia
+            name: sypialnia
+          - entity: sensor.battery_thermostat_lazienka
+            name: łazienka
+          - entity: sensor.battery_thermostat_pracownia
+            name: pracownia
       - type: entities
         title: "Baterie sensorów okien/drzwi"
         state_color: true
@@ -1129,13 +1169,17 @@ views:
           - sensor.battery_xiaomi_magnet_kuchnia
           - sensor.battery_xiaomi_magnet_salon
           - sensor.battery_aqara_magnet_salon
-          - sensor.battery_xiaomi_magnet_pracownia
-          - sensor.battery_aqara_magnet_goscinny
+          - entity: sensor.lumi_magnet_sensor_9f383f_battery
+            name: pracownia
+          - entity: sensor.lumi_magnet_sensor_aq2_c576ee_battery
+            name: pokój gościnny
           - sensor.battery_xiaomi_magnet_antresola_1
           - sensor.battery_xiaomi_magnet_antresola_2
           - sensor.battery_aqara_magnet_antresola
-          - sensor.battery_xiaomi_magnet_gabinet
-          - sensor.battery_xiaomi_magnet_antek
+          - entity: sensor.lumi_magnet_sensor_57c712_battery
+            name: gabinet
+          - entity: sensor.lumi_magnet_sensor_6af0c3_battery
+            name: pokój Antka
           - sensor.battery_xiaomi_magnet_window_sypialnia
           - sensor.battery_xiaomi_magnet_door_sypialnia
       - type: entities

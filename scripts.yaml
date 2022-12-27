@@ -1,297 +1,291 @@
 devices_away_mode:
   sequence:
-    - service: homeassistant.turn_off
-      data: {}
-      target:
-        entity_id:
-          - light.ceiling_antek
-          - light.ceiling_gabinet
-          - light.ceiling_goscinny
-          - light.ceiling_korytarz
-          - light.ceiling_kuchnia
-          - light.ceiling_lazienka
-          - light.ceiling_przedpokoj
-          - light.ceiling_salon
-          - light.ceiling_toaleta
-          - light.desk_lamp_antek
-          - light.desk_lamp_gabinet
-          - light.gateway_antresola
-          - light.gateway_goscinny
-          - light.lamp_gabinet
-          - light.lamp_pracownia
-          - light.lamp_salon
-          - light.leds_przedpokoj
-          - light.leds_salon
-          - light.leds_schody
-          - light.lightstrip_antek
-          - light.lightstrip_sypialnia
-          - light.scone_schody
-          - light.tree_antek
-          - fan.ceiling_salon
-          - humidifier.xiaomi_salon
-          - input_boolean.antek_lamp_night
+  - service: homeassistant.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.ceiling_antek
+      - light.ceiling_gabinet
+      - light.ceiling_goscinny
+      - light.ceiling_korytarz
+      - light.ceiling_kuchnia
+      - light.ceiling_lazienka
+      - light.ceiling_przedpokoj
+      - light.ceiling_salon
+      - light.ceiling_toaleta
+      - light.desk_lamp_antek
+      - light.desk_lamp_gabinet
+      - light.gateway_antresola
+      - light.lamp_goscinny
+      - light.lamp_gabinet
+      - light.lamp_pracownia
+      - light.lamp_salon
+      - light.leds_przedpokoj
+      - light.leds_salon
+      - light.leds_schody
+      - light.lightstrip_antek
+      - light.lightstrip_sypialnia
+      - light.scone_schody
+      - light.tree_antek
+      - fan.ceiling_salon
+      - humidifier.xiaomi_salon
+      - humidifier.xiaomi_antek
+      - input_boolean.antek_lamp_night
   mode: single
-  alias: "Devices: away mode"
+  alias: 'Devices: away mode'
   icon: mdi:home-export-outline
 heating_fast_warm_up:
   alias: Szybkie dogrzanie
   sequence:
-    - condition: state
-      entity_id: input_boolean.heating_season
-      state: "on"
-    - service: climate.set_temperature
-      entity_id:
-        - climate.thermostat_antresola
-        - climate.thermostat_gabinet
-        - climate.thermostat_antek
-        - climate.thermostat_sypialnia
-        - climate.aeotec_thermostat_kuchnia
-        - climate.thermostat_salon
-        - climate.custom_thermostat_lazienka
-        - climate.thermostat_pracownia
-      data:
-        temperature: 24
-    - delay: 01:00:00
-    - service: script.heating_day
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  - service: climate.set_temperature
+    entity_id:
+    - climate.thermostat_antresola
+    - climate.thermostat_gabinet
+    - climate.thermostat_antek
+    - climate.thermostat_sypialnia
+    - climate.aeotec_thermostat_kuchnia
+    - climate.thermostat_salon
+    - climate.custom_thermostat_lazienka
+    - climate.thermostat_pracownia
+    data:
+      temperature: 24
+  - delay: 01:00:00
+  - service: script.heating_day
   mode: single
   icon: mdi:clock-fast
 heating_day:
   sequence:
-    - service: climate.set_temperature
-      entity_id: climate.custom_thermostat_lazienka
-      data:
-        temperature: "{{ states('input_select.heating_temp_bathroom_day') }}"
-    - service: climate.set_temperature
-      entity_id:
-        - climate.thermostat_antresola
-        - climate.aeotec_thermostat_kuchnia
-        - climate.thermostat_salon
-        - climate.thermostat_gabinet
-        - climate.thermostat_pracownia
-      data:
-        temperature: "{{ states('input_select.heating_temp_day') }}"
-    - service: climate.set_temperature
-      entity_id:
-        - climate.thermostat_antek
-        - climate.thermostat_sypialnia
-      data:
-        temperature: "{{ states('input_select.heating_temp_bedroom_day') }}"
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.heating_night
-    - condition: template
-      value_template:
-        "{{ states('sensor.humidity_salon') | float < states('input_select.target_humidity')
-        | float\n   and states('sensor.xiaomi_mi_humidifier_ca1_water_level') | int
-        > 5 }}"
-    - service: humidifier.turn_on
-      entity_id: humidifier.xiaomi_salon
+  - service: climate.set_temperature
+    entity_id: climate.custom_thermostat_lazienka
+    data:
+      temperature: '{{ states(''input_select.heating_temp_bathroom_day'') }}'
+  - service: climate.set_temperature
+    entity_id:
+    - climate.thermostat_antresola
+    - climate.aeotec_thermostat_kuchnia
+    - climate.thermostat_salon
+    - climate.thermostat_gabinet
+    - climate.thermostat_pracownia
+    data:
+      temperature: '{{ states(''input_select.heating_temp_day'') }}'
+  - service: climate.set_temperature
+    entity_id:
+    - climate.thermostat_antek
+    - climate.thermostat_sypialnia
+    data:
+      temperature: '{{ states(''input_select.heating_temp_bedroom_day'') }}'
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.heating_night
   mode: single
   icon: mdi:radiator
-  alias: "Heating: day"
+  alias: 'Heating: day'
 heating_night:
   sequence:
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.heating_night
-    - service: climate.set_temperature
-      entity_id:
-        - climate.thermostat_antresola
-        - climate.thermostat_gabinet
-        - climate.thermostat_pracownia
-      data:
-        temperature: "{{ states('input_select.heating_temp_night') }}"
-    - service: climate.set_temperature
-      entity_id:
-        - climate.thermostat_antek
-        - climate.thermostat_sypialnia
-      data:
-        temperature: "{{ states('input_select.heating_temp_bedroom_night') }}"
-    - service: climate.set_temperature
-      entity_id: climate.custom_thermostat_lazienka
-      data:
-        temperature: "{{ states('input_select.heating_temp_bathroom_night') }}"
-    - condition: template
-      value_template: "{{ is_state('input_boolean.guests', 'off') }}"
-    - service: homeassistant.turn_off
-      target:
-        entity_id: humidifier.xiaomi_salon
-      data: {}
-    - service: climate.set_temperature
-      entity_id:
-        - climate.aeotec_thermostat_kuchnia
-        - climate.thermostat_salon
-      data:
-        temperature: "{{ states('input_select.heating_temp_night') }}"
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.heating_night
+  - service: climate.set_temperature
+    entity_id:
+    - climate.thermostat_antresola
+    - climate.thermostat_gabinet
+    - climate.thermostat_pracownia
+    data:
+      temperature: '{{ states(''input_select.heating_temp_night'') }}'
+  - service: climate.set_temperature
+    entity_id:
+    - climate.thermostat_antek
+    - climate.thermostat_sypialnia
+    data:
+      temperature: '{{ states(''input_select.heating_temp_bedroom_night'') }}'
+  - service: climate.set_temperature
+    entity_id: climate.custom_thermostat_lazienka
+    data:
+      temperature: '{{ states(''input_select.heating_temp_bathroom_night'') }}'
+  - condition: template
+    value_template: '{{ is_state(''input_boolean.guests'', ''off'') }}'
+  - service: climate.set_temperature
+    entity_id:
+    - climate.aeotec_thermostat_kuchnia
+    - climate.thermostat_salon
+    data:
+      temperature: '{{ states(''input_select.heating_temp_night'') }}'
   mode: single
-  alias: "Heating: night"
+  alias: 'Heating: night'
   icon: mdi:radiator
 heating_away_mode:
   sequence:
-    - service: climate.set_temperature
+  - service: climate.set_temperature
+    entity_id:
+    - climate.thermostat_antresola
+    - climate.thermostat_gabinet
+    - climate.aeotec_thermostat_kuchnia
+    - climate.thermostat_salon
+    - climate.thermostat_antek
+    - climate.thermostat_sypialnia
+    - climate.custom_thermostat_lazienka
+    - climate.thermostat_pracownia
+    data:
+      temperature: '{{ states(''input_select.heating_temp_away'') }}'
+  - service: humidifier.turn_off
+    target:
       entity_id:
-        - climate.thermostat_antresola
-        - climate.thermostat_gabinet
-        - climate.aeotec_thermostat_kuchnia
-        - climate.thermostat_salon
-        - climate.thermostat_antek
-        - climate.thermostat_sypialnia
-        - climate.custom_thermostat_lazienka
-        - climate.thermostat_pracownia
-      data:
-        temperature: "{{ states('input_select.heating_temp_away') }}"
-    - service: humidifier.turn_off
-      entity_id: humidifier.xiaomi_salon
+      - humidifier.xiaomi_salon
+      - humidifier.xiaomi_antek
   mode: single
-  alias: "Heating: away"
+  alias: 'Heating: away'
   icon: mdi:radiator
 heating_season_end:
   sequence:
-    - service: climate.set_temperature
-      entity_id:
-        - climate.thermostat_antresola
-        - climate.thermostat_gabinet
-        - climate.thermostat_salon
-        - climate.thermostat_antek
-        - climate.thermostat_sypialnia
-        - climate.custom_thermostat_lazienka
-        - climate.thermostat_pracownia
-      data:
-        temperature: 4
-    - service: climate.turn_off
-      entity_id:
-        - climate.aeotec_thermostat_kuchnia
-        - climate.custom_thermostat_lazienka
+  - service: climate.set_temperature
+    entity_id:
+    - climate.thermostat_antresola
+    - climate.thermostat_gabinet
+    - climate.thermostat_salon
+    - climate.thermostat_antek
+    - climate.thermostat_sypialnia
+    - climate.custom_thermostat_lazienka
+    - climate.thermostat_pracownia
+    data:
+      temperature: 4
+  - service: climate.turn_off
+    entity_id:
+    - climate.aeotec_thermostat_kuchnia
+    - climate.custom_thermostat_lazienka
   mode: single
-  alias: "Heating: end season"
+  alias: 'Heating: end season'
   icon: mdi:radiator
 heating_airing_begin:
   sequence:
-    - service: climate.set_temperature
+  - service: climate.set_temperature
+    entity_id:
+    - climate.thermostat_antresola
+    - climate.thermostat_gabinet
+    - climate.thermostat_salon
+    - climate.thermostat_antek
+    - climate.thermostat_sypialnia
+    - climate.custom_thermostat_lazienka
+    - climate.aeotec_thermostat_kuchnia
+    - climate.thermostat_pracownia
+    data:
+      temperature: 8
+  - service: humidifier.turn_off
+    target:
       entity_id:
-        - climate.thermostat_antresola
-        - climate.thermostat_gabinet
-        - climate.thermostat_salon
-        - climate.thermostat_antek
-        - climate.thermostat_sypialnia
-        - climate.custom_thermostat_lazienka
-        - climate.aeotec_thermostat_kuchnia
-        - climate.thermostat_pracownia
-      data:
-        temperature: 8
-    - service: humidifier.turn_off
-      entity_id: humidifier.xiaomi_salon
-    - condition: state
-      entity_id: input_boolean.heating_airing
-      state: "off"
-    - service: input_boolean.turn_on
-      entity_id: input_boolean.heating_airing
+      - humidifier.xiaomi_salon
+      - humidifier.xiaomi_antek
+  - condition: state
+    entity_id: input_boolean.heating_airing
+    state: 'off'
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.heating_airing
   mode: single
-  alias: "Heating: airing"
+  alias: 'Heating: airing'
   icon: mdi:radiator
 light_turn_off_antek_leds:
   sequence:
-    - service: input_boolean.turn_off
-      entity_id: input_boolean.antek_lamp_night
-    - service: light.turn_off
-      target:
-        entity_id: light.lightstrip_antek
-      data:
-        transition: 10
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.antek_lamp_night
+  - service: light.turn_off
+    target:
+      entity_id: light.lightstrip_antek
+    data:
+      transition: 10
   mode: single
-  alias: "Light: turn off Antek's LEDs"
+  alias: 'Light: turn off Antek''s LEDs'
   icon: mdi:lightbulb-outline
 light_turn_on_antek_leds:
   sequence:
-    - service: light.turn_on
-      target:
-        entity_id: light.lightstrip_antek
-      data:
-        brightness: 150
-        rgb_color:
-          - "{{ (range(0, 255)|random) }}"
-          - "{{ (range(0, 255)|random) }}"
-          - "{{ (range(0, 255)|random) }}"
+  - service: light.turn_on
+    target:
+      entity_id: light.lightstrip_antek
+    data:
+      brightness: 150
+      rgb_color:
+      - '{{ (range(0, 255)|random) }}'
+      - '{{ (range(0, 255)|random) }}'
+      - '{{ (range(0, 255)|random) }}'
   mode: single
   icon: mdi:lightbulb-outline
-  alias: "Light: turn on Antek's LEDs"
+  alias: 'Light: turn on Antek''s LEDs'
 camera_move:
   sequence:
-    - service: mqtt.publish
-      data:
-        topic: camera/salon/motors/{{ orientation }}/set
-        payload: "{{ direction }}"
+  - service: mqtt.publish
+    data:
+      topic: camera/salon/motors/{{ orientation }}/set
+      payload: '{{ direction }}'
   mode: single
-  alias: "Camera: move"
+  alias: 'Camera: move'
   icon: mdi:cctv
 alexa_netflix:
   sequence:
-    - delay: 00:00:02
-    - service: remote.turn_on
-      entity_id: remote.salon
-      data:
-        activity: Smart TV
+  - delay: 00:00:02
+  - service: remote.turn_on
+    entity_id: remote.salon
+    data:
+      activity: Smart TV
   mode: single
-  alias: "Alexa: Netflix"
+  alias: 'Alexa: Netflix'
 alexa_goodnight:
   sequence:
-    - service: homeassistant.turn_off
-      target:
-        entity_id:
-          - remote.salon
-          - humidifier.xiaomi_salon
-          - light.leds_salon
-          - light.ceiling_salon
-          - light.desk_lamp_antek
-          - light.ceiling_gabinet
-          - light.ceiling_goscinny
-          - light.ceiling_kuchnia
-          - light.ceiling_lazienka
-          - light.ceiling_toaleta
-          - light.ceiling_antek
-          - light.ceiling_przedpokoj
-          - light.ceiling_korytarz
-          - light.scone_schody
+  - service: homeassistant.turn_off
+    target:
+      entity_id:
+      - remote.salon
+      - light.leds_salon
+      - light.ceiling_salon
+      - light.desk_lamp_antek
+      - light.desk_lamp_gabinet
+      - light.ceiling_gabinet
+      - light.ceiling_goscinny
+      - light.ceiling_kuchnia
+      - light.ceiling_lazienka
+      - light.ceiling_toaleta
+      - light.ceiling_antek
+      - light.ceiling_przedpokoj
+      - light.ceiling_korytarz
+      - light.scone_schody
   mode: single
-  alias: "Alexa: goodnight"
+  alias: 'Alexa: goodnight'
 alexa_tts:
   sequence:
-    - service: notify.alexa_media_echo_plus_antek
+  - service: notify.alexa_media_echo_plus_antek
+    data:
+      message: '{{ message }}'
       data:
-        message: "{{ message }}"
-        data:
-          type: tts
+        type: tts
   mode: single
-  alias: "Alexa: TTS"
+  alias: 'Alexa: TTS'
 restart_wifi_devices:
   alias: Restart Wi-Fi Devices
   sequence:
-    - service: button.press
-      entity_id:
-        - button.blitzwolf_bw_shp6_17957c_restart
-        - button.blitzwolf_bw_shp6_2ad05a_restart
-        - button.blitzwolf_bw_shp6_3766eb_restart
-        - button.blitzwolf_bw_shp6_ecf9ea_restart
-        - button.blitzwolf_bw_shp6_ed007d_restart
-        - button.nettigo_air_monitor_restart
-        - button.shelly_1l_253d92_restart
-        - button.shelly_1l_61c9fd_restart
-        - button.shelly_1l_701559_restart
-        - button.shelly_1l_aacec4_restart
-        - button.shelly_1l_aceb5f_restart
-        - button.shelly_1l_ad365e_restart
-        - button.shelly_1l_e361a5_restart
-        - button.shelly_1pm_5fd486_restart
-        - button.shelly_25_77dbe5_restart
-        - button.shelly_duo_5f6fa1_restart
-        - button.shelly_duo_rgbw_d4ecd3_restart
-        - button.shelly_gas_c6811c_restart
-        - button.shelly_motion_2_72a6a4_restart
-        - button.shelly_motion_c67c2a_restart
-        - button.shelly_plug_s_7aecf4_restart
-        - button.shelly_plus_1pm_b22864_restart
-        - button.shelly_plus_1pm_948ff8_restart
-        - button.shelly_pro_1pm_80e0c0_restart
-        - button.shelly_valve_72a544_restart
-        - button.shelly_vintage_d10472_restart
-        - button.wemos_lolin32_8cbf7c_restart
+  - service: button.press
+    entity_id:
+    - button.blitzwolf_bw_shp6_17957c_restart
+    - button.blitzwolf_bw_shp6_2ad05a_restart
+    - button.blitzwolf_bw_shp6_3766eb_restart
+    - button.nettigo_air_monitor_restart
+    - button.shelly_1l_253d92_restart
+    - button.shelly_1l_61c9fd_restart
+    - button.shelly_1l_701559_restart
+    - button.shelly_1l_aacec4_restart
+    - button.shelly_1l_aceb5f_restart
+    - button.shelly_1l_ad365e_restart
+    - button.shelly_1l_e361a5_restart
+    - button.shelly_1pm_5fd486_restart
+    - button.shelly_25_77dbe5_restart
+    - button.shelly_duo_5f6fa1_restart
+    - button.shelly_duo_rgbw_d4ecd3_restart
+    - button.shelly_gas_c6811c_restart
+    - button.shelly_motion_2_72a6a4_restart
+    - button.shelly_motion_c67c2a_restart
+    - button.shelly_plug_s_7aecf4_restart
+    - button.shelly_plus_1pm_b22864_restart
+    - button.shelly_plus_1pm_948ff8_restart
+    - button.shelly_pro_1pm_80e0c0_restart
+    - button.shelly_valve_72a544_restart
+    - button.shelly_vintage_d10472_restart
+    - button.wemos_lolin32_8cbf7c_restart
   mode: single
   icon: mdi:restart

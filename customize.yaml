@@ -71,10 +71,6 @@ binary_sensor.laptop_status:
   friendly_name: "Lenovo IdeaPad Z510"
 binary_sensor.migateway_cc6f0b_status:
   friendly_name: "Xiaomi Mi Gateway 2 [CC6F0B]"
-binary_sensor.migateway_a0f210_status:
-  friendly_name: "Xiaomi Mi Gateway 2 [A0F210]"
-binary_sensor.mihumidifier_status:
-  friendly_name: "Xiaomi Mi Humidifier CA1"
 binary_sensor.miairpurifier_status:
   friendly_name: "Xiaomi Mi Air Purifier 3H"
 binary_sensor.mifan_status:
@@ -83,12 +79,6 @@ binary_sensor.brother_status:
   friendly_name: "Brother HL-L2340DW"
 binary_sensor.dafang_status:
   friendly_name: "Xiaomi DaFang"
-binary_sensor.sonoff_basic_a786cc_status:
-  friendly_name: "Sonoff Basic [A786CC]"
-binary_sensor.sonoff_basic_067c81_status:
-  friendly_name: "Sonoff Basic [067C81]"
-binary_sensor.sonoff_basic_5dfba8_status:
-  friendly_name: "Sonoff Basic [5DFBA8]"
 binary_sensor.sonoff_s26_182475_status:
   friendly_name: "Sonoff S26 [182475]"
 binary_sensor.blitzwolf_bw_shp6_2ad05a_status:
@@ -143,8 +133,6 @@ binary_sensor.yeelight_yldp06yl_7cafc6_status:
   friendly_name: "Yeelight Color Bulb 2 [7CAFC6]"
 binary_sensor.yeelight_yldp06yl_84be7a_status:
   friendly_name: "Yeelight Color Bulb 2 [84BE7A]"
-binary_sensor.yeelight_yldp02yl_b1b6aa_status:
-  friendly_name: "Yeelight Color Bulb [B1B6AA]"
 binary_sensor.yeelight_yldp02yl_f12026_status:
   friendly_name: "Yeelight Color Bulb [F12026]"
 binary_sensor.yeelight_yldd01yl_860cfa_status:
