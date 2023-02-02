@@ -10,12 +10,23 @@
           wyłączona
         {% endif %}
 
+    - name: washing_machine_pralnia
+      unique_id: "washing_machine_pralnia"
+      icon: "mdi:washing-machine"
+      availability: "{{ states('sensor.power_washing_machine_pralnia') != ('unavailable' or 'unknown') }}"
+      state: >-
+        {% if states('sensor.power_washing_machine_pralnia') | int > 1 %}
+          pranie
+        {% else %}
+          wyłączona
+        {% endif %}
+
     - name: air_quality_info_outdoor
       unique_id: "air_quality_info_outdoor"
       icon: "mdi:home-export-outline"
       availability: "{{ not is_state('sensor.caqi_level_outdoor', 'unavailable') }}"
       state: >-
-        {% if is_state('sensor.caqi_level_outdoor', 'very low') %}
+        {% if is_state('sensor.caqi_level_outdoor', 'very_low') %}
           bardzo dobra
         {% elif is_state('sensor.caqi_level_outdoor', 'low') %}
           dobra
@@ -23,7 +34,7 @@
           średnia
         {% elif is_state('sensor.caqi_level_outdoor', 'high') %}
           zła
-        {% elif is_state('sensor.caqi_level_outdoor', 'very high') %}
+        {% elif is_state('sensor.caqi_level_outdoor', 'very_high') %}
           bardzo zła
         {% endif %}
 
@@ -370,6 +381,10 @@
     - name: shelly_plug_s_7aecf4_status
       unique_id: "shelly_plug_s_7aecf4_status"
       state: "{{ is_state('device_tracker.shelly_plug_s_7aecf4', 'home') }}"
+
+    - name: shelly_plus_plug_s_2ffb28_status
+      unique_id: "shelly_plus_plug_s_2ffb28_status"
+      state: "{{ is_state('device_tracker.shelly_plus_plug_s_2ffb28', 'home') }}"
 
     - name: shelly_plus_ht_09e018_status
       unique_id: "shelly_plus_ht_09e018_status"

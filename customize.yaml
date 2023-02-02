@@ -113,8 +113,6 @@ binary_sensor.shelly_duo_rgbw_d4ecd3_status:
   friendly_name: "Shelly DUO RGBW [D4ECD3]"
 binary_sensor.shelly_vintage_d10472_status:
   friendly_name: "Shelly Vintage [D10472]"
-binary_sensor.shelly_plug_s_7aecf4_status:
-  friendly_name: "Shelly Plug S [7AECF4]"
 binary_sensor.shelly_ht_e00abd_status:
   friendly_name: "Shelly H&T [E00ABD]"
 binary_sensor.shelly_flood_f2ad1d_status:

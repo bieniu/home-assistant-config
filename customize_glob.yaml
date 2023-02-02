@@ -15,8 +15,6 @@
   icon: mdi:light-switch
 "binary_sensor.shelly_pro_*_status":
   icon: mdi:light-switch
-"binary_sensor.shelly_plug_*_status":
-  icon: mdi:light-switch
 "binary_sensor.shelly_ht_*_status":
   icon: mdi:thermometer-lines
 "binary_sensor.shelly_flood_*_status":

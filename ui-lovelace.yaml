@@ -37,6 +37,7 @@ views:
             title: "Pogoda"
             cards:
               - type: custom:simple-weather-card
+                no_card: true
                 canary_style:
                   margin-top: "-22px"
                   border-style: none
@@ -183,7 +184,6 @@ views:
               - light.ceiling_salon
               - light.leds_salon
               - light.lamp_salon
-              - light.christmas_tree_salon
               - input_select.light_scenes_salon
               - select.harmony_activities
               - type: custom:mini-media-player
@@ -236,7 +236,7 @@ views:
                   border-style: none
                 entity: media_player.echo_show_salon
                 hide:
-                  controls: true
+                  volume: true
                   power: true
                   progress: true
                 info: scroll
@@ -337,7 +337,6 @@ views:
                 row:
                   entity: climate.thermostat_pracownia
               - light.lamp_pracownia
-              - light.christmas_lights_pracownia
       - type: vertical-stack
         in_card: true
         cards:
@@ -393,7 +392,6 @@ views:
               - light.leds_schody
               - light.scone_schody
               - light.gateway_antresola
-              - light.christmas_lights_schody
       - type: vertical-stack
         in_card: true
         cards:
@@ -431,9 +429,9 @@ views:
                   border-style: none
                 entity: media_player.sonos_one_gabinet
                 hide:
-                  controls: true
                   power: true
                   progress: true
+                  volume: true
                 info: scroll
                 group: true
                 shortcuts:
@@ -467,6 +465,37 @@ views:
                         entity_id: media_player.sonos_one_gabinet
                         media_content_type: "favorite_item_id"
                         media_content_id: "FV:2/1"
+      - type: vertical-stack
+        in_card: true
+        cards:
+          - type: glance
+            canary_style:
+              border-style: none
+            <<: *card-header-no-padding-bottom
+            title: "Pralnia"
+            show_name: false
+            entities:
+              - sensor.temperature_pralnia
+              - sensor.humidity_pralnia
+          - type: entities
+            canary_style:
+              border-style: none
+            show_header_toggle: false
+            state_color: true
+            entities:
+              - entity: binary_sensor.motion_pralnia
+                secondary_info: last-changed
+              - entity: sensor.washing_machine_pralnia
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color:
+                        {% if is_state(config.entity, "pranie") %}
+                          var(--state-on-color)
+                        {% elif is_state(config.entity, "wyłączona") %}
+                          var(--state-icon-color)
+                        {% endif %};
+                    }
       - type: vertical-stack
         in_card: true
         cards:
@@ -514,7 +543,7 @@ views:
                   border-style: none
                 entity: media_player.echo_plus_antek
                 hide:
-                  controls: true
+                  volume: true
                   power: true
                   progress: true
                   source: true
@@ -581,16 +610,15 @@ views:
                 row:
                   entity: climate.thermostat_sypialnia
               - light.lightstrip_sypialnia
-              - light.christmas_lights_sypialnia
               - type: custom:mini-media-player
                 canary_style:
                   border-style: none
                 entity: media_player.echo_dot_sypialnia
                 hide:
-                  controls: true
                   power: true
                   progress: true
                   source: true
+                  volume: true
                 info: scroll
                 group: true
                 shortcuts:
@@ -951,8 +979,7 @@ views:
         entities:
           - binary_sensor.iphone_13_status
           - binary_sensor.iphone_12_status
-          # - binary_sensor.iphone_11_status
-          - binary_sensor.iphone_8_plus_status
+          - binary_sensor.iphone_11_status
           - binary_sensor.ipad_status
           - binary_sensor.kindle_keyboard_3g_status
           - binary_sensor.kindle_8_status
@@ -1038,6 +1065,7 @@ views:
           - binary_sensor.shelly_1pm_5fd486_status
           - binary_sensor.shelly_25_77dbe5_status
           - binary_sensor.shelly_plug_s_7aecf4_status
+          - binary_sensor.shelly_plus_plug_s_2ffb28_status
           - binary_sensor.shelly_plus_1pm_948ff8_status
           - binary_sensor.shelly_plus_1pm_b22864_status
           - binary_sensor.shelly_pro_1pm_80e0c0_status
@@ -1086,56 +1114,62 @@ views:
         title: "Baterie sensorów ruchu"
         state_color: true
         entities:
-          - entity: sensor.lumi_motion_sensor_aq2_e16358_battery
+          - entity: sensor.aqara_motion_sensor_2_e16358_battery
             name: przedpokój
           - entity: sensor.shelly_motion_c67c2a_battery
             name: korytarz
           - entity: sensor.shelly_motion_2_72a6a4_battery
             name: kuchnia
-          - sensor.battery_xiaomi_motion_salon
-          - sensor.battery_xiaomi_motion_aq2_salon
-          - entity: sensor.lumi_motion_sensor_aq2_0527db_battery
+          - entity: sensor.aqara_motion_sensor_21c604_battery
+            name: salon [1]
+          - entity: sensor.aqara_motion_sensor_2_beb936_battery
+            name: salon [2]
+          - entity: sensor.aqara_motion_sensor_2_0527db_battery
             name: toaleta
-          - entity: sensor.lumi_motion_sensor_aq2_b935e7_battery
+          - entity: sensor.aqara_motion_sensor_2_b935e7_battery
             name: pracownia
-          - entity: sensor.lumi_motion_sensor_aq2_e2746a_battery
+          - entity: sensor.aqara_motion_sensor_2_e2746a_battery
             name: pokój gościnny
-          - sensor.battery_xiaomi_motion_aq2_schody
-          - entity: sensor.lumi_motion_sensor_aq2_d3ec74_battery
+          - entity: sensor.aqara_motion_sensor_20a226_battery
+            name: schody
+          - entity: sensor.aqara_motion_sensor_2_d3ec74_battery
             name: antresola
-          - entity: sensor.lumi_motion_sensor_aq2_f8d7e3_battery
+          - entity: sensor.aqara_motion_sensor_2_f8d7e3_battery
             name: gabinet
-          - entity: sensor.lumi_motion_sensor_4d0a27_battery
+          - entity: sensor.aqara_motion_sensor_4d0a27_battery
             name: pralnia
-          - entity: sensor.lumi_motion_sensor_aq2_6612fb_battery
+          - entity: sensor.aqara_motion_sensor_2_6612fb_battery
             name: pokój Antka
-          - entity: sensor.lumi_motion_sensor_aq2_65ffb8_battery
+          - entity: sensor.aqara_motion_sensor_2_65ffb8_battery
             name: sypialnia
-          - sensor.battery_xiaomi_motion_aq2_lazienka
+          - entity: sensor.aqara_motion_sensor_2_aca2a3_battery
+            name: łazienka
       - type: entities
         title: "Baterie sensorów temperatury"
         state_color: true
         entities:
-          - entity: sensor.lumi_ht_sensor_0fb340_battery
+          - entity: sensor.aqara_ht_sensor_0fb340_battery
             name: przedpokój
-          - entity: sensor.lumi_ht_sensor_866f20_battery
+          - entity: sensor.aqara_ht_sensor_866f20_battery
             name: kuchnia
           - entity: sensor.shelly_plus_ht_6b3e3c_battery
             name: salon
-          - entity: sensor.lumi_weather_sensor_273538_battery
+          - entity: sensor.aqara_ht_sensor_2_273538_battery
             name: toaleta
-          - entity: sensor.lumi_ht_sensor_01d5d5_battery
+          - entity: sensor.aqara_ht_sensor_01d5d5_battery
             name: pracownia
-          - entity: sensor.lumi_ht_sensor_c09930_battery
+          - entity: sensor.aqara_ht_sensor_c09930_battery
             name: pokój gościnny
-          - entity: sensor.lumi_ht_sensor_49cc8c_battery
+          - entity: sensor.aqara_ht_sensor_49cc8c_battery
             name: antresola
           - entity: sensor.shelly_plus_ht_09e018_battery
             name: gabinet
-          - entity: sensor.lumi_ht_sensor_0fb2cd_battery
+          - entity: sensor.aqara_ht_sensor_0fb2cd_battery
             name: pokój Antka
-          - sensor.battery_xiaomi_ht_sypialnia
-          - sensor.battery_xiaomi_ht_lazienka
+          - entity: sensor.aqara_ht_sensor_100416_battery
+            name: sypialnia
+          - entity: sensor.aqara_ht_sensor_29a158_battery
+            name: łazienka
       - type: entities
         title: "Baterie sensorów wody"
         state_color: true
@@ -1148,7 +1182,7 @@ views:
         entities:
           - entity: sensor.battery_thermostat_salon
             name: salon
-          - entity: sensor.aeotec_zwa021_thermostat_021_battery
+          - entity: sensor.aeotec_zwa021_thermostat_023_battery
             name: kuchnia
           - entity: sensor.shelly_valve_72a544_battery
             name: antresola
@@ -1166,29 +1200,40 @@ views:
         title: "Baterie sensorów okien/drzwi"
         state_color: true
         entities:
-          - sensor.battery_xiaomi_magnet_kuchnia
-          - sensor.battery_xiaomi_magnet_salon
-          - sensor.battery_aqara_magnet_salon
-          - entity: sensor.lumi_magnet_sensor_9f383f_battery
+          - entity: sensor.aqara_magnet_sensor_a223ff_battery
+            name: kuchnia
+          - entity: sensor.aqara_magnet_sensor_90fc40_battery
+            name: salon [1]
+          - entity: sensor.aqara_magnet_sensor_2_c38502_battery
+            name: salon [2]
+          - entity: sensor.aqara_magnet_sensor_9f383f_battery
             name: pracownia
-          - entity: sensor.lumi_magnet_sensor_aq2_c576ee_battery
+          - entity: sensor.aqara_magnet_sensor_2_c576ee_battery
             name: pokój gościnny
-          - sensor.battery_xiaomi_magnet_antresola_1
-          - sensor.battery_xiaomi_magnet_antresola_2
-          - sensor.battery_aqara_magnet_antresola
-          - entity: sensor.lumi_magnet_sensor_57c712_battery
+          - entity: sensor.aqara_magnet_sensor_39d29b_battery
+            name: antresola [1]
+          - entity: sensor.aqara_magnet_sensor_1e254b_battery
+            name: antresola [2]
+          - entity: sensor.aqara_magnet_sensor_2_c57676_battery
+            name: antresola [3]
+          - entity: sensor.aqara_magnet_sensor_57c712_battery
             name: gabinet
-          - entity: sensor.lumi_magnet_sensor_6af0c3_battery
+          - entity: sensor.aqara_magnet_sensor_6af0c3_battery
             name: pokój Antka
-          - sensor.battery_xiaomi_magnet_window_sypialnia
-          - sensor.battery_xiaomi_magnet_door_sypialnia
+          - entity: sensor.aqara_magnet_sensor_58dcea_battery
+            name: sypialnia [1]
+          - entity: sensor.aqara_magnet_sensor_a5dbdb_battery
+            name: sypialnia [2]
       - type: entities
         title: "Baterie przełączników"
         state_color: true
         entities:
-          - sensor.battery_xiaomi_switch_salon
-          - sensor.battery_xiaomi_switch_gabinet
-          - sensor.battery_xiaomi_switch_antek
+          - entity: sensor.aqara_switch_54964c_battery
+            name: salon
+          - entity: sensor.aqara_switch_4a0911_battery
+            name: gabinet
+          - entity: sensor.aqara_switch_d87c4f_battery
+            name: pokój Antka
   - id: climate
     icon: mdi:cloud
     title: "Klimat"
@@ -1392,15 +1437,15 @@ views:
               - sensor.uv_index_home
             line_color: "#ffce57"
             decimals: 0
-      - type: custom:auto-entities
-        card:
-          type: entities
-          title: "Stężenia alergenów"
-        filter:
-          include:
-            - entity_id: "sensor.stezenie_*"
-          exclude:
-            - state: "lack"
+      # - type: custom:auto-entities
+      #   card:
+      #     type: entities
+      #     title: "Stężenia alergenów"
+      #   filter:
+      #     include:
+      #       - entity_id: "sensor.stezenie_*"
+      #     exclude:
+      #       - state: "lack"
   - id: misc
     icon: mdi:cog
     title: "Różne"

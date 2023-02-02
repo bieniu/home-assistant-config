@@ -30,7 +30,6 @@ devices_away_mode:
       - fan.ceiling_salon
       - humidifier.xiaomi_salon
       - humidifier.xiaomi_antek
-      - input_boolean.antek_lamp_night
   mode: single
   alias: 'Devices: away mode'
   icon: mdi:home-export-outline
@@ -183,18 +182,6 @@ heating_airing_begin:
   mode: single
   alias: 'Heating: airing'
   icon: mdi:radiator
-light_turn_off_antek_leds:
-  sequence:
-  - service: input_boolean.turn_off
-    entity_id: input_boolean.antek_lamp_night
-  - service: light.turn_off
-    target:
-      entity_id: light.lightstrip_antek
-    data:
-      transition: 10
-  mode: single
-  alias: 'Light: turn off Antek''s LEDs'
-  icon: mdi:lightbulb-outline
 light_turn_on_antek_leds:
   sequence:
   - service: light.turn_on
@@ -262,8 +249,7 @@ restart_wifi_devices:
   sequence:
   - service: button.press
     entity_id:
-    - button.blitzwolf_bw_shp6_17957c_restart
-    - button.blitzwolf_bw_shp6_2ad05a_restart
+    - button.blitzwolf_bw_shp6_ed007d_restart
     - button.blitzwolf_bw_shp6_3766eb_restart
     - button.nettigo_air_monitor_restart
     - button.shelly_1l_253d92_restart
@@ -281,6 +267,7 @@ restart_wifi_devices:
     - button.shelly_motion_2_72a6a4_restart
     - button.shelly_motion_c67c2a_restart
     - button.shelly_plug_s_7aecf4_restart
+    - button.shelly_plus_plug_s_2ffb28_reboot
     - button.shelly_plus_1pm_b22864_restart
     - button.shelly_plus_1pm_948ff8_restart
     - button.shelly_pro_1pm_80e0c0_restart

@@ -54,7 +54,7 @@
         }} graczy.\n{% endif %}"
       tag: minecraft-server
       services:
-      - service: notify.mobile_app_iphone_8_plus
+      - service: notify.mobile_app_iphone_11
         type: ios
 - id: ios_turn_on_tv
   alias: iOS Turn On TV
@@ -85,12 +85,7 @@
   trigger:
   - platform: state
     entity_id:
-    - update.adaptive_lighting
-    - update.aeotec_zw175_smart_switch_7_019_firmware
-    - update.aeotec_zwa021_thermostat_021_firmware
-    - update.alexa_media_player
     - update.auto_entities
-    - update.battery_state_card_entity_row
     - update.blitzortung_org_lightning_detector
     - update.caddy_2
     - update.canary
@@ -103,12 +98,11 @@
     - update.home_assistant
     - update.ios_theme
     - update.mariadb
-    - update.matter_server
     - update.midnight_theme
     - update.mini_graph_card
     - update.mini_media_player
     - update.mosquitto_broker
-    - update.mushroom
+    - update.mushroom_card
     - update.noctis_theme
     - update.nordic_theme
     - update.rpc_shutdown
@@ -123,6 +117,10 @@
     - update.watchman
     - update.z_wave_js
     - update.zadnego_ale
+    - update.adaptive_lighting
+    - update.alexa_media_player
+    - update.aeotec_zw175_smart_switch_7_019_firmware
+    - update.aeotec_zwa021_thermostat_021_firmware
     - update.shelly_1l_253d92_firmware
     - update.shelly_1l_61c9fd_firmware
     - update.shelly_1l_701559_firmware
@@ -139,6 +137,7 @@
     - update.shelly_motion_2_72a6a4_firmware
     - update.shelly_motion_c67c2a_firmware
     - update.shelly_plug_s_7aecf4_firmware
+    - update.shelly_plus_plug_s_2ffb28_firmware
     - update.shelly_valve_72a544_firmware
     - update.shelly_vintage_d10472_firmware
     - update.shelly_pro_1pm_80e0c0_firmware
@@ -239,7 +238,7 @@
     - if:
       - condition: state
         entity_id: media_player.bravia_salon
-        state: playing
+        state: 'on'
       then:
         service: notify.bravia
         data:
@@ -326,7 +325,7 @@
     notification_title: Komputer stacjonarny włączony
     notification_tag: notification-desktop-computer
 - id: notification_humidifier_low_water
-  alias: Notification Humidifier Salon Low Water
+  alias: Notification Salon Humidifier Low Water
   description: powiadom o małej ilości wody w nawilżaczu
   trigger:
   - platform: numeric_state
@@ -389,7 +388,7 @@
       conditions:
         condition: state
         entity_id: media_player.bravia_salon
-        state: playing
+        state: 'on'
       sequence:
         service: notify.bravia
         data:
@@ -458,7 +457,7 @@
       conditions:
         condition: state
         entity_id: media_player.bravia_salon
-        state: playing
+        state: 'on'
       sequence:
         service: notify.bravia
         data:
@@ -500,7 +499,7 @@
       conditions:
         condition: state
         entity_id: media_player.bravia_salon
-        state: playing
+        state: 'on'
       sequence:
         service: notify.bravia
         data:
@@ -517,6 +516,7 @@
   - platform: state
     entity_id:
     - binary_sensor.shelly_plug_s_7aecf4_overpower
+    - binary_sensor.shelly_plus_plug_s_2ffb28_overpower
     - binary_sensor.shelly_25_77dbe5_overpower_0
     - binary_sensor.shelly_25_77dbe5_overpower_1
     - binary_sensor.shelly_1pm_5fd486_overpower
@@ -547,7 +547,7 @@
       conditions:
         condition: state
         entity_id: media_player.bravia_salon
-        state: playing
+        state: 'on'
       sequence:
         service: notify.bravia
         data:
@@ -573,6 +573,7 @@
     - binary_sensor.shelly_1pm_5fd486_overtemperature
     - binary_sensor.shelly_25_77dbe5_overtemperature
     - binary_sensor.shelly_plug_s_7aecf4_overtemperature
+    - binary_sensor.shelly_plus_plug_s_2ffb28_overtemperature
     - binary_sensor.shelly_plus_1pm_948ff8_overtemperature
     - binary_sensor.shelly_plus_1pm_b22864_overtemperature
     - binary_sensor.shelly_pro_1pm_80e0c0_overtemperature
@@ -596,7 +597,7 @@
     - conditions:
       - condition: state
         entity_id: media_player.bravia_salon
-        state: playing
+        state: 'on'
       sequence:
         service: notify.bravia
         data:
@@ -737,7 +738,7 @@
         type: ios
       - service: notify.mobile_app_iphone_12
         type: ios
-      - service: notify.mobile_app_iphone_8_plus
+      - service: notify.mobile_app_iphone_11
         type: ios
   - condition: state
     entity_id: input_boolean.away_mode
@@ -1364,16 +1365,6 @@
   - service: light.turn_on
     target:
       entity_id: light.tree_antek
-- id: light_turn_off_tree
-  alias: Light Turn Off Tree
-  description: wyłącz drzewko o 23:00
-  trigger:
-    platform: time
-    at: '23:00:00'
-  action:
-    service: light.turn_off
-    target:
-      entity_id: light.tree_antek
 - id: light_turn_on_adaptive_lightning_at_start
   alias: Light Turn On Adaptive Lightning At Start
   description: włącz adaptive lightning przy starcie HA
@@ -1399,11 +1390,11 @@
   action:
     service: script.devices_away_mode
 - id: devices_turn_off_in_salon_when_no_motion_and_after_midnight
-  alias: Devices Turn Off In Salon When No Motion And After Midnight
+  alias: Devices Salon Turn Off When No Motion And After Midnight
   description: wyłącz urządzenia w salonie jeśli nie ma ruchu przez 30 min i jest
     po północy
   trigger:
-    platform: state
+  - platform: state
     entity_id: binary_sensor.motion_salon
     to: 'off'
     for:
@@ -1430,83 +1421,75 @@
       entity_id: fan.ceiling_salon
       state: 'on'
   action:
-    service: homeassistant.turn_off
+  - service: homeassistant.turn_off
     target:
       entity_id:
       - light.ceiling_salon
       - light.leds_salon
       - light.lamp_salon
       - fan.ceiling_salon
+    data: {}
 - id: light_scene_salon_auto_when_bulbs_turn_on
-  alias: Light Scene Salon Auto When Bulbs Turn On
+  alias: Light Salon Scene Auto When Ceiling Lamp Turn On
   description: wybierz automatyczną scenę oświetlenia w salonie po włączeniu światła
   trigger:
-    platform: state
+  - platform: state
     entity_id: light.ceiling_salon
     to: 'on'
   action:
-    service: input_select.select_option
+  - service: input_select.select_option
     data:
       entity_id: input_select.light_scenes_salon
       option: automatyczny
 - id: light_scene_salon
-  alias: Light Scene Salon
+  alias: Light Salon Scenes
   description: wybierz scenę oświetlenia w salonie
   trigger:
-    platform: state
+  - platform: state
     entity_id: input_select.light_scenes_salon
     to:
   action:
-    service: scene.turn_on
+  - service: scene.turn_on
     data:
       entity_id: scene.{{ trigger.to_state.state }}
       transition: 5
 - id: light_toggle_salon_bulbs
-  alias: Light Toggle Salon Bulbs
-  description: włącz/wyłącz żarówki w salonie
+  alias: Light Salon Toggle Ceiling Lamp
+  description: włącz/wyłącz oświetlenie sufitowe w salonie
   trigger:
-    platform: device
+  - platform: device
     domain: mqtt
     device_id: 52237db1203926d98cf2fa58e2ec8d6c
     type: button_short_press
     subtype: button_1
     discovery_id: shellyswitch25-C45BBE77DBE5-input-0 button_short_press
+  - device_id: 1f8b076d4a78b00888e90626c7c9a919
+    domain: zha
+    platform: device
+    type: remote_button_double_press
+    subtype: remote_button_double_press
   action:
-    service: light.toggle
+  - service: light.toggle
     target:
       entity_id: light.ceiling_salon
+    data: {}
 - id: light_toggle_salon_light
-  alias: Light Toggle Salon Light
-  description: włącz/wyłącz oświetlenie w salonie
+  alias: Light Salon Toggle LEDs
+  description: włącz/wyłącz LEDy w salonie
   trigger:
-  - platform: event
-    event_type: xiaomi_aqara.click
-    event_data:
-      entity_id: binary_sensor.switch_light_salon
+  - device_id: 1f8b076d4a78b00888e90626c7c9a919
+    domain: zha
+    platform: device
+    type: remote_button_triple_press
+    subtype: remote_button_triple_press
   action:
-  - choose:
-    - conditions: '{{ trigger.event.data.click_type == ''single'' }}'
-      sequence:
-        service: light.toggle
-        target:
-          entity_id: light.lamp_salon
-        data: {}
-    - conditions: '{{ trigger.event.data.click_type == ''double'' }}'
-      sequence:
-        service: light.toggle
-        target:
-          entity_id: light.ceiling_salon
-        data: {}
-    - conditions: '{{ trigger.event.data.click_type == ''hold'' }}'
-      sequence:
-        service: fan.toggle
-        target:
-          entity_id: fan.ceiling_salon
-        data: {}
+  - service: light.toggle
+    data: {}
+    target:
+      entity_id: light.leds_salon
 - id: light_turn_on_salon_lamp_when_dark_and_motion
-  alias: Light Turn On Salon Lamp When Dark And Motion
+  alias: Light Salon Turn On Lamp When Dark And Motion
   description: włącz lampę w salonie jak pojawi się ruch i jest ciemno
-  max_exceeded: silent
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_salon
@@ -1547,6 +1530,7 @@
   - service: light.turn_on
     target:
       entity_id: light.lamp_salon
+    data: {}
   - wait_for_trigger:
     - platform: state
       entity_id: binary_sensor.motion_salon
@@ -1563,6 +1547,8 @@
   - service: light.turn_off
     target:
       entity_id: light.lamp_salon
+    data: {}
+  max_exceeded: silent
 - id: light_scene_film
   alias: Light Scene Film
   description: włącz scenę oświetlenia film po włączeniu filmu/gry/trybu smart
@@ -1915,23 +1901,30 @@
       - light.ceiling_przedpokoj
       - light.ceiling_korytarz
 - id: light_toggle_ceiling_antek
-  alias: Light Toggle Ceiling Antek
+  alias: Light Antek Toggle Ceiling Lamp
+  description: ''
   trigger:
-    platform: device
+  - platform: device
     domain: mqtt
     device_id: d9bac82dff0257d63401f912e99b205c
     type: button_short_press
     subtype: button_1
     discovery_id: shelly1l-84CCA8AD365E-input-0 button_short_press
+  - device_id: aabc0c68397757ef0cf5caa56a59d0c8
+    domain: zha
+    platform: device
+    type: remote_button_long_press
+    subtype: button
   action:
-    service: light.toggle
+  - service: light.toggle
     target:
       entity_id: light.ceiling_antek
+    data: {}
 - id: light_turn_off_antek_lights_when_no_motion
-  alias: Light Turn Off Antek Lights When No Motion
+  alias: Light Antek Turn Off Lights When No Motion
   description: wyłącz światła w pokoju Antka jak brak ruchu przez 20 min
   trigger:
-    platform: state
+  - platform: state
     entity_id: binary_sensor.motion_antek
     from: 'on'
     to: 'off'
@@ -1953,15 +1946,16 @@
       entity_id: light.lightstrip_antek
       state: 'on'
   action:
-    service: light.turn_off
+  - service: light.turn_off
     target:
       entity_id:
       - light.desk_lamp_antek
       - light.ceiling_antek
       - light.lightstrip_antek
+    data: {}
 - id: light_turn_on_antek_leds_and_cabinet_when_dark_and_motion
-  alias: Light Turn On Antek LEDs And Cabinet When Dark And Motion
-  description: włącz LEDy i gablotę w pokoju Antka jak pojawi się ruch i jest ciemno
+  alias: Light Antek Turn On LEDs When Dark And Motion
+  description: włącz LEDy w pokoju Antka jak pojawi się ruch i jest ciemno
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_antek
@@ -1972,7 +1966,6 @@
     entity_id:
     - input_boolean.away_mode
     - light.lightstrip_antek
-    - input_boolean.antek_lamp_night
     - light.ceiling_antek
     state: 'off'
   - condition: numeric_state
@@ -1987,109 +1980,34 @@
       before_offset: +00:10:00
   action:
   - service: script.light_turn_on_antek_leds
+    data: {}
   - wait_for_trigger:
       platform: state
       entity_id: binary_sensor.motion_antek
       from: 'on'
       to: 'off'
   - condition: state
-    entity_id: input_boolean.antek_lamp_night
-    state: 'off'
-  - condition: state
     entity_id: binary_sensor.laptop_antek_status
     state: 'off'
-  - service: script.light_turn_off_antek_leds
-- id: light_turn_on_antek_leds_night
-  alias: Light Turn On Antek LEDs Night
-  trigger:
-    platform: event
-    event_type: xiaomi_aqara.click
-    event_data:
-      entity_id: binary_sensor.switch_light_antek
-      click_type: hold
-  condition:
-  - condition: state
-    entity_id:
-    - input_boolean.away_mode
-    - input_boolean.antek_lamp_night
-    state: 'off'
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-  action:
-  - service: light.turn_on
+  - service: light.toggle
+    data:
+      transition: 10
     target:
       entity_id: light.lightstrip_antek
-    data:
-      brightness: 15
-      rgb_color:
-      - 255
-      - 190
-      - 0
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.antek_lamp_night
-- id: light_turn_off_antek_leds_night
-  alias: Light Turn Off Antek LEDs Night
-  description: wyłącz LEDy w pokoju Antka po zakończeniu trybu nocnego
-  trigger:
-    platform: event
-    event_type: xiaomi_aqara.click
-    event_data:
-      entity_id: binary_sensor.switch_light_antek
-      click_type: hold
-  condition:
-  - condition: state
-    entity_id: input_boolean.away_mode
-    state: 'off'
-  - condition: state
-    entity_id: input_boolean.antek_lamp_night
-    state: 'on'
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-  action:
-  - service: script.light_turn_on_antek_leds
-  - service: input_boolean.turn_off
-    entity_id: input_boolean.antek_lamp_night
-- id: light_turn_off_antek_leds_at_sunrise
-  alias: Light Turn Off Antek LEDs At Sunrise
-  description: wyłącz LEDy w pokoju Antka o wschodzie słońca
-  trigger:
-    platform: sun
-    event: sunrise
-  condition:
-    condition: state
-    entity_id: light.lightstrip_antek
-    state: 'on'
-  action:
-    service: script.light_turn_off_antek_leds
 - id: light_toggle_antek_leds
-  alias: Light Toggle Antek LEDs
+  alias: Light Antek Toggle LEDs
   description: włącz/wyłącz LEDy w pokoju Antka
   trigger:
-    platform: event
-    event_type: xiaomi_aqara.click
-    event_data:
-      entity_id: binary_sensor.switch_light_antek
-      click_type: single
+  - device_id: aabc0c68397757ef0cf5caa56a59d0c8
+    domain: zha
+    platform: device
+    type: remote_button_triple_press
+    subtype: remote_button_triple_press
   action:
-  - choose:
-      conditions:
-        condition: state
-        entity_id: light.lightstrip_antek
-        state: 'off'
-      sequence:
-        service: script.light_turn_on_antek_leds
-    default:
-      service: light.turn_off
-      target:
-        entity_id: light.lightstrip_antek
+  - type: toggle
+    device_id: 40c8e12009a311ebbd1ce5aa5e97a8d7
+    entity_id: light.lightstrip_antek
+    domain: light
 - id: light_turn_on_pracownia_lamp_when_dark_and_motion
   alias: Light Turn On Pracownia Lamp When Dark And Motion
   description: włącz lampkę w pracowni jak pojawi się ruch i jest ciemno
@@ -2130,33 +2048,45 @@
     target:
       entity_id: light.lamp_pracownia
 - id: light_toggle_gabinet_ceiling_light_
-  alias: Light Toggle Gabinet Ceiling Light
+  alias: Light Gabinet Toggle Ceiling Lamp
   description: włącz/wyłącz oświetlenie sufitowe
   trigger:
-    platform: device
+  - platform: device
     domain: mqtt
     device_id: 8b0d2dd5099fa8d8664ab14cd4a30f87
     type: button_short_press
     subtype: button_1
     discovery_id: shelly1l-483FDA701559-input-0 button_short_press
+  - device_id: 12765067d8e37adeadb4188a5b9b0c5c
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: remote_button_short_press
   action:
-    service: light.toggle
+  - service: light.toggle
     target:
       entity_id: light.ceiling_gabinet
+    data: {}
 - id: light_toggle_gabinet_lamp
-  alias: Light Toggle Gabinet Lamp
+  alias: Light Gabinet Toggle Lamp
   description: włącz/wyłącz lampę
   trigger:
-    platform: device
+  - platform: device
     domain: mqtt
     device_id: 8b0d2dd5099fa8d8664ab14cd4a30f87
     type: button_long_press
     subtype: button_1
     discovery_id: shelly1l-483FDA701559-input-0 button_long_press
+  - device_id: 12765067d8e37adeadb4188a5b9b0c5c
+    domain: zha
+    platform: device
+    type: remote_button_double_press
+    subtype: remote_button_double_press
   action:
-    service: light.toggle
+  - service: light.toggle
     target:
       entity_id: light.lamp_gabinet
+    data: {}
 - id: light_turn_on_gabinet_lamp_when_dark_and_motion
   alias: Light Turn On Gabinet Lamp When Dark And Motion
   description: włącz lampę w gabinecie jak pojawi się ruch i jest ciemno
@@ -2191,8 +2121,7 @@
     target:
       entity_id: light.lamp_gabinet
     data:
-      color_temp: 420
-      brightness: 220
+      brightness_pct: 20
       transition: 3
   - wait_for_trigger:
       platform: state
@@ -2237,21 +2166,22 @@
       - light.lamp_gabinet
       - light.desk_lamp_gabinet
 - id: light_toggle_schody_leds
-  alias: Light Toggle Schody LEDs
+  alias: Light Schody Toggle LEDs
   description: włącz/wyłącz LEDy na schodach
   trigger:
-    platform: device
+  - platform: device
     domain: mqtt
     device_id: f005f9684c07d6ff46619c42b448bf38
     type: button_short_press
     subtype: button_2
     discovery_id: shelly1l-98CDAC253D92-input-1 button_short_press
   action:
-    service: light.toggle
+  - service: light.toggle
     target:
       entity_id: light.leds_schody
+    data: {}
 - id: light_turn_on_schody_leds_when_motion_at_night
-  alias: Light Turn On Schody LEDs When Motion At Night
+  alias: Light Schody Turn On LEDs When Motion At Night
   description: włącz ledy na schodach jak pojawi się ruch i jest noc
   trigger:
   - platform: state
@@ -2264,8 +2194,8 @@
     - light.leds_schody
     state: 'off'
   - condition: numeric_state
-    entity_id: sensor.illumination_schody
-    below: 8
+    entity_id: sensor.illumination_antresola
+    below: 9
   - condition: or
     conditions:
     - condition: sun
@@ -2277,6 +2207,7 @@
   - service: light.turn_on
     target:
       entity_id: light.leds_schody
+    data: {}
   - wait_for_trigger:
       platform: state
       entity_id: binary_sensor.motion_schody
@@ -2285,34 +2216,37 @@
   - service: light.turn_off
     target:
       entity_id: light.leds_schody
+    data: {}
 - id: light_turn_on_schody_leds_on_sunset
-  alias: Light Turn On Schody LEDs On Sunset
+  alias: Light Schody Turn On LEDs On Sunset
   description: Włącz LEDy na schodach o zachodzie słońca
   trigger:
-    platform: sun
+  - platform: sun
     event: sunset
   condition:
-    condition: state
+  - condition: state
     entity_id:
     - input_boolean.away_mode
     - light.leds_schody
     state: 'off'
   action:
-    service: light.turn_on
+  - service: light.turn_on
     target:
       entity_id: light.leds_schody
+    data: {}
 - id: light_turn_off_schody_leds_on_midnight
-  alias: Light Turn On Schody LEDs On Midnight
+  alias: Light Schody Turn On LEDs On Midnight
   description: Włącz LEDy na schodach o północy
   trigger:
-    platform: time
+  - platform: time
     at: 00:00:00
   action:
-    service: light.turn_off
+  - service: light.turn_off
     target:
       entity_id: light.leds_schody
+    data: {}
 - id: light_turn_on_goscinny_lamp_when_dark_and_motion
-  alias: Light Turn On Goscinny Lamp When Dark And Motion
+  alias: Light Gościnny Turn On Lamp When Dark And Motion
   description: włącz lampkę w pokoju gościnnym jak pojawi się ruch i jest ciemno
   trigger:
   - platform: state
@@ -2327,7 +2261,7 @@
     state: 'off'
   - condition: numeric_state
     entity_id: sensor.illumination_goscinny
-    below: 9
+    below: 8
   - condition: state
     entity_id: input_boolean.light_auto_turn_goscinny
     state: 'on'
@@ -2393,12 +2327,12 @@
   condition:
     condition: state
     entity_id: media_player.bravia_salon
-    state: playing
+    state: 'on'
   action:
   - delay: 00:00:02
   - condition: state
     entity_id: media_player.bravia_salon
-    state: playing
+    state: 'on'
   - service: media_player.turn_off
     target:
       entity_id: media_player.bravia_salon
@@ -2436,7 +2370,7 @@
     data:
       humidity: '{{ states(''input_select.target_humidity'') }}'
 - id: humidification_start
-  alias: Humidification Start Salon
+  alias: Humidification Salon Start
   description: włącz nawilżanie jak wilgotność spadnie poniżej ustawionego poziomu
   trigger:
   - platform: template
@@ -2459,7 +2393,7 @@
   - service: humidifier.turn_on
     entity_id: humidifier.xiaomi_salon
 - id: humidification_stop
-  alias: Humidification Stop Salon
+  alias: Humidification Salon Stop
   description: wyłącz nawilżanie jak wilgotność wzroścnie powyżej ustawionego poziomu
     lub zbiornik pusty
   trigger:
@@ -2477,11 +2411,6 @@
     - input_boolean.heating_season
     - humidifier.xiaomi_salon
     state: 'on'
-  variables:
-    notification_title: Uzupełnij wodę w nawilżaczu
-    notification_message: Nawilżacz w salonie został wyłączony ponieważ w zbiorniku
-      pozostało {{ states('sensor.xiaomi_mi_humidifier_ca1_water_level') }}% wody.
-    notification_tag: notification-humidifier-ca1
   action:
   - service: humidifier.turn_off
     entity_id: humidifier.xiaomi_salon
@@ -2520,7 +2449,7 @@
       conditions:
         condition: state
         entity_id: media_player.bravia_salon
-        state: playing
+        state: 'on'
       sequence:
         service: notify.bravia
         data:
@@ -2530,6 +2459,11 @@
             icon:
               url: http://localhost:8123/static/icons/favicon-192x192.png
             duration: 10
+  variables:
+    notification_title: Uzupełnij wodę w nawilżaczu
+    notification_message: Nawilżacz w salonie został wyłączony ponieważ w zbiorniku
+      pozostało {{ states('sensor.xiaomi_mi_humidifier_ca1_water_level') }}% wody.
+    notification_tag: notification-humidifier-ca1
 - id: climate_anresola_external_temperature_sensor
   alias: Heating Antresola External Temperature Sensor
   description: Przekazuje temperaturę z sensora do termostatu
@@ -2692,7 +2626,7 @@
     data:
       name: '{{ now().strftime(''%Y-%m-%d'') }}'
 - id: '1658514116580'
-  alias: Climate Toggle Salon Fan
+  alias: Climate Salon Toggle Fan
   description: włącz/wyłącz wentylator w salonie
   trigger:
   - platform: device
@@ -2701,6 +2635,11 @@
     type: button_long_press
     subtype: button_1
     discovery_id: shellyswitch25-C45BBE77DBE5-input-0 button_long_press
+  - device_id: 1f8b076d4a78b00888e90626c7c9a919
+    domain: zha
+    platform: device
+    type: remote_button_long_press
+    subtype: button
   condition: []
   action:
   - service: fan.toggle
@@ -2709,7 +2648,7 @@
       entity_id: fan.ceiling_salon
   mode: single
 - id: '1658514193572'
-  alias: Light  Toggle Salon Lamp
+  alias: Light Salon Toggle Lamp
   description: włącz/wyłącz lampę w salonie
   trigger:
   - platform: device
@@ -2718,6 +2657,11 @@
     type: button_long_press
     subtype: button_2
     discovery_id: shellyswitch25-C45BBE77DBE5-input-1 button_long_press
+  - device_id: 1f8b076d4a78b00888e90626c7c9a919
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: remote_button_short_press
   condition: []
   action:
   - service: light.toggle
@@ -2726,7 +2670,7 @@
       entity_id: light.lamp_salon
   mode: single
 - id: '1658522979417'
-  alias: Light Toggle Antek Tree
+  alias: Light Antek Toggle Tree
   description: włącz/wyłącz drzewko w pokoju Antka
   trigger:
   - platform: device
@@ -2735,6 +2679,11 @@
     type: button_long_press
     subtype: button_1
     discovery_id: shelly1l-84CCA8AD365E-input-0 button_long_press
+  - device_id: aabc0c68397757ef0cf5caa56a59d0c8
+    domain: zha
+    platform: device
+    type: remote_button_double_press
+    subtype: remote_button_double_press
   condition: []
   action:
   - service: light.toggle
@@ -2759,88 +2708,40 @@
       entity_id: media_player.playstation_salon
   mode: single
 - id: light_turn_off_goscinny_light_when_no_motion
-  alias: Light Turn Off Goscinny Light When No Motion
+  alias: Light Gościnny Turn Off Light When No Motion
   description: wyłącz światło w pokoju gościnnym jak brak ruchu przez 20 min
   trigger:
-    platform: state
+  - platform: state
     entity_id: binary_sensor.motion_goscinny
     from: 'on'
     to: 'off'
     for:
       minutes: 20
   condition:
-    condition: state
+  - condition: state
     entity_id: light.ceiling_goscinny
     state: 'on'
   action:
-    service: light.turn_off
+  - service: light.turn_off
     target:
       entity_id: light.ceiling_goscinny
+    data: {}
 - id: '1670319144056'
-  alias: Light Toggle Gabinet Light
+  alias: Media Gabinet Play/Pause
   description: włącz/wyłącz oświetlenie w gabinecie
   trigger:
-  - platform: event
-    event_type: xiaomi_aqara.click
-    event_data:
-      entity_id: binary_sensor.switch_light_gabinet
+  - device_id: 12765067d8e37adeadb4188a5b9b0c5c
+    domain: zha
+    platform: device
+    type: remote_button_triple_press
+    subtype: remote_button_triple_press
   action:
-  - choose:
-    - conditions: '{{ trigger.event.data.click_type == ''single'' }}'
-      sequence:
-        service: light.toggle
-        target:
-          entity_id: light.ceiling_gabinet
-        data: {}
-    - conditions: '{{ trigger.event.data.click_type == ''double'' }}'
-      sequence:
-        service: light.toggle
-        target:
-          entity_id: light.lamp_gabinet
-        data: {}
-    - conditions: '{{ trigger.event.data.click_type == ''hold'' }}'
-      sequence:
-        service: media_player.media_play_pause
-        target:
-          entity_id: media_player.sonos_one_gabinet
-        data: {}
-- id: '1670709627054'
-  alias: Light Turn Off Christmas Light
-  description: ''
-  trigger:
-  - platform: time
-    at: 00:00:00
-  condition: []
-  action:
-  - service: light.turn_off
+  - service: media_player.media_play_pause
     data: {}
     target:
-      entity_id:
-      - light.christmas_lights_sypialnia
-      - light.christmas_lights_pracownia
-      - light.christmas_lights_schody
-      - light.christmas_tree_salon
-  mode: single
-- id: '1670709738004'
-  alias: Light Turn On Christmas Light
-  description: ''
-  trigger:
-  - platform: sun
-    event: sunset
-    offset: 0
-  condition: []
-  action:
-  - service: light.turn_on
-    data: {}
-    target:
-      entity_id:
-      - light.christmas_lights_sypialnia
-      - light.christmas_lights_pracownia
-      - light.christmas_lights_schody
-      - light.christmas_tree_salon
-  mode: single
+      entity_id: media_player.sonos_one_gabinet
 - id: '1671558014151'
-  alias: Humidification Start Antek
+  alias: Humidification Antek Start
   description: włącz nawilżanie jak wilgotność spadnie poniżej ustawionego poziomu
   trigger:
   - platform: template
@@ -2863,7 +2764,7 @@
   - service: humidifier.turn_on
     entity_id: humidifier.xiaomi_antek
 - id: '1671558157880'
-  alias: Humidification Stop Antek
+  alias: Humidification Antek Stop
   description: wyłącz nawilżanie jak wilgotność wzroścnie powyżej ustawionego poziomu
     lub zbiornik pusty
   trigger:
@@ -2927,13 +2828,13 @@
           message: '{{ notification_message }}'
           tag: '{{ notification_tag }}'
           services:
-          - service: notify.mobile_app_iphone_8_plus
+          - service: notify.mobile_app_iphone_11
             type: ios
   - choose:
       conditions:
         condition: state
         entity_id: media_player.bravia_salon
-        state: playing
+        state: 'on'
       sequence:
         service: notify.bravia
         data:
@@ -2949,7 +2850,7 @@
       pozostało {{ states('sensor.xiaomi_mi_humidifier_cb1_water_level') }}% wody.
     notification_tag: notification-humidifier-cb1
 - id: '1671558318632'
-  alias: Notification Humidifier Antek Low Water
+  alias: Notification Antek Humidifier Low Water
   description: powiadom o małej ilości wody w nawilżaczu
   trigger:
   - platform: numeric_state
@@ -3020,13 +2921,13 @@
           message: '{{ notification_message }}'
           tag: '{{ notification_tag }}'
           services:
-          - service: notify.mobile_app_iphone_8_plus
+          - service: notify.mobile_app_iphone_11
             type: ios
   - choose:
       conditions:
         condition: state
         entity_id: media_player.bravia_salon
-        state: playing
+        state: 'on'
       sequence:
         service: notify.bravia
         data:
@@ -3041,3 +2942,103 @@
     notification_message: W zbiorniku nawilżacza w pokoju Antka pozostało {{ states('sensor.xiaomi_mi_humidifier_cb1_water_level')
       }}% wody.
     notification_tag: notification-humidifier-cb1
+- id: '1672476393165'
+  alias: Light Gościnny Toggle Ceiling Lamp
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 84783955a9dda947e7b647309a6b15f9
+    type: button_short_press
+    subtype: button_1
+    discovery_id: shellyplus1pm-441793948ff8-input-0 single_push
+  condition: []
+  action:
+  - service: light.toggle
+    data: {}
+    target:
+      entity_id: light.ceiling_goscinny
+  mode: single
+- id: '1672477395224'
+  alias: Light Gościnny Toggle Lamp
+  description: ''
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 84783955a9dda947e7b647309a6b15f9
+    type: button_long_press
+    subtype: button_1
+    discovery_id: shellyplus1pm-441793948ff8-input-0 long_push
+  condition: []
+  action:
+  - service: light.toggle
+    data: {}
+    target:
+      entity_id: light.lamp_goscinny
+  mode: single
+- id: '1672489364549'
+  alias: Light Antek Toggle Desk Lamp
+  description: ''
+  trigger:
+  - device_id: aabc0c68397757ef0cf5caa56a59d0c8
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: remote_button_short_press
+  condition: []
+  action:
+  - type: toggle
+    device_id: 279e3fb7aea5702cb35ae756f6b2795f
+    entity_id: light.desk_lamp_antek
+    domain: light
+  mode: single
+- id: '1672565177379'
+  alias: Light Antek Turn Off Tree At Sunrise
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunrise
+    offset: 0
+  condition: []
+  action:
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.tree_antek
+  mode: single
+- id: '1672565410928'
+  alias: Light Antek Turn On Tree On Sunset
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: 0
+  condition: []
+  action:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.tree_antek
+  mode: single
+- id: '1673781976268'
+  alias: Notification Washing Machine End
+  description: powiadom o końcu prania
+  trigger:
+  - platform: state
+    entity_id: sensor.washing_machine_pralnia
+    from: pranie
+    to: wyłączona
+    for:
+      minutes: 1
+  action:
+  - service: python_script.notify
+    data:
+      title: Koniec prania
+      message: Pralka zakończyła pranie.
+      tag: notification-washing-machine
+      group: other
+      services:
+      - service: notify.mobile_app_iphone_13
+        type: ios
+      - service: notify.mobile_app_iphone_12
+        type: ios

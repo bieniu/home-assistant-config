@@ -21,7 +21,8 @@ logger:
   baud_rate: 0
 
 api:
-  password: !secret esphome_password
+  encryption:
+    key: !secret encryption_key
 
 ota:
   password: !secret esphome_password
@@ -46,20 +47,18 @@ sensor:
     id: uptime_sensor
     internal: true
 
-  - platform: uptime
+  - platform: template
     name: "${device_name} Last restart"
     update_interval: 300s
     device_class: "timestamp"
     entity_category: "diagnostic"
-    unit_of_measurement: ""
-    filters:
-      - lambda: |-
-          auto time = id(homeassistant_time).now();
-          if (time.is_valid()) {
-            return time.timestamp - x;
-          } else {
-            return {};
-          }
+    lambda: |-
+      auto time = id(homeassistant_time).now();
+      if (time.is_valid()) {
+        return time.timestamp - id(uptime_sensor).state;
+      } else {
+        return {};
+      }
 
   - platform: wifi_signal
     name: "${device_name} WiFi signal"

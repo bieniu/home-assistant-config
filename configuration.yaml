@@ -29,6 +29,7 @@ frontend:
   themes: !include_dir_merge_named themes
   extra_module_url:
     - /hacsfiles/lovelace-card-mod/card-mod.js
+    - /hacsfiles/lovelace-canary/canary.js
 
 group: !include groups.yaml
 
@@ -70,11 +71,7 @@ lovelace:
       type: module
     - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
       type: module
-    - url: /hacsfiles/battery-state-card/battery-state-card.js
-      type: module
     - url: /hacsfiles/home-assistant-sun-card/home-assistant-sun-card.js
-      type: module
-    - url: /hacsfiles/lovelace-canary/canary.js
       type: module
     - url: /hacsfiles/tv-card/tv-card.js
       type: module
@@ -94,3 +91,14 @@ switch: !include switches.yaml
 fan: !include fans.yaml
 
 template: !include templates.yaml
+
+panel_custom:
+  - name: zha_map
+    sidebar_title: Zigbee
+    sidebar_icon: mdi:zigbee
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: config/zha/visualization?config_entry=f9ae1510a963b99ee5fba82bf62904ae
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
