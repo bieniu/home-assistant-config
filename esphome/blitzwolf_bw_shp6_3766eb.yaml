@@ -7,6 +7,7 @@ substitutions:
 
 esphome:
   name: ${host_name}
+  friendly_name: ${device_name}
   platform: ESP8266
   board: esp8285
 
@@ -59,7 +60,7 @@ switch:
     pin: GPIO15
     id: relay
     icon: mdi:power-plug
-    name: "${device_name} Relay"
+    name: "Relay"
     restore_mode: ALWAYS_ON
     on_turn_on:
       - output.turn_on: led
@@ -68,7 +69,7 @@ switch:
 
 button:
   - platform: restart
-    name: "${device_name} Restart"
+    name: "Restart"
     device_class: "restart"
 
 status_led:
@@ -82,7 +83,7 @@ sensor:
     internal: true
 
   - platform: template
-    name: "${device_name} Last restart"
+    name: "Last restart"
     update_interval: 300s
     device_class: "timestamp"
     entity_category: "diagnostic"
@@ -95,7 +96,7 @@ sensor:
       }
 
   - platform: wifi_signal
-    name: "${device_name} WiFi signal"
+    name: "WiFi signal"
     update_interval: 300s
     device_class: "signal_strength"
     entity_category: "diagnostic"
@@ -109,7 +110,7 @@ sensor:
     current_resistor: ${current_res}
     voltage_divider: ${voltage_div}
     power:
-      name: "${device_name} Power"
+      name: "Power"
       unit_of_measurement: "W"
       device_class: "power"
       on_value_range:
@@ -118,6 +119,6 @@ sensor:
             - output.turn_off: led
             - switch.turn_off: relay
     energy:
-      name: "${device_name} Energy"
+      name: "Energy"
       unit_of_measurement: "Wh"
       device_class: "energy"

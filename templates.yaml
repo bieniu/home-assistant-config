@@ -232,6 +232,10 @@
 
     - name: laptop_maciek_status
       unique_id: "laptop_maciek_status"
+      state: "{{ is_state('device_tracker.lenovo_thinkpad_t14', 'home') }}"
+
+    - name: dell_latitude_5400_status
+      unique_id: "dell_latitude_5400_status"
       state: "{{ is_state('device_tracker.dell_latitude_5400', 'home') }}"
 
     - name: laptop_antek_status

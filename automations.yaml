@@ -85,8 +85,16 @@
   trigger:
   - platform: state
     entity_id:
+    - update.adaptive_lighting
+    - update.aeotec_zw175_smart_switch_7_019_firmware
+    - update.aeotec_zwa021_thermostat_023_firmware
+    - update.alexa_media_player
+    - update.asus_rt_ac86u_firmware
     - update.auto_entities
     - update.blitzortung_org_lightning_detector
+    - update.blitzwolf_bw_shp6_3766eb_firmware
+    - update.blitzwolf_bw_shp6_ecf9ea_firmware
+    - update.blitzwolf_bw_shp6_ed007d_firmware
     - update.caddy_2
     - update.canary
     - update.card_mod
@@ -103,24 +111,12 @@
     - update.mini_media_player
     - update.mosquitto_broker
     - update.mushroom_card
+    - update.mushroom_themes
     - update.noctis_theme
     - update.nordic_theme
     - update.rpc_shutdown
     - update.shellies_discovery
     - update.shellies_discovery_gen2
-    - update.simple_weather_card
-    - update.studio_code_server
-    - update.sun_card
-    - update.supervisor
-    - update.tv_remote_card
-    - update.vaultwarden_bitwarden
-    - update.watchman
-    - update.z_wave_js
-    - update.zadnego_ale
-    - update.adaptive_lighting
-    - update.alexa_media_player
-    - update.aeotec_zw175_smart_switch_7_019_firmware
-    - update.aeotec_zwa021_thermostat_021_firmware
     - update.shelly_1l_253d92_firmware
     - update.shelly_1l_61c9fd_firmware
     - update.shelly_1l_701559_firmware
@@ -137,13 +133,22 @@
     - update.shelly_motion_2_72a6a4_firmware
     - update.shelly_motion_c67c2a_firmware
     - update.shelly_plug_s_7aecf4_firmware
-    - update.shelly_plus_plug_s_2ffb28_firmware
-    - update.shelly_valve_72a544_firmware
-    - update.shelly_vintage_d10472_firmware
-    - update.shelly_pro_1pm_80e0c0_firmware
     - update.shelly_plus_1pm_948ff8_firmware
     - update.shelly_plus_1pm_b22864_firmware
-    - update.asus_rt_ac86u_firmware
+    - update.shelly_plus_plug_s_2ffb28_firmware
+    - update.shelly_pro_1pm_80e0c0_firmware
+    - update.shelly_valve_72a544_firmware
+    - update.shelly_vintage_d10472_firmware
+    - update.simple_weather_card
+    - update.studio_code_server
+    - update.sun_card
+    - update.supervisor
+    - update.tv_remote_card
+    - update.vaultwarden_bitwarden
+    - update.watchman
+    - update.wemos_lolin32_8cbf7c_firmware
+    - update.z_wave_js
+    - update.zadnego_ale
     from: 'off'
     to: 'on'
   action:
@@ -473,22 +478,23 @@
       }} ppm. Należy przewietrzyć pomieszczenie.
     notification_tag: notification-high-co2
 - id: notification_water_leak_kuchnia
-  alias: Notification Water Leak Kuchnia
-  description: powiadom o wycieku wodu w kuchni
+  alias: Notification Water Leak
+  description: powiadom o wycieku wodu
   trigger:
   - platform: state
     entity_id: binary_sensor.water_leak_kuchnia
     from: 'off'
     to: 'on'
-  variables:
-    notification_title: Wykryto wyciek wody
-    notification_message: W kuchni wykryto wodę na podłodze.
+  - platform: state
+    entity_id: binary_sensor.water_leak_pralnia
+    from: 'off'
+    to: 'on'
   action:
   - service: python_script.notify
     data:
       title: '{{ notification_title }}'
       message: '{{ notification_message }}'
-      tag: notification-water-leak
+      tag: notification-water-leak-{{ area_name(trigger.entity_id) }}
       priority: high
       services:
       - service: notify.mobile_app_iphone_13
@@ -509,6 +515,10 @@
             icon:
               url: http://localhost:8123/static/icons/favicon-192x192.png
             duration: 10
+  variables:
+    notification_title: Wykryto wyciek wody
+    notification_message: 'Wykryto wyciek wody w pomieszczeniu: {{ area_name(trigger.entity_id)
+      }}.'
 - id: notification_relay_overpower
   alias: Notification Relay Overpower
   description: powiadom o zbyt dużym obciązeniu przekaźnika
@@ -957,9 +967,10 @@
     entity_id: input_boolean.heating_season
     state: 'on'
   - condition: state
-    entity_id:
-    - input_boolean.away_mode
-    - binary_sensor.windows
+    entity_id: input_boolean.away_mode
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.windows
     state: 'off'
   action:
   - service: script.heating_day
@@ -978,9 +989,10 @@
     entity_id: input_boolean.heating_season
     state: 'on'
   - condition: state
-    entity_id:
-    - input_boolean.away_mode
-    - binary_sensor.windows
+    entity_id: input_boolean.away_mode
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.windows
     state: 'off'
   action:
   - service: script.heating_night
@@ -1009,7 +1021,7 @@
   alias: Heating Away Mode
   description: przełącz ogrzewanie w tryb away jak domownicy wychodzą
   trigger:
-    platform: state
+  - platform: state
     entity_id: input_boolean.away_mode
     from: 'off'
     to: 'on'
@@ -1019,11 +1031,9 @@
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
-  - condition: state
-    entity_id: binary_sensor.windows
-    state: 'off'
   action:
-    service: script.heating_away_mode
+  - service: script.heating_away_mode
+    data: {}
 - id: heating_peoples_back
   alias: Heating Peoples Back
   description: włącz ogrzewanie dzienne lub nocne gdy domownicy wrócą do domu
@@ -1063,14 +1073,17 @@
     to: 'off'
   condition:
   - condition: state
-    entity_id:
-    - input_boolean.heating_season
-    - input_boolean.away_mode
+    entity_id: input_boolean.heating_season
     state: 'on'
   - condition: state
     entity_id:
-    - script.heating_fast_warm_up
-    - binary_sensor.windows
+    - input_boolean.away_mode
+    state: 'on'
+  - condition: state
+    entity_id: script.heating_fast_warm_up
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.windows
     state: 'off'
   action:
   - choose:
@@ -1116,9 +1129,10 @@
   - service: script.heating_fast_warm_up
     data: {}
   - service: input_boolean.turn_off
-    entity_id:
-    - input_boolean.edyta_far_from_home
-    - input_boolean.maciek_far_from_home
+    target:
+      entity_id:
+      - input_boolean.edyta_far_from_home
+      - input_boolean.maciek_far_from_home
   - service: python_script.notify
     data:
       title: Włączono szybkie dogrzanie
@@ -1275,26 +1289,6 @@
     default:
       service: script.heating_night
       data: {}
-  - if:
-    - condition: template
-      value_template: '{{ states(''sensor.humidity_salon'') | float < states(''input_select.target_humidity'')
-        | float and states(''sensor.xiaomi_mi_humidifier_ca1_water_level'') | int
-        > 5 }}'
-    then:
-    - service: humidifier.turn_on
-      data: {}
-      target:
-        entity_id: humidifier.xiaomi_salon
-  - if:
-    - condition: template
-      value_template: '{{ states(''sensor.humidity_antek'') | float < states(''input_select.target_humidity'')
-        | float and states(''sensor.xiaomi_mi_humidifier_cb1_water_level'') | int
-        > 5 }}'
-    then:
-    - service: humidifier.turn_on
-      data: {}
-      target:
-        entity_id: humidifier.xiaomi_antek
   - condition: state
     entity_id: binary_sensor.windows
     state: 'on'
@@ -1320,9 +1314,10 @@
     to: 'on'
   action:
   - service: climate.turn_on
-    entity_id:
-    - climate.aeotec_thermostat_kuchnia
-    - climate.custom_thermostat_lazienka
+    target:
+      entity_id:
+      - climate.aeotec_thermostat_kuchnia
+      - climate.custom_thermostat_lazienka
   - choose:
     - conditions:
       - condition: state
@@ -1530,7 +1525,8 @@
   - service: light.turn_on
     target:
       entity_id: light.lamp_salon
-    data: {}
+    data:
+      brightness_pct: 100
   - wait_for_trigger:
     - platform: state
       entity_id: binary_sensor.motion_salon
@@ -1768,9 +1764,9 @@
     data:
       brightness: 200
       rgb_color:
-      - 233
-      - 96
       - 255
+      - 1
+      - 191
   - wait_for_trigger:
       platform: state
       entity_id: binary_sensor.motion_sypialnia
@@ -2291,7 +2287,9 @@
   description: pomocnik przełączanie wejść w aplitunerze i telewizorze
   trigger:
   - platform: state
-    entity_id: remote.salon
+    entity_id:
+    - binary_sensor.harmony_status
+    attribute: current_activity
   condition:
   - '{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity
     }}'
@@ -2311,7 +2309,7 @@
     entity_id: media_player.bravia_salon
     data:
       source: "{% if trigger.to_state.attributes.current_activity == 'telewizja' %}\n
-        \ HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity == 'filmy'
+        \ HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity == 'smart'
         %}\n  HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity ==
         'gry' %}\n  HDMI 2\n{% elif trigger.to_state.attributes.current_activity ==
         'muzyka' %}\n  HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity
@@ -2360,22 +2358,26 @@
   description: ustaw docelową wilgotność
   trigger:
   - platform: state
-    entity_id: input_select.target_humidity
-    to:
+    entity_id:
+    - input_number.target_humidity
   action:
   - service: humidifier.set_humidity
     entity_id:
     - humidifier.xiaomi_salon
     - humidifier.xiaomi_antek
     data:
-      humidity: '{{ states(''input_select.target_humidity'') }}'
+      humidity: '{{ states(''input_number.target_humidity'') }}'
 - id: humidification_start
   alias: Humidification Salon Start
   description: włącz nawilżanie jak wilgotność spadnie poniżej ustawionego poziomu
   trigger:
-  - platform: template
-    value_template: '{{ states(''sensor.humidity_salon'') | float(0) < states(''input_select.target_humidity'')
-      | float(0) }}'
+  - platform: numeric_state
+    entity_id: sensor.humidity_salon
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+    below: input_number.target_humidity
   condition:
   - condition: numeric_state
     entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
@@ -2384,10 +2386,13 @@
     entity_id: input_boolean.heating_season
     state: 'on'
   - condition: state
-    entity_id:
-    - input_boolean.heating_airing
-    - input_boolean.away_mode
-    - humidifier.xiaomi_salon
+    entity_id: input_boolean.heating_airing
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.away_mode
+    state: 'off'
+  - condition: state
+    entity_id: humidifier.xiaomi_salon
     state: 'off'
   action:
   - service: humidifier.turn_on
@@ -2397,9 +2402,13 @@
   description: wyłącz nawilżanie jak wilgotność wzroścnie powyżej ustawionego poziomu
     lub zbiornik pusty
   trigger:
-  - platform: template
-    value_template: '{{ states(''sensor.humidity_salon'') | float(0) > states(''input_select.target_humidity'')
-      | float(0) + 1 }}'
+  - platform: numeric_state
+    entity_id: sensor.humidity_salon
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+    above: input_number.target_humidity
   - platform: numeric_state
     entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
     below: 6
@@ -2407,9 +2416,10 @@
       minutes: 5
   condition:
   - condition: state
-    entity_id:
-    - input_boolean.heating_season
-    - humidifier.xiaomi_salon
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  - condition: state
+    entity_id: humidifier.xiaomi_salon
     state: 'on'
   action:
   - service: humidifier.turn_off
@@ -2744,9 +2754,13 @@
   alias: Humidification Antek Start
   description: włącz nawilżanie jak wilgotność spadnie poniżej ustawionego poziomu
   trigger:
-  - platform: template
-    value_template: '{{ states(''sensor.humidity_antek'') | float(0) < states(''input_select.target_humidity'')
-      | float(0) }}'
+  - platform: numeric_state
+    entity_id: sensor.humidity_antek
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+    below: input_number.target_humidity
   condition:
   - condition: numeric_state
     entity_id: sensor.xiaomi_mi_humidifier_cb1_water_level
@@ -2755,10 +2769,13 @@
     entity_id: input_boolean.heating_season
     state: 'on'
   - condition: state
-    entity_id:
-    - input_boolean.heating_airing
-    - input_boolean.away_mode
-    - humidifier.xiaomi_antek
+    entity_id: input_boolean.heating_airing
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.away_mode
+    state: 'off'
+  - condition: state
+    entity_id: humidifier.xiaomi_antek
     state: 'off'
   action:
   - service: humidifier.turn_on
@@ -2768,9 +2785,13 @@
   description: wyłącz nawilżanie jak wilgotność wzroścnie powyżej ustawionego poziomu
     lub zbiornik pusty
   trigger:
-  - platform: template
-    value_template: '{{ states(''sensor.humidity_antek'') | float(0) > states(''input_select.target_humidity'')
-      | float(0) + 1 }}'
+  - platform: numeric_state
+    entity_id: sensor.humidity_antek
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+    above: input_number.target_humidity
   - platform: numeric_state
     entity_id: sensor.xiaomi_mi_humidifier_cb1_water_level
     below: 6
@@ -2778,9 +2799,10 @@
       minutes: 5
   condition:
   - condition: state
-    entity_id:
-    - input_boolean.heating_season
-    - humidifier.xiaomi_antek
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  - condition: state
+    entity_id: humidifier.xiaomi_antek
     state: 'on'
   action:
   - service: humidifier.turn_off
@@ -2993,18 +3015,20 @@
     domain: light
   mode: single
 - id: '1672565177379'
-  alias: Light Antek Turn Off Tree At Sunrise
+  alias: Light Antek Turn Off At 2:00
   description: ''
   trigger:
-  - platform: sun
-    event: sunrise
-    offset: 0
+  - platform: time
+    at: 02:00:00
   condition: []
   action:
   - service: light.turn_off
     data: {}
     target:
-      entity_id: light.tree_antek
+      entity_id:
+      - light.tree_antek
+      - light.desk_lamp_antek
+      - light.lightstrip_antek
   mode: single
 - id: '1672565410928'
   alias: Light Antek Turn On Tree On Sunset

@@ -4,6 +4,7 @@ substitutions:
 
 esphome:
   name: ${host_name}
+  friendly_name: ${device_name}
   platform: ESP8266
   board: d1_mini
 
@@ -39,7 +40,7 @@ time:
 
 button:
   - platform: restart
-    name: "${device_name} Restart"
+    name: "Restart"
     device_class: "restart"
 
 sensor:
@@ -48,7 +49,7 @@ sensor:
     internal: true
 
   - platform: template
-    name: "${device_name} Last restart"
+    name: "Last restart"
     update_interval: 300s
     device_class: "timestamp"
     entity_category: "diagnostic"
@@ -61,7 +62,7 @@ sensor:
       }
 
   - platform: wifi_signal
-    name: "${device_name} WiFi signal"
+    name: "WiFi signal"
     update_interval: 300s
     device_class: "signal_strength"
     entity_category: "diagnostic"

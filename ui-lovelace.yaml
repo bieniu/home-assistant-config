@@ -485,6 +485,7 @@ views:
             entities:
               - entity: binary_sensor.motion_pralnia
                 secondary_info: last-changed
+              - binary_sensor.water_leak_pralnia
               - entity: sensor.washing_machine_pralnia
                 card_mod:
                   style: |
@@ -610,6 +611,7 @@ views:
                 row:
                   entity: climate.thermostat_sypialnia
               - light.lightstrip_sypialnia
+              - light.table_lamp_sypialnia
               - type: custom:mini-media-player
                 canary_style:
                   border-style: none
@@ -1176,6 +1178,8 @@ views:
         entities:
           - entity: sensor.shelly_flood_f2ad1d_battery
             name: kuchnia
+          - entity: sensor.aqara_water_leak_sensor_79b8e9_battery
+            name: pralnia
       - type: entities
         title: "Baterie termostatów"
         state_color: true
@@ -1461,7 +1465,8 @@ views:
             show_header_toggle: false
             entities:
               - input_boolean.heating_season
-              - script.heating_fast_warm_up
+              - entity: script.heating_fast_warm_up
+                name: "Szybkie dogrzanie"
               - input_boolean.heating_airing
               - input_boolean.away_mode
               - input_boolean.guests
@@ -1472,18 +1477,18 @@ views:
         entities:
           - input_select.heating_temp_bedroom_day
           - input_select.heating_temp_bedroom_night
-          - input_select.heating_temp_bathroom_day
-          - input_select.heating_temp_bathroom_night
+          - input_number.bathroom_temperature_day
+          - input_number.bathroom_temperature_night
           - input_select.heating_temp_day
           - input_select.heating_temp_night
-          - input_select.heating_temp_away
+          - input_number.temperature_away
       - type: vertical-stack
         cards:
           - type: entities
             title: "Ustawienie nawilżania"
             show_header_toggle: false
             entities:
-              - input_select.target_humidity
+              - input_number.target_humidity
           - type: entities
             title: "Ustawienia oświetlenia"
             show_header_toggle: false
