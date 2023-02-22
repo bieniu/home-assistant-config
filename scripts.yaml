@@ -76,14 +76,14 @@ heating_day:
       - climate.thermostat_gabinet
       - climate.thermostat_pracownia
     data:
-      temperature: '{{ states(''input_select.heating_temp_day'') }}'
+      temperature: '{{ states(''input_number.temperature_day'') }}'
   - service: climate.set_temperature
     target:
       entity_id:
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
     data:
-      temperature: '{{ states(''input_select.heating_temp_bedroom_day'') }}'
+      temperature: '{{ states(''input_number.bedroom_temperature_day'') }}'
   mode: single
   icon: mdi:radiator
   alias: 'Heating: day'
@@ -98,14 +98,14 @@ heating_night:
       - climate.thermostat_gabinet
       - climate.thermostat_pracownia
     data:
-      temperature: '{{ states(''input_select.heating_temp_night'') }}'
+      temperature: '{{ states(''input_number.temperature_night'') }}'
   - service: climate.set_temperature
     target:
       entity_id:
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
     data:
-      temperature: '{{ states(''input_select.heating_temp_bedroom_night'') }}'
+      temperature: '{{ states(''input_number.bedroom_temperature_night'') }}'
   - service: climate.set_temperature
     target:
       entity_id: climate.custom_thermostat_lazienka
@@ -120,7 +120,7 @@ heating_night:
       - climate.aeotec_thermostat_kuchnia
       - climate.thermostat_salon
     data:
-      temperature: '{{ states(''input_select.heating_temp_night'') }}'
+      temperature: '{{ states(''input_number.temperature_night'') }}'
   mode: single
   alias: 'Heating: night'
   icon: mdi:radiator

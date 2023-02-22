@@ -337,6 +337,41 @@ views:
                 row:
                   entity: climate.thermostat_pracownia
               - light.lamp_pracownia
+              - type: custom:mini-media-player
+                canary_style:
+                  border-style: none
+                entity: media_player.echo_dot_pracownia
+                hide:
+                  power: true
+                  progress: true
+                  source: true
+                  volume: true
+                info: scroll
+                group: true
+                shortcuts:
+                  label: "Skróty"
+                  list:
+                    - name: "RMF FM"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_dot_sypialnia
+                        media_content_type: "TUNEIN"
+                        media_content_id: "RMF FM"
+                    - name: "MUZO FM"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_dot_sypialnia
+                        media_content_type: "TUNEIN"
+                        media_content_id: "MUZO FM"
+                    - name: "Radio ZET"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_dot_sypialnia
+                        media_content_type: "TUNEIN"
+                        media_content_id: "Radio ZET"
       - type: vertical-stack
         in_card: true
         cards:
@@ -612,41 +647,6 @@ views:
                   entity: climate.thermostat_sypialnia
               - light.lightstrip_sypialnia
               - light.table_lamp_sypialnia
-              - type: custom:mini-media-player
-                canary_style:
-                  border-style: none
-                entity: media_player.echo_dot_sypialnia
-                hide:
-                  power: true
-                  progress: true
-                  source: true
-                  volume: true
-                info: scroll
-                group: true
-                shortcuts:
-                  label: "Skróty"
-                  list:
-                    - name: "RMF FM"
-                      type: "service"
-                      id: media_player.play_media
-                      data:
-                        entity_id: media_player.echo_dot_sypialnia
-                        media_content_type: "TUNEIN"
-                        media_content_id: "RMF FM"
-                    - name: "MUZO FM"
-                      type: "service"
-                      id: media_player.play_media
-                      data:
-                        entity_id: media_player.echo_dot_sypialnia
-                        media_content_type: "TUNEIN"
-                        media_content_id: "MUZO FM"
-                    - name: "Radio ZET"
-                      type: "service"
-                      id: media_player.play_media
-                      data:
-                        entity_id: media_player.echo_dot_sypialnia
-                        media_content_type: "TUNEIN"
-                        media_content_id: "Radio ZET"
       - type: vertical-stack
         in_card: true
         cards:
@@ -1475,12 +1475,12 @@ views:
         title: "Temperatury ogrzewania"
         show_header_toggle: false
         entities:
-          - input_select.heating_temp_bedroom_day
-          - input_select.heating_temp_bedroom_night
+          - input_number.bedroom_temperature_day
+          - input_number.bedroom_temperature_night
           - input_number.bathroom_temperature_day
           - input_number.bathroom_temperature_night
-          - input_select.heating_temp_day
-          - input_select.heating_temp_night
+          - input_number.temperature_day
+          - input_number.temperature_night
           - input_number.temperature_away
       - type: vertical-stack
         cards:

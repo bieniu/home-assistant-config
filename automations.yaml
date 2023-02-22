@@ -100,7 +100,6 @@
     - update.card_mod
     - update.clear_theme
     - update.custom_animated_weather_card
-    - update.esphome
     - update.google_theme
     - update.hacs
     - update.home_assistant
@@ -114,7 +113,6 @@
     - update.mushroom_themes
     - update.noctis_theme
     - update.nordic_theme
-    - update.rpc_shutdown
     - update.shellies_discovery
     - update.shellies_discovery_gen2
     - update.shelly_1l_253d92_firmware
@@ -140,7 +138,6 @@
     - update.shelly_valve_72a544_firmware
     - update.shelly_vintage_d10472_firmware
     - update.simple_weather_card
-    - update.studio_code_server
     - update.sun_card
     - update.supervisor
     - update.tv_remote_card
@@ -163,6 +160,8 @@
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
+  mode: queued
+  max: 10
 - id: notification_high_ram_usage
   alias: Notification High RAM Usage
   description: powiadom o wysokim użyciu pamięci RAM
@@ -683,13 +682,13 @@
     from: 'off'
     to: 'on'
   condition:
-    condition: state
+  - condition: state
     entity_id: input_boolean.away_mode
     state: 'on'
     for:
       minutes: 10
   action:
-    service: python_script.notify
+  - service: python_script.notify
     data:
       title: Wykryto otwarcie okna w pustym mieszkaniu
       message: 'Pomieszczenie: {{ area_name(trigger.to_state.entity_id) }}, godzina
@@ -2496,11 +2495,10 @@
   alias: Log Level
   description: ustaw poziom logowania
   trigger:
-    platform: state
+  - platform: state
     entity_id: input_select.log_level
-    to:
   action:
-    service: logger.set_level
+  - service: logger.set_level
     data:
       homeassistant.components: '{{ trigger.to_state.state }}'
 - id: shellies_announce
