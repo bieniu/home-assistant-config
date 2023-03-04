@@ -1,0 +1,66 @@
+- platform: generic_thermostat
+  name: "Thermostat Lazienka"
+  unique_id: thermostat_lazienka
+  heater: switch.heater_lazienka
+  target_sensor: sensor.temperature_lazienka
+  min_temp: 4
+  max_temp: 28
+  min_cycle_duration:
+    minutes: 10
+  initial_hvac_mode: "heat"
+  precision: 0.5
+- platform: generic_thermostat
+  name: "Thermostat Gabinet"
+  unique_id: thermostat_gabinet
+  heater: switch.heater_gabinet
+  target_sensor: sensor.temperature_gabinet
+  min_temp: 4
+  max_temp: 28
+  min_cycle_duration:
+    minutes: 10
+  initial_hvac_mode: "heat"
+  precision: 0.5
+- platform: generic_thermostat
+  name: "Thermostat Antek"
+  unique_id: thermostat_antek
+  heater: switch.heater_antek
+  target_sensor: sensor.temperature_antek
+  min_temp: 4
+  max_temp: 28
+  min_cycle_duration:
+    minutes: 10
+  initial_hvac_mode: "heat"
+  precision: 0.5
+- platform: generic_thermostat
+  name: "Thermostat Salon"
+  unique_id: thermostat_salon
+  heater: switch.heater_salon
+  target_sensor: sensor.temperature_salon
+  min_temp: 4
+  max_temp: 28
+  min_cycle_duration:
+    minutes: 10
+  initial_hvac_mode: "heat"
+  precision: 0.5
+- platform: generic_thermostat
+  name: "Thermostat Sypialnia"
+  unique_id: thermostat_sypialnia
+  heater: switch.heater_sypialnia
+  target_sensor: sensor.temperature_sypialnia
+  min_temp: 4
+  max_temp: 28
+  min_cycle_duration:
+    minutes: 10
+  initial_hvac_mode: "heat"
+  precision: 0.5
+- platform: generic_thermostat
+  name: "Thermostat Pracownia"
+  unique_id: thermostat_pracownia
+  heater: switch.heater_pracownia
+  target_sensor: sensor.temperature_pracownia
+  min_temp: 4
+  max_temp: 28
+  min_cycle_duration:
+    minutes: 10
+  initial_hvac_mode: "heat"
+  precision: 0.5

@@ -8,8 +8,6 @@ include:
     - person.maciek
     - person.romana
     - sensor.co2_salon
-    - sensor.dark_sky_precip_probability
-    - sensor.dark_sky_wind_speed
     - sensor.ha_database_size
     - sensor.humidity_indoor
     - sensor.humidity_outdoor

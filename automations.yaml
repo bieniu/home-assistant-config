@@ -893,7 +893,7 @@
   alias: Presence Peoples Away
   description: ludzie poza domem
   trigger:
-    platform: state
+  - platform: state
     entity_id: binary_sensor.people_at_home
     to: 'off'
   action:
@@ -903,13 +903,13 @@
     entity_id: binary_sensor.windows
     state: 'on'
   - condition: numeric_state
-    entity_id: sensor.dark_sky_precip_probability
+    entity_id: sensor.home_forecast_precipitation_probability
     above: 20
   - service: python_script.notify
     data:
       title: Otwarte okna
       message: Okna w pustym mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów
-        wynosi {{ states('sensor.dark_sky_precip_probability') | int }}%.
+        wynosi {{ states('sensor.home_forecast_precipitation_probability') | int }}%.
       tag: notification-windows-weather
       group: windows
       priority: high
@@ -943,15 +943,15 @@
     state: 'off'
   action:
   - service: climate.set_preset_mode
-    entity_id: climate.aeotec_thermostat_kuchnia
+    entity_id: climate.aeotec_zwa021_thermostat_023
     data:
       preset_mode: Full power
   - delay: 00:00:15
   - service: climate.turn_off
-    entity_id: climate.aeotec_thermostat_kuchnia
+    entity_id: climate.aeotec_zwa021_thermostat_023
   - delay: 00:00:15
   - service: climate.turn_on
-    entity_id: climate.aeotec_thermostat_kuchnia
+    entity_id: climate.aeotec_zwa021_thermostat_023
 - id: heating_day
   alias: Heating Day
   description: przełącz na ogrzewanie dzienne
@@ -1079,9 +1079,6 @@
     - input_boolean.away_mode
     state: 'on'
   - condition: state
-    entity_id: script.heating_fast_warm_up
-    state: 'off'
-  - condition: state
     entity_id: binary_sensor.windows
     state: 'off'
   action:
@@ -1096,53 +1093,6 @@
     default:
     - service: script.heating_night
       data: {}
-- id: heating_heating_fast_warm_up_before_return_to_home
-  alias: Heating Fast Warm Up Before Return To Home
-  description: włącz szybkie dogrzanie przed powrotem domowników do domu
-  trigger:
-  - platform: state
-    entity_id:
-    - person.edyta
-    - person.maciek
-  condition:
-  - '{{ state_attr(trigger.entity_id, ''latitude'') != None }}'
-  - '{{ state_attr(trigger.entity_id, ''longitude'') != None }}'
-  - condition: state
-    entity_id:
-    - input_boolean.edyta_far_from_home
-    - input_boolean.maciek_far_from_home
-    - input_boolean.heating_season
-    state: 'on'
-  - condition: state
-    entity_id: input_boolean.away_mode
-    state: 'on'
-    for:
-      hours: 10
-  - condition: state
-    entity_id:
-    - script.heating_fast_warm_up
-    - binary_sensor.windows
-    state: 'off'
-  action:
-  - condition: '{{ distance(trigger.entity_id, ''zone.home'') < 60 }}'
-  - service: script.heating_fast_warm_up
-    data: {}
-  - service: input_boolean.turn_off
-    target:
-      entity_id:
-      - input_boolean.edyta_far_from_home
-      - input_boolean.maciek_far_from_home
-  - service: python_script.notify
-    data:
-      title: Włączono szybkie dogrzanie
-      message: Włączono szybie dogrzanie pomieszczeń po długiej nieobecności domowników.
-      tag: notification-fast-warm-up
-      group: heating
-      services:
-      - service: notify.mobile_app_iphone_13
-        type: ios
-      - service: notify.mobile_app_iphone_12
-        type: ios
 - id: windows_opened
   alias: Windows Opened
   description: włącz przewietrzanie i wyłącz oczyszczacz jak otwarte okna
@@ -1315,8 +1265,15 @@
   - service: climate.turn_on
     target:
       entity_id:
-      - climate.aeotec_thermostat_kuchnia
-      - climate.custom_thermostat_lazienka
+      - climate.aeotec_zwa021_thermostat_023
+      - climate.thermostat_antek
+      - climate.thermostat_gabinet
+      - climate.thermostat_lazienka
+      - climate.thermostat_lazienka
+      - climate.thermostat_pracownia
+      - climate.thermostat_salon
+      - climate.thermostat_sypialnia
+    data: {}
   - choose:
     - conditions:
       - condition: state
@@ -2520,6 +2477,9 @@
   trigger:
   - platform: mqtt
     topic: shellies/announce
+  condition:
+  - condition: template
+    value_template: '{{ trigger.payload_json.gen is not defined }}'
   action:
   - service: python_script.shellies_discovery
     data:
@@ -2571,6 +2531,8 @@
         device_name: Shelly Vintage [D10472]
       shellytrv-84FD2772A544:
         device_name: Shelly Valve [72A544]
+        default_heating_temperature: '{{ states(''input_number.temperature_day'')
+          | int(20) }}'
       shellyplug-s-7AECF4:
         device_name: Shelly Plug S [7AECF4]
       shellymotion2-84FD2772A6A4:

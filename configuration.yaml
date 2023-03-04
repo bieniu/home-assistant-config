@@ -2,19 +2,7 @@ automation: !include automations.yaml
 
 binary_sensor: !include binary_sensors.yaml
 
-climate:
-  - platform: generic_thermostat
-    name: "Custom Thermostat Lazienka"
-    unique_id: thermostat_lazienka
-    heater: switch.heater_lazienka
-    target_sensor: sensor.temperature_lazienka
-    min_temp: 4
-    max_temp: 28
-    min_cycle_duration:
-      minutes: 10
-    initial_hvac_mode: "heat"
-    away_temp: 16
-    precision: 0.5
+climate: !include climate.yaml
 
 default_config:
 
@@ -67,8 +55,6 @@ lovelace:
       type: module
     - url: /hacsfiles/mini-media-player/mini-media-player-bundle.js
       type: module
-    - url: /hacsfiles/bom-weather-card/bom-weather-card.js
-      type: module
     - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
       type: module
     - url: /hacsfiles/home-assistant-sun-card/home-assistant-sun-card.js
@@ -76,6 +62,8 @@ lovelace:
     - url: /hacsfiles/tv-card/tv-card.js
       type: module
     - url: /hacsfiles/lovelace-mushroom/mushroom.js
+      type: module
+    - url: /hacsfiles/clock-weather-card/clock-weather-card.js
       type: module
 
 python_script:
@@ -102,3 +90,16 @@ panel_custom:
     require_admin: true
     config:
       ingress: core_configurator
+
+weather:
+  - platform: template
+    name: "Home"
+    unique_id: "home"
+    condition_template: "{{ states('weather.openweathermap') }}"
+    temperature_template: "{{ states('sensor.temperature_outdoor') | float }}"
+    humidity_template: "{{ states('sensor.humidity_outdoor') | float }}"
+    pressure_template: "{{ states('sensor.pressure_outdoor', rounded=True) | float }}"
+    wind_speed_template: "{{ state_attr('weather.openweathermap', 'wind_speed') }}"
+    wind_bearing_template: "{{ state_attr('weather.openweathermap', 'wind_bearing') }}"
+    visibility_template: "{{ state_attr('weather.openweathermap', 'visibility') }}"
+    forecast_template: "{{ state_attr('weather.openweathermap', 'forecast') }}"

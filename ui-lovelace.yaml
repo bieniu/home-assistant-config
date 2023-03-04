@@ -52,10 +52,7 @@ views:
                 secondary_info:
                   - pressure
                 custom:
-                  - temp: sensor.temperature_outdoor
-                  - humidity: sensor.humidity_outdoor
-                  - pressure: sensor.pressure_outdoor
-                  - precipitation_probability: sensor.dark_sky_precip_probability
+                  - precipitation_probability: sensor.home_forecast_precipitation_probability
           - type: glance
             <<: *card-header-no-padding-bottom
             title: "Samochód"
@@ -124,7 +121,7 @@ views:
                       - entity: input_boolean.heating_season
                         state_not: "off"
                     row:
-                      entity: climate.aeotec_thermostat_kuchnia
+                      entity: climate.aeotec_zwa021_thermostat_023
                   - entity: sensor.dishwasher_kuchnia
                     card_mod:
                       style: |
@@ -355,21 +352,21 @@ views:
                       type: "service"
                       id: media_player.play_media
                       data:
-                        entity_id: media_player.echo_dot_sypialnia
+                        entity_id: media_player.echo_dot_pracownia
                         media_content_type: "TUNEIN"
                         media_content_id: "RMF FM"
                     - name: "MUZO FM"
                       type: "service"
                       id: media_player.play_media
                       data:
-                        entity_id: media_player.echo_dot_sypialnia
+                        entity_id: media_player.echo_dot_pracownia
                         media_content_type: "TUNEIN"
                         media_content_id: "MUZO FM"
                     - name: "Radio ZET"
                       type: "service"
                       id: media_player.play_media
                       data:
-                        entity_id: media_player.echo_dot_sypialnia
+                        entity_id: media_player.echo_dot_pracownia
                         media_content_type: "TUNEIN"
                         media_content_id: "Radio ZET"
       - type: vertical-stack
@@ -423,7 +420,7 @@ views:
                   - entity: input_boolean.heating_season
                     state_not: "off"
                 row:
-                  entity: climate.thermostat_antresola
+                  entity: climate.shelly_valve_72a544
               - light.leds_schody
               - light.scone_schody
               - light.gateway_antresola
@@ -673,7 +670,7 @@ views:
                   - entity: input_boolean.heating_season
                     state_not: "off"
                 row:
-                  entity: climate.custom_thermostat_lazienka
+                  entity: climate.thermostat_lazienka
               - light.ceiling_lazienka
       - type: picture-glance
         title: "Salon"
@@ -1184,21 +1181,21 @@ views:
         title: "Baterie termostatów"
         state_color: true
         entities:
-          - entity: sensor.battery_thermostat_salon
+          - entity: sensor.danfoss_014g0013_thermostat_002_battery
             name: salon
           - entity: sensor.aeotec_zwa021_thermostat_023_battery
             name: kuchnia
           - entity: sensor.shelly_valve_72a544_battery
             name: antresola
-          - entity: sensor.battery_thermostat_gabinet
+          - entity: sensor.danfoss_014g0013_thermostat_015_battery
             name: gabinet
-          - entity: sensor.battery_thermostat_antek
+          - entity: sensor.danfoss_014g0013_thermostat_003_battery
             name: pokój Antka
-          - entity: sensor.battery_thermostat_sypialnia
+          - entity: sensor.danfoss_014g0013_thermostat_004_battery
             name: sypialnia
-          - entity: sensor.battery_thermostat_lazienka
+          - entity: sensor.danfoss_014g0013_thermostat_014_battery
             name: łazienka
-          - entity: sensor.battery_thermostat_pracownia
+          - entity: sensor.danfoss_014g0013_thermostat_012_battery
             name: pracownia
       - type: entities
         title: "Baterie sensorów okien/drzwi"
@@ -1245,65 +1242,12 @@ views:
     cards:
       - type: vertical-stack
         cards:
-          - type: custom:bom-weather-card
-            entity_sun: sun.sun
-            entity_daily_summary: sensor.dark_sky_daily_summary
-            entity_current_conditions: sensor.dark_sky_icon
-            entity_humidity: sensor.humidity_outdoor
-            entity_pressure: sensor.pressure_outdoor
-            entity_temperature: sensor.temperature_outdoor
-            entity_apparent_temp: sensor.realfeel_temperature_home
-            entity_wind_bearing: sensor.dark_sky_wind_bearing
-            entity_wind_speed: sensor.dark_sky_wind_speed
-            entity_pop: sensor.dark_sky_precip_probability
-            entity_pop_intensity: sensor.precipitation_home
-            entity_forecast_high_temp_1: sensor.dark_sky_daytime_high_temperature_1d
-            entity_forecast_high_temp_2: sensor.dark_sky_daytime_high_temperature_2d
-            entity_forecast_high_temp_3: sensor.dark_sky_daytime_high_temperature_3d
-            entity_forecast_high_temp_4: sensor.dark_sky_daytime_high_temperature_4d
-            entity_forecast_high_temp_5: sensor.dark_sky_daytime_high_temperature_5d
-            entity_forecast_low_temp_1: sensor.dark_sky_overnight_low_temperature_1d
-            entity_forecast_low_temp_2: sensor.dark_sky_overnight_low_temperature_2d
-            entity_forecast_low_temp_3: sensor.dark_sky_overnight_low_temperature_3d
-            entity_forecast_low_temp_4: sensor.dark_sky_overnight_low_temperature_4d
-            entity_forecast_low_temp_5: sensor.dark_sky_overnight_low_temperature_5d
-            entity_forecast_icon_1: sensor.dark_sky_icon_1d
-            entity_forecast_icon_2: sensor.dark_sky_icon_2d
-            entity_forecast_icon_3: sensor.dark_sky_icon_3d
-            entity_forecast_icon_4: sensor.dark_sky_icon_4d
-            entity_forecast_icon_5: sensor.dark_sky_icon_5d
-            entity_summary_1: sensor.dark_sky_summary_1d
-            entity_summary_2: sensor.dark_sky_summary_2d
-            entity_summary_3: sensor.dark_sky_summary_3d
-            entity_summary_4: sensor.dark_sky_summary_4d
-            entity_summary_5: sensor.dark_sky_summary_5d
-            entity_pop_1: sensor.dark_sky_precip_probability_1d
-            entity_pop_2: sensor.dark_sky_precip_probability_2d
-            entity_pop_3: sensor.dark_sky_precip_probability_3d
-            entity_pop_4: sensor.dark_sky_precip_probability_4d
-            entity_pop_5: sensor.dark_sky_precip_probability_5d
-            current_data_top_margin: 7em
-            time_format: 24
-            locale: pl
-            tooltips: true
-            tooltip_width: 100
-            tooltip_bg_color: "#FAFAFA"
-            tooltip_fg_color: "#212121"
-            tooltip_border_color: "#D9D9D9"
-            tooltip_left_offset: -14
-            slot_l1: "wind"
-            slot_l2: "pop"
-            slot_l3: "remove"
-            slot_l4: "remove"
-            slot_l5: "remove"
-            slot_r1: "humidity"
-            slot_r2: "pressure"
-            slot_r3: "remove"
-            slot_r4: "remove"
-            slot_r5: "remove"
-            old_icon: "true"
-            show_decimals: true
-            use_old_column_format: true
+          - type: weather-forecast
+            name: " "
+            show_current: true
+            show_forecast: true
+            entity: weather.home
+            secondary_info_attribute: pressure
           - type: custom:sun-card
           - type: iframe
             url: https://embed.windy.com/embed2.html?lat=52.101&lon=19.948&zoom=11&location=coordinates&metricWind=m%2Fs
@@ -1438,7 +1382,7 @@ views:
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - sensor.uv_index_home
+              - sensor.home_uv_index
             line_color: "#ffce57"
             decimals: 0
       # - type: custom:auto-entities
@@ -1465,8 +1409,6 @@ views:
             show_header_toggle: false
             entities:
               - input_boolean.heating_season
-              - entity: script.heating_fast_warm_up
-                name: "Szybkie dogrzanie"
               - input_boolean.heating_airing
               - input_boolean.away_mode
               - input_boolean.guests

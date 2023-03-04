@@ -12,17 +12,83 @@
 - platform: template
   switches:
     heater_lazienka:
-      value_template: "{{ is_state_attr('climate.thermostat_lazienka', 'temperature', 28) }}"
+      unique_id: "heater_lazienka"
+      value_template: "{{ is_state_attr('climate.danfoss_014g0013_thermostat_014', 'temperature', 28) }}"
       turn_on:
         service: climate.set_temperature
-        entity_id: climate.thermostat_lazienka
+        entity_id: climate.danfoss_014g0013_thermostat_014
         data:
           temperature: 28
       turn_off:
         service: climate.set_temperature
-        entity_id: climate.thermostat_lazienka
+        entity_id: climate.danfoss_014g0013_thermostat_014
         data:
-          temperature: 4
+          temperature: 7
+    heater_gabinet:
+      unique_id: "heater_gabinet"
+      value_template: "{{ is_state_attr('climate.danfoss_014g0013_thermostat_015', 'temperature', 28) }}"
+      turn_on:
+        service: climate.set_temperature
+        entity_id: climate.danfoss_014g0013_thermostat_015
+        data:
+          temperature: 28
+      turn_off:
+        service: climate.set_temperature
+        entity_id: climate.danfoss_014g0013_thermostat_015
+        data:
+          temperature: 7
+    heater_antek:
+      unique_id: "heater_antek"
+      value_template: "{{ is_state_attr('climate.danfoss_014g0013_thermostat_003', 'temperature', 28) }}"
+      turn_on:
+        service: climate.set_temperature
+        entity_id: climate.danfoss_014g0013_thermostat_003
+        data:
+          temperature: 28
+      turn_off:
+        service: climate.set_temperature
+        entity_id: climate.danfoss_014g0013_thermostat_003
+        data:
+          temperature: 7
+    heater_salon:
+      unique_id: "heater_salon"
+      value_template: "{{ is_state_attr('climate.danfoss_014g0013_thermostat_002', 'temperature', 28) }}"
+      turn_on:
+        service: climate.set_temperature
+        entity_id: climate.danfoss_014g0013_thermostat_002
+        data:
+          temperature: 28
+      turn_off:
+        service: climate.set_temperature
+        entity_id: climate.danfoss_014g0013_thermostat_002
+        data:
+          temperature: 7
+    heater_sypialnia:
+      unique_id: "heater_sypialnia"
+      value_template: "{{ is_state_attr('climate.danfoss_014g0013_thermostat_004', 'temperature', 28) }}"
+      turn_on:
+        service: climate.set_temperature
+        entity_id: climate.danfoss_014g0013_thermostat_004
+        data:
+          temperature: 28
+      turn_off:
+        service: climate.set_temperature
+        entity_id: climate.danfoss_014g0013_thermostat_004
+        data:
+          temperature: 7
+    heater_pracownia:
+      unique_id: "heater_pracownia"
+      value_template: "{{ is_state_attr('climate.danfoss_014g0013_thermostat_012', 'temperature', 28) }}"
+      turn_on:
+        service: climate.set_temperature
+        entity_id: climate.danfoss_014g0013_thermostat_012
+        data:
+          temperature: 28
+      turn_off:
+        service: climate.set_temperature
+        entity_id: climate.danfoss_014g0013_thermostat_012
+        data:
+          temperature: 7
 
     camera_move_up:
       friendly_name: "w górę"

@@ -34,44 +34,20 @@ devices_away_mode:
   mode: single
   alias: 'Devices: away mode'
   icon: mdi:home-export-outline
-heating_fast_warm_up:
-  alias: 'Heating: fast warm up'
-  sequence:
-  - condition: state
-    entity_id: input_boolean.heating_season
-    state: 'on'
-  - service: climate.set_temperature
-    target:
-      entity_id:
-      - climate.thermostat_antresola
-      - climate.thermostat_gabinet
-      - climate.thermostat_antek
-      - climate.thermostat_sypialnia
-      - climate.aeotec_thermostat_kuchnia
-      - climate.thermostat_salon
-      - climate.custom_thermostat_lazienka
-      - climate.thermostat_pracownia
-    data:
-      temperature: 24
-  - delay: 01:00:00
-  - service: script.heating_day
-    data: {}
-  mode: single
-  icon: mdi:clock-fast
 heating_day:
   sequence:
   - service: script.humidification_start
     data: {}
   - service: climate.set_temperature
     target:
-      entity_id: climate.custom_thermostat_lazienka
+      entity_id: climate.thermostat_lazienka
     data:
       temperature: '{{ states(''input_number.bathroom_temperature_day'') }}'
   - service: climate.set_temperature
     target:
       entity_id:
-      - climate.thermostat_antresola
-      - climate.aeotec_thermostat_kuchnia
+      - climate.shelly_valve_72a544
+      - climate.aeotec_zwa021_thermostat_023
       - climate.thermostat_salon
       - climate.thermostat_gabinet
       - climate.thermostat_pracownia
@@ -94,7 +70,7 @@ heating_night:
   - service: climate.set_temperature
     target:
       entity_id:
-      - climate.thermostat_antresola
+      - climate.shelly_valve_72a544
       - climate.thermostat_gabinet
       - climate.thermostat_pracownia
     data:
@@ -108,7 +84,7 @@ heating_night:
       temperature: '{{ states(''input_number.bedroom_temperature_night'') }}'
   - service: climate.set_temperature
     target:
-      entity_id: climate.custom_thermostat_lazienka
+      entity_id: climate.thermostat_lazienka
     data:
       temperature: '{{ states(''input_number.bathroom_temperature_night'') }}'
   - condition: state
@@ -117,7 +93,7 @@ heating_night:
   - service: climate.set_temperature
     target:
       entity_id:
-      - climate.aeotec_thermostat_kuchnia
+      - climate.aeotec_zwa021_thermostat_023
       - climate.thermostat_salon
     data:
       temperature: '{{ states(''input_number.temperature_night'') }}'
@@ -129,13 +105,13 @@ heating_away_mode:
   - service: climate.set_temperature
     target:
       entity_id:
-      - climate.thermostat_antresola
+      - climate.shelly_valve_72a544
       - climate.thermostat_gabinet
-      - climate.aeotec_thermostat_kuchnia
+      - climate.aeotec_zwa021_thermostat_023
       - climate.thermostat_salon
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
-      - climate.custom_thermostat_lazienka
+      - climate.thermostat_lazienka
       - climate.thermostat_pracownia
     data:
       temperature: '{{ states(''input_number.temperature_away'') }}'
@@ -150,23 +126,18 @@ heating_away_mode:
   icon: mdi:radiator
 heating_season_end:
   sequence:
-  - service: climate.set_temperature
-    target:
-      entity_id:
-      - climate.thermostat_antresola
-      - climate.thermostat_gabinet
-      - climate.thermostat_salon
-      - climate.thermostat_antek
-      - climate.thermostat_sypialnia
-      - climate.custom_thermostat_lazienka
-      - climate.thermostat_pracownia
-    data:
-      temperature: 4
   - service: climate.turn_off
     target:
       entity_id:
-      - climate.custom_thermostat_lazienka
-      - climate.aeotec_thermostat_kuchnia
+      - climate.aeotec_zwa021_thermostat_023
+      - climate.shelly_valve_72a544
+      - climate.thermostat_antek
+      - climate.thermostat_gabinet
+      - climate.thermostat_lazienka
+      - climate.thermostat_lazienka
+      - climate.thermostat_pracownia
+      - climate.thermostat_salon
+      - climate.thermostat_sypialnia
     data: {}
   - service: humidifier.turn_off
     data: {}
@@ -182,13 +153,13 @@ heating_airing_begin:
   - service: climate.set_temperature
     target:
       entity_id:
-      - climate.thermostat_antresola
+      - climate.shelly_valve_72a544
       - climate.thermostat_gabinet
       - climate.thermostat_salon
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
-      - climate.custom_thermostat_lazienka
-      - climate.aeotec_thermostat_kuchnia
+      - climate.thermostat_lazienka
+      - climate.aeotec_zwa021_thermostat_023
       - climate.thermostat_pracownia
     data:
       temperature: 8

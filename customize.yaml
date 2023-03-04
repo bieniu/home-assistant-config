@@ -150,7 +150,7 @@ switch.camera_move_left:
 switch.camera_move_right:
   icon: mdi:chevron-double-right
 
-sensor.uv_index_home:
+sensor.home_uv_index:
   unit_of_measurement: " "
 
 sensor.hacs:
@@ -158,9 +158,6 @@ sensor.hacs:
 
 zone.home:
   radius: 50
-
-sensor.dark_sky_wind_speed:
-  friendly_name: "Prędkość wiatru"
 
 sensor.minecraft_server_players_online:
   unit_of_measurement: " "
