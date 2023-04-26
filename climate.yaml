@@ -7,8 +7,9 @@
   max_temp: 28
   min_cycle_duration:
     minutes: 10
-  initial_hvac_mode: "heat"
   precision: 0.5
+  hot_tolerance: 0.2
+
 - platform: generic_thermostat
   name: "Thermostat Gabinet"
   unique_id: thermostat_gabinet
@@ -18,8 +19,9 @@
   max_temp: 28
   min_cycle_duration:
     minutes: 10
-  initial_hvac_mode: "heat"
   precision: 0.5
+  hot_tolerance: 0.2
+
 - platform: generic_thermostat
   name: "Thermostat Antek"
   unique_id: thermostat_antek
@@ -29,8 +31,9 @@
   max_temp: 28
   min_cycle_duration:
     minutes: 10
-  initial_hvac_mode: "heat"
   precision: 0.5
+  hot_tolerance: 0.2
+
 - platform: generic_thermostat
   name: "Thermostat Salon"
   unique_id: thermostat_salon
@@ -40,8 +43,9 @@
   max_temp: 28
   min_cycle_duration:
     minutes: 10
-  initial_hvac_mode: "heat"
   precision: 0.5
+  hot_tolerance: 0.2
+
 - platform: generic_thermostat
   name: "Thermostat Sypialnia"
   unique_id: thermostat_sypialnia
@@ -51,8 +55,9 @@
   max_temp: 28
   min_cycle_duration:
     minutes: 10
-  initial_hvac_mode: "heat"
   precision: 0.5
+  hot_tolerance: 0.2
+
 - platform: generic_thermostat
   name: "Thermostat Pracownia"
   unique_id: thermostat_pracownia
@@ -62,5 +67,17 @@
   max_temp: 28
   min_cycle_duration:
     minutes: 10
-  initial_hvac_mode: "heat"
   precision: 0.5
+  hot_tolerance: 0.2
+
+- platform: generic_thermostat
+  name: "Thermostat Kuchnia"
+  unique_id: thermostat_kuchnia
+  heater: switch.heater_kuchnia
+  target_sensor: sensor.temperature_kuchnia
+  min_temp: 4
+  max_temp: 28
+  min_cycle_duration:
+    minutes: 10
+  precision: 0.5
+  hot_tolerance: 0.2

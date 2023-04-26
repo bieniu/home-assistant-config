@@ -3,4 +3,4 @@ logs:
   slixmpp.stringprep: error
   androidtv.adb_manager.adb_manager_async: error
   homeassistant.components.androidtv.media_player: error
-  # homeassistant.components.bluetooth: debug
+  homeassistant.components.bluetooth: debug

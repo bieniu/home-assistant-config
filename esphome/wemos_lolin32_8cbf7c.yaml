@@ -94,3 +94,6 @@ sensor:
     update_interval: 300s
     device_class: "signal_strength"
     entity_category: "diagnostic"
+
+  - platform: internal_temperature
+    name: "Device Temperature"

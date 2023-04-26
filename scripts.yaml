@@ -38,6 +38,17 @@ heating_day:
   sequence:
   - service: script.humidification_start
     data: {}
+  - service: climate.turn_on
+    data: {}
+    target:
+      entity_id:
+      - climate.thermostat_lazienka
+      - climate.thermostat_gabinet
+      - climate.thermostat_antek
+      - climate.thermostat_salon
+      - climate.thermostat_sypialnia
+      - climate.thermostat_kuchnia
+      - climate.thermostat_pracownia
   - service: climate.set_temperature
     target:
       entity_id: climate.thermostat_lazienka
@@ -47,10 +58,16 @@ heating_day:
     target:
       entity_id:
       - climate.shelly_valve_72a544
-      - climate.aeotec_zwa021_thermostat_023
+    data:
+      temperature: '{{ states(''input_number.temperature_day'') }}'
+  - service: climate.set_temperature
+    target:
+      entity_id:
+      - climate.thermostat_kuchnia
       - climate.thermostat_salon
       - climate.thermostat_gabinet
       - climate.thermostat_pracownia
+      - climate.shelly_valve_72a544
     data:
       temperature: '{{ states(''input_number.temperature_day'') }}'
   - service: climate.set_temperature
@@ -67,13 +84,25 @@ heating_night:
   sequence:
   - service: script.humidification_start
     data: {}
+  - service: climate.turn_on
+    data: {}
+    target:
+      entity_id:
+      - climate.thermostat_kuchnia
+      - climate.thermostat_pracownia
+      - climate.thermostat_sypialnia
+      - climate.thermostat_salon
+      - climate.thermostat_antek
+      - climate.thermostat_gabinet
+      - climate.thermostat_lazienka
   - service: climate.set_temperature
     target:
       entity_id:
-      - climate.shelly_valve_72a544
       - climate.thermostat_gabinet
       - climate.thermostat_pracownia
+      - climate.shelly_valve_72a544
     data:
+      hvac_mode: heat
       temperature: '{{ states(''input_number.temperature_night'') }}'
   - service: climate.set_temperature
     target:
@@ -81,11 +110,13 @@ heating_night:
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
     data:
+      hvac_mode: heat
       temperature: '{{ states(''input_number.bedroom_temperature_night'') }}'
   - service: climate.set_temperature
     target:
       entity_id: climate.thermostat_lazienka
     data:
+      hvac_mode: heat
       temperature: '{{ states(''input_number.bathroom_temperature_night'') }}'
   - condition: state
     entity_id: input_boolean.guests
@@ -93,9 +124,10 @@ heating_night:
   - service: climate.set_temperature
     target:
       entity_id:
-      - climate.aeotec_zwa021_thermostat_023
+      - climate.thermostat_kuchnia
       - climate.thermostat_salon
     data:
+      hvac_mode: heat
       temperature: '{{ states(''input_number.temperature_night'') }}'
   mode: single
   alias: 'Heating: night'
@@ -106,14 +138,20 @@ heating_away_mode:
     target:
       entity_id:
       - climate.shelly_valve_72a544
+    data:
+      temperature: '{{ states(''input_number.temperature_away'') }}'
+  - service: climate.set_temperature
+    target:
+      entity_id:
       - climate.thermostat_gabinet
-      - climate.aeotec_zwa021_thermostat_023
+      - climate.thermostat_kuchnia
       - climate.thermostat_salon
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
       - climate.thermostat_lazienka
       - climate.thermostat_pracownia
     data:
+      hvac_mode: heat
       temperature: '{{ states(''input_number.temperature_away'') }}'
   - service: humidifier.turn_off
     target:
@@ -129,11 +167,10 @@ heating_season_end:
   - service: climate.turn_off
     target:
       entity_id:
-      - climate.aeotec_zwa021_thermostat_023
       - climate.shelly_valve_72a544
       - climate.thermostat_antek
       - climate.thermostat_gabinet
-      - climate.thermostat_lazienka
+      - climate.thermostat_kuchnia
       - climate.thermostat_lazienka
       - climate.thermostat_pracownia
       - climate.thermostat_salon
@@ -150,7 +187,7 @@ heating_season_end:
   icon: mdi:radiator
 heating_airing_begin:
   sequence:
-  - service: climate.set_temperature
+  - service: climate.turn_off
     target:
       entity_id:
       - climate.shelly_valve_72a544
@@ -159,10 +196,8 @@ heating_airing_begin:
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
       - climate.thermostat_lazienka
-      - climate.aeotec_zwa021_thermostat_023
+      - climate.thermostat_kuchnia
       - climate.thermostat_pracownia
-    data:
-      temperature: 8
   - service: humidifier.turn_off
     target:
       entity_id:
@@ -243,6 +278,23 @@ alexa_goodnight:
 restart_wifi_devices:
   alias: Restart Wi-Fi Devices
   sequence:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.shelly_plus_1pm_948ff8_relay
+      - switch.ceiling_fan_and_bulbs_salon
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 5
+      milliseconds: 0
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id:
+      - switch.shelly_plus_1pm_948ff8_relay
+      - switch.ceiling_fan_and_bulbs_salon
   - service: button.press
     target:
       entity_id:

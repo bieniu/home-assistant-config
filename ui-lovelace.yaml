@@ -34,25 +34,18 @@ views:
                 - entity_id: person.karmel
           - type: vertical-stack
             in_card: true
-            title: "Pogoda"
+            title: Pogoda
             cards:
-              - type: custom:simple-weather-card
-                no_card: true
+              - type: weather-forecast
                 canary_style:
-                  margin-top: "-22px"
-                  border-style: none
+                  margin-top: "-7px"
+                name: ""
+                show_forecast: false
                 entity: weather.home
+                secondary_info_attribute: pressure
                 tap_action:
                   action: navigate
                   navigation_path: /lovelace/climate
-                name: " "
-                primary_info:
-                  - humidity
-                  - precipitation_probability
-                secondary_info:
-                  - pressure
-                custom:
-                  - precipitation_probability: sensor.home_forecast_precipitation_probability
           - type: glance
             <<: *card-header-no-padding-bottom
             title: "Samochód"
@@ -121,7 +114,7 @@ views:
                       - entity: input_boolean.heating_season
                         state_not: "off"
                     row:
-                      entity: climate.aeotec_zwa021_thermostat_023
+                      entity: climate.thermostat_kuchnia
                   - entity: sensor.dishwasher_kuchnia
                     card_mod:
                       style: |
@@ -415,6 +408,7 @@ views:
               - binary_sensor.windows_antresola
               - entity: binary_sensor.motion_antresola
                 secondary_info: last-changed
+              - binary_sensor.smoke_antresola
               - type: conditional
                 conditions:
                   - entity: input_boolean.heating_season
@@ -1039,6 +1033,7 @@ views:
           - binary_sensor.shelly_motion_2_72a6a4_status
           - binary_sensor.shelly_flood_f2ad1d_status
           - binary_sensor.shelly_gas_c6811c_status
+          - binary_sensor.shelly_plus_smoke_d12914_status
           - binary_sensor.wemos_d1_mini_1c91ea_status
           - binary_sensor.wemos_lolin32_8cbf7c_status
           - binary_sensor.nettigo_air_monitor_status
@@ -1177,6 +1172,12 @@ views:
             name: kuchnia
           - entity: sensor.aqara_water_leak_sensor_79b8e9_battery
             name: pralnia
+      - type: entities
+        title: "Baterie sensorów dymu"
+        state_color: true
+        entities:
+          - entity: sensor.shelly_plus_smoke_d12914_battery
+            name: antresola
       - type: entities
         title: "Baterie termostatów"
         state_color: true
@@ -1328,33 +1329,11 @@ views:
               - sensor.pressure_outdoor
             line_color: "#4bc0c0"
             decimals: 0
-      - type: vertical-stack
-        cards:
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - sensor.temperature_indoor
-            line_color: "#ef5350"
-            decimals: 1
-          - type: custom:mini-graph-card
-            <<: *CLIMATE_GRAPH_PARAMS
-            entities:
-              - sensor.humidity_indoor
-            line_color: "#36a2eb"
-            decimals: 1
-          - type: custom:mini-graph-card
-            <<: *CLIMATE_GRAPH_PARAMS
-            name: "Dwutlenek węgla"
-            entities:
-              - entity: sensor.co2_salon
-            line_color: "#8bc34a"
-            decimals: 0
-            icon: "mdi:molecule-co2"
-          - type: custom:mini-graph-card
-            <<: *CLIMATE_GRAPH_PARAMS
-            entities:
-              - entity: sensor.pm25_salon
-            line_color: "#78909c"
+              - sensor.home_uv_index
+            line_color: "#ffce57"
             decimals: 0
       - type: vertical-stack
         cards:
@@ -1382,8 +1361,35 @@ views:
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
-              - sensor.home_uv_index
-            line_color: "#ffce57"
+              - sensor.stan_rzeki_bzury
+            line_color: "#5C6BC0"
+      - type: vertical-stack
+        cards:
+          - type: custom:mini-graph-card
+            <<: *CLIMATE_GRAPH_PARAMS
+            entities:
+              - sensor.temperature_indoor
+            line_color: "#ef5350"
+            decimals: 1
+          - type: custom:mini-graph-card
+            <<: *CLIMATE_GRAPH_PARAMS
+            entities:
+              - sensor.humidity_indoor
+            line_color: "#36a2eb"
+            decimals: 1
+          - type: custom:mini-graph-card
+            <<: *CLIMATE_GRAPH_PARAMS
+            name: "Dwutlenek węgla"
+            entities:
+              - entity: sensor.co2_salon
+            line_color: "#8bc34a"
+            decimals: 0
+            icon: "mdi:molecule-co2"
+          - type: custom:mini-graph-card
+            <<: *CLIMATE_GRAPH_PARAMS
+            entities:
+              - entity: sensor.pm25_salon
+            line_color: "#78909c"
             decimals: 0
       # - type: custom:auto-entities
       #   card:

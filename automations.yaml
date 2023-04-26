@@ -806,8 +806,9 @@
   - condition: template
     value_template: "{% macro battery_level() %}\n  {% for item in states['sensor']
       if item.attributes.device_class == 'battery' and item.attributes.unit_of_measurement
-      == '%' and item.state | int(0) < threshold %}\n    {{ item.entity_id }}\n  {%
-      endfor %}\n{% endmacro %} {{ battery_level() | trim != '' }}\n"
+      == '%' and item.state != \"unavailable\" and item.state | int(-1) < threshold
+      %}\n    {{ item.entity_id }}\n  {% endfor %}\n{% endmacro %} {{ battery_level()
+      | trim != '' }}\n"
   action:
   - service: python_script.notify
     data:
@@ -816,8 +817,9 @@
         == 'battery' and item.attributes.unit_of_measurement == '%' and item.state
         | int(0) < threshold %}\n - {{ device_attr(item.entity_id, 'name_by_user')
         }}{% if area_name(item.entity_id) %}, {{ area_name(item.entity_id) }}{% endif
-        %} [{{ item.state | round(0, 'unknown') }}%]{% endfor %}{% endmacro %}W następujących
-        urządzeniach jest niski poziom naładowania baterii: {{ battery_level() }}"
+        %} [{{ item.state | round(0, default='unknown') }}%]{% endfor %}{% endmacro
+        %}W następujących urządzeniach jest niski poziom naładowania baterii: {{ battery_level()
+        }}"
       tag: notification-low-battery
       group: other
       services:
@@ -1262,18 +1264,6 @@
     from: 'off'
     to: 'on'
   action:
-  - service: climate.turn_on
-    target:
-      entity_id:
-      - climate.aeotec_zwa021_thermostat_023
-      - climate.thermostat_antek
-      - climate.thermostat_gabinet
-      - climate.thermostat_lazienka
-      - climate.thermostat_lazienka
-      - climate.thermostat_pracownia
-      - climate.thermostat_salon
-      - climate.thermostat_sypialnia
-    data: {}
   - choose:
     - conditions:
       - condition: state
@@ -2561,26 +2551,25 @@
           topic: '{{ repeat.item }}/rpc'
           payload: '{{ device_info_payload }}'
   variables:
-    device_info_payload: '{{ {''id'': 1, ''src'':''shellies_discovery'', ''method'':''Shelly.GetConfig''}
-      | to_json }}'
+    device_info_payload: '{{ {''id'': 1, ''src'':''shellies-gen2/shellies-discovery'',
+      ''method'':''Shelly.GetConfig''} | to_json }}'
     device_ids:
-    - shellyplus1pm-a8032ab22864
-    - shellyplus1pm-441793948ff8
-    - shellyplusht-30839809e018
-    - shellyplusht-7c87ce6b3e3c
-    - shellypro1pm-30c6f780e0c0
+    - shellies-gen2/shelly-plus-ht-09e018
+    - shellies-gen2/shelly-plus-ht-6b3e3c
+    - shellies-gen2/shelly-plus-smoke-d12914
 - id: shellies_discovery_gen2
   alias: Shellies Discovery Gen2
   mode: queued
   max: 999
   trigger:
   - platform: mqtt
-    topic: shellies_discovery/rpc
+    topic: shellies-gen2/shellies-discovery/rpc
   action:
   - service: python_script.shellies_discovery_gen2
     data:
       id: '{{ trigger.payload_json.src }}'
       device_config: '{{ trigger.payload_json.result }}'
+      script_prefix: shellies-gen2
 - id: hassio_backup
   alias: Hassio Backup
   description: wykonaj hassio backup
@@ -2929,11 +2918,10 @@
   description: ''
   trigger:
   - platform: device
-    domain: mqtt
     device_id: 84783955a9dda947e7b647309a6b15f9
-    type: button_short_press
-    subtype: button_1
-    discovery_id: shellyplus1pm-441793948ff8-input-0 single_push
+    domain: shelly
+    type: single_push
+    subtype: button1
   condition: []
   action:
   - service: light.toggle
@@ -2946,11 +2934,10 @@
   description: ''
   trigger:
   - platform: device
-    domain: mqtt
     device_id: 84783955a9dda947e7b647309a6b15f9
-    type: button_long_press
-    subtype: button_1
-    discovery_id: shellyplus1pm-441793948ff8-input-0 long_push
+    domain: shelly
+    type: long_push
+    subtype: button1
   condition: []
   action:
   - service: light.toggle
@@ -3026,3 +3013,71 @@
         type: ios
       - service: notify.mobile_app_iphone_12
         type: ios
+- id: '1678536051718'
+  alias: Notification Smoke Antresola
+  description: powiadom o dymie na antresoli
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.smoke_antresola
+    from: 'off'
+    to: 'on'
+  action:
+  - service: python_script.notify
+    data:
+      title: Dym
+      message: Uwaga! Wykryto dym na antresoli!
+      tag: notification-smoke
+      priority: high
+      group: smoke
+      services:
+      - service: notify.mobile_app_iphone_13
+        type: ios
+      - service: notify.mobile_app_iphone_12
+        type: ios
+      - service: notify.mobile_app_iphone_11
+        type: ios
+- id: '1678536227339'
+  alias: Shelly Gas Self Test
+  description: uruchomienie auto testu Shelly Gas
+  trigger:
+  - platform: time
+    at: 03:00:00
+  condition:
+  - condition: time
+    weekday:
+    - sun
+  action:
+  - device_id: 07ee2d658bd1fbdce765f6707e48f76d
+    domain: button
+    entity_id: button.shelly_gas_c6811c_self_test
+    type: press
+  mode: single
+- id: '1679942943336'
+  alias: Shelly Smoke Helper
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - service: mqtt.publish
+    data:
+      topic: shellies-gen2/shelly-plus-smoke-d12914/status/smoke:0
+      payload: '{{ {"alarm": False} | to_json }}'
+  mode: single
+- id: '1682413050614'
+  alias: Light Sypialnia Toggle Lamp
+  description: włącz/wyłącz lampkę w sypialni
+  trigger:
+  - platform: device
+    device_id: 9c1d6b506fc5c2b66d70325621df177f
+    domain: bthome
+    type: button
+    subtype: press
+  condition: []
+  action:
+  - type: toggle
+    device_id: 0614f4b07155c115d1e506fffeed1acf
+    entity_id: light.table_lamp_sypialnia
+    domain: light
+  mode: single

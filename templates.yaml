@@ -1,25 +1,36 @@
 - sensor:
+    - name: temperature_outdoor_rounded
+      unique_id: "temperature_outdoor_rounded"
+      state: "{{ states('sensor.temperature_outdoor') | float | round }}"
+      availability: "{{ states('sensor.temperature_outdoor') != ('unavailable' or 'unknown') }}"
+      device_class: temperature
+      unit_of_measurement: "°C"
+
+    - name: humidity_outdoor_rounded
+      unique_id: "humidity_outdoor_rounded"
+      state: "{{ states('sensor.humidity_outdoor') | float | round }}"
+      availability: "{{ states('sensor.humidity_outdoor') != ('unavailable' or 'unknown') }}"
+      device_class: humidity
+      unit_of_measurement: "%"
+
+    - name: pressure_outdoor_rounded
+      unique_id: "pressure_outdoor_rounded"
+      state: "{{ states('sensor.pressure_outdoor') | float | round }}"
+      availability: "{{ states('sensor.pressure_outdoor') != ('unavailable' or 'unknown') }}"
+      device_class: pressure
+      unit_of_measurement: "hPa"
+
     - name: dishwasher_kuchnia
       unique_id: "dishwasher_kuchnia"
       icon: "mdi:dishwasher"
       availability: "{{ states('sensor.power_dishwasher_kuchnia') != ('unavailable' or 'unknown') }}"
-      state: >-
-        {% if states('sensor.power_dishwasher_kuchnia') | int > 1 %}
-          zmywanie
-        {% else %}
-          wyłączona
-        {% endif %}
+      state: "{{ 'zmywanie' if states('sensor.power_dishwasher_kuchnia') | int(0) > 1 else 'wyłączona' }}"
 
     - name: washing_machine_pralnia
       unique_id: "washing_machine_pralnia"
       icon: "mdi:washing-machine"
       availability: "{{ states('sensor.power_washing_machine_pralnia') != ('unavailable' or 'unknown') }}"
-      state: >-
-        {% if states('sensor.power_washing_machine_pralnia') | int > 1 %}
-          pranie
-        {% else %}
-          wyłączona
-        {% endif %}
+      state: "{{ 'pranie' if states('sensor.power_washing_machine_pralnia') | int(0) > 1 else 'wyłączona' }}"
 
     - name: air_quality_info_outdoor
       unique_id: "air_quality_info_outdoor"
@@ -78,7 +89,7 @@
       state: >-
         {% if is_state('sensor.cyberpower_dl650elcd_status_data', 'OL') %}
           zasilanie sieciowe
-        {% elif is_state('sensor.cyberpower_dl650elcd_status_data', 'OL CHRG') or is_state('sensor.cyberpower_dl650elcd_status_data', 'OL CHRG LB')%}
+        {% elif states('sensor.cyberpower_dl650elcd_status_data') in ('OL CHRG', 'OL CHRG LB') %}
           ładowanie baterii
         {% elif is_state('sensor.cyberpower_dl650elcd_status_data', 'OL DISCHRG') %}
           zasilanie bateryjne
@@ -86,7 +97,7 @@
           zasilanie bateryjne
         {% elif is_state('sensor.cyberpower_dl650elcd_status_data', 'LB') %}
           słaba bateria
-        {% elif is_state('sensor.cyberpower_dl650elcd_status_data', 'SD') or is_state('sensor.cyberpower_dl650elcd_status_data', 'FSD OB DISCHRG') %}
+        {% elif states('sensor.cyberpower_dl650elcd_status_data') in ('SD', 'FSD OB DISCHRG') %}
           wyłączanie
         {% else %}
           {{ states('sensor.cyberpower_dl650elcd_status_data') }}
@@ -316,6 +327,10 @@
     - name: shelly_gas_c6811c_status
       unique_id: "shelly_gas_c6811c_status"
       state: "{{ is_state('device_tracker.shelly_gas_c6811c', 'home') }}"
+
+    - name: shelly_plus_smoke_d12914_status
+      unique_id: "shelly_plus_smoke_d12914_status"
+      state: "{{ is_state('device_tracker.shelly_plus_smoke_d12914', 'home') }}"
 
     - name: shelly_valve_2a544_status
       unique_id: "shelly_valve_2a544_status"

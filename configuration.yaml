@@ -49,8 +49,6 @@ logger: !include logger.yaml
 lovelace:
   mode: yaml
   resources:
-    - url: /hacsfiles/simple-weather-card/simple-weather-card-bundle.js
-      type: module
     - url: /hacsfiles/lovelace-auto-entities/auto-entities.js
       type: module
     - url: /hacsfiles/mini-media-player/mini-media-player-bundle.js
@@ -63,7 +61,9 @@ lovelace:
       type: module
     - url: /hacsfiles/lovelace-mushroom/mushroom.js
       type: module
-    - url: /hacsfiles/clock-weather-card/clock-weather-card.js
+    - url: /hacsfiles/stack-in-card/stack-in-card.js
+      type: module
+    - url: /hacsfiles/lovelace-layout-card/layout-card.js
       type: module
 
 python_script:

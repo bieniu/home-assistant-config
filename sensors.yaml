@@ -5,3 +5,13 @@
     - type: memory_use_percent
     - type: processor_use
     - type: last_boot
+
+- platform: rest
+  resource: "https://danepubliczne.imgw.pl/api/data/hydro?id=152190050"
+  name: "Stan rzeki Bzury"
+  state_class : "measurement"
+  unique_id: "imgw-hydro-152190050"
+  unit_of_measurement: "cm"
+  device_class: "distance"
+  value_template: "{{ value_json.stan_wody | int(0) }}" 
+  icon: "mdi:rowing"
