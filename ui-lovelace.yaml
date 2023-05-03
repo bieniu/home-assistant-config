@@ -940,129 +940,211 @@ views:
       - type: entities
         title: "Urządzenia sieciowe"
         show_header_toggle: false
-        state_color: true
         entities:
-          - binary_sensor.modem_status
-          - binary_sensor.router_status
-          - binary_sensor.lyra_54cf59_status
-          - binary_sensor.lyra_54cf5d_status
+          - entity: binary_sensor.modem_status
+            <<: &NETWORK_STATUS_ICON_COLOR
+              card_mod:
+                style: |
+                  :host {
+                    --paper-item-icon-color:
+                      {% if is_state(config.entity, "on") %}
+                        var(--state-icon-color)
+                      {% elif is_state(config.entity, "off") %}
+                        var(--state-unavailable-color)
+                      {% endif %};
+                  }
+          - entity: binary_sensor.router_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.lyra_54cf59_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.lyra_54cf5d_status
+            <<: *NETWORK_STATUS_ICON_COLOR
       - type: entities
         title: "Serwery"
         show_header_toggle: false
-        state_color: true
         entities:
-          - binary_sensor.synology_status
-          - binary_sensor.nuc_status
-          - binary_sensor.raspberry_status
-          - binary_sensor.brother_status
+          - entity: binary_sensor.synology_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.nuc_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.raspberry_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.brother_status
+            <<: *NETWORK_STATUS_ICON_COLOR
       - type: entities
         title: "Komputery"
         show_header_toggle: false
-        state_color: true
         entities:
-          - binary_sensor.stacjonarny_status
-          - binary_sensor.laptop_status
-          - binary_sensor.laptop_edyta_status
-          - binary_sensor.laptop_maciek_status
-          - binary_sensor.laptop_antek_status
+          - entity: binary_sensor.stacjonarny_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.laptop_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.laptop_edyta_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.laptop_maciek_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.laptop_antek_status
+            <<: *NETWORK_STATUS_ICON_COLOR
       - type: entities
         title: "Urządzenia mobilne"
         show_header_toggle: false
-        state_color: true
         entities:
-          - binary_sensor.iphone_13_status
-          - binary_sensor.iphone_12_status
-          - binary_sensor.iphone_11_status
-          - binary_sensor.ipad_status
-          - binary_sensor.kindle_keyboard_3g_status
-          - binary_sensor.kindle_8_status
-          - binary_sensor.inkbook_status
-          - binary_sensor.remarkable_2_status
+          - entity: binary_sensor.iphone_13_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.iphone_12_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.iphone_11_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.ipad_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.kindle_keyboard_3g_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.kindle_8_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.inkbook_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.remarkable_2_status
+            <<: *NETWORK_STATUS_ICON_COLOR
       - type: entities
         title: "Urządzenia RTV"
         show_header_toggle: false
-        state_color: true
         entities:
-          - binary_sensor.bravia_status
-          - binary_sensor.denon_status
-          - binary_sensor.mibox_status
-          - binary_sensor.firetv_status
-          - binary_sensor.playstation_status
-          - binary_sensor.echo_show_status
-          - binary_sensor.echo_plus_status
-          - binary_sensor.echo_dot_status
-          - binary_sensor.sonos_one_status
-          - binary_sensor.harmony_status
+          - entity: binary_sensor.bravia_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.denon_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.mibox_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.firetv_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.playstation_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.echo_show_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.echo_plus_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.echo_dot_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.sonos_one_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.harmony_status
+            <<: *NETWORK_STATUS_ICON_COLOR
       - type: entities
         title: "IoT - inne"
         show_header_toggle: false
-        state_color: true
         entities:
-          - binary_sensor.migateway_cc6f0b_status
-          - binary_sensor.dafang_status
-          - binary_sensor.mihumidifier_ca1_status
-          - binary_sensor.mihumidifier_cb1_status
-          - binary_sensor.mifan_status
-          - binary_sensor.miairpurifier_status
-          - binary_sensor.thermomix_status
-          - binary_sensor.shelly_valve_2a544_status
+          - entity: binary_sensor.migateway_cc6f0b_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.dafang_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.mihumidifier_ca1_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.mihumidifier_cb1_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.mifan_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.miairpurifier_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.thermomix_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_valve_2a544_status
+            <<: *NETWORK_STATUS_ICON_COLOR
       - type: entities
         title: "IoT - oświetlenie"
         show_header_toggle: false
-        state_color: true
         entities:
-          - binary_sensor.yeelight_yldp06yl_84be7a_status
-          - binary_sensor.yeelight_yldp06yl_7cafc6_status
-          - binary_sensor.yeelight_yldp02yl_f12026_status
-          - binary_sensor.yeelight_yldd01yl_860cfa_status
-          - binary_sensor.yeelight_yldd01yl_6707fc_status
-          - binary_sensor.yeelight_mjtd01syl_94e1f5_status
-          - binary_sensor.yeelight_mjtd01syl_4fbaa2_status
-          - binary_sensor.shelly_duo_5f6fa1_status
-          - binary_sensor.shelly_duo_rgbw_d4ecd3_status
-          - binary_sensor.shelly_vintage_d10472_status
+          - entity: binary_sensor.yeelight_yldp06yl_84be7a_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.yeelight_yldp06yl_7cafc6_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.yeelight_yldp02yl_f12026_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.yeelight_yldd01yl_860cfa_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.yeelight_yldd01yl_6707fc_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.yeelight_mjtd01syl_94e1f5_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.yeelight_mjtd01syl_4fbaa2_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_duo_5f6fa1_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_duo_rgbw_d4ecd3_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_vintage_d10472_status
+            <<: *NETWORK_STATUS_ICON_COLOR
       - type: entities
         title: "IoT - sensory"
         show_header_toggle: false
-        state_color: true
         entities:
-          - binary_sensor.shelly_ht_e00abd_status
-          - binary_sensor.shelly_plus_ht_09e018_status
-          - binary_sensor.shelly_plus_ht_6b3e3c_status
-          - binary_sensor.shelly_motion_c67c2a_status
-          - binary_sensor.shelly_motion_2_72a6a4_status
-          - binary_sensor.shelly_flood_f2ad1d_status
-          - binary_sensor.shelly_gas_c6811c_status
-          - binary_sensor.shelly_plus_smoke_d12914_status
-          - binary_sensor.wemos_d1_mini_1c91ea_status
-          - binary_sensor.wemos_lolin32_8cbf7c_status
-          - binary_sensor.nettigo_air_monitor_status
+          - entity: binary_sensor.shelly_ht_e00abd_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_plus_ht_09e018_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_plus_ht_6b3e3c_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_motion_c67c2a_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_motion_2_72a6a4_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_flood_f2ad1d_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_gas_c6811c_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_plus_smoke_d12914_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.wemos_d1_mini_1c91ea_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.wemos_lolin32_8cbf7c_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.nettigo_air_monitor_status
+            <<: *NETWORK_STATUS_ICON_COLOR
       - type: entities
         title: "IoT - przekaźniki"
         show_header_toggle: false
-        state_color: true
         entities:
-          - binary_sensor.sonoff_s26_182475_status
-          - binary_sensor.blitzwolf_bw_shp6_2ad05a_status
-          - binary_sensor.blitzwolf_bw_shp6_ed007d_status
-          - binary_sensor.blitzwolf_bw_shp6_ecf9ea_status
-          - binary_sensor.blitzwolf_bw_shp6_3766eb_status
-          - binary_sensor.blitzwolf_bw_shp6_17957c_status
-          - binary_sensor.blitzwolf_bw_shp6_173eb6_status
-          - binary_sensor.shelly_1l_253d92_status
-          - binary_sensor.shelly_1l_61c9fd_status
-          - binary_sensor.shelly_1l_701559_status
-          - binary_sensor.shelly_1l_aacec4_status
-          - binary_sensor.shelly_1l_aceb5f_status
-          - binary_sensor.shelly_1l_ad365e_status
-          - binary_sensor.shelly_1l_e361a5_status
-          - binary_sensor.shelly_1pm_5fd486_status
-          - binary_sensor.shelly_25_77dbe5_status
-          - binary_sensor.shelly_plug_s_7aecf4_status
-          - binary_sensor.shelly_plus_plug_s_2ffb28_status
-          - binary_sensor.shelly_plus_1pm_948ff8_status
-          - binary_sensor.shelly_plus_1pm_b22864_status
-          - binary_sensor.shelly_pro_1pm_80e0c0_status
+          - entity: binary_sensor.sonoff_s26_182475_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.blitzwolf_bw_shp6_2ad05a_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.blitzwolf_bw_shp6_ed007d_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.blitzwolf_bw_shp6_ecf9ea_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.blitzwolf_bw_shp6_3766eb_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.blitzwolf_bw_shp6_17957c_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.blitzwolf_bw_shp6_173eb6_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_1l_253d92_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_1l_61c9fd_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_1l_701559_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_1l_aacec4_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_1l_aceb5f_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_1l_ad365e_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_1l_e361a5_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_1pm_5fd486_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_25_77dbe5_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_plug_s_7aecf4_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_plus_plug_s_2ffb28_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_plus_1pm_948ff8_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_plus_1pm_b22864_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_pro_1pm_80e0c0_status
+            <<: *NETWORK_STATUS_ICON_COLOR
   - id: energy
     icon: mdi:power-plug
     title: "Energia"

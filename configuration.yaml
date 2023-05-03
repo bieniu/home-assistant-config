@@ -9,9 +9,6 @@ default_config:
 recorder:
   db_url: !secret mysql_db_url
   purge_keep_days: 7
-  exclude:
-    domains:
-      - device_tracker
 
 frontend:
   themes: !include_dir_merge_named themes

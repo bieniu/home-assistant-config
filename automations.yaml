@@ -85,36 +85,44 @@
   trigger:
   - platform: state
     entity_id:
+    - update.home_assistant
+    - update.supervisor
+    - update.cloudflared
+    - update.nginx_proxy_manager
+    - update.mariadb
+    - update.mosquitto_broker
+    - update.vaultwarden_bitwarden
+    - update.z_wave_js
     - update.adaptive_lighting
-    - update.aeotec_zw175_smart_switch_7_019_firmware
-    - update.aeotec_zwa021_thermostat_023_firmware
     - update.alexa_media_player
-    - update.asus_rt_ac86u_firmware
-    - update.auto_entities
     - update.blitzortung_org_lightning_detector
-    - update.blitzwolf_bw_shp6_3766eb_firmware
-    - update.blitzwolf_bw_shp6_ecf9ea_firmware
-    - update.blitzwolf_bw_shp6_ed007d_firmware
-    - update.caddy_2
+    - update.hacs
+    - update.watchman
+    - update.auto_entities
     - update.canary
     - update.card_mod
-    - update.clear_theme
-    - update.custom_animated_weather_card
-    - update.google_theme
-    - update.hacs
-    - update.home_assistant
-    - update.ios_theme
-    - update.mariadb
-    - update.midnight_theme
+    - update.layout_card
     - update.mini_graph_card
     - update.mini_media_player
-    - update.mosquitto_broker
     - update.mushroom_card
+    - update.stack_in_card
+    - update.sun_card
+    - update.tv_remote_card
+    - update.clear_theme
+    - update.google_theme
+    - update.ios_theme
+    - update.midnight_theme
     - update.mushroom_themes
     - update.noctis_theme
     - update.nordic_theme
     - update.shellies_discovery
     - update.shellies_discovery_gen2
+    - update.aeotec_zw175_smart_switch_7_025_firmware
+    - update.aeotec_zwa021_thermostat_023_firmware
+    - update.asus_rt_ac86u_firmware
+    - update.blitzwolf_bw_shp6_3766eb_firmware
+    - update.blitzwolf_bw_shp6_ecf9ea_firmware
+    - update.blitzwolf_bw_shp6_ed007d_firmware
     - update.shelly_1l_253d92_firmware
     - update.shelly_1l_61c9fd_firmware
     - update.shelly_1l_701559_firmware
@@ -137,15 +145,7 @@
     - update.shelly_pro_1pm_80e0c0_firmware
     - update.shelly_valve_72a544_firmware
     - update.shelly_vintage_d10472_firmware
-    - update.simple_weather_card
-    - update.sun_card
-    - update.supervisor
-    - update.tv_remote_card
-    - update.vaultwarden_bitwarden
-    - update.watchman
     - update.wemos_lolin32_8cbf7c_firmware
-    - update.z_wave_js
-    - update.zadnego_ale
     from: 'off'
     to: 'on'
   action:
@@ -153,7 +153,8 @@
     data:
       title: Dostępna aktualizacja
       message: Dostępna jest aktualizacja do wersji {{ trigger.to_state.attributes.latest_version
-        | replace('v.', '') | replace('v', '') }} dla {{ trigger.to_state.name }}.
+        | replace('v.', '') | replace('v', '') }} dla {{ device_attr(trigger.entity_id,
+        "name_by_user") or device_attr(trigger.entity_id, "name") }}.
       tag: notification-update-{{ trigger.entity_id }}
       group: updates
       url: /config/updates
@@ -532,14 +533,11 @@
     - binary_sensor.shelly_plus_1pm_948ff8_overpower
     - binary_sensor.shelly_plus_1pm_b22864_overpower
     - binary_sensor.shelly_pro_1pm_80e0c0_overpower
+    - binary_sensor.aeotec_zw175_smart_switch_7_025_overpower
     from: 'off'
     to: 'on'
     for:
       minutes: 1
-  variables:
-    notification_title: Zbyt duże obciążenie przekaźnika
-    notification_message: Przekaźnik urządzenia {{ device_attr(trigger.entity_id,
-      'name_by_user') }} ma zbyt duże obciążenie i został wyłączony.
   action:
   - service: python_script.notify
     data:
@@ -566,6 +564,11 @@
             icon:
               url: http://localhost:8123/static/icons/favicon-192x192.png
             duration: 10
+  variables:
+    notification_title: Zbyt duże obciążenie przekaźnika
+    notification_message: Przekaźnik urządzenia {{ device_attr(trigger.entity_id,
+      'name_by_user') or device_attr(trigger.entity_id, "name") }} ma zbyt duże obciążenie
+      i został wyłączony.
 - id: notification_relay_overheating
   alias: Notification Relay Overheating
   description: powiadom o przegrzewaniu się urządzenia
@@ -619,7 +622,7 @@
   variables:
     notification_title: Urządzenie się przegrzewa
     notification_message: Urządzenie {{ device_attr(trigger.entity_id, 'name_by_user')
-      }} się przegrzewa.
+      or device_attr(trigger.entity_id, "name") }} się przegrzewa.
 - id: notification_motion_when_away_mode
   alias: Notification Motion When Away Mode
   description: powiadom o ruchu w pustym mieszkaniu
