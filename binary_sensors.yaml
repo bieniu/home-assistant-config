@@ -9,6 +9,3 @@
   name: modem_status
   count: 2
   scan_interval: 180
-
-- platform: workday
-  country: "PL"

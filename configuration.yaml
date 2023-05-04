@@ -18,8 +18,6 @@ frontend:
 
 group: !include groups.yaml
 
-history: !include history.yaml
-
 homeassistant:
   customize: !include customize.yaml
   customize_glob: !include customize_glob.yaml
