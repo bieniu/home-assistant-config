@@ -141,7 +141,10 @@
     - update.shelly_plug_s_7aecf4_firmware
     - update.shelly_plus_1pm_948ff8_firmware
     - update.shelly_plus_1pm_b22864_firmware
+    - update.shelly_plus_ht_09e018_firmware_update
+    - update.shelly_plus_ht_6b3e3c_firmware_update
     - update.shelly_plus_plug_s_2ffb28_firmware
+    - update.shelly_plus_smoke_d12914_firmware
     - update.shelly_pro_1pm_80e0c0_firmware
     - update.shelly_valve_72a544_firmware
     - update.shelly_vintage_d10472_firmware
@@ -215,7 +218,7 @@
   action:
   - parallel:
     - if:
-        condition: state
+      - condition: state
         entity_id: person.maciek
         state: home
       then:
@@ -240,19 +243,6 @@
           services:
           - service: notify.mobile_app_iphone_12
             type: ios
-    - if:
-      - condition: state
-        entity_id: media_player.bravia_salon
-        state: 'on'
-      then:
-        service: notify.bravia
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          data:
-            icon:
-              url: http://localhost:8123/static/icons/favicon-192x192.png
-            duration: 10
   variables:
     notification_title: Burza w pobliżu domu
     notification_message: Wyładowania atmosferyczne występują {{ states('sensor.lightning_distance')
@@ -389,20 +379,6 @@
           services:
           - service: notify.mobile_app_iphone_12
             type: ios
-  - choose:
-      conditions:
-        condition: state
-        entity_id: media_player.bravia_salon
-        state: 'on'
-      sequence:
-        service: notify.bravia
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          data:
-            icon:
-              url: http://localhost:8123/static/icons/favicon-192x192.png
-            duration: 10
   variables:
     notification_title: Uzupełnij wodę w nawilżaczu
     notification_message: W zbiorniku nawilżacza w salonie pozostało {{ states('sensor.xiaomi_mi_humidifier_ca1_water_level')
@@ -458,20 +434,6 @@
           services:
           - service: notify.mobile_app_iphone_12
             type: ios
-  - choose:
-      conditions:
-        condition: state
-        entity_id: media_player.bravia_salon
-        state: 'on'
-      sequence:
-        service: notify.bravia
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          data:
-            icon:
-              url: http://localhost:8123/static/icons/favicon-192x192.png
-            duration: 10
   variables:
     notification_title: Wysokie stężenie dwutlenku węgla
     notification_message: W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state
@@ -501,20 +463,6 @@
         type: ios
       - service: notify.mobile_app_iphone_12
         type: ios
-  - choose:
-      conditions:
-        condition: state
-        entity_id: media_player.bravia_salon
-        state: 'on'
-      sequence:
-        service: notify.bravia
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          data:
-            icon:
-              url: http://localhost:8123/static/icons/favicon-192x192.png
-            duration: 10
   variables:
     notification_title: Wykryto wyciek wody
     notification_message: 'Wykryto wyciek wody w pomieszczeniu: {{ area_name(trigger.entity_id)
@@ -548,22 +496,6 @@
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
-      - service: notify.mobile_app_iphone_12
-        type: ios
-  - choose:
-      conditions:
-        condition: state
-        entity_id: media_player.bravia_salon
-        state: 'on'
-      sequence:
-        service: notify.bravia
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          data:
-            icon:
-              url: http://localhost:8123/static/icons/favicon-192x192.png
-            duration: 10
   variables:
     notification_title: Zbyt duże obciążenie przekaźnika
     notification_message: Przekaźnik urządzenia {{ device_attr(trigger.entity_id,
@@ -603,22 +535,6 @@
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
-      - service: notify.mobile_app_iphone_12
-        type: ios
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: media_player.bravia_salon
-        state: 'on'
-      sequence:
-        service: notify.bravia
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          data:
-            icon:
-              url: http://localhost:8123/static/icons/favicon-192x192.png
-            duration: 10
   variables:
     notification_title: Urządzenie się przegrzewa
     notification_message: Urządzenie {{ device_attr(trigger.entity_id, 'name_by_user')
@@ -1003,9 +919,9 @@
     data: {}
 - id: turn_off_ceiling_fan_for_night
   alias: Turn Off Ceiling Fan For Night
-  description: wyłącz wentylator sufirowy na noc
+  description: wyłącz wentylator sufitowy na noc
   trigger:
-    platform: state
+  - platform: state
     entity_id: light.ceiling_salon
     to: 'off'
   condition:
@@ -1016,7 +932,7 @@
     entity_id: media_player.denon_salon
     state: 'off'
   - condition: state
-    entity_id: media_player.bravia_salon
+    entity_id: media_player.philips_65oled707
     state: 'off'
   action:
   - service: fan.turn_off
@@ -1504,9 +1420,6 @@
   - platform: state
     entity_id: select.harmony_activities
     to: smart
-  - platform: state
-    entity_id: select.harmony_activities
-    to: fire
   condition:
   - condition: sun
     after: sunset
@@ -1534,8 +1447,7 @@
     for:
       seconds: 20
   - platform: template
-    value_template: '{{ not is_state(''select.harmony_activities'', ''smart'') and
-      not is_state(''select.harmony_activities'', ''fire'')}}'
+    value_template: '{{ not is_state(''select.harmony_activities'', ''smart'') }}'
   condition:
   - '{{ is_state(''light.leds_salon'', ''on'') or is_state(''light.ceiling_salon'',
     ''on'') or is_state(''light.lamp_salon'', ''on'') }}'
@@ -2231,58 +2143,33 @@
     target:
       entity_id: light.lamp_goscinny
     data: {}
-- id: denon_bravia_input_helper
-  alias: Denon Bravia Input Switch Helper
+- id: '347564abc3457677634346568784aaff'
+  alias: Denon Philips Input Switch Helper
   description: pomocnik przełączanie wejść w aplitunerze i telewizorze
   trigger:
   - platform: state
     entity_id:
-    - binary_sensor.harmony_status
+    - remote.salon
     attribute: current_activity
   condition:
   - '{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity
     }}'
   - '{{ trigger.to_state.attributes.current_activity != ''PowerOff'' }}'
   action:
-  - delay: 00:00:07
+  - delay: 00:00:01
+  - service: media_player.select_source
+    entity_id: media_player.philips_65oled707
+    data:
+      source: "{% if trigger.to_state.attributes.current_activity == 'telewizja' %}\n
+        \ HDMI 2\n{% elif trigger.to_state.attributes.current_activity == 'gry' %}\n
+        \ HDMI 1\n{% endif %}\n"
   - service: media_player.select_source
     entity_id: media_player.denon_salon
     data:
       source: "{% if trigger.to_state.attributes.current_activity == 'telewizja' %}\n
         \ CBL\n{% elif trigger.to_state.attributes.current_activity == 'gry' %}\n
-        \ TV\n{% elif trigger.to_state.attributes.current_activity == 'muzyka' %}\n
-        \ Online Music\n{% elif trigger.to_state.attributes.current_activity == 'smart'
-        %}\n  TV\n{% elif trigger.to_state.attributes.current_activity == 'fire' %}\n
+        \ TV\n{% elif trigger.to_state.attributes.current_activity == 'smart' %}\n
         \ TV\n{% endif %}\n"
-  - service: media_player.select_source
-    entity_id: media_player.bravia_salon
-    data:
-      source: "{% if trigger.to_state.attributes.current_activity == 'telewizja' %}\n
-        \ HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity == 'smart'
-        %}\n  HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity ==
-        'gry' %}\n  HDMI 2\n{% elif trigger.to_state.attributes.current_activity ==
-        'muzyka' %}\n  HDMI 3/ARC\n{% elif trigger.to_state.attributes.current_activity
-        == 'fire' %}\n  HDMI 1\n{% endif %}\n"
-- id: harmony_turn_off_television
-  alias: Harmony Turn Off Television
-  description: wyłącz telewizor jeśli nie wyłączył go Harmony
-  trigger:
-    platform: state
-    entity_id: remote.salon
-    attribute: current_activity
-    to: PowerOff
-  condition:
-    condition: state
-    entity_id: media_player.bravia_salon
-    state: 'on'
-  action:
-  - delay: 00:00:02
-  - condition: state
-    entity_id: media_player.bravia_salon
-    state: 'on'
-  - service: media_player.turn_off
-    target:
-      entity_id: media_player.bravia_salon
 - id: harmony_turn_off_playstation
   alias: Harmony Turn Off PlayStation
   description: wyłącz PlayStation jeśli nie wyłączył go Harmony
@@ -2404,20 +2291,6 @@
           services:
           - service: notify.mobile_app_iphone_12
             type: ios
-  - choose:
-      conditions:
-        condition: state
-        entity_id: media_player.bravia_salon
-        state: 'on'
-      sequence:
-        service: notify.bravia
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          data:
-            icon:
-              url: http://localhost:8123/static/icons/favicon-192x192.png
-            duration: 10
   variables:
     notification_title: Uzupełnij wodę w nawilżaczu
     notification_message: Nawilżacz w salonie został wyłączony ponieważ w zbiorniku
@@ -2540,39 +2413,6 @@
       - shellycolorbulb-E868E7C6811C
   mode: queued
   max: 999
-- id: shellies_announce_gen2
-  alias: Shellies Announce Gen2
-  trigger:
-  - platform: homeassistant
-    event: start
-  action:
-  - repeat:
-      for_each: '{{ device_ids }}'
-      sequence:
-      - service: mqtt.publish
-        data:
-          topic: '{{ repeat.item }}/rpc'
-          payload: '{{ device_info_payload }}'
-  variables:
-    device_info_payload: '{{ {''id'': 1, ''src'':''shellies-gen2/shellies-discovery'',
-      ''method'':''Shelly.GetConfig''} | to_json }}'
-    device_ids:
-    - shellies-gen2/shelly-plus-ht-09e018
-    - shellies-gen2/shelly-plus-ht-6b3e3c
-    - shellies-gen2/shelly-plus-smoke-d12914
-- id: shellies_discovery_gen2
-  alias: Shellies Discovery Gen2
-  mode: queued
-  max: 999
-  trigger:
-  - platform: mqtt
-    topic: shellies-gen2/shellies-discovery/rpc
-  action:
-  - service: python_script.shellies_discovery_gen2
-    data:
-      id: '{{ trigger.payload_json.src }}'
-      device_config: '{{ trigger.payload_json.result }}'
-      script_prefix: shellies-gen2
 - id: hassio_backup
   alias: Hassio Backup
   description: wykonaj hassio backup
@@ -2804,20 +2644,6 @@
           services:
           - service: notify.mobile_app_iphone_11
             type: ios
-  - choose:
-      conditions:
-        condition: state
-        entity_id: media_player.bravia_salon
-        state: 'on'
-      sequence:
-        service: notify.bravia
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          data:
-            icon:
-              url: http://localhost:8123/static/icons/favicon-192x192.png
-            duration: 10
   variables:
     notification_title: Uzupełnij wodę w nawilżaczu
     notification_message: Nawilżacz w salonie został wyłączony ponieważ w zbiorniku
@@ -2897,20 +2723,6 @@
           services:
           - service: notify.mobile_app_iphone_11
             type: ios
-  - choose:
-      conditions:
-        condition: state
-        entity_id: media_player.bravia_salon
-        state: 'on'
-      sequence:
-        service: notify.bravia
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          data:
-            icon:
-              url: http://localhost:8123/static/icons/favicon-192x192.png
-            duration: 10
   variables:
     notification_title: Uzupełnij wodę w nawilżaczu
     notification_message: W zbiorniku nawilżacza w pokoju Antka pozostało {{ states('sensor.xiaomi_mi_humidifier_cb1_water_level')
@@ -3054,19 +2866,6 @@
     domain: button
     entity_id: button.shelly_gas_c6811c_self_test
     type: press
-  mode: single
-- id: '1679942943336'
-  alias: Shelly Smoke Helper
-  description: ''
-  trigger:
-  - platform: homeassistant
-    event: start
-  condition: []
-  action:
-  - service: mqtt.publish
-    data:
-      topic: shellies-gen2/shelly-plus-smoke-d12914/status/smoke:0
-      payload: '{{ {"alarm": False} | to_json }}'
   mode: single
 - id: '1682413050614'
   alias: Light Sypialnia Toggle Lamp

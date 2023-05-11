@@ -35,10 +35,10 @@
   hot_tolerance: 0.2
 
 - platform: generic_thermostat
-  name: "Thermostat Salon"
-  unique_id: thermostat_salon
-  heater: switch.heater_salon
-  target_sensor: sensor.temperature_salon
+  name: "Thermostat Goscinny"
+  unique_id: thermostat_goscinny
+  heater: switch.heater_goscinny
+  target_sensor: sensor.temperature_goscinny
   min_temp: 4
   max_temp: 28
   min_cycle_duration:

@@ -143,7 +143,7 @@ views:
                   - entity: input_boolean.heating_season
                     state_not: "off"
                 row:
-                  entity: climate.thermostat_salon
+                  entity: climate.danfoss_014g2461_thermostat_983ed3
               - type: conditional
                 conditions:
                   - entity: input_boolean.heating_season
@@ -154,20 +154,33 @@ views:
                     entity: sensor.xiaomi_mi_humidifier_ca1_water_level
                     prefix: "poziom wody: "
                     postfix: "%"
-              - entity: fan.air_purifier_salon
+              - type: custom:slider-entity-row
+                entity: fan.air_purifier_salon
+                toggle: true
+                hide_when_off: true
+                state_color: true
                 secondary_info:
                   entity: sensor.aqi_attr_salon
                   prefix: "powietrze: "
-              - fan.ceiling_salon
-              - light.ceiling_salon
+              - type: custom:slider-entity-row
+                entity: fan.ceiling_salon
+                toggle: true
+                hide_when_off: true
+              - type: custom:slider-entity-row
+                entity: light.ceiling_salon
+                toggle: true
+                hide_when_off: true
               - light.leds_salon
-              - light.lamp_salon
+              - type: custom:slider-entity-row
+                entity: light.lamp_salon
+                toggle: true
+                hide_when_off: true
               - input_select.light_scenes_salon
               - select.harmony_activities
               - type: custom:mini-media-player
                 canary_style:
                   border-style: none
-                entity: media_player.bravia_salon
+                entity: media_player.philips_65oled707
                 hide:
                   controls: true
                   volume: true
@@ -189,17 +202,6 @@ views:
               - type: custom:mini-media-player
                 canary_style:
                   border-style: none
-                entity: media_player.firetv_salon
-                hide:
-                  volume: true
-                  controls: true
-                  power: true
-                  source: true
-                info: scroll
-                group: true
-              - type: custom:mini-media-player
-                canary_style:
-                  border-style: none
                 entity: media_player.playstation_salon
                 hide:
                   controls: true
@@ -214,9 +216,12 @@ views:
                   border-style: none
                 entity: media_player.echo_show_salon
                 hide:
-                  volume: true
                   power: true
                   progress: true
+                  state_label: true
+                idle_view:
+                  when_paused: true
+                  when_standby: true
                 info: scroll
                 group: true
                 shortcuts:
@@ -321,7 +326,10 @@ views:
                   power: true
                   progress: true
                   source: true
-                  volume: true
+                  state_label: true
+                idle_view:
+                  when_paused: true
+                  when_standby: true
                 info: scroll
                 group: true
                 shortcuts:
@@ -369,8 +377,25 @@ views:
               - binary_sensor.window_goscinny
               - entity: binary_sensor.motion_goscinny
                 secondary_info: last-changed
-              - light.ceiling_goscinny
+              - type: conditional
+                conditions:
+                  - entity: input_boolean.heating_season
+                    state_not: "off"
+                row:
+                  entity: climate.thermostat_goscinny
+              - type: custom:slider-entity-row
+                entity: light.ceiling_goscinny
+                toggle: true
+                hide_when_off: true
               - light.lamp_goscinny
+              - type: custom:mini-media-player
+                canary_style:
+                  border-style: none
+                entity: media_player.sony_kd_55xf8596
+                hide:
+                  progress: true
+                info: scroll
+                group: true
       - type: vertical-stack
         in_card: true
         cards:
@@ -401,7 +426,10 @@ views:
                   entity: climate.shelly_valve_72a544
               - light.leds_schody
               - light.scone_schody
-              - light.gateway_antresola
+              - type: custom:slider-entity-row
+                entity: light.gateway_antresola
+                toggle: true
+                hide_when_off: true
       - type: vertical-stack
         in_card: true
         cards:
@@ -429,9 +457,23 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_gabinet
-              - light.ceiling_gabinet
-              - light.lamp_gabinet
-              - light.desk_lamp_gabinet
+              - type: custom:slider-entity-row
+                entity: fan.pedestal_gabinet
+                toggle: true
+                hide_when_off: true
+                state_color: true
+              - type: custom:slider-entity-row
+                entity: light.ceiling_gabinet
+                toggle: true
+                hide_when_off: true
+              - type: custom:slider-entity-row
+                entity: light.lamp_gabinet
+                toggle: true
+                hide_when_off: true
+              - type: custom:slider-entity-row
+                entity: light.desk_lamp_gabinet
+                toggle: true
+                hide_when_off: true
               - switch.stacjonarny
               - type: custom:mini-media-player
                 canary_style:
@@ -440,7 +482,8 @@ views:
                 hide:
                   power: true
                   progress: true
-                  volume: true
+                idle_view:
+                  when_paused: true
                 info: scroll
                 group: true
                 shortcuts:
@@ -480,7 +523,6 @@ views:
           - type: glance
             canary_style:
               border-style: none
-
             title: "Pralnia"
             show_name: false
             entities:
@@ -543,19 +585,31 @@ views:
                     entity: sensor.xiaomi_mi_humidifier_cb1_water_level
                     prefix: "poziom wody: "
                     postfix: "%"
-              - light.ceiling_antek
-              - light.desk_lamp_antek
-              - light.lightstrip_antek
+              - type: custom:slider-entity-row
+                entity: light.ceiling_antek
+                toggle: true
+                hide_when_off: true
+              - type: custom:slider-entity-row
+                entity: light.desk_lamp_antek
+                toggle: true
+                hide_when_off: true
+              - type: custom:slider-entity-row
+                entity: light.lightstrip_antek
+                toggle: true
+                hide_when_off: true
               - light.tree_antek
               - type: custom:mini-media-player
                 canary_style:
                   border-style: none
                 entity: media_player.echo_plus_antek
                 hide:
-                  volume: true
                   power: true
                   progress: true
                   source: true
+                  state_label: true
+                idle_view:
+                  when_paused: true
+                  when_standby: true
                 info: scroll
                 group: true
                 shortcuts:
@@ -617,8 +671,14 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_sypialnia
-              - light.lightstrip_sypialnia
-              - light.table_lamp_sypialnia
+              - type: custom:slider-entity-row
+                entity: light.lightstrip_sypialnia
+                toggle: true
+                hide_when_off: true
+              - type: custom:slider-entity-row
+                entity: light.table_lamp_sypialnia
+                toggle: true
+                hide_when_off: true
       - type: vertical-stack
         in_card: true
         cards:
@@ -993,10 +1053,6 @@ views:
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.denon_status
             <<: *NETWORK_STATUS_ICON_COLOR
-          - entity: binary_sensor.mibox_status
-            <<: *NETWORK_STATUS_ICON_COLOR
-          - entity: binary_sensor.firetv_status
-            <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.playstation_status
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.echo_show_status
@@ -1244,7 +1300,7 @@ views:
         title: "Baterie termostatów"
         state_color: true
         entities:
-          - entity: sensor.danfoss_014g0013_thermostat_002_battery
+          - entity: sensor.danfoss_014g2461_thermostat_983ed3_battery
             name: salon
           - entity: sensor.aeotec_zwa021_thermostat_023_battery
             name: kuchnia
@@ -1260,6 +1316,8 @@ views:
             name: łazienka
           - entity: sensor.danfoss_014g0013_thermostat_012_battery
             name: pracownia
+          - entity: sensor.danfoss_014g0013_thermostat_002_battery
+            name: pokój gościnny
       - type: entities
         title: "Baterie sensorów okien/drzwi"
         state_color: true
@@ -1321,7 +1379,7 @@ views:
               style: |
                 ha-card {
                   --ha-card-background:
-                    {% set air_quality = states("sensor.air_quality_info_outdoor") %}
+                    {% set air_quality = states(config.entity) %}
                     {% if air_quality == "bardzo dobra" %}
                       #43a047;
                     {% elif air_quality == "dobra" %}
@@ -1346,7 +1404,7 @@ views:
               style: |
                 ha-card {
                   --ha-card-background:
-                    {% set airly = states("sensor.aqi_info_salon") %}
+                    {% set airly = states(config.entity) %}
                     {% if airly == "bardzo dobra" %}
                       #43a047;
                     {% elif airly == "dobra" %}

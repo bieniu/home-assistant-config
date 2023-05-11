@@ -59,8 +59,8 @@
         data:
           temperature: 7
 
-    heater_salon:
-      unique_id: "heater_salon"
+    heater_goscinny:
+      unique_id: "heater_goscinny"
       value_template: "{{ not is_state_attr('climate.danfoss_014g0013_thermostat_002', 'temperature', 7) }}"
       turn_on:
         service: climate.set_temperature

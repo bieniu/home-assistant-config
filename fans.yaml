@@ -13,7 +13,7 @@
         {% set fan_power = states("sensor.power_ceiling_fan_salon") | int(0) %}
         {% if fan_power < 25 %}
           0
-        {% if fan_power >= 25 and fan_power <= 27 or fan_power >= 33 and fan_power <= 45 %}
+        {% elif fan_power >= 25 and fan_power <= 27 or fan_power >= 33 and fan_power <= 45 %}
           33
         {% elif fan_power >= 53 and fan_power <= 58 or fan_power >= 61 and fan_power <= 73 %}
           66

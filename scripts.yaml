@@ -38,17 +38,6 @@ heating_day:
   sequence:
   - service: script.humidification_start
     data: {}
-  - service: climate.turn_on
-    data: {}
-    target:
-      entity_id:
-      - climate.thermostat_lazienka
-      - climate.thermostat_gabinet
-      - climate.thermostat_antek
-      - climate.thermostat_salon
-      - climate.thermostat_sypialnia
-      - climate.thermostat_kuchnia
-      - climate.thermostat_pracownia
   - service: climate.set_temperature
     target:
       entity_id: climate.thermostat_lazienka
@@ -64,7 +53,7 @@ heating_day:
     target:
       entity_id:
       - climate.thermostat_kuchnia
-      - climate.thermostat_salon
+      - climate.danfoss_014g2461_thermostat_983ed3
       - climate.thermostat_gabinet
       - climate.thermostat_pracownia
       - climate.shelly_valve_72a544
@@ -75,6 +64,7 @@ heating_day:
       entity_id:
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
+      - climate.thermostat_goscinny
     data:
       temperature: '{{ states(''input_number.bedroom_temperature_day'') }}'
   mode: single
@@ -84,17 +74,6 @@ heating_night:
   sequence:
   - service: script.humidification_start
     data: {}
-  - service: climate.turn_on
-    data: {}
-    target:
-      entity_id:
-      - climate.thermostat_kuchnia
-      - climate.thermostat_pracownia
-      - climate.thermostat_sypialnia
-      - climate.thermostat_salon
-      - climate.thermostat_antek
-      - climate.thermostat_gabinet
-      - climate.thermostat_lazienka
   - service: climate.set_temperature
     target:
       entity_id:
@@ -109,6 +88,7 @@ heating_night:
       entity_id:
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
+      - climate.thermostat_goscinny
     data:
       hvac_mode: heat
       temperature: '{{ states(''input_number.bedroom_temperature_night'') }}'
@@ -125,7 +105,7 @@ heating_night:
     target:
       entity_id:
       - climate.thermostat_kuchnia
-      - climate.thermostat_salon
+      - climate.danfoss_014g2461_thermostat_983ed3
     data:
       hvac_mode: heat
       temperature: '{{ states(''input_number.temperature_night'') }}'
@@ -137,21 +117,16 @@ heating_away_mode:
   - service: climate.set_temperature
     target:
       entity_id:
-      - climate.shelly_valve_72a544
-    data:
-      temperature: '{{ states(''input_number.temperature_away'') }}'
-  - service: climate.set_temperature
-    target:
-      entity_id:
       - climate.thermostat_gabinet
       - climate.thermostat_kuchnia
-      - climate.thermostat_salon
+      - climate.danfoss_014g2461_thermostat_983ed3
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
       - climate.thermostat_lazienka
       - climate.thermostat_pracownia
+      - climate.thermostat_goscinny
+      - climate.shelly_valve_72a544
     data:
-      hvac_mode: heat
       temperature: '{{ states(''input_number.temperature_away'') }}'
   - service: humidifier.turn_off
     target:
@@ -164,7 +139,7 @@ heating_away_mode:
   icon: mdi:radiator
 heating_season_end:
   sequence:
-  - service: climate.turn_off
+  - service: climate.set_temperature
     target:
       entity_id:
       - climate.shelly_valve_72a544
@@ -173,9 +148,16 @@ heating_season_end:
       - climate.thermostat_kuchnia
       - climate.thermostat_lazienka
       - climate.thermostat_pracownia
-      - climate.thermostat_salon
+      - climate.thermostat_goscinny
       - climate.thermostat_sypialnia
-    data: {}
+    data:
+      temperature: 4
+  - service: climate.set_temperature
+    target:
+      entity_id:
+      - climate.danfoss_014g2461_thermostat_983ed3
+    data:
+      temperature: 5
   - service: humidifier.turn_off
     data: {}
     target:
@@ -187,17 +169,20 @@ heating_season_end:
   icon: mdi:radiator
 heating_airing_begin:
   sequence:
-  - service: climate.turn_off
+  - service: climate.set_temperature
     target:
       entity_id:
       - climate.shelly_valve_72a544
       - climate.thermostat_gabinet
-      - climate.thermostat_salon
+      - climate.danfoss_014g2461_thermostat_983ed3
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
       - climate.thermostat_lazienka
       - climate.thermostat_kuchnia
       - climate.thermostat_pracownia
+      - climate.thermostat_goscinny
+    data:
+      temperature: 8
   - service: humidifier.turn_off
     target:
       entity_id:
