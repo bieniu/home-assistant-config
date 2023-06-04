@@ -222,20 +222,18 @@ camera_move:
   icon: mdi:cctv
 alexa_netflix:
   sequence:
-  - service: remote.turn_on
-    entity_id: remote.salon
+  - service: select.select_option
     data:
-      activity: Smart TV
-  - delay: 00:00:02
-  - service: remote.send_command
-    data:
-      num_repeats: 1
-      delay_secs: 0.4
-      hold_secs: 0
-      command: Netflix
-      device: Telewizor
+      option: smart
     target:
-      entity_id: remote.salon
+      entity_id: select.harmony_activities
+  - delay: 00:00:02
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.philips_65oled707
+    data:
+      media_content_id: Netflix
+      media_content_type: app
   mode: single
   alias: 'Alexa: Netflix'
   icon: mdi:netflix
@@ -245,6 +243,10 @@ alexa_goodnight:
     target:
       entity_id:
       - remote.salon
+      - media_player.sony_kd_55xf8596
+      - fan.ceiling_salon
+      - fan.pedestal_gabinet
+      - fan.air_purifier_salon
       - light.leds_salon
       - light.ceiling_salon
       - light.desk_lamp_antek
@@ -258,6 +260,7 @@ alexa_goodnight:
       - light.ceiling_przedpokoj
       - light.ceiling_korytarz
       - light.scone_schody
+      - switch.stacjonarny
   mode: single
   alias: 'Alexa: goodnight'
 restart_wifi_devices:
@@ -341,3 +344,42 @@ humidification_start:
       data: {}
       target:
         entity_id: humidifier.xiaomi_antek
+alexa_harmony_activity_tv:
+  alias: 'Alexa: Harmony Activity TV'
+  sequence:
+  - service: select.select_option
+    data:
+      option: telewizja
+    target:
+      entity_id: select.harmony_activities
+  mode: single
+  icon: mdi:television
+alexa_harmony_activity_games:
+  alias: 'Alexa: Harmony Activity Games'
+  sequence:
+  - service: select.select_option
+    data:
+      option: gry
+    target:
+      entity_id: select.harmony_activities
+  mode: single
+  icon: mdi:sony-playstation
+alexa_harmony_activity_smart_tv:
+  alias: 'Alexa: Harmony Activity Smart TV'
+  sequence:
+  - service: select.select_option
+    data:
+      option: smart
+    target:
+      entity_id: select.harmony_activities
+  mode: single
+  icon: mdi:television-shimmer
+alexa_harmony_power_off:
+  alias: 'Alexa: Harmony Power Off'
+  sequence:
+  - service: remote.turn_off
+    data: {}
+    target:
+      entity_id: remote.salon
+  mode: single
+  icon: mdi:television-off

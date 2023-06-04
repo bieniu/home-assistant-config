@@ -60,26 +60,24 @@
   alias: iOS Turn On TV
   description: włącz TV via iOS
   trigger:
-    platform: event
+  - platform: event
     event_type: ios.action_fired
     event_data:
       actionName: turn_on_tv
   action:
-    service: select.select_option
-    data:
-      entity_id: select.harmony_activities
-      option: telewizja
+  - service: script.alexa_harmony_activity_tv
+    data: {}
 - id: ios_turn_off_tv
   alias: iOS Turn Off TV
   description: wyłącz TV via iOS
   trigger:
-    platform: event
+  - platform: event
     event_type: ios.action_fired
     event_data:
       actionName: turn_off_tv
   action:
-    service: remote.turn_off
-    entity_id: remote.salon
+  - service: script.alexa_harmony_power_off
+    data: {}
 - id: notification_update_platform
   alias: Notification Update Platform
   trigger:
@@ -1411,7 +1409,7 @@
     data: {}
   max_exceeded: silent
 - id: light_scene_film
-  alias: Light Scene Film
+  alias: Light Salon Scene Film
   description: włącz scenę oświetlenia film po włączeniu filmu/gry/trybu smart
   trigger:
   - platform: state
@@ -1436,7 +1434,7 @@
       entity_id: input_select.light_scenes_salon
       option: film
 - id: light_scene_auto_after_film
-  alias: Light Scene Auto After Film
+  alias: Light Salon Scene Auto After Film
   description: wybierz automatyczną scenę oświetlenia w salonie po wyłączeniu filmu/gry/trybu
     smart
   trigger:
@@ -2143,52 +2141,76 @@
     target:
       entity_id: light.lamp_goscinny
     data: {}
-- id: '347564abc3457677634346568784aaff'
-  alias: Denon Philips Input Switch Helper
-  description: pomocnik przełączanie wejść w aplitunerze i telewizorze
+- id: 347564abc3457677634346568784aaff
+  alias: Harmony Philips Input Switch Helper
+  description: pomocnik przełączanie wejść w telewizorze
   trigger:
   - platform: state
     entity_id:
     - remote.salon
     attribute: current_activity
-  condition:
-  - '{{ trigger.from_state.attributes.current_activity != trigger.to_state.attributes.current_activity
-    }}'
-  - '{{ trigger.to_state.attributes.current_activity != ''PowerOff'' }}'
+    not_to: PowerOff
   action:
-  - delay: 00:00:01
-  - service: media_player.select_source
-    entity_id: media_player.philips_65oled707
-    data:
-      source: "{% if trigger.to_state.attributes.current_activity == 'telewizja' %}\n
-        \ HDMI 2\n{% elif trigger.to_state.attributes.current_activity == 'gry' %}\n
-        \ HDMI 1\n{% endif %}\n"
-  - service: media_player.select_source
-    entity_id: media_player.denon_salon
-    data:
-      source: "{% if trigger.to_state.attributes.current_activity == 'telewizja' %}\n
-        \ CBL\n{% elif trigger.to_state.attributes.current_activity == 'gry' %}\n
-        \ TV\n{% elif trigger.to_state.attributes.current_activity == 'smart' %}\n
-        \ TV\n{% endif %}\n"
+  - if:
+    - condition: state
+      entity_id: remote.salon
+      attribute: current_activity
+      state: gry
+    then:
+    - service: media_player.select_source
+      data:
+        source: HDMI 1
+      target:
+        entity_id: media_player.philips_65oled707
+    - service: media_player.turn_on
+      data: {}
+      target:
+        entity_id: media_player.playstation_salon
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 30
+        milliseconds: 0
+    - service: media_player.select_source
+      data:
+        source: HDMI 1
+      target:
+        entity_id: media_player.philips_65oled707
+  - if:
+    - condition: state
+      entity_id: remote.salon
+      attribute: current_activity
+      state: telewizja
+    then:
+    - service: media_player.select_source
+      data:
+        source: HDMI 2
+      target:
+        entity_id: media_player.philips_65oled707
 - id: harmony_turn_off_playstation
   alias: Harmony Turn Off PlayStation
   description: wyłącz PlayStation jeśli nie wyłączył go Harmony
   trigger:
-    platform: state
+  - platform: state
     entity_id: remote.salon
     from: gry
   condition:
-    condition: state
+  - condition: state
     entity_id: media_player.playstation_salon
     state: idle
   action:
-  - delay: 00:00:10
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 20
+      milliseconds: 0
   - condition: state
     entity_id: media_player.playstation_salon
     state: idle
   - service: media_player.turn_off
     target:
       entity_id: media_player.playstation_salon
+    data: {}
 - id: humidification_set_target_humidity
   alias: Humidification Set Target Humidity
   description: ustaw docelową wilgotność
@@ -2492,22 +2514,6 @@
     data: {}
     target:
       entity_id: light.tree_antek
-  mode: single
-- id: '1662321735236'
-  alias: Harmony Turn On PlayStation
-  description: włącz PlayStation po przełączeniu Harmony na PlayStation
-  trigger:
-  - platform: state
-    entity_id:
-    - remote.salon
-    to: gry
-    attribute: current_activity
-  condition: []
-  action:
-  - service: media_player.turn_on
-    data: {}
-    target:
-      entity_id: media_player.playstation_salon
   mode: single
 - id: light_turn_off_goscinny_light_when_no_motion
   alias: Light Gościnny Turn Off Light When No Motion

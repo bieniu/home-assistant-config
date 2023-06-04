@@ -137,15 +137,25 @@
       icon: mdi:raspberry-pi
       state: "{{ is_state('device_tracker.raspberry', 'home') }}"
 
-    - name: stacjonarny_status
-      unique_id: "stacjonarny_status"
+    - name: desktop_maciek_status
+      unique_id: "desktop_maciek_status"
       icon: mdi:desktop-tower
-      state: "{{ is_state('device_tracker.stacjonarny', 'home') }}"
+      state: "{{ is_state('device_tracker.desktop_maciek', 'home') }}"
 
-    - name: bravia_status
-      unique_id: "bravia_status"
+    - name: desktop_antek_status
+      unique_id: "desktop_antek_status"
+      icon: mdi:desktop-tower
+      state: "{{ is_state('device_tracker.desktop_antek', 'home') }}"
+
+    - name: sony_kd_55xf8596_status
+      unique_id: "sony_kd_55xf8596_status"
       icon: mdi:television
-      state: "{{ is_state('device_tracker.bravia', 'home') }}"
+      state: "{{ is_state('device_tracker.sony_kd_55xf8596', 'home') }}"
+
+    - name: philips_65oled707_12_status
+      unique_id: "philips_65oled707_12_status"
+      icon: mdi:television
+      state: "{{ is_state('device_tracker.philips_65oled707_12', 'home') }}"
 
     - name: thermomix_status
       unique_id: "thermomix_status"
@@ -226,16 +236,6 @@
       unique_id: "inkbook_status"
       state: "{{ is_state('device_tracker.inkbook_classic_2', 'home') }}"
       icon: mdi:cellphone-text
-
-    - name: mibox_status
-      unique_id: "mibox_status"
-      icon: mdi:cast
-      state: "{{ is_state('device_tracker.mibox', 'home') }}"
-
-    - name: firetv_status
-      unique_id: "firetv_status"
-      icon: mdi:cast
-      state: "{{ is_state('device_tracker.firetv', 'home') }}"
 
     - name: laptop_edyta_status
       unique_id: "laptop_edyta_status"

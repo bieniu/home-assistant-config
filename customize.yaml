@@ -1,6 +1,3 @@
-sun.sun:
-  friendly_name: "Słońce"
-
 #### INTEL NUC/HA ####
 sensor.processor_use:
   friendly_name: "Obciążenie CPU"
@@ -28,8 +25,6 @@ binary_sensor.stacjonarny_status:
   friendly_name: "Komputer stacjonarny"
 binary_sensor.playstation_status:
   friendly_name: "PlayStation 4 Pro"
-binary_sensor.bravia_status:
-  friendly_name: "Sony KD-55XF8596"
 binary_sensor.harmony_status:
   friendly_name: "Logitech Harmony Hub"
 binary_sensor.iphone_8_plus_status:
@@ -55,10 +50,6 @@ binary_sensor.echo_show_status:
   friendly_name: "Amazon Echo Show"
 binary_sensor.inkbook_status:
   friendly_name: "inkBook Classic 2"
-binary_sensor.mibox_status:
-  friendly_name: "Xiaomi Mi Box 3"
-binary_sensor.firetv_status:
-  friendly_name: "Fire TV Stick 4K"
 binary_sensor.laptop_edyta_status:
   friendly_name: "Dell Latitude 7320"
 binary_sensor.laptop_antek_status:

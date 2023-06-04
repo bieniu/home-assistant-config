@@ -154,11 +154,7 @@ views:
                     entity: sensor.xiaomi_mi_humidifier_ca1_water_level
                     prefix: "poziom wody: "
                     postfix: "%"
-              - type: custom:slider-entity-row
-                entity: fan.air_purifier_salon
-                toggle: true
-                hide_when_off: true
-                state_color: true
+              - entity: fan.air_purifier_salon
                 secondary_info:
                   entity: sensor.aqi_attr_salon
                   prefix: "powietrze: "
@@ -222,6 +218,7 @@ views:
                 idle_view:
                   when_paused: true
                   when_standby: true
+                  after: 30
                 info: scroll
                 group: true
                 shortcuts:
@@ -233,42 +230,49 @@ views:
                       data:
                         entity_id: media_player.echo_show_salon
                         media_content_type: "TUNEIN"
-                        media_content_id: "RMF FM in everywhere group"
+                        media_content_id: "RMF FM"
                     - name: "MUZO FM"
                       type: "service"
                       id: media_player.play_media
                       data:
                         entity_id: media_player.echo_show_salon
                         media_content_type: "TUNEIN"
-                        media_content_id: "MUZO FM in everywhere group"
+                        media_content_id: "MUZO FM"
                     - name: "Radio ZET"
                       type: "service"
                       id: media_player.play_media
                       data:
                         entity_id: media_player.echo_show_salon
                         media_content_type: "TUNEIN"
-                        media_content_id: "Radio ZET in everywhere group"
+                        media_content_id: "Radio ZET"
+                    - name: "ESKA Rock"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_show_salon
+                        media_content_type: "TUNEIN"
+                        media_content_id: "ESKA Rock"
                     - name: "Spotify [Antek]"
                       type: "service"
                       id: media_player.play_media
                       data:
                         entity_id: media_player.echo_show_salon
                         media_content_type: "SPOTIFY"
-                        media_content_id: "in everywhere group playlist Antek"
+                        media_content_id: "playlist Antek"
                     - name: "Spotify [Edyta]"
                       type: "service"
                       id: media_player.play_media
                       data:
                         entity_id: media_player.echo_show_salon
                         media_content_type: "SPOTIFY"
-                        media_content_id: "in everywhere group playlist Edyta"
+                        media_content_id: "playlist Edyta"
                     - name: "Spotify [Maciek]"
                       type: "service"
                       id: media_player.play_media
                       data:
                         entity_id: media_player.echo_show_salon
                         media_content_type: "SPOTIFY"
-                        media_content_id: "in everywhere group playlist Maciek"
+                        media_content_id: "playlist Maciek"
       - type: vertical-stack
         in_card: true
         cards:
@@ -330,6 +334,7 @@ views:
                 idle_view:
                   when_paused: true
                   when_standby: true
+                  after: 30
                 info: scroll
                 group: true
                 shortcuts:
@@ -356,6 +361,20 @@ views:
                         entity_id: media_player.echo_dot_pracownia
                         media_content_type: "TUNEIN"
                         media_content_id: "Radio ZET"
+                    - name: "ESKA Rock"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_dot_pracownia
+                        media_content_type: "TUNEIN"
+                        media_content_id: "ESKA Rock"
+                    - name: "Spotify"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_dot_pracownia
+                        media_content_type: "SPOTIFY"
+                        media_content_id: "playlist Edyta"
       - type: vertical-stack
         in_card: true
         cards:
@@ -610,6 +629,7 @@ views:
                 idle_view:
                   when_paused: true
                   when_standby: true
+                  after: 30
                 info: scroll
                 group: true
                 shortcuts:
@@ -636,6 +656,13 @@ views:
                         entity_id: media_player.echo_plus_antek
                         media_content_type: "TUNEIN"
                         media_content_id: "Radio ZET"
+                    - name: "ESKA Rock"
+                      type: "service"
+                      id: media_player.play_media
+                      data:
+                        entity_id: media_player.echo_plus_antek
+                        media_content_type: "TUNEIN"
+                        media_content_id: "ESKA Rock"
                     - name: "Spotify"
                       type: "service"
                       id: media_player.play_media
@@ -1015,7 +1042,7 @@ views:
         title: "Komputery"
         show_header_toggle: false
         entities:
-          - entity: binary_sensor.stacjonarny_status
+          - entity: binary_sensor.desktop_maciek_status
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.laptop_status
             <<: *NETWORK_STATUS_ICON_COLOR
@@ -1023,7 +1050,7 @@ views:
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.laptop_maciek_status
             <<: *NETWORK_STATUS_ICON_COLOR
-          - entity: binary_sensor.laptop_antek_status
+          - entity: binary_sensor.desktop_antek_status
             <<: *NETWORK_STATUS_ICON_COLOR
       - type: entities
         title: "Urządzenia mobilne"
@@ -1049,7 +1076,9 @@ views:
         title: "Urządzenia RTV"
         show_header_toggle: false
         entities:
-          - entity: binary_sensor.bravia_status
+          - entity: binary_sensor.philips_65oled707_12_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.sony_kd_55xf8596_status
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.denon_status
             <<: *NETWORK_STATUS_ICON_COLOR
@@ -1511,15 +1540,6 @@ views:
               - entity: sensor.pm25_salon
             line_color: "#78909c"
             decimals: 0
-      # - type: custom:auto-entities
-      #   card:
-      #     type: entities
-      #     title: "Stężenia alergenów"
-      #   filter:
-      #     include:
-      #       - entity_id: "sensor.stezenie_*"
-      #     exclude:
-      #       - state: "lack"
   - id: misc
     icon: mdi:cog
     title: "Różne"
