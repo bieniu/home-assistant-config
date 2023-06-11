@@ -4,6 +4,9 @@ devices_away_mode:
     data: {}
     target:
       entity_id:
+      - light.ceiling_garderoba
+      - light.ceiling_bed_sypialnia
+      - light.ceiling_sypialnia
       - light.ceiling_antek
       - light.ceiling_gabinet
       - light.ceiling_goscinny
@@ -259,8 +262,10 @@ alexa_goodnight:
       - light.ceiling_antek
       - light.ceiling_przedpokoj
       - light.ceiling_korytarz
+      - light.ceiling_garderoba
       - light.scone_schody
       - switch.stacjonarny
+    data: {}
   mode: single
   alias: 'Alexa: goodnight'
 restart_wifi_devices:
@@ -295,7 +300,6 @@ restart_wifi_devices:
       - button.shelly_1l_aacec4_restart
       - button.shelly_1l_aceb5f_restart
       - button.shelly_1l_ad365e_restart
-      - button.shelly_1l_e361a5_restart
       - button.shelly_1pm_5fd486_restart
       - button.shelly_25_77dbe5_restart
       - button.shelly_duo_5f6fa1_restart
@@ -306,6 +310,8 @@ restart_wifi_devices:
       - button.shelly_plug_s_7aecf4_restart
       - button.shelly_plus_1pm_b22864_restart
       - button.shelly_plus_1pm_948ff8_restart
+      - button.shelly_plus_2pm_8d28f4_restart
+      - button.shelly_plus_2pm_b67728_restart
       - button.shelly_pro_1pm_80e0c0_restart
       - button.shelly_valve_72a544_restart
       - button.shelly_vintage_d10472_restart

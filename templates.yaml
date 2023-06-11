@@ -112,15 +112,10 @@
           or is_state('media_player.denon_salon', 'on')
           or is_state('input_boolean.guests', 'on') }}
 
-    - name: lyra_54cf59_status
-      unique_id: "lyra_54cf59_status"
+    - name: rt_ax86s_ddc8_status
+      unique_id: "rt_ax86s_ddc8_status"
       icon: "mdi:access-point-network"
-      state: "{{ is_state('device_tracker.lyra_trio_54cf59', 'home') }}"
-
-    - name: lyra_54cf5d_status
-      unique_id: "lyra_54cf5d_status"
-      icon: "mdi:access-point-network"
-      state: "{{ is_state('device_tracker.lyra_trio_54cf5d', 'home') }}"
+      state: "{{ is_state('device_tracker.rt_ax86s_ddc8', 'home') }}"
 
     - name: synology_status
       unique_id: "synology_status"
@@ -177,11 +172,6 @@
       icon: mdi:cellphone
       state: "{{ is_state('device_tracker.iphone_13', 'home') }}"
 
-    - name: iphone_8_plus_status
-      unique_id: "iphone_8_plus_status"
-      icon: mdi:cellphone
-      state: "{{ is_state('device_tracker.iphone_8_plus', 'home') }}"
-
     - name: iphone_11_status
       unique_id: "iphone_11_status"
       icon: mdi:cellphone
@@ -227,10 +217,10 @@
       icon: mdi:speaker
       state: "{{ is_state('device_tracker.echo_dot', 'home') }}"
 
-    - name: sonos_one_status
-      unique_id: "echo_one_status"
+    - name: sonos_one_67e008_status
+      unique_id: "sonos_one_67e008_status"
       icon: mdi:cast-audio
-      state: "{{ is_state('device_tracker.sonos_one', 'home') }}"
+      state: "{{ is_state('device_tracker.sonos_one_67e008', 'home') }}"
 
     - name: inkbook_status
       unique_id: "inkbook_status"
@@ -244,14 +234,6 @@
     - name: laptop_maciek_status
       unique_id: "laptop_maciek_status"
       state: "{{ is_state('device_tracker.lenovo_thinkpad_t14', 'home') }}"
-
-    - name: dell_latitude_5400_status
-      unique_id: "dell_latitude_5400_status"
-      state: "{{ is_state('device_tracker.dell_latitude_5400', 'home') }}"
-
-    - name: laptop_antek_status
-      unique_id: "laptop_antek_status"
-      state: "{{ is_state('device_tracker.lenovo_ideapad_s145', 'home') }}"
 
     - name: denon_status
       unique_id: "denon_status"
@@ -360,10 +342,6 @@
       unique_id: "shelly_1l_ad365e_status"
       state: "{{ is_state('device_tracker.shelly_1l_ad365e', 'home') }}"
 
-    - name: shelly_1l_e361a5_status
-      unique_id: "shelly_1l_e361a5_status"
-      state: "{{ is_state('device_tracker.shelly_1l_e361a5', 'home') }}"
-
     - name: shelly_1pm_5fd486_status
       unique_id: "shelly_1pm_5fd486_status"
       state: "{{ is_state('device_tracker.shelly_1pm_5fd486', 'home') }}"
@@ -383,6 +361,14 @@
     - name: shelly_25_77dbe5_status
       unique_id: "shelly_25_77dbe5_status"
       state: "{{ is_state('device_tracker.shelly_25_77dbe5', 'home') }}"
+
+    - name: shelly_plus_2pm_8d28f4_status
+      unique_id: "shelly_plus_2pm_8d28f4_status"
+      state: "{{ is_state('device_tracker.shelly_plus_2pm_8d28f4', 'home') }}"
+
+    - name: shelly_plus_2pm_b67728_status
+      unique_id: "shelly_plus_2pm_b67728_status"
+      state: "{{ is_state('device_tracker.shelly_plus_2pm_b67728', 'home') }}"
 
     - name: shelly_duo_5f6fa1_status
       unique_id: "shelly_duo_5f6fa1_status"
@@ -431,11 +417,6 @@
       icon: mdi:motion-sensor
       state: "{{ is_state('device_tracker.shelly_motion_2_72a6a4', 'home') }}"
 
-    - name: wemos_d1_mini_1c91ea_status
-      unique_id: "wemos_d1_mini_1c91ea_status"
-      icon: mdi:developer-board
-      state: "{{ is_state('device_tracker.wemos_d1_mini_1c91ea', 'home') }}"
-
     - name: wemos_lolin32_8cbf7c_status
       unique_id: "wemos_lolin32_8cbf7c_status"
       icon: mdi:developer-board
@@ -444,7 +425,7 @@
     - name: nettigo_air_monitor_status
       unique_id: "nettigo_air_monitor_status"
       icon: mdi:weather-partly-rainy
-      state: "{{ is_state('device_tracker.nettigo_air_monitor', 'home') }}"
+      state: "{{ is_state('device_tracker.nam_f5280e', 'home') }}"
 
     - name: yeelight_mjtd01syl_94e1f5_status
       unique_id: "yeelight_mjtd01syl_94e1f5_status"

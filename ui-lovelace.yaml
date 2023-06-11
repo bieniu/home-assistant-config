@@ -698,6 +698,8 @@ views:
                     state_not: "off"
                 row:
                   entity: climate.thermostat_sypialnia
+              - light.ceiling_sypialnia
+              - light.ceiling_bed_sypialnia
               - type: custom:slider-entity-row
                 entity: light.lightstrip_sypialnia
                 toggle: true
@@ -706,6 +708,12 @@ views:
                 entity: light.table_lamp_sypialnia
                 toggle: true
                 hide_when_off: true
+      - type: entities
+        title: "Garderoba"
+        show_header_toggle: false
+        state_color: true
+        entities:
+          - light.ceiling_garderoba
       - type: vertical-stack
         in_card: true
         cards:
@@ -826,9 +834,12 @@ views:
                 title: "Router"
                 show_header_toggle: false
                 entities:
-                  - sensor.asuswrt_cpu_temperature
-                  - sensor.asuswrt_2_4ghz_temperature
-                  - sensor.asuswrt_5ghz_temperature
+                  - sensor.asus_rt_ax86s_devices_connected
+                  - sensor.asus_rt_ax86s_cpu_temperature
+                  - sensor.asus_rt_ax86s_2_4ghz_temperature
+                  - sensor.asus_rt_ax86s_5ghz_temperature
+                  - sensor.asus_rt_ax86s_download
+                  - sensor.asus_rt_ax86s_upload
               - type: horizontal-stack
                 cards:
                   - type: custom:mini-graph-card
@@ -838,7 +849,7 @@ views:
                     line_color: "#36a2eb"
                     decimals: 1
                     entities:
-                      - sensor.asuswrt_download_speed
+                      - sensor.asus_rt_ax86s_download_speed
                   - type: custom:mini-graph-card
                     canary_style:
                       border-style: none
@@ -846,7 +857,7 @@ views:
                     line_color: "#ffce57"
                     decimals: 1
                     entities:
-                      - sensor.asuswrt_upload_speed
+                      - sensor.asus_rt_ax86s_upload_speed
           - type: vertical-stack
             in_card: true
             title: "NextDNS"
@@ -1022,9 +1033,7 @@ views:
                   }
           - entity: binary_sensor.router_status
             <<: *NETWORK_STATUS_ICON_COLOR
-          - entity: binary_sensor.lyra_54cf59_status
-            <<: *NETWORK_STATUS_ICON_COLOR
-          - entity: binary_sensor.lyra_54cf5d_status
+          - entity: binary_sensor.rt_ax86s_ddc8_status
             <<: *NETWORK_STATUS_ICON_COLOR
       - type: entities
         title: "Serwery"
@@ -1090,7 +1099,7 @@ views:
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.echo_dot_status
             <<: *NETWORK_STATUS_ICON_COLOR
-          - entity: binary_sensor.sonos_one_status
+          - entity: binary_sensor.sonos_one_67e008_status
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.harmony_status
             <<: *NETWORK_STATUS_ICON_COLOR
@@ -1158,8 +1167,6 @@ views:
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_plus_smoke_d12914_status
             <<: *NETWORK_STATUS_ICON_COLOR
-          - entity: binary_sensor.wemos_d1_mini_1c91ea_status
-            <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.wemos_lolin32_8cbf7c_status
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.nettigo_air_monitor_status
@@ -1194,8 +1201,6 @@ views:
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_1l_ad365e_status
             <<: *NETWORK_STATUS_ICON_COLOR
-          - entity: binary_sensor.shelly_1l_e361a5_status
-            <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_1pm_5fd486_status
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_25_77dbe5_status
@@ -1207,6 +1212,10 @@ views:
           - entity: binary_sensor.shelly_plus_1pm_948ff8_status
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_plus_1pm_b22864_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_plus_2pm_8d28f4_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_plus_2pm_b67728_status
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_pro_1pm_80e0c0_status
             <<: *NETWORK_STATUS_ICON_COLOR

@@ -117,7 +117,6 @@
     - update.shellies_discovery_gen2
     - update.aeotec_zw175_smart_switch_7_025_firmware
     - update.aeotec_zwa021_thermostat_023_firmware
-    - update.asus_rt_ac86u_firmware
     - update.blitzwolf_bw_shp6_3766eb_firmware
     - update.blitzwolf_bw_shp6_ecf9ea_firmware
     - update.blitzwolf_bw_shp6_ed007d_firmware
@@ -139,6 +138,7 @@
     - update.shelly_plug_s_7aecf4_firmware
     - update.shelly_plus_1pm_948ff8_firmware
     - update.shelly_plus_1pm_b22864_firmware
+    - update.shelly_plus_2pm_8d28f4_firmware
     - update.shelly_plus_ht_09e018_firmware_update
     - update.shelly_plus_ht_6b3e3c_firmware_update
     - update.shelly_plus_plug_s_2ffb28_firmware
@@ -473,13 +473,17 @@
     entity_id:
     - binary_sensor.shelly_plug_s_7aecf4_overpower
     - binary_sensor.shelly_plus_plug_s_2ffb28_overpower
-    - binary_sensor.shelly_25_77dbe5_overpower_0
-    - binary_sensor.shelly_25_77dbe5_overpower_1
+    - binary_sensor.shelly_25_77dbe5_relay_1_overpower
+    - binary_sensor.shelly_25_77dbe5_relay_2_overpower
     - binary_sensor.shelly_1pm_5fd486_overpower
     - binary_sensor.shelly_plus_1pm_948ff8_overpower
     - binary_sensor.shelly_plus_1pm_b22864_overpower
     - binary_sensor.shelly_pro_1pm_80e0c0_overpower
     - binary_sensor.aeotec_zw175_smart_switch_7_025_overpower
+    - binary_sensor.shelly_plus_2pm_8d28f4_relay_1_overpower
+    - binary_sensor.shelly_plus_2pm_8d28f4_relay_2_overpower
+    - binary_sensor.shelly_plus_2pm_b67728_relay_1_overpower
+    - binary_sensor.shelly_plus_2pm_b67728_relay_2_overpower
     from: 'off'
     to: 'on'
     for:
@@ -511,7 +515,6 @@
     - binary_sensor.shelly_1l_aacec4_overtemperature
     - binary_sensor.shelly_1l_aceb5f_overtemperature
     - binary_sensor.shelly_1l_ad365e_overtemperature
-    - binary_sensor.shelly_1l_e361a5_overtemperature
     - binary_sensor.shelly_1pm_5fd486_overtemperature
     - binary_sensor.shelly_25_77dbe5_overtemperature
     - binary_sensor.shelly_plug_s_7aecf4_overtemperature
@@ -519,6 +522,10 @@
     - binary_sensor.shelly_plus_1pm_948ff8_overtemperature
     - binary_sensor.shelly_plus_1pm_b22864_overtemperature
     - binary_sensor.shelly_pro_1pm_80e0c0_overtemperature
+    - binary_sensor.shelly_plus_2pm_8d28f4_relay_1_overtemperature
+    - binary_sensor.shelly_plus_2pm_8d28f4_relay_2_overtemperature
+    - binary_sensor.shelly_plus_2pm_b67728_relay_1_overtemperature
+    - binary_sensor.shelly_plus_2pm_b67728_relay_2_overtemperature
     from: 'off'
     to: 'on'
     for:
@@ -1787,8 +1794,8 @@
       minutes: 20
   condition:
   - condition: state
-    entity_id: binary_sensor.laptop_antek_status
-    state: 'off'
+    entity_id: device_tracker.desktop_antek
+    state: not_home
   - condition: or
     conditions:
     - condition: state
@@ -1842,8 +1849,8 @@
       from: 'on'
       to: 'off'
   - condition: state
-    entity_id: binary_sensor.laptop_antek_status
-    state: 'off'
+    entity_id: device_tracker.desktop_antek
+    state: not_home
   - service: light.toggle
     data:
       transition: 10
@@ -2889,3 +2896,33 @@
     entity_id: light.table_lamp_sypialnia
     domain: light
   mode: single
+- id: '1686430803024'
+  alias: Light Sypialnia Turn Off Lights When No Motion
+  description: wyłącz światła w sypialni jak brak ruchu przez 20 min
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_sypialnia
+    from: 'on'
+    to: 'off'
+    for:
+      minutes: 20
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: light.ceiling_bed_sypialnia
+      state: 'on'
+    - condition: state
+      entity_id: light.ceiling_sypialnia
+      state: 'on'
+    - condition: state
+      entity_id: light.ceiling_garderoba
+      state: 'on'
+  action:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.ceiling_bed_sypialnia
+      - light.ceiling_sypialnia
+      - light.ceiling_garderoba
+    data: {}

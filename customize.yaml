@@ -8,29 +8,20 @@ sensor.disk_use_percent:
   friendly_name: "Zajęta przestrzeń dyskowa"
 
 #### NETWORK DEVICES ####
-binary_sensor.lyra_54cf59_status:
-  friendly_name: "Lyra Trio [54CF59]"
-binary_sensor.lyra_54cf5d_status:
-  friendly_name: "Lyra Trio [54CF5D]"
 binary_sensor.raspberry_status:
   friendly_name: "Raspberry Pi 4B"
 binary_sensor.router_status:
   icon: mdi:router-network
-  friendly_name: "Asus RT-AC86U"
+  friendly_name: "Asus RT-AX86S [CBA8]"
 binary_sensor.synology_status:
   friendly_name: "Synology DS110j"
 binary_sensor.nuc_status:
   friendly_name: "Intel NUC 5CPYH"
-binary_sensor.stacjonarny_status:
-  friendly_name: "Komputer stacjonarny"
 binary_sensor.playstation_status:
   friendly_name: "PlayStation 4 Pro"
 binary_sensor.harmony_status:
   friendly_name: "Logitech Harmony Hub"
-binary_sensor.iphone_8_plus_status:
-  friendly_name: "iPhone 8 Plus"
-binary_sensor.iphone_11_status:
-  friendly_name: "iPhone 11"
+
 binary_sensor.ipad_status:
   friendly_name: "iPad Air"
 binary_sensor.kindle_keyboard_3g_status:
@@ -52,8 +43,6 @@ binary_sensor.inkbook_status:
   friendly_name: "inkBook Classic 2"
 binary_sensor.laptop_edyta_status:
   friendly_name: "Dell Latitude 7320"
-binary_sensor.laptop_antek_status:
-  friendly_name: "Lenovo IdeaPad S145"
 binary_sensor.denon_status:
   friendly_name: "Denon AVR-X2100W"
 binary_sensor.laptop_status:
@@ -108,8 +97,6 @@ binary_sensor.shelly_flood_f2ad1d_status:
   friendly_name: "Shelly Flood [F2AD1D]"
 binary_sensor.shelly_motion_c67c2a_status:
   friendly_name: "Shelly Motion [C67C2A]"
-binary_sensor.wemos_d1_mini_1c91ea_status:
-  friendly_name: "Wemos D1 mini [1C91EA]"
 binary_sensor.nettigo_air_monitor_status:
   friendly_name: "Nettigo Air Monitor"
 binary_sensor.yeelight_mjtd01syl_94e1f5_status:
@@ -167,3 +154,6 @@ sensor.aqi_attr_salon:
 
 sensor.bmw_x1_xdrive20i_remaining_fuel:
   unit_of_measurement: "l"
+
+sensor.asus_rt_ax86s_devices_connected:
+  unit_of_measurement: "urządzeń"
