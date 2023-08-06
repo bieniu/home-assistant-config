@@ -314,6 +314,10 @@
       unique_id: "shelly_plus_smoke_d12914_status"
       state: "{{ is_state('device_tracker.shelly_plus_smoke_d12914', 'home') }}"
 
+    - name: shelly_plus_smoke_d08428_status
+      unique_id: "shelly_plus_smoke_d08428_status"
+      state: "{{ is_state('device_tracker.shelly_plus_smoke_d08428', 'home') }}"
+
     - name: shelly_valve_2a544_status
       unique_id: "shelly_valve_2a544_status"
       state: "{{ is_state('device_tracker.shelly_valve_72a544', 'home') }}"
@@ -357,6 +361,14 @@
     - name: shelly_pro_1pm_80e0c0_status
       unique_id: "shelly_pro_1pm_80e0c0_status"
       state: "{{ is_state('device_tracker.shelly_pro_1pm_80e0c0', 'home') }}"
+
+    - name: shelly_pro_3em_879c7c_status
+      unique_id: "shelly_pro_3em_879c7c_status"
+      state: "{{ is_state('device_tracker.shelly_pro_3em_879c7c', 'home') }}"
+
+    - name: shelly_plus_pm_mini_af50f0_status
+      unique_id: "shelly_plus_pm_mini_af50f0_status"
+      state: "{{ is_state('device_tracker.shelly_plus_pm_mini_af50f0', 'home') }}"
 
     - name: shelly_25_77dbe5_status
       unique_id: "shelly_25_77dbe5_status"
@@ -412,10 +424,10 @@
       icon: mdi:motion-sensor
       state: "{{ is_state('device_tracker.shelly_motion_c67c2a', 'home') }}"
 
-    - name: shelly_motion_2_72a6a4_status
-      unique_id: "shelly_motion_2_72a6a4_status"
+    - name: shelly_motion_2_08a4e9_status
+      unique_id: "shelly_motion_2_08a4e9_status"
       icon: mdi:motion-sensor
-      state: "{{ is_state('device_tracker.shelly_motion_2_72a6a4', 'home') }}"
+      state: "{{ is_state('device_tracker.shelly_motion_2_08a4e9', 'home') }}"
 
     - name: wemos_lolin32_8cbf7c_status
       unique_id: "wemos_lolin32_8cbf7c_status"

@@ -305,19 +305,20 @@ restart_wifi_devices:
       - button.shelly_duo_5f6fa1_restart
       - button.shelly_duo_rgbw_d4ecd3_restart
       - button.shelly_gas_c6811c_restart
-      - button.shelly_motion_2_72a6a4_restart
+      - button.shelly_motion_2_08a4e9_restart
       - button.shelly_motion_c67c2a_restart
       - button.shelly_plug_s_7aecf4_restart
       - button.shelly_plus_1pm_b22864_restart
       - button.shelly_plus_1pm_948ff8_restart
       - button.shelly_plus_2pm_8d28f4_restart
       - button.shelly_plus_2pm_b67728_restart
+      - button.shelly_plus_plug_s_2ffb28_restart
       - button.shelly_pro_1pm_80e0c0_restart
+      - button.shelly_pro_3em_879c7c_restart
       - button.shelly_valve_72a544_restart
       - button.shelly_vintage_d10472_restart
       - button.wemos_lolin32_8cbf7c_restart
-      - button.blitzwolf_bw_shp6_ecf9ea_restart
-      - button.shelly_plus_plug_s_2ffb28_restart
+      - button.shelly_plus_pm_mini_af50f0_restart
     data: {}
   mode: single
   icon: mdi:restart

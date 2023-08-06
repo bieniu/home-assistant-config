@@ -11,9 +11,12 @@
   description: powiadom o zagubionych encjach
   trigger:
   - platform: state
-    entity_id: sensor.watchman_missing_entities
+    entity_id:
+    - sensor.watchman_missing_entities
     for:
-      minutes: 1
+      hours: 0
+      minutes: 0
+      seconds: 30
   condition:
   - condition: template
     value_template: '{{ trigger.to_state.state | int(0) > 0 }}'
@@ -118,7 +121,8 @@
     - update.aeotec_zw175_smart_switch_7_025_firmware
     - update.aeotec_zwa021_thermostat_023_firmware
     - update.blitzwolf_bw_shp6_3766eb_firmware
-    - update.blitzwolf_bw_shp6_ecf9ea_firmware
+    - update.blitzwolf_bw_shp6_173eb6_firmware
+    - update.blitzwolf_bw_shp6_2ad05a_firmware
     - update.blitzwolf_bw_shp6_ed007d_firmware
     - update.shelly_1l_253d92_firmware
     - update.shelly_1l_61c9fd_firmware
@@ -133,7 +137,7 @@
     - update.shelly_flood_f2ad1d_firmware
     - update.shelly_gas_c6811c_firmware
     - update.shelly_ht_e00abd_firmware
-    - update.shelly_motion_2_72a6a4_firmware
+    - update.shelly_motion_2_08a4e9_firmware
     - update.shelly_motion_c67c2a_firmware
     - update.shelly_plug_s_7aecf4_firmware
     - update.shelly_plus_1pm_948ff8_firmware
@@ -142,8 +146,11 @@
     - update.shelly_plus_ht_09e018_firmware_update
     - update.shelly_plus_ht_6b3e3c_firmware_update
     - update.shelly_plus_plug_s_2ffb28_firmware
+    - update.shelly_plus_pm_mini_af50f0_firmware
     - update.shelly_plus_smoke_d12914_firmware
+    - update.shelly_plus_smoke_d08428_firmware
     - update.shelly_pro_1pm_80e0c0_firmware
+    - update.shelly_pro_3em_879c7c_firmware
     - update.shelly_valve_72a544_firmware
     - update.shelly_vintage_d10472_firmware
     - update.wemos_lolin32_8cbf7c_firmware
@@ -687,23 +694,6 @@
       gw_mac: f0b429cc6f0b
       ringtone_id: 2
       ringtone_vol: 20
-- id: notification_low_disk_space_on_synology
-  alias: Notification Low Disk Space On Synology
-  description: powiadom o małej ilości miejsca na Synology
-  trigger:
-    platform: numeric_state
-    entity_id: sensor.synology_disk_used
-    above: 70
-  action:
-  - service: python_script.notify
-    data:
-      title: Mało miejsca na dysku Synology
-      message: Dysk Synology jest zapełniony w {{ trigger.to_state.state }}%.
-      tag: notification-synology-low-space
-      group: other
-      services:
-      - service: notify.mobile_app_iphone_13
-        type: ios
 - id: notification_new_device
   alias: Notification New Device
   description: powiadom o wykryciu nowego urządzenia
@@ -923,7 +913,7 @@
   - service: script.heating_night
     data: {}
 - id: turn_off_ceiling_fan_for_night
-  alias: Turn Off Ceiling Fan For Night
+  alias: Salon Turn Off Ceiling Fan For Night
   description: wyłącz wentylator sufitowy na noc
   trigger:
   - platform: state
@@ -1254,20 +1244,16 @@
     to: 'on'
   action:
     service: script.devices_away_mode
-- id: devices_turn_off_in_salon_when_no_motion_and_after_midnight
-  alias: Devices Salon Turn Off When No Motion And After Midnight
-  description: wyłącz urządzenia w salonie jeśli nie ma ruchu przez 30 min i jest
-    po północy
+- id: devices_turn_off_in_salon_when_no_motion
+  alias: Salon Turn Off Devices When No Motion
+  description: wyłącz urządzenia w salonie jeśli nie ma ruchu
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_salon
     to: 'off'
     for:
-      minutes: 30
+      minutes: '{{ states(''input_number.no_motion_time'') | int }}'
   condition:
-  - condition: time
-    after: 00:30:00
-    before: 06:00:00
   - condition: state
     entity_id: media_player.denon_salon
     state: 'off'
@@ -1285,6 +1271,8 @@
     - condition: state
       entity_id: fan.ceiling_salon
       state: 'on'
+  - condition: time
+    before: 07:00:00
   action:
   - service: homeassistant.turn_off
     target:
@@ -1414,7 +1402,6 @@
     target:
       entity_id: light.lamp_salon
     data: {}
-  max_exceeded: silent
 - id: light_scene_film
   alias: Light Salon Scene Film
   description: włącz scenę oświetlenia film po włączeniu filmu/gry/trybu smart
@@ -1466,44 +1453,45 @@
       option: automatyczny
 - id: light_turn_off_toaleta_light_when_no_motion
   alias: Light Turn Off Toaleta Light When No Motion
-  description: wyłącz światło w toalecie jak brak ruchu przez 20 min
+  description: wyłącz światło w toalecie jak brak ruchu
   trigger:
     platform: state
     entity_id: binary_sensor.motion_toaleta
     from: 'on'
     to: 'off'
     for:
-      minutes: 20
+      minutes: '{{ states(''input_number.no_motion_time'') | int }}'
   condition:
-    condition: state
+  - condition: state
     entity_id: light.ceiling_toaleta
     state: 'on'
   action:
-    service: light.turn_off
+  - service: light.turn_off
     target:
       entity_id: light.ceiling_toaleta
+    data: {}
 - id: light_turn_off_lazienka_light_when_no_motion
   alias: Light Turn Off Lazienka Light When No Motion
   description: wyłącz światło w łazience jak brak ruchu przez 20 min
   trigger:
-    platform: state
+  - platform: state
     entity_id: binary_sensor.motion_lazienka
     from: 'on'
     to: 'off'
     for:
-      minutes: 20
+      minutes: '{{ states(''input_number.no_motion_time'') | int }}'
   condition:
-    condition: state
+  - condition: state
     entity_id: light.ceiling_lazienka
     state: 'on'
   action:
-    service: light.turn_off
+  - service: light.turn_off
     target:
       entity_id: light.ceiling_lazienka
+    data: {}
 - id: light_turn_on_kuchnia_light_when_dark_and_motion
-  alias: Light Turn On Kuchnia Light When Dark And Motion
+  alias: Light Kuchnia Turn On Light When Dark And Motion
   description: włącz światło w kuchni jak pojawi się ruch i jest ciemno
-  max_exceeded: silent
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_kuchnia
@@ -1531,6 +1519,7 @@
   - service: light.turn_on
     target:
       entity_id: light.ceiling_kuchnia
+    data: {}
   - wait_for_trigger:
       platform: state
       entity_id: binary_sensor.motion_kuchnia
@@ -1539,6 +1528,7 @@
   - service: light.turn_off
     target:
       entity_id: light.ceiling_kuchnia
+    data: {}
 - id: light_turn_off_kuchnia_light_when_no_motion
   alias: Light Turn Off Kuchnia Light When No Motion
   description: wyłącz światło w kuchni jak brak ruchu przez 20 min
@@ -1558,10 +1548,10 @@
     target:
       entity_id: light.ceiling_kuchnia
 - id: light_turn_on_antresola_lampt_when_dark_and_motion
-  alias: Light Turn On Antresola Lamp When Dark And Motion
+  alias: Light Antresola Turn On Lamp When Dark And Motion
   description: włącz lampkę na antresoli jak pojawi się ruch i jest ciemno
   trigger:
-    platform: state
+  - platform: state
     entity_id: binary_sensor.motion_antresola
     from: 'off'
     to: 'on'
@@ -1599,8 +1589,9 @@
   - service: light.turn_off
     target:
       entity_id: light.gateway_antresola
+    data: {}
 - id: light_turn_on_sypialnia_leds_when_dark_and_motion
-  alias: Light Turn On Sypialnia LEDs When Dark And Motion
+  alias: Light Sypialnia Turn On LEDs When Dark And Motion
   description: włącz LEDy w sypialni jak pojawi się ruch i jest ciemno
   trigger:
   - platform: state
@@ -1644,7 +1635,7 @@
     data:
       transition: 10
 - id: light_turn_on_korytarz_light_when_dark_and_motion
-  alias: Light Turn On Korytarz Light When Dark And Motion
+  alias: Light Korytarz Turn On Light When Dark And Motion
   description: włącz oświetnie w korytarzu jak pojawi się ruch i jest ciemno
   trigger:
   - platform: state
@@ -1669,6 +1660,7 @@
   - service: light.turn_on
     target:
       entity_id: light.ceiling_korytarz
+    data: {}
   - wait_for_trigger:
       platform: state
       entity_id: binary_sensor.motion_korytarz
@@ -1677,6 +1669,7 @@
   - service: light.turn_off
     target:
       entity_id: light.ceiling_korytarz
+    data: {}
 - id: light_turn_off_korytarz_lights_when_no_motion
   alias: Light Turn Off Korytarz Lights When No Motion
   description: wyłącz oświetlenie na korytarzu jak brak ruchu przez 20 min
@@ -1696,7 +1689,7 @@
     target:
       entity_id: light.ceiling_korytarz
 - id: light_turn_on_przedpokoj_leds_when_dark_and_motion
-  alias: Light Turn On Przedpokoj LEDs When Dark And Motion
+  alias: Light Przedpokój Turn On LEDs When Dark And Motion
   description: włącz LEDy na przedpokoju jak pojawi się ruch i jest ciemno
   trigger:
   - platform: state
@@ -1725,6 +1718,7 @@
   - service: light.turn_on
     target:
       entity_id: light.leds_przedpokoj
+    data: {}
   - wait_for_trigger:
       platform: state
       entity_id: binary_sensor.motion_przedpokoj
@@ -1733,18 +1727,19 @@
   - service: light.turn_off
     target:
       entity_id: light.leds_przedpokoj
+    data: {}
 - id: light_turn_off_przedpokoj_lights_when_no_motion
   alias: Light Turn Off Przedpokoj lights When No Motion
-  description: wyłącz oświetlenie na przedpokoju jak brak ruchu przez 20 min
+  description: wyłącz oświetlenie na przedpokoju jak brak ruchu
   trigger:
     platform: state
     entity_id: binary_sensor.motion_przedpokoj
     from: 'on'
     to: 'off'
     for:
-      minutes: 20
+      minutes: '{{ states(''input_number.no_motion_time'') | int }}'
   condition:
-    condition: or
+  - condition: or
     conditions:
     - condition: state
       entity_id: light.leds_przedpokoj
@@ -1756,12 +1751,13 @@
       entity_id: light.ceiling_korytarz
       state: 'on'
   action:
-    service: light.turn_off
+  - service: light.turn_off
     target:
       entity_id:
       - light.leds_przedpokoj
       - light.ceiling_przedpokoj
       - light.ceiling_korytarz
+    data: {}
 - id: light_toggle_ceiling_antek
   alias: Light Antek Toggle Ceiling Lamp
   description: ''
@@ -1784,18 +1780,15 @@
     data: {}
 - id: light_turn_off_antek_lights_when_no_motion
   alias: Light Antek Turn Off Lights When No Motion
-  description: wyłącz światła w pokoju Antka jak brak ruchu przez 20 min
+  description: wyłącz światła w pokoju Antka jak brak ruchu
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_antek
     from: 'on'
     to: 'off'
     for:
-      minutes: 20
+      minutes: '{{ states(''input_number.no_motion_time'') | int }}'
   condition:
-  - condition: state
-    entity_id: device_tracker.desktop_antek
-    state: not_home
   - condition: or
     conditions:
     - condition: state
@@ -1871,7 +1864,7 @@
     entity_id: light.lightstrip_antek
     domain: light
 - id: light_turn_on_pracownia_lamp_when_dark_and_motion
-  alias: Light Turn On Pracownia Lamp When Dark And Motion
+  alias: Light Pracownia Turn On Lamp When Dark And Motion
   description: włącz lampkę w pracowni jak pojawi się ruch i jest ciemno
   trigger:
   - platform: state
@@ -1901,6 +1894,7 @@
   - service: light.turn_on
     target:
       entity_id: light.lamp_pracownia
+    data: {}
   - wait_for_trigger:
       platform: state
       entity_id: binary_sensor.motion_pracownia
@@ -1909,6 +1903,7 @@
   - service: light.turn_off
     target:
       entity_id: light.lamp_pracownia
+    data: {}
 - id: light_toggle_gabinet_ceiling_light_
   alias: Light Gabinet Toggle Ceiling Lamp
   description: włącz/wyłącz oświetlenie sufitowe
@@ -1950,7 +1945,7 @@
       entity_id: light.lamp_gabinet
     data: {}
 - id: light_turn_on_gabinet_lamp_when_dark_and_motion
-  alias: Light Turn On Gabinet Lamp When Dark And Motion
+  alias: Light Gabinet Turn On Lamp When Dark And Motion
   description: włącz lampę w gabinecie jak pojawi się ruch i jest ciemno
   trigger:
   - platform: state
@@ -1997,18 +1992,15 @@
       transition: 10
 - id: light_turn_off_gabinet_light_when_no_motion
   alias: Light Turn Off Gabinet Light When No Motion
-  description: wyłącz światło w gabinecie jak brak ruchu przez 20 min
+  description: wyłącz światło w gabinecie jak brak ruchu
   trigger:
     platform: state
     entity_id: binary_sensor.motion_gabinet
     from: 'on'
     to: 'off'
     for:
-      minutes: 20
+      minutes: '{{ states(''input_number.no_motion_time'') | int }}'
   condition:
-  - condition: state
-    entity_id: switch.stacjonarny
-    state: 'off'
   - condition: or
     conditions:
     - condition: state
@@ -2021,12 +2013,13 @@
       entity_id: light.desk_lamp_gabinet
       state: 'on'
   action:
-    service: light.turn_off
+  - service: light.turn_off
     target:
       entity_id:
       - light.ceiling_gabinet
       - light.lamp_gabinet
       - light.desk_lamp_gabinet
+    data: {}
 - id: light_toggle_schody_leds
   alias: Light Schody Toggle LEDs
   description: włącz/wyłącz LEDy na schodach
@@ -2524,14 +2517,14 @@
   mode: single
 - id: light_turn_off_goscinny_light_when_no_motion
   alias: Light Gościnny Turn Off Light When No Motion
-  description: wyłącz światło w pokoju gościnnym jak brak ruchu przez 20 min
+  description: wyłącz światło w pokoju gościnnym jak brak ruchu
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_goscinny
     from: 'on'
     to: 'off'
     for:
-      minutes: 20
+      minutes: '{{ states(''input_number.no_motion_time'') | int }}'
   condition:
   - condition: state
     entity_id: light.ceiling_goscinny
@@ -2790,11 +2783,11 @@
     domain: light
   mode: single
 - id: '1672565177379'
-  alias: Light Antek Turn Off At 2:00
+  alias: Light Antek Turn Off At 0:10
   description: ''
   trigger:
   - platform: time
-    at: 02:00:00
+    at: 00:10:00
   condition: []
   action:
   - service: light.turn_off
@@ -2842,18 +2835,23 @@
       - service: notify.mobile_app_iphone_12
         type: ios
 - id: '1678536051718'
-  alias: Notification Smoke Antresola
-  description: powiadom o dymie na antresoli
+  alias: Notification Smoke
+  description: powiadom o wykryciu dymu
   trigger:
   - platform: state
     entity_id: binary_sensor.smoke_antresola
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.smoke_kuchnia
     from: 'off'
     to: 'on'
   action:
   - service: python_script.notify
     data:
       title: Dym
-      message: Uwaga! Wykryto dym na antresoli!
+      message: "{% if \"antresola\" in trigger.entity_id %}\n  Uwaga! Wykryto dym
+        na antresoli!\n{% else %}\n  Uwaga! Wykryto dym w kuchni!\n{% endif %}"
       tag: notification-smoke
       priority: high
       group: smoke
@@ -2898,14 +2896,14 @@
   mode: single
 - id: '1686430803024'
   alias: Light Sypialnia Turn Off Lights When No Motion
-  description: wyłącz światła w sypialni jak brak ruchu przez 20 min
+  description: wyłącz światła w sypialni jak brak ruchu
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_sypialnia
     from: 'on'
     to: 'off'
     for:
-      minutes: 20
+      minutes: '{{ states(''input_number.no_motion_time'') | int }}'
   condition:
   - condition: or
     conditions:
@@ -2926,3 +2924,55 @@
       - light.ceiling_sypialnia
       - light.ceiling_garderoba
     data: {}
+- id: '1687379670409'
+  alias: Notification Update Asus Firmware
+  description: ''
+  trigger:
+  - platform: webhook
+    allowed_methods:
+    - POST
+    local_only: true
+    webhook_id: c49z8jfh2reyo2dc8q2tn45jd7aw3fugrafws2jzrauzhsh7g3jzatzvwn5z
+  condition:
+  - '{{ trigger.json.installed != trigger.json.latest }}'
+  - '{{ trigger.json.installed is defined }}'
+  - '{{ trigger.json.latest is defined }}'
+  action:
+  - service: python_script.notify
+    data:
+      title: Dostępna aktualizacja
+      message: Dostępna jest aktualizacja do wersji {{ trigger.json.latest }} dla
+        Asus RT-AX86S.
+      tag: notification-update-router
+      group: updates
+      url: http://rt-ax86s.bieniu.lan/
+      services:
+      - service: notify.mobile_app_iphone_13
+        type: ios
+  mode: single
+- id: '1687849080259'
+  alias: Light Salon Helper
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - light.ceiling_salon
+    to: unavailable
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.ceiling_fan_and_bulbs_salon
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 7
+      milliseconds: 0
+  - service: switch.turn_on
+    data: {}
+  mode: single

@@ -23,34 +23,41 @@
 * Xiaomi Yeelight Color Bulbs [YLDP02YL and YLDP06YL]
 * Xiaomi Yeelight Lightstrips [YLDD01YL]
 * Xiaomi Mi Led Desk Lamp 1S [MJTD01SYL]
-* [Shelly DUO](https://shelly.cloud/products/shelly-duo-smart-home-automation-bulb/)
-* [Shelly DUO RGBW](https://shelly.cloud/products/shelly-bulb-smart-home-automation-device/)
-* [Shelly Vintage](https://shelly.cloud/products/shelly-vintage-smart-home-automation-bulb/)
+* Shelly DUO
+* Shelly DUO RGBW
+* Shelly Vintage
 
 ## Relays
 
 * Aeotec ZW175 Smart Switch 7
-* Sonoff S26 Plug [[ESPHome](https://esphome.io) firmware]
-* BlitzWolf BW-SHP6 Plugs [[ESPHome](https://esphome.io) firmware]
-* [Shelly 1PM](https://shelly.cloud/products/shelly-1pm-smart-home-automation-relay/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
-* [Shelly 1L](https://shelly.cloud/products/shelly-1l-single-wire-smart-home-automation-relay/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
-* [Shelly 2.5](https://shelly.cloud/products/shelly-25-smart-home-automation-relay/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
-* [Shelly Plug S](https://shelly.cloud/products/shelly-plug-s-smart-home-automation-device/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
-* [Shelly Pro 1PM](https://shelly.cloud/shelly-pro-smart-home-automation-solution/#Pro-1PM) via [Shellies Discovery Gen2](https://github.com/bieniu/ha-shellies-discovery-gen2)
-* [Shelly Plus 1PM](https://shelly.cloud/shelly-plus-1pm/) via [Shellies Discovery Gen2](https://github.com/bieniu/ha-shellies-discovery-gen2)
+* Sonoff S26 Plug
+* BlitzWolf BW-SHP6 Plugs
+* Shelly 1L
+* Shelly 1PM
+* Shelly 2.5
+* Shelly Plug S
+* Shelly Plus 1PM
+* Shelly Plus 2PM
+* Shelly Plus Plug S
+* Shelly Plus PM Mini
+* Shelly Pro 1PM
+* Shelly Pro 3EM
 
 ## Switches
 
 * Aqara Switches
+* ShellyBLU Button1
 
 ## Sensors
 
-* Wemos D1 mini + MH-Z19B [[ESPHome](https://esphome.io) firmware]
-* [Shelly H&T](https://shelly.cloud/products/shelly-humidity-temperature-smart-home-automation-sensor/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
-* [Shelly Plus H&T](https://shelly.cloud/shelly_plus_h-t/) via [Shellies Discovery Gen2](https://github.com/bieniu/ha-shellies-discovery-gen2)
-* [Shelly Flood](https://shelly.cloud/products/shelly-flood-smart-home-automation-sensor/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
-* [Shelly Motion](https://shelly.cloud/ifa-2020-products/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
-* [Shelly Gas](https://shelly.cloud/products/shelly-gas-smart-home-automation-sensor/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
+* Wemos Lolin32 + MH-Z19B [[ESPHome](https://esphome.io) firmware]
+* Shelly H&T(https://github.com/bieniu/ha-shellies-discovery)
+* Shelly Plus H&T
+* Shelly Flood
+* Shelly Motion
+* Shelly Motion 2
+* Shelly Gas
+* Shelly Plus Smoke
 * [Nettigo Air Monitor](https://air.nettigo.pl/?lang=en)
 * Aqara Temperature/Humidity/Pressure Sensors
 * Aqara Motion/Illumination Sensors
@@ -60,6 +67,7 @@
 
 * Aeotec ZWA021
 * Danfoss 014G0013
+* Danfoss 014G2461
 * [Shelly Valve](https://shelly.cloud/shelly-thermostatic-radiator-valve/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
 
 ## Other Integrated Devices
@@ -69,29 +77,27 @@
 * Denon AVR-X2100W
 * PlayStation 4 Pro
 * Xiaomi Mi Humidifier CA1
+* Xiaomi Mi Humidifier CB1
 * Xiaomi Mi Pedestal Fan 1X
 * Xiaomi Mi Air Purifier 3H
-* Xiaomi Mi Box 4K
-* Amazon Fire TV Stick 4K
-* Dune BD Prime 3.0
 * Synology DS110j
 * Brother HL-L2340D
-* iPhone/iPad [iOS [Home Assistant](https://itunes.apple.com/us/app/home-assistant-companion/id1099568401) app]
+* iPhones
 * CyberPower DL650ELCD
 * Xiaomi DaFang [camera with [custom firmware](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks)]
+* Philips TV
 * Sony Bravia TV
 * Amazon Echo Plus/Dot/Show [via Home Assistant Cloud]
 * Sonos One
-* Tractive tracker for dog
+* Tractive tracker for dogs
 * BMW car
-* Asus RT-AC86U router
+* Asus router
 
 ## Home Assistant Custom Components
 
 * [Alexa Media Player](https://github.com/custom-components/alexa_media_player)
 * [HACS](https://github.com/custom-components/hacs)
 * [Blitzortung.org Lightning Detector](https://github.com/mrk-its/homeassistant-blitzortung)
-* [Żadnego Ale](https://github.com/bieniu/ha-zadnego-ale)
 
 ## Lovelace Custom Cards
 

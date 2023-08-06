@@ -13,16 +13,12 @@
   icon: mdi:light-switch
 "binary_sensor.shelly_2_*_status":
   icon: mdi:light-switch
-"binary_sensor.shelly_pro_*_status":
-  icon: mdi:light-switch
 "binary_sensor.shelly_ht_*_status":
   icon: mdi:thermometer-lines
 "binary_sensor.shelly_flood_*_status":
   icon: mdi:water
 "binary_sensor.shelly_valve_*_status":
   icon: mdi:thermostat
-"binary_sensor.shelly_gas_*_status":
-  icon: mdi:gas-cylinder
 "binary_sensor.yeelight_mjtd01syl_*_status":
   icon: mdi:desk-lamp
 

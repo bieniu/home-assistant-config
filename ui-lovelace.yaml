@@ -24,6 +24,7 @@ views:
                 - entity_id: person.jerzy
                   state: home
                 - entity_id: person.karmel
+                - entity_id: person.luna
           - type: vertical-stack
             in_card: true
             title: "Pogoda"
@@ -94,6 +95,7 @@ views:
                 state_color: true
                 entities:
                   - binary_sensor.window_kuchnia
+                  - binary_sensor.smoke_kuchnia
                   - entity: binary_sensor.motion_kuchnia
                     secondary_info: last-changed
                   - binary_sensor.gas_leak_kuchnia
@@ -768,6 +770,7 @@ views:
           - person.maciek
           - person.antek
           - person.karmel
+          - person.luna
           - person.bmw
           - zone.home
           - zone.grandparents
@@ -945,7 +948,7 @@ views:
                     canary_style:
                       border-style: none
                     <<: *GRAPH_IN_CARD
-                    decimals: 1
+                    decimals: 0
                     entities:
                       - sensor.memory_use_percent
                     <<: *GRAPH_COLOR_THRESHOLD
@@ -976,7 +979,7 @@ views:
                     canary_style:
                       border-style: none
                     <<: *GRAPH_IN_CARD
-                    decimals: 1
+                    decimals: 0
                     entities:
                       - sensor.raspberry_memory_use
                     <<: *GRAPH_COLOR_THRESHOLD
@@ -991,13 +994,6 @@ views:
                   - sensor.printer_drum_remaining_life
                   - sensor.printer_toner_remaining
                   - sensor.printer_last_restart
-              - type: entities
-                title: "Synology"
-                show_header_toggle: false
-                entities:
-                  - sensor.synology_disk_used
-                  - entity: sensor.synology_last_restart
-                    format: relative
       - type: vertical-stack
         cards:
           - type: entities
@@ -1123,6 +1119,10 @@ views:
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_valve_2a544_status
             <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_plus_pm_mini_af50f0_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_pro_3em_879c7c_status
+            <<: *NETWORK_STATUS_ICON_COLOR
       - type: entities
         title: "IoT - oświetlenie"
         show_header_toggle: false
@@ -1159,11 +1159,13 @@ views:
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_motion_c67c2a_status
             <<: *NETWORK_STATUS_ICON_COLOR
-          - entity: binary_sensor.shelly_motion_2_72a6a4_status
+          - entity: binary_sensor.shelly_motion_2_08a4e9_status
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_flood_f2ad1d_status
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_gas_c6811c_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_plus_smoke_d08428_status
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_plus_smoke_d12914_status
             <<: *NETWORK_STATUS_ICON_COLOR
@@ -1224,42 +1226,32 @@ views:
     title: "Energia"
     path: energy
     cards:
-      - type: energy-devices-graph
-        title: "Zużycie energii"
       - type: vertical-stack
         in_card: true
+        canary_style:
+          border-style: none
+        title: "Zużycie energii"
         cards:
-          - type: entities
+          - type: energy-usage-graph
+          - type: energy-devices-graph
+          - type: custom:mini-graph-card
+            name: "Pobór mocy"
             canary_style:
               border-style: none
-            title: "UPS"
-            show_header_toggle: false
+            <<: *GRAPH_IN_CARD
+            decimals: 0
             entities:
-              - sensor.ups_status
-              - entity: sensor.cyberpower_dl650elcd_battery_charge
-                state_color: true
-              - sensor.cyberpower_dl650elcd_load
-          - type: horizontal-stack
-            cards:
-              - type: custom:mini-graph-card
-                canary_style:
-                  border-style: none
-                <<: *GRAPH_IN_CARD
-                icon: mdi:sine-wave
-                decimals: 0
-                entities:
-                  - sensor.cyberpower_dl650elcd_input_voltage
-                line_color: "#ef5350"
-              - type: custom:mini-graph-card
-                canary_style:
-                  border-style: none
-                <<: *GRAPH_IN_CARD
-                icon: mdi:sine-wave
-                decimals: 0
-                entities:
-                  - sensor.cyberpower_dl650elcd_battery_voltage
-                line_color: "#36a2eb"
-                lower_bound: 0
+              - sensor.shelly_pro_3em_879c7c_total_active_power
+      - type: entities
+        canary_style:
+          border-style: none
+        title: "UPS"
+        show_header_toggle: false
+        entities:
+          - sensor.ups_status
+          - entity: sensor.cyberpower_dl650elcd_battery_charge
+            state_color: true
+          - sensor.cyberpower_dl650elcd_load
       - type: entities
         title: "Baterie sensorów ruchu"
         state_color: true
@@ -1268,7 +1260,7 @@ views:
             name: przedpokój
           - entity: sensor.shelly_motion_c67c2a_battery
             name: korytarz
-          - entity: sensor.shelly_motion_2_72a6a4_battery
+          - entity: sensor.shelly_motion_2_08a4e9_battery
             name: kuchnia
           - entity: sensor.aqara_motion_sensor_21c604_battery
             name: salon [1]
@@ -1332,6 +1324,8 @@ views:
         title: "Baterie sensorów dymu"
         state_color: true
         entities:
+          - entity: sensor.shelly_plus_smoke_d08428_battery
+            name: kuchnia
           - entity: sensor.shelly_plus_smoke_d12914_battery
             name: antresola
       - type: entities
@@ -1549,6 +1543,7 @@ views:
               - entity: sensor.pm25_salon
             line_color: "#78909c"
             decimals: 0
+            icon: "mdi:molecule"
   - id: misc
     icon: mdi:cog
     title: "Różne"
@@ -1594,6 +1589,7 @@ views:
               - input_boolean.light_auto_turn_pracownia
               - input_boolean.light_auto_turn_goscinny
               - input_boolean.light_auto_turn_gabinet
+              - input_number.no_motion_time
           - type: entities
             title: "Skrypty i ustawienia"
             show_header_toggle: false
