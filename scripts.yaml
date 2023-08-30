@@ -32,8 +32,8 @@ devices_away_mode:
       - light.scone_schody
       - light.tree_antek
       - fan.ceiling_salon
-      - humidifier.xiaomi_salon
-      - humidifier.xiaomi_antek
+      - humidifier.xiaomi_mi_humidifier_ca1
+      - humidifier.xiaomi_mi_humidifier_cb1
   mode: single
   alias: 'Devices: away mode'
   icon: mdi:home-export-outline
@@ -134,8 +134,8 @@ heating_away_mode:
   - service: humidifier.turn_off
     target:
       entity_id:
-      - humidifier.xiaomi_salon
-      - humidifier.xiaomi_antek
+      - humidifier.xiaomi_mi_humidifier_ca1
+      - humidifier.xiaomi_mi_humidifier_cb1
     data: {}
   mode: single
   alias: 'Heating: away mode'
@@ -165,8 +165,8 @@ heating_season_end:
     data: {}
     target:
       entity_id:
-      - humidifier.xiaomi_antek
-      - humidifier.xiaomi_salon
+      - humidifier.xiaomi_mi_humidifier_cb1
+      - humidifier.xiaomi_mi_humidifier_ca1
   mode: single
   alias: 'Heating: end season'
   icon: mdi:radiator
@@ -189,8 +189,8 @@ heating_airing_begin:
   - service: humidifier.turn_off
     target:
       entity_id:
-      - humidifier.xiaomi_salon
-      - humidifier.xiaomi_antek
+      - humidifier.xiaomi_mi_humidifier_ca1
+      - humidifier.xiaomi_mi_humidifier_cb1
     data: {}
   - condition: state
     entity_id: input_boolean.heating_airing
@@ -248,8 +248,8 @@ alexa_goodnight:
       - remote.salon
       - media_player.sony_kd_55xf8596
       - fan.ceiling_salon
-      - fan.pedestal_gabinet
-      - fan.air_purifier_salon
+      - fan.xiaomi_mi_pedestal_fan_1x
+      - fan.xiaomi_mi_air_purifier_3h
       - light.leds_salon
       - light.ceiling_salon
       - light.desk_lamp_antek
@@ -338,7 +338,7 @@ humidification_start:
     - service: humidifier.turn_on
       data: {}
       target:
-        entity_id: humidifier.xiaomi_salon
+        entity_id: humidifier.xiaomi_mi_humidifier_ca1
   - if:
     - condition: numeric_state
       entity_id: sensor.humidity_antek
@@ -350,7 +350,7 @@ humidification_start:
     - service: humidifier.turn_on
       data: {}
       target:
-        entity_id: humidifier.xiaomi_antek
+        entity_id: humidifier.xiaomi_mi_humidifier_cb1
 alexa_harmony_activity_tv:
   alias: 'Alexa: Harmony Activity TV'
   sequence:

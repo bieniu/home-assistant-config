@@ -222,6 +222,11 @@
       icon: mdi:cast-audio
       state: "{{ is_state('device_tracker.sonos_one_67e008', 'home') }}"
 
+    - name: sonos_one_695980_status
+      unique_id: "sonos_one_695980_status"
+      icon: mdi:cast-audio
+      state: "{{ is_state('device_tracker.sonos_one_695980', 'home') }}"
+
     - name: inkbook_status
       unique_id: "inkbook_status"
       state: "{{ is_state('device_tracker.inkbook_classic_2', 'home') }}"

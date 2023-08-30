@@ -1,109 +1,216 @@
-- id: film
-  name: "film"
+- id: '1693379234955'
+  name: Light Salon Auto
   entities:
     light.ceiling_salon:
-      state: "on"
-      brightness: 190
-      color_temp: 350
-    light.leds_salon:
-      state: "off"
-    light.lamp_salon:
-      state: "off"
-    switch.adaptive_lighting_salon:
-      state: "off"
-
-- id: niebieski
-  name: "niebieski"
-  entities:
-    light.ceiling_salon:
-      state: "on"
-      brightness: 200
-      rgb_color: [20, 20, 50]
-    light.leds_salon:
-      state: "off"
-    light.lamp_salon:
-      state: "on"
-    switch.adaptive_lighting_salon:
-      state: "off"
-
-- id: romantyczny
-  name: "romantyczny"
-  entities:
-    light.ceiling_salon:
-      state: "on"
-      brightness: 128
-      rgb_color: [255, 102, 0]
-    light.leds_salon:
-      state: "off"
-    light.lamp_salon:
-      state: "on"
-    switch.adaptive_lighting_salon:
-      state: "off"
-
-- id: fiolet
-  name: "fiolet"
-  entities:
-    light.ceiling_salon:
-      state: "on"
-      brightness: 200
-      rgb_color: [255, 0, 255]
-    light.leds_salon:
-      state: "off"
-    light.lamp_salon:
-      state: "on"
-    switch.adaptive_lighting_salon:
-      state: "off"
-
-- id: automatyczny
-  name: "automatyczny"
-  entities:
-    light.ceiling_salon:
-      state: "on"
+      min_color_temp_kelvin: 1700
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 588
+      effect_list:
+      - Alarm
+      - Candle Flicker
+      - Christmas
+      - Date Night
+      - Disco
+      - Facebook
+      - Fast Random Loop
+      - Happy Birthday
+      - Home
+      - LSD
+      - Movie
+      - Night Mode
+      - Police
+      - Police2
+      - RGB
+      - Random Loop
+      - Romance
+      - Slow Temp
+      - Slowdown
+      - Stop
+      - Strobe color
+      - Strobe epilepsy!
+      - Sunrise
+      - Sunset
+      - Twitter
+      - WhatsApp
+      supported_color_modes:
+      - color_temp
+      - hs
+      - rgb
+      entity_id:
+      - light.bulb_salon_1
+      - light.bulb_salon_2
+      icon: mdi:ceiling-fan-light
+      friendly_name: Oświetlenie
+      supported_features: 44
+      color_mode: color_temp
       brightness: 255
-    light.leds_salon:
-      state: "off"
+      color_temp_kelvin: 3322
+      color_temp: 301
+      hs_color:
+      - 27.369
+      - 48.786
+      rgb_color:
+      - 255
+      - 187
+      - 130
+      xy_color:
+      - 0.468
+      - 0.377
+      state: 'on'
     light.lamp_salon:
-      state: "off"
+      supported_color_modes:
+      - brightness
+      icon: mdi:floor-lamp
+      friendly_name: Lampa
+      supported_features: 40
+      state: 'off'
     switch.adaptive_lighting_salon:
-      state: "on"
-
-- id: czytanie
-  name: "czytanie"
+      configuration: {}
+      brightness_pct: 100
+      color_temp_kelvin: 5040
+      color_temp_mired: 198
+      rgb_color:
+      - 255
+      - 228.80510014927057
+      - 207.3087172633701
+      xy_color:
+      - 0.37
+      - 0.349
+      hs_color:
+      - 26.25
+      - 18.824
+      sun_position: 0.7709983529634554
+      force_rgb_color: false
+      icon: mdi:theme-light-dark
+      friendly_name: 'Adaptive Lighting: salon'
+      manual_control:
+      - light.bulb_salon_1
+      - light.bulb_salon_2
+      autoreset_time_remaining: {}
+      state: 'on'
+    light.leds_salon:
+      supported_color_modes:
+      - onoff
+      icon: mdi:led-strip-variant
+      friendly_name: LEDy
+      supported_features: 0
+      state: 'off'
+  icon: mdi:lightbulb-auto-outline
+  metadata:
+    light.ceiling_salon:
+      entity_only: true
+    light.lamp_salon:
+      entity_only: true
+    switch.adaptive_lighting_salon:
+      entity_only: true
+    light.leds_salon:
+      entity_only: true
+- id: '1693379770188'
+  name: Light Salon Dusk
   entities:
     light.ceiling_salon:
-      state: "on"
-      brightness: 220
-      color_temp: 300
+      min_color_temp_kelvin: 1700
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 588
+      effect_list:
+      - Alarm
+      - Candle Flicker
+      - Christmas
+      - Date Night
+      - Disco
+      - Facebook
+      - Fast Random Loop
+      - Happy Birthday
+      - Home
+      - LSD
+      - Movie
+      - Night Mode
+      - Police
+      - Police2
+      - RGB
+      - Random Loop
+      - Romance
+      - Slow Temp
+      - Slowdown
+      - Stop
+      - Strobe color
+      - Strobe epilepsy!
+      - Sunrise
+      - Sunset
+      - Twitter
+      - WhatsApp
+      supported_color_modes:
+      - color_temp
+      - hs
+      - rgb
+      entity_id:
+      - light.bulb_salon_1
+      - light.bulb_salon_2
+      icon: mdi:ceiling-fan-light
+      friendly_name: Oświetlenie
+      supported_features: 44
+      color_mode: color_temp
+      brightness: 189
+      color_temp_kelvin: 3322
+      color_temp: 301
+      hs_color:
+      - 27.369
+      - 48.786
+      rgb_color:
+      - 255
+      - 187
+      - 130
+      xy_color:
+      - 0.468
+      - 0.377
+      state: 'on'
     light.leds_salon:
-      state: "off"
-    light.lamp_salon:
-      state: "on"
+      supported_color_modes:
+      - onoff
+      icon: mdi:led-strip-variant
+      friendly_name: LEDy
+      supported_features: 0
+      state: 'off'
     switch.adaptive_lighting_salon:
-      state: "off"
-
-- id: jasny
-  name: "jasny"
-  entities:
+      configuration: {}
+      brightness_pct: 100
+      color_temp_kelvin: 5040
+      color_temp_mired: 198
+      rgb_color:
+      - 255
+      - 228.80510014927057
+      - 207.3087172633701
+      xy_color:
+      - 0.37
+      - 0.349
+      hs_color:
+      - 26.25
+      - 18.824
+      sun_position: 0.7709983529634554
+      force_rgb_color: false
+      icon: mdi:theme-light-dark
+      friendly_name: 'Adaptive Lighting: salon'
+      manual_control:
+      - light.bulb_salon_1
+      - light.bulb_salon_2
+      autoreset_time_remaining: {}
+      state: 'on'
+    light.lamp_salon:
+      supported_color_modes:
+      - brightness
+      icon: mdi:floor-lamp
+      friendly_name: Lampa
+      supported_features: 40
+      state: 'off'
+  icon: mdi:lightbulb-night-outline
+  metadata:
     light.ceiling_salon:
-      state: "on"
-      brightness: 255
-      color_temp: 260
+      entity_only: true
     light.leds_salon:
-      state: "on"
-    light.lamp_salon:
-      state: "on"
+      entity_only: true
     switch.adaptive_lighting_salon:
-      state: "off"
-
-- id: dyskoteka
-  name: "dyskoteka"
-  entities:
-    light.leds_salon:
-      state: "off"
+      entity_only: true
     light.lamp_salon:
-      state: "off"
-    light.ceiling_salon:
-      state: "on"
-      effect: "Disco"
-    switch.adaptive_lighting_salon:
-      state: "off"
+      entity_only: true

@@ -6,41 +6,6 @@
     at: '16:00:00'
   action:
     service: watchman.report
-- id: notification_watchman_missing_entities
-  alias: Notification Watchman Missing Entities
-  description: powiadom o zagubionych encjach
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.watchman_missing_entities
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 30
-  condition:
-  - condition: template
-    value_template: '{{ trigger.to_state.state | int(0) > 0 }}'
-  - '{{ as_timestamp(now()) - as_timestamp(state_attr(''automation.notification_watchman_missing_entities'',
-    ''last_triggered'')) > 600 }}'
-  action:
-  - service: python_script.notify
-    data:
-      title: Niedostępne urządzenia
-      message: "{% macro unavailable_entities() %}{% for entity in state_attr('sensor.watchman_missing_entities',
-        'entities') %}{% if device_attr(entity.id, 'name_by_user') %}{{ device_attr(entity.id,
-        'name_by_user') }}{% if area_name(entity.id) %}, {{ area_name(entity.id) }}{%
-        endif %}{% if not loop.last %}|{% endif %}{% else %}{{ entity.friendly_name
-        }}{% if area_name(entity.id) %}, {{ area_name(entity.id) }}{% endif %} ({{
-        entity.id }}){% if not loop.last %}|{% endif %}{% endif %}{% endfor %}{% endmacro
-        %}{% set entities = unavailable_entities().split('|') | unique | list %} Następujące
-        urządzenia są niedostępne: {% for entity in entities %}{% if entity | length
-        > 5 %} \n - {{ entity }}{% endif %}{% endfor %}"
-      tag: notification-watchman-missing-entities
-      group: other
-      priority: high
-      services:
-      - service: notify.mobile_app_iphone_13
-        type: ios
 - id: minecraft_server_players_online_notification
   alias: Minecraft Server Players Online Notification
   description: powiadomienie o aktywnych graczach na serwerze Minecraft
@@ -1021,7 +986,7 @@
       minutes: 10
   action:
   - service: fan.turn_off
-    entity_id: fan.air_purifier_salon
+    entity_id: fan.xiaomi_mi_air_purifier_3h
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
@@ -1058,7 +1023,7 @@
     state: 'off'
   action:
     service: fan.turn_on
-    entity_id: fan.air_purifier_salon
+    entity_id: fan.xiaomi_mi_air_purifier_3h
     data:
       percentage: "{% if states('sensor.pm25_salon') | int(0) > 100 %}\n  66\n{% else
         %}\n  33\n{% endif %}"
@@ -1073,7 +1038,7 @@
       minutes: 2
   action:
     service: fan.turn_off
-    entity_id: fan.air_purifier_salon
+    entity_id: fan.xiaomi_mi_air_purifier_3h
 - id: air_quality_air_purifier_switch_fan_level_to_2
   alias: Air Quality Air Purifier Switch Fan Level To 2
   description: zmień prędkość wentylatora oczyszczacza na 2
@@ -1085,7 +1050,7 @@
       minutes: 2
   condition:
   - condition: state
-    entity_id: fan.air_purifier_salon
+    entity_id: fan.xiaomi_mi_air_purifier_3h
     state: 'on'
   - condition: numeric_state
     entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
@@ -1106,7 +1071,7 @@
       minutes: 2
   condition:
   - condition: state
-    entity_id: fan.air_purifier_salon
+    entity_id: fan.xiaomi_mi_air_purifier_3h
     state: 'on'
   - condition: numeric_state
     entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
@@ -1220,20 +1185,6 @@
   - service: light.turn_on
     target:
       entity_id: light.tree_antek
-- id: light_turn_on_adaptive_lightning_at_start
-  alias: Light Turn On Adaptive Lightning At Start
-  description: włącz adaptive lightning przy starcie HA
-  trigger:
-    platform: homeassistant
-    event: start
-  condition:
-    condition: state
-    entity_id: input_select.light_scenes_salon
-    state: automatyczny
-  action:
-    service: switch.turn_on
-    target:
-      entity_id: switch.adaptive_lighting_salon
 - id: light_turn_off_when_away_mode
   alias: Light Turn Off When Away Mode
   description: wyłącz oświetlenie gdy domownicy wyjdą z domu
@@ -1290,22 +1241,12 @@
     entity_id: light.ceiling_salon
     to: 'on'
   action:
-  - service: input_select.select_option
-    data:
-      entity_id: input_select.light_scenes_salon
-      option: automatyczny
-- id: light_scene_salon
-  alias: Light Salon Scenes
-  description: wybierz scenę oświetlenia w salonie
-  trigger:
-  - platform: state
-    entity_id: input_select.light_scenes_salon
-    to:
-  action:
   - service: scene.turn_on
     data:
-      entity_id: scene.{{ trigger.to_state.state }}
       transition: 5
+    target:
+      entity_id:
+      - scene.light_salon_auto
 - id: light_toggle_salon_bulbs
   alias: Light Salon Toggle Ceiling Lamp
   description: włącz/wyłącz oświetlenie sufitowe w salonie
@@ -1403,8 +1344,8 @@
       entity_id: light.lamp_salon
     data: {}
 - id: light_scene_film
-  alias: Light Salon Scene Film
-  description: włącz scenę oświetlenia film po włączeniu filmu/gry/trybu smart
+  alias: Light Salon Scene Dusk
+  description: włącz scenę oświetlenia Dusk po włączeniu filmu/gry/trybu smart
   trigger:
   - platform: state
     entity_id: media_player.playstation_salon
@@ -1423,10 +1364,12 @@
     entity_id: input_boolean.guests
     state: 'off'
   action:
-  - service: input_select.select_option
+  - service: scene.turn_on
     data:
-      entity_id: input_select.light_scenes_salon
-      option: film
+      transition: 5
+    target:
+      entity_id:
+      - scene.light_salon_dusk
 - id: light_scene_auto_after_film
   alias: Light Salon Scene Auto After Film
   description: wybierz automatyczną scenę oświetlenia w salonie po wyłączeniu filmu/gry/trybu
@@ -1443,14 +1386,13 @@
   condition:
   - '{{ is_state(''light.leds_salon'', ''on'') or is_state(''light.ceiling_salon'',
     ''on'') or is_state(''light.lamp_salon'', ''on'') }}'
-  - condition: state
-    entity_id: input_select.light_scenes_salon
-    state: film
   action:
-  - service: input_select.select_option
+  - service: scene.turn_on
     data:
-      entity_id: input_select.light_scenes_salon
-      option: automatyczny
+      transition: 5
+    target:
+      entity_id:
+      - scene.light_salon_auto
 - id: light_turn_off_toaleta_light_when_no_motion
   alias: Light Turn Off Toaleta Light When No Motion
   description: wyłącz światło w toalecie jak brak ruchu
@@ -2187,6 +2129,16 @@
         source: HDMI 2
       target:
         entity_id: media_player.philips_65oled707
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 10
+        milliseconds: 0
+    - service: media_player.select_source
+      data:
+        source: CBL
+      target:
+        entity_id: media_player.denon_salon
 - id: harmony_turn_off_playstation
   alias: Harmony Turn Off PlayStation
   description: wyłącz PlayStation jeśli nie wyłączył go Harmony
@@ -2221,8 +2173,8 @@
   action:
   - service: humidifier.set_humidity
     entity_id:
-    - humidifier.xiaomi_salon
-    - humidifier.xiaomi_antek
+    - humidifier.xiaomi_mi_humidifier_ca1
+    - humidifier.xiaomi_mi_humidifier_cb1
     data:
       humidity: '{{ states(''input_number.target_humidity'') }}'
 - id: humidification_start
@@ -2250,11 +2202,11 @@
     entity_id: input_boolean.away_mode
     state: 'off'
   - condition: state
-    entity_id: humidifier.xiaomi_salon
+    entity_id: humidifier.xiaomi_mi_humidifier_ca1
     state: 'off'
   action:
   - service: humidifier.turn_on
-    entity_id: humidifier.xiaomi_salon
+    entity_id: humidifier.xiaomi_mi_humidifier_ca1
 - id: humidification_stop
   alias: Humidification Salon Stop
   description: wyłącz nawilżanie jak wilgotność wzroścnie powyżej ustawionego poziomu
@@ -2277,11 +2229,11 @@
     entity_id: input_boolean.heating_season
     state: 'on'
   - condition: state
-    entity_id: humidifier.xiaomi_salon
+    entity_id: humidifier.xiaomi_mi_humidifier_ca1
     state: 'on'
   action:
   - service: humidifier.turn_off
-    entity_id: humidifier.xiaomi_salon
+    entity_id: humidifier.xiaomi_mi_humidifier_ca1
   - condition: numeric_state
     entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
     below: 6
@@ -2573,11 +2525,11 @@
     entity_id: input_boolean.away_mode
     state: 'off'
   - condition: state
-    entity_id: humidifier.xiaomi_antek
+    entity_id: humidifier.xiaomi_mi_humidifier_cb1
     state: 'off'
   action:
   - service: humidifier.turn_on
-    entity_id: humidifier.xiaomi_antek
+    entity_id: humidifier.xiaomi_mi_humidifier_cb1
 - id: '1671558157880'
   alias: Humidification Antek Stop
   description: wyłącz nawilżanie jak wilgotność wzroścnie powyżej ustawionego poziomu
@@ -2600,11 +2552,11 @@
     entity_id: input_boolean.heating_season
     state: 'on'
   - condition: state
-    entity_id: humidifier.xiaomi_antek
+    entity_id: humidifier.xiaomi_mi_humidifier_cb1
     state: 'on'
   action:
   - service: humidifier.turn_off
-    entity_id: humidifier.xiaomi_antek
+    entity_id: humidifier.xiaomi_mi_humidifier_cb1
   - condition: numeric_state
     entity_id: sensor.xiaomi_mi_humidifier_cb1_water_level
     below: 6
@@ -2976,3 +2928,26 @@
   - service: switch.turn_on
     data: {}
   mode: single
+- id: '1692438895111'
+  alias: Notification Watchman Missing Devices/Services
+  description: wysyłanie powiadomienia o niedostępnych urządzeniach/usługach
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.watchman_missing_entities
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 20
+  condition:
+  - condition: template
+    value_template: '{{ trigger.to_state.state | int(0) > 0 }}'
+  action:
+  - service: python_script.missing_devices_services
+    data:
+      entities: "{% macro entities() %}\n  {% for entity in state_attr('sensor.watchman_missing_entities',
+        'entities') -%}\n    {{ device_attr(entity.id, 'name_by_user') or device_attr(entity.id,
+        'name') }}&{{ area_name(entity.id) }}|\n  {%- endfor %}\n{% endmacro %} {%
+        set result = entities() %} {{ result }}"
+  mode: queued
+  max: 10
