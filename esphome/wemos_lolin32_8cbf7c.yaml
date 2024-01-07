@@ -16,16 +16,12 @@ logger:
 api:
   encryption:
     key: !secret encryption_key
-  services:
-    - service: calibrate
-      then:
-        - mhz19.calibrate_zero: mhz19_sensor
 
 ota:
   password: !secret esphome_password
 
 wifi:
-  ssid: !secret wifi_ssid
+  ssid: !secret wifi_ssid_wpa3
   password: !secret wifi_password
   domain: !secret local_domain
   power_save_mode: high
@@ -53,6 +49,12 @@ button:
   - platform: restart
     name: "Restart"
     device_class: "restart"
+  - platform: template
+    name: "Kalibruj punkt zero MH-Z19"
+    on_press:
+      then:
+        - mhz19.calibrate_zero: mhz19_sensor
+    entity_category: "config"
 
 uart:
   rx_pin: GPIO21
@@ -63,10 +65,10 @@ sensor:
   - platform: mhz19
     id: mhz19_sensor
     co2:
-      name: "MH-Z19B Carbon Dioxide"
+      name: "Carbon Dioxide"
       device_class: "carbon_dioxide"
     temperature:
-      name: "MH-Z19B Temperature"
+      name: "Temperature"
       accuracy_decimals: 1
       device_class: "temperature"
     automatic_baseline_calibration: false
@@ -97,3 +99,13 @@ sensor:
 
   - platform: internal_temperature
     name: "Device Temperature"
+
+switch:
+  - platform: template
+    name: "Automatyczna kalibracja MH-Z19"
+    optimistic: true
+    on_turn_on:
+      mhz19.abc_enable: mhz19_sensor
+    on_turn_off:
+      mhz19.abc_disable: mhz19_sensor
+    entity_category: "config"

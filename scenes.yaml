@@ -1,110 +1,31 @@
 - id: '1693379234955'
   name: Light Salon Auto
   entities:
-    light.ceiling_salon:
-      min_color_temp_kelvin: 1700
-      max_color_temp_kelvin: 6535
-      min_mireds: 153
-      max_mireds: 588
-      effect_list:
-      - Alarm
-      - Candle Flicker
-      - Christmas
-      - Date Night
-      - Disco
-      - Facebook
-      - Fast Random Loop
-      - Happy Birthday
-      - Home
-      - LSD
-      - Movie
-      - Night Mode
-      - Police
-      - Police2
-      - RGB
-      - Random Loop
-      - Romance
-      - Slow Temp
-      - Slowdown
-      - Stop
-      - Strobe color
-      - Strobe epilepsy!
-      - Sunrise
-      - Sunset
-      - Twitter
-      - WhatsApp
-      supported_color_modes:
-      - color_temp
-      - hs
-      - rgb
-      entity_id:
-      - light.bulb_salon_1
-      - light.bulb_salon_2
-      icon: mdi:ceiling-fan-light
-      friendly_name: Oświetlenie
-      supported_features: 44
-      color_mode: color_temp
-      brightness: 255
-      color_temp_kelvin: 3322
-      color_temp: 301
-      hs_color:
-      - 27.369
-      - 48.786
-      rgb_color:
-      - 255
-      - 187
-      - 130
-      xy_color:
-      - 0.468
-      - 0.377
-      state: 'on'
-    light.lamp_salon:
-      supported_color_modes:
-      - brightness
-      icon: mdi:floor-lamp
-      friendly_name: Lampa
-      supported_features: 40
-      state: 'off'
     switch.adaptive_lighting_salon:
-      configuration: {}
-      brightness_pct: 100
-      color_temp_kelvin: 5040
-      color_temp_mired: 198
-      rgb_color:
-      - 255
-      - 228.80510014927057
-      - 207.3087172633701
-      xy_color:
-      - 0.37
-      - 0.349
-      hs_color:
-      - 26.25
-      - 18.824
-      sun_position: 0.7709983529634554
-      force_rgb_color: false
       icon: mdi:theme-light-dark
       friendly_name: 'Adaptive Lighting: salon'
-      manual_control:
-      - light.bulb_salon_1
-      - light.bulb_salon_2
+      configuration: {}
+      manual_control: []
+      brightness_pct: 66.18322083494802
+      color_temp_kelvin: 3500
+      color_temp_mired: 285
+      rgb_color:
+      - 255
+      - 192.53375698318678
+      - 140.82658361892766
+      xy_color:
+      - 0.453
+      - 0.374
+      hs_color:
+      - 27.08
+      - 44.314
+      sun_position: -0.6763355833010396
+      force_rgb_color: false
       autoreset_time_remaining: {}
       state: 'on'
-    light.leds_salon:
-      supported_color_modes:
-      - onoff
-      icon: mdi:led-strip-variant
-      friendly_name: LEDy
-      supported_features: 0
-      state: 'off'
   icon: mdi:lightbulb-auto-outline
   metadata:
-    light.ceiling_salon:
-      entity_only: true
-    light.lamp_salon:
-      entity_only: true
     switch.adaptive_lighting_salon:
-      entity_only: true
-    light.leds_salon:
       entity_only: true
 - id: '1693379770188'
   name: Light Salon Dusk
@@ -145,14 +66,8 @@
       - color_temp
       - hs
       - rgb
-      entity_id:
-      - light.bulb_salon_1
-      - light.bulb_salon_2
-      icon: mdi:ceiling-fan-light
-      friendly_name: Oświetlenie
-      supported_features: 44
       color_mode: color_temp
-      brightness: 189
+      brightness: 128
       color_temp_kelvin: 3322
       color_temp: 301
       hs_color:
@@ -165,6 +80,12 @@
       xy_color:
       - 0.468
       - 0.377
+      entity_id:
+      - light.bulb_salon_1
+      - light.bulb_salon_2
+      icon: mdi:ceiling-fan-light
+      friendly_name: Oświetlenie
+      supported_features: 44
       state: 'on'
     light.leds_salon:
       supported_color_modes:
@@ -175,28 +96,17 @@
       state: 'off'
     switch.adaptive_lighting_salon:
       configuration: {}
-      brightness_pct: 100
-      color_temp_kelvin: 5040
-      color_temp_mired: 198
+      brightness_pct:
+      color_temp_kelvin:
+      color_temp_mired:
       rgb_color:
-      - 255
-      - 228.80510014927057
-      - 207.3087172633701
       xy_color:
-      - 0.37
-      - 0.349
       hs_color:
-      - 26.25
-      - 18.824
-      sun_position: 0.7709983529634554
-      force_rgb_color: false
+      sun_position:
+      force_rgb_color:
       icon: mdi:theme-light-dark
       friendly_name: 'Adaptive Lighting: salon'
-      manual_control:
-      - light.bulb_salon_1
-      - light.bulb_salon_2
-      autoreset_time_remaining: {}
-      state: 'on'
+      state: 'off'
     light.lamp_salon:
       supported_color_modes:
       - brightness

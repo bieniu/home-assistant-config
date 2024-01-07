@@ -7,44 +7,249 @@ views:
     cards:
       - type: vertical-stack
         cards:
-          - type: custom:auto-entities
+          - type: glance
+            title: "Domownicy"
+            show_name: false
+            entities:
+              - entity: person.maciek
+                tap_action:
+                  action: fire-dom-event
+                  browser_mod:
+                    service: browser_mod.popup
+                    data:
+                      title: Maciek
+                      content:
+                        type: custom:stack-in-card
+                        mode: vertical
+                        cards:
+                          - type: entities
+                            entities:
+                              - entity: person.maciek
+                                secondary_info: last-changed
+                          - type: history-graph
+                            entities:
+                              - entity: person.maciek
+                          - type: glance
+                            entities:
+                              - sensor.maciek_kroki
+                              - entity: sensor.iphone_13_battery_level
+                                name: Bateria
+                          - type: map
+                            entities:
+                              - entity: person.maciek
+                            dark_mode: false
+                            hours_to_show: 12
+              - entity: person.edyta
+                tap_action:
+                  action: fire-dom-event
+                  browser_mod:
+                    service: browser_mod.popup
+                    data:
+                      title: Edyta
+                      content:
+                        type: custom:stack-in-card
+                        mode: vertical
+                        cards:
+                          - type: entities
+                            entities:
+                              - entity: person.edyta
+                                secondary_info: last-changed
+                          - type: history-graph
+                            entities:
+                              - entity: person.edyta
+                          - type: glance
+                            entities:
+                              - entity: sensor.iphone_12_steps
+                                name: Kroki
+                              - entity: sensor.iphone_12_battery_level
+                                name: Bateria
+                          - type: map
+                            entities:
+                              - entity: person.edyta
+                            dark_mode: false
+                            hours_to_show: 12
+                            auto_fit: true
+              - entity: person.antek
+                tap_action:
+                  action: fire-dom-event
+                  browser_mod:
+                    service: browser_mod.popup
+                    data:
+                      title: Antek
+                      content:
+                        type: custom:stack-in-card
+                        mode: vertical
+                        cards:
+                          - type: entities
+                            entities:
+                              - entity: person.antek
+                                secondary_info: last-changed
+                          - type: history-graph
+                            entities:
+                              - entity: person.antek
+                          - type: glance
+                            entities:
+                              - entity: sensor.iphone_11_steps
+                                name: Kroki
+                              - entity: sensor.iphone_11_battery_level
+                                name: Bateria
+                          - type: map
+                            entities:
+                              - entity: person.antek
+                            dark_mode: false
+                            hours_to_show: 12
+              - entity: person.karmel
+                tap_action:
+                  action: fire-dom-event
+                  browser_mod:
+                    service: browser_mod.popup
+                    data:
+                      title: Karmel
+                      content:
+                        type: custom:stack-in-card
+                        mode: vertical
+                        cards:
+                          - type: entities
+                            entities:
+                              - entity: person.karmel
+                                secondary_info: last-changed
+                          - type: history-graph
+                            entities:
+                              - entity: person.karmel
+                          - type: glance
+                            entities:
+                              - entity: sensor.karmel_czas_aktywnosci
+                                name: Aktywność
+                              - entity: sensor.karmel_stan_trackera
+                                name: Tracker
+                              - entity: sensor.karmel_bateria_trackera
+                                name: Bateria
+                          - type: map
+                            entities:
+                              - entity: person.karmel
+                            dark_mode: false
+                            hours_to_show: 12
+              - entity: person.luna
+                tap_action:
+                  action: fire-dom-event
+                  browser_mod:
+                    service: browser_mod.popup
+                    data:
+                      title: Luna
+                      content:
+                        type: custom:stack-in-card
+                        mode: vertical
+                        cards:
+                          - type: entities
+                            entities:
+                              - entity: person.luna
+                                secondary_info: last-changed
+                          - type: history-graph
+                            entities:
+                              - entity: person.luna
+                          - type: glance
+                            entities:
+                              - entity: sensor.luna_czas_aktywnosci
+                                name: Aktywność
+                              - entity: sensor.luna_stan_trackera
+                                name: Tracker
+                              - entity: sensor.luna_bateria_trackera
+                                name: Bateria
+                          - type: map
+                            entities:
+                              - entity: person.luna
+                            dark_mode: false
+                            hours_to_show: 12
+          - type: conditional
+            conditions:
+              - condition: state
+                entity: binary_sensor.guests
+                state: "on"
             card:
               type: glance
-              title: "Rodzina"
+              title: "Goście"
               show_name: false
-            filter:
-              include:
-                - entity_id: person.maciek
-                - entity_id: person.edyta
-                - entity_id: person.antek
-                - entity_id: person.grazyna
-                  state: home
-                - entity_id: person.romana
-                  state: home
-                - entity_id: person.jerzy
-                  state: home
-                - entity_id: person.karmel
-                - entity_id: person.luna
+              entities:
+                - person.grazyna
+                - person.romana
+                - person.jerzy
           - type: vertical-stack
             in_card: true
-            title: "Pogoda"
             cards:
-              - type: weather-forecast
+              - type: glance
                 canary_style:
-                  margin-top: "-7px"
-                name: ""
-                show_forecast: false
-                entity: weather.home
-                secondary_info_attribute: pressure
-                tap_action:
-                  action: navigate
-                  navigation_path: /lovelace/climate
+                  border-style: none
+                title: "Pogoda"
+                show_name: false
+                entities:
+                  - sensor.temperature_outdoor
+                  - sensor.humidity_outdoor
+                  - sensor.pressure_outdoor
+                  - sensor.home_forecast_precipitation_probability
+              - type: entities
+                canary_style:
+                  border-style: none
+                show_header_toggle: false
+                entities:
+                  - type: simple-entity
+                    entity: weather.home
+                    name: Obecne warunki
+                  - entity: sensor.air_quality_info_outdoor
+                    name: Jakość powietrza
+                    icon: "mdi:blur"
+                    card_mod:
+                      style: |
+                        :host {
+                          --paper-item-icon-color:
+                            {% set air_quality = states(config.entity) %}
+                            {% if air_quality == "bardzo dobra" %}
+                              #43a047;
+                            {% elif air_quality == "dobra" %}
+                              #fbc02d;
+                            {% elif air_quality == "średnia" %}
+                              #fb8c00;
+                            {% elif air_quality == "zła" %}
+                              #f4511e;
+                            {% elif air_quality == "bardzo zła" %}
+                              #d81b60;
+                            {% else %}
+                              #44739e;
+                            {% endif %}
+                        }
           - type: glance
             title: "Samochód"
             show_name: false
             entities:
-              - person.bmw
-              - sensor.bmw_x1_xdrive20i_remaining_fuel
+              - entity: person.bmw
+                tap_action:
+                  action: fire-dom-event
+                  browser_mod:
+                    service: browser_mod.popup
+                    data:
+                      title: Samochód
+                      content:
+                        type: custom:stack-in-card
+                        mode: vertical
+                        cards:
+                          - type: entities
+                            entities:
+                              - entity: person.bmw
+                                secondary_info: last-changed
+                          - type: history-graph
+                            entities:
+                              - entity: person.bmw
+                          - type: glance
+                            entities:
+                              - binary_sensor.bmw_x1_xdrive20i_lids
+                              - binary_sensor.bmw_x1_xdrive20i_windows
+                              - sensor.bmw_x1_xdrive20i_remaining_fuel
+                              - sensor.bmw_x1_xdrive20i_mileage
+                          - type: map
+                            entities:
+                              - entity: person.bmw
+                            dark_mode: false
+                            hours_to_show: 12
+              - lock.bmw_x1_xdrive20i_lock
               - sensor.bmw_x1_xdrive20i_remaining_range_fuel
           - type: vertical-stack
             in_card: true
@@ -57,15 +262,13 @@ views:
                 entities:
                   - sensor.temperature_przedpokoj
                   - sensor.humidity_przedpokoj
-                  - sensor.illumination_przedpokoj
+                  - binary_sensor.motion_przedpokoj
               - type: entities
                 canary_style:
                   border-style: none
                 show_header_toggle: false
                 state_color: true
                 entities:
-                  - entity: binary_sensor.motion_przedpokoj
-                    secondary_info: last-changed
                   - light.leds_przedpokoj
                   - light.ceiling_przedpokoj
           - type: entities
@@ -73,8 +276,6 @@ views:
             show_header_toggle: false
             state_color: true
             entities:
-              - entity: binary_sensor.motion_korytarz
-                secondary_info: last-changed
               - light.ceiling_korytarz
           - type: vertical-stack
             in_card: true
@@ -87,7 +288,7 @@ views:
                 entities:
                   - sensor.temperature_kuchnia
                   - sensor.humidity_kuchnia
-                  - sensor.illumination_kuchnia
+                  - binary_sensor.motion_kuchnia
               - type: entities
                 canary_style:
                   border-style: none
@@ -95,11 +296,9 @@ views:
                 state_color: true
                 entities:
                   - binary_sensor.window_kuchnia
-                  - binary_sensor.smoke_kuchnia
-                  - entity: binary_sensor.motion_kuchnia
-                    secondary_info: last-changed
-                  - binary_sensor.gas_leak_kuchnia
-                  - binary_sensor.water_leak_kuchnia
+                  # - binary_sensor.smoke_kuchnia
+                  # - binary_sensor.gas_leak_kuchnia
+                  # - binary_sensor.water_leak_kuchnia
                   - type: conditional
                     conditions:
                       - entity: input_boolean.heating_season
@@ -112,7 +311,7 @@ views:
                         :host {
                           --paper-item-icon-color:
                             {% if is_state(config.entity, "zmywanie") %}
-                              var(--state-on-color)
+                              var(--state-binary_sensor-active-color)
                             {% elif is_state(config.entity, "wyłączona") %}
                               var(--state-icon-color)
                             {% endif %};
@@ -130,7 +329,7 @@ views:
               - sensor.temperature_salon
               - sensor.humidity_salon
               - sensor.co2_salon
-              - sensor.illumination_salon
+              - binary_sensor.motion_salon
           - type: entities
             canary_style:
               border-style: none
@@ -138,14 +337,13 @@ views:
             state_color: true
             entities:
               - binary_sensor.windows_salon
-              - entity: binary_sensor.motion_salon
-                secondary_info: last-changed
               - type: conditional
                 conditions:
                   - entity: input_boolean.heating_season
                     state_not: "off"
                 row:
                   entity: climate.danfoss_014g2461_thermostat_983ed3
+                  state_color: off
               - type: conditional
                 conditions:
                   - entity: input_boolean.heating_season
@@ -169,12 +367,8 @@ views:
                 toggle: true
                 hide_when_off: true
               - light.leds_salon
-              - type: custom:slider-entity-row
-                entity: light.lamp_salon
-                toggle: true
-                hide_when_off: true
-              - light.philips_65oled707_ambilight
-              # - input_select.light_scenes_salon
+              - light.lamp_salon
+              - switch.christmas_tree_salon
               - select.harmony_activities
               - type: custom:mini-media-player
                 canary_style:
@@ -196,18 +390,6 @@ views:
                   power: true
                   power_state: false
                   progress: true
-                info: scroll
-                group: true
-              - type: custom:mini-media-player
-                canary_style:
-                  border-style: none
-                entity: media_player.playstation_salon
-                hide:
-                  controls: true
-                  volume: true
-                  power: true
-                  progress: true
-                  source: true
                 info: scroll
                 group: true
               - type: custom:mini-media-player
@@ -287,15 +469,13 @@ views:
             entities:
               - sensor.temperature_toaleta
               - sensor.humidity_toaleta
-              - sensor.illumination_toaleta
+              - binary_sensor.motion_toaleta
           - type: entities
             canary_style:
               border-style: none
             show_header_toggle: false
             state_color: true
             entities:
-              - entity: binary_sensor.motion_toaleta
-                secondary_info: last-changed
               - light.ceiling_toaleta
       - type: vertical-stack
         in_card: true
@@ -308,7 +488,7 @@ views:
             entities:
               - sensor.temperature_pracownia
               - sensor.humidity_pracownia
-              - sensor.illumination_pracownia
+              - binary_sensor.motion_pracownia
           - type: entities
             canary_style:
               border-style: none
@@ -316,8 +496,6 @@ views:
             state_color: true
             entities:
               - binary_sensor.balcony_door_pracownia
-              - entity: binary_sensor.motion_pracownia
-                secondary_info: last-changed
               - type: conditional
                 conditions:
                   - entity: input_boolean.heating_season
@@ -389,7 +567,7 @@ views:
             entities:
               - sensor.temperature_goscinny
               - sensor.humidity_goscinny
-              - sensor.illumination_goscinny
+              - binary_sensor.motion_goscinny
           - type: entities
             canary_style:
               border-style: none
@@ -397,8 +575,6 @@ views:
             state_color: true
             entities:
               - binary_sensor.window_goscinny
-              - entity: binary_sensor.motion_goscinny
-                secondary_info: last-changed
               - type: conditional
                 conditions:
                   - entity: input_boolean.heating_season
@@ -429,7 +605,7 @@ views:
             entities:
               - sensor.temperature_antresola
               - sensor.humidity_antresola
-              - sensor.illumination_antresola
+              - binary_sensor.motion_antresola
           - type: entities
             canary_style:
               border-style: none
@@ -437,9 +613,7 @@ views:
             state_color: true
             entities:
               - binary_sensor.windows_antresola
-              - entity: binary_sensor.motion_antresola
-                secondary_info: last-changed
-              - binary_sensor.smoke_antresola
+              # - binary_sensor.smoke_antresola
               - type: conditional
                 conditions:
                   - entity: input_boolean.heating_season
@@ -463,7 +637,7 @@ views:
             entities:
               - sensor.temperature_gabinet
               - sensor.humidity_gabinet
-              - sensor.illumination_gabinet
+              - binary_sensor.motion_gabinet
           - type: entities
             canary_style:
               border-style: none
@@ -471,8 +645,6 @@ views:
             state_color: true
             entities:
               - binary_sensor.window_gabinet
-              - entity: binary_sensor.motion_gabinet
-                secondary_info: last-changed
               - type: conditional
                 conditions:
                   - entity: input_boolean.heating_season
@@ -550,22 +722,21 @@ views:
             entities:
               - sensor.temperature_pralnia
               - sensor.humidity_pralnia
+              - binary_sensor.motion_pralnia
           - type: entities
             canary_style:
               border-style: none
             show_header_toggle: false
             state_color: true
             entities:
-              - entity: binary_sensor.motion_pralnia
-                secondary_info: last-changed
-              - binary_sensor.water_leak_pralnia
+              # - binary_sensor.water_leak_pralnia
               - entity: sensor.washing_machine_pralnia
                 card_mod:
                   style: |
                     :host {
                       --paper-item-icon-color:
                         {% if is_state(config.entity, "pranie") %}
-                          var(--state-on-color)
+                          var(--state-binary_sensor-active-color)
                         {% elif is_state(config.entity, "wyłączona") %}
                           var(--state-icon-color)
                         {% endif %};
@@ -581,7 +752,7 @@ views:
             entities:
               - sensor.temperature_antek
               - sensor.humidity_antek
-              - sensor.illumination_antek
+              - binary_sensor.motion_antek
           - type: entities
             canary_style:
               border-style: none
@@ -589,8 +760,17 @@ views:
             state_color: true
             entities:
               - binary_sensor.window_antek
-              - entity: binary_sensor.motion_antek
-                secondary_info: last-changed
+              - entity: sensor.desktop_antek
+                card_mod:
+                  style: |
+                    :host {
+                      --paper-item-icon-color:
+                        {% if is_state(config.entity, "włączony") %}
+                          var(--state-binary_sensor-active-color)
+                        {% elif is_state(config.entity, "wyłączony") %}
+                          var(--state-icon-color)
+                        {% endif %};
+                    }
               - type: conditional
                 conditions:
                   - entity: input_boolean.heating_season
@@ -684,7 +864,7 @@ views:
             entities:
               - sensor.temperature_sypialnia
               - sensor.humidity_sypialnia
-              - sensor.illumination_sypialnia
+              - binary_sensor.motion_sypialnia
           - type: entities
             canary_style:
               border-style: none
@@ -693,8 +873,6 @@ views:
             entities:
               - binary_sensor.window_sypialnia
               - binary_sensor.balcony_door_sypialnia
-              - entity: binary_sensor.motion_sypialnia
-                secondary_info: last-changed
               - type: conditional
                 conditions:
                   - entity: input_boolean.heating_season
@@ -728,15 +906,13 @@ views:
             entities:
               - sensor.temperature_lazienka
               - sensor.humidity_lazienka
-              - sensor.illumination_lazienka
+              - binary_sensor.motion_lazienka
           - type: entities
             canary_style:
               border-style: none
             show_header_toggle: false
             state_color: true
             entities:
-              - entity: binary_sensor.motion_lazienka
-                secondary_info: last-changed
               - type: conditional
                 conditions:
                   - entity: input_boolean.heating_season
@@ -752,6 +928,7 @@ views:
           - switch.camera_move_up
           - switch.camera_move_down
         camera_image: camera.salon
+        cavera_view: "live"
   - id: map
     icon: mdi:map
     title: "Mapa"
@@ -916,7 +1093,6 @@ views:
                 show_header_toggle: false
                 entities:
                   - sensor.disk_use_percent
-                  - sensor.nuc_cpu_temp
                   - sensor.nuc_cpu_speed
                   - entity: sensor.last_restart
                     format: relative
@@ -1144,10 +1320,6 @@ views:
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_duo_5f6fa1_status
             <<: *NETWORK_STATUS_ICON_COLOR
-          - entity: binary_sensor.shelly_duo_rgbw_d4ecd3_status
-            <<: *NETWORK_STATUS_ICON_COLOR
-          - entity: binary_sensor.shelly_vintage_d10472_status
-            <<: *NETWORK_STATUS_ICON_COLOR
       - type: entities
         title: "IoT - sensory"
         show_header_toggle: false
@@ -1204,17 +1376,23 @@ views:
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_1l_ad365e_status
             <<: *NETWORK_STATUS_ICON_COLOR
-          - entity: binary_sensor.shelly_1pm_5fd486_status
-            <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_25_77dbe5_status
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_plug_s_7aecf4_status
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_plus_plug_s_2ffb28_status
             <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_plus_plug_s_d00c84_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_plus_plug_it_d0affc_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_plus_1_mini_af5390_status
+            <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_plus_1pm_948ff8_status
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_plus_1pm_b22864_status
+            <<: *NETWORK_STATUS_ICON_COLOR
+          - entity: binary_sensor.shelly_plus_1pm_mini_411170_status
             <<: *NETWORK_STATUS_ICON_COLOR
           - entity: binary_sensor.shelly_plus_2pm_8d28f4_status
             <<: *NETWORK_STATUS_ICON_COLOR
@@ -1321,6 +1499,8 @@ views:
             name: kuchnia
           - entity: sensor.aqara_water_leak_sensor_79b8e9_battery
             name: pralnia
+          - entity: sensor.aqara_water_leak_sensor_t1_9abffb_bateria
+            name: łazienka
       - type: entities
         title: "Baterie sensorów dymu"
         state_color: true
@@ -1475,7 +1655,7 @@ views:
             entities:
               - sensor.humidity_outdoor
             line_color: "#36a2eb"
-            decimals: 1
+            decimals: 0
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             entities:
@@ -1529,7 +1709,7 @@ views:
             entities:
               - sensor.humidity_indoor
             line_color: "#36a2eb"
-            decimals: 1
+            decimals: 0
           - type: custom:mini-graph-card
             <<: *CLIMATE_GRAPH_PARAMS
             name: "Dwutlenek węgla"

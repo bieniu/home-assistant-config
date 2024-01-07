@@ -8,7 +8,7 @@
 ## Server
 
 * Intel NUC NUC5CPYH [Debian]
-* Home Assistant Supervised installation
+* Home Assistant OS installation
 
 ## Z-Wave Controller
 
@@ -24,7 +24,6 @@
 * Xiaomi Yeelight Lightstrips [YLDD01YL]
 * Xiaomi Mi Led Desk Lamp 1S [MJTD01SYL]
 * Shelly DUO
-* Shelly DUO RGBW
 * Shelly Vintage
 
 ## Relays
@@ -33,12 +32,14 @@
 * Sonoff S26 Plug
 * BlitzWolf BW-SHP6 Plugs
 * Shelly 1L
-* Shelly 1PM
 * Shelly 2.5
 * Shelly Plug S
+* Shelly Plus 1 Mini
 * Shelly Plus 1PM
+* Shelly Plus 1PM Mini
 * Shelly Plus 2PM
 * Shelly Plus Plug S
+* Shelly Plus Plug IT
 * Shelly Plus PM Mini
 * Shelly Pro 1PM
 * Shelly Pro 3EM
@@ -46,12 +47,13 @@
 ## Switches
 
 * Aqara Switches
-* ShellyBLU Button1
+* Shelly BLU Button1
 
 ## Sensors
 
 * Wemos Lolin32 + MH-Z19B [[ESPHome](https://esphome.io) firmware]
 * Shelly H&T(https://github.com/bieniu/ha-shellies-discovery)
+* Shelly BLU Motion
 * Shelly Plus H&T
 * Shelly Flood
 * Shelly Motion
@@ -75,7 +77,6 @@
 * Xiaomi Mi Smart Home Gateway 2
 * Logitech Harmony Ultimate
 * Denon AVR-X2100W
-* PlayStation 4 Pro
 * Xiaomi Mi Humidifier CA1
 * Xiaomi Mi Humidifier CB1
 * Xiaomi Mi Pedestal Fan 1X

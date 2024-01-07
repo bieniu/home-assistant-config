@@ -1,7 +1,5 @@
 automation: !include automations.yaml
 
-binary_sensor: !include binary_sensors.yaml
-
 climate: !include climate.yaml
 
 default_config:
@@ -52,8 +50,6 @@ lovelace:
       type: module
     - url: /hacsfiles/home-assistant-sun-card/home-assistant-sun-card.js
       type: module
-    - url: /hacsfiles/tv-card/tv-card.js
-      type: module
     - url: /hacsfiles/lovelace-mushroom/mushroom.js
       type: module
     - url: /hacsfiles/stack-in-card/stack-in-card.js
@@ -93,11 +89,29 @@ weather:
   - platform: template
     name: "Home"
     unique_id: "home"
-    condition_template: "{{ states('weather.openweathermap') }}"
-    temperature_template: "{{ states('sensor.temperature_outdoor') | float }}"
-    humidity_template: "{{ states('sensor.humidity_outdoor') | float }}"
-    pressure_template: "{{ states('sensor.pressure_outdoor', rounded=True) | float }}"
-    wind_speed_template: "{{ state_attr('weather.openweathermap', 'wind_speed') }}"
-    wind_bearing_template: "{{ state_attr('weather.openweathermap', 'wind_bearing') }}"
-    visibility_template: "{{ state_attr('weather.openweathermap', 'visibility') }}"
+    condition_template: "{{ states('weather.accuweather') }}"
+    temperature_template: "{{ (states('sensor.temperature_outdoor') or state_attr('weather.accuweather', 'temperature')) | float }}"
+    humidity_template: "{{ (states('sensor.humidity_outdoor') or state_attr('weather.accuweather', 'humidity')) | float }}"
+    pressure_template: "{{ (states('sensor.pressure_outdoor', rounded=True) or state_attr('weather.accuweather', 'pressure')) | float }}"
+    dew_point_template: "{{ state_attr('weather.accuweather', 'dew_point') }}"
+    apparent_temperature_template: "{{ state_attr('weather.accuweather', 'apparent_temperature') }}"
+    wind_speed_template: "{{ state_attr('weather.accuweather', 'wind_speed') }}"
+    wind_bearing_template: "{{ state_attr('weather.accuweather', 'wind_bearing') }}"
+    wind_gust_speed_template: "{{ state_attr('weather.accuweather', 'wind_gust_speed') }}"
+    visibility_template: "{{ state_attr('weather.accuweather', 'visibility') }}"
+    cloud_coverage_template: "{{ state_attr('weather.accuweather', 'cloud_coverage') }}"
     forecast_template: "{{ state_attr('weather.openweathermap', 'forecast') }}"
+    
+proximity:
+  edyta_home:
+    ignored_zones:
+      - zone.grandmother
+      - zone.grandparents
+      - zone.school_antek
+      - zone.skaratki_horses
+      - zone.work_edyta_lodz
+      - zone.work_edyta_warszawa
+    devices:
+      - person.edyta
+    tolerance: 50
+    unit_of_measurement: km

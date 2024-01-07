@@ -52,6 +52,7 @@
   - platform: state
     entity_id:
     - update.home_assistant
+    - update.home_assistant_operating_system
     - update.supervisor
     - update.cloudflared
     - update.nginx_proxy_manager
@@ -98,26 +99,27 @@
     - update.shelly_1l_e361a5_firmware
     - update.shelly_25_77dbe5_firmware
     - update.shelly_duo_55f6fa1_firmware
-    - update.shelly_duo_rgbw_d4ecd3_firmware
     - update.shelly_flood_f2ad1d_firmware
     - update.shelly_gas_c6811c_firmware
     - update.shelly_ht_e00abd_firmware
     - update.shelly_motion_2_08a4e9_firmware
     - update.shelly_motion_c67c2a_firmware
-    - update.shelly_plug_s_7aecf4_firmware
+    - update.shelly_plus_1_mini_af5390_firmware
+    - update.shelly_plus_1pm_mini_411170_firmware
     - update.shelly_plus_1pm_948ff8_firmware
     - update.shelly_plus_1pm_b22864_firmware
     - update.shelly_plus_2pm_8d28f4_firmware
     - update.shelly_plus_ht_09e018_firmware_update
     - update.shelly_plus_ht_6b3e3c_firmware_update
     - update.shelly_plus_plug_s_2ffb28_firmware
+    - update.shelly_plus_plug_s_d00c84_firmware
+    - update.shelly_plus_plug_it_d0affc_firmware
     - update.shelly_plus_pm_mini_af50f0_firmware
     - update.shelly_plus_smoke_d12914_firmware
     - update.shelly_plus_smoke_d08428_firmware
     - update.shelly_pro_1pm_80e0c0_firmware
     - update.shelly_pro_3em_879c7c_firmware
     - update.shelly_valve_72a544_firmware
-    - update.shelly_vintage_d10472_firmware
     - update.wemos_lolin32_8cbf7c_firmware
     from: 'off'
     to: 'on'
@@ -185,6 +187,10 @@
   - platform: numeric_state
     entity_id: sensor.lightning_distance
     below: 10
+  condition:
+  - condition: template
+    value_template: '{{ now().timestamp() - as_timestamp(state_attr(''automation.notification_storm_comming'',
+      ''last_triggered'')) > 120 }}'
   action:
   - parallel:
     - if:
@@ -421,6 +427,10 @@
     entity_id: binary_sensor.water_leak_pralnia
     from: 'off'
     to: 'on'
+  - platform: state
+    entity_id: binary_sensor.water_leak_lazienka
+    from: 'off'
+    to: 'on'
   action:
   - service: python_script.notify
     data:
@@ -443,15 +453,16 @@
   trigger:
   - platform: state
     entity_id:
-    - binary_sensor.shelly_plug_s_7aecf4_overpower
     - binary_sensor.shelly_plus_plug_s_2ffb28_overpower
+    - binary_sensor.shelly_plus_plug_s_d00c84_overpower
+    - binary_sensor.shelly_plus_plug_it_d0affc_overpower
     - binary_sensor.shelly_25_77dbe5_relay_1_overpower
     - binary_sensor.shelly_25_77dbe5_relay_2_overpower
-    - binary_sensor.shelly_1pm_5fd486_overpower
     - binary_sensor.shelly_plus_1pm_948ff8_overpower
     - binary_sensor.shelly_plus_1pm_b22864_overpower
     - binary_sensor.shelly_pro_1pm_80e0c0_overpower
     - binary_sensor.aeotec_zw175_smart_switch_7_025_overpower
+    - binary_sensor.shelly_plus_1pm_mini_411170_overpowering
     - binary_sensor.shelly_plus_2pm_8d28f4_relay_1_overpower
     - binary_sensor.shelly_plus_2pm_8d28f4_relay_2_overpower
     - binary_sensor.shelly_plus_2pm_b67728_relay_1_overpower
@@ -487,12 +498,13 @@
     - binary_sensor.shelly_1l_aacec4_overtemperature
     - binary_sensor.shelly_1l_aceb5f_overtemperature
     - binary_sensor.shelly_1l_ad365e_overtemperature
-    - binary_sensor.shelly_1pm_5fd486_overtemperature
     - binary_sensor.shelly_25_77dbe5_overtemperature
-    - binary_sensor.shelly_plug_s_7aecf4_overtemperature
     - binary_sensor.shelly_plus_plug_s_2ffb28_overtemperature
+    - binary_sensor.shelly_plus_plug_s_d00c84_overtemperature
+    - binary_sensor.shelly_plus_plug_it_d0affc_overtemperature
     - binary_sensor.shelly_plus_1pm_948ff8_overtemperature
     - binary_sensor.shelly_plus_1pm_b22864_overtemperature
+    - binary_sensor.shelly_plus_1pm_mini_411170_overheating
     - binary_sensor.shelly_pro_1pm_80e0c0_overtemperature
     - binary_sensor.shelly_plus_2pm_8d28f4_relay_1_overtemperature
     - binary_sensor.shelly_plus_2pm_8d28f4_relay_2_overtemperature
@@ -1238,8 +1250,19 @@
   description: wybierz automatyczną scenę oświetlenia w salonie po włączeniu światła
   trigger:
   - platform: state
-    entity_id: light.ceiling_salon
+    entity_id:
+    - light.ceiling_salon
     to: 'on'
+    from: 'off'
+  condition:
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: select.harmony_activities
+      state: gry
+    - condition: state
+      entity_id: select.harmony_activities
+      state: smart
   action:
   - service: scene.turn_on
     data:
@@ -1324,8 +1347,6 @@
   - service: light.turn_on
     target:
       entity_id: light.lamp_salon
-    data:
-      brightness_pct: 100
   - wait_for_trigger:
     - platform: state
       entity_id: binary_sensor.motion_salon
@@ -1348,11 +1369,12 @@
   description: włącz scenę oświetlenia Dusk po włączeniu filmu/gry/trybu smart
   trigger:
   - platform: state
-    entity_id: media_player.playstation_salon
-    to: playing
-  - platform: state
     entity_id: select.harmony_activities
     to: smart
+  - platform: state
+    entity_id:
+    - select.harmony_activities
+    to: gry
   condition:
   - condition: sun
     after: sunset
@@ -1371,18 +1393,18 @@
       entity_id:
       - scene.light_salon_dusk
 - id: light_scene_auto_after_film
-  alias: Light Salon Scene Auto After Film
+  alias: Light Salon Scene Auto
   description: wybierz automatyczną scenę oświetlenia w salonie po wyłączeniu filmu/gry/trybu
     smart
   trigger:
   - platform: state
-    entity_id: media_player.playstation_salon
-    from: playing
-    to: idle
-    for:
-      seconds: 20
-  - platform: template
-    value_template: '{{ not is_state(''select.harmony_activities'', ''smart'') }}'
+    entity_id:
+    - select.harmony_activities
+    to: telewizja
+  - platform: state
+    entity_id:
+    - select.harmony_activities
+    to: power_off
   condition:
   - '{{ is_state(''light.leds_salon'', ''on'') or is_state(''light.ceiling_salon'',
     ''on'') or is_state(''light.lamp_salon'', ''on'') }}'
@@ -1473,22 +1495,23 @@
     data: {}
 - id: light_turn_off_kuchnia_light_when_no_motion
   alias: Light Turn Off Kuchnia Light When No Motion
-  description: wyłącz światło w kuchni jak brak ruchu przez 20 min
+  description: wyłącz światło w kuchni jak brak ruchu
   trigger:
-    platform: state
+  - platform: state
     entity_id: binary_sensor.motion_kuchnia
     from: 'on'
     to: 'off'
     for:
-      minutes: 20
+      minutes: '{{ states(''input_number.no_motion_time'') | int }}'
   condition:
-    condition: state
+  - condition: state
     entity_id: light.ceiling_kuchnia
     state: 'on'
   action:
-    service: light.turn_off
+  - service: light.turn_off
     target:
       entity_id: light.ceiling_kuchnia
+    data: {}
 - id: light_turn_on_antresola_lampt_when_dark_and_motion
   alias: Light Antresola Turn On Lamp When Dark And Motion
   description: włącz lampkę na antresoli jak pojawi się ruch i jest ciemno
@@ -1704,12 +1727,6 @@
   alias: Light Antek Toggle Ceiling Lamp
   description: ''
   trigger:
-  - platform: device
-    domain: mqtt
-    device_id: d9bac82dff0257d63401f912e99b205c
-    type: button_short_press
-    subtype: button_1
-    discovery_id: shelly1l-84CCA8AD365E-input-0 button_short_press
   - device_id: aabc0c68397757ef0cf5caa56a59d0c8
     domain: zha
     platform: device
@@ -2056,19 +2073,19 @@
     - input_boolean.away_mode
     - light.lamp_goscinny
     state: 'off'
+  - condition: state
+    entity_id: light.ceiling_goscinny
+    state: 'off'
   - condition: numeric_state
     entity_id: sensor.illumination_goscinny
     below: 8
   - condition: state
     entity_id: input_boolean.light_auto_turn_goscinny
     state: 'on'
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-      before_offset: +00:10:00
+  - condition: sun
+    after: sunset
+    before: sunrise
+    before_offset: +00:10:00
   action:
   - service: light.turn_on
     target:
@@ -2104,10 +2121,6 @@
         source: HDMI 1
       target:
         entity_id: media_player.philips_65oled707
-    - service: media_player.turn_on
-      data: {}
-      target:
-        entity_id: media_player.playstation_salon
     - delay:
         hours: 0
         minutes: 0
@@ -2139,30 +2152,6 @@
         source: CBL
       target:
         entity_id: media_player.denon_salon
-- id: harmony_turn_off_playstation
-  alias: Harmony Turn Off PlayStation
-  description: wyłącz PlayStation jeśli nie wyłączył go Harmony
-  trigger:
-  - platform: state
-    entity_id: remote.salon
-    from: gry
-  condition:
-  - condition: state
-    entity_id: media_player.playstation_salon
-    state: idle
-  action:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 20
-      milliseconds: 0
-  - condition: state
-    entity_id: media_player.playstation_salon
-    state: idle
-  - service: media_player.turn_off
-    target:
-      entity_id: media_player.playstation_salon
-    data: {}
 - id: humidification_set_target_humidity
   alias: Humidification Set Target Humidity
   description: ustaw docelową wilgotność
@@ -2286,7 +2275,7 @@
   - service: mqtt.publish
     data:
       topic: shellies/shellytrv-84FD2772A544/thermostat/0/command/ext_t
-      payload: '{{ trigger.to_state.state | float(0) }}'
+      payload: '{{ trigger.to_state.state | float }}'
   mode: restart
 - id: log_level
   alias: Log Level
@@ -2330,6 +2319,9 @@
       mode: '{{ trigger.payload_json.mode | default }}'
       host: '{{ trigger.payload_json.ip }}'
       qos: 1
+      shelly1l-84CCA8AD365E:
+        device_name: Shelly 1L [AD365E]
+        relay-0: light
       shelly1pm-8CAAB55FD486:
         device_name: Shelly 1PM [5FD486]
         relay-0: light
@@ -2346,29 +2338,15 @@
       shelly1l-84CCA8ACEB5F:
         device_name: Shelly 1L [ACEB5F]
         relay-0: light
-      shelly1l-84CCA8AD1B60:
-        device_name: Shelly 1L [AD1B60]
-        relay-0: light
       shelly1l-8CAAB561C9FD:
         device_name: Shelly 1L [61C9FD]
-        relay-0: light
-      shelly1l-84CCA8ACEDF2:
-        device_name: Shelly 1L [ACEDF2]
         relay-0: light
       shelly1l-E8DB84AACEC4:
         device_name: Shelly 1L [AACEC4]
         relay-0: light
-      shelly1-328900:
-        device_name: Shelly 1 [328900]
-        relay-0: light
       shelly1l-98CDAC253D92:
         device_name: Shelly 1L [253D92]
         relay-0: light
-      shelly1l-3C6105E361A5:
-        device_name: Shelly 1L [E361A5]
-        relay-0: light
-      ShellyVintage-D10472:
-        device_name: Shelly Vintage [D10472]
       shellytrv-84FD2772A544:
         device_name: Shelly Valve [72A544]
         default_heating_temperature: '{{ states(''input_number.temperature_day'')
@@ -2381,10 +2359,9 @@
         device_name: Shelly Motion [C67C2A]
       shellygas-E868E7C6811C:
         device_name: Shelly Gas [C6811C]
-      ShellyBulbDuo-8CAAB55F6FA1:
-        device_name: Shelly DUO [5F6FA1]
       ignored_devices:
       - shellycolorbulb-E868E7C6811C
+      - ShellyVintage-D10472
   mode: queued
   max: 999
 - id: hassio_backup
@@ -2937,8 +2914,8 @@
     - sensor.watchman_missing_entities
     for:
       hours: 0
-      minutes: 0
-      seconds: 20
+      minutes: 1
+      seconds: 0
   condition:
   - condition: template
     value_template: '{{ trigger.to_state.state | int(0) > 0 }}'
@@ -2951,3 +2928,144 @@
         set result = entities() %} {{ result }}"
   mode: queued
   max: 10
+- id: '1693856668458'
+  alias: Light Salon Scene Dusk When Turn On
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - light.ceiling_salon
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: select.harmony_activities
+      state: gry
+    - condition: state
+      entity_id: select.harmony_activities
+      state: smart
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.light_salon_dusk
+    metadata: {}
+  mode: single
+- id: '1699100330008'
+  alias: Notification Edyta Comes Back Home
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - proximity.edyta_home
+    attribute: dir_of_travel
+    to: towards
+  condition:
+  - condition: numeric_state
+    entity_id: proximity.edyta_home
+    below: 20
+    above: 0
+  - condition: state
+    entity_id: person.maciek
+    state: home
+  action:
+  - service: python_script.notify
+    data:
+      title: Edyta wraca do domu
+      message: Edyta jest w odległości {{ trigger.to_state.state }} km od domu.
+      tag: notification-{{ trigger.entity_id }}
+      group: family
+      services:
+      - service: notify.mobile_app_iphone_13
+        type: ios
+  mode: single
+- id: '1700997698677'
+  alias: Heating Salon External Temperature Sensor
+  description: Przekazuje temperaturę z sensora do termostatu
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.temperature_salon
+  condition:
+  - '{{ is_number(trigger.to_state.state) }}'
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  action:
+  - service: zha.set_zigbee_cluster_attribute
+    data:
+      cluster_type: in
+      ieee: 60:b6:47:ff:fe:98:3e:d3
+      endpoint_id: 1
+      cluster_id: 513
+      attribute: 16405
+      value: '{{ trigger.to_state.state | float * 100 }}'
+  mode: single
+- id: '1702640682201'
+  alias: Christmas Turn On Christmas Lights
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: -0:30:00
+  condition: []
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.christmas_lights_balkon_gora
+      - switch.christmas_lights_balkon_dol
+      - switch.christmas_lights_goscinny
+      - switch.christmas_tree_salon
+    data: {}
+  mode: single
+- id: '1702640763057'
+  alias: Christmas Turn Off Christmass Lights
+  description: ''
+  trigger:
+  - platform: time
+    at: 01:00:00
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.christmas_lights_goscinny
+      - switch.christmas_lights_balkon_dol
+      - switch.christmas_lights_balkon_gora
+      - switch.christmas_tree_salon
+    data: {}
+  mode: single
+- id: '1702731405720'
+  alias: Christmas Turn Off Christmas Lights Schody
+  description: ''
+  trigger:
+  - platform: time
+    at: 01:00:00
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.christmas_lights_schody
+      device_id: []
+      area_id: []
+    data: {}
+  mode: single
+- id: '1702731478823'
+  alias: Christmas Turn On Christmas Lights Schody
+  description: ''
+  trigger:
+  - platform: time
+    at: 06:30:00
+  condition: []
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.christmas_lights_schody
+      device_id: []
+      area_id: []
+    data: {}
+  mode: single

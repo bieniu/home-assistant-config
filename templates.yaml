@@ -1,25 +1,4 @@
 - sensor:
-    - name: temperature_outdoor_rounded
-      unique_id: "temperature_outdoor_rounded"
-      state: "{{ states('sensor.temperature_outdoor') | float | round }}"
-      availability: "{{ states('sensor.temperature_outdoor') != ('unavailable' or 'unknown') }}"
-      device_class: temperature
-      unit_of_measurement: "°C"
-
-    - name: humidity_outdoor_rounded
-      unique_id: "humidity_outdoor_rounded"
-      state: "{{ states('sensor.humidity_outdoor') | float | round }}"
-      availability: "{{ states('sensor.humidity_outdoor') != ('unavailable' or 'unknown') }}"
-      device_class: humidity
-      unit_of_measurement: "%"
-
-    - name: pressure_outdoor_rounded
-      unique_id: "pressure_outdoor_rounded"
-      state: "{{ states('sensor.pressure_outdoor') | float | round }}"
-      availability: "{{ states('sensor.pressure_outdoor') != ('unavailable' or 'unknown') }}"
-      device_class: pressure
-      unit_of_measurement: "hPa"
-
     - name: dishwasher_kuchnia
       unique_id: "dishwasher_kuchnia"
       icon: "mdi:dishwasher"
@@ -47,6 +26,23 @@
           zła
         {% elif is_state('sensor.caqi_level_outdoor', 'very_high') %}
           bardzo zła
+        {% endif %}
+
+    - name: air_outside_info
+      unique_id: "air_outside_info"
+      icon: "mdi:blur"
+      availability: "{{ not is_state('sensor.caqi_level_outdoor', 'unavailable') }}"
+      state: >-
+        {% if is_state('sensor.caqi_level_outdoor', 'very_low') %}
+          bardzo dobre
+        {% elif is_state('sensor.caqi_level_outdoor', 'low') %}
+          dobre
+        {% elif is_state('sensor.caqi_level_outdoor', 'medium') %}
+          średnie
+        {% elif is_state('sensor.caqi_level_outdoor', 'high') %}
+          złe
+        {% elif is_state('sensor.caqi_level_outdoor', 'very_high') %}
+          bardzo złe
         {% endif %}
 
     - name: aqi_info_salon
@@ -104,33 +100,25 @@
         {% endif %}
 
 - binary_sensor:
-    - name: people_at_home
-      unique_id: "people_at_home"
-      state: >-
-        {{ is_state('group.household', 'home')
-          or is_state('group.family', 'home')
-          or is_state('media_player.denon_salon', 'on')
-          or is_state('input_boolean.guests', 'on') }}
-
     - name: rt_ax86s_ddc8_status
       unique_id: "rt_ax86s_ddc8_status"
       icon: "mdi:access-point-network"
-      state: "{{ is_state('device_tracker.rt_ax86s_ddc8', 'home') }}"
+      state: "{{ is_state('device_tracker.asus_rt_ax86s_ddc8', 'home') }}"
 
     - name: synology_status
       unique_id: "synology_status"
       icon: mdi:nas
-      state: "{{ is_state('device_tracker.synology', 'home') }}"
+      state: "{{ is_state('device_tracker.synology_ds110j', 'home') }}"
 
     - name: nuc_status
       unique_id: "nuc_status"
       icon: mdi:server
-      state: "{{ is_state('device_tracker.nuc', 'home') }}"
+      state: "{{ is_state('device_tracker.intel_nuc_5cpyh', 'home') }}"
 
     - name: raspberry_status
       unique_id: "raspberry_status"
       icon: mdi:raspberry-pi
-      state: "{{ is_state('device_tracker.raspberry', 'home') }}"
+      state: "{{ is_state('device_tracker.raspberry_pi_4b', 'home') }}"
 
     - name: desktop_maciek_status
       unique_id: "desktop_maciek_status"
@@ -160,12 +148,12 @@
     - name: playstation_status
       unique_id: "playstation_status"
       icon: mdi:sony-playstation
-      state: "{{ is_state('device_tracker.playstation', 'home') }}"
+      state: "{{ is_state('device_tracker.playstation_5', 'home') }}"
 
     - name: harmony_status
       unique_id: "harmony_status"
       icon: mdi:remote
-      state: "{{ is_state('device_tracker.harmony', 'home') }}"
+      state: "{{ is_state('device_tracker.logitech_harmony_hub', 'home') }}"
 
     - name: iphone_13_status
       unique_id: "iphone_13_status"
@@ -234,7 +222,7 @@
 
     - name: laptop_edyta_status
       unique_id: "laptop_edyta_status"
-      state: "{{ is_state('device_tracker.dell_latitude_7320', 'home') }}"
+      state: "{{ is_state('device_tracker.hp_elitebook_840_g7', 'home') }}"
 
     - name: laptop_maciek_status
       unique_id: "laptop_maciek_status"
@@ -243,7 +231,7 @@
     - name: denon_status
       unique_id: "denon_status"
       icon: mdi:audio-video
-      state: "{{ is_state('device_tracker.denon', 'home') }}"
+      state: "{{ is_state('device_tracker.denon_avr_x2100w', 'home') }}"
 
     - name: laptop_status
       unique_id: "laptop_status"
@@ -251,7 +239,7 @@
 
     - name: migateway_cc6f0b_status
       unique_id: "migateway_cc6f0b_status"
-      state: "{{ is_state('device_tracker.migateway_cc6f0b', 'home') }}"
+      state: "{{ is_state('device_tracker.xiaomi_mi_gateway_2_cc6f0b', 'home') }}"
 
     - name: mihumidifier_ca1_status
       unique_id: "mihumidifier_ca1_status"
@@ -265,23 +253,23 @@
 
     - name: miairpurifier_status
       unique_id: "miairpurifier_status"
-      state: "{{ is_state('device_tracker.miairpurifier', 'home') }}"
+      state: "{{ is_state('device_tracker.xiaomi_mi_air_purifier_3h', 'home') }}"
       icon: mdi:air-purifier
 
     - name: mifan_status
       unique_id: "mifan_status"
-      state: "{{ is_state('device_tracker.mifan', 'home') }}"
+      state: "{{ is_state('device_tracker.xiaomi_mi_pedestal_fan_1x', 'home') }}"
       icon: mdi:fan
 
     - name: brother_status
       unique_id: "brother_status"
-      state: "{{ is_state('device_tracker.brother', 'home') }}"
+      state: "{{ is_state('device_tracker.brother_hl_l2340dw', 'home') }}"
       icon: mdi:printer
 
     - name: dafang_status
       unique_id: "dafang_status"
       icon: mdi:cctv
-      state: "{{ is_state('device_tracker.dafang', 'home') }}"
+      state: "{{ is_state('device_tracker.xiaomi_dafang', 'home') }}"
 
     - name: sonoff_s26_182475_status
       unique_id: "sonoff_s26_182475_status"
@@ -351,9 +339,13 @@
       unique_id: "shelly_1l_ad365e_status"
       state: "{{ is_state('device_tracker.shelly_1l_ad365e', 'home') }}"
 
-    - name: shelly_1pm_5fd486_status
-      unique_id: "shelly_1pm_5fd486_status"
-      state: "{{ is_state('device_tracker.shelly_1pm_5fd486', 'home') }}"
+    - name: shelly_plus_1pm_mini_411170_status
+      unique_id: "shelly_plus_1pm_mini_411170_status"
+      state: "{{ is_state('device_tracker.shelly_plus_1pm_mini_411170', 'home') }}"
+
+    - name: shelly_plus_1_mini_af5390_status
+      unique_id: "shelly_plus_1_mini_af5390_status"
+      state: "{{ is_state('device_tracker.shelly_plus_1_mini_af5390', 'home') }}"
 
     - name: shelly_plus_1pm_b22864_status
       unique_id: "shelly_plus_1pm_b22864_status"
@@ -392,17 +384,17 @@
       icon: mdi:lightbulb-outline
       state: "{{ is_state('device_tracker.shelly_duo_5f6fa1', 'home') }}"
 
-    - name: shelly_duo_rgbw_d4ecd3_status
-      unique_id: "shelly_duo_rgbw_d4ecd3_status"
-      state: "{{ is_state('device_tracker.shelly_duo_rgbw_d4ecd3', 'home') }}"
-
-    - name: shelly_vintage_d10472_status
-      unique_id: "shelly_vintage_d10472_status"
-      state: "{{ is_state('device_tracker.shelly_vintage_d10472', 'home') }}"
-
     - name: shelly_plug_s_7aecf4_status
       unique_id: "shelly_plug_s_7aecf4_status"
       state: "{{ is_state('device_tracker.shelly_plug_s_7aecf4', 'home') }}"
+
+    - name: shelly_plus_plug_it_d0affc_status
+      unique_id: "shelly_plus_plug_it_d0affc_status"
+      state: "{{ is_state('device_tracker.shelly_plus_plug_it_d0affc', 'home') }}"
+
+    - name: shelly_plus_plug_s_d00c84_status
+      unique_id: "shelly_plus_plug_s_d00c84_status"
+      state: "{{ is_state('device_tracker.shelly_plus_plug_s_d00c84', 'home') }}"
 
     - name: shelly_plus_plug_s_2ffb28_status
       unique_id: "shelly_plus_plug_s_2ffb28_status"
@@ -442,7 +434,7 @@
     - name: nettigo_air_monitor_status
       unique_id: "nettigo_air_monitor_status"
       icon: mdi:weather-partly-rainy
-      state: "{{ is_state('device_tracker.nam_f5280e', 'home') }}"
+      state: "{{ is_state('device_tracker.nettigo_air_monitor_f5280e', 'home') }}"
 
     - name: yeelight_mjtd01syl_94e1f5_status
       unique_id: "yeelight_mjtd01syl_94e1f5_status"

@@ -1,12 +1,3 @@
-#### INTEL NUC/HA ####
-sensor.processor_use:
-  friendly_name: "Obciążenie CPU"
-sensor.memory_use_percent:
-  friendly_name: "Zajęty RAM"
-  icon: mdi:chip
-sensor.disk_use_percent:
-  friendly_name: "Zajęta przestrzeń dyskowa"
-
 #### NETWORK DEVICES ####
 binary_sensor.raspberry_status:
   friendly_name: "Raspberry Pi 4B"
@@ -17,11 +8,8 @@ binary_sensor.synology_status:
   friendly_name: "Synology DS110j"
 binary_sensor.nuc_status:
   friendly_name: "Intel NUC 5CPYH"
-binary_sensor.playstation_status:
-  friendly_name: "PlayStation 4 Pro"
 binary_sensor.harmony_status:
   friendly_name: "Logitech Harmony Hub"
-
 binary_sensor.ipad_status:
   friendly_name: "iPad Air"
 binary_sensor.kindle_keyboard_3g_status:
@@ -42,7 +30,7 @@ binary_sensor.echo_show_status:
 binary_sensor.inkbook_status:
   friendly_name: "inkBook Classic 2"
 binary_sensor.laptop_edyta_status:
-  friendly_name: "Dell Latitude 7320"
+  friendly_name: "HP EliteBook 840 G7"
 binary_sensor.denon_status:
   friendly_name: "Denon AVR-X2100W"
 binary_sensor.laptop_status:
@@ -87,10 +75,6 @@ binary_sensor.shelly_1l_aceb5f_status:
   friendly_name: "Shelly 1L [ACEB5F]"
 binary_sensor.shelly_duo_5f6fa1_status:
   friendly_name: "Shelly DUO [5F6FA1]"
-binary_sensor.shelly_duo_rgbw_d4ecd3_status:
-  friendly_name: "Shelly DUO RGBW [D4ECD3]"
-binary_sensor.shelly_vintage_d10472_status:
-  friendly_name: "Shelly Vintage [D10472]"
 binary_sensor.shelly_ht_e00abd_status:
   friendly_name: "Shelly H&T [E00ABD]"
 binary_sensor.shelly_flood_f2ad1d_status:
@@ -129,7 +113,7 @@ switch.camera_move_right:
   icon: mdi:chevron-double-right
 
 sensor.home_uv_index:
-  unit_of_measurement: " "
+  unit_of_measurement: ""
 
 sensor.hacs:
   icon: mdi:store
@@ -138,7 +122,7 @@ zone.home:
   radius: 50
 
 sensor.minecraft_server_players_online:
-  unit_of_measurement: " "
+  unit_of_measurement: ""
 
 sensor.dishwasher_kuchnia:
   friendly_name: "Zmywarka"
@@ -156,4 +140,12 @@ sensor.bmw_x1_xdrive20i_remaining_fuel:
   unit_of_measurement: "l"
 
 sensor.asus_rt_ax86s_devices_connected:
-  unit_of_measurement: "urządzeń"
+  unit_of_measurement: ""
+
+sensor.maciek_kroki:
+  unit_of_measurement: ""
+
+sensor.watchman_missing_entities:
+  unit_of_measurement: ""
+sensor.watchman_missing_services:
+  unit_of_measurement: ""

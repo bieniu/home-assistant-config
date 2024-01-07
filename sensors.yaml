@@ -1,11 +1,3 @@
-- platform: systemmonitor
-  resources:
-    - type: disk_use_percent
-      arg: /
-    - type: memory_use_percent
-    - type: processor_use
-    - type: last_boot
-
 - platform: rest
   resource: "https://danepubliczne.imgw.pl/api/data/hydro?id=152190050"
   name: "Stan rzeki Bzury"
@@ -15,3 +7,4 @@
   device_class: "distance"
   value_template: "{{ value_json.stan_wody | int(0) }}" 
   icon: "mdi:rowing"
+  
