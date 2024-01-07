@@ -52,7 +52,7 @@
 ## Sensors
 
 * Wemos Lolin32 + MH-Z19B [[ESPHome](https://esphome.io) firmware]
-* Shelly H&T(https://github.com/bieniu/ha-shellies-discovery)
+* Shelly H&T
 * Shelly BLU Motion
 * Shelly Plus H&T
 * Shelly Flood
@@ -70,7 +70,7 @@
 * Aeotec ZWA021
 * Danfoss 014G0013
 * Danfoss 014G2461
-* [Shelly Valve](https://shelly.cloud/shelly-thermostatic-radiator-valve/) via [Shellies Discovery](https://github.com/bieniu/ha-shellies-discovery)
+* Shelly Valve
 
 ## Other Integrated Devices
 
