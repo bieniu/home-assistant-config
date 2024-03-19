@@ -1,14 +1,3 @@
-- platform: wake_on_lan
-  name: "stacjonarny"
-  host: !secret desktop_hostname
-  mac: !secret desktop_mac_address
-  broadcast_address: 255.255.255.255
-  turn_off:
-    service: hassio.addon_stdin
-    data:
-      addon: core_rpc_shutdown
-      input: stacjonarny
-
 - platform: template
   switches:
     heater_lazienka:
@@ -59,22 +48,6 @@
         data:
           temperature: 7
 
-    heater_goscinny:
-      unique_id: "heater_goscinny"
-      value_template: "{{ not is_state_attr('climate.danfoss_014g0013_thermostat_002', 'temperature', 7) }}"
-      turn_on:
-        service: climate.set_temperature
-        target:
-          entity_id: climate.danfoss_014g0013_thermostat_002
-        data:
-          temperature: 28
-      turn_off:
-        service: climate.set_temperature
-        target:
-          entity_id: climate.danfoss_014g0013_thermostat_002
-        data:
-          temperature: 7
-
     heater_sypialnia:
       unique_id: "heater_sypialnia"
       value_template: "{{ not is_state_attr('climate.danfoss_014g0013_thermostat_004', 'temperature', 7) }}"
@@ -107,8 +80,8 @@
         data:
           temperature: 7
 
-    heater_kuchnia:
-      unique_id: "heater_kuchnia"
+    heater_goscinny:
+      unique_id: "heater_goscinny"
       value_template: "{{ is_state('climate.aeotec_zwa021_thermostat_023', 'heat') }}"
       turn_on:
         service: climate.set_temperature
@@ -121,59 +94,3 @@
         service: climate.turn_off
         target:
           entity_id: climate.aeotec_zwa021_thermostat_023
-
-    camera_move_up:
-      friendly_name: "w górę"
-      value_template: "on"
-      turn_on:
-        service: script.camera_move
-        data:
-          orientation: "horizontal"
-          direction: "up"
-      turn_off:
-        service: script.camera_move
-        data:
-          orientation: "vertical"
-          direction: "up"
-
-    camera_move_down:
-      friendly_name: "w dół"
-      value_template: "on"
-      turn_on:
-        service: script.camera_move
-        data:
-          orientation: "horizontal"
-          direction: "down"
-      turn_off:
-        service: script.camera_move
-        data:
-          orientation: "vertical"
-          direction: "down"
-
-    camera_move_left:
-      friendly_name: "w lewo"
-      value_template: "on"
-      turn_on:
-        service: script.camera_move
-        data:
-          orientation: "horizontal"
-          direction: "left"
-      turn_off:
-        service: script.camera_move
-        data:
-          orientation: "horizontal"
-          direction: "left"
-
-    camera_move_right:
-      friendly_name: "w prawo"
-      value_template: "on"
-      turn_on:
-        service: script.camera_move
-        data:
-          orientation: "horizontal"
-          direction: "right"
-      turn_off:
-        service: script.camera_move
-        data:
-          orientation: "horizontal"
-          direction: "right"

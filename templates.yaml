@@ -1,16 +1,17 @@
+- binary_sensor:
+  - name: dishwasher_kuchnia
+    unique_id: "dishwasher_kuchnia"
+    icon: "mdi:dishwasher"
+    availability: "{{ states('sensor.power_dishwasher_kuchnia') != ('unavailable' or 'unknown') }}"
+    state: "{{ states('sensor.power_dishwasher_kuchnia') | int > 1 }}"
+
+  - name: washing_machine_pralnia
+    unique_id: "washing_machine_pralnia"
+    icon: "mdi:washing-machine"
+    availability: "{{ states('sensor.power_washing_machine_pralnia') != ('unavailable' or 'unknown') }}"
+    state: "{{ states('sensor.power_washing_machine_pralnia') | int > 1 }}"
+
 - sensor:
-    - name: dishwasher_kuchnia
-      unique_id: "dishwasher_kuchnia"
-      icon: "mdi:dishwasher"
-      availability: "{{ states('sensor.power_dishwasher_kuchnia') != ('unavailable' or 'unknown') }}"
-      state: "{{ 'zmywanie' if states('sensor.power_dishwasher_kuchnia') | int(0) > 1 else 'wyłączona' }}"
-
-    - name: washing_machine_pralnia
-      unique_id: "washing_machine_pralnia"
-      icon: "mdi:washing-machine"
-      availability: "{{ states('sensor.power_washing_machine_pralnia') != ('unavailable' or 'unknown') }}"
-      state: "{{ 'pranie' if states('sensor.power_washing_machine_pralnia') | int(0) > 1 else 'wyłączona' }}"
-
     - name: air_quality_info_outdoor
       unique_id: "air_quality_info_outdoor"
       icon: "mdi:home-export-outline"
@@ -28,22 +29,22 @@
           bardzo zła
         {% endif %}
 
-    - name: air_outside_info
-      unique_id: "air_outside_info"
-      icon: "mdi:blur"
-      availability: "{{ not is_state('sensor.caqi_level_outdoor', 'unavailable') }}"
-      state: >-
-        {% if is_state('sensor.caqi_level_outdoor', 'very_low') %}
-          bardzo dobre
-        {% elif is_state('sensor.caqi_level_outdoor', 'low') %}
-          dobre
-        {% elif is_state('sensor.caqi_level_outdoor', 'medium') %}
-          średnie
-        {% elif is_state('sensor.caqi_level_outdoor', 'high') %}
-          złe
-        {% elif is_state('sensor.caqi_level_outdoor', 'very_high') %}
-          bardzo złe
-        {% endif %}
+    # - name: air_outside_info
+    #   unique_id: "air_outside_info"
+    #   icon: "mdi:blur"
+    #   availability: "{{ not is_state('sensor.caqi_level_outdoor', 'unavailable') }}"
+    #   state: >-
+    #     {% if is_state('sensor.caqi_level_outdoor', 'very_low') %}
+    #       bardzo dobre
+    #     {% elif is_state('sensor.caqi_level_outdoor', 'low') %}
+    #       dobre
+    #     {% elif is_state('sensor.caqi_level_outdoor', 'medium') %}
+    #       średnie
+    #     {% elif is_state('sensor.caqi_level_outdoor', 'high') %}
+    #       złe
+    #     {% elif is_state('sensor.caqi_level_outdoor', 'very_high') %}
+    #       bardzo złe
+    #     {% endif %}
 
     - name: aqi_info_salon
       unique_id: "aqi_info_salon"
@@ -62,21 +63,21 @@
           bardzo zła
         {% endif %}
 
-    - name: aqi_attr_salon
-      unique_id: "aqi_attr_salon"
-      availability: "{{ states('sensor.pm25_salon') != ('unavailable' or 'unknown') }}"
-      state: >-
-        {% if states('sensor.pm25_salon') | int <= 25 %}
-          bardzo dobre
-        {% elif states('sensor.pm25_salon') | int <= 50 %}
-          dobre
-        {% elif states('sensor.pm25_salon') | int <= 100 %}
-          średnie
-        {% elif states('sensor.pm25_salon') | int <= 150 %}
-          złe
-        {% elif states('sensor.pm25_salon') | int > 200 %}
-          bardzo złe
-        {% endif %}
+    # - name: aqi_attr_salon
+    #   unique_id: "aqi_attr_salon"
+    #   availability: "{{ states('sensor.pm25_salon') != ('unavailable' or 'unknown') }}"
+    #   state: >-
+    #     {% if states('sensor.pm25_salon') | int <= 25 %}
+    #       bardzo dobre
+    #     {% elif states('sensor.pm25_salon') | int <= 50 %}
+    #       dobre
+    #     {% elif states('sensor.pm25_salon') | int <= 100 %}
+    #       średnie
+    #     {% elif states('sensor.pm25_salon') | int <= 150 %}
+    #       złe
+    #     {% elif states('sensor.pm25_salon') | int > 200 %}
+    #       bardzo złe
+    #     {% endif %}
 
     - name: ups_status
       unique_id: "ups_status"
@@ -120,10 +121,10 @@
       icon: mdi:raspberry-pi
       state: "{{ is_state('device_tracker.raspberry_pi_4b', 'home') }}"
 
-    - name: desktop_maciek_status
-      unique_id: "desktop_maciek_status"
-      icon: mdi:desktop-tower
-      state: "{{ is_state('device_tracker.desktop_maciek', 'home') }}"
+    - name: dell_latitude_5400_status
+      unique_id: "dell_latitude_5400_status"
+      icon: mdi:laptop
+      state: "{{ is_state('device_tracker.dell_latitude_5400_wireless', 'home') or is_state('device_tracker.dell_latitude_5400_ethernet', 'home') }}"
 
     - name: desktop_antek_status
       unique_id: "desktop_antek_status"
@@ -222,7 +223,7 @@
 
     - name: laptop_edyta_status
       unique_id: "laptop_edyta_status"
-      state: "{{ is_state('device_tracker.hp_elitebook_840_g7', 'home') }}"
+      state: "{{ is_state('device_tracker.hp_elitebook_840_g10', 'home') }}"
 
     - name: laptop_maciek_status
       unique_id: "laptop_maciek_status"
@@ -339,14 +340,22 @@
       unique_id: "shelly_1l_ad365e_status"
       state: "{{ is_state('device_tracker.shelly_1l_ad365e', 'home') }}"
 
-    - name: shelly_plus_1pm_mini_411170_status
-      unique_id: "shelly_plus_1pm_mini_411170_status"
-      state: "{{ is_state('device_tracker.shelly_plus_1pm_mini_411170', 'home') }}"
+    - name: shelly_1pm_mini_gen3_411170_status
+      unique_id: "shelly_1pm_mini_gen3_411170_status"
+      state: "{{ is_state('device_tracker.shelly_1pm_mini_gen3_411170', 'home') }}"
+
+    - name: shelly_1_mini_gen3_411724_status
+      unique_id: "shelly_1_mini_gen3_411724_status"
+      state: "{{ is_state('device_tracker.shelly_1_mini_gen3_411724', 'home') }}"
 
     - name: shelly_plus_1_mini_af5390_status
       unique_id: "shelly_plus_1_mini_af5390_status"
       state: "{{ is_state('device_tracker.shelly_plus_1_mini_af5390', 'home') }}"
 
+    - name: shelly_plus_1pm_9d35dc_status
+      unique_id: "shelly_plus_1pm_9d35dc_status"
+      state: "{{ is_state('device_tracker.shelly_plus_1pm_9d35dc', 'home') }}"
+    
     - name: shelly_plus_1pm_b22864_status
       unique_id: "shelly_plus_1pm_b22864_status"
       state: "{{ is_state('device_tracker.shelly_plus_1pm_b22864', 'home') }}"
@@ -400,17 +409,13 @@
       unique_id: "shelly_plus_plug_s_2ffb28_status"
       state: "{{ is_state('device_tracker.shelly_plus_plug_s_2ffb28', 'home') }}"
 
-    - name: shelly_plus_ht_09e018_status
-      unique_id: "shelly_plus_ht_09e018_status"
-      state: "{{ is_state('device_tracker.shelly_plus_ht_09e018', 'home') }}"
-
     - name: shelly_plus_ht_6b3e3c_status
       unique_id: "shelly_plus_ht_6b3e3c_status"
       state: "{{ is_state('device_tracker.shelly_plus_ht_6b3e3c', 'home') }}"
 
-    - name: shelly_ht_e00abd_status
-      unique_id: "shelly_ht_e00abd_status"
-      state: "{{ is_state('device_tracker.shelly_ht_e00abd', 'home') }}"
+    - name: shelly_ht_gen3_3ad778_status
+      unique_id: "shelly_ht_gen3_3ad778_status"
+      state: "{{ is_state('device_tracker.shelly_ht_gen3_3ad778', 'home') }}"
 
     - name: shelly_flood_f2ad1d_status
       unique_id: "shelly_flood_f2ad1d_status"

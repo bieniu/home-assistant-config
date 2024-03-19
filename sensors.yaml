@@ -5,6 +5,7 @@
   unique_id: "imgw-hydro-152190050"
   unit_of_measurement: "cm"
   device_class: "distance"
-  value_template: "{{ value_json.stan_wody | int(0) }}" 
+  value_template: "{{ value_json.stan_wody | int }}"
+  availability: "{{ value_json is defined }}"
   icon: "mdi:rowing"
   

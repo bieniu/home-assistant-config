@@ -22,21 +22,19 @@ binary_sensor.modem_status:
 binary_sensor.yeelight_yldd01yl_6707fc_status:
   friendly_name: "Yeelight Lightstrip [6707FC]"
 binary_sensor.echo_plus_status:
-  friendly_name: "Amazon Echo Plus"
+  friendly_name: "Echo Plus"
 binary_sensor.echo_dot_status:
-  friendly_name: "Amazon Echo Dot"
+  friendly_name: "Echo Dot"
 binary_sensor.echo_show_status:
-  friendly_name: "Amazon Echo Show"
+  friendly_name: "Echo Show"
 binary_sensor.inkbook_status:
   friendly_name: "inkBook Classic 2"
-binary_sensor.laptop_edyta_status:
-  friendly_name: "HP EliteBook 840 G7"
 binary_sensor.denon_status:
   friendly_name: "Denon AVR-X2100W"
 binary_sensor.laptop_status:
   friendly_name: "Lenovo IdeaPad Z510"
 binary_sensor.migateway_cc6f0b_status:
-  friendly_name: "Xiaomi Mi Gateway 2 [CC6F0B]"
+  friendly_name: "Xiaomi Mi Gateway 2"
 binary_sensor.miairpurifier_status:
   friendly_name: "Xiaomi Mi Air Purifier 3H"
 binary_sensor.mifan_status:
@@ -75,8 +73,6 @@ binary_sensor.shelly_1l_aceb5f_status:
   friendly_name: "Shelly 1L [ACEB5F]"
 binary_sensor.shelly_duo_5f6fa1_status:
   friendly_name: "Shelly DUO [5F6FA1]"
-binary_sensor.shelly_ht_e00abd_status:
-  friendly_name: "Shelly H&T [E00ABD]"
 binary_sensor.shelly_flood_f2ad1d_status:
   friendly_name: "Shelly Flood [F2AD1D]"
 binary_sensor.shelly_motion_c67c2a_status:
@@ -102,16 +98,6 @@ binary_sensor.thermomix_status:
 sensor.printer_page_counter:
   unit_of_measurement: "str"
 
-#### CAMERA ####
-switch.camera_move_up:
-  icon: mdi:chevron-double-up
-switch.camera_move_down:
-  icon: mdi:chevron-double-down
-switch.camera_move_left:
-  icon: mdi:chevron-double-left
-switch.camera_move_right:
-  icon: mdi:chevron-double-right
-
 sensor.home_uv_index:
   unit_of_measurement: ""
 
@@ -122,10 +108,7 @@ zone.home:
   radius: 50
 
 sensor.minecraft_server_players_online:
-  unit_of_measurement: ""
-
-sensor.dishwasher_kuchnia:
-  friendly_name: "Zmywarka"
+  unit_of_measurement: "graczy"
 
 sensor.air_quality_info_outdoor:
   friendly_name: "Jakość powietrza zewnętrzenego"
@@ -133,14 +116,11 @@ sensor.air_quality_info_outdoor:
 sensor.aqi_info_salon:
   friendly_name: "Jakość powietrza wewnętrznego"
 
-sensor.aqi_attr_salon:
-  friendly_name: "Powietrze"
-
 sensor.bmw_x1_xdrive20i_remaining_fuel:
   unit_of_measurement: "l"
 
 sensor.asus_rt_ax86s_devices_connected:
-  unit_of_measurement: ""
+  unit_of_measurement: "urządzeń"
 
 sensor.maciek_kroki:
   unit_of_measurement: ""
@@ -149,3 +129,6 @@ sensor.watchman_missing_entities:
   unit_of_measurement: ""
 sensor.watchman_missing_services:
   unit_of_measurement: ""
+
+sun.sun:
+  friendly_name: "Słońce"

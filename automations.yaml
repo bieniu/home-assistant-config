@@ -55,72 +55,13 @@
     - update.home_assistant_operating_system
     - update.supervisor
     - update.cloudflared
-    - update.nginx_proxy_manager
     - update.mariadb
     - update.mosquitto_broker
     - update.vaultwarden_bitwarden
     - update.z_wave_js
-    - update.adaptive_lighting
-    - update.alexa_media_player
-    - update.blitzortung_org_lightning_detector
-    - update.hacs
-    - update.watchman
-    - update.auto_entities
-    - update.canary
-    - update.card_mod
-    - update.layout_card
-    - update.mini_graph_card
-    - update.mini_media_player
-    - update.mushroom_card
-    - update.stack_in_card
-    - update.sun_card
-    - update.tv_remote_card
-    - update.clear_theme
-    - update.google_theme
-    - update.ios_theme
-    - update.midnight_theme
-    - update.mushroom_themes
-    - update.noctis_theme
-    - update.nordic_theme
-    - update.shellies_discovery
-    - update.shellies_discovery_gen2
-    - update.aeotec_zw175_smart_switch_7_025_firmware
-    - update.aeotec_zwa021_thermostat_023_firmware
-    - update.blitzwolf_bw_shp6_3766eb_firmware
-    - update.blitzwolf_bw_shp6_173eb6_firmware
-    - update.blitzwolf_bw_shp6_2ad05a_firmware
-    - update.blitzwolf_bw_shp6_ed007d_firmware
-    - update.shelly_1l_253d92_firmware
-    - update.shelly_1l_61c9fd_firmware
-    - update.shelly_1l_701559_firmware
-    - update.shelly_1l_aacec4_firmware
-    - update.shelly_1l_aceb5f_firmware
-    - update.shelly_1l_ad365e_firmware
-    - update.shelly_1l_e361a5_firmware
-    - update.shelly_25_77dbe5_firmware
-    - update.shelly_duo_55f6fa1_firmware
-    - update.shelly_flood_f2ad1d_firmware
-    - update.shelly_gas_c6811c_firmware
-    - update.shelly_ht_e00abd_firmware
-    - update.shelly_motion_2_08a4e9_firmware
-    - update.shelly_motion_c67c2a_firmware
-    - update.shelly_plus_1_mini_af5390_firmware
-    - update.shelly_plus_1pm_mini_411170_firmware
-    - update.shelly_plus_1pm_948ff8_firmware
-    - update.shelly_plus_1pm_b22864_firmware
-    - update.shelly_plus_2pm_8d28f4_firmware
-    - update.shelly_plus_ht_09e018_firmware_update
-    - update.shelly_plus_ht_6b3e3c_firmware_update
-    - update.shelly_plus_plug_s_2ffb28_firmware
-    - update.shelly_plus_plug_s_d00c84_firmware
-    - update.shelly_plus_plug_it_d0affc_firmware
-    - update.shelly_plus_pm_mini_af50f0_firmware
-    - update.shelly_plus_smoke_d12914_firmware
-    - update.shelly_plus_smoke_d08428_firmware
-    - update.shelly_pro_1pm_80e0c0_firmware
-    - update.shelly_pro_3em_879c7c_firmware
-    - update.shelly_valve_72a544_firmware
-    - update.wemos_lolin32_8cbf7c_firmware
+    - update.terminal_ssh
+    - update.studio_code_server
+    - update.samba_share
     from: 'off'
     to: 'on'
   action:
@@ -228,14 +169,15 @@
   alias: Notification Dishwasher End
   description: powiadom o końcu zmywania
   trigger:
-    platform: state
-    entity_id: sensor.dishwasher_kuchnia
-    from: zmywanie
-    to: wyłączona
+  - platform: state
+    entity_id:
+    - binary_sensor.dishwasher_kuchnia
+    from: 'on'
+    to: 'off'
     for:
       minutes: 1
   action:
-    service: python_script.notify
+  - service: python_script.notify
     data:
       title: Koniec zmywania
       message: Zmywarka zakończyła zmywanie naczyń.
@@ -246,55 +188,6 @@
         type: ios
       - service: notify.mobile_app_iphone_12
         type: ios
-- id: notification_desktop_computer_turned_on
-  alias: Notification Desktop Computer Turned On
-  description: powiadom o włączonym komputerze
-  trigger:
-  - platform: time
-    at: '22:00:00'
-  - platform: state
-    entity_id: person.maciek
-    to: not_home
-    for:
-      minutes: 5
-  condition:
-  - condition: state
-    entity_id: switch.stacjonarny
-    state: 'on'
-  action:
-  - service: python_script.notify
-    data:
-      title: '{{ notification_title }}'
-      message: Komputer stacjonarny jest włączony. Czy chcesz go wyłączyć?
-      tag: '{{ notification_tag }}'
-      group: other
-      actions:
-      - title: Wyłącz
-        action: '{{ turn_off_action }}'
-      services:
-      - service: notify.mobile_app_iphone_13
-        type: ios
-  - wait_for_trigger:
-      platform: event
-      event_type: mobile_app_notification_action
-      event_data:
-        action: '{{ turn_off_action }}'
-  - service: switch.turn_off
-    target:
-      entity_id: switch.stacjonarny
-    data: {}
-  - service: python_script.notify
-    data:
-      title: '{{ notification_title }}'
-      message: clear_notification
-      tag: '{{ notification_tag }}'
-      services:
-      - service: notify.mobile_app_iphone_13
-        type: ios
-  variables:
-    turn_off_action: TURN_OFF_DESKTOP
-    notification_title: Komputer stacjonarny włączony
-    notification_tag: notification-desktop-computer
 - id: notification_humidifier_low_water
   alias: Notification Salon Humidifier Low Water
   description: powiadom o małej ilości wody w nawilżaczu
@@ -455,18 +348,18 @@
     entity_id:
     - binary_sensor.shelly_plus_plug_s_2ffb28_overpower
     - binary_sensor.shelly_plus_plug_s_d00c84_overpower
-    - binary_sensor.shelly_plus_plug_it_d0affc_overpower
     - binary_sensor.shelly_25_77dbe5_relay_1_overpower
     - binary_sensor.shelly_25_77dbe5_relay_2_overpower
     - binary_sensor.shelly_plus_1pm_948ff8_overpower
     - binary_sensor.shelly_plus_1pm_b22864_overpower
-    - binary_sensor.shelly_pro_1pm_80e0c0_overpower
     - binary_sensor.aeotec_zw175_smart_switch_7_025_overpower
-    - binary_sensor.shelly_plus_1pm_mini_411170_overpowering
+    - binary_sensor.shelly_1pm_mini_gen3_411170_overpowering
+    - binary_sensor.shelly_plus_1pm_9d35dc_overpowering
     - binary_sensor.shelly_plus_2pm_8d28f4_relay_1_overpower
     - binary_sensor.shelly_plus_2pm_8d28f4_relay_2_overpower
     - binary_sensor.shelly_plus_2pm_b67728_relay_1_overpower
     - binary_sensor.shelly_plus_2pm_b67728_relay_2_overpower
+    - binary_sensor.shelly_pro_1pm_80e0c0_overpower
     from: 'off'
     to: 'on'
     for:
@@ -501,15 +394,15 @@
     - binary_sensor.shelly_25_77dbe5_overtemperature
     - binary_sensor.shelly_plus_plug_s_2ffb28_overtemperature
     - binary_sensor.shelly_plus_plug_s_d00c84_overtemperature
-    - binary_sensor.shelly_plus_plug_it_d0affc_overtemperature
     - binary_sensor.shelly_plus_1pm_948ff8_overtemperature
     - binary_sensor.shelly_plus_1pm_b22864_overtemperature
-    - binary_sensor.shelly_plus_1pm_mini_411170_overheating
-    - binary_sensor.shelly_pro_1pm_80e0c0_overtemperature
+    - binary_sensor.shelly_1pm_mini_gen3_411170_overheating
+    - binary_sensor.shelly_plus_1pm_9d35dc_overheating
     - binary_sensor.shelly_plus_2pm_8d28f4_relay_1_overtemperature
     - binary_sensor.shelly_plus_2pm_8d28f4_relay_2_overtemperature
     - binary_sensor.shelly_plus_2pm_b67728_relay_1_overtemperature
     - binary_sensor.shelly_plus_2pm_b67728_relay_2_overtemperature
+    - binary_sensor.shelly_pro_1pm_80e0c0_overtemperature
     from: 'off'
     to: 'on'
     for:
@@ -557,16 +450,32 @@
     for:
       minutes: 10
   action:
+  - variables:
+      area: '{{ area_name(trigger.entity_id) }}'
+      snapshot_name: '{{ now().strftime(''%Y%m%d_%H%M%S'') }}_{{ area_name(trigger.entity_id)
+        }}.jpg'
+      snapshot_areas:
+      - salon
+      - kuchnia
+      - przedpokój
+  - if:
+    - condition: template
+      value_template: '{{ area_name(trigger.entity_id) in snapshot_areas }}'
+    then:
+    - service: camera.snapshot
+      data:
+        filename: /media/snapshots/{{ snapshot_name }}
+      target:
+        entity_id: camera.salon
   - service: python_script.notify
     data:
       title: Wykryto ruch w pustym mieszkaniu
-      message: 'Pomieszczenie: {{ area_name(trigger.entity_id) }}, godzina {{ now().strftime(''%H:%M'')
-        }}.'
-      tag: notification-motion-{{ area_name(trigger.entity_id) }}
+      message: 'Pomieszczenie: {{ area }}, godzina {{ now().strftime(''%H:%M'') }}.'
+      tag: notification-motion-{{ area }}
       group: motion
       priority: high
-      entity_id: "{% if area_name(trigger.entity_id) in [\"salon\", \"kuchnia\", \"przedpokój\"]
-        %}\n  camera.salon\n{% else %}\n  None\n{% endif %}"
+      image: "{% if area in snapshot_areas %}\n  /media/local/snapshots/{{ snapshot_name
+        }}\n{% endif %}"
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
@@ -718,70 +627,6 @@
         type: ios
   variables:
     threshold: 20
-- id: presence_edyta_far_from_home
-  alias: Presence Edyta Far From Home
-  description: Edyta daleko od domu
-  trigger:
-    platform: state
-    entity_id: person.edyta
-  condition:
-  - '{{ state_attr(trigger.entity_id, ''latitude'') != None }}'
-  - '{{ state_attr(trigger.entity_id, ''longitude'') != None }}'
-  - condition: state
-    entity_id: input_boolean.edyta_far_from_home
-    state: 'off'
-  - '{{ distance(trigger.entity_id, ''zone.home'') > 40 }}'
-  action:
-    service: input_boolean.turn_on
-    entity_id: input_boolean.edyta_far_from_home
-- id: presence_maciek_far_from_home
-  alias: Presence Maciek Far From Home
-  description: Maciek daleko od domu
-  trigger:
-    platform: state
-    entity_id: person.maciek
-  condition:
-  - '{{ state_attr(trigger.entity_id, ''latitude'') != None }}'
-  - '{{ state_attr(trigger.entity_id, ''longitude'') != None }}'
-  - condition: state
-    entity_id: input_boolean.maciek_far_from_home
-    state: 'off'
-  - '{{ distance(trigger.entity_id, ''zone.home'') > 40 }}'
-  action:
-    service: input_boolean.turn_on
-    entity_id: input_boolean.maciek_far_from_home
-- id: presence_maciek_near_home
-  alias: Presence Maciek Near Home
-  description: Maciek wraca z dalekiej podróży
-  trigger:
-    platform: state
-    entity_id: person.maciek
-  condition:
-  - '{{ state_attr(trigger.entity_id, ''latitude'') != None }}'
-  - '{{ state_attr(trigger.entity_id, ''longitude'') != None }}'
-  - condition: state
-    entity_id: input_boolean.maciek_far_from_home
-    state: 'on'
-  - '{{ distance(trigger.entity_id, ''zone.home'') < 30 }}'
-  action:
-    service: input_boolean.turn_off
-    entity_id: input_boolean.maciek_far_from_home
-- id: presence_edyta_near_home
-  alias: Presence Edyta Near Home
-  description: Edyta wraca z dalekiej podróży
-  trigger:
-    platform: state
-    entity_id: person.edyta
-  condition:
-  - '{{ state_attr(trigger.entity_id, ''latitude'') != None }}'
-  - '{{ state_attr(trigger.entity_id, ''longitude'') != None }}'
-  - condition: state
-    entity_id: input_boolean.edyta_far_from_home
-    state: 'on'
-  - '{{ distance(trigger.entity_id, ''zone.home'') < 30 }}'
-  action:
-    service: input_boolean.turn_off
-    entity_id: input_boolean.edyta_far_from_home
 - id: presence_peoples_away
   alias: Presence Peoples Away
   description: ludzie poza domem
@@ -792,35 +637,46 @@
   action:
   - service: input_boolean.turn_on
     entity_id: input_boolean.away_mode
-  - condition: state
-    entity_id: binary_sensor.windows
-    state: 'on'
-  - condition: numeric_state
-    entity_id: sensor.home_forecast_precipitation_probability
-    above: 20
-  - service: python_script.notify
-    data:
-      title: Otwarte okna
-      message: Okna w pustym mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów
-        wynosi {{ states('sensor.home_forecast_precipitation_probability') | int }}%.
-      tag: notification-windows-weather
-      group: windows
-      priority: high
-      services:
-      - service: notify.mobile_app_iphone_13
-        type: ios
-      - service: notify.mobile_app_iphone_12
-        type: ios
+  - if:
+    - condition: state
+      entity_id: binary_sensor.windows
+      state: 'on'
+    - condition: numeric_state
+      entity_id: sensor.home_forecast_precipitation_probability
+      above: 20
+    then:
+    - service: python_script.notify
+      data:
+        title: Otwarte okna
+        message: Okna w pustym mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów
+          wynosi {{ states('sensor.home_forecast_precipitation_probability') | int
+          }}%.
+        tag: notification-windows-weather
+        group: windows
+        priority: high
+        services:
+        - service: notify.mobile_app_iphone_13
+          type: ios
+        - service: notify.mobile_app_iphone_12
+          type: ios
 - id: presence_peoples_back
   alias: Presence Peoples Back
   description: ludzie w domu
   trigger:
-    platform: state
+  - platform: state
     entity_id: binary_sensor.people_at_home
     to: 'on'
   action:
   - service: input_boolean.turn_off
     entity_id: input_boolean.away_mode
+  - if:
+    - condition: sun
+      after: sunset
+    then:
+    - service: light.turn_on
+      target:
+        entity_id: light.leds_schody
+      data: {}
 - id: heating_aeotec_thermostat_calibration
   alias: Heating Aeotec Thermostat Calibration
   description: kalibracja termostatu Aeotec
@@ -923,6 +779,9 @@
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
+  - condition: state
+    entity_id: input_boolean.heating_airing
+    state: 'off'
   action:
   - service: script.heating_away_mode
     data: {}
@@ -939,7 +798,7 @@
     entity_id: input_boolean.heating_season
     state: 'on'
   - condition: state
-    entity_id: binary_sensor.windows
+    entity_id: input_boolean.heating_airing
     state: 'off'
   action:
   - choose:
@@ -949,42 +808,9 @@
         state: 'on'
       sequence:
         service: script.heating_day
-    default:
-      service: script.heating_night
-- id: heating_turn_on_before_return_to_home
-  alias: Heating Turn On Before Return To Home
-  description: włącz ogrzewanie dzienne przed powrotem domowników do domu
-  trigger:
-  - platform: state
-    entity_id: input_boolean.edyta_far_from_home
-    from: 'on'
-    to: 'off'
-  - platform: state
-    entity_id: input_boolean.maciek_far_from_home
-    from: 'on'
-    to: 'off'
-  condition:
-  - condition: state
-    entity_id: input_boolean.heating_season
-    state: 'on'
-  - condition: state
-    entity_id:
-    - input_boolean.away_mode
-    state: 'on'
-  - condition: state
-    entity_id: binary_sensor.windows
-    state: 'off'
-  action:
-  - choose:
-    - conditions:
-      - condition: state
-        entity_id: schedule.heating
-        state: 'on'
-      sequence:
-      - service: script.heating_day
         data: {}
     default:
-    - service: script.heating_night
+      service: script.heating_night
       data: {}
 - id: windows_opened
   alias: Windows Opened
@@ -1453,46 +1279,6 @@
     target:
       entity_id: light.ceiling_lazienka
     data: {}
-- id: light_turn_on_kuchnia_light_when_dark_and_motion
-  alias: Light Kuchnia Turn On Light When Dark And Motion
-  description: włącz światło w kuchni jak pojawi się ruch i jest ciemno
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_kuchnia
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id:
-    - input_boolean.away_mode
-    - light.ceiling_kuchnia
-    - light.leds_salon
-    - light.ceiling_salon
-    state: 'off'
-  - condition: numeric_state
-    entity_id: sensor.illumination_kuchnia
-    below: 41
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-      before_offset: +00:10:00
-  action:
-  - service: light.turn_on
-    target:
-      entity_id: light.ceiling_kuchnia
-    data: {}
-  - wait_for_trigger:
-      platform: state
-      entity_id: binary_sensor.motion_kuchnia
-      from: 'on'
-      to: 'off'
-  - service: light.turn_off
-    target:
-      entity_id: light.ceiling_kuchnia
-    data: {}
 - id: light_turn_off_kuchnia_light_when_no_motion
   alias: Light Turn Off Kuchnia Light When No Motion
   description: wyłącz światło w kuchni jak brak ruchu
@@ -1653,76 +1439,6 @@
     service: light.turn_off
     target:
       entity_id: light.ceiling_korytarz
-- id: light_turn_on_przedpokoj_leds_when_dark_and_motion
-  alias: Light Przedpokój Turn On LEDs When Dark And Motion
-  description: włącz LEDy na przedpokoju jak pojawi się ruch i jest ciemno
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_przedpokoj
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id:
-    - light.ceiling_przedpokoj
-    - light.leds_przedpokoj
-    - light.ceiling_salon
-    - light.leds_salon
-    state: 'off'
-  - condition: numeric_state
-    entity_id: sensor.illumination_przedpokoj
-    below: 9
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-      before_offset: +00:10:00
-  action:
-  - service: light.turn_on
-    target:
-      entity_id: light.leds_przedpokoj
-    data: {}
-  - wait_for_trigger:
-      platform: state
-      entity_id: binary_sensor.motion_przedpokoj
-      from: 'on'
-      to: 'off'
-  - service: light.turn_off
-    target:
-      entity_id: light.leds_przedpokoj
-    data: {}
-- id: light_turn_off_przedpokoj_lights_when_no_motion
-  alias: Light Turn Off Przedpokoj lights When No Motion
-  description: wyłącz oświetlenie na przedpokoju jak brak ruchu
-  trigger:
-    platform: state
-    entity_id: binary_sensor.motion_przedpokoj
-    from: 'on'
-    to: 'off'
-    for:
-      minutes: '{{ states(''input_number.no_motion_time'') | int }}'
-  condition:
-  - condition: or
-    conditions:
-    - condition: state
-      entity_id: light.leds_przedpokoj
-      state: 'on'
-    - condition: state
-      entity_id: light.ceiling_przedpokoj
-      state: 'on'
-    - condition: state
-      entity_id: light.ceiling_korytarz
-      state: 'on'
-  action:
-  - service: light.turn_off
-    target:
-      entity_id:
-      - light.leds_przedpokoj
-      - light.ceiling_przedpokoj
-      - light.ceiling_korytarz
-    data: {}
 - id: light_toggle_ceiling_antek
   alias: Light Antek Toggle Ceiling Lamp
   description: ''
@@ -1748,6 +1464,9 @@
     for:
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
   condition:
+  - condition: state
+    entity_id: binary_sensor.desktop_antek_status
+    state: 'off'
   - condition: or
     conditions:
     - condition: state
@@ -1950,16 +1669,19 @@
     data:
       transition: 10
 - id: light_turn_off_gabinet_light_when_no_motion
-  alias: Light Turn Off Gabinet Light When No Motion
+  alias: Light Gabinet Turn Off Light When No Motion
   description: wyłącz światło w gabinecie jak brak ruchu
   trigger:
-    platform: state
+  - platform: state
     entity_id: binary_sensor.motion_gabinet
     from: 'on'
     to: 'off'
     for:
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
   condition:
+  - condition: state
+    entity_id: binary_sensor.dell_latitude_5400_status
+    state: 'off'
   - condition: or
     conditions:
     - condition: state
@@ -2746,9 +2468,10 @@
   description: powiadom o końcu prania
   trigger:
   - platform: state
-    entity_id: sensor.washing_machine_pralnia
-    from: pranie
-    to: wyłączona
+    entity_id:
+    - binary_sensor.washing_machine_pralnia
+    from: 'on'
+    to: 'off'
     for:
       minutes: 1
   action:
@@ -2958,114 +2681,151 @@
   trigger:
   - platform: state
     entity_id:
-    - proximity.edyta_home
-    attribute: dir_of_travel
+    - sensor.dom_edyta_direction_of_travel
     to: towards
   condition:
-  - condition: numeric_state
-    entity_id: proximity.edyta_home
-    below: 20
-    above: 0
   - condition: state
     entity_id: person.maciek
     state: home
+  - condition: numeric_state
+    entity_id: sensor.dom_edyta_distance
+    above: 2
   action:
   - service: python_script.notify
     data:
       title: Edyta wraca do domu
-      message: Edyta jest w odległości {{ trigger.to_state.state }} km od domu.
+      message: Edyta wraca do domu i jest w odległości {{ states('sensor.dom_edyta_distance')
+        | round }} km.
       tag: notification-{{ trigger.entity_id }}
       group: family
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
   mode: single
-- id: '1700997698677'
-  alias: Heating Salon External Temperature Sensor
-  description: Przekazuje temperaturę z sensora do termostatu
+- id: '1705870734815'
+  alias: Light Pracownia Turn Off Lights When No Motion
+  description: wyłącz światła w pracowni jak brak ruchu
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_pracownia
+    from: 'on'
+    to: 'off'
+    for:
+      minutes: '{{ states(''input_number.no_motion_time'') | int }}'
+  condition:
+  - condition: state
+    entity_id: binary_sensor.laptop_edyta_status
+    state: 'off'
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: light.ceiling_pracownia
+      state: 'on'
+  action:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.ceiling_pracownia
+    data: {}
+- id: '1709306186649'
+  alias: Light Przedpokój Turn On LEDs When Dark And Motion
+  description: włącz LEDy na przedpokoju jak pojawi się ruch i jest ciemno
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_przedpokoj
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id:
+    - light.ceiling_przedpokoj
+    - light.leds_przedpokoj
+    - light.ceiling_salon
+    - light.leds_salon
+    state: 'off'
+  - condition: numeric_state
+    entity_id: sensor.illumination_przedpokoj
+    below: 9
+  - condition: or
+    conditions:
+    - condition: sun
+      after: sunset
+    - condition: sun
+      before: sunrise
+      before_offset: +00:10:00
+  action:
+  - service: light.turn_on
+    target:
+      entity_id: light.leds_przedpokoj
+    data: {}
+  - wait_for_trigger:
+      platform: state
+      entity_id: binary_sensor.motion_przedpokoj
+      from: 'on'
+      to: 'off'
+  - service: light.turn_off
+    target:
+      entity_id: light.leds_przedpokoj
+    data: {}
+  mode: single
+- id: '1709306300471'
+  alias: Light Turn Off Przedpokoj lights When No Motion
+  description: wyłącz oświetlenie na przedpokoju jak brak ruchu
+  trigger:
+    platform: state
+    entity_id: binary_sensor.motion_przedpokoj
+    from: 'on'
+    to: 'off'
+    for:
+      minutes: '{{ states(''input_number.no_motion_time'') | int }}'
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: light.leds_przedpokoj
+      state: 'on'
+    - condition: state
+      entity_id: light.ceiling_przedpokoj
+      state: 'on'
+    - condition: state
+      entity_id: light.ceiling_korytarz
+      state: 'on'
+  action:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.leds_przedpokoj
+      - light.ceiling_przedpokoj
+      - light.ceiling_korytarz
+    data: {}
+  mode: single
+- id: '1710416852993'
+  alias: Energy Consumption Reduction
+  description: wyłącza na noc urządzenia by oszczędzać energię
   trigger:
   - platform: state
     entity_id:
-    - sensor.temperature_salon
+    - schedule.energy_consumption_reduction
   condition:
-  - '{{ is_number(trigger.to_state.state) }}'
   - condition: state
-    entity_id: input_boolean.heating_season
-    state: 'on'
+    entity_id: input_boolean.guests
+    state: 'off'
   action:
-  - service: zha.set_zigbee_cluster_attribute
-    data:
-      cluster_type: in
-      ieee: 60:b6:47:ff:fe:98:3e:d3
-      endpoint_id: 1
-      cluster_id: 513
-      attribute: 16405
-      value: '{{ trigger.to_state.state | float * 100 }}'
-  mode: single
-- id: '1702640682201'
-  alias: Christmas Turn On Christmas Lights
-  description: ''
-  trigger:
-  - platform: sun
-    event: sunset
-    offset: -0:30:00
-  condition: []
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id:
-      - switch.christmas_lights_balkon_gora
-      - switch.christmas_lights_balkon_dol
-      - switch.christmas_lights_goscinny
-      - switch.christmas_tree_salon
-    data: {}
-  mode: single
-- id: '1702640763057'
-  alias: Christmas Turn Off Christmass Lights
-  description: ''
-  trigger:
-  - platform: time
-    at: 01:00:00
-  condition: []
-  action:
-  - service: switch.turn_off
-    target:
-      entity_id:
-      - switch.christmas_lights_goscinny
-      - switch.christmas_lights_balkon_dol
-      - switch.christmas_lights_balkon_gora
-      - switch.christmas_tree_salon
-    data: {}
-  mode: single
-- id: '1702731405720'
-  alias: Christmas Turn Off Christmas Lights Schody
-  description: ''
-  trigger:
-  - platform: time
-    at: 01:00:00
-  condition: []
-  action:
-  - service: switch.turn_off
-    target:
-      entity_id:
-      - switch.christmas_lights_schody
-      device_id: []
-      area_id: []
-    data: {}
-  mode: single
-- id: '1702731478823'
-  alias: Christmas Turn On Christmas Lights Schody
-  description: ''
-  trigger:
-  - platform: time
-    at: 06:30:00
-  condition: []
-  action:
-  - service: switch.turn_on
-    target:
-      entity_id:
-      - switch.christmas_lights_schody
-      device_id: []
-      area_id: []
-    data: {}
+  - if:
+    - condition: template
+      value_template: '{{ trigger.to_state.state == "on" }}'
+    then:
+    - service: switch.turn_off
+      target:
+        entity_id: switch.tv_power_supply_goscinny
+      data: {}
+  - if:
+    - condition: template
+      value_template: '{{ trigger.to_state.state == "off" }}'
+    then:
+    - service: switch.turn_on
+      target:
+        entity_id:
+        - switch.tv_power_supply_goscinny
+      data: {}
   mode: single

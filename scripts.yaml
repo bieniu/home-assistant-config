@@ -14,6 +14,7 @@ devices_away_mode:
       - light.ceiling_kuchnia
       - light.ceiling_lazienka
       - light.ceiling_przedpokoj
+      - light.leds_przedpokoj
       - light.ceiling_salon
       - light.ceiling_toaleta
       - light.desk_lamp_antek
@@ -23,7 +24,6 @@ devices_away_mode:
       - light.lamp_gabinet
       - light.lamp_pracownia
       - light.lamp_salon
-      - light.leds_przedpokoj
       - light.leds_salon
       - light.leds_schody
       - light.lightstrip_antek
@@ -49,17 +49,17 @@ heating_day:
   - service: climate.set_temperature
     target:
       entity_id:
-      - climate.shelly_valve_72a544
+      - climate.thermostat_antresola
     data:
       temperature: '{{ states(''input_number.temperature_day'') }}'
   - service: climate.set_temperature
     target:
       entity_id:
       - climate.thermostat_kuchnia
-      - climate.danfoss_014g2461_thermostat_983ed3
+      - climate.thermostat_salon
       - climate.thermostat_gabinet
       - climate.thermostat_pracownia
-      - climate.shelly_valve_72a544
+      - climate.thermostat_antresola
     data:
       temperature: '{{ states(''input_number.temperature_day'') }}'
   - service: climate.set_temperature
@@ -82,7 +82,7 @@ heating_night:
       entity_id:
       - climate.thermostat_gabinet
       - climate.thermostat_pracownia
-      - climate.shelly_valve_72a544
+      - climate.thermostat_antresola
     data:
       hvac_mode: heat
       temperature: '{{ states(''input_number.temperature_night'') }}'
@@ -108,7 +108,7 @@ heating_night:
     target:
       entity_id:
       - climate.thermostat_kuchnia
-      - climate.danfoss_014g2461_thermostat_983ed3
+      - climate.thermostat_salon
     data:
       hvac_mode: heat
       temperature: '{{ states(''input_number.temperature_night'') }}'
@@ -122,13 +122,13 @@ heating_away_mode:
       entity_id:
       - climate.thermostat_gabinet
       - climate.thermostat_kuchnia
-      - climate.danfoss_014g2461_thermostat_983ed3
+      - climate.thermostat_salon
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
       - climate.thermostat_lazienka
       - climate.thermostat_pracownia
       - climate.thermostat_goscinny
-      - climate.shelly_valve_72a544
+      - climate.thermostat_antresola
     data:
       temperature: '{{ states(''input_number.temperature_away'') }}'
   - service: humidifier.turn_off
@@ -142,23 +142,21 @@ heating_away_mode:
   icon: mdi:radiator
 heating_season_end:
   sequence:
+  - service: climate.turn_off
+    target:
+      entity_id: climate.thermostat_antresola
+    data: {}
   - service: climate.set_temperature
     target:
       entity_id:
-      - climate.shelly_valve_72a544
       - climate.thermostat_antek
       - climate.thermostat_gabinet
-      - climate.thermostat_kuchnia
       - climate.thermostat_lazienka
       - climate.thermostat_pracownia
       - climate.thermostat_goscinny
       - climate.thermostat_sypialnia
-    data:
-      temperature: 4
-  - service: climate.set_temperature
-    target:
-      entity_id:
-      - climate.danfoss_014g2461_thermostat_983ed3
+      - climate.thermostat_salon
+      - climate.thermostat_kuchnia
     data:
       temperature: 5
   - service: humidifier.turn_off
@@ -175,9 +173,9 @@ heating_airing_begin:
   - service: climate.set_temperature
     target:
       entity_id:
-      - climate.shelly_valve_72a544
+      - climate.thermostat_antresola
       - climate.thermostat_gabinet
-      - climate.danfoss_014g2461_thermostat_983ed3
+      - climate.thermostat_salon
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
       - climate.thermostat_lazienka
@@ -214,15 +212,6 @@ light_turn_on_antek_leds:
   mode: single
   icon: mdi:lightbulb-outline
   alias: 'Light: turn on Antek''s LEDs'
-camera_move:
-  sequence:
-  - service: mqtt.publish
-    data:
-      topic: camera/salon/motors/{{ orientation }}/set
-      payload: '{{ direction }}'
-  mode: single
-  alias: 'Camera: move'
-  icon: mdi:cctv
 alexa_netflix:
   sequence:
   - service: select.select_option
@@ -264,7 +253,7 @@ alexa_goodnight:
       - light.ceiling_korytarz
       - light.ceiling_garderoba
       - light.scone_schody
-      - switch.stacjonarny
+      - light.ceiling_pracownia
     data: {}
   mode: single
   alias: 'Alexa: goodnight'
@@ -306,14 +295,14 @@ restart_wifi_devices:
       - button.shelly_motion_2_08a4e9_restart
       - button.shelly_motion_c67c2a_restart
       - button.shelly_plus_1pm_b22864_restart
-      - button.shelly_plus_1pm_mini_411170_restart
+      - button.shelly_1_mini_gen3_411724_restart
+      - button.shelly_1pm_mini_gen3_411170_restart
       - button.shelly_plus_1pm_948ff8_restart
+      - button.shelly_plus_1pm_9d35dc_restart
       - button.shelly_plus_2pm_8d28f4_restart
       - button.shelly_plus_2pm_b67728_restart
       - button.shelly_plus_plug_s_2ffb28_restart
       - button.shelly_plus_plug_s_d00c84_restart
-      - button.shelly_plus_plug_it_d0affc_restart
-      - button.shelly_pro_1pm_80e0c0_restart
       - button.shelly_pro_3em_879c7c_restart
       - button.shelly_valve_72a544_restart
       - button.shelly_plus_1_mini_af5390_restart

@@ -10,9 +10,6 @@ recorder:
 
 frontend:
   themes: !include_dir_merge_named themes
-  extra_module_url:
-    - /hacsfiles/lovelace-card-mod/card-mod.js
-    - /hacsfiles/lovelace-canary/canary.js
 
 group: !include groups.yaml
 
@@ -39,27 +36,6 @@ logbook:
 
 logger: !include logger.yaml
 
-lovelace:
-  mode: yaml
-  resources:
-    - url: /hacsfiles/lovelace-auto-entities/auto-entities.js
-      type: module
-    - url: /hacsfiles/mini-media-player/mini-media-player-bundle.js
-      type: module
-    - url: /hacsfiles/mini-graph-card/mini-graph-card-bundle.js
-      type: module
-    - url: /hacsfiles/home-assistant-sun-card/home-assistant-sun-card.js
-      type: module
-    - url: /hacsfiles/lovelace-mushroom/mushroom.js
-      type: module
-    - url: /hacsfiles/stack-in-card/stack-in-card.js
-      type: module
-    - url: /hacsfiles/lovelace-layout-card/layout-card.js
-      type: module
-    - url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js
-      type: module
-                
-
 python_script:
 
 scene: !include scenes.yaml
@@ -71,6 +47,8 @@ sensor: !include sensors.yaml
 switch: !include switches.yaml
 
 fan: !include fans.yaml
+
+media_player: !include media_players.yaml
 
 template: !include templates.yaml
 
@@ -101,17 +79,65 @@ weather:
     visibility_template: "{{ state_attr('weather.accuweather', 'visibility') }}"
     cloud_coverage_template: "{{ state_attr('weather.accuweather', 'cloud_coverage') }}"
     forecast_template: "{{ state_attr('weather.openweathermap', 'forecast') }}"
-    
-proximity:
-  edyta_home:
-    ignored_zones:
-      - zone.grandmother
-      - zone.grandparents
-      - zone.school_antek
-      - zone.skaratki_horses
-      - zone.work_edyta_lodz
-      - zone.work_edyta_warszawa
-    devices:
-      - person.edyta
-    tolerance: 50
-    unit_of_measurement: km
+
+mqtt:
+  - button:
+      unique_id: camera_salon_move_up
+      name: "Camera Move Up"
+      command_topic: "camera/salon/motors/vertical/set"
+      payload_press: "up"
+      qos: 1
+      retain: false
+      icon: "mdi:chevron-double-up"
+      device:
+        connections: [["mac", !secret dafang_mac_address]]
+        manufacturer: "Xiaomi"
+        model: "DaFang"
+        name: "Xiaomi DaFang"
+        configuration_url: !secret dafang_url
+        identifiers: [!secret dafang_mac_address]
+  - button:
+      unique_id: camera_salon_move_down
+      name: "camera Move Down"
+      command_topic: "camera/salon/motors/vertical/set"
+      payload_press: "down"
+      qos: 1
+      retain: false
+      icon: "mdi:chevron-double-down"
+      device:
+        connections: [["mac", !secret dafang_mac_address]]
+        manufacturer: "Xiaomi"
+        model: "DaFang"
+        name: "Xiaomi DaFang"
+        configuration_url: !secret dafang_url
+        identifiers: [!secret dafang_mac_address]
+  - button:
+      unique_id: camera_salon_move_left
+      name: "camera Move Left"
+      command_topic: "camera/salon/motors/horizontal/set"
+      payload_press: "left"
+      qos: 1
+      retain: false
+      icon: "mdi:chevron-double-left"
+      device:
+        connections: [["mac", !secret dafang_mac_address]]
+        manufacturer: "Xiaomi"
+        model: "DaFang"
+        name: "Xiaomi DaFang"
+        configuration_url: !secret dafang_url
+        identifiers: [!secret dafang_mac_address]
+  - button:
+      unique_id: camera_salon_move_right
+      name: "camera Move Right"
+      command_topic: "camera/salon/motors/horizontal/set"
+      payload_press: "right"
+      qos: 1
+      retain: false
+      icon: "mdi:chevron-double-right"
+      device:
+        connections: [["mac", !secret dafang_mac_address]]
+        manufacturer: "Xiaomi"
+        model: "DaFang"
+        name: "Xiaomi DaFang"
+        configuration_url: !secret dafang_url
+        identifiers: [!secret dafang_mac_address]

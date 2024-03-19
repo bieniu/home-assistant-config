@@ -3,8 +3,8 @@
   unique_id: thermostat_lazienka
   heater: switch.heater_lazienka
   target_sensor: sensor.temperature_lazienka
-  min_temp: 4
-  max_temp: 28
+  min_temp: 5
+  max_temp: 35
   min_cycle_duration:
     minutes: 10
   precision: 0.5
@@ -15,8 +15,8 @@
   unique_id: thermostat_gabinet
   heater: switch.heater_gabinet
   target_sensor: sensor.temperature_gabinet
-  min_temp: 4
-  max_temp: 28
+  min_temp: 5
+  max_temp: 35
   min_cycle_duration:
     minutes: 10
   precision: 0.5
@@ -27,20 +27,8 @@
   unique_id: thermostat_antek
   heater: switch.heater_antek
   target_sensor: sensor.temperature_antek
-  min_temp: 4
-  max_temp: 28
-  min_cycle_duration:
-    minutes: 10
-  precision: 0.5
-  hot_tolerance: 0.2
-
-- platform: generic_thermostat
-  name: "Thermostat Goscinny"
-  unique_id: thermostat_goscinny
-  heater: switch.heater_goscinny
-  target_sensor: sensor.temperature_goscinny
-  min_temp: 4
-  max_temp: 28
+  min_temp: 5
+  max_temp: 35
   min_cycle_duration:
     minutes: 10
   precision: 0.5
@@ -51,8 +39,8 @@
   unique_id: thermostat_sypialnia
   heater: switch.heater_sypialnia
   target_sensor: sensor.temperature_sypialnia
-  min_temp: 4
-  max_temp: 28
+  min_temp: 5
+  max_temp: 35
   min_cycle_duration:
     minutes: 10
   precision: 0.5
@@ -63,20 +51,20 @@
   unique_id: thermostat_pracownia
   heater: switch.heater_pracownia
   target_sensor: sensor.temperature_pracownia
-  min_temp: 4
-  max_temp: 28
+  min_temp: 5
+  max_temp: 35
   min_cycle_duration:
     minutes: 10
   precision: 0.5
   hot_tolerance: 0.2
 
 - platform: generic_thermostat
-  name: "Thermostat Kuchnia"
-  unique_id: thermostat_kuchnia
-  heater: switch.heater_kuchnia
-  target_sensor: sensor.temperature_kuchnia
-  min_temp: 4
-  max_temp: 28
+  name: "Thermostat Goscinny"
+  unique_id: thermostat_goscinny
+  heater: switch.heater_goscinny
+  target_sensor: sensor.temperature_goscinny
+  min_temp: 5
+  max_temp: 35
   min_cycle_duration:
     minutes: 10
   precision: 0.5
