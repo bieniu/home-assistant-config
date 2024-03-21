@@ -49,6 +49,20 @@ binary_sensor:
     on_press:
       - switch.toggle: relay
 
+  - platform: status
+    id: connection_status
+    internal: true
+    filters:
+      - delayed_off: 5min
+    on_state:
+        if:
+          condition:
+            binary_sensor.is_off: connection_status
+          then:
+            - switch.turn_off: relay
+            - delay: 5s
+            - switch.turn_on: relay
+
 output:
   - platform: gpio
     pin: GPIO00
@@ -61,6 +75,7 @@ switch:
     id: relay
     icon: mdi:power-plug
     name: "Relay"
+    restore_mode: ALWAYS_ON
     on_turn_on:
       - output.turn_on: led
     on_turn_off:

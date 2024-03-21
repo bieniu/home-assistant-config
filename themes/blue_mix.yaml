@@ -14,7 +14,6 @@ blue-mix:
       state-icon-color: 'var(--dark-primary-color)'
 
     dark:
-      ha-card-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.90)
       accent-color: '#ffb750'
       app-header-background-color: 'var(--primary-color)'
       dark-primary-color: '#0067b0'

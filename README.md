@@ -119,7 +119,13 @@
 
 ## Screenshots
 
-![HA Overview](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/HA-overview.png)
+![Home](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/home.png)
+![Living room](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/living_room.png)
+![Office](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/office.png)
+![Network](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/network.png)
+![Energy](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/energy.png)
+![Climate](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/climate.png)
+![Settings](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/settings.png)
 
 [paypal-me-shield]: https://img.shields.io/static/v1.svg?label=%20&message=PayPal.Me&logo=paypal
 [paypal-me]: https://www.paypal.me/bieniu79
