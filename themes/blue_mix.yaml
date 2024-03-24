@@ -4,9 +4,11 @@ blue-mix:
   ha-card-border-radius: 20px
   modes:
     light:
+      app-header-background-color: 'var(--primary-color)'
       accent-color: '#ffb750'
       dark-primary-color: '#0067b0'
       light-primary-color: '#89c4ff'
+      ha-card-background: '#ffffff'
       primary-background-color: '#e5e5e5'
       primary-color: '#5294e2'
       state-climate-heat-color: 'var(--accent-color)'
@@ -14,11 +16,11 @@ blue-mix:
       state-icon-color: 'var(--dark-primary-color)'
 
     dark:
-      accent-color: '#ffb750'
       app-header-background-color: 'var(--primary-color)'
+      accent-color: '#ffb750'
       dark-primary-color: '#0067b0'
-      ha-card-background: '#434954'
       light-primary-color: '#89c4ff'
+      ha-card-background: '#434954'
       primary-background-color: '#383C45'
       card-background-color: 'var(--primary-background-color)'
       primary-color: '#5294e2'
