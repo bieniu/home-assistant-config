@@ -1,26 +1,26 @@
 - id: '1693379234955'
-  name: Light Salon Auto
+  name: Automatyczny oświetlenia w salonie
   entities:
     switch.adaptive_lighting_salon:
-      icon: mdi:theme-light-dark
-      friendly_name: 'Adaptive Lighting: salon'
       configuration: {}
-      manual_control: []
-      brightness_pct: 66.18322083494802
-      color_temp_kelvin: 3500
-      color_temp_mired: 285
+      brightness_pct: 100
+      color_temp_kelvin: 4875
+      color_temp_mired: 205
       rgb_color:
       - 255
-      - 192.53375698318678
-      - 140.82658361892766
+      - 225.49411723920662
+      - 201.53266234884768
       xy_color:
-      - 0.453
-      - 0.374
+      - 0.376
+      - 0.351
       hs_color:
-      - 27.08
-      - 44.314
-      sun_position: -0.6763355833010396
+      - 26.038
+      - 20.784
+      sun_position: 0.7283914647362668
       force_rgb_color: false
+      icon: mdi:theme-light-dark
+      friendly_name: 'Adaptive Lighting: salon'
+      manual_control: []
       autoreset_time_remaining: {}
       state: 'on'
   icon: mdi:lightbulb-auto-outline
@@ -28,7 +28,7 @@
     switch.adaptive_lighting_salon:
       entity_only: true
 - id: '1693379770188'
-  name: Light Salon Dusk
+  name: Oświetlenie po zmierzchu w salonie
   entities:
     light.ceiling_salon:
       min_color_temp_kelvin: 1700
@@ -60,26 +60,28 @@
       - Strobe epilepsy!
       - Sunrise
       - Sunset
+      - Tea Time
       - Twitter
       - WhatsApp
       supported_color_modes:
       - color_temp
       - hs
       - rgb
+      effect:
       color_mode: color_temp
-      brightness: 128
-      color_temp_kelvin: 3322
-      color_temp: 301
+      brightness: 255
+      color_temp_kelvin: 4878
+      color_temp: 205
       hs_color:
-      - 27.369
-      - 48.786
+      - 26.891
+      - 20.926
       rgb_color:
       - 255
-      - 187
-      - 130
+      - 225
+      - 201
       xy_color:
-      - 0.468
       - 0.377
+      - 0.351
       entity_id:
       - light.bulb_salon_1
       - light.bulb_salon_2
@@ -90,29 +92,40 @@
     light.leds_salon:
       supported_color_modes:
       - onoff
+      color_mode:
       icon: mdi:led-strip-variant
       friendly_name: LEDy
       supported_features: 0
       state: 'off'
     switch.adaptive_lighting_salon:
       configuration: {}
-      brightness_pct:
-      color_temp_kelvin:
-      color_temp_mired:
+      brightness_pct: 100
+      color_temp_kelvin: 4875
+      color_temp_mired: 205
       rgb_color:
+      - 255
+      - 225.49411723920662
+      - 201.53266234884768
       xy_color:
+      - 0.376
+      - 0.351
       hs_color:
-      sun_position:
-      force_rgb_color:
+      - 26.038
+      - 20.784
+      sun_position: 0.7283914647362668
+      force_rgb_color: false
       icon: mdi:theme-light-dark
       friendly_name: 'Adaptive Lighting: salon'
-      state: 'off'
+      manual_control: []
+      autoreset_time_remaining: {}
+      state: 'on'
     light.lamp_salon:
       supported_color_modes:
-      - brightness
+      - onoff
+      color_mode:
       icon: mdi:floor-lamp
       friendly_name: Lampa
-      supported_features: 40
+      supported_features: 0
       state: 'off'
   icon: mdi:lightbulb-night-outline
   metadata:

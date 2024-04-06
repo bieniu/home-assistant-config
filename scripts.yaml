@@ -35,7 +35,7 @@ devices_away_mode:
       - humidifier.xiaomi_mi_humidifier_ca1
       - humidifier.xiaomi_mi_humidifier_cb1
   mode: single
-  alias: 'Devices: away mode'
+  alias: Poza domem
   icon: mdi:home-export-outline
 heating_day:
   sequence:
@@ -72,7 +72,7 @@ heating_day:
       temperature: '{{ states(''input_number.bedroom_temperature_day'') }}'
   mode: single
   icon: mdi:radiator
-  alias: 'Heating: day'
+  alias: Tryb dzienny ogrzewania
 heating_night:
   sequence:
   - service: script.humidification_start
@@ -113,7 +113,7 @@ heating_night:
       hvac_mode: heat
       temperature: '{{ states(''input_number.temperature_night'') }}'
   mode: single
-  alias: 'Heating: night'
+  alias: Tryb nocny ogrzewania
   icon: mdi:radiator
 heating_away_mode:
   sequence:
@@ -138,8 +138,8 @@ heating_away_mode:
       - humidifier.xiaomi_mi_humidifier_cb1
     data: {}
   mode: single
-  alias: 'Heating: away mode'
-  icon: mdi:radiator
+  alias: Tryb "poza domem" ogrzewania
+  icon: mdi:radiator-disabled
 heating_season_end:
   sequence:
   - service: climate.turn_off
@@ -166,8 +166,8 @@ heating_season_end:
       - humidifier.xiaomi_mi_humidifier_cb1
       - humidifier.xiaomi_mi_humidifier_ca1
   mode: single
-  alias: 'Heating: end season'
-  icon: mdi:radiator
+  alias: Koniec sezony grzewczego
+  icon: mdi:radiator-off
 heating_airing_begin:
   sequence:
   - service: climate.set_temperature
@@ -196,8 +196,8 @@ heating_airing_begin:
   - service: input_boolean.turn_on
     entity_id: input_boolean.heating_airing
   mode: single
-  alias: 'Heating: airing'
-  icon: mdi:radiator
+  alias: Przewietrzanie
+  icon: mdi:window-open-variant
 light_turn_on_antek_leds:
   sequence:
   - service: light.turn_on
@@ -211,7 +211,7 @@ light_turn_on_antek_leds:
       - '{{ (range(0, 255)|random) }}'
   mode: single
   icon: mdi:lightbulb-outline
-  alias: 'Light: turn on Antek''s LEDs'
+  alias: Włącz LEDy Antka z losowym kolorem
 alexa_netflix:
   sequence:
   - service: select.select_option
@@ -227,7 +227,7 @@ alexa_netflix:
       media_content_id: Netflix
       media_content_type: app
   mode: single
-  alias: 'Alexa: Netflix'
+  alias: Uruchom Netflix
   icon: mdi:netflix
 alexa_goodnight:
   sequence:
@@ -256,9 +256,10 @@ alexa_goodnight:
       - light.ceiling_pracownia
     data: {}
   mode: single
-  alias: 'Alexa: goodnight'
+  alias: Dobranoc
+  icon: mdi:weather-night
 restart_wifi_devices:
-  alias: Restart Wi-Fi Devices
+  alias: Restart urządzeń Wi-Fi
   sequence:
   - service: switch.turn_off
     data: {}
@@ -312,7 +313,7 @@ restart_wifi_devices:
   mode: single
   icon: mdi:restart
 humidification_start:
-  alias: 'Humidification: start'
+  alias: Nawilżanie
   mode: single
   icon: mdi:air-humidifier
   sequence:
@@ -341,7 +342,7 @@ humidification_start:
       target:
         entity_id: humidifier.xiaomi_mi_humidifier_cb1
 alexa_harmony_activity_tv:
-  alias: 'Alexa: Harmony Activity TV'
+  alias: Włącz telewizję w salonie
   sequence:
   - service: select.select_option
     data:
@@ -351,7 +352,7 @@ alexa_harmony_activity_tv:
   mode: single
   icon: mdi:television
 alexa_harmony_activity_games:
-  alias: 'Alexa: Harmony Activity Games'
+  alias: Włącz gry w salonie
   sequence:
   - service: select.select_option
     data:
@@ -361,7 +362,7 @@ alexa_harmony_activity_games:
   mode: single
   icon: mdi:sony-playstation
 alexa_harmony_activity_smart_tv:
-  alias: 'Alexa: Harmony Activity Smart TV'
+  alias: Włącz smart TV w salonie
   sequence:
   - service: select.select_option
     data:
@@ -371,7 +372,7 @@ alexa_harmony_activity_smart_tv:
   mode: single
   icon: mdi:television-shimmer
 alexa_harmony_power_off:
-  alias: 'Alexa: Harmony Power Off'
+  alias: Wyłącz sprzęt RTV w salonie
   sequence:
   - service: remote.turn_off
     data: {}

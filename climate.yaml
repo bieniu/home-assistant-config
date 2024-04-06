@@ -47,18 +47,6 @@
   hot_tolerance: 0.2
 
 - platform: generic_thermostat
-  name: "Thermostat Pracownia"
-  unique_id: thermostat_pracownia
-  heater: switch.heater_pracownia
-  target_sensor: sensor.temperature_pracownia
-  min_temp: 5
-  max_temp: 35
-  min_cycle_duration:
-    minutes: 10
-  precision: 0.5
-  hot_tolerance: 0.2
-
-- platform: generic_thermostat
   name: "Thermostat Goscinny"
   unique_id: thermostat_goscinny
   heater: switch.heater_goscinny

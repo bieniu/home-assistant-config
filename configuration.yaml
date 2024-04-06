@@ -80,7 +80,7 @@ weather:
     wind_gust_speed_template: "{{ state_attr('weather.accuweather', 'wind_gust_speed') }}"
     visibility_template: "{{ state_attr('weather.accuweather', 'visibility') }}"
     cloud_coverage_template: "{{ state_attr('weather.accuweather', 'cloud_coverage') }}"
-    forecast_template: "{{ state_attr('weather.openweathermap', 'forecast') }}"
+    forecast_daily_template: "{{ state_attr('weather.openweathermap', 'forecast') }}"
 
 mqtt:
   - button:

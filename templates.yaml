@@ -29,23 +29,6 @@
           bardzo zła
         {% endif %}
 
-    # - name: air_outside_info
-    #   unique_id: "air_outside_info"
-    #   icon: "mdi:blur"
-    #   availability: "{{ not is_state('sensor.caqi_level_outdoor', 'unavailable') }}"
-    #   state: >-
-    #     {% if is_state('sensor.caqi_level_outdoor', 'very_low') %}
-    #       bardzo dobre
-    #     {% elif is_state('sensor.caqi_level_outdoor', 'low') %}
-    #       dobre
-    #     {% elif is_state('sensor.caqi_level_outdoor', 'medium') %}
-    #       średnie
-    #     {% elif is_state('sensor.caqi_level_outdoor', 'high') %}
-    #       złe
-    #     {% elif is_state('sensor.caqi_level_outdoor', 'very_high') %}
-    #       bardzo złe
-    #     {% endif %}
-
     - name: aqi_info_salon
       unique_id: "aqi_info_salon"
       icon: "mdi:home-import-outline"
@@ -62,22 +45,6 @@
         {% elif states('sensor.pm25_salon') | int > 200 %}
           bardzo zła
         {% endif %}
-
-    # - name: aqi_attr_salon
-    #   unique_id: "aqi_attr_salon"
-    #   availability: "{{ states('sensor.pm25_salon') != ('unavailable' or 'unknown') }}"
-    #   state: >-
-    #     {% if states('sensor.pm25_salon') | int <= 25 %}
-    #       bardzo dobre
-    #     {% elif states('sensor.pm25_salon') | int <= 50 %}
-    #       dobre
-    #     {% elif states('sensor.pm25_salon') | int <= 100 %}
-    #       średnie
-    #     {% elif states('sensor.pm25_salon') | int <= 150 %}
-    #       złe
-    #     {% elif states('sensor.pm25_salon') | int > 200 %}
-    #       bardzo złe
-    #     {% endif %}
 
     - name: ups_status
       unique_id: "ups_status"

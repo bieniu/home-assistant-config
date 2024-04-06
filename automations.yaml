@@ -1,20 +1,12 @@
-- id: run_watchman
-  alias: Run Watchman
-  description: uruchom Watchman
-  trigger:
-    platform: time
-    at: '16:00:00'
-  action:
-    service: watchman.report
 - id: minecraft_server_players_online_notification
-  alias: Minecraft Server Players Online Notification
-  description: powiadomienie o aktywnych graczach na serwerze Minecraft
+  alias: Ilość graczy na serwerze Minecraft
+  description: ''
   trigger:
-    platform: numeric_state
+  - platform: numeric_state
     entity_id: sensor.minecraft_server_players_online
     above: 0
   action:
-    service: python_script.notify
+  - service: python_script.notify
     data:
       title: Gracze na serwerze Minecraft
       message: "{% if trigger.to_state.state == 1 %}\n  Na serwerze Minecraft gra
@@ -25,8 +17,8 @@
       - service: notify.mobile_app_iphone_11
         type: ios
 - id: ios_turn_on_tv
-  alias: iOS Turn On TV
-  description: włącz TV via iOS
+  alias: włącz telewizję w salonie
+  description: ''
   trigger:
   - platform: event
     event_type: ios.action_fired
@@ -36,8 +28,8 @@
   - service: script.alexa_harmony_activity_tv
     data: {}
 - id: ios_turn_off_tv
-  alias: iOS Turn Off TV
-  description: wyłącz TV via iOS
+  alias: Wyłącz sprzęt RTV w salonie
+  description: ''
   trigger:
   - platform: event
     event_type: ios.action_fired
@@ -47,7 +39,8 @@
   - service: script.alexa_harmony_power_off
     data: {}
 - id: notification_update_platform
-  alias: Notification Update Platform
+  alias: Dostępna aktualizacja dla składnika Home Assistant
+  description: ''
   trigger:
   - platform: state
     entity_id:
@@ -62,6 +55,7 @@
     - update.terminal_ssh
     - update.studio_code_server
     - update.samba_share
+    - update.go2rtc
     from: 'off'
     to: 'on'
   action:
@@ -80,16 +74,16 @@
   mode: queued
   max: 10
 - id: notification_high_ram_usage
-  alias: Notification High RAM Usage
-  description: powiadom o wysokim użyciu pamięci RAM
+  alias: Wysokie użycie pamięci RAM
+  description: ''
   trigger:
-    platform: numeric_state
+  - platform: numeric_state
     entity_id: sensor.memory_use_percent
     above: 70
     for:
       minutes: 5
   action:
-    service: python_script.notify
+  - service: python_script.notify
     data:
       title: Wysokie użycie pamięci RAM
       message: Serwer Home Assistant używa obecnie {{ trigger.to_state.state }}% pamięci
@@ -101,16 +95,17 @@
       - service: notify.mobile_app_iphone_13
         type: ios
 - id: notification_ssl_cert_expiry
-  alias: Notification SSL Cert Expiry
-  description: powiadom o wygasającym certyfikacie SSL
+  alias: Wygaśnięcie certyfikatu SSL
+  description: ''
   trigger:
-    platform: state
+  - platform: state
     entity_id: sensor.ssl_certificate_expiry
     variables:
       days: '{{ trigger.to_state.state | as_timestamp(0) - now() | as_timestamp //
         86400 }}'
   condition:
-  - '{{ 0 <= days < 14 }}'
+  - condition: template
+    value_template: '{{ 0 <= days < 14 }}'
   action:
   - service: python_script.notify
     data:
@@ -122,8 +117,8 @@
       - service: notify.mobile_app_iphone_13
         type: ios
 - id: notification_storm_comming
-  alias: Notification Storm Comming
-  description: powiadom o zblizającej się burzy
+  alias: Burza w pobliżu
+  description: ''
   trigger:
   - platform: numeric_state
     entity_id: sensor.lightning_distance
@@ -166,8 +161,8 @@
       }} km od domu.
     notification_tag: notification-storm-comming
 - id: notification_dishwasher_end
-  alias: Notification Dishwasher End
-  description: powiadom o końcu zmywania
+  alias: Koniec zmywania naczyń
+  description: ''
   trigger:
   - platform: state
     entity_id:
@@ -189,8 +184,8 @@
       - service: notify.mobile_app_iphone_12
         type: ios
 - id: notification_humidifier_low_water
-  alias: Notification Salon Humidifier Low Water
-  description: powiadom o małej ilości wody w nawilżaczu
+  alias: Mało wody w nawilżaczy w salonie
+  description: ''
   trigger:
   - platform: numeric_state
     entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
@@ -218,7 +213,9 @@
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
-  - '{{ states(''sensor.xiaomi_mi_humidifier_ca1_water_level'') | int(999) != 0 }}'
+  - condition: template
+    value_template: '{{ states(''sensor.xiaomi_mi_humidifier_ca1_water_level'') |
+      int(999) != 0 }}'
   action:
   - choose:
       conditions:
@@ -254,8 +251,8 @@
       }}% wody.
     notification_tag: notification-humidifier-ca1
 - id: notification_salon_co2
-  alias: Notification Salon CO2
-  description: powiadom o wysokim stężeniu CO2 w salonie
+  alias: Wysokie stężenie dwutlenku węgla w salonie
+  description: ''
   trigger:
   - platform: numeric_state
     entity_id: sensor.co2_salon
@@ -309,8 +306,8 @@
       }} ppm. Należy przewietrzyć pomieszczenie.
     notification_tag: notification-high-co2
 - id: notification_water_leak_kuchnia
-  alias: Notification Water Leak
-  description: powiadom o wycieku wodu
+  alias: Wyciek wody
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.water_leak_kuchnia
@@ -341,8 +338,8 @@
     notification_message: 'Wykryto wyciek wody w pomieszczeniu: {{ area_name(trigger.entity_id)
       }}.'
 - id: notification_relay_overpower
-  alias: Notification Relay Overpower
-  description: powiadom o zbyt dużym obciązeniu przekaźnika
+  alias: Przeciążenie przekaźnika
+  description: ''
   trigger:
   - platform: state
     entity_id:
@@ -380,8 +377,8 @@
       'name_by_user') or device_attr(trigger.entity_id, "name") }} ma zbyt duże obciążenie
       i został wyłączony.
 - id: notification_relay_overheating
-  alias: Notification Relay Overheating
-  description: powiadom o przegrzewaniu się urządzenia
+  alias: Przegrzanie przekaźnika
+  description: ''
   trigger:
   - platform: state
     entity_id:
@@ -422,8 +419,8 @@
     notification_message: Urządzenie {{ device_attr(trigger.entity_id, 'name_by_user')
       or device_attr(trigger.entity_id, "name") }} się przegrzewa.
 - id: notification_motion_when_away_mode
-  alias: Notification Motion When Away Mode
-  description: powiadom o ruchu w pustym mieszkaniu
+  alias: Ruch w pustym mieszkaniu
+  description: ''
   trigger:
   - platform: state
     entity_id:
@@ -452,8 +449,7 @@
   action:
   - variables:
       area: '{{ area_name(trigger.entity_id) }}'
-      snapshot_name: '{{ now().strftime(''%Y%m%d_%H%M%S'') }}_{{ area_name(trigger.entity_id)
-        }}.jpg'
+      snapshot_name: '{{ now().strftime(''%Y%m%d_%H%M%S'') }}.jpg'
       snapshot_areas:
       - salon
       - kuchnia
@@ -474,6 +470,8 @@
       tag: notification-motion-{{ area }}
       group: motion
       priority: high
+      url: "{% if area in snapshot_areas %}\n  /dashboard-living-room/0\n{% endif
+        %}  "
       image: "{% if area in snapshot_areas %}\n  /media/local/snapshots/{{ snapshot_name
         }}\n{% endif %}"
       services:
@@ -482,8 +480,8 @@
       - service: notify.mobile_app_iphone_12
         type: ios
 - id: notification_window_opened_when_away_mode
-  alias: Notification Window Opened When Away Mode
-  description: powiadom o otwarciu okna w pustym mieszkaniu
+  alias: Otwarcie okna w pustym mieszkaniu
+  description: ''
   trigger:
   - platform: state
     entity_id:
@@ -519,18 +517,18 @@
       - service: notify.mobile_app_iphone_12
         type: ios
 - id: notification_balcony_door_pracownia_opened
-  alias: Notification Balcony Door Pracownia Opened
-  description: powiadom o otwartych drzwiach balkonowych w pracowni po wyjściu z domu
+  alias: Drzwi balkonowe w pracowni otwarte
+  description: ''
   trigger:
-    platform: state
+  - platform: state
     entity_id: binary_sensor.people_at_home
     to: 'off'
   condition:
-    condition: state
+  - condition: state
     entity_id: binary_sensor.balcony_door_pracownia
     state: 'on'
   action:
-    service: python_script.notify
+  - service: python_script.notify
     data:
       title: Otwarte drzwi balkonowe
       message: Domownicy opuścili mieszkanie, a drzwi balkonowe w pracowni nie są
@@ -544,10 +542,10 @@
       - service: notify.mobile_app_iphone_12
         type: ios
 - id: notification_gas_leak_kuchnia
-  alias: Notification Gas Leak Kuchnia
-  description: powiadom o wycieku gazu w kuchni
+  alias: Wyciek gazu w kuchni
+  description: ''
   trigger:
-    platform: state
+  - platform: state
     entity_id: binary_sensor.gas_leak_kuchnia
     from: 'off'
     to: 'on'
@@ -580,25 +578,9 @@
       gw_mac: f0b429cc6f0b
       ringtone_id: 2
       ringtone_vol: 20
-- id: notification_new_device
-  alias: Notification New Device
-  description: powiadom o wykryciu nowego urządzenia
-  trigger:
-    platform: event
-    event_type: device_tracker_new_device
-  action:
-  - service: python_script.notify
-    data:
-      title: Nowe urządzenie
-      message: Wykryto nowe urządzenie o nazwie {{trigger.event.data.host_name}} ({{trigger.event.data.entity_id}}).
-      tag: notification-new-device
-      group: other
-      services:
-      - service: notify.mobile_app_iphone_13
-        type: ios
 - id: notification_low_battery
-  alias: Notification Low Battery
-  description: powiadom o niskim poziomie naładowania baterii
+  alias: Niski poziom naładowania baterii
+  description: ''
   trigger:
   - platform: time
     at: '18:00:00'
@@ -678,10 +660,10 @@
         entity_id: light.leds_schody
       data: {}
 - id: heating_aeotec_thermostat_calibration
-  alias: Heating Aeotec Thermostat Calibration
-  description: kalibracja termostatu Aeotec
+  alias: Kalibracja termostatu Aeotec
+  description: ''
   trigger:
-    platform: time
+  - platform: time
     at: 00:10:00
   condition:
   - condition: state
@@ -702,8 +684,8 @@
   - service: climate.turn_on
     entity_id: climate.aeotec_zwa021_thermostat_023
 - id: heating_day
-  alias: Heating Day
-  description: przełącz na ogrzewanie dzienne
+  alias: Tryb dzienny ogrzewania
+  description: ''
   trigger:
   - platform: state
     entity_id:
@@ -724,8 +706,8 @@
   - service: script.heating_day
     data: {}
 - id: heating_night
-  alias: Heating Night
-  description: przełącz na ogrzewanie nocne
+  alias: Tryb nocny ogrzewania
+  description: ''
   trigger:
   - platform: state
     entity_id:
@@ -766,8 +748,8 @@
   - service: fan.turn_off
     entity_id: fan.ceiling_salon
 - id: heating_away_mode
-  alias: Heating Away Mode
-  description: przełącz ogrzewanie w tryb away jak domownicy wychodzą
+  alias: Tryb "poza domem" ogrzewania
+  description: ''
   trigger:
   - platform: state
     entity_id: input_boolean.away_mode
@@ -786,8 +768,8 @@
   - service: script.heating_away_mode
     data: {}
 - id: heating_peoples_back
-  alias: Heating Peoples Back
-  description: włącz ogrzewanie dzienne lub nocne gdy domownicy wrócą do domu
+  alias: Powrót domowników do domu
+  description: ''
   trigger:
   - platform: state
     entity_id: input_boolean.away_mode
@@ -847,41 +829,41 @@
   - service: input_boolean.turn_off
     entity_id: input_boolean.heating_airing
 - id: air_quality_turn_on_air_purifier
-  alias: Air Quality Turn On Air Purifier
-  description: włącz oczyszczacz gdy PM2.5 większe od 40
+  alias: Rozpoczęcie oczyszczania powietrza w salonie
+  description: ''
   trigger:
-    platform: numeric_state
+  - platform: numeric_state
     entity_id: sensor.pm25_salon
     above: 50
     for:
       minutes: 2
   condition:
-    condition: state
+  - condition: state
     entity_id: binary_sensor.windows
     state: 'off'
   action:
-    service: fan.turn_on
+  - service: fan.turn_on
     entity_id: fan.xiaomi_mi_air_purifier_3h
     data:
       percentage: "{% if states('sensor.pm25_salon') | int(0) > 100 %}\n  66\n{% else
         %}\n  33\n{% endif %}"
 - id: air_quality_turn_off_air_purifier
-  alias: Air Quality Turn Off Air Purifier
-  description: wyłącz oczyszczacz gdy PM2.5 mniejsze od 40
+  alias: Zakończenie oczyszczania powietrza w salonie
+  description: ''
   trigger:
-    platform: numeric_state
+  - platform: numeric_state
     entity_id: sensor.pm25_salon
     below: 50
     for:
       minutes: 2
   action:
-    service: fan.turn_off
+  - service: fan.turn_off
     entity_id: fan.xiaomi_mi_air_purifier_3h
 - id: air_quality_air_purifier_switch_fan_level_to_2
-  alias: Air Quality Air Purifier Switch Fan Level To 2
-  description: zmień prędkość wentylatora oczyszczacza na 2
+  alias: Zmiana prędkości oczyszczacza na 2
+  description: ''
   trigger:
-    platform: numeric_state
+  - platform: numeric_state
     entity_id: sensor.pm25_salon
     above: 100
     for:
@@ -894,15 +876,15 @@
     entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
     below: 2
   action:
-    service: number.set_value
+  - service: number.set_value
     entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
     data:
       value: 2
 - id: air_quality_air_purifier_switch_fan_level_to_1
-  alias: Air Quality Air Purifier Switch Fan Level To 1
-  description: zmień prędkość wentylatora oczyszczacza na 1
+  alias: Zmiana prędkości oczyszczacza na 1
+  description: ''
   trigger:
-    platform: numeric_state
+  - platform: numeric_state
     entity_id: sensor.pm25_salon
     below: 100
     for:
@@ -915,27 +897,28 @@
     entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
     above: 1
   action:
-    service: number.set_value
+  - service: number.set_value
     entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
     data:
       value: 1
 - id: heating_airing_begin
-  alias: Heating Airing Begin
-  description: początek przewietrzania
+  alias: Początek przewietrzania
+  description: ''
   trigger:
-    platform: state
+  - platform: state
     entity_id: input_boolean.heating_airing
     from: 'off'
     to: 'on'
   condition:
-    condition: state
+  - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
   action:
-    service: script.heating_airing_begin
+  - service: script.heating_airing_begin
+    data: {}
 - id: heating_airing_end
-  alias: Heating Airing End
-  description: koniec przewietrzania
+  alias: Koniec przewietrzania
+  description: ''
   trigger:
   - platform: state
     entity_id: input_boolean.heating_airing
@@ -973,8 +956,8 @@
       - service: notify.mobile_app_iphone_12
         type: ios
 - id: heating_season_begin
-  alias: Heating Season Begin
-  description: początek sezonu grzewczego
+  alias: Początek sezonu grzewczego
+  description: ''
   trigger:
   - platform: state
     entity_id: input_boolean.heating_season
@@ -993,15 +976,16 @@
     - service: script.heating_night
       data: {}
 - id: heating_season_end
-  alias: Heating Season End
-  description: koniec sezonu grzewczego
+  alias: Koniec sezonu grzewczego
+  description: ''
   trigger:
-    platform: state
+  - platform: state
     entity_id: input_boolean.heating_season
     from: 'on'
     to: 'off'
   action:
-    service: script.heating_season_end
+  - service: script.heating_season_end
+    data: {}
 - id: light_turn_on_tree
   alias: Light Turn On Tree
   description: włącz drzewko o zachodzie słońca
@@ -1823,8 +1807,8 @@
       entity_id: light.lamp_goscinny
     data: {}
 - id: 347564abc3457677634346568784aaff
-  alias: Harmony Philips Input Switch Helper
-  description: pomocnik przełączanie wejść w telewizorze
+  alias: Pomocnik wejść/wyjść dla sprzętu RTV
+  description: ''
   trigger:
   - platform: state
     entity_id:
@@ -1875,8 +1859,8 @@
       target:
         entity_id: media_player.denon_salon
 - id: humidification_set_target_humidity
-  alias: Humidification Set Target Humidity
-  description: ustaw docelową wilgotność
+  alias: Ustaw docelową wilgotność
+  description: ''
   trigger:
   - platform: state
     entity_id:
@@ -1889,8 +1873,8 @@
     data:
       humidity: '{{ states(''input_number.target_humidity'') }}'
 - id: humidification_start
-  alias: Humidification Salon Start
-  description: włącz nawilżanie jak wilgotność spadnie poniżej ustawionego poziomu
+  alias: Rozpoczęcie nawilżania w salonie
+  description: ''
   trigger:
   - platform: numeric_state
     entity_id: sensor.humidity_salon
@@ -1919,9 +1903,8 @@
   - service: humidifier.turn_on
     entity_id: humidifier.xiaomi_mi_humidifier_ca1
 - id: humidification_stop
-  alias: Humidification Salon Stop
-  description: wyłącz nawilżanie jak wilgotność wzroścnie powyżej ustawionego poziomu
-    lub zbiornik pusty
+  alias: Zakończenie nawilżania w salonie
+  description: ''
   trigger:
   - platform: numeric_state
     entity_id: sensor.humidity_salon
@@ -1982,14 +1965,15 @@
       pozostało {{ states('sensor.xiaomi_mi_humidifier_ca1_water_level') }}% wody.
     notification_tag: notification-humidifier-ca1
 - id: climate_anresola_external_temperature_sensor
-  alias: Heating Antresola External Temperature Sensor
-  description: Przekazuje temperaturę z sensora do termostatu
+  alias: Przekazywanie temperatury do termostatu na antresoli
+  description: ''
   trigger:
   - platform: state
     entity_id:
     - sensor.temperature_antresola
   condition:
-  - '{{ is_number(trigger.to_state.state) }}'
+  - condition: template
+    value_template: '{{ is_number(trigger.to_state.state) }}'
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
@@ -2000,8 +1984,8 @@
       payload: '{{ trigger.to_state.state | float }}'
   mode: restart
 - id: log_level
-  alias: Log Level
-  description: ustaw poziom logowania
+  alias: Ustawianie poziomu logowania
+  description: ''
   trigger:
   - platform: state
     entity_id: input_select.log_level
@@ -2010,21 +1994,21 @@
     data:
       homeassistant.components: '{{ trigger.to_state.state }}'
 - id: shellies_announce
-  alias: Shellies Announce
-  description: wyślij komendę announce do urządzeń Shelly
+  alias: Wysyłanie komenty announce do urządzeń Shelly
+  description: ''
   trigger:
   - platform: homeassistant
     event: start
   - platform: time_pattern
     hours: /1
   action:
-    service: mqtt.publish
+  - service: mqtt.publish
     data:
       topic: shellies/command
       payload: announce
 - id: shellies_discovery
-  alias: Shellies Discovery
-  description: uruchom skrypt Shellies Discovery
+  alias: Uruchamianie Shellies Discovery
+  description: ''
   trigger:
   - platform: mqtt
     topic: shellies/announce
@@ -2087,22 +2071,22 @@
   mode: queued
   max: 999
 - id: hassio_backup
-  alias: Hassio Backup
-  description: wykonaj hassio backup
+  alias: Wykonanie kopii zapasowej
+  description: ''
   trigger:
-    platform: time
+  - platform: time
     at: 02:00:00
   condition:
-    condition: time
+  - condition: time
     weekday:
     - sun
   action:
-    service: hassio.backup_full
+  - service: hassio.backup_full
     data:
       name: '{{ now().strftime(''%Y-%m-%d'') }}'
 - id: '1658514116580'
-  alias: Climate Salon Toggle Fan
-  description: włącz/wyłącz wentylator w salonie
+  alias: Włącz/wyłącz wentylator w salonie
+  description: ''
   trigger:
   - platform: device
     domain: mqtt
@@ -2200,8 +2184,8 @@
     target:
       entity_id: media_player.sonos_one_gabinet
 - id: '1671558014151'
-  alias: Humidification Antek Start
-  description: włącz nawilżanie jak wilgotność spadnie poniżej ustawionego poziomu
+  alias: Rozpoczęcie nawilżania u Antka
+  description: ''
   trigger:
   - platform: numeric_state
     entity_id: sensor.humidity_antek
@@ -2230,9 +2214,8 @@
   - service: humidifier.turn_on
     entity_id: humidifier.xiaomi_mi_humidifier_cb1
 - id: '1671558157880'
-  alias: Humidification Antek Stop
-  description: wyłącz nawilżanie jak wilgotność wzroścnie powyżej ustawionego poziomu
-    lub zbiornik pusty
+  alias: Zakończenie nawilżania u Antka
+  description: ''
   trigger:
   - platform: numeric_state
     entity_id: sensor.humidity_antek
@@ -2307,8 +2290,7 @@
       pozostało {{ states('sensor.xiaomi_mi_humidifier_cb1_water_level') }}% wody.
     notification_tag: notification-humidifier-cb1
 - id: '1671558318632'
-  alias: Notification Antek Humidifier Low Water
-  description: powiadom o małej ilości wody w nawilżaczu
+  alias: Mało wody w nawilżaczu u Antka
   trigger:
   - platform: numeric_state
     entity_id: sensor.xiaomi_mi_humidifier_cb1_water_level
@@ -2336,7 +2318,9 @@
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
-  - '{{ states(''sensor.xiaomi_mi_humidifier_cb1_water_level'') | int(999) != 0 }}'
+  - condition: template
+    value_template: '{{ states(''sensor.xiaomi_mi_humidifier_cb1_water_level'') |
+      int(999) != 0 }}'
   action:
   - choose:
       conditions:
@@ -2464,8 +2448,8 @@
       entity_id: light.tree_antek
   mode: single
 - id: '1673781976268'
-  alias: Notification Washing Machine End
-  description: powiadom o końcu prania
+  alias: Koniec prania
+  description: ''
   trigger:
   - platform: state
     entity_id:
@@ -2487,8 +2471,8 @@
       - service: notify.mobile_app_iphone_12
         type: ios
 - id: '1678536051718'
-  alias: Notification Smoke
-  description: powiadom o wykryciu dymu
+  alias: Dym w mieszkaniu
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.smoke_antresola
@@ -2515,8 +2499,8 @@
       - service: notify.mobile_app_iphone_11
         type: ios
 - id: '1678536227339'
-  alias: Shelly Gas Self Test
-  description: uruchomienie auto testu Shelly Gas
+  alias: Uruchomienie automatycznego testu czujnika gazu
+  description: ''
   trigger:
   - platform: time
     at: 03:00:00
@@ -2577,8 +2561,7 @@
       - light.ceiling_garderoba
     data: {}
 - id: '1687379670409'
-  alias: Notification Update Asus Firmware
-  description: ''
+  alias: Dostępna aktualizacja firmware AsusWrt
   trigger:
   - platform: webhook
     allowed_methods:
@@ -2586,9 +2569,12 @@
     local_only: true
     webhook_id: c49z8jfh2reyo2dc8q2tn45jd7aw3fugrafws2jzrauzhsh7g3jzatzvwn5z
   condition:
-  - '{{ trigger.json.installed != trigger.json.latest }}'
-  - '{{ trigger.json.installed is defined }}'
-  - '{{ trigger.json.latest is defined }}'
+  - condition: template
+    value_template: '{{ trigger.json.installed != trigger.json.latest }}'
+  - condition: template
+    value_template: '{{ trigger.json.installed is defined }}'
+  - condition: template
+    value_template: '{{ trigger.json.latest is defined }}'
   action:
   - service: python_script.notify
     data:
@@ -2629,8 +2615,8 @@
     data: {}
   mode: single
 - id: '1692438895111'
-  alias: Notification Watchman Missing Devices/Services
-  description: wysyłanie powiadomienia o niedostępnych urządzeniach/usługach
+  alias: Brakujące encje
+  description: ''
   trigger:
   - platform: state
     entity_id:
@@ -2676,7 +2662,7 @@
     metadata: {}
   mode: single
 - id: '1699100330008'
-  alias: Notification Edyta Comes Back Home
+  alias: Edyta wraca do domu
   description: ''
   trigger:
   - platform: state
@@ -2690,6 +2676,7 @@
   - condition: numeric_state
     entity_id: sensor.dom_edyta_distance
     above: 2
+    below: 200
   action:
   - service: python_script.notify
     data:
