@@ -1,0 +1,60 @@
+- button:
+    unique_id: camera_salon_move_up
+    name: "Camera Move Up"
+    command_topic: "camera/salon/motors/vertical/set"
+    payload_press: "up"
+    qos: 1
+    retain: false
+    icon: "mdi:chevron-double-up"
+    device:
+      connections: [["mac", !secret dafang_mac_address]]
+      manufacturer: "Xiaomi"
+      model: "DaFang"
+      name: "Xiaomi DaFang"
+      configuration_url: !secret dafang_url
+      identifiers: [!secret dafang_mac_address]
+- button:
+    unique_id: camera_salon_move_down
+    name: "camera Move Down"
+    command_topic: "camera/salon/motors/vertical/set"
+    payload_press: "down"
+    qos: 1
+    retain: false
+    icon: "mdi:chevron-double-down"
+    device:
+      connections: [["mac", !secret dafang_mac_address]]
+      manufacturer: "Xiaomi"
+      model: "DaFang"
+      name: "Xiaomi DaFang"
+      configuration_url: !secret dafang_url
+      identifiers: [!secret dafang_mac_address]
+- button:
+    unique_id: camera_salon_move_left
+    name: "camera Move Left"
+    command_topic: "camera/salon/motors/horizontal/set"
+    payload_press: "left"
+    qos: 1
+    retain: false
+    icon: "mdi:chevron-double-left"
+    device:
+      connections: [["mac", !secret dafang_mac_address]]
+      manufacturer: "Xiaomi"
+      model: "DaFang"
+      name: "Xiaomi DaFang"
+      configuration_url: !secret dafang_url
+      identifiers: [!secret dafang_mac_address]
+- button:
+    unique_id: camera_salon_move_right
+    name: "camera Move Right"
+    command_topic: "camera/salon/motors/horizontal/set"
+    payload_press: "right"
+    qos: 1
+    retain: false
+    icon: "mdi:chevron-double-right"
+    device:
+      connections: [["mac", !secret dafang_mac_address]]
+      manufacturer: "Xiaomi"
+      model: "DaFang"
+      name: "Xiaomi DaFang"
+      configuration_url: !secret dafang_url
+      identifiers: [!secret dafang_mac_address]

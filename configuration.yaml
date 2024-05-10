@@ -44,8 +44,6 @@ scene: !include scenes.yaml
 
 script: !include scripts.yaml
 
-sensor: !include sensors.yaml
-
 switch: !include switches.yaml
 
 fan: !include fans.yaml
@@ -65,81 +63,6 @@ panel_custom:
     config:
       ingress: core_configurator
 
-weather:
-  - platform: template
-    name: "Home"
-    unique_id: "home"
-    condition_template: "{{ states('weather.accuweather') }}"
-    temperature_template: "{{ (states('sensor.temperature_outdoor') or state_attr('weather.accuweather', 'temperature')) | float }}"
-    humidity_template: "{{ (states('sensor.humidity_outdoor') or state_attr('weather.accuweather', 'humidity')) | float }}"
-    pressure_template: "{{ (states('sensor.pressure_outdoor', rounded=True) or state_attr('weather.accuweather', 'pressure')) | float }}"
-    dew_point_template: "{{ state_attr('weather.accuweather', 'dew_point') }}"
-    apparent_temperature_template: "{{ state_attr('weather.accuweather', 'apparent_temperature') }}"
-    wind_speed_template: "{{ state_attr('weather.accuweather', 'wind_speed') }}"
-    wind_bearing_template: "{{ state_attr('weather.accuweather', 'wind_bearing') }}"
-    wind_gust_speed_template: "{{ state_attr('weather.accuweather', 'wind_gust_speed') }}"
-    visibility_template: "{{ state_attr('weather.accuweather', 'visibility') }}"
-    cloud_coverage_template: "{{ state_attr('weather.accuweather', 'cloud_coverage') }}"
-    forecast_daily_template: "{{ state_attr('weather.openweathermap', 'forecast') }}"
+weather: !include weather.yaml
 
-mqtt:
-  - button:
-      unique_id: camera_salon_move_up
-      name: "Camera Move Up"
-      command_topic: "camera/salon/motors/vertical/set"
-      payload_press: "up"
-      qos: 1
-      retain: false
-      icon: "mdi:chevron-double-up"
-      device:
-        connections: [["mac", !secret dafang_mac_address]]
-        manufacturer: "Xiaomi"
-        model: "DaFang"
-        name: "Xiaomi DaFang"
-        configuration_url: !secret dafang_url
-        identifiers: [!secret dafang_mac_address]
-  - button:
-      unique_id: camera_salon_move_down
-      name: "camera Move Down"
-      command_topic: "camera/salon/motors/vertical/set"
-      payload_press: "down"
-      qos: 1
-      retain: false
-      icon: "mdi:chevron-double-down"
-      device:
-        connections: [["mac", !secret dafang_mac_address]]
-        manufacturer: "Xiaomi"
-        model: "DaFang"
-        name: "Xiaomi DaFang"
-        configuration_url: !secret dafang_url
-        identifiers: [!secret dafang_mac_address]
-  - button:
-      unique_id: camera_salon_move_left
-      name: "camera Move Left"
-      command_topic: "camera/salon/motors/horizontal/set"
-      payload_press: "left"
-      qos: 1
-      retain: false
-      icon: "mdi:chevron-double-left"
-      device:
-        connections: [["mac", !secret dafang_mac_address]]
-        manufacturer: "Xiaomi"
-        model: "DaFang"
-        name: "Xiaomi DaFang"
-        configuration_url: !secret dafang_url
-        identifiers: [!secret dafang_mac_address]
-  - button:
-      unique_id: camera_salon_move_right
-      name: "camera Move Right"
-      command_topic: "camera/salon/motors/horizontal/set"
-      payload_press: "right"
-      qos: 1
-      retain: false
-      icon: "mdi:chevron-double-right"
-      device:
-        connections: [["mac", !secret dafang_mac_address]]
-        manufacturer: "Xiaomi"
-        model: "DaFang"
-        name: "Xiaomi DaFang"
-        configuration_url: !secret dafang_url
-        identifiers: [!secret dafang_mac_address]
+mqtt: !include mqtt.yaml

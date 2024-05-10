@@ -435,3 +435,21 @@
     - name: yeelight_yldd01yl_6707fc_status
       unique_id: "yeelight_yldd01yl_6707fc_status"
       state: "{{ is_state('device_tracker.yeelight_yldd01yl_6707fc', 'home') }}"
+
+- trigger:
+    - platform: state
+      entity_id: weather.accuweather
+  action:
+    - service: weather.get_forecasts
+      target:
+        entity_id: weather.accuweather
+      data:
+        type: daily
+      response_variable: daily_forecast
+  sensor:
+    - name: Dom Prawdopodobieństwo opadów
+      unique_id: home_precipitation_probablility
+      icon: mdi:weather-partly-rainy
+      unit_of_measurement: "%"
+      state_class: measurement
+      state: "{{ daily_forecast['weather.accuweather'].forecast[0].precipitation_probability }}"

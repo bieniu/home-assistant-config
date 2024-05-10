@@ -69,19 +69,19 @@
       - rgb
       effect:
       color_mode: color_temp
-      brightness: 255
-      color_temp_kelvin: 4878
-      color_temp: 205
+      brightness: 178
+      color_temp_kelvin: 3058
+      color_temp: 327
       hs_color:
-      - 26.891
-      - 20.926
+      - 27.732
+      - 55.342
       rgb_color:
       - 255
-      - 225
-      - 201
+      - 179
+      - 113
       xy_color:
-      - 0.377
-      - 0.351
+      - 0.491
+      - 0.383
       entity_id:
       - light.bulb_salon_1
       - light.bulb_salon_2
@@ -99,26 +99,17 @@
       state: 'off'
     switch.adaptive_lighting_salon:
       configuration: {}
-      brightness_pct: 100
-      color_temp_kelvin: 4875
-      color_temp_mired: 205
+      brightness_pct:
+      color_temp_kelvin:
+      color_temp_mired:
       rgb_color:
-      - 255
-      - 225.49411723920662
-      - 201.53266234884768
       xy_color:
-      - 0.376
-      - 0.351
       hs_color:
-      - 26.038
-      - 20.784
-      sun_position: 0.7283914647362668
-      force_rgb_color: false
+      sun_position:
+      force_rgb_color:
       icon: mdi:theme-light-dark
       friendly_name: 'Adaptive Lighting: salon'
-      manual_control: []
-      autoreset_time_remaining: {}
-      state: 'on'
+      state: 'off'
     light.lamp_salon:
       supported_color_modes:
       - onoff

@@ -624,15 +624,14 @@
       entity_id: binary_sensor.windows
       state: 'on'
     - condition: numeric_state
-      entity_id: sensor.home_forecast_precipitation_probability
+      entity_id: sensor.dom_prawdopodobienstwo_opadow
       above: 20
     then:
     - service: python_script.notify
       data:
         title: Otwarte okna
         message: Okna w pustym mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów
-          wynosi {{ states('sensor.home_forecast_precipitation_probability') | int
-          }}%.
+          wynosi {{ states('sensor.dom_prawdopodobienstwo_opadow') | int }}%.
         tag: notification-windows-weather
         group: windows
         priority: high
@@ -987,8 +986,8 @@
   - service: script.heating_season_end
     data: {}
 - id: light_turn_on_tree
-  alias: Light Turn On Tree
-  description: włącz drzewko o zachodzie słońca
+  alias: Włącz oświetlenie drzewka o zachodzi słońca u Antka
+  description: ''
   trigger:
   - platform: sun
     event: sunset
@@ -1007,16 +1006,18 @@
   - service: light.turn_on
     target:
       entity_id: light.tree_antek
+    data: {}
 - id: light_turn_off_when_away_mode
-  alias: Light Turn Off When Away Mode
-  description: wyłącz oświetlenie gdy domownicy wyjdą z domu
+  alias: Wyłącz oświetlenie w trybie "poza domem"
+  description: ''
   trigger:
-    platform: state
+  - platform: state
     entity_id: input_boolean.away_mode
     from: 'off'
     to: 'on'
   action:
-    service: script.devices_away_mode
+  - service: script.devices_away_mode
+    data: {}
 - id: devices_turn_off_in_salon_when_no_motion
   alias: Salon Turn Off Devices When No Motion
   description: wyłącz urządzenia w salonie jeśli nie ma ruchu
@@ -1226,10 +1227,10 @@
       entity_id:
       - scene.light_salon_auto
 - id: light_turn_off_toaleta_light_when_no_motion
-  alias: Light Turn Off Toaleta Light When No Motion
-  description: wyłącz światło w toalecie jak brak ruchu
+  alias: Wyłącz oświetlenie w toalecie gdy nie ma ruchu
+  description: ''
   trigger:
-    platform: state
+  - platform: state
     entity_id: binary_sensor.motion_toaleta
     from: 'on'
     to: 'off'
@@ -1245,8 +1246,8 @@
       entity_id: light.ceiling_toaleta
     data: {}
 - id: light_turn_off_lazienka_light_when_no_motion
-  alias: Light Turn Off Lazienka Light When No Motion
-  description: wyłącz światło w łazience jak brak ruchu przez 20 min
+  alias: Wyłącz oświetlenie w łazience gdy nie ma ruchu
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_lazienka
@@ -1264,8 +1265,8 @@
       entity_id: light.ceiling_lazienka
     data: {}
 - id: light_turn_off_kuchnia_light_when_no_motion
-  alias: Light Turn Off Kuchnia Light When No Motion
-  description: wyłącz światło w kuchni jak brak ruchu
+  alias: Wyłącz oświetlenie w kuchni gdy nie ma ruchu
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_kuchnia
@@ -1406,25 +1407,26 @@
       entity_id: light.ceiling_korytarz
     data: {}
 - id: light_turn_off_korytarz_lights_when_no_motion
-  alias: Light Turn Off Korytarz Lights When No Motion
-  description: wyłącz oświetlenie na korytarzu jak brak ruchu przez 20 min
+  alias: Wyłącz oświetlenie w korytarzu gdy nie ma ruchu
+  description: ''
   trigger:
-    platform: state
+  - platform: state
     entity_id: binary_sensor.motion_korytarz
     from: 'on'
     to: 'off'
     for:
       minutes: 20
   condition:
-    condition: state
+  - condition: state
     entity_id: light.ceiling_korytarz
     state: 'on'
   action:
-    service: light.turn_off
+  - service: light.turn_off
     target:
       entity_id: light.ceiling_korytarz
+    data: {}
 - id: light_toggle_ceiling_antek
-  alias: Light Antek Toggle Ceiling Lamp
+  alias: Włącz/wyłącz oświetlenie sufitowe u Antka
   description: ''
   trigger:
   - device_id: aabc0c68397757ef0cf5caa56a59d0c8
@@ -1438,8 +1440,8 @@
       entity_id: light.ceiling_antek
     data: {}
 - id: light_turn_off_antek_lights_when_no_motion
-  alias: Light Antek Turn Off Lights When No Motion
-  description: wyłącz światła w pokoju Antka jak brak ruchu
+  alias: Wyłącz oświetlenie u Antka gdy nie ma ruchu
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_antek
@@ -1512,8 +1514,8 @@
     target:
       entity_id: light.lightstrip_antek
 - id: light_toggle_antek_leds
-  alias: Light Antek Toggle LEDs
-  description: włącz/wyłącz LEDy w pokoju Antka
+  alias: Włącz/wyłącz LEDy u Antka
+  description: ''
   trigger:
   - device_id: aabc0c68397757ef0cf5caa56a59d0c8
     domain: zha
@@ -1653,8 +1655,8 @@
     data:
       transition: 10
 - id: light_turn_off_gabinet_light_when_no_motion
-  alias: Light Gabinet Turn Off Light When No Motion
-  description: wyłącz światło w gabinecie jak brak ruchu
+  alias: Wyłącz oświetlenie wgabinecie gdy nie ma ruchu
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_gabinet
@@ -2129,8 +2131,8 @@
       entity_id: light.lamp_salon
   mode: single
 - id: '1658522979417'
-  alias: Light Antek Toggle Tree
-  description: włącz/wyłącz drzewko w pokoju Antka
+  alias: Włącz/wyłącz oświetlenie drzewka u Antka
+  description: ''
   trigger:
   - platform: device
     domain: mqtt
@@ -2151,8 +2153,8 @@
       entity_id: light.tree_antek
   mode: single
 - id: light_turn_off_goscinny_light_when_no_motion
-  alias: Light Gościnny Turn Off Light When No Motion
-  description: wyłącz światło w pokoju gościnnym jak brak ruchu
+  alias: Wyłącz oświetlenie w pokoju gościnnym gdy nie ma ruchu
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_goscinny
@@ -2402,7 +2404,7 @@
       entity_id: light.lamp_goscinny
   mode: single
 - id: '1672489364549'
-  alias: Light Antek Toggle Desk Lamp
+  alias: Włącz/wyłącz lapkę biurkową u Antka
   description: ''
   trigger:
   - device_id: aabc0c68397757ef0cf5caa56a59d0c8
@@ -2418,7 +2420,7 @@
     domain: light
   mode: single
 - id: '1672565177379'
-  alias: Light Antek Turn Off At 0:10
+  alias: Wyłącz oświetlenie o 1:00 u Antka
   description: ''
   trigger:
   - platform: time
@@ -2531,8 +2533,8 @@
     domain: light
   mode: single
 - id: '1686430803024'
-  alias: Light Sypialnia Turn Off Lights When No Motion
-  description: wyłącz światła w sypialni jak brak ruchu
+  alias: Wyłącz oświetlenie w sypialni gdy nie ma ruchu
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_sypialnia
@@ -2614,29 +2616,6 @@
   - service: switch.turn_on
     data: {}
   mode: single
-- id: '1692438895111'
-  alias: Brakujące encje
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - sensor.watchman_missing_entities
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-  condition:
-  - condition: template
-    value_template: '{{ trigger.to_state.state | int(0) > 0 }}'
-  action:
-  - service: python_script.missing_devices_services
-    data:
-      entities: "{% macro entities() %}\n  {% for entity in state_attr('sensor.watchman_missing_entities',
-        'entities') -%}\n    {{ device_attr(entity.id, 'name_by_user') or device_attr(entity.id,
-        'name') }}&{{ area_name(entity.id) }}|\n  {%- endfor %}\n{% endmacro %} {%
-        set result = entities() %} {{ result }}"
-  mode: queued
-  max: 10
 - id: '1693856668458'
   alias: Light Salon Scene Dusk When Turn On
   description: ''
@@ -2690,8 +2669,8 @@
         type: ios
   mode: single
 - id: '1705870734815'
-  alias: Light Pracownia Turn Off Lights When No Motion
-  description: wyłącz światła w pracowni jak brak ruchu
+  alias: Wyłącz oświetlenie w pracowni gdy nie ma ruchu
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_pracownia
@@ -2756,10 +2735,10 @@
     data: {}
   mode: single
 - id: '1709306300471'
-  alias: Light Turn Off Przedpokoj lights When No Motion
-  description: wyłącz oświetlenie na przedpokoju jak brak ruchu
+  alias: Wyłącz oświetlenie w przedpokoju gdy nie ma ruchu
+  description: ''
   trigger:
-    platform: state
+  - platform: state
     entity_id: binary_sensor.motion_przedpokoj
     from: 'on'
     to: 'off'
@@ -2787,8 +2766,8 @@
     data: {}
   mode: single
 - id: '1710416852993'
-  alias: Energy Consumption Reduction
-  description: wyłącza na noc urządzenia by oszczędzać energię
+  alias: Nocne oszczędzanie energii
+  description: ''
   trigger:
   - platform: state
     entity_id:
@@ -2816,3 +2795,26 @@
         - switch.tv_power_supply_goscinny
       data: {}
   mode: single
+- id: '1715247759498'
+  alias: Niedostępne urządzenia lub usługi
+  description: ''
+  trigger:
+  - platform: time_pattern
+    minutes: /15
+  condition: []
+  action:
+  - service: python_script.unavailable_entries
+    data:
+      entries: "{% set checked_domains = [\"binary_sensor\", \"climate\", \"light\",
+        \"media_player\", \"remote\", \"sensor\", \"switch\", \"weather\"] %}\n{%
+        set ignored_entities = [\"switch.philips_65oled707_screen_state\"] %}\n{%
+        set ignored_entries = [\"Asus RT-AX86S\", \"Sony KD-55XF8596\", \"SpeedTest\",
+        \"X1 xDrive20i\"] %}\n{% macro unavailable_entries() %}\n  {% for domain in
+        checked_domains %}\n    {% for item in states[domain] if item.state == \"unavailable\"
+        and item.entity_id not in ignored_entities %}\n      {% set entry_name = device_attr(item.entity_id,
+        \"name_by_user\") or device_attr(item.entity_id, \"name\") %}\n      {% if
+        entry_name not in ignored_entries %}\n        {{ entry_name }}@{{ area_name(item.entity_id)
+        }}|\n      {% endif %}\n    {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{
+        unavailable_entries() }}"
+  mode: queued
+  max: 10
