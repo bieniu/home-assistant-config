@@ -12,20 +12,21 @@
     state: "{{ states('sensor.power_washing_machine_pralnia') | int > 1 }}"
 
 - sensor:
-    - name: air_quality_info_outdoor
-      unique_id: "air_quality_info_outdoor"
+    - name: jakosc_powietrza_zewnetrznego
+      unique_id: "jakosc_powietrza_zewnetrznego"
       icon: "mdi:home-export-outline"
-      availability: "{{ not is_state('sensor.caqi_level_outdoor', 'unavailable') }}"
+      availability: "{{ states('sensor.nettigo_air_monitor_f5280e_sds011_poziom_caqi') != ('unavailable' or 'unknown') }}"
       state: >-
-        {% if is_state('sensor.caqi_level_outdoor', 'very_low') %}
+        {% set caqi_level = states('sensor.nettigo_air_monitor_f5280e_sds011_poziom_caqi') %}
+        {% if caqi_level == 'very_low' %}
           bardzo dobra
-        {% elif is_state('sensor.caqi_level_outdoor', 'low') %}
+        {% elif caqi_level == 'low' %}
           dobra
-        {% elif is_state('sensor.caqi_level_outdoor', 'medium') %}
+        {% elif caqi_level == 'medium' %}
           średnia
-        {% elif is_state('sensor.caqi_level_outdoor', 'high') %}
+        {% elif caqi_level == 'high' %}
           zła
-        {% elif is_state('sensor.caqi_level_outdoor', 'very_high') %}
+        {% elif caqi_level == 'very_high' %}
           bardzo zła
         {% endif %}
 
@@ -196,10 +197,10 @@
       unique_id: "laptop_maciek_status"
       state: "{{ is_state('device_tracker.lenovo_thinkpad_t14', 'home') }}"
 
-    - name: denon_status
-      unique_id: "denon_status"
-      icon: mdi:audio-video
-      state: "{{ is_state('device_tracker.denon_avr_x2100w', 'home') }}"
+    - name: sonos_arc_status
+      unique_id: "sonos_arc_status"
+      icon: mdi:speaker-play
+      state: "{{ is_state('device_tracker.sonos_arc', 'home') }}"
 
     - name: laptop_status
       unique_id: "laptop_status"
@@ -318,6 +319,10 @@
     - name: shelly_plus_1_mini_af5390_status
       unique_id: "shelly_plus_1_mini_af5390_status"
       state: "{{ is_state('device_tracker.shelly_plus_1_mini_af5390', 'home') }}"
+
+    - name: shelly_plus_1pm_b12a90_status
+      unique_id: "shelly_plus_1pm_b12a90_status"
+      state: "{{ is_state('device_tracker.shelly_plus_1pm_b12a90', 'home') }}"
 
     - name: shelly_plus_1pm_9d35dc_status
       unique_id: "shelly_plus_1pm_9d35dc_status"

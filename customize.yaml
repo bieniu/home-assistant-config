@@ -29,8 +29,6 @@ binary_sensor.echo_show_status:
   friendly_name: "Echo Show"
 binary_sensor.inkbook_status:
   friendly_name: "inkBook Classic 2"
-binary_sensor.denon_status:
-  friendly_name: "Denon AVR-X2100W"
 binary_sensor.laptop_status:
   friendly_name: "Lenovo IdeaPad Z510"
 binary_sensor.migateway_cc6f0b_status:

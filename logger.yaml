@@ -1,6 +1,8 @@
 default: warning
 logs:
+  tenacity: debug
+  nettigo_air_monitor: debug
+  custom_components.nam: debug
   pychromecast: fatal
-  custom_components.accuweather: debug
   alexapy: error
   homeassistant.components.xiaomi_miio: fatal

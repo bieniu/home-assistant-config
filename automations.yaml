@@ -357,6 +357,7 @@
     - binary_sensor.shelly_plus_2pm_b67728_relay_1_overpower
     - binary_sensor.shelly_plus_2pm_b67728_relay_2_overpower
     - binary_sensor.shelly_pro_1pm_80e0c0_overpower
+    - binary_sensor.oswietlenie_pralnia_przeciazenie
     from: 'off'
     to: 'on'
     for:
@@ -400,6 +401,7 @@
     - binary_sensor.shelly_plus_2pm_b67728_relay_1_overtemperature
     - binary_sensor.shelly_plus_2pm_b67728_relay_2_overtemperature
     - binary_sensor.shelly_pro_1pm_80e0c0_overtemperature
+    - binary_sensor.oswietlenie_pralnia_przegrzewanie
     from: 'off'
     to: 'on'
     for:
@@ -738,9 +740,6 @@
     entity_id: fan.ceiling_salon
     state: 'on'
   - condition: state
-    entity_id: media_player.denon_salon
-    state: 'off'
-  - condition: state
     entity_id: media_player.philips_65oled707
     state: 'off'
   action:
@@ -1029,7 +1028,7 @@
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
   condition:
   - condition: state
-    entity_id: media_player.denon_salon
+    entity_id: media_player.philips_65oled707
     state: 'off'
   - condition: or
     conditions:
@@ -1132,15 +1131,17 @@
     from: 'on'
     to: 'off'
   - platform: state
-    entity_id: media_player.denon_salon
+    entity_id:
+    - media_player.philips_65oled707
     to: 'off'
+    from: 'on'
   condition:
   - condition: state
     entity_id:
     - input_boolean.away_mode
     - light.leds_salon
     - light.ceiling_salon
-    - media_player.denon_salon
+    - media_player.philips_65oled707
     state: 'off'
   - condition: state
     entity_id:
@@ -1158,6 +1159,7 @@
   - service: light.turn_on
     target:
       entity_id: light.lamp_salon
+    data: {}
   - wait_for_trigger:
     - platform: state
       entity_id: binary_sensor.motion_salon
@@ -1415,7 +1417,7 @@
     from: 'on'
     to: 'off'
     for:
-      minutes: 20
+      minutes: '{{ states(''input_number.no_motion_time'') | int }}'
   condition:
   - condition: state
     entity_id: light.ceiling_korytarz
@@ -1437,7 +1439,7 @@
   action:
   - service: light.toggle
     target:
-      entity_id: light.ceiling_antek
+      entity_id: light.oswietlenie_antek
     data: {}
 - id: light_turn_off_antek_lights_when_no_motion
   alias: Wyłącz oświetlenie u Antka gdy nie ma ruchu
@@ -1459,7 +1461,7 @@
       entity_id: light.desk_lamp_antek
       state: 'on'
     - condition: state
-      entity_id: light.ceiling_antek
+      entity_id: light.oswietlenie_antek
       state: 'on'
     - condition: state
       entity_id: light.lightstrip_antek
@@ -1469,8 +1471,8 @@
     target:
       entity_id:
       - light.desk_lamp_antek
-      - light.ceiling_antek
       - light.lightstrip_antek
+      - light.oswietlenie_antek
     data: {}
 - id: light_turn_on_antek_leds_and_cabinet_when_dark_and_motion
   alias: Light Antek Turn On LEDs When Dark And Motion
@@ -1485,7 +1487,7 @@
     entity_id:
     - input_boolean.away_mode
     - light.lightstrip_antek
-    - light.ceiling_antek
+    - light.swietlenie_antek
     state: 'off'
   - condition: numeric_state
     entity_id: sensor.illumination_antek
@@ -1655,7 +1657,7 @@
     data:
       transition: 10
 - id: light_turn_off_gabinet_light_when_no_motion
-  alias: Wyłącz oświetlenie wgabinecie gdy nie ma ruchu
+  alias: Wyłącz oświetlenie w gabinecie gdy nie ma ruchu
   description: ''
   trigger:
   - platform: state
@@ -1808,58 +1810,6 @@
     target:
       entity_id: light.lamp_goscinny
     data: {}
-- id: 347564abc3457677634346568784aaff
-  alias: Pomocnik wejść/wyjść dla sprzętu RTV
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - remote.salon
-    attribute: current_activity
-    not_to: PowerOff
-  action:
-  - if:
-    - condition: state
-      entity_id: remote.salon
-      attribute: current_activity
-      state: gry
-    then:
-    - service: media_player.select_source
-      data:
-        source: HDMI 1
-      target:
-        entity_id: media_player.philips_65oled707
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 30
-        milliseconds: 0
-    - service: media_player.select_source
-      data:
-        source: HDMI 1
-      target:
-        entity_id: media_player.philips_65oled707
-  - if:
-    - condition: state
-      entity_id: remote.salon
-      attribute: current_activity
-      state: telewizja
-    then:
-    - service: media_player.select_source
-      data:
-        source: HDMI 2
-      target:
-        entity_id: media_player.philips_65oled707
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 10
-        milliseconds: 0
-    - service: media_player.select_source
-      data:
-        source: CBL
-      target:
-        entity_id: media_player.denon_salon
 - id: humidification_set_target_humidity
   alias: Ustaw docelową wilgotność
   description: ''
@@ -2807,14 +2757,76 @@
     data:
       entries: "{% set checked_domains = [\"binary_sensor\", \"climate\", \"light\",
         \"media_player\", \"remote\", \"sensor\", \"switch\", \"weather\"] %}\n{%
-        set ignored_entities = [\"switch.philips_65oled707_screen_state\"] %}\n{%
-        set ignored_entries = [\"Asus RT-AX86S\", \"Sony KD-55XF8596\", \"SpeedTest\",
+        set ignored_entities = [\"switch.philips_65oled707_screen_state\", \"media_player.philips_65oled707_cast\"]
+        %}\n{% set ignored_entries = [\"Asus RT-AX86S\", \"Sony KD-55XF8596\", \"SpeedTest\",
         \"X1 xDrive20i\"] %}\n{% macro unavailable_entries() %}\n  {% for domain in
-        checked_domains %}\n    {% for item in states[domain] if item.state == \"unavailable\"
-        and item.entity_id not in ignored_entities %}\n      {% set entry_name = device_attr(item.entity_id,
-        \"name_by_user\") or device_attr(item.entity_id, \"name\") %}\n      {% if
-        entry_name not in ignored_entries %}\n        {{ entry_name }}@{{ area_name(item.entity_id)
+        checked_domains %}\n    {% for entity_id in states[domain] | selectattr(\"state\",
+        \"==\", \"unavailable\") | map(attribute=\"entity_id\") if entity_id not in
+        ignored_entities %}\n      {% set entry_name = device_attr(entity_id, \"name_by_user\")
+        or device_attr(entity_id, \"name\") %}\n      {% if entry_name not in ignored_entries
+        and entry_name != None %}\n        {{ entry_name }}@{{ area_name(entity_id)
         }}|\n      {% endif %}\n    {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{
         unavailable_entries() }}"
   mode: queued
   max: 10
+- id: '1715426726944'
+  alias: Wyłącz oświetlenie w pralni gdy nie ma ruchu
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_pralnia
+    from: 'on'
+    to: 'off'
+    for:
+      minutes: '{{ states(''input_number.no_motion_time'') | int }}'
+  condition:
+  - condition: state
+    entity_id: light.oswietlenie_pralnia
+    state: 'on'
+  action:
+  - service: light.turn_off
+    target:
+      entity_id:
+      - light.oswietlenie_pralnia
+    data: {}
+  mode: single
+- id: '1716994224655'
+  alias: Pomocnik sprzętu RTV
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - remote.salon
+    attribute: current_activity
+    not_to: PowerOff
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - if:
+    - condition: state
+      entity_id: remote.salon
+      attribute: current_activity
+      state: gry
+    then:
+    - service: media_player.select_source
+      data:
+        source: HDMI 1
+      target:
+        entity_id: media_player.philips_65oled707
+  - if:
+    - condition: state
+      entity_id: remote.salon
+      attribute: current_activity
+      state: telewizja
+    then:
+    - service: media_player.select_source
+      data:
+        source: HDMI 2
+      target:
+        entity_id: media_player.philips_65oled707
+  mode: single
