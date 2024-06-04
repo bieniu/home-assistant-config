@@ -73,8 +73,6 @@ binary_sensor.shelly_duo_5f6fa1_status:
   friendly_name: "Shelly DUO [5F6FA1]"
 binary_sensor.shelly_flood_f2ad1d_status:
   friendly_name: "Shelly Flood [F2AD1D]"
-binary_sensor.shelly_motion_c67c2a_status:
-  friendly_name: "Shelly Motion [C67C2A]"
 binary_sensor.nettigo_air_monitor_status:
   friendly_name: "Nettigo Air Monitor"
 binary_sensor.yeelight_mjtd01syl_94e1f5_status:

@@ -393,11 +393,6 @@
       unique_id: "shelly_flood_f2ad1d_status"
       state: "{{ is_state('device_tracker.shelly_flood_f2ad1d', 'home') }}"
 
-    - name: shelly_motion_c67c2a_status
-      unique_id: "shelly_motion_c67c2a_status"
-      icon: mdi:motion-sensor
-      state: "{{ is_state('device_tracker.shelly_motion_c67c2a', 'home') }}"
-
     - name: shelly_motion_2_08a4e9_status
       unique_id: "shelly_motion_2_08a4e9_status"
       icon: mdi:motion-sensor
