@@ -18,6 +18,7 @@ api:
     key: !secret encryption_key
 
 ota:
+  platform: esphome
   password: !secret esphome_password
 
 wifi:

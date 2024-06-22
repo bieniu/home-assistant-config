@@ -1,5 +1,22 @@
 default: warning
-logs:
-  pychromecast: fatal
-  alexapy: error
-  homeassistant.components.xiaomi_miio: fatal
+filters:
+  homeassistant.loader:
+    - "We found a custom integration"
+  slixmpp.stringprep:
+    - "Using slower stringprep"
+  pychromecast.dial:
+    - "Failed to determine cast type for host"
+  pychromecast.socket_client:
+    - "Error communicating with socket"
+    - "Error reading from socket"
+    - "Heartbeat timeout"
+    - "Failed to connect to service"
+  homeassistant.components.xiaomi_miio:
+    - "Unexpected error fetching Xiaomi Mi Humidifier"
+  zigpy.application:
+    - "Zigbee channel 15 utilization"
+    - "If you are having problems joining new devices"
+  homeassistant.helpers.frame:
+    - "Detected that custom integration 'hacs'"
+  custom_components.alexa_media:
+    - "Too Many Requests"

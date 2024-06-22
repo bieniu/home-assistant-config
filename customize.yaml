@@ -59,14 +59,8 @@ binary_sensor.shelly_gas_c6811c_status:
   friendly_name: "Shelly Gas [C6811C]"
 binary_sensor.shelly_valve_2a544_status:
   friendly_name: "Shelly Valve [72A544]"
-binary_sensor.shelly_1l_ad365e_status:
-  friendly_name: "Shelly 1L [AD365E]"
 binary_sensor.shelly_1l_aacec4_status:
   friendly_name: "Shelly 1L [AACEC4]"
-binary_sensor.shelly_1l_701559_status:
-  friendly_name: "Shelly 1L [701559]"
-binary_sensor.shelly_1l_61c9fd_status:
-  friendly_name: "Shelly 1L [61C9FD]"
 binary_sensor.shelly_1l_aceb5f_status:
   friendly_name: "Shelly 1L [ACEB5F]"
 binary_sensor.shelly_duo_5f6fa1_status:

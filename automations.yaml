@@ -172,17 +172,35 @@
     for:
       minutes: 1
   action:
-  - service: python_script.notify
-    data:
-      title: Koniec zmywania
-      message: Zmywarka zakończyła zmywanie naczyń.
-      tag: notification-dishwasher
-      group: other
-      services:
-      - service: notify.mobile_app_iphone_13
-        type: ios
-      - service: notify.mobile_app_iphone_12
-        type: ios
+  - parallel:
+    - if:
+      - condition: state
+        entity_id: person.maciek
+        state: home
+      then:
+      - service: python_script.notify
+        data:
+          title: Koniec zmywania
+          message: Zmywarka zakończyła zmywanie naczyń.
+          tag: notification-dishwasher
+          group: other
+          services:
+          - service: notify.mobile_app_iphone_13
+            type: ios
+    - if:
+      - condition: state
+        entity_id: person.edyta
+        state: home
+      then:
+      - service: python_script.notify
+        data:
+          title: Koniec zmywania
+          message: Zmywarka zakończyła zmywanie naczyń.
+          tag: notification-dishwasher
+          group: other
+          services:
+          - service: notify.mobile_app_iphone_12
+            type: ios
 - id: notification_humidifier_low_water
   alias: Mało wody w nawilżaczy w salonie
   description: ''
@@ -217,34 +235,35 @@
     value_template: '{{ states(''sensor.xiaomi_mi_humidifier_ca1_water_level'') |
       int(999) != 0 }}'
   action:
-  - choose:
-      conditions:
-        condition: state
-        entity_id: person.maciek
-        state: home
-      sequence:
-        service: python_script.notify
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          tag: '{{ notification_tag }}'
-          services:
-          - service: notify.mobile_app_iphone_13
-            type: ios
-  - choose:
-      conditions:
-        condition: state
-        entity_id: person.edyta
-        state: home
-      sequence:
-        service: python_script.notify
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          tag: '{{ notification_tag }}'
-          services:
-          - service: notify.mobile_app_iphone_12
-            type: ios
+  - parallel:
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.maciek
+          state: home
+        sequence:
+          service: python_script.notify
+          data:
+            title: '{{ notification_title }}'
+            message: '{{ notification_message }}'
+            tag: '{{ notification_tag }}'
+            services:
+            - service: notify.mobile_app_iphone_13
+              type: ios
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.edyta
+          state: home
+        sequence:
+          service: python_script.notify
+          data:
+            title: '{{ notification_title }}'
+            message: '{{ notification_message }}'
+            tag: '{{ notification_tag }}'
+            services:
+            - service: notify.mobile_app_iphone_12
+              type: ios
   variables:
     notification_title: Uzupełnij wodę w nawilżaczu
     notification_message: W zbiorniku nawilżacza w salonie pozostało {{ states('sensor.xiaomi_mi_humidifier_ca1_water_level')
@@ -259,47 +278,37 @@
     above: 1000
     for:
       minutes: 5
-  condition:
-  - condition: or
-    conditions:
-    - condition: state
-      entity_id: person.maciek
-      state: home
-    - condition: state
-      entity_id: person.edyta
-      state: home
-  - condition: state
-    entity_id: input_boolean.away_mode
-    state: 'off'
+  condition: []
   action:
-  - choose:
-      conditions:
-        condition: state
-        entity_id: person.maciek
-        state: home
-      sequence:
-        service: python_script.notify
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          tag: '{{ notification_tag }}'
-          services:
-          - service: notify.mobile_app_iphone_13
-            type: ios
-  - choose:
-      conditions:
-        condition: state
-        entity_id: person.edyta
-        state: home
-      sequence:
-        service: python_script.notify
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          tag: '{{ notification_tag }}'
-          services:
-          - service: notify.mobile_app_iphone_12
-            type: ios
+  - parallel:
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.maciek
+          state: home
+        sequence:
+          service: python_script.notify
+          data:
+            title: '{{ notification_title }}'
+            message: '{{ notification_message }}'
+            tag: '{{ notification_tag }}'
+            services:
+            - service: notify.mobile_app_iphone_13
+              type: ios
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.edyta
+          state: home
+        sequence:
+          service: python_script.notify
+          data:
+            title: '{{ notification_title }}'
+            message: '{{ notification_message }}'
+            tag: '{{ notification_tag }}'
+            services:
+            - service: notify.mobile_app_iphone_12
+              type: ios
   variables:
     notification_title: Wysokie stężenie dwutlenku węgla
     notification_message: W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state
@@ -358,6 +367,9 @@
     - binary_sensor.shelly_plus_2pm_b67728_relay_2_overpower
     - binary_sensor.shelly_pro_1pm_80e0c0_overpower
     - binary_sensor.oswietlenie_pralnia_przeciazenie
+    - binary_sensor.oswietlenie_gabinet_przeciazenie
+    - binary_sensor.oswietlenie_toaleta_przeciazenie
+    - binary_sensor.oswietlenie_antek_przeciazenie
     from: 'off'
     to: 'on'
     for:
@@ -384,11 +396,8 @@
   - platform: state
     entity_id:
     - binary_sensor.shelly_1l_253d92_overtemperature
-    - binary_sensor.shelly_1l_61c9fd_overtemperature
-    - binary_sensor.shelly_1l_701559_overtemperature
     - binary_sensor.shelly_1l_aacec4_overtemperature
     - binary_sensor.shelly_1l_aceb5f_overtemperature
-    - binary_sensor.shelly_1l_ad365e_overtemperature
     - binary_sensor.shelly_25_77dbe5_overtemperature
     - binary_sensor.shelly_plus_plug_s_2ffb28_overtemperature
     - binary_sensor.shelly_plus_plug_s_d00c84_overtemperature
@@ -402,6 +411,9 @@
     - binary_sensor.shelly_plus_2pm_b67728_relay_2_overtemperature
     - binary_sensor.shelly_pro_1pm_80e0c0_overtemperature
     - binary_sensor.oswietlenie_pralnia_przegrzewanie
+    - binary_sensor.oswietlenie_gabinet_przegrzewanie
+    - binary_sensor.oswietlenie_toaleta_przegrzewanie
+    - binary_sensor.oswietlenie_antek_przegrzewanie
     from: 'off'
     to: 'on'
     for:
@@ -552,34 +564,37 @@
     from: 'off'
     to: 'on'
   action:
-  - service: python_script.notify
-    data:
-      title: Wyciek gazu
-      message: Uwaga! Wykryto wyciek gazu w kuchni!
-      tag: notification-gas-leak
-      priority: high
-      group: gas
-      services:
-      - service: notify.mobile_app_iphone_13
-        type: ios
-      - service: notify.mobile_app_iphone_12
-        type: ios
-      - service: notify.mobile_app_iphone_11
-        type: ios
-  - condition: state
-    entity_id: input_boolean.away_mode
-    state: 'off'
-  - service: xiaomi_aqara.play_ringtone
-    data:
-      gw_mac: f0b429cc6f0b
-      ringtone_id: 2
-      ringtone_vol: 20
-  - delay: 00:00:05
-  - service: xiaomi_aqara.play_ringtone
-    data:
-      gw_mac: f0b429cc6f0b
-      ringtone_id: 2
-      ringtone_vol: 20
+  - parallel:
+    - service: python_script.notify
+      data:
+        title: Wyciek gazu
+        message: Uwaga! Wykryto wyciek gazu w kuchni!
+        tag: notification-gas-leak
+        priority: high
+        group: gas
+        services:
+        - service: notify.mobile_app_iphone_13
+          type: ios
+        - service: notify.mobile_app_iphone_12
+          type: ios
+        - service: notify.mobile_app_iphone_11
+          type: ios
+    - if:
+      - condition: state
+        entity_id: script.devices_away_mode
+        state: 'off'
+      then:
+      - service: xiaomi_aqara.play_ringtone
+        data:
+          gw_mac: f0b429cc6f0b
+          ringtone_id: 2
+          ringtone_vol: 20
+      - delay: 00:00:05
+      - service: xiaomi_aqara.play_ringtone
+        data:
+          gw_mac: f0b429cc6f0b
+          ringtone_id: 2
+          ringtone_vol: 20
 - id: notification_low_battery
   alias: Niski poziom naładowania baterii
   description: ''
@@ -1081,8 +1096,8 @@
       entity_id:
       - scene.light_salon_auto
 - id: light_toggle_salon_bulbs
-  alias: Light Salon Toggle Ceiling Lamp
-  description: włącz/wyłącz oświetlenie sufitowe w salonie
+  alias: Włącz/wyłącz oświetlenie w salonie
+  description: ''
   trigger:
   - platform: device
     domain: mqtt
@@ -1101,8 +1116,8 @@
       entity_id: light.ceiling_salon
     data: {}
 - id: light_toggle_salon_light
-  alias: Light Salon Toggle LEDs
-  description: włącz/wyłącz LEDy w salonie
+  alias: Włącz/wyłącz LEDy w salonie
+  description: ''
   trigger:
   - device_id: 1f8b076d4a78b00888e90626c7c9a919
     domain: zha
@@ -1115,8 +1130,8 @@
     target:
       entity_id: light.leds_salon
 - id: light_turn_on_salon_lamp_when_dark_and_motion
-  alias: Light Salon Turn On Lamp When Dark And Motion
-  description: włącz lampę w salonie jak pojawi się ruch i jest ciemno
+  alias: Włącz lampę w salonie gdy pojawi się ruch i jest ciemno
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_salon
@@ -1240,12 +1255,12 @@
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
   condition:
   - condition: state
-    entity_id: light.ceiling_toaleta
+    entity_id: light.oswietlenie_toaleta
     state: 'on'
   action:
   - service: light.turn_off
     target:
-      entity_id: light.ceiling_toaleta
+      entity_id: light.oswietlenie_toaleta
     data: {}
 - id: light_turn_off_lazienka_light_when_no_motion
   alias: Wyłącz oświetlenie w łazience gdy nie ma ruchu
@@ -1286,8 +1301,8 @@
       entity_id: light.ceiling_kuchnia
     data: {}
 - id: light_turn_on_antresola_lampt_when_dark_and_motion
-  alias: Light Antresola Turn On Lamp When Dark And Motion
-  description: włącz lampkę na antresoli jak pojawi się ruch i jest ciemno
+  alias: Włącz lampkę na antresoli gdy pojawi się ruch i jest ciemno
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_antresola
@@ -1329,8 +1344,8 @@
       entity_id: light.gateway_antresola
     data: {}
 - id: light_turn_on_sypialnia_leds_when_dark_and_motion
-  alias: Light Sypialnia Turn On LEDs When Dark And Motion
-  description: włącz LEDy w sypialni jak pojawi się ruch i jest ciemno
+  alias: Włącz LEDy w sypialni gdy pojawi się ruch i jest ciemno
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_sypialnia
@@ -1373,8 +1388,8 @@
     data:
       transition: 10
 - id: light_turn_on_korytarz_light_when_dark_and_motion
-  alias: Light Korytarz Turn On Light When Dark And Motion
-  description: włącz oświetnie w korytarzu jak pojawi się ruch i jest ciemno
+  alias: Włącz oświetlenie w korytarzu gdy pojawi się ruch i jest ciemno
+  description: ''
   trigger:
   - platform: state
     entity_id:
@@ -1385,16 +1400,10 @@
   - condition: state
     entity_id: light.ceiling_korytarz
     state: 'off'
-  - condition: numeric_state
-    entity_id: sensor.natezenie_swiatla_korytarz
-    below: 10
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-      before_offset: +00:10:00
+  - condition: sun
+    before: sunrise
+    after: sunset
+    after_offset: 00:10:00
   action:
   - service: light.turn_on
     target:
@@ -1476,8 +1485,8 @@
       - light.oswietlenie_antek
     data: {}
 - id: light_turn_on_antek_leds_and_cabinet_when_dark_and_motion
-  alias: Light Antek Turn On LEDs When Dark And Motion
-  description: włącz LEDy w pokoju Antka jak pojawi się ruch i jest ciemno
+  alias: Włącz LEDy u Antka gdy pojawi się ruch i jest ciemno
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_antek
@@ -1488,7 +1497,7 @@
     entity_id:
     - input_boolean.away_mode
     - light.lightstrip_antek
-    - light.swietlenie_antek
+    - light.oswietlenie_antek
     state: 'off'
   - condition: numeric_state
     entity_id: sensor.illumination_antek
@@ -1525,14 +1534,19 @@
     platform: device
     type: remote_button_triple_press
     subtype: remote_button_triple_press
+  - platform: device
+    device_id: 7fd5d34776bed25cd216ca70f1a8a45d
+    domain: shelly
+    type: triple_push
+    subtype: button1
   action:
   - type: toggle
     device_id: 40c8e12009a311ebbd1ce5aa5e97a8d7
     entity_id: light.lightstrip_antek
     domain: light
 - id: light_turn_on_pracownia_lamp_when_dark_and_motion
-  alias: Light Pracownia Turn On Lamp When Dark And Motion
-  description: włącz lampkę w pracowni jak pojawi się ruch i jest ciemno
+  alias: Włącz lampkę w pracowni gdy pojawi się ruch i jest ciemno
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_pracownia
@@ -1572,15 +1586,14 @@
       entity_id: light.lamp_pracownia
     data: {}
 - id: light_toggle_gabinet_ceiling_light_
-  alias: Light Gabinet Toggle Ceiling Lamp
-  description: włącz/wyłącz oświetlenie sufitowe
+  alias: Włącz/wyłącz oświetlenie sufitowe w gabinecie
+  description: ''
   trigger:
   - platform: device
-    domain: mqtt
-    device_id: 8b0d2dd5099fa8d8664ab14cd4a30f87
-    type: button_short_press
-    subtype: button_1
-    discovery_id: shelly1l-483FDA701559-input-0 button_short_press
+    device_id: 5794eabef0db436756c344ac7632d9bd
+    domain: shelly
+    type: single_push
+    subtype: button1
   - device_id: 12765067d8e37adeadb4188a5b9b0c5c
     domain: zha
     platform: device
@@ -1592,28 +1605,27 @@
       entity_id: light.ceiling_gabinet
     data: {}
 - id: light_toggle_gabinet_lamp
-  alias: Light Gabinet Toggle Lamp
-  description: włącz/wyłącz lampę
+  alias: Włącz/wyłącz lampę w gabinecie
+  description: ''
   trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 8b0d2dd5099fa8d8664ab14cd4a30f87
-    type: button_long_press
-    subtype: button_1
-    discovery_id: shelly1l-483FDA701559-input-0 button_long_press
   - device_id: 12765067d8e37adeadb4188a5b9b0c5c
     domain: zha
     platform: device
     type: remote_button_double_press
     subtype: remote_button_double_press
+  - platform: device
+    device_id: 5794eabef0db436756c344ac7632d9bd
+    domain: shelly
+    type: double_push
+    subtype: button1
   action:
   - service: light.toggle
     target:
       entity_id: light.lamp_gabinet
     data: {}
 - id: light_turn_on_gabinet_lamp_when_dark_and_motion
-  alias: Light Gabinet Turn On Lamp When Dark And Motion
-  description: włącz lampę w gabinecie jak pojawi się ruch i jest ciemno
+  alias: Włącz lampę w gabinecie gdy pojawi się ruch i jest ciemno
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_gabinet
@@ -1706,8 +1718,8 @@
       entity_id: light.leds_schody
     data: {}
 - id: light_turn_on_schody_leds_when_motion_at_night
-  alias: Light Schody Turn On LEDs When Motion At Night
-  description: włącz ledy na schodach jak pojawi się ruch i jest noc
+  alias: Włącz LEDy na schodach gdy pojawi się ruch i jest ciemno
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_schody
@@ -1771,8 +1783,8 @@
       entity_id: light.leds_schody
     data: {}
 - id: light_turn_on_goscinny_lamp_when_dark_and_motion
-  alias: Light Gościnny Turn On Lamp When Dark And Motion
-  description: włącz lampkę w pokoju gościnnym jak pojawi się ruch i jest ciemno
+  alias: Włącz lampkę w gościnnym gdy pojawi się ruch i jest ciemno
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_goscinny
@@ -1981,19 +1993,11 @@
       shelly1l-98CDAC253D92:
         device_name: Shelly 1L [253D92]
         relay-0: light
-      shelly1l-8CAAB561C9FD:
-        device_name: Shelly 1L [61C9FD]
-        relay-0: light
-      shelly1l-483FDA701559:
-        device_name: Shelly 1L [701559]
       shelly1l-E8DB84AACEC4:
         device_name: Shelly 1L [AACEC4]
         relay-0: light
       shelly1l-84CCA8ACEB5F:
         device_name: Shelly 1L [ACEB5F]
-        relay-0: light
-      shelly1l-84CCA8AD365E:
-        device_name: Shelly 1L [AD365E]
         relay-0: light
       shellyswitch25-C45BBE77DBE5:
         device_name: Shelly 2.5 [77DBE5]
@@ -2011,6 +2015,7 @@
         device_name: Shelly Valve [72A544]
         default_heating_temperature: '{{ states(''input_number.temperature_day'')
           | int(20) }}'
+        humidity_topic: shellies/shellytrv-84FD2772A544/humidity
   mode: queued
   max: 999
 - id: hassio_backup
@@ -2050,8 +2055,8 @@
       entity_id: fan.ceiling_salon
   mode: single
 - id: '1658514193572'
-  alias: Light Salon Toggle Lamp
-  description: włącz/wyłącz lampę w salonie
+  alias: Włącz/wyłącz lampę w salonie
+  description: ''
   trigger:
   - platform: device
     domain: mqtt
@@ -2075,17 +2080,16 @@
   alias: Włącz/wyłącz oświetlenie drzewka u Antka
   description: ''
   trigger:
-  - platform: device
-    domain: mqtt
-    device_id: d9bac82dff0257d63401f912e99b205c
-    type: button_long_press
-    subtype: button_1
-    discovery_id: shelly1l-84CCA8AD365E-input-0 button_long_press
   - device_id: aabc0c68397757ef0cf5caa56a59d0c8
     domain: zha
     platform: device
     type: remote_button_double_press
     subtype: remote_button_double_press
+  - platform: device
+    device_id: 7fd5d34776bed25cd216ca70f1a8a45d
+    domain: shelly
+    type: double_push
+    subtype: button1
   condition: []
   action:
   - service: light.toggle
@@ -2113,14 +2117,19 @@
       entity_id: light.ceiling_goscinny
     data: {}
 - id: '1670319144056'
-  alias: Media Gabinet Play/Pause
-  description: włącz/wyłącz oświetlenie w gabinecie
+  alias: Odtwarzaj/wstrzymaj media w gabinecie
+  description: ''
   trigger:
   - device_id: 12765067d8e37adeadb4188a5b9b0c5c
     domain: zha
     platform: device
     type: remote_button_triple_press
     subtype: remote_button_triple_press
+  - platform: device
+    device_id: 5794eabef0db436756c344ac7632d9bd
+    domain: shelly
+    type: triple_push
+    subtype: button1
   action:
   - service: media_player.media_play_pause
     data: {}
@@ -2265,55 +2274,56 @@
     value_template: '{{ states(''sensor.xiaomi_mi_humidifier_cb1_water_level'') |
       int(999) != 0 }}'
   action:
-  - choose:
-      conditions:
-        condition: state
-        entity_id: person.maciek
-        state: home
-      sequence:
-        service: python_script.notify
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          tag: '{{ notification_tag }}'
-          services:
-          - service: notify.mobile_app_iphone_13
-            type: ios
-  - choose:
-      conditions:
-        condition: state
-        entity_id: person.edyta
-        state: home
-      sequence:
-        service: python_script.notify
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          tag: '{{ notification_tag }}'
-          services:
-          - service: notify.mobile_app_iphone_12
-            type: ios
-  - choose:
-      conditions:
-        condition: state
-        entity_id: person.antek
-        state: home
-      sequence:
-        service: python_script.notify
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          tag: '{{ notification_tag }}'
-          services:
-          - service: notify.mobile_app_iphone_11
-            type: ios
+  - parallel:
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.maciek
+          state: home
+        sequence:
+          service: python_script.notify
+          data:
+            title: '{{ notification_title }}'
+            message: '{{ notification_message }}'
+            tag: '{{ notification_tag }}'
+            services:
+            - service: notify.mobile_app_iphone_13
+              type: ios
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.edyta
+          state: home
+        sequence:
+          service: python_script.notify
+          data:
+            title: '{{ notification_title }}'
+            message: '{{ notification_message }}'
+            tag: '{{ notification_tag }}'
+            services:
+            - service: notify.mobile_app_iphone_12
+              type: ios
+    - choose:
+        conditions:
+          condition: state
+          entity_id: person.antek
+          state: home
+        sequence:
+          service: python_script.notify
+          data:
+            title: '{{ notification_title }}'
+            message: '{{ notification_message }}'
+            tag: '{{ notification_tag }}'
+            services:
+            - service: notify.mobile_app_iphone_11
+              type: ios
   variables:
     notification_title: Uzupełnij wodę w nawilżaczu
     notification_message: W zbiorniku nawilżacza w pokoju Antka pozostało {{ states('sensor.xiaomi_mi_humidifier_cb1_water_level')
       }}% wody.
     notification_tag: notification-humidifier-cb1
 - id: '1672476393165'
-  alias: Light Gościnny Toggle Ceiling Lamp
+  alias: Włącz/wyłącz oświetlenie w pokoju gościnnym
   description: ''
   trigger:
   - platform: device
@@ -2329,13 +2339,13 @@
       entity_id: light.ceiling_goscinny
   mode: single
 - id: '1672477395224'
-  alias: Light Gościnny Toggle Lamp
+  alias: Włącz/wyłącz lampkę w pokoju gościnnym
   description: ''
   trigger:
   - platform: device
     device_id: 84783955a9dda947e7b647309a6b15f9
     domain: shelly
-    type: long_push
+    type: double_push
     subtype: button1
   condition: []
   action:
@@ -2353,6 +2363,11 @@
     platform: device
     type: remote_button_short_press
     subtype: remote_button_short_press
+  - platform: device
+    device_id: 7fd5d34776bed25cd216ca70f1a8a45d
+    domain: shelly
+    type: long_push
+    subtype: button1
   condition: []
   action:
   - type: toggle
@@ -2402,17 +2417,35 @@
     for:
       minutes: 1
   action:
-  - service: python_script.notify
-    data:
-      title: Koniec prania
-      message: Pralka zakończyła pranie.
-      tag: notification-washing-machine
-      group: other
-      services:
-      - service: notify.mobile_app_iphone_13
-        type: ios
-      - service: notify.mobile_app_iphone_12
-        type: ios
+  - parallel:
+    - if:
+      - condition: state
+        entity_id: person.maciek
+        state: home
+      then:
+      - service: python_script.notify
+        data:
+          title: Koniec prania
+          message: Pralka zakończyła pranie.
+          tag: notification-washing-machine
+          group: other
+          services:
+          - service: notify.mobile_app_iphone_13
+            type: ios
+    - if:
+      - condition: state
+        entity_id: person.edyta
+        state: home
+      then:
+      - service: python_script.notify
+        data:
+          title: Koniec prania
+          message: Pralka zakończyła pranie.
+          tag: notification-washing-machine
+          group: other
+          services:
+          - service: notify.mobile_app_iphone_12
+            type: ios
 - id: '1678536051718'
   alias: Dym w mieszkaniu
   description: ''
@@ -2458,14 +2491,24 @@
     type: press
   mode: single
 - id: '1682413050614'
-  alias: Light Sypialnia Toggle Lamp
-  description: włącz/wyłącz lampkę w sypialni
+  alias: Włącz/wyłącz lampkę w sypialni
+  description: ''
   trigger:
   - platform: device
     device_id: 9c1d6b506fc5c2b66d70325621df177f
     domain: bthome
     type: button
     subtype: press
+  - platform: device
+    device_id: d126835937feceeaf66137ca3321675d
+    domain: shelly
+    type: double_push
+    subtype: button1
+  - platform: device
+    device_id: d126835937feceeaf66137ca3321675d
+    domain: shelly
+    type: double_push
+    subtype: button2
   condition: []
   action:
   - type: toggle
@@ -2635,8 +2678,8 @@
       - light.ceiling_pracownia
     data: {}
 - id: '1709306186649'
-  alias: Light Przedpokój Turn On LEDs When Dark And Motion
-  description: włącz LEDy na przedpokoju jak pojawi się ruch i jest ciemno
+  alias: Włącz LEDy na przedpokoju gdy pojawi się ruch i jest ciemno
+  description: ''
   trigger:
   - platform: state
     entity_id: binary_sensor.motion_przedpokoj
@@ -2820,4 +2863,83 @@
         source: HDMI 2
       target:
         entity_id: media_player.philips_65oled707
+  mode: single
+- id: '1718655436619'
+  alias: Przekazywanie wilgotności do termostatu na antresoli
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.humidity_antresola
+  condition:
+  - condition: template
+    value_template: '{{ is_number(trigger.to_state.state) }}'
+  action:
+  - service: mqtt.publish
+    metadata: {}
+    data:
+      retain: true
+      topic: shellies/shellytrv-84FD2772A544/humidity
+      payload: '{{ trigger.to_state.state | int }}'
+  mode: single
+- id: '1719055090033'
+  alias: Włącz/wyłącz wentylator w gabinecie
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 5794eabef0db436756c344ac7632d9bd
+    domain: shelly
+    type: long_push
+    subtype: button1
+  - device_id: 12765067d8e37adeadb4188a5b9b0c5c
+    domain: zha
+    platform: device
+    type: remote_button_long_press
+    subtype: button
+  condition: []
+  action:
+  - service: fan.toggle
+    metadata: {}
+    data: {}
+    target:
+      entity_id: fan.xiaomi_mi_pedestal_fan_1x
+  mode: single
+- id: '1719057451463'
+  alias: Włącz/wyłącz LEDy w sypialni
+  description: ''
+  trigger:
+  - platform: device
+    device_id: d126835937feceeaf66137ca3321675d
+    domain: shelly
+    type: triple_push
+    subtype: button1
+  - platform: device
+    device_id: d126835937feceeaf66137ca3321675d
+    domain: shelly
+    type: triple_push
+    subtype: button2
+  condition: []
+  action:
+  - service: light.toggle
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.lightstrip_sypialnia
+  mode: single
+- id: '1719058582558'
+  alias: Włącz/wyłącz lampkę w pracowni
+  description: ''
+  trigger:
+  - platform: device
+    device_id: 4b993b884f2acfc2961cadffaed93e80
+    domain: shelly
+    type: double_push
+    subtype: button1
+  condition: []
+  action:
+  - service: light.toggle
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.lamp_pracownia
   mode: single

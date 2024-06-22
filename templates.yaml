@@ -288,14 +288,6 @@
       unique_id: "shelly_1l_253d92_status"
       state: "{{ is_state('device_tracker.shelly_1l_253d92', 'home') }}"
 
-    - name: shelly_1l_61c9fd_status
-      unique_id: "shelly_1l_61c9fd_status"
-      state: "{{ is_state('device_tracker.shelly_1l_61c9fd', 'home') }}"
-
-    - name: shelly_1l_701559_status
-      unique_id: "shelly_1l_701559_status"
-      state: "{{ is_state('device_tracker.shelly_1l_701559', 'home') }}"
-
     - name: shelly_1l_aacec4_status
       unique_id: "shelly_1l_aacec4_status"
       state: "{{ is_state('device_tracker.shelly_1l_aacec4', 'home') }}"
@@ -303,10 +295,6 @@
     - name: shelly_1l_aceb5f_status
       unique_id: "shelly_1l_aceb5f_status"
       state: "{{ is_state('device_tracker.shelly_1l_aceb5f', 'home') }}"
-
-    - name: shelly_1l_ad365e_status
-      unique_id: "shelly_1l_ad365e_status"
-      state: "{{ is_state('device_tracker.shelly_1l_ad365e', 'home') }}"
 
     - name: shelly_1pm_mini_gen3_411170_status
       unique_id: "shelly_1pm_mini_gen3_411170_status"
@@ -319,6 +307,18 @@
     - name: shelly_plus_1_mini_af5390_status
       unique_id: "shelly_plus_1_mini_af5390_status"
       state: "{{ is_state('device_tracker.shelly_plus_1_mini_af5390', 'home') }}"
+
+    - name: shelly_1pm_gen3_c6b6c4_status
+      unique_id: "shelly_1pm_gen3_c6b6c4_status"
+      state: "{{ is_state('device_tracker.shelly_1pm_gen3_c6b6c4', 'home') }}"
+
+    - name: shelly_1pm_gen3_c66e94_status
+      unique_id: "shelly_1pm_gen3_c66e94_status"
+      state: "{{ is_state('device_tracker.shelly_1pm_gen3_c66e94', 'home') }}"
+
+    - name: shelly_plus_1pm_21e1dc_status
+      unique_id: "shelly_plus_1pm_21e1dc_status"
+      state: "{{ is_state('device_tracker.shelly_plus_1pm_21e1dc', 'home') }}"
 
     - name: shelly_plus_1pm_b12a90_status
       unique_id: "shelly_plus_1pm_b12a90_status"
