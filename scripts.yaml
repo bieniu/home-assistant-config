@@ -33,7 +33,8 @@ devices_away_mode:
       - light.oswietlenie_pralnia
       - light.tree_antek
       - fan.ceiling_salon
-      - fan.xiaomi_mi_pedestal_fan_1x
+      - fan.xiaomi_mi_standing_fan_1x
+      - fan.xiaomi_mi_standing_fan_2
       - humidifier.xiaomi_mi_humidifier_ca1
       - humidifier.xiaomi_mi_humidifier_cb1
   - if:
@@ -249,7 +250,7 @@ alexa_goodnight:
       - remote.salon
       - media_player.sony_kd_55xf8596
       - fan.ceiling_salon
-      - fan.xiaomi_mi_pedestal_fan_1x
+      - fan.xiaomi_mi_standing_fan_1x
       - fan.xiaomi_mi_air_purifier_3h
       - light.leds_salon
       - light.ceiling_salon
@@ -306,7 +307,7 @@ restart_wifi_devices:
       entity_id:
       - button.blitzwolf_bw_shp6_ed007d_restart
       - button.blitzwolf_bw_shp6_3766eb_restart
-      - button.nettigo_air_monitor_restart
+      - button.nettigo_air_monitor_uruchom_ponownie
       - button.shelly_1l_253d92_restart
       - button.shelly_1l_aacec4_restart
       - button.shelly_1l_aceb5f_restart

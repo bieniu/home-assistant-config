@@ -15,9 +15,9 @@
     - name: jakosc_powietrza_zewnetrznego
       unique_id: "jakosc_powietrza_zewnetrznego"
       icon: "mdi:home-export-outline"
-      availability: "{{ states('sensor.nettigo_air_monitor_f5280e_sds011_poziom_caqi') != ('unavailable' or 'unknown') }}"
+      availability: "{{ states('sensor.nettigo_air_monitor_sds011_poziom_caqi') != ('unavailable' or 'unknown') }}"
       state: >-
-        {% set caqi_level = states('sensor.nettigo_air_monitor_f5280e_sds011_poziom_caqi') %}
+        {% set caqi_level = states('sensor.nettigo_air_monitor_sds011_poziom_caqi') %}
         {% if caqi_level == 'very_low' %}
           bardzo dobra
         {% elif caqi_level == 'low' %}
@@ -129,10 +129,10 @@
       icon: mdi:cellphone
       state: "{{ is_state('device_tracker.iphone_13', 'home') }}"
 
-    - name: iphone_11_status
-      unique_id: "iphone_11_status"
+    - name: iphone_15_pro_status
+      unique_id: "iphone_15_pro_status"
       icon: mdi:cellphone
-      state: "{{ is_state('device_tracker.iphone_11', 'home') }}"
+      state: "{{ is_state('device_tracker.iphone_15_pro', 'home') }}"
 
     - name: iphone_12_status
       unique_id: "iphone_12_status"
@@ -202,9 +202,9 @@
       icon: mdi:speaker-play
       state: "{{ is_state('device_tracker.sonos_arc', 'home') }}"
 
-    - name: laptop_status
-      unique_id: "laptop_status"
-      state: "{{ is_state('device_tracker.lenovo_ideapad_z510', 'home') }}"
+    - name: lenovo_ideapad_s145_status
+      unique_id: "lenovo_ideapad_s145_status"
+      state: "{{ is_state('device_tracker.lenovo_ideapad_s145', 'home') }}"
 
     - name: migateway_cc6f0b_status
       unique_id: "migateway_cc6f0b_status"
@@ -225,9 +225,14 @@
       state: "{{ is_state('device_tracker.xiaomi_mi_air_purifier_3h', 'home') }}"
       icon: mdi:air-purifier
 
-    - name: mifan_status
-      unique_id: "mifan_status"
-      state: "{{ is_state('device_tracker.xiaomi_mi_pedestal_fan_1x', 'home') }}"
+    - name: mi_standing_fan_1x_status
+      unique_id: "mi_standing_fan_1x_status"
+      state: "{{ is_state('device_tracker.xiaomi_mi_standing_fan_1x', 'home') }}"
+      icon: mdi:fan
+
+    - name: mi_standing_fan_2_status
+      unique_id: "mi_standing_fan_2_status"
+      state: "{{ is_state('device_tracker.xiaomi_mi_standing_fan_2', 'home') }}"
       icon: mdi:fan
 
     - name: brother_status
@@ -406,7 +411,7 @@
     - name: nettigo_air_monitor_status
       unique_id: "nettigo_air_monitor_status"
       icon: mdi:weather-partly-rainy
-      state: "{{ is_state('device_tracker.nettigo_air_monitor_f5280e', 'home') }}"
+      state: "{{ is_state('device_tracker.nettigo_air_monitor', 'home') }}"
 
     - name: yeelight_mjtd01syl_94e1f5_status
       unique_id: "yeelight_mjtd01syl_94e1f5_status"

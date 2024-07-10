@@ -2392,7 +2392,7 @@
       - light.lightstrip_antek
   mode: single
 - id: '1672565410928'
-  alias: Light Antek Turn On Tree On Sunset
+  alias: Włącz oświetlenie drzewka o zachodzie słońca
   description: ''
   trigger:
   - platform: sun
@@ -2575,7 +2575,7 @@
         type: ios
   mode: single
 - id: '1687849080259'
-  alias: Light Salon Helper
+  alias: Pomocnik oświetlenia w salonie
   description: ''
   trigger:
   - platform: state
@@ -2791,16 +2791,17 @@
     data:
       entries: "{% set checked_domains = [\"binary_sensor\", \"climate\", \"light\",
         \"media_player\", \"remote\", \"sensor\", \"switch\", \"weather\"] %}\n{%
-        set ignored_entities = [\"switch.philips_65oled707_screen_state\", \"media_player.philips_65oled707_cast\"]
-        %}\n{% set ignored_entries = [\"Asus RT-AX86S\", \"Sony KD-55XF8596\", \"SpeedTest\",
-        \"X1 xDrive20i\"] %}\n{% macro unavailable_entries() %}\n  {% for domain in
-        checked_domains %}\n    {% for entity_id in states[domain] | selectattr(\"state\",
-        \"==\", \"unavailable\") | map(attribute=\"entity_id\") if entity_id not in
-        ignored_entities %}\n      {% set entry_name = device_attr(entity_id, \"name_by_user\")
-        or device_attr(entity_id, \"name\") %}\n      {% if entry_name not in ignored_entries
-        and entry_name != None %}\n        {{ entry_name }}@{{ area_name(entity_id)
-        }}|\n      {% endif %}\n    {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{
-        unavailable_entries() }}"
+        set ignored_entities = [\"switch.philips_65oled707_screen_state\", \"light.philips_65oled707_ambilight\",
+        \"media_player.philips_65oled707_cast\"] %}\n{% set ignored_entries = [\"Asus
+        RT-AX86S\", \"Sony KD-55XF8596\", \"SpeedTest\", \"X1 xDrive20i\"] %}\n{%
+        macro unavailable_entries() %}\n  {% for domain in checked_domains %}\n    {%
+        for entity_id in states[domain] | selectattr(\"state\", \"==\", \"unavailable\")
+        | map(attribute=\"entity_id\") if entity_id not in ignored_entities %}\n      {%
+        set entry_name = device_attr(entity_id, \"name_by_user\") or device_attr(entity_id,
+        \"name\") %}\n      {% if entry_name not in ignored_entries and entry_name
+        != None %}\n        {{ entry_name }}@{{ area_name(entity_id) }}|\n      {%
+        endif %}\n    {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{ unavailable_entries()
+        }}"
   mode: queued
   max: 10
 - id: '1715426726944'
@@ -2902,7 +2903,7 @@
     metadata: {}
     data: {}
     target:
-      entity_id: fan.xiaomi_mi_pedestal_fan_1x
+      entity_id: fan.xiaomi_mi_standing_fan_1x
   mode: single
 - id: '1719057451463'
   alias: Włącz/wyłącz LEDy w sypialni

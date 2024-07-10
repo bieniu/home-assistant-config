@@ -29,8 +29,6 @@ binary_sensor.echo_show_status:
   friendly_name: "Echo Show"
 binary_sensor.inkbook_status:
   friendly_name: "inkBook Classic 2"
-binary_sensor.laptop_status:
-  friendly_name: "Lenovo IdeaPad Z510"
 binary_sensor.migateway_cc6f0b_status:
   friendly_name: "Xiaomi Mi Gateway 2"
 binary_sensor.miairpurifier_status:
@@ -93,9 +91,6 @@ sensor.home_uv_index:
 
 sensor.hacs:
   icon: mdi:store
-
-zone.home:
-  radius: 50
 
 sensor.minecraft_server_players_online:
   unit_of_measurement: "graczy"
