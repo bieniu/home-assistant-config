@@ -1,0 +1,71 @@
+actions:
+  - name: Toggle Salon Light
+    label:
+      text: Oświetlenie
+    icon:
+      icon: ceiling_fan_light
+    show_in_carplay: false
+    show_in_watch: false
+  - name: Toggle Salon LEDs
+    label:
+      text: LEDy
+    icon:
+      icon: led_strip_variant
+    show_in_carplay: false
+    show_in_watch: false
+  - name: Toggle Salon Lamp
+    label:
+      text: Lampa
+    icon:
+      icon: floor_lamp
+    show_in_carplay: false
+    show_in_watch: false
+  - name: Toggle Salon Fan
+    label:
+      text: Wentylator
+    icon:
+      icon: ceiling_fan
+    show_in_carplay: false
+    show_in_watch: false
+  - name: Turn Off TV
+    label:
+      text: Wyłącz TV
+    icon:
+      icon: television_off
+    show_in_carplay: false
+    show_in_watch: false
+  - name: Turn On TV
+    label:
+      text: Telewizja
+    icon:
+      icon: television
+    show_in_carplay: false
+    show_in_watch: false
+  - name: Turn On Smart TV
+    label:
+      text: Smart TV
+    icon:
+      icon: television_guide
+    show_in_carplay: false
+    show_in_watch: false
+  - name: Turn On Games
+    label:
+      text: Gry
+    icon:
+      icon: gamepad_variant_outline
+    show_in_carplay: false
+    show_in_watch: false
+  - name: Turn Up TV Volume
+    label:
+      text: Głośniej
+    icon:
+      icon: volume_plus
+    show_in_carplay: false
+    show_in_watch: false
+  - name: Turn Down TV Volume
+    label:
+      text: Ciszej
+    icon:
+      icon: volume_minus
+    show_in_carplay: false
+    show_in_watch: false

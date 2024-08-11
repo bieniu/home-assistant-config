@@ -52,6 +52,8 @@ media_player: !include media_players.yaml
 
 template: !include templates.yaml
 
+ios: !include ios.yaml
+
 panel_custom:
   - name: zha_map
     sidebar_title: Zigbee

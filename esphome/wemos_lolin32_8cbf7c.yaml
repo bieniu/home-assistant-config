@@ -44,12 +44,12 @@ bluetooth_proxy:
 
 time:
   - platform: homeassistant
-    id: homeassistant_time
 
 button:
   - platform: restart
-    name: "Restart"
+    name: "Uruchom ponownie"
     device_class: "restart"
+
   - platform: template
     name: "Kalibruj punkt zero MH-Z19"
     on_press:
@@ -66,40 +66,30 @@ sensor:
   - platform: mhz19
     id: mhz19_sensor
     co2:
-      name: "Carbon Dioxide"
+      name: "Dwutlenek węgla"
       device_class: "carbon_dioxide"
     temperature:
-      name: "Temperature"
+      name: "Temperatura"
       accuracy_decimals: 1
       device_class: "temperature"
+      disabled_by_default: true
     automatic_baseline_calibration: false
     update_interval: 300s
 
   - platform: uptime
-    id: uptime_sensor
-    internal: true
-
-  - platform: template
-    name: "Last restart"
-    update_interval: 300s
-    device_class: "timestamp"
+    name: "Ostatni restart"
+    type: "timestamp"
     entity_category: "diagnostic"
-    lambda: |-
-      auto time = id(homeassistant_time).now();
-      if (time.is_valid()) {
-        return time.timestamp - id(uptime_sensor).state;
-      } else {
-        return {};
-      }
 
   - platform: wifi_signal
-    name: "WiFi signal"
+    name: "Sygnał WiFi"
     update_interval: 300s
     device_class: "signal_strength"
     entity_category: "diagnostic"
 
   - platform: internal_temperature
-    name: "Device Temperature"
+    name: "Temperatura urządzenia"
+    disabled_by_default: true
 
 switch:
   - platform: template

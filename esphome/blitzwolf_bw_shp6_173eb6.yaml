@@ -39,7 +39,6 @@ web_server:
 
 time:
   - platform: homeassistant
-    id: homeassistant_time
 
 binary_sensor:
   - platform: gpio
@@ -61,7 +60,7 @@ switch:
     pin: GPIO15
     id: relay
     icon: mdi:power-plug
-    name: "Relay"
+    name: "Przekaźnik"
     restore_mode: ALWAYS_ON
     on_turn_on:
       - output.turn_on: led
@@ -70,7 +69,7 @@ switch:
 
 button:
   - platform: restart
-    name: "Restart"
+    name: "Uruchom ponownie"
     device_class: "restart"
 
 status_led:
@@ -80,24 +79,12 @@ status_led:
 
 sensor:
   - platform: uptime
-    id: uptime_sensor
-    internal: true
-
-  - platform: template
-    name: "Last restart"
-    update_interval: 300s
-    device_class: "timestamp"
+    name: "Ostatni restart"
+    type: "timestamp"
     entity_category: "diagnostic"
-    lambda: |-
-      auto time = id(homeassistant_time).now();
-      if (time.is_valid()) {
-        return time.timestamp - id(uptime_sensor).state;
-      } else {
-        return {};
-      }
 
   - platform: wifi_signal
-    name: "WiFi signal"
+    name: "Sygnał WiFi"
     update_interval: 300s
     device_class: "signal_strength"
     entity_category: "diagnostic"
@@ -111,7 +98,7 @@ sensor:
     current_resistor: ${current_res}
     voltage_divider: ${voltage_div}
     power:
-      name: "Power"
+      name: "Pobór mocy"
       unit_of_measurement: "W"
       device_class: "power"
       on_value_range:
@@ -120,6 +107,6 @@ sensor:
             - output.turn_off: led
             - switch.turn_off: relay
     energy:
-      name: "Energy"
+      name: "Energia"
       unit_of_measurement: "Wh"
       device_class: "energy"
