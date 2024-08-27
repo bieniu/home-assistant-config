@@ -452,6 +452,11 @@
         type: daily
       response_variable: daily_forecast
   sensor:
+    - name: AccuWeather Pomocnik Prognozy Pogody
+      unique_id: accuweather_forecast_daily_helper
+      state: "{{ now().isoformat() }}"
+      attributes:                                           
+        forecast: "{{ daily_forecast['weather.accuweather'].forecast }}"
     - name: Dom Prawdopodobieństwo opadów
       unique_id: home_precipitation_probablility
       icon: mdi:weather-partly-rainy

@@ -12,3 +12,4 @@
   wind_gust_speed_template: "{{ state_attr('weather.accuweather', 'wind_gust_speed') }}"
   visibility_template: "{{ state_attr('weather.accuweather', 'visibility') }}"
   cloud_coverage_template: "{{ state_attr('weather.accuweather', 'cloud_coverage') }}"
+  forecast_daily_template: "{{ state_attr('sensor.accuweather_pomocnik_prognozy_pogody', 'forecast') }}"

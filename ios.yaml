@@ -4,6 +4,7 @@ actions:
       text: Oświetlenie
     icon:
       icon: ceiling_fan_light
+      color: "#ffc107"
     show_in_carplay: false
     show_in_watch: false
   - name: Toggle Salon LEDs
@@ -11,6 +12,7 @@ actions:
       text: LEDy
     icon:
       icon: led_strip_variant
+      color: "#ffc107"
     show_in_carplay: false
     show_in_watch: false
   - name: Toggle Salon Lamp
@@ -18,6 +20,7 @@ actions:
       text: Lampa
     icon:
       icon: floor_lamp
+      color: "#ffc107"
     show_in_carplay: false
     show_in_watch: false
   - name: Toggle Salon Fan
@@ -25,6 +28,7 @@ actions:
       text: Wentylator
     icon:
       icon: ceiling_fan
+      color: "#00bcd4"
     show_in_carplay: false
     show_in_watch: false
   - name: Turn Off TV
@@ -32,6 +36,7 @@ actions:
       text: Wyłącz TV
     icon:
       icon: television_off
+      color: "#f44336"
     show_in_carplay: false
     show_in_watch: false
   - name: Turn On TV
@@ -39,6 +44,7 @@ actions:
       text: Telewizja
     icon:
       icon: television
+      color: "#03a9f4"
     show_in_carplay: false
     show_in_watch: false
   - name: Turn On Smart TV
@@ -46,6 +52,7 @@ actions:
       text: Smart TV
     icon:
       icon: television_guide
+      color: "#03a9f4"
     show_in_carplay: false
     show_in_watch: false
   - name: Turn On Games
@@ -53,6 +60,7 @@ actions:
       text: Gry
     icon:
       icon: gamepad_variant_outline
+      color: "#03a9f4"
     show_in_carplay: false
     show_in_watch: false
   - name: Turn Up TV Volume
@@ -60,6 +68,7 @@ actions:
       text: Głośniej
     icon:
       icon: volume_plus
+      color: "#03a9f4"
     show_in_carplay: false
     show_in_watch: false
   - name: Turn Down TV Volume
@@ -67,5 +76,6 @@ actions:
       text: Ciszej
     icon:
       icon: volume_minus
+      color: "#03a9f4"
     show_in_carplay: false
     show_in_watch: false

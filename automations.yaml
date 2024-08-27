@@ -1120,6 +1120,9 @@
     event_type: ios.action_fired
     event_data:
       actionName: Toggle Salon Light
+  - platform: state
+    entity_id:
+    - event.shelly_blu_wall_switch_4_8b60a4_przycisk_1
   action:
   - target:
       entity_id: light.ceiling_salon
@@ -1138,6 +1141,9 @@
     event_type: ios.action_fired
     event_data:
       actionName: Toggle Salon LEDs
+  - platform: state
+    entity_id:
+    - event.shelly_blu_wall_switch_4_8b60a4_przycisk_3
   action:
   - data: {}
     target:
@@ -2065,6 +2071,9 @@
     event_type: ios.action_fired
     event_data:
       actionName: Toggle Salon Fan
+  - platform: state
+    entity_id:
+    - event.shelly_blu_wall_switch_4_8b60a4_przycisk_2
   condition: []
   action:
   - data: {}
@@ -2091,6 +2100,9 @@
     event_type: ios.action_fired
     event_data:
       actionName: Toggle Salon Lamp
+  - platform: state
+    entity_id:
+    - event.shelly_blu_wall_switch_4_8b60a4_przycisk_4
   condition: []
   action:
   - data: {}
@@ -2610,17 +2622,19 @@
       seconds: 0
   condition: []
   action:
-  - service: switch.turn_off
-    data: {}
+  - data: {}
     target:
       entity_id: switch.ceiling_fan_and_bulbs_salon
+    action: switch.turn_off
   - delay:
       hours: 0
       minutes: 0
       seconds: 7
       milliseconds: 0
-  - service: switch.turn_on
-    data: {}
+  - data: {}
+    target:
+      entity_id: switch.ceiling_fan_and_bulbs_salon
+    action: switch.turn_on
   mode: single
 - id: '1693856668458'
   alias: Light Salon Scene Dusk When Turn On
