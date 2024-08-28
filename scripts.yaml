@@ -1,7 +1,6 @@
 devices_away_mode:
   sequence:
-  - service: homeassistant.turn_off
-    data: {}
+  - data: {}
     target:
       entity_id:
       - light.ceiling_garderoba
@@ -11,7 +10,7 @@ devices_away_mode:
       - light.ceiling_gabinet
       - light.ceiling_goscinny
       - light.ceiling_korytarz
-      - light.ceiling_kuchnia
+      - light.oswietlenie_kuchnia
       - light.ceiling_lazienka
       - light.ceiling_przedpokoj
       - light.leds_przedpokoj
@@ -37,16 +36,17 @@ devices_away_mode:
       - fan.xiaomi_mi_standing_fan_2
       - humidifier.xiaomi_mi_humidifier_ca1
       - humidifier.xiaomi_mi_humidifier_cb1
+    action: homeassistant.turn_off
   - if:
     - condition: template
       value_template: '{{ states("select.harmony_activities") != "power_off" }}'
     then:
-    - service: select.select_option
-      metadata: {}
+    - metadata: {}
       data:
         option: power_off
       target:
         entity_id: select.harmony_activities
+      action: select.select_option
   mode: single
   alias: Poza domem
   icon: mdi:home-export-outline
@@ -244,8 +244,7 @@ alexa_netflix:
   icon: mdi:netflix
 alexa_goodnight:
   sequence:
-  - service: homeassistant.turn_off
-    target:
+  - target:
       entity_id:
       - remote.salon
       - media_player.sony_kd_55xf8596
@@ -258,7 +257,7 @@ alexa_goodnight:
       - light.desk_lamp_gabinet
       - light.ceiling_gabinet
       - light.ceiling_goscinny
-      - light.ceiling_kuchnia
+      - light.oswietlenie_kuchnia
       - light.ceiling_lazienka
       - light.oswietlenie_toaleta
       - light.oswietlenie_antek
@@ -269,41 +268,41 @@ alexa_goodnight:
       - light.ceiling_pracownia
       - light.oswietlenie_pralnia
     data: {}
+    action: homeassistant.turn_off
   - if:
     - condition: template
       value_template: '{{ states("select.harmony_activities") != "power_off" }}'
     then:
-    - service: select.select_option
-      metadata: {}
+    - metadata: {}
       data:
         option: power_off
       target:
         entity_id: select.harmony_activities
+      action: select.select_option
   mode: single
   alias: Dobranoc
   icon: mdi:weather-night
 restart_wifi_devices:
   alias: Restart urządzeń Wi-Fi
   sequence:
-  - service: switch.turn_off
-    data: {}
+  - data: {}
     target:
       entity_id:
       - switch.shelly_plus_1pm_948ff8_relay
       - switch.ceiling_fan_and_bulbs_salon
+    action: switch.turn_off
   - delay:
       hours: 0
       minutes: 0
       seconds: 5
       milliseconds: 0
-  - service: switch.turn_on
-    data: {}
+  - data: {}
     target:
       entity_id:
       - switch.shelly_plus_1pm_948ff8_relay
       - switch.ceiling_fan_and_bulbs_salon
-  - service: button.press
-    target:
+    action: switch.turn_on
+  - target:
       entity_id:
       - button.blitzwolf_bw_shp6_173eb6_uruchom_ponownie
       - button.blitzwolf_bw_shp6_2ad05a_uruchom_ponownie
@@ -314,7 +313,7 @@ restart_wifi_devices:
       - button.nettigo_air_monitor_uruchom_ponownie
       - button.shelly_1l_253d92_restart
       - button.shelly_1l_aacec4_restart
-      - button.shelly_1l_aceb5f_restart
+      - button.shelly_1l_ad365e_uruchom_ponownie
       - button.shelly_25_77dbe5_restart
       - button.shelly_duo_5f6fa1_restart
       - button.shelly_gas_c6811c_restart
@@ -338,6 +337,7 @@ restart_wifi_devices:
       - button.shelly_1pm_gen3_c6b6c4_uruchom_ponownie
       - button.shelly_1pm_gen3_c66e94_uruchom_ponownie
     data: {}
+    action: button.press
   mode: single
   icon: mdi:restart
 humidification_start:

@@ -1,6 +1,6 @@
 substitutions:
-  device_name: "BlitzWolf BW-SHP6 [17957C]"
-  host_name: "blitzwolf-bw-shp6-17957c"
+  device_name: "Shelly Plug S [7AECF4]"
+  host_name: "shelly-plug-s-7aecf4"
   current_res: "0.00290"
   voltage_div: "940"
   max_power: "2300"
@@ -8,8 +8,13 @@ substitutions:
 esphome:
   name: ${host_name}
   friendly_name: ${device_name}
-  platform: ESP8266
-  board: esp8285
+
+esp8266:
+  board: esp01_1m
+
+ota:
+  platform: esphome
+  password: !secret esphome_password
 
 wifi:
   ssid: !secret wifi_ssid
@@ -26,10 +31,6 @@ logger:
 api:
   encryption:
     key: !secret encryption_key
-
-ota:
-  platform: esphome
-  password: !secret esphome_password
 
 web_server:
   port: 80
@@ -54,28 +55,6 @@ output:
     pin: GPIO00
     inverted: true
     id: led
-
-switch:
-  - platform: gpio
-    pin: GPIO15
-    id: relay
-    icon: mdi:power-plug
-    name: "Przekaźnik"
-    restore_mode: RESTORE_DEFAULT_OFF
-    on_turn_on:
-      - output.turn_on: led
-    on_turn_off:
-      - output.turn_off: led
-
-button:
-  - platform: restart
-    name: "Uruchom ponownie"
-    device_class: "restart"
-
-status_led:
-  pin:
-    number: GPIO02
-    inverted: true
 
 sensor:
   - platform: uptime
@@ -110,3 +89,25 @@ sensor:
       name: "Energia"
       unit_of_measurement: "Wh"
       device_class: "energy"
+
+switch:
+  - platform: gpio
+    pin: GPIO15
+    id: relay
+    icon: mdi:power-plug
+    name: "Przekaźnik"
+    restore_mode: RESTORE_DEFAULT_OFF
+    on_turn_on:
+      - output.turn_on: led
+    on_turn_off:
+      - output.turn_off: led
+
+status_led:
+  pin:
+    number: GPIO02
+    inverted: true
+
+button:
+  - platform: restart
+    name: "Uruchom ponownie"
+    device_class: "restart"

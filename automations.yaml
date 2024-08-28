@@ -403,7 +403,6 @@
     entity_id:
     - binary_sensor.shelly_1l_253d92_overtemperature
     - binary_sensor.shelly_1l_aacec4_overtemperature
-    - binary_sensor.shelly_1l_aceb5f_overtemperature
     - binary_sensor.shelly_25_77dbe5_overtemperature
     - binary_sensor.shelly_plus_plug_s_2ffb28_overtemperature
     - binary_sensor.shelly_plus_plug_s_d00c84_overtemperature
@@ -425,8 +424,7 @@
     for:
       minutes: 1
   action:
-  - service: python_script.notify
-    data:
+  - data:
       title: '{{ notification_title }}'
       message: '{{ notification_message }}'
       tag: notification-relay-overheating-{{ trigger.entity_id }}
@@ -434,6 +432,7 @@
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
+    action: python_script.notify
   variables:
     notification_title: Urządzenie się przegrzewa
     notification_message: Urządzenie {{ device_attr(trigger.entity_id, 'name_by_user')
@@ -1313,13 +1312,13 @@
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
   condition:
   - condition: state
-    entity_id: light.ceiling_kuchnia
+    entity_id: light.oswietlenie_kuchnia
     state: 'on'
   action:
-  - service: light.turn_off
-    target:
-      entity_id: light.ceiling_kuchnia
+  - target:
+      entity_id: light.oswietlenie_kuchnia
     data: {}
+    action: light.turn_off
 - id: light_turn_on_antresola_lampt_when_dark_and_motion
   alias: Włącz lampkę na antresoli gdy pojawi się ruch i jest ciemno
   description: ''

@@ -1,0 +1,111 @@
+substitutions:
+  device_name: "Shelly 1L [AD365E]"
+  host_name: "shelly-1l-ad365e"
+
+esphome:
+  name: ${host_name}
+  friendly_name: ${device_name}
+
+esp8266:
+  board: esp01_1m
+
+ota:
+  platform: esphome
+  password: !secret esphome_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  domain: !secret local_domain
+  ap:
+    ssid: ${device_name}
+    password: !secret esphome_password
+
+captive_portal:
+
+logger:
+
+api:
+  encryption:
+    key: !secret encryption_key
+
+web_server:
+  port: 80
+  auth:
+    username: !secret web_server_username
+    password: !secret web_server_password
+
+time:
+  - platform: homeassistant
+
+sensor:
+  - platform: uptime
+    name: "Ostatni restart"
+    type: "timestamp"
+    entity_category: "diagnostic"
+
+  - platform: wifi_signal
+    name: "Sygnał WiFi"
+    update_interval: 300s
+    device_class: "signal_strength"
+    entity_category: "diagnostic"
+
+  - platform: ntc
+    sensor: temperature_resistance
+    name: Temperatura urządzenia
+    device_class: "temperature"
+    disabled_by_default: true
+    accuracy_decimals: 1
+    calibration:
+      b_constant: 3350
+      reference_resistance: 10kOhm
+      reference_temperature: 298.15K
+    on_value_range:
+      - above: "80.0"
+        then:
+          - switch.turn_off: relay
+
+  - platform: resistance
+    id: temperature_resistance
+    sensor: temperature_analog
+    configuration: DOWNSTREAM
+    resistor: 32kOhm
+
+  - platform: adc
+    id: temperature_analog
+    pin: 
+      number: A0
+
+switch:
+  - platform: gpio
+    pin:
+      number: GPIO5
+    id: relay
+    name: "Przekaźnik"
+    restore_mode: RESTORE_DEFAULT_OFF
+
+binary_sensor:
+  - platform: gpio
+    name: Input 1
+    disabled_by_default: true
+    pin:
+      number: GPIO4
+    on_click:
+      then:
+        - switch.toggle: relay
+    filters:
+      - delayed_on_off: 50ms
+  - platform: gpio
+    pin:
+      number: GPIO14
+    name: Input 2
+    disabled_by_default: true
+
+status_led:
+  pin: 
+    number: GPIO0
+
+button:
+  - platform: restart
+    name: "Uruchom ponownie"
+    device_class: "restart"

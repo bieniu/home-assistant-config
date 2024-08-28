@@ -59,6 +59,7 @@ switch:
     pin: GPIO12
     icon: mdi:power-plug
     name: "Przekaźnik"
+    restore_mode: RESTORE_DEFAULT_OFF
 
 button:
   - platform: restart
