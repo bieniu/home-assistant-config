@@ -1,6 +1,6 @@
 substitutions:
-  device_name: "Shelly 1L [AD365E]"
-  host_name: "shelly-1l-ad365e"
+  device_name: "Shelly 1L [AACEC4]"
+  host_name: "shelly-1l-aacec4"
 
 esphome:
   name: ${host_name}
@@ -120,7 +120,6 @@ binary_sensor:
             event_type: "double_push"
     filters:
       - delayed_on_off: 50ms
-    
 
 status_led:
   pin: 

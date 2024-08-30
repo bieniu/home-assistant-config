@@ -1,6 +1,6 @@
 substitutions:
-  device_name: "Shelly 1L [AD365E]"
-  host_name: "shelly-1l-ad365e"
+  device_name: "Shelly 1L [ACEB5F]"
+  host_name: "shelly-1l-aceb5f"
 
 esphome:
   name: ${host_name}
@@ -110,6 +110,7 @@ binary_sensor:
       number: GPIO14
     on_click:
       then:
+        - switch.toggle: relay
         - event.trigger:
             id: button_2
             event_type: "single_push"

@@ -401,8 +401,6 @@
   trigger:
   - platform: state
     entity_id:
-    - binary_sensor.shelly_1l_253d92_overtemperature
-    - binary_sensor.shelly_1l_aacec4_overtemperature
     - binary_sensor.shelly_25_77dbe5_overtemperature
     - binary_sensor.shelly_plus_plug_s_2ffb28_overtemperature
     - binary_sensor.shelly_plus_plug_s_d00c84_overtemperature
@@ -1722,20 +1720,21 @@
       - light.desk_lamp_gabinet
     data: {}
 - id: light_toggle_schody_leds
-  alias: Light Schody Toggle LEDs
-  description: włącz/wyłącz LEDy na schodach
+  alias: Włącz/wyłącz oświetlenie schodów
+  description: ''
   trigger:
-  - platform: device
-    domain: mqtt
-    device_id: f005f9684c07d6ff46619c42b448bf38
-    type: button_short_press
-    subtype: button_2
-    discovery_id: shelly1l-98CDAC253D92-input-1 button_short_press
+  - platform: state
+    entity_id: event.shelly_1l_aacec4_przycisk_2
+  condition:
+  - condition: state
+    entity_id: event.shelly_1l_aacec4_przycisk_2
+    attribute: event_type
+    state: single_push
   action:
-  - service: light.toggle
-    target:
+  - target:
       entity_id: light.leds_schody
     data: {}
+    action: light.toggle
 - id: light_turn_on_schody_leds_when_motion_at_night
   alias: Włącz LEDy na schodach gdy pojawi się ruch i jest ciemno
   description: ''
@@ -2000,8 +1999,7 @@
   - condition: template
     value_template: '{{ trigger.payload_json.gen is not defined }}'
   action:
-  - service: python_script.shellies_discovery
-    data:
+  - data:
       id: '{{ trigger.payload_json.id }}'
       mac: '{{ trigger.payload_json.mac }}'
       fw_ver: '{{ trigger.payload_json.fw_ver }}'
@@ -2011,12 +2009,6 @@
       qos: 1
       shelly1l-98CDAC253D92:
         device_name: Shelly 1L [253D92]
-        relay-0: light
-      shelly1l-E8DB84AACEC4:
-        device_name: Shelly 1L [AACEC4]
-        relay-0: light
-      shelly1l-84CCA8ACEB5F:
-        device_name: Shelly 1L [ACEB5F]
         relay-0: light
       shellyswitch25-C45BBE77DBE5:
         device_name: Shelly 2.5 [77DBE5]
@@ -2035,6 +2027,7 @@
         default_heating_temperature: '{{ states(''input_number.temperature_day'')
           | int(20) }}'
         humidity_topic: shellies/shellytrv-84FD2772A544/humidity
+    action: python_script.shellies_discovery
   mode: queued
   max: 999
 - id: hassio_backup
@@ -2723,7 +2716,7 @@
   condition:
   - condition: state
     entity_id:
-    - light.ceiling_przedpokoj
+    - light.oswietlenie_przedpokoj
     - light.leds_przedpokoj
     - light.ceiling_salon
     - light.leds_salon
@@ -2739,19 +2732,19 @@
       before: sunrise
       before_offset: +00:10:00
   action:
-  - service: light.turn_on
-    target:
+  - target:
       entity_id: light.leds_przedpokoj
     data: {}
+    action: light.turn_on
   - wait_for_trigger:
       platform: state
       entity_id: binary_sensor.motion_przedpokoj
       from: 'on'
       to: 'off'
-  - service: light.turn_off
-    target:
+  - target:
       entity_id: light.leds_przedpokoj
     data: {}
+    action: light.turn_off
   mode: single
 - id: '1709306300471'
   alias: Wyłącz oświetlenie w przedpokoju gdy nie ma ruchu
@@ -2770,19 +2763,19 @@
       entity_id: light.leds_przedpokoj
       state: 'on'
     - condition: state
-      entity_id: light.ceiling_przedpokoj
+      entity_id: light.oswietlenie_przedpokoj
       state: 'on'
     - condition: state
       entity_id: light.ceiling_korytarz
       state: 'on'
   action:
-  - service: light.turn_off
-    target:
+  - target:
       entity_id:
       - light.leds_przedpokoj
-      - light.ceiling_przedpokoj
+      - light.oswietlenie_przedpokoj
       - light.ceiling_korytarz
     data: {}
+    action: light.turn_off
   mode: single
 - id: '1710416852993'
   alias: Nocne oszczędzanie energii

@@ -12,7 +12,7 @@ devices_away_mode:
       - light.ceiling_korytarz
       - light.oswietlenie_kuchnia
       - light.ceiling_lazienka
-      - light.ceiling_przedpokoj
+      - light.oswietlenie_przedpokoj
       - light.leds_przedpokoj
       - light.ceiling_salon
       - light.oswietlenie_toaleta
@@ -28,7 +28,7 @@ devices_away_mode:
       - light.lightstrip_antek
       - light.lightstrip_sypialnia
       - light.table_lamp_sypialnia
-      - light.scone_schody
+      - light.kinkiet_schody
       - light.oswietlenie_pralnia
       - light.tree_antek
       - fan.ceiling_salon
@@ -261,10 +261,10 @@ alexa_goodnight:
       - light.ceiling_lazienka
       - light.oswietlenie_toaleta
       - light.oswietlenie_antek
-      - light.ceiling_przedpokoj
+      - light.oswietlenie_przedpokoj
       - light.ceiling_korytarz
       - light.ceiling_garderoba
-      - light.scone_schody
+      - light.kinkiet_schody
       - light.ceiling_pracownia
       - light.oswietlenie_pralnia
     data: {}
@@ -311,8 +311,8 @@ restart_wifi_devices:
       - button.blitzwolf_bw_shp6_ed007d_uruchom_ponownie
       - button.wemos_lolin32_8cbf7c_uruchom_ponownie
       - button.nettigo_air_monitor_uruchom_ponownie
-      - button.shelly_1l_253d92_restart
-      - button.shelly_1l_aacec4_restart
+      - button.shelly_1l_aacec4_uruchom_ponownie
+      - button.shelly_1l_aceb5f_uruchom_ponownie
       - button.shelly_1l_ad365e_uruchom_ponownie
       - button.shelly_25_77dbe5_restart
       - button.shelly_duo_5f6fa1_restart
