@@ -33,10 +33,10 @@
 * BlitzWolf BW-SHP6
 * BlitzWolf BW-SHP15
 * Shelly 1 Mini Gen3
-* Shelly 1L
+* Shelly 1L [with [ESPHome](https://esphome.io)]
 * Shelly 1PM Mini Gen3
 * Shelly 2.5
-* Shelly Plug S
+* Shelly Plug S [with [ESPHome](https://esphome.io)]
 * Shelly Plus 1 Mini
 * Shelly Plus 1PM
 * Shelly Plus 1PM Mini
@@ -52,6 +52,7 @@
 
 * Aqara Switches
 * Shelly BLU Button1
+* Shelly BLU Wall Switch 4
 
 ## Sensors
 
@@ -64,7 +65,6 @@
 * Shelly H&T Gen3
 * Shelly Plus H&T
 * Shelly Flood
-* Shelly Motion
 * Shelly Motion 2
 * Shelly Gas
 * Shelly Plus Smoke
@@ -76,14 +76,13 @@
 
 * Aeotec ZWA021
 * Danfoss 014G0013
-* Danfoss 014G2461
+* Danfoss 014G2460
 * Shelly Valve
 
 ## Other Integrated Devices
 
 * Xiaomi Mi Smart Home Gateway 2
 * Logitech Harmony Ultimate
-* Denon AVR-X2100W
 * Xiaomi Mi Humidifier CA1
 * Xiaomi Mi Humidifier CB1
 * Xiaomi Mi Pedestal Fan 1X
@@ -97,6 +96,7 @@
 * Sony Bravia TV
 * Amazon Echo Plus/Dot/Show [via Home Assistant Cloud]
 * Sonos One
+* Sonos Arc
 * Tractive tracker for dogs
 * BMW car
 * Asus router
@@ -107,15 +107,15 @@
 * [HACS](https://github.com/custom-components/hacs)
 * [Blitzortung.org Lightning Detector](https://github.com/mrk-its/homeassistant-blitzortung)
 * WebRTC Camera
+* Adaptive Lightning
 
 ## Lovelace Custom Cards
 
 * [card-mod](https://github.com/thomasloven/lovelace-card-mod)
 * [mini-graph-card](https://github.com/kalkih/mini-graph-card)
-* [mini-media-player](https://github.com/kalkih/mini-media-player)
+* Sonos Card
 * horizon-card
 * mushroom
-* slider-entity-row
 
 ## Screenshots
 

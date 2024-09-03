@@ -89,9 +89,6 @@ sensor.printer_page_counter:
 sensor.home_uv_index:
   unit_of_measurement: ""
 
-sensor.hacs:
-  icon: mdi:store
-
 sensor.minecraft_server_players_online:
   unit_of_measurement: "graczy"
 
@@ -101,18 +98,10 @@ sensor.air_quality_info_outdoor:
 sensor.aqi_info_salon:
   friendly_name: "Jakość powietrza wewnętrznego"
 
-sensor.bmw_x1_xdrive20i_remaining_fuel:
-  unit_of_measurement: "l"
-
 sensor.asus_rt_ax86s_devices_connected:
   unit_of_measurement: "urządzeń"
 
 sensor.maciek_kroki:
-  unit_of_measurement: ""
-
-sensor.watchman_missing_entities:
-  unit_of_measurement: ""
-sensor.watchman_missing_services:
   unit_of_measurement: ""
 
 sun.sun:

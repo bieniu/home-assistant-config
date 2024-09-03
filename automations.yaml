@@ -364,7 +364,7 @@
     - binary_sensor.shelly_25_77dbe5_relay_2_overpower
     - binary_sensor.shelly_plus_1pm_948ff8_overpower
     - binary_sensor.shelly_plus_1pm_b22864_overpower
-    - binary_sensor.aeotec_zw175_smart_switch_7_025_overpower
+    - binary_sensor.aeotec_zw175_smart_switch_7_026_przeciazenie
     - binary_sensor.shelly_1pm_mini_gen3_411170_overpowering
     - binary_sensor.shelly_plus_1pm_9d35dc_overpowering
     - binary_sensor.shelly_plus_2pm_8d28f4_relay_1_overpower
@@ -381,8 +381,7 @@
     for:
       minutes: 1
   action:
-  - service: python_script.notify
-    data:
+  - data:
       title: '{{ notification_title }}'
       message: '{{ notification_message }}'
       tag: notification-relay-overpower-{{ trigger.entity_id }}
@@ -390,6 +389,7 @@
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
+    action: python_script.notify
   variables:
     notification_title: Zbyt duże obciążenie przekaźnika
     notification_message: Przekaźnik urządzenia {{ device_attr(trigger.entity_id,
@@ -1020,10 +1020,10 @@
   - condition: time
     before: '23:00:00'
   action:
-  - service: light.turn_on
-    target:
-      entity_id: light.tree_antek
+  - target:
+      entity_id: light.drzewko_antek
     data: {}
+    action: light.turn_on
 - id: light_turn_off_when_away_mode
   alias: Wyłącz oświetlenie w trybie "poza domem"
   description: ''
@@ -2007,9 +2007,6 @@
       mode: '{{ trigger.payload_json.mode | default }}'
       host: '{{ trigger.payload_json.ip }}'
       qos: 1
-      shelly1l-98CDAC253D92:
-        device_name: Shelly 1L [253D92]
-        relay-0: light
       shellyswitch25-C45BBE77DBE5:
         device_name: Shelly 2.5 [77DBE5]
         relay-1: light
@@ -2118,10 +2115,10 @@
     subtype: button1
   condition: []
   action:
-  - service: light.toggle
-    data: {}
+  - data: {}
     target:
-      entity_id: light.tree_antek
+      entity_id: light.drzewko_antek
+    action: light.toggle
   mode: single
 - id: light_turn_off_goscinny_light_when_no_motion
   alias: Wyłącz oświetlenie w pokoju gościnnym gdy nie ma ruchu
@@ -2409,13 +2406,13 @@
     at: 00:10:00
   condition: []
   action:
-  - service: light.turn_off
-    data: {}
+  - data: {}
     target:
       entity_id:
-      - light.tree_antek
+      - light.drzewko_antek
       - light.desk_lamp_antek
       - light.lightstrip_antek
+    action: light.turn_off
   mode: single
 - id: '1672565410928'
   alias: Włącz oświetlenie drzewka o zachodzie słońca
@@ -2426,10 +2423,10 @@
     offset: 0
   condition: []
   action:
-  - service: light.turn_on
-    data: {}
+  - data: {}
     target:
-      entity_id: light.tree_antek
+      entity_id: light.drzewko_antek
+    action: light.turn_on
   mode: single
 - id: '1673781976268'
   alias: Koniec prania

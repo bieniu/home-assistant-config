@@ -30,7 +30,7 @@ devices_away_mode:
       - light.table_lamp_sypialnia
       - light.kinkiet_schody
       - light.oswietlenie_pralnia
-      - light.tree_antek
+      - light.drzewko_antek
       - fan.ceiling_salon
       - fan.xiaomi_mi_standing_fan_1x
       - fan.xiaomi_mi_standing_fan_2
@@ -68,8 +68,8 @@ heating_day:
   - service: climate.set_temperature
     target:
       entity_id:
-      - climate.thermostat_kuchnia
-      - climate.thermostat_salon
+      - climate.grzejnik_kuchnia
+      - climate.grzejnik_salon
       - climate.thermostat_gabinet
       - climate.thermostat_pracownia
       - climate.thermostat_antresola
@@ -120,8 +120,8 @@ heating_night:
   - service: climate.set_temperature
     target:
       entity_id:
-      - climate.thermostat_kuchnia
-      - climate.thermostat_salon
+      - climate.grzejnik_kuchnia
+      - climate.grzejnik_salon
     data:
       hvac_mode: heat
       temperature: '{{ states(''input_number.temperature_night'') }}'
@@ -134,8 +134,8 @@ heating_away_mode:
     target:
       entity_id:
       - climate.thermostat_gabinet
-      - climate.thermostat_kuchnia
-      - climate.thermostat_salon
+      - climate.grzejnik_kuchnia
+      - climate.grzejnik_salon
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
       - climate.thermostat_lazienka
@@ -168,8 +168,8 @@ heating_season_end:
       - climate.thermostat_pracownia
       - climate.thermostat_goscinny
       - climate.thermostat_sypialnia
-      - climate.thermostat_salon
-      - climate.thermostat_kuchnia
+      - climate.grzejnik_salon
+      - climate.grzejnik_kuchnia
     data:
       temperature: 5
   - service: humidifier.turn_off
@@ -188,11 +188,11 @@ heating_airing_begin:
       entity_id:
       - climate.thermostat_antresola
       - climate.thermostat_gabinet
-      - climate.thermostat_salon
+      - climate.grzejnik_salon
       - climate.thermostat_antek
       - climate.thermostat_sypialnia
       - climate.thermostat_lazienka
-      - climate.thermostat_kuchnia
+      - climate.grzejnik_kuchnia
       - climate.thermostat_pracownia
       - climate.thermostat_goscinny
     data:

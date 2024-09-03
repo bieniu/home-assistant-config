@@ -24,3 +24,5 @@ filters:
     - "Too Many Requests"
   alexapy.helpers:
     - "Too Many Requests"
+  homeassistant.components.philips_js.coordinator:
+    - "RemoteProtocolError"
