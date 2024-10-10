@@ -32,38 +32,6 @@
         data:
           temperature: 7
 
-    heater_antek:
-      unique_id: "heater_antek"
-      value_template: "{{ not is_state_attr('climate.danfoss_014g0013_thermostat_003', 'temperature', 7) }}"
-      turn_on:
-        service: climate.set_temperature
-        target:
-          entity_id: climate.danfoss_014g0013_thermostat_003
-        data:
-          temperature: 28
-      turn_off:
-        service: climate.set_temperature
-        target:
-          entity_id: climate.danfoss_014g0013_thermostat_003
-        data:
-          temperature: 7
-
-    heater_sypialnia:
-      unique_id: "heater_sypialnia"
-      value_template: "{{ not is_state_attr('climate.danfoss_014g0013_thermostat_004', 'temperature', 7) }}"
-      turn_on:
-        service: climate.set_temperature
-        target:
-          entity_id: climate.danfoss_014g0013_thermostat_004
-        data:
-          temperature: 28
-      turn_off:
-        service: climate.set_temperature
-        target:
-          entity_id: climate.danfoss_014g0013_thermostat_004
-        data:
-          temperature: 7
-
     heater_goscinny:
       unique_id: "heater_goscinny"
       value_template: "{{ is_state('climate.aeotec_zwa021_thermostat_023', 'heat') }}"

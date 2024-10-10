@@ -36,6 +36,7 @@ devices_away_mode:
       - fan.xiaomi_mi_standing_fan_2
       - humidifier.xiaomi_mi_humidifier_ca1
       - humidifier.xiaomi_mi_humidifier_cb1
+      - light.blat_kuchnia
     action: homeassistant.turn_off
   - if:
     - condition: template
@@ -71,15 +72,15 @@ heating_day:
       - climate.grzejnik_kuchnia
       - climate.grzejnik_salon
       - climate.thermostat_gabinet
-      - climate.thermostat_pracownia
+      - climate.grzejnik_pracownia
       - climate.thermostat_antresola
     data:
       temperature: '{{ states(''input_number.temperature_day'') }}'
   - service: climate.set_temperature
     target:
       entity_id:
-      - climate.thermostat_antek
-      - climate.thermostat_sypialnia
+      - climate.grzejnik_antek
+      - climate.grzejnik_sypialnia
       - climate.thermostat_goscinny
     data:
       temperature: '{{ states(''input_number.bedroom_temperature_day'') }}'
@@ -94,7 +95,7 @@ heating_night:
     target:
       entity_id:
       - climate.thermostat_gabinet
-      - climate.thermostat_pracownia
+      - climate.grzejnik_pracownia
       - climate.thermostat_antresola
     data:
       hvac_mode: heat
@@ -102,8 +103,8 @@ heating_night:
   - service: climate.set_temperature
     target:
       entity_id:
-      - climate.thermostat_antek
-      - climate.thermostat_sypialnia
+      - climate.grzejnik_antek
+      - climate.grzejnik_sypialnia
       - climate.thermostat_goscinny
     data:
       hvac_mode: heat
@@ -136,10 +137,10 @@ heating_away_mode:
       - climate.thermostat_gabinet
       - climate.grzejnik_kuchnia
       - climate.grzejnik_salon
-      - climate.thermostat_antek
-      - climate.thermostat_sypialnia
+      - climate.grzejnik_antek
+      - climate.grzejnik_sypialnia
       - climate.thermostat_lazienka
-      - climate.thermostat_pracownia
+      - climate.grzejnik_pracownia
       - climate.thermostat_goscinny
       - climate.thermostat_antresola
     data:
@@ -162,12 +163,12 @@ heating_season_end:
   - service: climate.set_temperature
     target:
       entity_id:
-      - climate.thermostat_antek
+      - climate.grzejnik_antek
       - climate.thermostat_gabinet
       - climate.thermostat_lazienka
-      - climate.thermostat_pracownia
+      - climate.grzejnik_pracownia
       - climate.thermostat_goscinny
-      - climate.thermostat_sypialnia
+      - climate.grzejnik_sypialnia
       - climate.grzejnik_salon
       - climate.grzejnik_kuchnia
     data:
@@ -189,11 +190,11 @@ heating_airing_begin:
       - climate.thermostat_antresola
       - climate.thermostat_gabinet
       - climate.grzejnik_salon
-      - climate.thermostat_antek
-      - climate.thermostat_sypialnia
+      - climate.grzejnik_antek
+      - climate.grzejnik_sypialnia
       - climate.thermostat_lazienka
       - climate.grzejnik_kuchnia
-      - climate.thermostat_pracownia
+      - climate.grzejnik_pracownia
       - climate.thermostat_goscinny
     data:
       temperature: 8
@@ -267,6 +268,7 @@ alexa_goodnight:
       - light.kinkiet_schody
       - light.ceiling_pracownia
       - light.oswietlenie_pralnia
+      - light.blat_kuchnia
     data: {}
     action: homeassistant.turn_off
   - if:
@@ -288,19 +290,23 @@ restart_wifi_devices:
   - data: {}
     target:
       entity_id:
-      - switch.shelly_plus_1pm_948ff8_relay
       - switch.ceiling_fan_and_bulbs_salon
+      - switch.zasilanie_oswietlenia_pokoju_goscinnego
+      - switch.zasilanie_biurka_edyty
+      - switch.zasilanie_ledow_antka
     action: switch.turn_off
   - delay:
       hours: 0
       minutes: 0
-      seconds: 5
+      seconds: 8
       milliseconds: 0
   - data: {}
     target:
       entity_id:
-      - switch.shelly_plus_1pm_948ff8_relay
       - switch.ceiling_fan_and_bulbs_salon
+      - switch.zasilanie_oswietlenia_pokoju_goscinnego
+      - switch.zasilanie_biurka_edyty
+      - switch.zasilanie_ledow_antka
     action: switch.turn_on
   - target:
       entity_id:
@@ -318,24 +324,25 @@ restart_wifi_devices:
       - button.shelly_duo_5f6fa1_restart
       - button.shelly_gas_c6811c_restart
       - button.shelly_motion_2_08a4e9_restart
-      - button.shelly_motion_c67c2a_restart
-      - button.shelly_plus_1pm_b22864_restart
       - button.shelly_1_mini_gen3_411724_restart
       - button.shelly_1pm_mini_gen3_411170_restart
+      - button.shelly_plus_1pm_b22864_restart
       - button.shelly_plus_1pm_948ff8_restart
       - button.shelly_plus_1pm_9d35dc_restart
+      - button.shelly_plus_1pm_b12a90_uruchom_ponownie
+      - button.shelly_plus_1pm_21e1dc_uruchom_ponownie
       - button.shelly_plus_2pm_8d28f4_restart
       - button.shelly_plus_2pm_b67728_restart
       - button.shelly_plus_plug_s_2ffb28_restart
       - button.shelly_plus_plug_s_d00c84_restart
+      - button.shelly_pro_1pm_80e0c0_restart
       - button.shelly_pro_3em_879c7c_restart
       - button.shelly_valve_72a544_restart
       - button.shelly_plus_1_mini_af5390_restart
       - button.shelly_plus_pm_mini_af50f0_restart
-      - button.shelly_plus_1pm_b12a90_uruchom_ponownie
-      - button.shelly_plus_1pm_21e1dc_uruchom_ponownie
       - button.shelly_1pm_gen3_c6b6c4_uruchom_ponownie
       - button.shelly_1pm_gen3_c66e94_uruchom_ponownie
+      - button.shelly_1_gen3_cc7610_uruchom_ponownie
     data: {}
     action: button.press
   mode: single

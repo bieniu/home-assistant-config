@@ -1,88 +1,15 @@
 - binary_sensor:
-  - name: dishwasher_kuchnia
-    unique_id: "dishwasher_kuchnia"
-    icon: "mdi:dishwasher"
-    availability: "{{ states('sensor.power_dishwasher_kuchnia') != ('unavailable' or 'unknown') }}"
-    state: "{{ states('sensor.power_dishwasher_kuchnia') | int > 1 }}"
+    - name: dishwasher_kuchnia
+      unique_id: "dishwasher_kuchnia"
+      icon: "mdi:dishwasher"
+      availability: "{{ states('sensor.power_dishwasher_kuchnia') != ('unavailable' or 'unknown') }}"
+      state: "{{ states('sensor.power_dishwasher_kuchnia') | int > 1 }}"
 
-  - name: washing_machine_pralnia
-    unique_id: "washing_machine_pralnia"
-    icon: "mdi:washing-machine"
-    availability: "{{ states('sensor.power_washing_machine_pralnia') != ('unavailable' or 'unknown') }}"
-    state: "{{ states('sensor.power_washing_machine_pralnia') | int > 1 }}"
-
-- sensor:
-    - name: jakosc_powietrza_zewnetrznego
-      unique_id: "jakosc_powietrza_zewnetrznego"
-      icon: "mdi:home-export-outline"
-      availability: "{{ states('sensor.nettigo_air_monitor_sds011_poziom_caqi') != ('unavailable' or 'unknown') }}"
-      state: >-
-        {% set caqi_level = states('sensor.nettigo_air_monitor_sds011_poziom_caqi') %}
-        {% if caqi_level == 'very_low' %}
-          bardzo dobra
-        {% elif caqi_level == 'low' %}
-          dobra
-        {% elif caqi_level == 'medium' %}
-          średnia
-        {% elif caqi_level == 'high' %}
-          zła
-        {% elif caqi_level == 'very_high' %}
-          bardzo zła
-        {% endif %}
-
-    - name: aqi_info_salon
-      unique_id: "aqi_info_salon"
-      icon: "mdi:home-import-outline"
-      availability: "{{ states('sensor.pm25_salon') != ('unavailable' or 'unknown') }}"
-      state: >-
-        {% if states('sensor.pm25_salon') | int <= 25 %}
-          bardzo dobra
-        {% elif states('sensor.pm25_salon') | int <= 50 %}
-          dobra
-        {% elif states('sensor.pm25_salon') | int <= 100 %}
-          średnia
-        {% elif states('sensor.pm25_salon') | int <= 150 %}
-          zła
-        {% elif states('sensor.pm25_salon') | int > 200 %}
-          bardzo zła
-        {% endif %}
-
-    - name: ups_status
-      unique_id: "ups_status"
-      icon: "mdi:server-security"
-      availability: "{{ not is_state('sensor.cyberpower_dl650elcd_status_data', 'unavailable') }}"
-      state: >-
-        {% if is_state('sensor.cyberpower_dl650elcd_status_data', 'OL') %}
-          zasilanie sieciowe
-        {% elif states('sensor.cyberpower_dl650elcd_status_data') in ('OL CHRG', 'OL CHRG LB') %}
-          ładowanie baterii
-        {% elif is_state('sensor.cyberpower_dl650elcd_status_data', 'OL DISCHRG') %}
-          zasilanie bateryjne
-        {% elif is_state('sensor.cyberpower_dl650elcd_status_data', 'OB DISCHRG') %}
-          zasilanie bateryjne
-        {% elif is_state('sensor.cyberpower_dl650elcd_status_data', 'LB') %}
-          słaba bateria
-        {% elif states('sensor.cyberpower_dl650elcd_status_data') in ('SD', 'FSD OB DISCHRG') %}
-          wyłączanie
-        {% else %}
-          {{ states('sensor.cyberpower_dl650elcd_status_data') }}
-        {% endif %}
-
-- binary_sensor:
-    - name: rt_ax86s_ddc8_status
-      unique_id: "rt_ax86s_ddc8_status"
-      icon: "mdi:access-point-network"
-      state: "{{ is_state('device_tracker.asus_rt_ax86s_ddc8', 'home') }}"
-
-    - name: synology_status
-      unique_id: "synology_status"
-      icon: mdi:nas
-      state: "{{ is_state('device_tracker.synology_ds110j', 'home') }}"
-
-    - name: nuc_status
-      unique_id: "nuc_status"
-      icon: mdi:server
-      state: "{{ is_state('device_tracker.intel_nuc_5cpyh', 'home') }}"
+    - name: washing_machine_pralnia
+      unique_id: "washing_machine_pralnia"
+      icon: "mdi:washing-machine"
+      availability: "{{ states('sensor.power_washing_machine_pralnia') != ('unavailable' or 'unknown') }}"
+      state: "{{ states('sensor.power_washing_machine_pralnia') | int > 1 }}"
 
     - name: raspberry_status
       unique_id: "raspberry_status"
@@ -174,16 +101,6 @@
       icon: mdi:speaker
       state: "{{ is_state('device_tracker.echo_dot', 'home') }}"
 
-    - name: sonos_one_67e008_status
-      unique_id: "sonos_one_67e008_status"
-      icon: mdi:cast-audio
-      state: "{{ is_state('device_tracker.sonos_one_67e008', 'home') }}"
-
-    - name: sonos_one_695980_status
-      unique_id: "sonos_one_695980_status"
-      icon: mdi:cast-audio
-      state: "{{ is_state('device_tracker.sonos_one_695980', 'home') }}"
-
     - name: inkbook_status
       unique_id: "inkbook_status"
       state: "{{ is_state('device_tracker.inkbook_classic_2', 'home') }}"
@@ -196,11 +113,6 @@
     - name: laptop_maciek_status
       unique_id: "laptop_maciek_status"
       state: "{{ is_state('device_tracker.lenovo_thinkpad_t14', 'home') }}"
-
-    - name: sonos_arc_status
-      unique_id: "sonos_arc_status"
-      icon: mdi:speaker-play
-      state: "{{ is_state('device_tracker.sonos_arc', 'home') }}"
 
     - name: lenovo_ideapad_s145_status
       unique_id: "lenovo_ideapad_s145_status"
@@ -288,10 +200,6 @@
     - name: shelly_valve_2a544_status
       unique_id: "shelly_valve_2a544_status"
       state: "{{ is_state('device_tracker.shelly_valve_72a544', 'home') }}"
-
-    - name: shelly_1l_253d92_status
-      unique_id: "shelly_1l_253d92_status"
-      state: "{{ is_state('device_tracker.shelly_1l_253d92', 'home') }}"
 
     - name: shelly_1l_aacec4_status
       unique_id: "shelly_1l_aacec4_status"
@@ -408,11 +316,6 @@
       icon: mdi:developer-board
       state: "{{ is_state('device_tracker.wemos_lolin32_8cbf7c', 'home') }}"
 
-    - name: nettigo_air_monitor_status
-      unique_id: "nettigo_air_monitor_status"
-      icon: mdi:weather-partly-rainy
-      state: "{{ is_state('device_tracker.nettigo_air_monitor', 'home') }}"
-
     - name: yeelight_mjtd01syl_94e1f5_status
       unique_id: "yeelight_mjtd01syl_94e1f5_status"
       state: "{{ is_state('device_tracker.yeelight_mjtd01syl_94e1f5', 'home') }}"
@@ -440,6 +343,63 @@
     - name: yeelight_yldd01yl_6707fc_status
       unique_id: "yeelight_yldd01yl_6707fc_status"
       state: "{{ is_state('device_tracker.yeelight_yldd01yl_6707fc', 'home') }}"
+
+- sensor:
+    # - name: jakosc_powietrza_zewnetrznego
+    #   unique_id: "jakosc_powietrza_zewnetrznego"
+    #   icon: "mdi:home-export-outline"
+    #   availability: "{{ states('sensor.nettigo_air_monitor_sds011_poziom_caqi') != ('unavailable' or 'unknown') }}"
+    #   state: >-
+    #     {% set caqi_level = states('sensor.nettigo_air_monitor_sds011_poziom_caqi') %}
+    #     {% if caqi_level == 'very_low' %}
+    #       bardzo dobra
+    #     {% elif caqi_level == 'low' %}
+    #       dobra
+    #     {% elif caqi_level == 'medium' %}
+    #       średnia
+    #     {% elif caqi_level == 'high' %}
+    #       zła
+    #     {% elif caqi_level == 'very_high' %}
+    #       bardzo zła
+    #     {% endif %}
+
+    - name: aqi_info_salon
+      unique_id: "aqi_info_salon"
+      icon: "mdi:home-import-outline"
+      availability: "{{ states('sensor.pm25_salon') != ('unavailable' or 'unknown') }}"
+      state: >-
+        {% if states('sensor.pm25_salon') | int <= 25 %}
+          bardzo dobra
+        {% elif states('sensor.pm25_salon') | int <= 50 %}
+          dobra
+        {% elif states('sensor.pm25_salon') | int <= 100 %}
+          średnia
+        {% elif states('sensor.pm25_salon') | int <= 150 %}
+          zła
+        {% elif states('sensor.pm25_salon') | int > 200 %}
+          bardzo zła
+        {% endif %}
+
+    - name: ups_status
+      unique_id: "ups_status"
+      icon: "mdi:server-security"
+      availability: "{{ not is_state('sensor.cyberpower_dl650elcd_status_data', 'unavailable') }}"
+      state: >-
+        {% if is_state('sensor.cyberpower_dl650elcd_status_data', 'OL') %}
+          zasilanie sieciowe
+        {% elif states('sensor.cyberpower_dl650elcd_status_data') in ('OL CHRG', 'OL CHRG LB') %}
+          ładowanie baterii
+        {% elif is_state('sensor.cyberpower_dl650elcd_status_data', 'OL DISCHRG') %}
+          zasilanie bateryjne
+        {% elif is_state('sensor.cyberpower_dl650elcd_status_data', 'OB DISCHRG') %}
+          zasilanie bateryjne
+        {% elif is_state('sensor.cyberpower_dl650elcd_status_data', 'LB') %}
+          słaba bateria
+        {% elif states('sensor.cyberpower_dl650elcd_status_data') in ('SD', 'FSD OB DISCHRG') %}
+          wyłączanie
+        {% else %}
+          {{ states('sensor.cyberpower_dl650elcd_status_data') }}
+        {% endif %}
 
 - trigger:
     - platform: state

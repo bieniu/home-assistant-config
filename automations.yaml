@@ -125,22 +125,22 @@
 - id: notification_storm_comming
   alias: Burza w pobliżu
   description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.lightning_distance
+  triggers:
+  - entity_id:
+    - sensor.dom_dystans_do_blyskawicy
     below: 10
-  condition:
+    trigger: numeric_state
+  conditions:
   - condition: template
     value_template: '{{ now().timestamp() - as_timestamp(state_attr(''automation.notification_storm_comming'',
-      ''last_triggered'')) > 120 }}'
-  action:
+      ''last_triggered'')) > 480 }}'
+  actions:
   - parallel:
     - if:
       - condition: state
         entity_id: person.maciek
         state: home
       then:
-        service: python_script.notify
         data:
           title: '{{ notification_title }}'
           message: '{{ notification_message }}'
@@ -148,12 +148,12 @@
           services:
           - service: notify.mobile_app_iphone_13
             type: ios
+        action: python_script.notify
     - if:
       - condition: state
         entity_id: person.edyta
         state: home
       then:
-        service: python_script.notify
         data:
           title: '{{ notification_title }}'
           message: '{{ notification_message }}'
@@ -161,9 +161,10 @@
           services:
           - service: notify.mobile_app_iphone_12
             type: ios
+        action: python_script.notify
   variables:
     notification_title: Burza w pobliżu domu
-    notification_message: Wyładowania atmosferyczne występują {{ states('sensor.lightning_distance')
+    notification_message: Wyładowania atmosferyczne występują {{ states('sensor.dom_dystans_do_blyskawicy')
       }} km od domu.
     notification_tag: notification-storm-comming
 - id: notification_dishwasher_end
@@ -630,15 +631,15 @@
   variables:
     threshold: 20
 - id: presence_peoples_away
-  alias: Presence Peoples Away
-  description: ludzie poza domem
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.people_at_home
+  alias: Domownicy poza domem
+  description: ''
+  triggers:
+  - entity_id: binary_sensor.people_at_home
     to: 'off'
-  action:
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.away_mode
+    trigger: state
+  actions:
+  - entity_id: input_boolean.away_mode
+    action: input_boolean.turn_on
   - if:
     - condition: state
       entity_id: binary_sensor.windows
@@ -647,8 +648,7 @@
       entity_id: sensor.dom_prawdopodobienstwo_opadow
       above: 20
     then:
-    - service: python_script.notify
-      data:
+    - data:
         title: Otwarte okna
         message: Okna w pustym mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów
           wynosi {{ states('sensor.dom_prawdopodobienstwo_opadow') | int }}%.
@@ -660,24 +660,25 @@
           type: ios
         - service: notify.mobile_app_iphone_12
           type: ios
+      action: python_script.notify
 - id: presence_peoples_back
-  alias: Presence Peoples Back
-  description: ludzie w domu
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.people_at_home
+  alias: Domownicy w domu
+  description: ''
+  triggers:
+  - entity_id: binary_sensor.people_at_home
     to: 'on'
-  action:
-  - service: input_boolean.turn_off
-    entity_id: input_boolean.away_mode
+    trigger: state
+  actions:
+  - entity_id: input_boolean.away_mode
+    action: input_boolean.turn_off
   - if:
     - condition: sun
       after: sunset
     then:
-    - service: light.turn_on
-      target:
+    - target:
         entity_id: light.leds_schody
       data: {}
+      action: light.turn_on
 - id: heating_aeotec_thermostat_calibration
   alias: Kalibracja termostatu Aeotec
   description: ''
@@ -747,22 +748,22 @@
   - service: script.heating_night
     data: {}
 - id: turn_off_ceiling_fan_for_night
-  alias: Salon Turn Off Ceiling Fan For Night
-  description: wyłącz wentylator sufitowy na noc
-  trigger:
-  - platform: state
-    entity_id: light.ceiling_salon
+  alias: Wyłącz wentylator w salonie na noc
+  description: ''
+  triggers:
+  - entity_id: light.ceiling_salon
     to: 'off'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: fan.ceiling_salon
     state: 'on'
   - condition: state
     entity_id: media_player.philips_65oled707
     state: 'off'
-  action:
-  - service: fan.turn_off
-    entity_id: fan.ceiling_salon
+  actions:
+  - entity_id: fan.ceiling_salon
+    action: fan.turn_off
 - id: heating_away_mode
   alias: Tryb "poza domem" ogrzewania
   description: ''
@@ -811,39 +812,39 @@
       service: script.heating_night
       data: {}
 - id: windows_opened
-  alias: Windows Opened
-  description: włącz przewietrzanie i wyłącz oczyszczacz jak otwarte okna
-  trigger:
-    platform: state
-    entity_id: binary_sensor.windows
+  alias: Okna otwarte
+  description: ''
+  triggers:
+  - entity_id: binary_sensor.windows
     from: 'off'
     to: 'on'
     for:
       minutes: 10
-  action:
-  - service: fan.turn_off
-    entity_id: fan.xiaomi_mi_air_purifier_3h
+    trigger: state
+  actions:
+  - entity_id: fan.xiaomi_mi_air_purifier_3h
+    action: fan.turn_off
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.heating_airing
+  - entity_id: input_boolean.heating_airing
+    action: input_boolean.turn_on
 - id: windows_closed
-  alias: Windows Closed
-  description: wyłącz przewietrzanie jak zamknięte okna
-  trigger:
-    platform: state
-    entity_id: binary_sensor.windows
+  alias: Okna zamknięte
+  description: ''
+  triggers:
+  - entity_id: binary_sensor.windows
     from: 'on'
     to: 'off'
     for:
       minutes: 5
-  action:
+    trigger: state
+  actions:
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
-  - service: input_boolean.turn_off
-    entity_id: input_boolean.heating_airing
+  - entity_id: input_boolean.heating_airing
+    action: input_boolean.turn_off
 - id: air_quality_turn_on_air_purifier
   alias: Rozpoczęcie oczyszczania powietrza w salonie
   description: ''
@@ -1036,15 +1037,15 @@
   - service: script.devices_away_mode
     data: {}
 - id: devices_turn_off_in_salon_when_no_motion
-  alias: Salon Turn Off Devices When No Motion
-  description: wyłącz urządzenia w salonie jeśli nie ma ruchu
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_salon
+  alias: Wyłącz urządzenia w salonie gdy nie ma ruchu
+  description: ''
+  triggers:
+  - entity_id: binary_sensor.motion_salon
     to: 'off'
     for:
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: media_player.philips_65oled707
     state: 'off'
@@ -1064,25 +1065,25 @@
       state: 'on'
   - condition: time
     before: 07:00:00
-  action:
-  - service: homeassistant.turn_off
-    target:
+  actions:
+  - target:
       entity_id:
       - light.ceiling_salon
       - light.leds_salon
       - light.lamp_salon
       - fan.ceiling_salon
     data: {}
+    action: homeassistant.turn_off
 - id: light_scene_salon_auto_when_bulbs_turn_on
-  alias: Light Salon Scene Auto When Ceiling Lamp Turn On
-  description: wybierz automatyczną scenę oświetlenia w salonie po włączeniu światła
-  trigger:
-  - platform: state
-    entity_id:
+  alias: Aktywuj w salonie scenę oświetlenie automatyczne
+  description: ''
+  triggers:
+  - entity_id:
     - light.ceiling_salon
     to: 'on'
     from: 'off'
-  condition:
+    trigger: state
+  conditions:
   - condition: not
     conditions:
     - condition: state
@@ -1091,13 +1092,13 @@
     - condition: state
       entity_id: select.harmony_activities
       state: smart
-  action:
-  - service: scene.turn_on
-    data:
+  actions:
+  - data:
       transition: 5
     target:
       entity_id:
       - scene.light_salon_auto
+    action: scene.turn_on
 - id: light_toggle_salon_bulbs
   alias: Włącz/wyłącz oświetlenie w salonie
   description: ''
@@ -1108,18 +1109,15 @@
     type: button_short_press
     subtype: button_1
     discovery_id: shellyswitch25-C45BBE77DBE5-input-0 button_short_press
-  - device_id: 1f8b076d4a78b00888e90626c7c9a919
-    domain: zha
-    platform: device
-    type: remote_button_double_press
-    subtype: remote_button_double_press
   - platform: event
     event_type: ios.action_fired
     event_data:
       actionName: Toggle Salon Light
-  - platform: state
-    entity_id:
-    - event.shelly_blu_wall_switch_4_8b60a4_przycisk_1
+  - platform: device
+    device_id: e0d1edcfb8aef580d6887c26610ac78e
+    domain: bthome
+    type: button_1
+    subtype: press
   action:
   - target:
       entity_id: light.ceiling_salon
@@ -1128,20 +1126,17 @@
 - id: light_toggle_salon_light
   alias: Włącz/wyłącz LEDy w salonie
   description: ''
-  trigger:
-  - device_id: 1f8b076d4a78b00888e90626c7c9a919
-    domain: zha
-    platform: device
-    type: remote_button_triple_press
-    subtype: remote_button_triple_press
-  - platform: event
-    event_type: ios.action_fired
+  triggers:
+  - event_type: ios.action_fired
     event_data:
       actionName: Toggle Salon LEDs
-  - platform: state
-    entity_id:
-    - event.shelly_blu_wall_switch_4_8b60a4_przycisk_3
-  action:
+    trigger: event
+  - device_id: e0d1edcfb8aef580d6887c26610ac78e
+    domain: bthome
+    type: button_3
+    subtype: press
+    trigger: device
+  actions:
   - data: {}
     target:
       entity_id: light.leds_salon
@@ -1149,25 +1144,25 @@
 - id: light_turn_on_salon_lamp_when_dark_and_motion
   alias: Włącz lampę w salonie gdy pojawi się ruch i jest ciemno
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_salon
+  triggers:
+  - entity_id: binary_sensor.motion_salon
     from: 'off'
     to: 'on'
-  - platform: state
-    entity_id: light.leds_salon
+    trigger: state
+  - entity_id: light.leds_salon
     from: 'on'
     to: 'off'
-  - platform: state
-    entity_id: light.ceiling_salon
+    trigger: state
+  - entity_id: light.ceiling_salon
     from: 'on'
     to: 'off'
-  - platform: state
-    entity_id:
+    trigger: state
+  - entity_id:
     - media_player.philips_65oled707
     to: 'off'
     from: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id:
     - input_boolean.away_mode
@@ -1180,86 +1175,85 @@
     - binary_sensor.motion_salon
     - input_boolean.light_auto_turn_salon
     state: 'on'
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-      before_offset: +00:10:00
-  action:
-  - service: light.turn_on
-    target:
-      entity_id: light.lamp_salon
-    data: {}
-  - wait_for_trigger:
-    - platform: state
-      entity_id: binary_sensor.motion_salon
-      from: 'on'
-      to: 'off'
-    - platform: state
-      entity_id: light.leds_salon
-      from: 'off'
-      to: 'on'
-    - platform: state
-      entity_id: light.ceiling_salon
-      from: 'off'
-      to: 'on'
-  - service: light.turn_off
-    target:
-      entity_id: light.lamp_salon
-    data: {}
-- id: light_scene_film
-  alias: Light Salon Scene Dusk
-  description: włącz scenę oświetlenia Dusk po włączeniu filmu/gry/trybu smart
-  trigger:
-  - platform: state
-    entity_id: select.harmony_activities
-    to: smart
-  - platform: state
-    entity_id:
-    - select.harmony_activities
-    to: gry
-  condition:
   - condition: sun
     after: sunset
-  - '{{ is_state(''light.leds_salon'', ''on'') or is_state(''light.ceiling_salon'',
-    ''on'') or is_state(''light.lamp_salon'', ''on'') }}'
+    before: sunrise
+    before_offset: +00:10:00
+  actions:
+  - target:
+      entity_id: light.lamp_salon
+    data: {}
+    action: light.turn_on
+  - wait_for_trigger:
+    - entity_id: binary_sensor.motion_salon
+      from: 'on'
+      to: 'off'
+      trigger: state
+    - entity_id: light.leds_salon
+      from: 'off'
+      to: 'on'
+      trigger: state
+    - entity_id: light.ceiling_salon
+      from: 'off'
+      to: 'on'
+      trigger: state
+  - target:
+      entity_id: light.lamp_salon
+    data: {}
+    action: light.turn_off
+- id: light_scene_film
+  alias: Aktywuj w salonie scenę oświetlenie po zmierzchu po włączeniu filmu lub gry
+  description: ''
+  triggers:
+  - entity_id: select.harmony_activities
+    to: smart
+    trigger: state
+  - entity_id:
+    - select.harmony_activities
+    to: gry
+    trigger: state
+  conditions:
+  - condition: sun
+    after: sunset
+  - condition: template
+    value_template: '{{ is_state(''light.leds_salon'', ''on'') or is_state(''light.ceiling_salon'',
+      ''on'') or is_state(''light.lamp_salon'', ''on'') }}'
   - condition: time
     after: '20:10:00'
   - condition: state
     entity_id: input_boolean.guests
     state: 'off'
-  action:
-  - service: scene.turn_on
-    data:
+  actions:
+  - data:
       transition: 5
     target:
       entity_id:
       - scene.light_salon_dusk
+    action: scene.turn_on
 - id: light_scene_auto_after_film
-  alias: Light Salon Scene Auto
-  description: wybierz automatyczną scenę oświetlenia w salonie po wyłączeniu filmu/gry/trybu
-    smart
-  trigger:
-  - platform: state
-    entity_id:
+  alias: Aktywuj w salonie scenę oświetlenie automatyczne po wyłączeniu filmu lub
+    gry
+  description: ''
+  triggers:
+  - entity_id:
     - select.harmony_activities
     to: telewizja
-  - platform: state
-    entity_id:
+    trigger: state
+  - entity_id:
     - select.harmony_activities
     to: power_off
-  condition:
-  - '{{ is_state(''light.leds_salon'', ''on'') or is_state(''light.ceiling_salon'',
-    ''on'') or is_state(''light.lamp_salon'', ''on'') }}'
-  action:
-  - service: scene.turn_on
-    data:
+    trigger: state
+  conditions:
+  - condition: template
+    value_template: '{{ is_state(''light.leds_salon'', ''on'') or is_state(''light.ceiling_salon'',
+      ''on'') or is_state(''light.lamp_salon'', ''on'') }}'
+  actions:
+  - data:
       transition: 5
     target:
       entity_id:
       - scene.light_salon_auto
+    action: scene.turn_on
 - id: light_turn_off_toaleta_light_when_no_motion
   alias: Wyłącz oświetlenie w toalecie gdy nie ma ruchu
   description: ''
@@ -1320,12 +1314,12 @@
 - id: light_turn_on_antresola_lampt_when_dark_and_motion
   alias: Włącz lampkę na antresoli gdy pojawi się ruch i jest ciemno
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_antresola
+  triggers:
+  - entity_id: binary_sensor.motion_antresola
     from: 'off'
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id:
     - input_boolean.away_mode
@@ -1334,16 +1328,12 @@
   - condition: numeric_state
     entity_id: sensor.illumination_antresola
     below: 8
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-      before_offset: +00:10:00
-  action:
-  - service: light.turn_on
-    target:
+  - condition: sun
+    after: sunset
+    before: sunrise
+    before_offset: +00:10:00
+  actions:
+  - target:
       entity_id: light.gateway_antresola
     data:
       brightness: 200
@@ -1351,24 +1341,25 @@
       - '{{ (range(0, 255)|random) }}'
       - '{{ (range(0, 255)|random) }}'
       - '{{ (range(0, 255)|random) }}'
+    action: light.turn_on
   - wait_for_trigger:
-      platform: state
       entity_id: binary_sensor.motion_antresola
       from: 'on'
       to: 'off'
-  - service: light.turn_off
-    target:
+      trigger: state
+  - target:
       entity_id: light.gateway_antresola
     data: {}
+    action: light.turn_off
 - id: light_turn_on_sypialnia_leds_when_dark_and_motion
   alias: Włącz LEDy w sypialni gdy pojawi się ruch i jest ciemno
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_sypialnia
+  triggers:
+  - entity_id: binary_sensor.motion_sypialnia
     from: 'off'
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id:
     - input_boolean.away_mode
@@ -1377,16 +1368,12 @@
   - condition: numeric_state
     entity_id: sensor.illumination_sypialnia
     below: 3
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-      before_offset: +00:10:00
-  action:
-  - service: light.turn_on
-    data:
+  - condition: sun
+    before: sunrise
+    after: sunset
+    before_offset: +00:10:00
+  actions:
+  - data:
       brightness_pct: 35
       rgb_color:
       - 255
@@ -1394,16 +1381,17 @@
       - 203
     target:
       entity_id: light.lightstrip_sypialnia
+    action: light.turn_on
   - wait_for_trigger:
-      platform: state
       entity_id: binary_sensor.motion_sypialnia
       from: 'on'
       to: 'off'
-  - service: light.turn_off
-    target:
+      trigger: state
+  - target:
       entity_id: light.lightstrip_sypialnia
     data:
       transition: 10
+    action: light.turn_off
 - id: light_turn_on_korytarz_light_when_dark_and_motion
   alias: Włącz oświetlenie w korytarzu gdy pojawi się ruch i jest ciemno
   description: ''
@@ -1504,12 +1492,12 @@
 - id: light_turn_on_antek_leds_and_cabinet_when_dark_and_motion
   alias: Włącz LEDy u Antka gdy pojawi się ruch i jest ciemno
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_antek
+  triggers:
+  - entity_id: binary_sensor.motion_antek
     from: 'off'
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id:
     - input_boolean.away_mode
@@ -1519,29 +1507,26 @@
   - condition: numeric_state
     entity_id: sensor.illumination_antek
     below: 3
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-      before_offset: +00:10:00
-  action:
-  - service: script.light_turn_on_antek_leds
-    data: {}
+  - condition: sun
+    after: sunset
+    before: sunrise
+    before_offset: +00:10:00
+  actions:
+  - data: {}
+    action: script.light_turn_on_antek_leds
   - wait_for_trigger:
-      platform: state
       entity_id: binary_sensor.motion_antek
       from: 'on'
       to: 'off'
+      trigger: state
   - condition: state
     entity_id: device_tracker.desktop_antek
     state: not_home
-  - service: light.toggle
-    data:
+  - data:
       transition: 10
     target:
       entity_id: light.lightstrip_antek
+    action: light.toggle
 - id: light_toggle_antek_leds
   alias: Włącz/wyłącz LEDy u Antka
   description: ''
@@ -1564,12 +1549,12 @@
 - id: light_turn_on_pracownia_lamp_when_dark_and_motion
   alias: Włącz lampkę w pracowni gdy pojawi się ruch i jest ciemno
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_pracownia
+  triggers:
+  - entity_id: binary_sensor.motion_pracownia
     from: 'off'
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id:
     - input_boolean.away_mode
@@ -1581,27 +1566,24 @@
   - condition: state
     entity_id: input_boolean.light_auto_turn_pracownia
     state: 'on'
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-      before_offset: +00:10:00
-  action:
-  - service: light.turn_on
-    target:
+  - condition: sun
+    before: sunrise
+    before_offset: +00:10:00
+    after: sunset
+  actions:
+  - target:
       entity_id: light.lamp_pracownia
     data: {}
+    action: light.turn_on
   - wait_for_trigger:
-      platform: state
       entity_id: binary_sensor.motion_pracownia
       from: 'on'
       to: 'off'
-  - service: light.turn_off
-    target:
+      trigger: state
+  - target:
       entity_id: light.lamp_pracownia
     data: {}
+    action: light.turn_off
 - id: light_toggle_gabinet_ceiling_light_
   alias: Włącz/wyłącz oświetlenie sufitowe w gabinecie
   description: ''
@@ -1611,44 +1593,44 @@
     domain: shelly
     type: single_push
     subtype: button1
-  - device_id: 12765067d8e37adeadb4188a5b9b0c5c
-    domain: zha
-    platform: device
-    type: remote_button_short_press
-    subtype: remote_button_short_press
+  - platform: device
+    device_id: 32d4a414f2347f65f26c23af29853f9d
+    domain: bthome
+    type: button_1
+    subtype: press
   action:
-  - service: light.toggle
-    target:
+  - target:
       entity_id: light.ceiling_gabinet
     data: {}
+    action: light.toggle
 - id: light_toggle_gabinet_lamp
   alias: Włącz/wyłącz lampę w gabinecie
   description: ''
   trigger:
-  - device_id: 12765067d8e37adeadb4188a5b9b0c5c
-    domain: zha
-    platform: device
-    type: remote_button_double_press
-    subtype: remote_button_double_press
   - platform: device
     device_id: 5794eabef0db436756c344ac7632d9bd
     domain: shelly
     type: double_push
     subtype: button1
+  - platform: device
+    device_id: 32d4a414f2347f65f26c23af29853f9d
+    domain: bthome
+    type: button_2
+    subtype: press
   action:
-  - service: light.toggle
-    target:
+  - target:
       entity_id: light.lamp_gabinet
     data: {}
+    action: light.toggle
 - id: light_turn_on_gabinet_lamp_when_dark_and_motion
   alias: Włącz lampę w gabinecie gdy pojawi się ruch i jest ciemno
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_gabinet
+  triggers:
+  - entity_id: binary_sensor.motion_gabinet
     from: 'off'
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id:
     - input_boolean.away_mode
@@ -1662,30 +1644,27 @@
   - condition: state
     entity_id: input_boolean.light_auto_turn_gabinet
     state: 'on'
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-      before_offset: +00:10:00
-  action:
-  - service: light.turn_on
-    target:
+  - condition: sun
+    before: sunrise
+    before_offset: +00:10:00
+    after: sunset
+  actions:
+  - target:
       entity_id: light.lamp_gabinet
     data:
       brightness_pct: 20
       transition: 3
+    action: light.turn_on
   - wait_for_trigger:
-      platform: state
       entity_id: binary_sensor.motion_gabinet
       from: 'on'
       to: 'off'
-  - service: light.turn_off
-    target:
+      trigger: state
+  - target:
       entity_id: light.lamp_gabinet
     data:
       transition: 10
+    action: light.turn_off
 - id: light_turn_off_gabinet_light_when_no_motion
   alias: Wyłącz oświetlenie w gabinecie gdy nie ma ruchu
   description: ''
@@ -1738,11 +1717,11 @@
 - id: light_turn_on_schody_leds_when_motion_at_night
   alias: Włącz LEDy na schodach gdy pojawi się ruch i jest ciemno
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_schody
+  triggers:
+  - entity_id: binary_sensor.motion_schody
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id:
     - input_boolean.away_mode
@@ -1751,55 +1730,52 @@
   - condition: numeric_state
     entity_id: sensor.illumination_antresola
     below: 9
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-      before_offset: +00:10:00
-  action:
-  - service: light.turn_on
-    target:
+  - condition: sun
+    before: sunrise
+    before_offset: +00:10:00
+    after: sunset
+  actions:
+  - target:
       entity_id: light.leds_schody
     data: {}
+    action: light.turn_on
   - wait_for_trigger:
-      platform: state
       entity_id: binary_sensor.motion_schody
       from: 'on'
       to: 'off'
-  - service: light.turn_off
-    target:
+      trigger: state
+  - target:
       entity_id: light.leds_schody
     data: {}
+    action: light.turn_off
 - id: light_turn_on_schody_leds_on_sunset
-  alias: Light Schody Turn On LEDs On Sunset
-  description: Włącz LEDy na schodach o zachodzie słońca
-  trigger:
-  - platform: sun
-    event: sunset
-  condition:
+  alias: Włącz LEDy na schodach o zachodzie słońca
+  description: ''
+  triggers:
+  - event: sunset
+    trigger: sun
+  conditions:
   - condition: state
     entity_id:
     - input_boolean.away_mode
     - light.leds_schody
     state: 'off'
-  action:
-  - service: light.turn_on
-    target:
+  actions:
+  - target:
       entity_id: light.leds_schody
     data: {}
+    action: light.turn_on
 - id: light_turn_off_schody_leds_on_midnight
-  alias: Light Schody Turn On LEDs On Midnight
-  description: Włącz LEDy na schodach o północy
-  trigger:
-  - platform: time
-    at: 00:00:00
-  action:
-  - service: light.turn_off
-    target:
+  alias: Wyącz LEDy na schodach o północy
+  description: ''
+  triggers:
+  - at: 00:00:00
+    trigger: time
+  actions:
+  - target:
       entity_id: light.leds_schody
     data: {}
+    action: light.turn_off
 - id: light_turn_on_goscinny_lamp_when_dark_and_motion
   alias: Włącz lampkę w gościnnym gdy pojawi się ruch i jest ciemno
   description: ''
@@ -2044,27 +2020,24 @@
 - id: '1658514116580'
   alias: Włącz/wyłącz wentylator w salonie
   description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
+  triggers:
+  - domain: mqtt
     device_id: 52237db1203926d98cf2fa58e2ec8d6c
     type: button_long_press
     subtype: button_1
     discovery_id: shellyswitch25-C45BBE77DBE5-input-0 button_long_press
-  - device_id: 1f8b076d4a78b00888e90626c7c9a919
-    domain: zha
-    platform: device
-    type: remote_button_long_press
-    subtype: button
-  - platform: event
-    event_type: ios.action_fired
+    trigger: device
+  - event_type: ios.action_fired
     event_data:
       actionName: Toggle Salon Fan
-  - platform: state
-    entity_id:
-    - event.shelly_blu_wall_switch_4_8b60a4_przycisk_2
-  condition: []
-  action:
+    trigger: event
+  - device_id: e0d1edcfb8aef580d6887c26610ac78e
+    domain: bthome
+    type: button_2
+    subtype: press
+    trigger: device
+  conditions: []
+  actions:
   - data: {}
     target:
       entity_id: fan.ceiling_salon
@@ -2073,27 +2046,24 @@
 - id: '1658514193572'
   alias: Włącz/wyłącz lampę w salonie
   description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
+  triggers:
+  - domain: mqtt
     device_id: 52237db1203926d98cf2fa58e2ec8d6c
     type: button_long_press
     subtype: button_2
     discovery_id: shellyswitch25-C45BBE77DBE5-input-1 button_long_press
-  - device_id: 1f8b076d4a78b00888e90626c7c9a919
-    domain: zha
-    platform: device
-    type: remote_button_short_press
-    subtype: remote_button_short_press
-  - platform: event
-    event_type: ios.action_fired
+    trigger: device
+  - event_type: ios.action_fired
     event_data:
       actionName: Toggle Salon Lamp
-  - platform: state
-    entity_id:
-    - event.shelly_blu_wall_switch_4_8b60a4_przycisk_4
-  condition: []
-  action:
+    trigger: event
+  - device_id: e0d1edcfb8aef580d6887c26610ac78e
+    domain: bthome
+    type: button_4
+    subtype: press
+    trigger: device
+  conditions: []
+  actions:
   - data: {}
     target:
       entity_id: light.lamp_salon
@@ -2143,21 +2113,21 @@
   alias: Odtwarzaj/wstrzymaj media w gabinecie
   description: ''
   trigger:
-  - device_id: 12765067d8e37adeadb4188a5b9b0c5c
-    domain: zha
-    platform: device
-    type: remote_button_triple_press
-    subtype: remote_button_triple_press
   - platform: device
     device_id: 5794eabef0db436756c344ac7632d9bd
     domain: shelly
     type: triple_push
     subtype: button1
+  - platform: device
+    device_id: 32d4a414f2347f65f26c23af29853f9d
+    domain: bthome
+    type: button_4
+    subtype: press
   action:
-  - service: media_player.media_play_pause
-    data: {}
+  - data: {}
     target:
       entity_id: media_player.sonos_one_gabinet
+    action: media_player.media_play_pause
 - id: '1671558014151'
   alias: Rozpoczęcie nawilżania u Antka
   description: ''
@@ -2354,12 +2324,17 @@
     domain: shelly
     type: single_push
     subtype: button1
+  - device_id: 1f8b076d4a78b00888e90626c7c9a919
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: remote_button_short_press
   condition: []
   action:
-  - service: light.toggle
-    data: {}
+  - data: {}
     target:
       entity_id: light.ceiling_goscinny
+    action: light.toggle
   mode: single
 - id: '1672477395224'
   alias: Włącz/wyłącz lampkę w pokoju gościnnym
@@ -2626,15 +2601,15 @@
     action: switch.turn_on
   mode: single
 - id: '1693856668458'
-  alias: Light Salon Scene Dusk When Turn On
+  alias: Aktywuj w salonie scenę oświetlenie po zmierzchu
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - light.ceiling_salon
     from: 'off'
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: or
     conditions:
     - condition: state
@@ -2643,11 +2618,11 @@
     - condition: state
       entity_id: select.harmony_activities
       state: smart
-  action:
-  - service: scene.turn_on
-    target:
+  actions:
+  - target:
       entity_id: scene.light_salon_dusk
     metadata: {}
+    action: scene.turn_on
   mode: single
 - id: '1699100330008'
   alias: Edyta wraca do domu
@@ -2705,12 +2680,12 @@
 - id: '1709306186649'
   alias: Włącz LEDy na przedpokoju gdy pojawi się ruch i jest ciemno
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_przedpokoj
+  triggers:
+  - entity_id: binary_sensor.motion_przedpokoj
     from: 'off'
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id:
     - light.oswietlenie_przedpokoj
@@ -2721,23 +2696,20 @@
   - condition: numeric_state
     entity_id: sensor.illumination_przedpokoj
     below: 9
-  - condition: or
-    conditions:
-    - condition: sun
-      after: sunset
-    - condition: sun
-      before: sunrise
-      before_offset: +00:10:00
-  action:
+  - condition: sun
+    before: sunrise
+    before_offset: +00:10:00
+    after: sunset
+  actions:
   - target:
       entity_id: light.leds_przedpokoj
     data: {}
     action: light.turn_on
   - wait_for_trigger:
-      platform: state
       entity_id: binary_sensor.motion_przedpokoj
       from: 'on'
       to: 'off'
+      trigger: state
   - target:
       entity_id: light.leds_przedpokoj
     data: {}
@@ -2917,18 +2889,18 @@
     domain: shelly
     type: long_push
     subtype: button1
-  - device_id: 12765067d8e37adeadb4188a5b9b0c5c
-    domain: zha
-    platform: device
-    type: remote_button_long_press
-    subtype: button
+  - platform: device
+    device_id: 32d4a414f2347f65f26c23af29853f9d
+    domain: bthome
+    type: button_3
+    subtype: press
   condition: []
   action:
-  - service: fan.toggle
-    metadata: {}
+  - metadata: {}
     data: {}
     target:
       entity_id: fan.xiaomi_mi_standing_fan_1x
+    action: fan.toggle
   mode: single
 - id: '1719057451463'
   alias: Włącz/wyłącz LEDy w sypialni
@@ -3016,7 +2988,8 @@
     data: {}
     target:
       entity_id: media_player.sonos_arc
-  mode: single
+  mode: queued
+  max: 10
 - id: '1723301743769'
   alias: Zmniejsz głośność w salonie
   description: ''
@@ -3032,4 +3005,55 @@
     data: {}
     target:
       entity_id: media_player.sonos_arc
+  mode: queued
+  max: 10
+- id: '1725635170993'
+  alias: Włącz oświetlenie blatu w kuchni gdy pojawi się ruch i jest po zachodzie
+    słońca
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.motion_kuchnia
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.away_mode
+    state: 'off'
+  - condition: state
+    entity_id: light.blat_kuchnia
+    state: 'off'
+  - condition: sun
+    before: sunrise
+    after: sunset
+  action:
+  - target:
+      entity_id: light.blat_kuchnia
+    action: light.turn_on
+    data: {}
+  - wait_for_trigger:
+      platform: state
+      entity_id: binary_sensor.motion_kuchnia
+      from: 'on'
+      to: 'off'
+  - target:
+      entity_id: light.blat_kuchnia
+    action: light.turn_off
+    data: {}
+- id: '1725785049250'
+  alias: Włącz/wyłącz oświetlenie w pracowni
+  description: ''
+  trigger:
+  - device_id: 12765067d8e37adeadb4188a5b9b0c5c
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: remote_button_short_press
+  condition: []
+  action:
+  - action: light.toggle
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.ceiling_pracownia
   mode: single
