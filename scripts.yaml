@@ -53,162 +53,160 @@ devices_away_mode:
   icon: mdi:home-export-outline
 heating_day:
   sequence:
-  - service: script.humidification_start
-    data: {}
-  - service: climate.set_temperature
-    target:
-      entity_id: climate.thermostat_lazienka
+  - data: {}
+    action: script.humidification_start
+  - target:
+      entity_id: climate.grzejnik_lazienka
     data:
       temperature: '{{ states(''input_number.bathroom_temperature_day'') }}'
-  - service: climate.set_temperature
-    target:
+    action: climate.set_temperature
+  - target:
       entity_id:
       - climate.thermostat_antresola
     data:
       temperature: '{{ states(''input_number.temperature_day'') }}'
-  - service: climate.set_temperature
-    target:
+    action: climate.set_temperature
+  - target:
       entity_id:
       - climate.grzejnik_kuchnia
       - climate.grzejnik_salon
-      - climate.thermostat_gabinet
+      - climate.grzejnik_gabinet
       - climate.grzejnik_pracownia
       - climate.thermostat_antresola
     data:
       temperature: '{{ states(''input_number.temperature_day'') }}'
-  - service: climate.set_temperature
-    target:
+    action: climate.set_temperature
+  - target:
       entity_id:
       - climate.grzejnik_antek
       - climate.grzejnik_sypialnia
-      - climate.thermostat_goscinny
+      - climate.grzejnik_goscinny
     data:
       temperature: '{{ states(''input_number.bedroom_temperature_day'') }}'
+    action: climate.set_temperature
   mode: single
   icon: mdi:radiator
   alias: Tryb dzienny ogrzewania
 heating_night:
   sequence:
-  - service: script.humidification_start
-    data: {}
-  - service: climate.set_temperature
-    target:
+  - data: {}
+    action: script.humidification_start
+  - target:
       entity_id:
-      - climate.thermostat_gabinet
+      - climate.grzejnik_gabinet
       - climate.grzejnik_pracownia
       - climate.thermostat_antresola
     data:
       hvac_mode: heat
       temperature: '{{ states(''input_number.temperature_night'') }}'
-  - service: climate.set_temperature
-    target:
+    action: climate.set_temperature
+  - target:
       entity_id:
       - climate.grzejnik_antek
       - climate.grzejnik_sypialnia
-      - climate.thermostat_goscinny
+      - climate.grzejnik_goscinny
     data:
       hvac_mode: heat
       temperature: '{{ states(''input_number.bedroom_temperature_night'') }}'
-  - service: climate.set_temperature
-    target:
-      entity_id: climate.thermostat_lazienka
+    action: climate.set_temperature
+  - target:
+      entity_id: climate.grzejnik_lazienka
     data:
       hvac_mode: heat
       temperature: '{{ states(''input_number.bathroom_temperature_night'') }}'
+    action: climate.set_temperature
   - condition: state
     entity_id: input_boolean.guests
     state: 'off'
-  - service: climate.set_temperature
-    target:
+  - target:
       entity_id:
       - climate.grzejnik_kuchnia
       - climate.grzejnik_salon
     data:
       hvac_mode: heat
       temperature: '{{ states(''input_number.temperature_night'') }}'
+    action: climate.set_temperature
   mode: single
   alias: Tryb nocny ogrzewania
   icon: mdi:radiator
 heating_away_mode:
   sequence:
-  - service: climate.set_temperature
-    target:
+  - target:
       entity_id:
-      - climate.thermostat_gabinet
+      - climate.grzejnik_gabinet
       - climate.grzejnik_kuchnia
       - climate.grzejnik_salon
       - climate.grzejnik_antek
       - climate.grzejnik_sypialnia
-      - climate.thermostat_lazienka
+      - climate.grzejnik_lazienka
       - climate.grzejnik_pracownia
-      - climate.thermostat_goscinny
+      - climate.grzejnik_goscinny
       - climate.thermostat_antresola
     data:
       temperature: '{{ states(''input_number.temperature_away'') }}'
-  - service: humidifier.turn_off
-    target:
+    action: climate.set_temperature
+  - target:
       entity_id:
       - humidifier.xiaomi_mi_humidifier_ca1
       - humidifier.xiaomi_mi_humidifier_cb1
     data: {}
+    action: humidifier.turn_off
   mode: single
   alias: Tryb "poza domem" ogrzewania
   icon: mdi:radiator-disabled
 heating_season_end:
   sequence:
-  - service: climate.turn_off
-    target:
+  - target:
       entity_id: climate.thermostat_antresola
     data: {}
-  - service: climate.set_temperature
-    target:
+    action: climate.turn_off
+  - target:
       entity_id:
       - climate.grzejnik_antek
-      - climate.thermostat_gabinet
-      - climate.thermostat_lazienka
+      - climate.grzejnik_gabinet
+      - climate.grzejnik_lazienka
       - climate.grzejnik_pracownia
-      - climate.thermostat_goscinny
+      - climate.grzejnik_goscinny
       - climate.grzejnik_sypialnia
       - climate.grzejnik_salon
       - climate.grzejnik_kuchnia
     data:
       temperature: 5
-  - service: humidifier.turn_off
-    data: {}
+    action: climate.set_temperature
+  - data: {}
     target:
       entity_id:
       - humidifier.xiaomi_mi_humidifier_cb1
       - humidifier.xiaomi_mi_humidifier_ca1
+    action: humidifier.turn_off
   mode: single
   alias: Koniec sezony grzewczego
   icon: mdi:radiator-off
 heating_airing_begin:
   sequence:
-  - service: climate.set_temperature
-    target:
+  - target:
       entity_id:
       - climate.thermostat_antresola
-      - climate.thermostat_gabinet
+      - climate.grzejnik_gabinet
       - climate.grzejnik_salon
       - climate.grzejnik_antek
       - climate.grzejnik_sypialnia
-      - climate.thermostat_lazienka
+      - climate.grzejnik_lazienka
       - climate.grzejnik_kuchnia
       - climate.grzejnik_pracownia
-      - climate.thermostat_goscinny
-    data:
-      temperature: 8
-  - service: humidifier.turn_off
-    target:
+      - climate.grzejnik_goscinny
+    action: climate.turn_off
+  - target:
       entity_id:
       - humidifier.xiaomi_mi_humidifier_ca1
       - humidifier.xiaomi_mi_humidifier_cb1
     data: {}
+    action: humidifier.turn_off
   - condition: state
     entity_id: input_boolean.heating_airing
     state: 'off'
-  - service: input_boolean.turn_on
-    entity_id: input_boolean.heating_airing
+  - entity_id: input_boolean.heating_airing
+    action: input_boolean.turn_on
   mode: single
   alias: Przewietrzanie
   icon: mdi:window-open-variant

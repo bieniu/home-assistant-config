@@ -132,8 +132,8 @@
     trigger: numeric_state
   conditions:
   - condition: template
-    value_template: '{{ now().timestamp() - as_timestamp(state_attr(''automation.notification_storm_comming'',
-      ''last_triggered'')) > 480 }}'
+    value_template: '{{ now().timestamp() - as_timestamp(this.attributes.last_triggered,
+      0) > 480 }}'
   actions:
   - parallel:
     - if:
@@ -815,11 +815,14 @@
   alias: Okna otwarte
   description: ''
   triggers:
-  - entity_id: binary_sensor.windows
+  - entity_id:
+    - binary_sensor.windows
     from: 'off'
     to: 'on'
     for:
-      minutes: 10
+      hours: 0
+      minutes: 30
+      seconds: 0
     trigger: state
   actions:
   - entity_id: fan.xiaomi_mi_air_purifier_3h
@@ -1924,23 +1927,23 @@
       pozostało {{ states('sensor.xiaomi_mi_humidifier_ca1_water_level') }}% wody.
     notification_tag: notification-humidifier-ca1
 - id: climate_anresola_external_temperature_sensor
-  alias: Przekazywanie temperatury do termostatu na antresoli
+  alias: Raportowanie temperatury do termostatu na antresoli
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - sensor.temperature_antresola
-  condition:
+    trigger: state
+  conditions:
   - condition: template
     value_template: '{{ is_number(trigger.to_state.state) }}'
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
-  action:
-  - service: mqtt.publish
-    data:
+  actions:
+  - data:
       topic: shellies/shellytrv-84FD2772A544/thermostat/0/command/ext_t
       payload: '{{ trigger.to_state.state | float }}'
+    action: mqtt.publish
   mode: restart
 - id: log_level
   alias: Ustawianie poziomu logowania
@@ -2863,22 +2866,25 @@
         entity_id: media_player.philips_65oled707
   mode: single
 - id: '1718655436619'
-  alias: Przekazywanie wilgotności do termostatu na antresoli
+  alias: Raportowanie wilgotności do termostatu na antresoli
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - sensor.humidity_antresola
-  condition:
+    trigger: state
+  conditions:
   - condition: template
     value_template: '{{ is_number(trigger.to_state.state) }}'
-  action:
-  - service: mqtt.publish
-    metadata: {}
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  actions:
+  - metadata: {}
     data:
       retain: true
       topic: shellies/shellytrv-84FD2772A544/humidity
       payload: '{{ trigger.to_state.state | int }}'
+    action: mqtt.publish
   mode: single
 - id: '1719055090033'
   alias: Włącz/wyłącz wentylator w gabinecie
@@ -3056,4 +3062,119 @@
     data: {}
     target:
       entity_id: light.ceiling_pracownia
+  mode: single
+- id: '1728586481244'
+  alias: Raportowanie temperatury do termostatu w salonie
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.temperature_salon
+  conditions:
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  - condition: template
+    value_template: '{{ now().timestamp() - as_timestamp(this.attributes.last_triggered,
+      0) > 300 }}'
+  - condition: template
+    value_template: '{{ is_number(trigger.to_state.state) }}'
+  actions:
+  - action: number.set_value
+    data:
+      value: '{{ trigger.to_state.state | float }}'
+    target:
+      entity_id: number.temperatura_zewnetrznego_sensora_salon
+  mode: single
+- id: '1728588099095'
+  alias: Raportowanie temperatury do termostatu w sypialni
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.temperature_sypialnia
+  conditions:
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  - condition: template
+    value_template: '{{ now().timestamp() - as_timestamp(this.attributes.last_triggered,
+      0) > 300 }}'
+  - condition: template
+    value_template: '{{ is_number(trigger.to_state.state) }}'
+  actions:
+  - action: number.set_value
+    data:
+      value: '{{ trigger.to_state.state | float }}'
+    target:
+      entity_id: number.temperatura_zewnetrznego_sensora_sypialnia
+  mode: single
+- id: '1728663268346'
+  alias: Raportowanie temperatury do termostatu u Antka
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.temperature_antek
+  conditions:
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  - condition: template
+    value_template: '{{ now().timestamp() - as_timestamp(this.attributes.last_triggered,
+      0) > 300 }}'
+  - condition: template
+    value_template: '{{ is_number(trigger.to_state.state) }}'
+  actions:
+  - action: number.set_value
+    data:
+      value: '{{ trigger.to_state.state | float }}'
+    target:
+      entity_id: number.temperatura_zewnetrznego_sensora_antek
+  mode: single
+- id: '1728663344425'
+  alias: Raportowanie temperatury do termostatu w pracowni
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.temperature_pracownia
+  conditions:
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  - condition: template
+    value_template: '{{ now().timestamp() - as_timestamp(this.attributes.last_triggered,
+      0) > 300 }}'
+  - condition: template
+    value_template: '{{ is_number(trigger.to_state.state) }}'
+  actions:
+  - action: number.set_value
+    data:
+      value: '{{ trigger.to_state.state | float }}'
+    target:
+      entity_id: number.temperatura_zewnetrznego_sensora_pracownia
+  mode: single
+- id: '1728663436906'
+  alias: Raportowanie temperatury do termostatu w kuchni
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.temperature_kuchnia
+  conditions:
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  - condition: template
+    value_template: '{{ now().timestamp() - as_timestamp(this.attributes.last_triggered,
+      0) > 300 }}'
+  - condition: template
+    value_template: '{{ is_number(trigger.to_state.state) }}'
+  actions:
+  - action: number.set_value
+    data:
+      value: '{{ trigger.to_state.state | float }}'
+    target:
+      entity_id: number.temperatura_zewnetrznego_sensora_kuchnia
   mode: single

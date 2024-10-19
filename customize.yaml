@@ -1,9 +1,5 @@
-#### NETWORK DEVICES ####
 binary_sensor.raspberry_status:
   friendly_name: "Raspberry Pi 4B"
-binary_sensor.router_status:
-  icon: mdi:router-network
-  friendly_name: "Asus RT-AX86S [CBA8]"
 binary_sensor.synology_status:
   friendly_name: "Synology DS110j"
 binary_sensor.nuc_status:
@@ -16,9 +12,6 @@ binary_sensor.kindle_keyboard_3g_status:
   friendly_name: "Kindle Keyboard 3G"
 binary_sensor.kindle_8_status:
   friendly_name: "Kindle 8"
-binary_sensor.modem_status:
-  friendly_name: "ZTE GPON F660"
-  icon: mdi:wan
 binary_sensor.yeelight_yldd01yl_6707fc_status:
   friendly_name: "Yeelight Lightstrip [6707FC]"
 binary_sensor.echo_plus_status:
@@ -69,18 +62,7 @@ binary_sensor.yeelight_mjtd01syl_94e1f5_status:
   friendly_name: "Yeelight Desk Lamp 1S [94E1F5]"
 binary_sensor.yeelight_mjtd01syl_4fbaa2_status:
   friendly_name: "Yeelight Desk Lamp 1S [4FBAA2]"
-binary_sensor.yeelight_yldp06yl_7cafc6_status:
-  friendly_name: "Yeelight Color Bulb 2 [7CAFC6]"
-binary_sensor.yeelight_yldp06yl_84be7a_status:
-  friendly_name: "Yeelight Color Bulb 2 [84BE7A]"
-binary_sensor.yeelight_yldp02yl_f12026_status:
-  friendly_name: "Yeelight Color Bulb [F12026]"
-binary_sensor.yeelight_yldd01yl_860cfa_status:
-  friendly_name: "Yeelight Lightstrip [860CFA]"
-binary_sensor.thermomix_status:
-  friendly_name: "Thermomix TM6"
 
-#### PRINTER ####
 sensor.printer_page_counter:
   unit_of_measurement: "str"
 
@@ -90,12 +72,6 @@ sensor.home_uv_index:
 sensor.minecraft_server_players_online:
   unit_of_measurement: "graczy"
 
-sensor.air_quality_info_outdoor:
-  friendly_name: "Jakość powietrza zewnętrzenego"
-
-sensor.aqi_info_salon:
-  friendly_name: "Jakość powietrza wewnętrznego"
-
 sensor.asus_rt_ax86s_devices_connected:
   unit_of_measurement: "urządzeń"
 
@@ -104,3 +80,10 @@ sensor.maciek_kroki:
 
 sun.sun:
   friendly_name: "Słońce"
+
+climate.grzejnik_gabinet:
+  target_temp_step: 0.5
+climate.grzejnik_lazienka:
+  target_temp_step: 0.5
+climate.grzejnik_goscinny:
+  target_temp_step: 0.5

@@ -1,7 +1,5 @@
 automation: !include automations.yaml
 
-climate: !include climate.yaml
-
 default_config:
 
 recorder:
@@ -43,8 +41,6 @@ python_script:
 scene: !include scenes.yaml
 
 script: !include scripts.yaml
-
-switch: !include switches.yaml
 
 fan: !include fans.yaml
 
