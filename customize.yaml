@@ -87,3 +87,9 @@ climate.grzejnik_lazienka:
   target_temp_step: 0.5
 climate.grzejnik_goscinny:
   target_temp_step: 0.5
+climate.grzejnik_pralnia:
+  target_temp_step: 0.5
+climate.drabinka_lazienka:
+  target_temp_step: 0.5
+climate.grzejnik_antresola:
+  target_temp_step: 0.5

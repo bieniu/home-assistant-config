@@ -77,7 +77,7 @@
 * Aeotec ZWA021
 * Danfoss 014G0013
 * Danfoss 014G2460
-* Shelly Valve
+* Shelly BLU TRV
 
 ## Other Integrated Devices
 

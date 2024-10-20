@@ -56,15 +56,11 @@ heating_day:
   - data: {}
     action: script.humidification_start
   - target:
-      entity_id: climate.grzejnik_lazienka
+      entity_id:
+      - climate.grzejnik_lazienka
+      - climate.drabinka_lazienka
     data:
       temperature: '{{ states(''input_number.bathroom_temperature_day'') }}'
-    action: climate.set_temperature
-  - target:
-      entity_id:
-      - climate.thermostat_antresola
-    data:
-      temperature: '{{ states(''input_number.temperature_day'') }}'
     action: climate.set_temperature
   - target:
       entity_id:
@@ -72,7 +68,8 @@ heating_day:
       - climate.grzejnik_salon
       - climate.grzejnik_gabinet
       - climate.grzejnik_pracownia
-      - climate.thermostat_antresola
+      - climate.grzejnik_antresola
+      - climate.grzejnik_pralnia
     data:
       temperature: '{{ states(''input_number.temperature_day'') }}'
     action: climate.set_temperature
@@ -95,7 +92,8 @@ heating_night:
       entity_id:
       - climate.grzejnik_gabinet
       - climate.grzejnik_pracownia
-      - climate.thermostat_antresola
+      - climate.grzejnik_antresola
+      - climate.grzejnik_pralnia
     data:
       hvac_mode: heat
       temperature: '{{ states(''input_number.temperature_night'') }}'
@@ -110,7 +108,9 @@ heating_night:
       temperature: '{{ states(''input_number.bedroom_temperature_night'') }}'
     action: climate.set_temperature
   - target:
-      entity_id: climate.grzejnik_lazienka
+      entity_id:
+      - climate.grzejnik_lazienka
+      - climate.drabinka_lazienka
     data:
       hvac_mode: heat
       temperature: '{{ states(''input_number.bathroom_temperature_night'') }}'
@@ -139,9 +139,11 @@ heating_away_mode:
       - climate.grzejnik_antek
       - climate.grzejnik_sypialnia
       - climate.grzejnik_lazienka
+      - climate.drabinka_lazienka
       - climate.grzejnik_pracownia
       - climate.grzejnik_goscinny
-      - climate.thermostat_antresola
+      - climate.grzejnik_antresola
+      - climate.grzejnik_pralnia
     data:
       temperature: '{{ states(''input_number.temperature_away'') }}'
     action: climate.set_temperature
@@ -156,29 +158,25 @@ heating_away_mode:
   icon: mdi:radiator-disabled
 heating_season_end:
   sequence:
-  - target:
-      entity_id: climate.thermostat_antresola
-    data: {}
-    action: climate.turn_off
-  - target:
+  - action: climate.turn_off
+    target:
       entity_id:
       - climate.grzejnik_antek
       - climate.grzejnik_gabinet
       - climate.grzejnik_lazienka
+      - climate.drabinka_lazienka
       - climate.grzejnik_pracownia
       - climate.grzejnik_goscinny
       - climate.grzejnik_sypialnia
       - climate.grzejnik_salon
       - climate.grzejnik_kuchnia
-    data:
-      temperature: 5
-    action: climate.set_temperature
-  - data: {}
+      - climate.grzejnik_pralnia
+      - climate.grzejnik_antresola
+  - action: humidifier.turn_off
     target:
       entity_id:
       - humidifier.xiaomi_mi_humidifier_cb1
       - humidifier.xiaomi_mi_humidifier_ca1
-    action: humidifier.turn_off
   mode: single
   alias: Koniec sezony grzewczego
   icon: mdi:radiator-off
@@ -186,16 +184,19 @@ heating_airing_begin:
   sequence:
   - target:
       entity_id:
-      - climate.thermostat_antresola
+      - climate.grzejnik_antresola
       - climate.grzejnik_gabinet
       - climate.grzejnik_salon
       - climate.grzejnik_antek
       - climate.grzejnik_sypialnia
       - climate.grzejnik_lazienka
+      - climate.drabinka_lazienka
       - climate.grzejnik_kuchnia
       - climate.grzejnik_pracownia
       - climate.grzejnik_goscinny
+      - climate.grzejnik_pralnia
     action: climate.turn_off
+    data: {}
   - target:
       entity_id:
       - humidifier.xiaomi_mi_humidifier_ca1

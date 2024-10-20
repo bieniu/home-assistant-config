@@ -939,32 +939,39 @@
 - id: heating_airing_end
   alias: Koniec przewietrzania
   description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.heating_airing
+  triggers:
+  - entity_id: input_boolean.heating_airing
     from: 'on'
     to: 'off'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
-  action:
+  actions:
+  - action: climate.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - climate.grzejnik_gabinet
+      - climate.grzejnik_lazienka
+      - climate.grzejnik_goscinny
   - choose:
     - conditions:
       - condition: state
         entity_id: schedule.heating
         state: 'on'
       sequence:
-        service: script.heating_day
         data: {}
+        action: script.heating_day
     default:
-      service: script.heating_night
       data: {}
+      action: script.heating_night
   - condition: state
     entity_id: binary_sensor.windows
     state: 'on'
-  - service: python_script.notify
-    data:
+  - data:
       title: Koniec przewietrzania
       message: Wyłączono tryb przewietrzania. Proszę zamknąć okna!
       tag: notification-airing-end
@@ -975,6 +982,7 @@
         type: ios
       - service: notify.mobile_app_iphone_12
         type: ios
+    action: python_script.notify
 - id: heating_season_begin
   alias: Początek sezonu grzewczego
   description: ''
@@ -1956,18 +1964,18 @@
     data:
       homeassistant.components: '{{ trigger.to_state.state }}'
 - id: shellies_announce
-  alias: Wysyłanie komenty announce do urządzeń Shelly
+  alias: Wysyłanie komendy announce do urządzeń Shelly
   description: ''
-  trigger:
-  - platform: homeassistant
-    event: start
-  - platform: time_pattern
-    hours: /1
-  action:
-  - service: mqtt.publish
-    data:
+  triggers:
+  - event: start
+    trigger: homeassistant
+  - hours: /1
+    trigger: time_pattern
+  actions:
+  - data:
       topic: shellies/command
       payload: announce
+    action: mqtt.publish
 - id: shellies_discovery
   alias: Uruchamianie Shellies Discovery
   description: ''
@@ -3177,4 +3185,92 @@
       value: '{{ trigger.to_state.state | float }}'
     target:
       entity_id: number.temperatura_zewnetrznego_sensora_kuchnia
+  mode: single
+- id: '1729346953236'
+  alias: Wyłącz oświetlenie blatu w kuchni jak nie ma ruchu
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.motion_kuchnia
+    from: 'on'
+    to: 'off'
+    for:
+      minutes: '{{ states(''input_number.no_motion_time'') | int }}'
+  conditions:
+  - condition: state
+    entity_id: light.blat_kuchnia
+    state: 'on'
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.blat_kuchnia
+  mode: single
+- id: '1729422543756'
+  alias: Wysyłanie komendy announce do urządzeń Shelly Gen2+
+  description: ''
+  triggers:
+  - event: start
+    trigger: homeassistant
+  actions:
+  - repeat:
+      for_each: '{{ device_ids }}'
+      sequence:
+      - action: mqtt.publish
+        data:
+          topic: '{{ repeat.item }}/rpc'
+          payload: '{{ get_config_payload }}'
+      - data:
+          topic: '{{ repeat.item }}/rpc'
+          payload: '{{ get_components_payload }}'
+        action: mqtt.publish
+  variables:
+    get_config_payload: '{{ {''id'': 1, ''src'': ''shellies_discovery'', ''method'':
+      ''Shelly.GetConfig''} | to_json }}'
+    get_components_payload: '{{ {''id'': 1, ''src'': ''shellies_discovery'', ''method'':''Shelly.GetComponents''}
+      | to_json }}'
+    device_ids:
+    - shellies-gen3/shelly-blu-gateway-gen3-78742c
+- id: '1729422698511'
+  alias: Uruchomienie Shellies Discovery Gen2+
+  description: ''
+  triggers:
+  - topic: shellies_discovery/rpc
+    trigger: mqtt
+  actions:
+  - action: python_script.shellies_discovery_gen2
+    data:
+      id: '{{ trigger.payload_json.src }}'
+      device_config: '{{ trigger.payload_json.result }}'
+  - condition: template
+    value_template: '{{ ''mqtt'' in trigger.payload_json.result }}'
+  - data:
+      topic: '{{ trigger.payload_json.result.mqtt.topic_prefix }}/command'
+      payload: status_update
+    action: mqtt.publish
+  mode: queued
+  max: 999
+- id: '1729425205616'
+  alias: Uruchomienie szybkiego dogrzania na grzejniku drabinkowym w łazience
+  description: ''
+  triggers:
+  - trigger: time
+    at: 06:10:00
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.dzien_tygodnia
+    below: 6
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  actions:
+  - action: mqtt.publish
+    metadata: {}
+    data:
+      qos: '1'
+      topic: shellies-gen3/shelly-blu-gateway-gen3-78742c/rpc
+      payload: '{{ {"id":1,"src":"home-assistant","method":"BluTRV.Call","params":{"id":200,"method":"TRV.SetBoost","params":{"id":0,
+        "duration": 600}}} | to_json }}'
   mode: single
