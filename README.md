@@ -35,7 +35,7 @@
 * Shelly 1 Mini Gen3
 * Shelly 1L [with [ESPHome](https://esphome.io)]
 * Shelly 1PM Mini Gen3
-* Shelly 2.5
+* Shelly 2PM Gen3
 * Shelly Plug S [with [ESPHome](https://esphome.io)]
 * Shelly Plus 1 Mini
 * Shelly Plus 1PM

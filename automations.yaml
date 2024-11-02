@@ -356,13 +356,10 @@
 - id: notification_relay_overpower
   alias: Przeciążenie przekaźnika
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - binary_sensor.shelly_plus_plug_s_2ffb28_overpower
     - binary_sensor.shelly_plus_plug_s_d00c84_overpower
-    - binary_sensor.shelly_25_77dbe5_relay_1_overpower
-    - binary_sensor.shelly_25_77dbe5_relay_2_overpower
     - binary_sensor.shelly_plus_1pm_948ff8_overpower
     - binary_sensor.shelly_plus_1pm_b22864_overpower
     - binary_sensor.aeotec_zw175_smart_switch_7_026_przeciazenie
@@ -377,11 +374,14 @@
     - binary_sensor.oswietlenie_gabinet_przeciazenie
     - binary_sensor.oswietlenie_toaleta_przeciazenie
     - binary_sensor.oswietlenie_antek_przeciazenie
+    - binary_sensor.ledy_salon_przeciazenie
+    - binary_sensor.wentylator_i_oswietlenie_salon_przeciazenie
     from: 'off'
     to: 'on'
     for:
       minutes: 1
-  action:
+    trigger: state
+  actions:
   - data:
       title: '{{ notification_title }}'
       message: '{{ notification_message }}'
@@ -399,10 +399,8 @@
 - id: notification_relay_overheating
   alias: Przegrzanie przekaźnika
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.shelly_25_77dbe5_overtemperature
+  triggers:
+  - entity_id:
     - binary_sensor.shelly_plus_plug_s_2ffb28_overtemperature
     - binary_sensor.shelly_plus_plug_s_d00c84_overtemperature
     - binary_sensor.shelly_plus_1pm_948ff8_overtemperature
@@ -418,11 +416,14 @@
     - binary_sensor.oswietlenie_gabinet_przegrzewanie
     - binary_sensor.oswietlenie_toaleta_przegrzewanie
     - binary_sensor.oswietlenie_antek_przegrzewanie
+    - binary_sensor.ledy_salon_przegrzewanie
+    - binary_sensor.wentylator_i_oswietlenie_salon_przegrzewanie
     from: 'off'
     to: 'on'
     for:
       minutes: 1
-  action:
+    trigger: state
+  actions:
   - data:
       title: '{{ notification_title }}'
       message: '{{ notification_message }}'
@@ -1066,7 +1067,7 @@
       entity_id: light.ceiling_salon
       state: 'on'
     - condition: state
-      entity_id: light.leds_salon
+      entity_id: light.ledy_salon
       state: 'on'
     - condition: state
       entity_id: light.lamp_salon
@@ -1080,9 +1081,9 @@
   - target:
       entity_id:
       - light.ceiling_salon
-      - light.leds_salon
       - light.lamp_salon
       - fan.ceiling_salon
+      - light.ledy_salon
     data: {}
     action: homeassistant.turn_off
 - id: light_scene_salon_auto_when_bulbs_turn_on
@@ -1113,23 +1114,22 @@
 - id: light_toggle_salon_bulbs
   alias: Włącz/wyłącz oświetlenie w salonie
   description: ''
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 52237db1203926d98cf2fa58e2ec8d6c
-    type: button_short_press
-    subtype: button_1
-    discovery_id: shellyswitch25-C45BBE77DBE5-input-0 button_short_press
-  - platform: event
-    event_type: ios.action_fired
+  triggers:
+  - device_id: 142c0c74f511cb5af11fa1d33e6437f7
+    domain: shelly
+    type: single_push
+    subtype: button1
+    trigger: device
+  - event_type: ios.action_fired
     event_data:
       actionName: Toggle Salon Light
-  - platform: device
-    device_id: e0d1edcfb8aef580d6887c26610ac78e
+    trigger: event
+  - device_id: e0d1edcfb8aef580d6887c26610ac78e
     domain: bthome
     type: button_1
     subtype: press
-  action:
+    trigger: device
+  actions:
   - target:
       entity_id: light.ceiling_salon
     data: {}
@@ -1149,9 +1149,9 @@
     trigger: device
   actions:
   - data: {}
-    target:
-      entity_id: light.leds_salon
     action: light.toggle
+    target:
+      entity_id: light.ledy_salon
 - id: light_turn_on_salon_lamp_when_dark_and_motion
   alias: Włącz lampę w salonie gdy pojawi się ruch i jest ciemno
   description: ''
@@ -1160,7 +1160,8 @@
     from: 'off'
     to: 'on'
     trigger: state
-  - entity_id: light.leds_salon
+  - entity_id:
+    - light.ledy_salon
     from: 'on'
     to: 'off'
     trigger: state
@@ -1177,7 +1178,7 @@
   - condition: state
     entity_id:
     - input_boolean.away_mode
-    - light.leds_salon
+    - light.ledy_salon
     - light.ceiling_salon
     - media_player.philips_65oled707
     state: 'off'
@@ -2032,11 +2033,10 @@
   alias: Włącz/wyłącz wentylator w salonie
   description: ''
   triggers:
-  - domain: mqtt
-    device_id: 52237db1203926d98cf2fa58e2ec8d6c
-    type: button_long_press
-    subtype: button_1
-    discovery_id: shellyswitch25-C45BBE77DBE5-input-0 button_long_press
+  - device_id: 142c0c74f511cb5af11fa1d33e6437f7
+    domain: shelly
+    type: double_push
+    subtype: button1
     trigger: device
   - event_type: ios.action_fired
     event_data:
@@ -2058,11 +2058,10 @@
   alias: Włącz/wyłącz lampę w salonie
   description: ''
   triggers:
-  - domain: mqtt
-    device_id: 52237db1203926d98cf2fa58e2ec8d6c
-    type: button_long_press
-    subtype: button_2
-    discovery_id: shellyswitch25-C45BBE77DBE5-input-1 button_long_press
+  - device_id: 142c0c74f511cb5af11fa1d33e6437f7
+    domain: shelly
+    type: double_push
+    subtype: button2
     trigger: device
   - event_type: ios.action_fired
     event_data:
@@ -2586,30 +2585,30 @@
 - id: '1687849080259'
   alias: Pomocnik oświetlenia w salonie
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - light.ceiling_salon
     to: unavailable
     for:
       hours: 0
       minutes: 2
       seconds: 0
-  condition: []
-  action:
+    trigger: state
+  conditions: []
+  actions:
   - data: {}
-    target:
-      entity_id: switch.ceiling_fan_and_bulbs_salon
     action: switch.turn_off
+    target:
+      entity_id: switch.wentylator_i_oswietlenie_salon
   - delay:
       hours: 0
       minutes: 0
       seconds: 7
       milliseconds: 0
   - data: {}
-    target:
-      entity_id: switch.ceiling_fan_and_bulbs_salon
     action: switch.turn_on
+    target:
+      entity_id: switch.wentylator_i_oswietlenie_salon
   mode: single
 - id: '1693856668458'
   alias: Aktywuj w salonie scenę oświetlenie po zmierzchu
@@ -2702,7 +2701,7 @@
     - light.oswietlenie_przedpokoj
     - light.leds_przedpokoj
     - light.ceiling_salon
-    - light.leds_salon
+    - light.ledy_salon
     state: 'off'
   - condition: numeric_state
     entity_id: sensor.illumination_przedpokoj
@@ -3266,11 +3265,32 @@
     entity_id: input_boolean.heating_season
     state: 'on'
   actions:
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.shelly_blu_trv_7744f8_szybkie_dogrzanie
+  mode: single
+- id: '1730502166603'
+  alias: Wyślij dane do stacji pogodowej
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.nettigo_air_monitor_bme280_temperatura
+    - sensor.nettigo_air_monitor_bme280_wilgotnosc
+    - sensor.nettigo_air_monitor_bme280_cisnienie
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.to_state.state | is_number }}'
+  actions:
   - action: mqtt.publish
     metadata: {}
     data:
-      qos: '1'
-      topic: shellies-gen3/shelly-blu-gateway-gen3-78742c/rpc
-      payload: '{{ {"id":1,"src":"home-assistant","method":"BluTRV.Call","params":{"id":200,"method":"TRV.SetBoost","params":{"id":0,
-        "duration": 600}}} | to_json }}'
-  mode: single
+      evaluate_payload: false
+      qos: '0'
+      retain: true
+      topic: weather-station/{{ trigger.to_state.attributes.device_class }}
+      payload: '{{ trigger.to_state.state | float }}'
+  mode: parallel
+  max: 10

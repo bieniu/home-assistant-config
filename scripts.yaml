@@ -23,7 +23,7 @@ devices_away_mode:
       - light.lamp_gabinet
       - light.lamp_pracownia
       - light.lamp_salon
-      - light.leds_salon
+      - light.ledy_salon
       - light.leds_schody
       - light.lightstrip_antek
       - light.lightstrip_sypialnia
@@ -53,16 +53,18 @@ devices_away_mode:
   icon: mdi:home-export-outline
 heating_day:
   sequence:
-  - data: {}
-    action: script.humidification_start
-  - target:
+  - action: script.humidification_start
+    data: {}
+  - action: climate.set_temperature
+    target:
       entity_id:
       - climate.grzejnik_lazienka
       - climate.drabinka_lazienka
     data:
+      hvac_mode: heat
       temperature: '{{ states(''input_number.bathroom_temperature_day'') }}'
-    action: climate.set_temperature
-  - target:
+  - action: climate.set_temperature
+    target:
       entity_id:
       - climate.grzejnik_kuchnia
       - climate.grzejnik_salon
@@ -71,61 +73,67 @@ heating_day:
       - climate.grzejnik_antresola
       - climate.grzejnik_pralnia
     data:
+      hvac_mode: heat
       temperature: '{{ states(''input_number.temperature_day'') }}'
-    action: climate.set_temperature
-  - target:
+  - action: climate.set_temperature
+    target:
+      entity_id:
+      - climate.grzejnik_pralnia
+      - climate.grzejnik_goscinny
+    data:
+      hvac_mode: heat
+      temperature: '{{ states(''input_number.pomieszczenia_pomocnicze_temperatura_dzien'')
+        }}'
+  - action: climate.set_temperature
+    target:
       entity_id:
       - climate.grzejnik_antek
       - climate.grzejnik_sypialnia
-      - climate.grzejnik_goscinny
     data:
+      hvac_mode: heat
       temperature: '{{ states(''input_number.bedroom_temperature_day'') }}'
-    action: climate.set_temperature
   mode: single
   icon: mdi:radiator
   alias: Tryb dzienny ogrzewania
 heating_night:
   sequence:
-  - data: {}
-    action: script.humidification_start
-  - target:
+  - action: script.humidification_start
+  - action: climate.set_temperature
+    target:
       entity_id:
       - climate.grzejnik_gabinet
       - climate.grzejnik_pracownia
       - climate.grzejnik_antresola
-      - climate.grzejnik_pralnia
+      - climate.grzejnik_kuchnia
+      - climate.grzejnik_salon
     data:
       hvac_mode: heat
       temperature: '{{ states(''input_number.temperature_night'') }}'
-    action: climate.set_temperature
-  - target:
+  - action: climate.set_temperature
+    target:
       entity_id:
-      - climate.grzejnik_antek
-      - climate.grzejnik_sypialnia
+      - climate.grzejnik_pralnia
       - climate.grzejnik_goscinny
     data:
       hvac_mode: heat
+      temperature: '{{ states(''input_number.pomieszczenia_pomocnicze_temperatura_noc'')
+        }}'
+  - action: climate.set_temperature
+    target:
+      entity_id:
+      - climate.grzejnik_antek
+      - climate.grzejnik_sypialnia
+    data:
+      hvac_mode: heat
       temperature: '{{ states(''input_number.bedroom_temperature_night'') }}'
-    action: climate.set_temperature
-  - target:
+  - action: climate.set_temperature
+    target:
       entity_id:
       - climate.grzejnik_lazienka
       - climate.drabinka_lazienka
     data:
       hvac_mode: heat
       temperature: '{{ states(''input_number.bathroom_temperature_night'') }}'
-    action: climate.set_temperature
-  - condition: state
-    entity_id: input_boolean.guests
-    state: 'off'
-  - target:
-      entity_id:
-      - climate.grzejnik_kuchnia
-      - climate.grzejnik_salon
-    data:
-      hvac_mode: heat
-      temperature: '{{ states(''input_number.temperature_night'') }}'
-    action: climate.set_temperature
   mode: single
   alias: Tryb nocny ogrzewania
   icon: mdi:radiator
@@ -251,7 +259,7 @@ alexa_goodnight:
       - fan.ceiling_salon
       - fan.xiaomi_mi_standing_fan_1x
       - fan.xiaomi_mi_air_purifier_3h
-      - light.leds_salon
+      - light.ledy_salon
       - light.ceiling_salon
       - light.desk_lamp_antek
       - light.desk_lamp_gabinet
@@ -289,7 +297,7 @@ restart_wifi_devices:
   - data: {}
     target:
       entity_id:
-      - switch.ceiling_fan_and_bulbs_salon
+      - switch.wentylator_i_oswietlenie_salon
       - switch.zasilanie_oswietlenia_pokoju_goscinnego
       - switch.zasilanie_biurka_edyty
       - switch.zasilanie_ledow_antka
@@ -302,7 +310,7 @@ restart_wifi_devices:
   - data: {}
     target:
       entity_id:
-      - switch.ceiling_fan_and_bulbs_salon
+      - switch.wentylator_i_oswietlenie_salon
       - switch.zasilanie_oswietlenia_pokoju_goscinnego
       - switch.zasilanie_biurka_edyty
       - switch.zasilanie_ledow_antka
@@ -319,7 +327,6 @@ restart_wifi_devices:
       - button.shelly_1l_aacec4_uruchom_ponownie
       - button.shelly_1l_aceb5f_uruchom_ponownie
       - button.shelly_1l_ad365e_uruchom_ponownie
-      - button.shelly_25_77dbe5_restart
       - button.shelly_duo_5f6fa1_restart
       - button.shelly_gas_c6811c_restart
       - button.shelly_motion_2_08a4e9_restart
@@ -342,6 +349,7 @@ restart_wifi_devices:
       - button.shelly_1pm_gen3_c6b6c4_uruchom_ponownie
       - button.shelly_1pm_gen3_c66e94_uruchom_ponownie
       - button.shelly_1_gen3_cc7610_uruchom_ponownie
+      - button.shelly_2pm_gen3_36522c_uruchom_ponownie
     data: {}
     action: button.press
   mode: single

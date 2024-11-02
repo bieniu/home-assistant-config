@@ -69,19 +69,19 @@
       - rgb
       effect:
       color_mode: color_temp
-      brightness: 178
-      color_temp_kelvin: 3058
-      color_temp: 327
+      brightness: 255
+      color_temp_kelvin: 5524
+      color_temp: 181
       hs_color:
-      - 27.732
-      - 55.342
+      - 28.004
+      - 12.556
       rgb_color:
       - 255
-      - 179
-      - 113
+      - 237
+      - 222
       xy_color:
-      - 0.491
-      - 0.383
+      - 0.354
+      - 0.343
       entity_id:
       - light.bulb_salon_1
       - light.bulb_salon_2
@@ -89,27 +89,28 @@
       friendly_name: Oświetlenie
       supported_features: 44
       state: 'on'
-    light.leds_salon:
-      supported_color_modes:
-      - onoff
-      color_mode:
-      icon: mdi:led-strip-variant
-      friendly_name: LEDy
-      supported_features: 0
-      state: 'off'
     switch.adaptive_lighting_salon:
       configuration: {}
-      brightness_pct:
-      color_temp_kelvin:
-      color_temp_mired:
+      brightness_pct: 100
+      color_temp_kelvin: 5500
+      color_temp_mired: 181
       rgb_color:
+      - 255
+      - 237.49307999888646
+      - 222.2454588843617
       xy_color:
+      - 0.354
+      - 0.343
       hs_color:
-      sun_position:
-      force_rgb_color:
+      - 27.273
+      - 12.941
+      sun_position: 0.999249260993034
+      force_rgb_color: false
       icon: mdi:theme-light-dark
       friendly_name: 'Adaptive Lighting: salon'
-      state: 'off'
+      manual_control: []
+      autoreset_time_remaining: {}
+      state: 'on'
     light.lamp_salon:
       supported_color_modes:
       - onoff
@@ -118,13 +119,21 @@
       friendly_name: Lampa
       supported_features: 0
       state: 'off'
+    light.ledy_salon:
+      supported_color_modes:
+      - onoff
+      color_mode:
+      icon: mdi:led-strip-variant
+      friendly_name: LEDy salon
+      supported_features: 0
+      state: 'off'
   icon: mdi:lightbulb-night-outline
   metadata:
     light.ceiling_salon:
       entity_only: true
-    light.leds_salon:
-      entity_only: true
     switch.adaptive_lighting_salon:
       entity_only: true
     light.lamp_salon:
+      entity_only: true
+    light.ledy_salon:
       entity_only: true

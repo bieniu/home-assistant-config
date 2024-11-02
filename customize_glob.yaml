@@ -1,2 +1,6 @@
 "binary_sensor.*_status":
   device_class: connectivity
+
+"climate.danfoss_014g0013_thermostat_*":
+  max_temp: 28
+  min_temp: 4
