@@ -45,7 +45,7 @@ sensor:
     entity_category: "diagnostic"
 
   - platform: wifi_signal
-    name: "Sygnał WiFi"
+    name: "Siła sygnału"
     update_interval: 300s
     device_class: "signal_strength"
     entity_category: "diagnostic"

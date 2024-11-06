@@ -1,3 +1,13 @@
+- sensor:
+    - name: Dom Ciśnienie
+      unique_id: home_pressure
+      state: "{{ states('sensor.nettigo_air_monitor_bme280_cisnienie') | float }}"
+      attributes:
+        tendencja: "{{ states('sensor.tendencja_cisnienia') }}"
+      availability: "{{ states('sensor.nettigo_air_monitor_bme280_cisnienie') | is_number }}"
+      device_class: pressure
+      state_class: measurement
+      unit_of_measurement: hPa
 - binary_sensor:
     - name: dishwasher_kuchnia
       unique_id: "dishwasher_kuchnia"
@@ -197,10 +207,6 @@
       unique_id: "shelly_plus_smoke_d08428_status"
       state: "{{ is_state('device_tracker.shelly_plus_smoke_d08428', 'home') }}"
 
-    - name: shelly_valve_2a544_status
-      unique_id: "shelly_valve_2a544_status"
-      state: "{{ is_state('device_tracker.shelly_valve_72a544', 'home') }}"
-
     - name: shelly_1l_aacec4_status
       unique_id: "shelly_1l_aacec4_status"
       state: "{{ is_state('device_tracker.shelly_1l_aacec4', 'home') }}"
@@ -260,10 +266,6 @@
     - name: shelly_plus_pm_mini_af50f0_status
       unique_id: "shelly_plus_pm_mini_af50f0_status"
       state: "{{ is_state('device_tracker.shelly_plus_pm_mini_af50f0', 'home') }}"
-
-    - name: shelly_25_77dbe5_status
-      unique_id: "shelly_25_77dbe5_status"
-      state: "{{ is_state('device_tracker.shelly_25_77dbe5', 'home') }}"
 
     - name: shelly_plus_2pm_8d28f4_status
       unique_id: "shelly_plus_2pm_8d28f4_status"

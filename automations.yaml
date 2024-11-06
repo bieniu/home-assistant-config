@@ -2836,14 +2836,14 @@
 - id: '1716994224655'
   alias: Pomocnik sprzętu RTV
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - remote.salon
     attribute: current_activity
     not_to: PowerOff
-  condition: []
-  action:
+    trigger: state
+  conditions: []
+  actions:
   - delay:
       hours: 0
       minutes: 0
@@ -2855,22 +2855,22 @@
       attribute: current_activity
       state: gry
     then:
-    - service: media_player.select_source
-      data:
+    - data:
         source: HDMI 1
       target:
         entity_id: media_player.philips_65oled707
+      action: media_player.select_source
   - if:
     - condition: state
       entity_id: remote.salon
       attribute: current_activity
       state: telewizja
     then:
-    - service: media_player.select_source
-      data:
-        source: HDMI 2
+    - data:
+        source: HDMI 3
       target:
         entity_id: media_player.philips_65oled707
+      action: media_player.select_source
   mode: single
 - id: '1718655436619'
   alias: Raportowanie wilgotności do termostatu na antresoli
@@ -3271,26 +3271,3 @@
     target:
       entity_id: button.shelly_blu_trv_7744f8_szybkie_dogrzanie
   mode: single
-- id: '1730502166603'
-  alias: Wyślij dane do stacji pogodowej
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - sensor.nettigo_air_monitor_bme280_temperatura
-    - sensor.nettigo_air_monitor_bme280_wilgotnosc
-    - sensor.nettigo_air_monitor_bme280_cisnienie
-  conditions:
-  - condition: template
-    value_template: '{{ trigger.to_state.state | is_number }}'
-  actions:
-  - action: mqtt.publish
-    metadata: {}
-    data:
-      evaluate_payload: false
-      qos: '0'
-      retain: true
-      topic: weather-station/{{ trigger.to_state.attributes.device_class }}
-      payload: '{{ trigger.to_state.state | float }}'
-  mode: parallel
-  max: 10

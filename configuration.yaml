@@ -5,6 +5,11 @@ default_config:
 recorder:
   db_url: !secret mysql_db_url
   purge_keep_days: 7
+  exclude:
+    entity_globs:
+      - sensor.airly_*
+    entities:
+      - weather.accuweather
 
 frontend:
   themes: !include_dir_merge_named themes
