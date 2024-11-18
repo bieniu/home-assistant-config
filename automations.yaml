@@ -211,22 +211,24 @@
 - id: notification_humidifier_low_water
   alias: Mało wody w nawilżaczy w salonie
   description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
+  triggers:
+  - entity_id:
+    - sensor.xiaomi_mi_humidifier_ca1_water_level
     below: 10
     for:
       hours: 0
-      minutes: 3
+      minutes: 10
       seconds: 0
-  - platform: numeric_state
-    entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
+    trigger: numeric_state
+  - entity_id:
+    - sensor.xiaomi_mi_humidifier_ca1_water_level
     below: 20
     for:
       hours: 0
-      minutes: 3
+      minutes: 10
       seconds: 0
-  condition:
+    trigger: numeric_state
+  conditions:
   - condition: or
     conditions:
     - condition: state
@@ -241,7 +243,7 @@
   - condition: template
     value_template: '{{ states(''sensor.xiaomi_mi_humidifier_ca1_water_level'') |
       int(999) != 0 }}'
-  action:
+  actions:
   - parallel:
     - choose:
         conditions:
@@ -249,7 +251,6 @@
           entity_id: person.maciek
           state: home
         sequence:
-          service: python_script.notify
           data:
             title: '{{ notification_title }}'
             message: '{{ notification_message }}'
@@ -257,13 +258,13 @@
             services:
             - service: notify.mobile_app_iphone_13
               type: ios
+          action: python_script.notify
     - choose:
         conditions:
           condition: state
           entity_id: person.edyta
           state: home
         sequence:
-          service: python_script.notify
           data:
             title: '{{ notification_title }}'
             message: '{{ notification_message }}'
@@ -271,6 +272,7 @@
             services:
             - service: notify.mobile_app_iphone_12
               type: ios
+          action: python_script.notify
   variables:
     notification_title: Uzupełnij wodę w nawilżaczu
     notification_message: W zbiorniku nawilżacza w salonie pozostało {{ states('sensor.xiaomi_mi_humidifier_ca1_water_level')
@@ -2246,22 +2248,24 @@
     notification_tag: notification-humidifier-cb1
 - id: '1671558318632'
   alias: Mało wody w nawilżaczu u Antka
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.xiaomi_mi_humidifier_cb1_water_level
+  triggers:
+  - entity_id:
+    - sensor.xiaomi_mi_humidifier_cb1_water_level
     below: 10
     for:
       hours: 0
-      minutes: 3
+      minutes: 10
       seconds: 0
-  - platform: numeric_state
-    entity_id: sensor.xiaomi_mi_humidifier_cb1_water_level
+    trigger: numeric_state
+  - entity_id:
+    - sensor.xiaomi_mi_humidifier_cb1_water_level
     below: 20
     for:
       hours: 0
-      minutes: 3
+      minutes: 10
       seconds: 0
-  condition:
+    trigger: numeric_state
+  conditions:
   - condition: or
     conditions:
     - condition: state
@@ -2276,7 +2280,7 @@
   - condition: template
     value_template: '{{ states(''sensor.xiaomi_mi_humidifier_cb1_water_level'') |
       int(999) != 0 }}'
-  action:
+  actions:
   - parallel:
     - choose:
         conditions:
@@ -2284,7 +2288,6 @@
           entity_id: person.maciek
           state: home
         sequence:
-          service: python_script.notify
           data:
             title: '{{ notification_title }}'
             message: '{{ notification_message }}'
@@ -2292,13 +2295,13 @@
             services:
             - service: notify.mobile_app_iphone_13
               type: ios
+          action: python_script.notify
     - choose:
         conditions:
           condition: state
           entity_id: person.edyta
           state: home
         sequence:
-          service: python_script.notify
           data:
             title: '{{ notification_title }}'
             message: '{{ notification_message }}'
@@ -2306,13 +2309,13 @@
             services:
             - service: notify.mobile_app_iphone_12
               type: ios
+          action: python_script.notify
     - choose:
         conditions:
           condition: state
           entity_id: person.antek
           state: home
         sequence:
-          service: python_script.notify
           data:
             title: '{{ notification_title }}'
             message: '{{ notification_message }}'
@@ -2320,6 +2323,7 @@
             services:
             - service: notify.mobile_app_iphone_11
               type: ios
+          action: python_script.notify
   variables:
     notification_title: Uzupełnij wodę w nawilżaczu
     notification_message: W zbiorniku nawilżacza w pokoju Antka pozostało {{ states('sensor.xiaomi_mi_humidifier_cb1_water_level')
@@ -2554,34 +2558,6 @@
       - light.ceiling_sypialnia
       - light.ceiling_garderoba
     data: {}
-- id: '1687379670409'
-  alias: Dostępna aktualizacja firmware AsusWrt
-  trigger:
-  - platform: webhook
-    allowed_methods:
-    - POST
-    local_only: true
-    webhook_id: c49z8jfh2reyo2dc8q2tn45jd7aw3fugrafws2jzrauzhsh7g3jzatzvwn5z
-  condition:
-  - condition: template
-    value_template: '{{ trigger.json.installed != trigger.json.latest }}'
-  - condition: template
-    value_template: '{{ trigger.json.installed is defined }}'
-  - condition: template
-    value_template: '{{ trigger.json.latest is defined }}'
-  action:
-  - service: python_script.notify
-    data:
-      title: Dostępna aktualizacja
-      message: Dostępna jest aktualizacja do wersji {{ trigger.json.latest }} dla
-        Asus RT-AX86S.
-      tag: notification-update-router
-      group: updates
-      url: http://rt-ax86s.bieniu.lan/
-      services:
-      - service: notify.mobile_app_iphone_13
-        type: ios
-  mode: single
 - id: '1687849080259'
   alias: Pomocnik oświetlenia w salonie
   description: ''
@@ -2871,27 +2847,6 @@
       target:
         entity_id: media_player.philips_65oled707
       action: media_player.select_source
-  mode: single
-- id: '1718655436619'
-  alias: Raportowanie wilgotności do termostatu na antresoli
-  description: ''
-  triggers:
-  - entity_id:
-    - sensor.humidity_antresola
-    trigger: state
-  conditions:
-  - condition: template
-    value_template: '{{ is_number(trigger.to_state.state) }}'
-  - condition: state
-    entity_id: input_boolean.heating_season
-    state: 'on'
-  actions:
-  - metadata: {}
-    data:
-      retain: true
-      topic: shellies/shellytrv-84FD2772A544/humidity
-      payload: '{{ trigger.to_state.state | int }}'
-    action: mqtt.publish
   mode: single
 - id: '1719055090033'
   alias: Włącz/wyłącz wentylator w gabinecie
@@ -3228,8 +3183,8 @@
   variables:
     get_config_payload: '{{ {''id'': 1, ''src'': ''shellies_discovery'', ''method'':
       ''Shelly.GetConfig''} | to_json }}'
-    get_components_payload: '{{ {''id'': 1, ''src'': ''shellies_discovery'', ''method'':''Shelly.GetComponents''}
-      | to_json }}'
+    get_components_payload: '{{ {''id'': 1, ''src'': ''shellies_discovery'', ''method'':''Shelly.GetComponents'',
+      ''params'': {''include'': [''config'']}} | to_json }}'
     device_ids:
     - shellies-gen3/shelly-blu-gateway-gen3-78742c
 - id: '1729422698511'

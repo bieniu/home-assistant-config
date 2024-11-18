@@ -1,5 +1,7 @@
 default: warning
 filters:
+  homeassistant.components.go2rtc.server:
+    - "codecs not matched"
   homeassistant.loader:
     - "We found a custom integration"
   slixmpp.stringprep:
