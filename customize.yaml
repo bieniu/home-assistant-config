@@ -1,13 +1,10 @@
-sensor.printer_page_counter:
-  unit_of_measurement: "str"
-
 sensor.home_uv_index:
   unit_of_measurement: ""
 
 sensor.minecraft_server_players_online:
   unit_of_measurement: "graczy"
 
-sensor.cloud_gateway_ultra_podlaczonych_klientow:
+sensor.cloud_gateway_ultra_podlaczonych:
   unit_of_measurement: "klientów"
 
 sensor.maciek_kroki:

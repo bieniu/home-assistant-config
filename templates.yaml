@@ -9,18 +9,6 @@
       state_class: measurement
       unit_of_measurement: hPa
 - binary_sensor:
-    - name: dishwasher_kuchnia
-      unique_id: "dishwasher_kuchnia"
-      icon: "mdi:dishwasher"
-      availability: "{{ states('sensor.power_dishwasher_kuchnia') != ('unavailable' or 'unknown') }}"
-      state: "{{ states('sensor.power_dishwasher_kuchnia') | int > 1 }}"
-
-    - name: washing_machine_pralnia
-      unique_id: "washing_machine_pralnia"
-      icon: "mdi:washing-machine"
-      availability: "{{ states('sensor.power_washing_machine_pralnia') != ('unavailable' or 'unknown') }}"
-      state: "{{ states('sensor.power_washing_machine_pralnia') | int > 1 }}"
-
     - name: raspberry_status
       unique_id: "raspberry_status"
       icon: mdi:raspberry-pi
@@ -62,11 +50,6 @@
     - name: lenovo_ideapad_s145_status
       unique_id: "lenovo_ideapad_s145_status"
       state: "{{ is_state('device_tracker.lenovo_ideapad_s145', 'home') }}"
-
-    - name: brother_status
-      unique_id: "brother_status"
-      state: "{{ is_state('device_tracker.brother_hl_l2340dw', 'home') }}"
-      icon: mdi:printer
 
 - trigger:
     - platform: state

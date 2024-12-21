@@ -21,7 +21,6 @@ devices_away_mode:
       - light.gateway_antresola
       - light.lamp_goscinny
       - light.lamp_gabinet
-      - light.lamp_pracownia
       - light.lamp_salon
       - light.ledy_salon
       - light.leds_schody
@@ -34,7 +33,6 @@ devices_away_mode:
       - fan.ceiling_salon
       - fan.xiaomi_mi_standing_fan_1x
       - fan.xiaomi_mi_standing_fan_2
-      - humidifier.xiaomi_mi_humidifier_ca1
       - humidifier.xiaomi_mi_humidifier_cb1
       - light.blat_kuchnia
     action: homeassistant.turn_off
@@ -92,12 +90,29 @@ heating_day:
     data:
       hvac_mode: heat
       temperature: '{{ states(''input_number.bedroom_temperature_day'') }}'
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - action: climate.set_hvac_mode
+    metadata: {}
+    data:
+      hvac_mode: heat
+    target:
+      entity_id:
+      - climate.grzejnik_antresola
+      - climate.grzejnik_gabinet
+      - climate.grzejnik_goscinny
+      - climate.grzejnik_pralnia
+      - climate.grzejnik_lazienka
   mode: single
   icon: mdi:radiator
   alias: Tryb dzienny ogrzewania
 heating_night:
   sequence:
   - action: script.humidification_start
+    data: {}
   - action: climate.set_temperature
     target:
       entity_id:
@@ -134,6 +149,22 @@ heating_night:
     data:
       hvac_mode: heat
       temperature: '{{ states(''input_number.bathroom_temperature_night'') }}'
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - action: climate.set_hvac_mode
+    metadata: {}
+    data:
+      hvac_mode: heat
+    target:
+      entity_id:
+      - climate.grzejnik_antresola
+      - climate.grzejnik_goscinny
+      - climate.grzejnik_gabinet
+      - climate.grzejnik_lazienka
+      - climate.grzejnik_pralnia
   mode: single
   alias: Tryb nocny ogrzewania
   icon: mdi:radiator
@@ -157,7 +188,6 @@ heating_away_mode:
     action: climate.set_temperature
   - target:
       entity_id:
-      - humidifier.xiaomi_mi_humidifier_ca1
       - humidifier.xiaomi_mi_humidifier_cb1
     data: {}
     action: humidifier.turn_off
@@ -180,11 +210,12 @@ heating_season_end:
       - climate.grzejnik_kuchnia
       - climate.grzejnik_pralnia
       - climate.grzejnik_antresola
+    data: {}
   - action: humidifier.turn_off
     target:
       entity_id:
       - humidifier.xiaomi_mi_humidifier_cb1
-      - humidifier.xiaomi_mi_humidifier_ca1
+    data: {}
   mode: single
   alias: Koniec sezony grzewczego
   icon: mdi:radiator-off
@@ -207,7 +238,6 @@ heating_airing_begin:
     data: {}
   - target:
       entity_id:
-      - humidifier.xiaomi_mi_humidifier_ca1
       - humidifier.xiaomi_mi_humidifier_cb1
     data: {}
     action: humidifier.turn_off
@@ -361,28 +391,16 @@ humidification_start:
   sequence:
   - if:
     - condition: numeric_state
-      entity_id: sensor.humidity_salon
-      below: input_number.target_humidity
-    - condition: numeric_state
-      entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
-      above: 5
-    then:
-    - service: humidifier.turn_on
-      data: {}
-      target:
-        entity_id: humidifier.xiaomi_mi_humidifier_ca1
-  - if:
-    - condition: numeric_state
-      entity_id: sensor.humidity_antek
+      entity_id: sensor.humidity_sypialnia
       below: input_number.target_humidity
     - condition: numeric_state
       entity_id: sensor.xiaomi_mi_humidifier_cb1_water_level
       above: 5
     then:
-    - service: humidifier.turn_on
-      data: {}
+    - data: {}
       target:
         entity_id: humidifier.xiaomi_mi_humidifier_cb1
+      action: humidifier.turn_on
 alexa_harmony_activity_tv:
   alias: Włącz telewizję w salonie
   sequence:

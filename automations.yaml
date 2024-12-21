@@ -170,23 +170,22 @@
 - id: notification_dishwasher_end
   alias: Koniec zmywania naczyń
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.dishwasher_kuchnia
+  triggers:
+  - entity_id:
+    - binary_sensor.zmywarka_kuchnia
     from: 'on'
     to: 'off'
     for:
       minutes: 1
-  action:
+    trigger: state
+  actions:
   - parallel:
     - if:
       - condition: state
         entity_id: person.maciek
         state: home
       then:
-      - service: python_script.notify
-        data:
+      - data:
           title: Koniec zmywania
           message: Zmywarka zakończyła zmywanie naczyń.
           tag: notification-dishwasher
@@ -194,13 +193,13 @@
           services:
           - service: notify.mobile_app_iphone_13
             type: ios
+        action: python_script.notify
     - if:
       - condition: state
         entity_id: person.edyta
         state: home
       then:
-      - service: python_script.notify
-        data:
+      - data:
           title: Koniec zmywania
           message: Zmywarka zakończyła zmywanie naczyń.
           tag: notification-dishwasher
@@ -208,76 +207,7 @@
           services:
           - service: notify.mobile_app_iphone_12
             type: ios
-- id: notification_humidifier_low_water
-  alias: Mało wody w nawilżaczy w salonie
-  description: ''
-  triggers:
-  - entity_id:
-    - sensor.xiaomi_mi_humidifier_ca1_water_level
-    below: 10
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-    trigger: numeric_state
-  - entity_id:
-    - sensor.xiaomi_mi_humidifier_ca1_water_level
-    below: 20
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-    trigger: numeric_state
-  conditions:
-  - condition: or
-    conditions:
-    - condition: state
-      entity_id: person.maciek
-      state: home
-    - condition: state
-      entity_id: person.edyta
-      state: home
-  - condition: state
-    entity_id: input_boolean.heating_season
-    state: 'on'
-  - condition: template
-    value_template: '{{ states(''sensor.xiaomi_mi_humidifier_ca1_water_level'') |
-      int(999) != 0 }}'
-  actions:
-  - parallel:
-    - choose:
-        conditions:
-          condition: state
-          entity_id: person.maciek
-          state: home
-        sequence:
-          data:
-            title: '{{ notification_title }}'
-            message: '{{ notification_message }}'
-            tag: '{{ notification_tag }}'
-            services:
-            - service: notify.mobile_app_iphone_13
-              type: ios
-          action: python_script.notify
-    - choose:
-        conditions:
-          condition: state
-          entity_id: person.edyta
-          state: home
-        sequence:
-          data:
-            title: '{{ notification_title }}'
-            message: '{{ notification_message }}'
-            tag: '{{ notification_tag }}'
-            services:
-            - service: notify.mobile_app_iphone_12
-              type: ios
-          action: python_script.notify
-  variables:
-    notification_title: Uzupełnij wodę w nawilżaczu
-    notification_message: W zbiorniku nawilżacza w salonie pozostało {{ states('sensor.xiaomi_mi_humidifier_ca1_water_level')
-      }}% wody.
-    notification_tag: notification-humidifier-ca1
+        action: python_script.notify
 - id: notification_salon_co2
   alias: Wysokie stężenie dwutlenku węgla w salonie
   description: ''
@@ -1203,7 +1133,8 @@
       from: 'on'
       to: 'off'
       trigger: state
-    - entity_id: light.leds_salon
+    - entity_id:
+      - light.ledy_salon
       from: 'off'
       to: 'on'
       trigger: state
@@ -1560,44 +1491,6 @@
     device_id: 40c8e12009a311ebbd1ce5aa5e97a8d7
     entity_id: light.lightstrip_antek
     domain: light
-- id: light_turn_on_pracownia_lamp_when_dark_and_motion
-  alias: Włącz lampkę w pracowni gdy pojawi się ruch i jest ciemno
-  description: ''
-  triggers:
-  - entity_id: binary_sensor.motion_pracownia
-    from: 'off'
-    to: 'on'
-    trigger: state
-  conditions:
-  - condition: state
-    entity_id:
-    - input_boolean.away_mode
-    - light.lamp_pracownia
-    state: 'off'
-  - condition: numeric_state
-    entity_id: sensor.illumination_pracownia
-    below: 8
-  - condition: state
-    entity_id: input_boolean.light_auto_turn_pracownia
-    state: 'on'
-  - condition: sun
-    before: sunrise
-    before_offset: +00:10:00
-    after: sunset
-  actions:
-  - target:
-      entity_id: light.lamp_pracownia
-    data: {}
-    action: light.turn_on
-  - wait_for_trigger:
-      entity_id: binary_sensor.motion_pracownia
-      from: 'on'
-      to: 'off'
-      trigger: state
-  - target:
-      entity_id: light.lamp_pracownia
-    data: {}
-    action: light.turn_off
 - id: light_toggle_gabinet_ceiling_light_
   alias: Włącz/wyłącz oświetlenie sufitowe w gabinecie
   description: ''
@@ -1682,16 +1575,19 @@
 - id: light_turn_off_gabinet_light_when_no_motion
   alias: Wyłącz oświetlenie w gabinecie gdy nie ma ruchu
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_gabinet
+  triggers:
+  - entity_id: binary_sensor.motion_gabinet
     from: 'on'
     to: 'off'
     for:
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: binary_sensor.dell_latitude_5400_status
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.laptop_maciek_status
     state: 'off'
   - condition: or
     conditions:
@@ -1704,14 +1600,14 @@
     - condition: state
       entity_id: light.desk_lamp_gabinet
       state: 'on'
-  action:
-  - service: light.turn_off
-    target:
+  actions:
+  - target:
       entity_id:
       - light.ceiling_gabinet
       - light.lamp_gabinet
       - light.desk_lamp_gabinet
     data: {}
+    action: light.turn_off
 - id: light_toggle_schody_leds
   alias: Włącz/wyłącz oświetlenie schodów
   description: ''
@@ -1834,109 +1730,16 @@
 - id: humidification_set_target_humidity
   alias: Ustaw docelową wilgotność
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - input_number.target_humidity
-  action:
-  - service: humidifier.set_humidity
-    entity_id:
-    - humidifier.xiaomi_mi_humidifier_ca1
+    trigger: state
+  actions:
+  - entity_id:
     - humidifier.xiaomi_mi_humidifier_cb1
     data:
       humidity: '{{ states(''input_number.target_humidity'') }}'
-- id: humidification_start
-  alias: Rozpoczęcie nawilżania w salonie
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.humidity_salon
-    for:
-      hours: 0
-      minutes: 2
-      seconds: 0
-    below: input_number.target_humidity
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
-    above: 5
-  - condition: state
-    entity_id: input_boolean.heating_season
-    state: 'on'
-  - condition: state
-    entity_id: input_boolean.heating_airing
-    state: 'off'
-  - condition: state
-    entity_id: input_boolean.away_mode
-    state: 'off'
-  - condition: state
-    entity_id: humidifier.xiaomi_mi_humidifier_ca1
-    state: 'off'
-  action:
-  - service: humidifier.turn_on
-    entity_id: humidifier.xiaomi_mi_humidifier_ca1
-- id: humidification_stop
-  alias: Zakończenie nawilżania w salonie
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.humidity_salon
-    for:
-      hours: 0
-      minutes: 2
-      seconds: 0
-    above: input_number.target_humidity
-  - platform: numeric_state
-    entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
-    below: 6
-    for:
-      minutes: 5
-  condition:
-  - condition: state
-    entity_id: input_boolean.heating_season
-    state: 'on'
-  - condition: state
-    entity_id: humidifier.xiaomi_mi_humidifier_ca1
-    state: 'on'
-  action:
-  - service: humidifier.turn_off
-    entity_id: humidifier.xiaomi_mi_humidifier_ca1
-  - condition: numeric_state
-    entity_id: sensor.xiaomi_mi_humidifier_ca1_water_level
-    below: 6
-  - choose:
-      conditions:
-        condition: state
-        entity_id: person.maciek
-        state: home
-      sequence:
-        service: python_script.notify
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          tag: '{{ notification_tag }}'
-          services:
-          - service: notify.mobile_app_iphone_13
-            type: ios
-  - choose:
-      conditions:
-        condition: state
-        entity_id: person.edyta
-        state: home
-      sequence:
-        service: python_script.notify
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          tag: '{{ notification_tag }}'
-          services:
-          - service: notify.mobile_app_iphone_12
-            type: ios
-  variables:
-    notification_title: Uzupełnij wodę w nawilżaczu
-    notification_message: Nawilżacz w salonie został wyłączony ponieważ w zbiorniku
-      pozostało {{ states('sensor.xiaomi_mi_humidifier_ca1_water_level') }}% wody.
-    notification_tag: notification-humidifier-ca1
+    action: humidifier.set_humidity
 - id: log_level
   alias: Ustawianie poziomu logowania
   description: ''
@@ -2122,17 +1925,17 @@
       entity_id: media_player.sonos_one_gabinet
     action: media_player.media_play_pause
 - id: '1671558014151'
-  alias: Rozpoczęcie nawilżania u Antka
+  alias: Rozpoczęcie nawilżania w sypialni
   description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.humidity_antek
+  triggers:
+  - entity_id: sensor.humidity_sypialnia
     for:
       hours: 0
       minutes: 2
       seconds: 0
     below: input_number.target_humidity
-  condition:
+    trigger: numeric_state
+  conditions:
   - condition: numeric_state
     entity_id: sensor.xiaomi_mi_humidifier_cb1_water_level
     above: 5
@@ -2148,35 +1951,35 @@
   - condition: state
     entity_id: humidifier.xiaomi_mi_humidifier_cb1
     state: 'off'
-  action:
-  - service: humidifier.turn_on
-    entity_id: humidifier.xiaomi_mi_humidifier_cb1
+  actions:
+  - entity_id: humidifier.xiaomi_mi_humidifier_cb1
+    action: humidifier.turn_on
 - id: '1671558157880'
-  alias: Zakończenie nawilżania u Antka
+  alias: Zakończenie nawilżania w sypialni
   description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.humidity_antek
+  triggers:
+  - entity_id: sensor.humidity_sypialnia
     for:
       hours: 0
       minutes: 2
       seconds: 0
     above: input_number.target_humidity
-  - platform: numeric_state
-    entity_id: sensor.xiaomi_mi_humidifier_cb1_water_level
+    trigger: numeric_state
+  - entity_id: sensor.xiaomi_mi_humidifier_cb1_water_level
     below: 6
     for:
       minutes: 5
-  condition:
+    trigger: numeric_state
+  conditions:
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
   - condition: state
     entity_id: humidifier.xiaomi_mi_humidifier_cb1
     state: 'on'
-  action:
-  - service: humidifier.turn_off
-    entity_id: humidifier.xiaomi_mi_humidifier_cb1
+  actions:
+  - entity_id: humidifier.xiaomi_mi_humidifier_cb1
+    action: humidifier.turn_off
   - condition: numeric_state
     entity_id: sensor.xiaomi_mi_humidifier_cb1_water_level
     below: 6
@@ -2186,7 +1989,6 @@
         entity_id: person.maciek
         state: home
       sequence:
-        service: python_script.notify
         data:
           title: '{{ notification_title }}'
           message: '{{ notification_message }}'
@@ -2194,13 +1996,13 @@
           services:
           - service: notify.mobile_app_iphone_13
             type: ios
+        action: python_script.notify
   - choose:
       conditions:
         condition: state
         entity_id: person.edyta
         state: home
       sequence:
-        service: python_script.notify
         data:
           title: '{{ notification_title }}'
           message: '{{ notification_message }}'
@@ -2208,13 +2010,13 @@
           services:
           - service: notify.mobile_app_iphone_12
             type: ios
+        action: python_script.notify
   - choose:
       conditions:
         condition: state
         entity_id: person.antek
         state: home
       sequence:
-        service: python_script.notify
         data:
           title: '{{ notification_title }}'
           message: '{{ notification_message }}'
@@ -2222,13 +2024,14 @@
           services:
           - service: notify.mobile_app_iphone_11
             type: ios
+        action: python_script.notify
   variables:
     notification_title: Uzupełnij wodę w nawilżaczu
-    notification_message: Nawilżacz w salonie został wyłączony ponieważ w zbiorniku
+    notification_message: Nawilżacz w sypialni został wyłączony ponieważ w zbiorniku
       pozostało {{ states('sensor.xiaomi_mi_humidifier_cb1_water_level') }}% wody.
     notification_tag: notification-humidifier-cb1
 - id: '1671558318632'
-  alias: Mało wody w nawilżaczu u Antka
+  alias: Mało wody w nawilżaczu w sypialni
   triggers:
   - entity_id:
     - sensor.xiaomi_mi_humidifier_cb1_water_level
@@ -2307,7 +2110,7 @@
           action: python_script.notify
   variables:
     notification_title: Uzupełnij wodę w nawilżaczu
-    notification_message: W zbiorniku nawilżacza w pokoju Antka pozostało {{ states('sensor.xiaomi_mi_humidifier_cb1_water_level')
+    notification_message: W zbiorniku nawilżacza w sypialni pozostało {{ states('sensor.xiaomi_mi_humidifier_cb1_water_level')
       }}% wody.
     notification_tag: notification-humidifier-cb1
 - id: '1672476393165'
@@ -2401,23 +2204,22 @@
 - id: '1673781976268'
   alias: Koniec prania
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.washing_machine_pralnia
+  triggers:
+  - entity_id:
+    - binary_sensor.pralka_pralnia
     from: 'on'
     to: 'off'
     for:
       minutes: 1
-  action:
+    trigger: state
+  actions:
   - parallel:
     - if:
       - condition: state
         entity_id: person.maciek
         state: home
       then:
-      - service: python_script.notify
-        data:
+      - data:
           title: Koniec prania
           message: Pralka zakończyła pranie.
           tag: notification-washing-machine
@@ -2425,13 +2227,13 @@
           services:
           - service: notify.mobile_app_iphone_13
             type: ios
+        action: python_script.notify
     - if:
       - condition: state
         entity_id: person.edyta
         state: home
       then:
-      - service: python_script.notify
-        data:
+      - data:
           title: Koniec prania
           message: Pralka zakończyła pranie.
           tag: notification-washing-machine
@@ -2439,6 +2241,7 @@
           services:
           - service: notify.mobile_app_iphone_12
             type: ios
+        action: python_script.notify
 - id: '1678536051718'
   alias: Dym w mieszkaniu
   description: ''
@@ -2716,32 +2519,32 @@
 - id: '1710416852993'
   alias: Nocne oszczędzanie energii
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - schedule.energy_consumption_reduction
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: input_boolean.guests
     state: 'off'
-  action:
+  actions:
   - if:
     - condition: template
       value_template: '{{ trigger.to_state.state == "on" }}'
     then:
-    - service: switch.turn_off
-      target:
-        entity_id: switch.tv_power_supply_goscinny
+    - target:
+        entity_id: switch.zasilanie_telewizora_goscinny
       data: {}
+      action: switch.turn_off
   - if:
     - condition: template
       value_template: '{{ trigger.to_state.state == "off" }}'
     then:
-    - service: switch.turn_on
-      target:
+    - target:
         entity_id:
-        - switch.tv_power_supply_goscinny
+        - switch.zasilanie_telewizora_goscinny
       data: {}
+      action: switch.turn_on
   mode: single
 - id: '1715247759498'
   alias: Niedostępne urządzenia lub usługi
@@ -2756,15 +2559,15 @@
         \"media_player\", \"remote\", \"sensor\", \"switch\", \"weather\"] %}\n{%
         set ignored_entities = [\"switch.philips_65oled707_screen_state\", \"light.philips_65oled707_ambilight\",
         \"media_player.philips_65oled707_cast\"] %}\n{% set ignored_entries = [\"Asus
-        RT-AX86S\", \"Sony KD-55XF8596\", \"SpeedTest\", \"BMW X1 xDrive20i\"] %}\n{%
-        macro unavailable_entries() %}\n  {% for domain in checked_domains %}\n    {%
-        for entity_id in states[domain] | selectattr(\"state\", \"==\", \"unavailable\")
-        | map(attribute=\"entity_id\") if entity_id not in ignored_entities %}\n      {%
-        set entry_name = device_attr(entity_id, \"name_by_user\") or device_attr(entity_id,
-        \"name\") %}\n      {% if entry_name not in ignored_entries and entry_name
-        != None %}\n        {{ entry_name }}@{{ area_name(entity_id) }}|\n      {%
-        endif %}\n    {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{ unavailable_entries()
-        }}"
+        RT-AX86S\", \"Sony KD-55XF8596\", \"SpeedTest\", \"BMW X1 xDrive20i\", \"Bzura
+        (Żuków)\"] %}\n{% macro unavailable_entries() %}\n  {% for domain in checked_domains
+        %}\n    {% for entity_id in states[domain] | selectattr(\"state\", \"==\",
+        \"unavailable\") | map(attribute=\"entity_id\") if entity_id not in ignored_entities
+        %}\n      {% set entry_name = device_attr(entity_id, \"name_by_user\") or
+        device_attr(entity_id, \"name\") %}\n      {% if entry_name not in ignored_entries
+        and entry_name != None %}\n        {{ entry_name }}@{{ area_name(entity_id)
+        }}|\n      {% endif %}\n    {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{
+        unavailable_entries() }}"
     action: python_script.unavailable_entries
   mode: queued
   max: 10
@@ -2804,7 +2607,7 @@
   - delay:
       hours: 0
       minutes: 0
-      seconds: 1
+      seconds: 3
       milliseconds: 0
   - if:
     - condition: state
@@ -2872,23 +2675,6 @@
     data: {}
     target:
       entity_id: light.lightstrip_sypialnia
-  mode: single
-- id: '1719058582558'
-  alias: Włącz/wyłącz lampkę w pracowni
-  description: ''
-  trigger:
-  - platform: device
-    device_id: 4b993b884f2acfc2961cadffaed93e80
-    domain: shelly
-    type: double_push
-    subtype: button1
-  condition: []
-  action:
-  - service: light.toggle
-    metadata: {}
-    data: {}
-    target:
-      entity_id: light.lamp_pracownia
   mode: single
 - id: '1723288584908'
   alias: Włącz smart TV w salonie
@@ -3209,4 +2995,81 @@
       value: '{{ trigger.to_state.state | float }}'
     target:
       entity_id: number.temperatura_zewnetrznego_sensora_lazienka
+  mode: single
+- id: '1733758713539'
+  alias: Powiadomienie o braku kalibracji dla Shelly BLU TRV
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.shelly_blu_trv_7744f8_kalibracja
+    from: 'off'
+    to: 'on'
+  conditions: []
+  actions:
+  - data:
+      title: Brak kalibracji dla Shelly BLU TRV
+      message: Shelly BLU TRV w łazience zgłasza brak kalibracji.
+      tag: notification-blu-trv
+      group: other
+      services:
+      - service: notify.mobile_app_iphone_13
+        type: ios
+    action: python_script.notify
+  mode: single
+- id: '1733989057568'
+  alias: Włącz wewnętrzne oświetlenie świąteczne
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunrise
+    offset: -01:00:00
+  conditions: []
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - light.oswietlenie_swiateczne_schody
+      - light.bonsai_salon
+      - light.choinka_salon
+  mode: single
+- id: '1733989167690'
+  alias: Wyłącz oświetlenie świąteczne
+  description: ''
+  triggers:
+  - trigger: time
+    at: 00:30:00
+  conditions: []
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - light.oswietlenie_swiateczne_schody
+      - light.oswietlenie_swiateczne_balkon_gora
+      - light.oswietlenie_swiateczne_balkon_dol
+      - light.bonsai_salon
+      - light.oswietlenie_swiateczne_goscinny
+      - light.choinka_salon
+  mode: single
+- id: '1734001978153'
+  alias: Włącz zewnętrzne oświetlenie świąteczne
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: 00:15:00
+  conditions: []
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - light.oswietlenie_swiateczne_balkon_gora
+      - light.oswietlenie_swiateczne_balkon_dol
+      - light.oswietlenie_swiateczne_goscinny
   mode: single

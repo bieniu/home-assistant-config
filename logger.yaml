@@ -1,5 +1,8 @@
 default: warning
 filters:
+  homeassistant.compoennts.twinkly:
+    - "is now available"
+    - "is not reachable"
   homeassistant.components.go2rtc.server:
     - "codecs not matched"
   homeassistant.loader:
