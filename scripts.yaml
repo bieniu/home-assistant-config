@@ -319,6 +319,7 @@ restart_wifi_devices:
       - switch.zasilanie_oswietlenia_pokoju_goscinnego
       - switch.zasilanie_biurka_edyty
       - switch.zasilanie_ledow_antka
+      - switch.zasilanie_biurka_antka
     action: switch.turn_off
   - delay:
       hours: 0
@@ -332,6 +333,7 @@ restart_wifi_devices:
       - switch.zasilanie_oswietlenia_pokoju_goscinnego
       - switch.zasilanie_biurka_edyty
       - switch.zasilanie_ledow_antka
+      - switch.zasilanie_biurka_antka
     action: switch.turn_on
   - target:
       entity_id:

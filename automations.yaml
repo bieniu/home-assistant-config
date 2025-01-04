@@ -1770,17 +1770,18 @@
 - id: hassio_backup
   alias: Wykonanie kopii zapasowej
   description: ''
-  trigger:
-  - platform: time
-    at: 02:00:00
-  condition:
+  triggers:
+  - at: 02:00:00
+    trigger: time
+  conditions:
   - condition: time
     weekday:
     - sun
-  action:
-  - service: hassio.backup_full
-    data:
+  actions:
+  - data:
       name: '{{ now().strftime(''%Y-%m-%d'') }}'
+      location: Synology
+    action: hassio.backup_full
 - id: '1658514116580'
   alias: Włącz/wyłącz wentylator w salonie
   description: ''
