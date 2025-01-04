@@ -372,9 +372,8 @@
 - id: notification_motion_when_away_mode
   alias: Ruch w pustym mieszkaniu
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - binary_sensor.motion_antek
     - binary_sensor.motion_antresola
     - binary_sensor.motion_gabinet
@@ -391,13 +390,14 @@
     - binary_sensor.motion_pralnia
     from: 'off'
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: input_boolean.away_mode
     state: 'on'
     for:
       minutes: 10
-  action:
+  actions:
   - variables:
       area: '{{ area_name(trigger.entity_id) }}'
       snapshot_name: '{{ now().strftime(''%Y%m%d_%H%M%S'') }}.jpg'
@@ -409,20 +409,17 @@
     - condition: template
       value_template: '{{ area_name(trigger.entity_id) in snapshot_areas }}'
     then:
-    - service: camera.snapshot
-      data:
+    - data:
         filename: /media/snapshots/{{ snapshot_name }}
       target:
         entity_id: camera.salon
-  - service: python_script.notify
-    data:
+      action: camera.snapshot
+  - data:
       title: Wykryto ruch w pustym mieszkaniu
       message: 'Pomieszczenie: {{ area }}, godzina {{ now().strftime(''%H:%M'') }}.'
       tag: notification-motion-{{ area }}
       group: motion
       priority: high
-      url: "{% if area in snapshot_areas %}\n  /dashboard-living-room/0\n{% endif
-        %}  "
       image: "{% if area in snapshot_areas %}\n  /media/local/snapshots/{{ snapshot_name
         }}\n{% endif %}"
       services:
@@ -430,6 +427,7 @@
         type: ios
       - service: notify.mobile_app_iphone_12
         type: ios
+    action: python_script.notify
 - id: notification_window_opened_when_away_mode
   alias: Otwarcie okna w pustym mieszkaniu
   description: ''
@@ -612,30 +610,6 @@
         entity_id: light.leds_schody
       data: {}
       action: light.turn_on
-- id: heating_aeotec_thermostat_calibration
-  alias: Kalibracja termostatu Aeotec
-  description: ''
-  trigger:
-  - platform: time
-    at: 00:10:00
-  condition:
-  - condition: state
-    entity_id: input_boolean.heating_season
-    state: 'on'
-  - condition: state
-    entity_id: input_boolean.heating_airing
-    state: 'off'
-  action:
-  - service: climate.set_preset_mode
-    entity_id: climate.aeotec_zwa021_thermostat_023
-    data:
-      preset_mode: Full power
-  - delay: 00:00:15
-  - service: climate.turn_off
-    entity_id: climate.aeotec_zwa021_thermostat_023
-  - delay: 00:00:15
-  - service: climate.turn_on
-    entity_id: climate.aeotec_zwa021_thermostat_023
 - id: heating_day
   alias: Tryb dzienny ogrzewania
   description: ''
@@ -784,76 +758,76 @@
 - id: air_quality_turn_on_air_purifier
   alias: Rozpoczęcie oczyszczania powietrza w salonie
   description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.pm25_salon
+  triggers:
+  - entity_id: sensor.xiaomi_mi_air_purifier_3h_pm2_5
     above: 50
     for:
       minutes: 2
-  condition:
+    trigger: numeric_state
+  conditions:
   - condition: state
     entity_id: binary_sensor.windows
     state: 'off'
-  action:
-  - service: fan.turn_on
-    entity_id: fan.xiaomi_mi_air_purifier_3h
+  actions:
+  - entity_id: fan.xiaomi_mi_air_purifier_3h
     data:
-      percentage: "{% if states('sensor.pm25_salon') | int(0) > 100 %}\n  66\n{% else
-        %}\n  33\n{% endif %}"
+      percentage: "{% if states('sensor.xiaomi_mi_air_purifier_3h_pm2_5') | int(0)
+        > 100 %}\n  66\n{% else %}\n  33\n{% endif %}"
+    action: fan.turn_on
 - id: air_quality_turn_off_air_purifier
   alias: Zakończenie oczyszczania powietrza w salonie
   description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.pm25_salon
+  triggers:
+  - entity_id: sensor.xiaomi_mi_air_purifier_3h_pm2_5
     below: 50
     for:
       minutes: 2
-  action:
-  - service: fan.turn_off
-    entity_id: fan.xiaomi_mi_air_purifier_3h
+    trigger: numeric_state
+  actions:
+  - entity_id: fan.xiaomi_mi_air_purifier_3h
+    action: fan.turn_off
 - id: air_quality_air_purifier_switch_fan_level_to_2
   alias: Zmiana prędkości oczyszczacza na 2
   description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.pm25_salon
+  triggers:
+  - entity_id: sensor.xiaomi_mi_air_purifier_3h_pm2_5
     above: 100
     for:
       minutes: 2
-  condition:
+    trigger: numeric_state
+  conditions:
   - condition: state
     entity_id: fan.xiaomi_mi_air_purifier_3h
     state: 'on'
   - condition: numeric_state
     entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
     below: 2
-  action:
-  - service: number.set_value
-    entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
+  actions:
+  - entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
     data:
       value: 2
+    action: number.set_value
 - id: air_quality_air_purifier_switch_fan_level_to_1
   alias: Zmiana prędkości oczyszczacza na 1
   description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.pm25_salon
+  triggers:
+  - entity_id: sensor.xiaomi_mi_air_purifier_3h_pm2_5
     below: 100
     for:
       minutes: 2
-  condition:
+    trigger: numeric_state
+  conditions:
   - condition: state
     entity_id: fan.xiaomi_mi_air_purifier_3h
     state: 'on'
   - condition: numeric_state
     entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
     above: 1
-  action:
-  - service: number.set_value
-    entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
+  actions:
+  - entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
     data:
       value: 1
+    action: number.set_value
 - id: heating_airing_begin
   alias: Początek przewietrzania
   description: ''
@@ -882,14 +856,6 @@
     entity_id: input_boolean.heating_season
     state: 'on'
   actions:
-  - action: climate.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - climate.grzejnik_gabinet
-      - climate.grzejnik_lazienka
-      - climate.grzejnik_goscinny
   - choose:
     - conditions:
       - condition: state
@@ -1937,7 +1903,7 @@
     trigger: numeric_state
   conditions:
   - condition: numeric_state
-    entity_id: sensor.xiaomi_mi_humidifier_cb1_water_level
+    entity_id: sensor.xiaomi_mi_humidifier_cb1_poziom_wody
     above: 5
   - condition: state
     entity_id: input_boolean.heating_season
@@ -1965,7 +1931,7 @@
       seconds: 0
     above: input_number.target_humidity
     trigger: numeric_state
-  - entity_id: sensor.xiaomi_mi_humidifier_cb1_water_level
+  - entity_id: sensor.xiaomi_mi_humidifier_cb1_poziom_wody
     below: 6
     for:
       minutes: 5
@@ -1981,7 +1947,7 @@
   - entity_id: humidifier.xiaomi_mi_humidifier_cb1
     action: humidifier.turn_off
   - condition: numeric_state
-    entity_id: sensor.xiaomi_mi_humidifier_cb1_water_level
+    entity_id: sensor.xiaomi_mi_humidifier_cb1_poziom_wody
     below: 6
   - choose:
       conditions:
@@ -2028,13 +1994,13 @@
   variables:
     notification_title: Uzupełnij wodę w nawilżaczu
     notification_message: Nawilżacz w sypialni został wyłączony ponieważ w zbiorniku
-      pozostało {{ states('sensor.xiaomi_mi_humidifier_cb1_water_level') }}% wody.
+      pozostało {{ states('sensor.xiaomi_mi_humidifier_cb1_poziom_wody') }}% wody.
     notification_tag: notification-humidifier-cb1
 - id: '1671558318632'
   alias: Mało wody w nawilżaczu w sypialni
   triggers:
   - entity_id:
-    - sensor.xiaomi_mi_humidifier_cb1_water_level
+    - sensor.xiaomi_mi_humidifier_cb1_poziom_wody
     below: 10
     for:
       hours: 0
@@ -2042,7 +2008,7 @@
       seconds: 0
     trigger: numeric_state
   - entity_id:
-    - sensor.xiaomi_mi_humidifier_cb1_water_level
+    - sensor.xiaomi_mi_humidifier_cb1_poziom_wody
     below: 20
     for:
       hours: 0
@@ -2062,7 +2028,7 @@
     entity_id: input_boolean.heating_season
     state: 'on'
   - condition: template
-    value_template: '{{ states(''sensor.xiaomi_mi_humidifier_cb1_water_level'') |
+    value_template: '{{ states(''sensor.xiaomi_mi_humidifier_cb1_poziom_wody'') |
       int(999) != 0 }}'
   actions:
   - parallel:
@@ -2094,23 +2060,9 @@
             - service: notify.mobile_app_iphone_12
               type: ios
           action: python_script.notify
-    - choose:
-        conditions:
-          condition: state
-          entity_id: person.antek
-          state: home
-        sequence:
-          data:
-            title: '{{ notification_title }}'
-            message: '{{ notification_message }}'
-            tag: '{{ notification_tag }}'
-            services:
-            - service: notify.mobile_app_iphone_11
-              type: ios
-          action: python_script.notify
   variables:
     notification_title: Uzupełnij wodę w nawilżaczu
-    notification_message: W zbiorniku nawilżacza w sypialni pozostało {{ states('sensor.xiaomi_mi_humidifier_cb1_water_level')
+    notification_message: W zbiorniku nawilżacza w sypialni pozostało {{ states('sensor.xiaomi_mi_humidifier_cb1_poziom_wody')
       }}% wody.
     notification_tag: notification-humidifier-cb1
 - id: '1672476393165'
@@ -2153,23 +2105,24 @@
 - id: '1672489364549'
   alias: Włącz/wyłącz lapkę biurkową u Antka
   description: ''
-  trigger:
+  triggers:
   - device_id: aabc0c68397757ef0cf5caa56a59d0c8
     domain: zha
-    platform: device
     type: remote_button_short_press
     subtype: remote_button_short_press
-  - platform: device
-    device_id: 7fd5d34776bed25cd216ca70f1a8a45d
+    trigger: device
+  - device_id: 7fd5d34776bed25cd216ca70f1a8a45d
     domain: shelly
     type: long_push
     subtype: button1
-  condition: []
-  action:
-  - type: toggle
-    device_id: 279e3fb7aea5702cb35ae756f6b2795f
-    entity_id: light.desk_lamp_antek
-    domain: light
+    trigger: device
+  conditions: []
+  actions:
+  - action: light.toggle
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.desk_lamp_antek
   mode: single
 - id: '1672565177379'
   alias: Wyłącz oświetlenie o 1:00 u Antka
@@ -3072,4 +3025,30 @@
       - light.oswietlenie_swiateczne_balkon_gora
       - light.oswietlenie_swiateczne_balkon_dol
       - light.oswietlenie_swiateczne_goscinny
+  mode: single
+- id: '1735983352747'
+  alias: Baterie psich trackerów
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.luna_bateria_trackera
+    - sensor.karmel_bateria_trackera
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
+    below: 50
+  conditions: []
+  actions:
+  - data:
+      title: Poziom baterii trackera
+      message: Poziom baterii trackera {{ device_attr(trigger.entity_id, "name") }}
+        wynosi {{ trigger.to_state.state }}%. Rozważ ładowanie.
+      tag: notification-tracker-battery
+      group: other
+      services:
+      - service: notify.mobile_app_iphone_13
+        type: ios
+    action: python_script.notify
   mode: single

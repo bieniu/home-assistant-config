@@ -59,7 +59,6 @@ heating_day:
       - climate.grzejnik_lazienka
       - climate.drabinka_lazienka
     data:
-      hvac_mode: heat
       temperature: '{{ states(''input_number.bathroom_temperature_day'') }}'
   - action: climate.set_temperature
     target:
@@ -69,17 +68,12 @@ heating_day:
       - climate.grzejnik_gabinet
       - climate.grzejnik_pracownia
       - climate.grzejnik_antresola
-      - climate.grzejnik_pralnia
     data:
-      hvac_mode: heat
       temperature: '{{ states(''input_number.temperature_day'') }}'
   - action: climate.set_temperature
     target:
-      entity_id:
-      - climate.grzejnik_pralnia
-      - climate.grzejnik_goscinny
+      entity_id: climate.grzejnik_goscinny
     data:
-      hvac_mode: heat
       temperature: '{{ states(''input_number.pomieszczenia_pomocnicze_temperatura_dzien'')
         }}'
   - action: climate.set_temperature
@@ -88,24 +82,12 @@ heating_day:
       - climate.grzejnik_antek
       - climate.grzejnik_sypialnia
     data:
-      hvac_mode: heat
       temperature: '{{ states(''input_number.bedroom_temperature_day'') }}'
   - delay:
       hours: 0
       minutes: 5
       seconds: 0
       milliseconds: 0
-  - action: climate.set_hvac_mode
-    metadata: {}
-    data:
-      hvac_mode: heat
-    target:
-      entity_id:
-      - climate.grzejnik_antresola
-      - climate.grzejnik_gabinet
-      - climate.grzejnik_goscinny
-      - climate.grzejnik_pralnia
-      - climate.grzejnik_lazienka
   mode: single
   icon: mdi:radiator
   alias: Tryb dzienny ogrzewania
@@ -122,15 +104,11 @@ heating_night:
       - climate.grzejnik_kuchnia
       - climate.grzejnik_salon
     data:
-      hvac_mode: heat
       temperature: '{{ states(''input_number.temperature_night'') }}'
   - action: climate.set_temperature
     target:
-      entity_id:
-      - climate.grzejnik_pralnia
-      - climate.grzejnik_goscinny
+      entity_id: climate.grzejnik_goscinny
     data:
-      hvac_mode: heat
       temperature: '{{ states(''input_number.pomieszczenia_pomocnicze_temperatura_noc'')
         }}'
   - action: climate.set_temperature
@@ -139,7 +117,6 @@ heating_night:
       - climate.grzejnik_antek
       - climate.grzejnik_sypialnia
     data:
-      hvac_mode: heat
       temperature: '{{ states(''input_number.bedroom_temperature_night'') }}'
   - action: climate.set_temperature
     target:
@@ -147,24 +124,12 @@ heating_night:
       - climate.grzejnik_lazienka
       - climate.drabinka_lazienka
     data:
-      hvac_mode: heat
       temperature: '{{ states(''input_number.bathroom_temperature_night'') }}'
   - delay:
       hours: 0
       minutes: 5
       seconds: 0
       milliseconds: 0
-  - action: climate.set_hvac_mode
-    metadata: {}
-    data:
-      hvac_mode: heat
-    target:
-      entity_id:
-      - climate.grzejnik_antresola
-      - climate.grzejnik_goscinny
-      - climate.grzejnik_gabinet
-      - climate.grzejnik_lazienka
-      - climate.grzejnik_pralnia
   mode: single
   alias: Tryb nocny ogrzewania
   icon: mdi:radiator
@@ -182,7 +147,6 @@ heating_away_mode:
       - climate.grzejnik_pracownia
       - climate.grzejnik_goscinny
       - climate.grzejnik_antresola
-      - climate.grzejnik_pralnia
     data:
       temperature: '{{ states(''input_number.temperature_away'') }}'
     action: climate.set_temperature
@@ -196,21 +160,33 @@ heating_away_mode:
   icon: mdi:radiator-disabled
 heating_season_end:
   sequence:
-  - action: climate.turn_off
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 4
+    target:
+      entity_id: climate.drabinka_lazienka
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
     target:
       entity_id:
       - climate.grzejnik_antek
+      - climate.grzejnik_kuchnia
+      - climate.grzejnik_pracownia
+      - climate.grzejnik_salon
+      - climate.grzejnik_sypialnia
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 7
+    target:
+      entity_id:
+      - climate.grzejnik_antresola
       - climate.grzejnik_gabinet
       - climate.grzejnik_lazienka
-      - climate.drabinka_lazienka
-      - climate.grzejnik_pracownia
       - climate.grzejnik_goscinny
-      - climate.grzejnik_sypialnia
-      - climate.grzejnik_salon
-      - climate.grzejnik_kuchnia
-      - climate.grzejnik_pralnia
-      - climate.grzejnik_antresola
-    data: {}
   - action: humidifier.turn_off
     target:
       entity_id:
@@ -221,21 +197,33 @@ heating_season_end:
   icon: mdi:radiator-off
 heating_airing_begin:
   sequence:
-  - target:
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 4
+    target:
+      entity_id: climate.drabinka_lazienka
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 5
+    target:
+      entity_id:
+      - climate.grzejnik_antek
+      - climate.grzejnik_kuchnia
+      - climate.grzejnik_pracownia
+      - climate.grzejnik_salon
+      - climate.grzejnik_sypialnia
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 7
+    target:
       entity_id:
       - climate.grzejnik_antresola
       - climate.grzejnik_gabinet
-      - climate.grzejnik_salon
-      - climate.grzejnik_antek
-      - climate.grzejnik_sypialnia
       - climate.grzejnik_lazienka
-      - climate.drabinka_lazienka
-      - climate.grzejnik_kuchnia
-      - climate.grzejnik_pracownia
       - climate.grzejnik_goscinny
-      - climate.grzejnik_pralnia
-    action: climate.turn_off
-    data: {}
   - target:
       entity_id:
       - humidifier.xiaomi_mi_humidifier_cb1
@@ -357,6 +345,7 @@ restart_wifi_devices:
       - button.shelly_1l_aacec4_uruchom_ponownie
       - button.shelly_1l_aceb5f_uruchom_ponownie
       - button.shelly_1l_ad365e_uruchom_ponownie
+      - button.shelly_plug_s_7aecf4_uruchom_ponownie
       - button.shelly_duo_5f6fa1_restart
       - button.shelly_gas_c6811c_restart
       - button.shelly_motion_2_08a4e9_restart
@@ -373,7 +362,6 @@ restart_wifi_devices:
       - button.shelly_plus_plug_s_d00c84_restart
       - button.shelly_pro_1pm_80e0c0_restart
       - button.shelly_pro_3em_879c7c_restart
-      - button.shelly_valve_72a544_restart
       - button.shelly_plus_1_mini_af5390_restart
       - button.shelly_plus_pm_mini_af50f0_restart
       - button.shelly_1pm_gen3_c6b6c4_uruchom_ponownie
