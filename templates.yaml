@@ -9,6 +9,18 @@
       state_class: measurement
       unit_of_measurement: hPa
 - binary_sensor:
+    - name: Pralka pralnia
+      unique_id: pralka_pralnia
+      icon: mdi:washing-machine
+      state: "{{ states('sensor.power_washing_machine_pralnia') | int > 1 }}"
+      availability: "{{ states('sensor.power_washing_machine_pralnia') | is_number }}"
+
+    - name: Zmywarka kuchnia
+      unique_id: zmywarka_kuchnia
+      icon: mdi:dishwasher
+      state: "{{ states('sensor.power_dishwasher_kuchnia') | int > 1 }}"
+      availability: "{{ states('sensor.power_dishwasher_kuchnia') | is_number }}"
+
     - name: raspberry_status
       unique_id: "raspberry_status"
       icon: mdi:raspberry-pi

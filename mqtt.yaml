@@ -58,3 +58,8 @@
       name: "Xiaomi DaFang"
       configuration_url: !secret dafang_url
       identifiers: [!secret dafang_mac_address]
+- sensor:
+    name: "BLU Gateway Free Memory"
+    state_topic: "shellies-gen3/shelly-blu-gateway-gen3-78742c/status/rpc"
+    value_template: "{{ value_json.sys.ram_free }}"
+    unit_of_measurement: "B"

@@ -251,28 +251,10 @@ light_turn_on_antek_leds:
   mode: single
   icon: mdi:lightbulb-outline
   alias: Włącz LEDy Antka z losowym kolorem
-alexa_netflix:
-  sequence:
-  - service: select.select_option
-    data:
-      option: smart
-    target:
-      entity_id: select.harmony_activities
-  - delay: 00:00:02
-  - service: media_player.play_media
-    target:
-      entity_id: media_player.philips_65oled707
-    data:
-      media_content_id: Netflix
-      media_content_type: app
-  mode: single
-  alias: Uruchom Netflix
-  icon: mdi:netflix
 alexa_goodnight:
   sequence:
   - target:
       entity_id:
-      - remote.salon
       - media_player.sony_kd_55xf8596
       - fan.ceiling_salon
       - fan.xiaomi_mi_standing_fan_1x
@@ -384,7 +366,7 @@ humidification_start:
       entity_id: sensor.humidity_sypialnia
       below: input_number.target_humidity
     - condition: numeric_state
-      entity_id: sensor.xiaomi_mi_humidifier_cb1_water_level
+      entity_id: sensor.xiaomi_mi_humidifier_cb1_poziom_wody
       above: 5
     then:
     - data: {}
@@ -394,41 +376,121 @@ humidification_start:
 alexa_harmony_activity_tv:
   alias: Włącz telewizję w salonie
   sequence:
-  - service: select.select_option
+  - if:
+    - condition: state
+      entity_id: media_player.philips_65oled707
+      state: unavailable
+    then:
+    - action: remote.send_command
+      metadata: {}
+      data:
+        device: Telewizor
+        command: PowerOn
+      target:
+        entity_id: remote.salon
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 2
+    else:
+    - if:
+      - condition: state
+        entity_id: media_player.philips_65oled707
+        state: 'off'
+      then:
+      - action: remote.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: remote.philips_65oled707
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 2
+  - action: media_player.select_source
+    metadata: {}
     data:
-      option: telewizja
+      source: HDMI3
     target:
-      entity_id: select.harmony_activities
+      entity_id: media_player.philips_65oled707
   mode: single
   icon: mdi:television
 alexa_harmony_activity_games:
   alias: Włącz gry w salonie
   sequence:
-  - service: select.select_option
+  - if:
+    - condition: state
+      entity_id: media_player.philips_65oled707
+      state: unavailable
+    then:
+    - action: remote.send_command
+      metadata: {}
+      data:
+        device: Telewizor
+        command: PowerOn
+      target:
+        entity_id: remote.salon
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 2
+    else:
+    - if:
+      - condition: state
+        entity_id: media_player.philips_65oled707
+        state: 'off'
+      then:
+      - action: remote.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: remote.philips_65oled707
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 2
+  - action: media_player.select_source
+    metadata: {}
     data:
-      option: gry
+      source: HDMI1
     target:
-      entity_id: select.harmony_activities
+      entity_id: media_player.philips_65oled707
   mode: single
   icon: mdi:sony-playstation
 alexa_harmony_activity_smart_tv:
   alias: Włącz smart TV w salonie
   sequence:
-  - service: select.select_option
+  - if:
+    - condition: state
+      entity_id: media_player.philips_65oled707
+      state: unavailable
+    then:
+    - action: remote.send_command
+      metadata: {}
+      data:
+        device: Telewizor
+        command: PowerOn
+      target:
+        entity_id: remote.salon
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 2
+  - action: remote.send_command
+    metadata: {}
     data:
-      option: smart
+      command: Home
     target:
-      entity_id: select.harmony_activities
+      entity_id: remote.philips_65oled707
   mode: single
   icon: mdi:television-shimmer
 alexa_harmony_power_off:
   alias: Wyłącz sprzęt RTV w salonie
   sequence:
-  - service: select.select_option
+  - action: remote.turn_off
     metadata: {}
-    data:
-      option: power_off
+    data: {}
     target:
-      entity_id: select.harmony_activities
+      entity_id: remote.philips_65oled707
   mode: single
   icon: mdi:television-off

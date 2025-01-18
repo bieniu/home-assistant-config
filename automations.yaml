@@ -19,31 +19,27 @@
 - id: ios_turn_on_tv
   alias: Włącz telewizję w salonie
   description: ''
-  trigger:
-  - platform: event
-    event_type: ios.action_fired
+  triggers:
+  - event_type: ios.action_fired
     event_data:
       actionName: Turn On TV
-  action:
-  - action: select.select_option
-    target:
-      entity_id: select.harmony_activities
-    data:
-      option: telewizja
+    trigger: event
+  actions:
+  - action: script.alexa_harmony_activity_tv
+    metadata: {}
+    data: {}
 - id: ios_turn_off_tv
   alias: Wyłącz sprzęt RTV w salonie
   description: ''
-  trigger:
-  - platform: event
-    event_type: ios.action_fired
+  triggers:
+  - event_type: ios.action_fired
     event_data:
       actionName: Turn Off TV
-  action:
-  - action: select.select_option
-    target:
-      entity_id: select.harmony_activities
-    data:
-      option: power_off
+    trigger: event
+  actions:
+  - action: script.alexa_harmony_power_off
+    metadata: {}
+    data: {}
 - id: notification_update_platform
   alias: Dostępna aktualizacja dla składnika Home Assistant
   description: ''
@@ -2633,34 +2629,30 @@
 - id: '1723288584908'
   alias: Włącz smart TV w salonie
   description: ''
-  trigger:
-  - platform: event
-    event_type: ios.action_fired
+  triggers:
+  - event_type: ios.action_fired
     event_data:
       actionName: Turn On Smart TV
-  condition: []
-  action:
-  - action: select.select_option
-    target:
-      entity_id: select.harmony_activities
-    data:
-      option: smart
+    trigger: event
+  conditions: []
+  actions:
+  - action: script.alexa_harmony_activity_smart_tv
+    metadata: {}
+    data: {}
   mode: single
 - id: '1723288816878'
   alias: Włącz gry w salonie
   description: ''
-  trigger:
-  - platform: event
-    event_type: ios.action_fired
+  triggers:
+  - event_type: ios.action_fired
     event_data:
       actionName: Turn On Games
-  condition: []
-  action:
-  - action: select.select_option
-    target:
-      entity_id: select.harmony_activities
-    data:
-      option: gry
+    trigger: event
+  conditions: []
+  actions:
+  - action: script.alexa_harmony_activity_games
+    metadata: {}
+    data: {}
   mode: single
 - id: '1723301586705'
   alias: Zwiększ głośność w salonie
@@ -2987,7 +2979,6 @@
       entity_id:
       - light.oswietlenie_swiateczne_schody
       - light.bonsai_salon
-      - light.choinka_salon
   mode: single
 - id: '1733989167690'
   alias: Wyłącz oświetlenie świąteczne
@@ -3006,8 +2997,6 @@
       - light.oswietlenie_swiateczne_balkon_gora
       - light.oswietlenie_swiateczne_balkon_dol
       - light.bonsai_salon
-      - light.oswietlenie_swiateczne_goscinny
-      - light.choinka_salon
   mode: single
 - id: '1734001978153'
   alias: Włącz zewnętrzne oświetlenie świąteczne
@@ -3025,7 +3014,6 @@
       entity_id:
       - light.oswietlenie_swiateczne_balkon_gora
       - light.oswietlenie_swiateczne_balkon_dol
-      - light.oswietlenie_swiateczne_goscinny
   mode: single
 - id: '1735983352747'
   alias: Baterie psich trackerów
