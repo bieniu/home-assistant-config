@@ -4,22 +4,23 @@
       state: "{{ states('sensor.nettigo_air_monitor_bme280_cisnienie') | float }}"
       attributes:
         tendencja: "{{ states('sensor.tendencja_cisnienia') }}"
-      availability: "{{ states('sensor.nettigo_air_monitor_bme280_cisnienie') | is_number }}"
+      availability: "{{ is_number(states('sensor.nettigo_air_monitor_bme280_cisnienie')) }}"
       device_class: pressure
       state_class: measurement
       unit_of_measurement: hPa
+
 - binary_sensor:
     - name: Pralka pralnia
       unique_id: pralka_pralnia
       icon: mdi:washing-machine
       state: "{{ states('sensor.power_washing_machine_pralnia') | int > 1 }}"
-      availability: "{{ states('sensor.power_washing_machine_pralnia') | is_number }}"
+      availability: "{{ is_number(states('sensor.power_washing_machine_pralnia')) }}"
 
     - name: Zmywarka kuchnia
       unique_id: zmywarka_kuchnia
       icon: mdi:dishwasher
       state: "{{ states('sensor.power_dishwasher_kuchnia') | int > 1 }}"
-      availability: "{{ states('sensor.power_dishwasher_kuchnia') | is_number }}"
+      availability: "{{ is_number(states('sensor.power_dishwasher_kuchnia')) }}"
 
     - name: raspberry_status
       unique_id: "raspberry_status"

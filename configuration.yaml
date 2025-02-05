@@ -6,6 +6,8 @@ recorder:
   db_url: !secret mysql_db_url
   purge_keep_days: 7
   exclude:
+    domains:
+      - geo_location
     entity_globs:
       - sensor.airly_*
     entities:

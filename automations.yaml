@@ -40,41 +40,6 @@
   - action: script.alexa_harmony_power_off
     metadata: {}
     data: {}
-- id: notification_update_platform
-  alias: Dostępna aktualizacja dla składnika Home Assistant
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - update.home_assistant
-    - update.home_assistant_operating_system
-    - update.supervisor
-    - update.cloudflared
-    - update.mariadb
-    - update.mosquitto_broker
-    - update.vaultwarden_bitwarden
-    - update.z_wave_js
-    - update.terminal_ssh
-    - update.studio_code_server
-    - update.samba_share
-    - update.go2rtc
-    from: 'off'
-    to: 'on'
-  action:
-  - service: python_script.notify
-    data:
-      title: Dostępna aktualizacja
-      message: Dostępna jest aktualizacja do wersji {{ trigger.to_state.attributes.latest_version
-        | replace('v.', '') | replace('v', '') }} dla {{ device_attr(trigger.entity_id,
-        "name_by_user") or device_attr(trigger.entity_id, "name") }}.
-      tag: notification-update-{{ trigger.entity_id }}
-      group: updates
-      url: /config/updates
-      services:
-      - service: notify.mobile_app_iphone_13
-        type: ios
-  mode: queued
-  max: 10
 - id: notification_high_ram_usage
   alias: Wysokie użycie pamięci RAM
   description: ''
@@ -290,7 +255,6 @@
     - binary_sensor.shelly_plus_plug_s_d00c84_overpower
     - binary_sensor.shelly_plus_1pm_948ff8_overpower
     - binary_sensor.shelly_plus_1pm_b22864_overpower
-    - binary_sensor.aeotec_zw175_smart_switch_7_026_przeciazenie
     - binary_sensor.shelly_1pm_mini_gen3_411170_overpowering
     - binary_sensor.shelly_plus_1pm_9d35dc_overpowering
     - binary_sensor.shelly_plus_2pm_8d28f4_relay_1_overpower
@@ -993,11 +957,8 @@
   - condition: not
     conditions:
     - condition: state
-      entity_id: select.harmony_activities
-      state: gry
-    - condition: state
-      entity_id: select.harmony_activities
-      state: smart
+      entity_id: media_player.tv_salon
+      state: playing
   actions:
   - data:
       transition: 5
@@ -1070,21 +1031,27 @@
     trigger: state
   conditions:
   - condition: state
-    entity_id:
-    - input_boolean.away_mode
-    - light.ledy_salon
-    - light.ceiling_salon
-    - media_player.philips_65oled707
-    state: 'off'
+    entity_id: binary_sensor.motion_salon
+    state: 'on'
   - condition: state
-    entity_id:
-    - binary_sensor.motion_salon
-    - input_boolean.light_auto_turn_salon
+    entity_id: input_boolean.light_auto_turn_salon
     state: 'on'
   - condition: sun
     after: sunset
     before: sunrise
     before_offset: +00:10:00
+  - condition: state
+    entity_id: input_boolean.away_mode
+    state: 'off'
+  - condition: state
+    entity_id: light.ledy_salon
+    state: 'off'
+  - condition: state
+    entity_id: light.ceiling_salon
+    state: 'off'
+  - condition: state
+    entity_id: media_player.philips_65oled707
+    state: 'off'
   actions:
   - target:
       entity_id: light.lamp_salon
@@ -1112,18 +1079,15 @@
   alias: Aktywuj w salonie scenę oświetlenie po zmierzchu po włączeniu filmu lub gry
   description: ''
   triggers:
-  - entity_id: select.harmony_activities
-    to: smart
-    trigger: state
-  - entity_id:
-    - select.harmony_activities
-    to: gry
-    trigger: state
+  - trigger: state
+    entity_id:
+    - media_player.tv_salon
+    to: playing
   conditions:
   - condition: sun
     after: sunset
   - condition: template
-    value_template: '{{ is_state(''light.leds_salon'', ''on'') or is_state(''light.ceiling_salon'',
+    value_template: '{{ is_state(''light.ledy_salon'', ''on'') or is_state(''light.ceiling_salon'',
       ''on'') or is_state(''light.lamp_salon'', ''on'') }}'
   - condition: time
     after: '20:10:00'
@@ -1142,18 +1106,27 @@
     gry
   description: ''
   triggers:
-  - entity_id:
-    - select.harmony_activities
-    to: telewizja
-    trigger: state
-  - entity_id:
-    - select.harmony_activities
-    to: power_off
-    trigger: state
+  - trigger: state
+    entity_id:
+    - media_player.tv_salon
+    from: playing
+    to:
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
   conditions:
-  - condition: template
-    value_template: '{{ is_state(''light.leds_salon'', ''on'') or is_state(''light.ceiling_salon'',
-      ''on'') or is_state(''light.lamp_salon'', ''on'') }}'
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: light.ledy_salon
+      state: 'on'
+    - condition: state
+      entity_id: light.ceiling_salon
+      state: 'on'
+    - condition: state
+      entity_id: light.lamp_salon
+      state: 'on'
   actions:
   - data:
       transition: 5
@@ -1634,7 +1607,10 @@
     state: 'off'
   actions:
   - target:
-      entity_id: light.leds_schody
+      entity_id:
+      - light.leds_schody
+      - light.bonsai_salon
+      - light.oswietlenie_swiateczne_schody
     data: {}
     action: light.turn_on
 - id: light_turn_off_schody_leds_on_midnight
@@ -1645,7 +1621,10 @@
     trigger: time
   actions:
   - target:
-      entity_id: light.leds_schody
+      entity_id:
+      - light.leds_schody
+      - light.bonsai_salon
+      - light.oswietlenie_swiateczne_schody
     data: {}
     action: light.turn_off
 - id: light_turn_on_goscinny_lamp_when_dark_and_motion
@@ -1998,14 +1977,6 @@
   triggers:
   - entity_id:
     - sensor.xiaomi_mi_humidifier_cb1_poziom_wody
-    below: 10
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-    trigger: numeric_state
-  - entity_id:
-    - sensor.xiaomi_mi_humidifier_cb1_poziom_wody
     below: 20
     for:
       hours: 0
@@ -2333,16 +2304,14 @@
   - condition: or
     conditions:
     - condition: state
-      entity_id: select.harmony_activities
-      state: gry
-    - condition: state
-      entity_id: select.harmony_activities
-      state: smart
+      entity_id: media_player.tv_salon
+      state: playing
   actions:
   - target:
       entity_id: scene.light_salon_dusk
     metadata: {}
     action: scene.turn_on
+    data: {}
   mode: single
 - id: '1699100330008'
   alias: Edyta wraca do domu
@@ -2875,50 +2844,6 @@
     target:
       entity_id: light.blat_kuchnia
   mode: single
-- id: '1729422543756'
-  alias: Wysyłanie komendy announce do urządzeń Shelly Gen2+
-  description: ''
-  triggers:
-  - event: start
-    trigger: homeassistant
-  actions:
-  - repeat:
-      for_each: '{{ device_ids }}'
-      sequence:
-      - action: mqtt.publish
-        data:
-          topic: '{{ repeat.item }}/rpc'
-          payload: '{{ get_config_payload }}'
-      - data:
-          topic: '{{ repeat.item }}/rpc'
-          payload: '{{ get_components_payload }}'
-        action: mqtt.publish
-  variables:
-    get_config_payload: '{{ {''id'': 1, ''src'': ''shellies_discovery'', ''method'':
-      ''Shelly.GetConfig''} | to_json }}'
-    get_components_payload: '{{ {''id'': 1, ''src'': ''shellies_discovery'', ''method'':''Shelly.GetComponents'',
-      ''params'': {''include'': [''config'']}} | to_json }}'
-    device_ids:
-    - shellies-gen3/shelly-blu-gateway-gen3-78742c
-- id: '1729422698511'
-  alias: Uruchomienie Shellies Discovery Gen2+
-  description: ''
-  triggers:
-  - topic: shellies_discovery/rpc
-    trigger: mqtt
-  actions:
-  - action: python_script.shellies_discovery_gen2
-    data:
-      id: '{{ trigger.payload_json.src }}'
-      device_config: '{{ trigger.payload_json.result }}'
-  - condition: template
-    value_template: '{{ ''mqtt'' in trigger.payload_json.result }}'
-  - data:
-      topic: '{{ trigger.payload_json.result.mqtt.topic_prefix }}/command'
-      payload: status_update
-    action: mqtt.publish
-  mode: queued
-  max: 999
 - id: '1732278070035'
   alias: Raportowanie temperatury do termostatu w łazience
   description: ''
@@ -2963,58 +2888,6 @@
         type: ios
     action: python_script.notify
   mode: single
-- id: '1733989057568'
-  alias: Włącz wewnętrzne oświetlenie świąteczne
-  description: ''
-  triggers:
-  - trigger: sun
-    event: sunrise
-    offset: -01:00:00
-  conditions: []
-  actions:
-  - action: light.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - light.oswietlenie_swiateczne_schody
-      - light.bonsai_salon
-  mode: single
-- id: '1733989167690'
-  alias: Wyłącz oświetlenie świąteczne
-  description: ''
-  triggers:
-  - trigger: time
-    at: 00:30:00
-  conditions: []
-  actions:
-  - action: light.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - light.oswietlenie_swiateczne_schody
-      - light.oswietlenie_swiateczne_balkon_gora
-      - light.oswietlenie_swiateczne_balkon_dol
-      - light.bonsai_salon
-  mode: single
-- id: '1734001978153'
-  alias: Włącz zewnętrzne oświetlenie świąteczne
-  description: ''
-  triggers:
-  - trigger: sun
-    event: sunset
-    offset: 00:15:00
-  conditions: []
-  actions:
-  - action: light.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - light.oswietlenie_swiateczne_balkon_gora
-      - light.oswietlenie_swiateczne_balkon_dol
-  mode: single
 - id: '1735983352747'
   alias: Baterie psich trackerów
   description: ''
@@ -3041,3 +2914,70 @@
         type: ios
     action: python_script.notify
   mode: single
+- id: '1738692240675'
+  alias: Zmniejsz temperaturę w pomieszczeniach biurowych po pracy
+  description: ''
+  triggers:
+  - trigger: time
+    at: '16:00:00'
+  conditions:
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  - condition: state
+    entity_id: input_boolean.away_mode
+    state: 'off'
+  actions:
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 20
+    target:
+      entity_id:
+      - climate.grzejnik_gabinet
+      - climate.grzejnik_pracownia
+  mode: single
+- id: '1738793038969'
+  alias: Wysyłanie komendy announce do urządzeń Shelly Gen2+
+  description: ''
+  triggers:
+  - trigger: homeassistant
+    event: start
+  actions:
+  - repeat:
+      for_each: '{{ device_ids }}'
+      sequence:
+      - action: mqtt.publish
+        data:
+          topic: '{{ repeat.item }}/rpc'
+          payload: '{{ get_config_payload }}'
+      - action: mqtt.publish
+        data:
+          topic: '{{ repeat.item }}/rpc'
+          payload: '{{ get_components_payload }}'
+  variables:
+    get_config_payload: '{{ {''id'': 1, ''src'': ''shellies_discovery'', ''method'':
+      ''Shelly.GetConfig''} | to_json }}'
+    get_components_payload: '{{ {''id'': 1, ''src'': ''shellies_discovery'', ''method'':''Shelly.GetComponents'',
+      ''params'': {''include'': [''config'']}} | to_json }}'
+    device_ids:
+    - shellies-gen3/shelly-blu-gateway-gen3-78742c
+- id: '1738793112394'
+  alias: Uruchamianie Shellies Discovery Gen2+
+  description: ''
+  triggers:
+  - trigger: mqtt
+    topic: shellies_discovery/rpc
+  actions:
+  - action: python_script.shellies_discovery_gen2
+    data:
+      id: '{{ trigger.payload_json.src }}'
+      device_config: '{{ trigger.payload_json.result }}'
+  - condition: template
+    value_template: '{{ ''mqtt'' in trigger.payload_json.result }}'
+  - action: mqtt.publish
+    data:
+      topic: '{{ trigger.payload_json.result.mqtt.topic_prefix }}/command'
+      payload: status_update
+  mode: queued
+  max: 999

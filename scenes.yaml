@@ -32,7 +32,7 @@
   entities:
     light.ceiling_salon:
       min_color_temp_kelvin: 1700
-      max_color_temp_kelvin: 6535
+      max_color_temp_kelvin: 6500
       min_mireds: 153
       max_mireds: 588
       effect_list:
@@ -77,11 +77,11 @@
       - 57.304
       rgb_color:
       - 255
-      - 176
-      - 108
+      - 177
+      - 109
       xy_color:
-      - 0.498
-      - 0.383
+      - 0.497
+      - 0.384
       entity_id:
       - light.bulb_salon_1
       - light.bulb_salon_2
@@ -91,26 +91,17 @@
       state: 'on'
     switch.adaptive_lighting_salon:
       configuration: {}
-      manual_control: []
-      brightness_pct: 70.94795300268417
-      color_temp_kelvin: 3200
-      color_temp_mired: 312
+      brightness_pct:
+      color_temp_kelvin:
+      color_temp_mired:
       rgb_color:
-      - 255
-      - 183.61996363685068
-      - 123.1193950227788
       xy_color:
-      - 0.478
-      - 0.38
       hs_color:
-      - 27.481
-      - 51.373
-      sun_position: -0.9684015665771943
-      force_rgb_color: false
-      autoreset_time_remaining: {}
+      sun_position:
+      force_rgb_color:
       icon: mdi:theme-light-dark
       friendly_name: 'Adaptive Lighting: salon'
-      state: 'on'
+      state: 'off'
     light.lamp_salon:
       supported_color_modes:
       - onoff

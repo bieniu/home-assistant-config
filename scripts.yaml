@@ -35,17 +35,9 @@ devices_away_mode:
       - fan.xiaomi_mi_standing_fan_2
       - humidifier.xiaomi_mi_humidifier_cb1
       - light.blat_kuchnia
+      - media_player.philips_65oled707
+      - media_player.sony_kd_55xf8596
     action: homeassistant.turn_off
-  - if:
-    - condition: template
-      value_template: '{{ states("select.harmony_activities") != "power_off" }}'
-    then:
-    - metadata: {}
-      data:
-        option: power_off
-      target:
-        entity_id: select.harmony_activities
-      action: select.select_option
   mode: single
   alias: Poza domem
   icon: mdi:home-export-outline
@@ -276,18 +268,9 @@ alexa_goodnight:
       - light.ceiling_pracownia
       - light.oswietlenie_pralnia
       - light.blat_kuchnia
+      - media_player.philips_65oled707
     data: {}
     action: homeassistant.turn_off
-  - if:
-    - condition: template
-      value_template: '{{ states("select.harmony_activities") != "power_off" }}'
-    then:
-    - metadata: {}
-      data:
-        option: power_off
-      target:
-        entity_id: select.harmony_activities
-      action: select.select_option
   mode: single
   alias: Dobranoc
   icon: mdi:weather-night
@@ -319,17 +302,13 @@ restart_wifi_devices:
     action: switch.turn_on
   - target:
       entity_id:
-      - button.blitzwolf_bw_shp6_173eb6_uruchom_ponownie
       - button.blitzwolf_bw_shp6_2ad05a_uruchom_ponownie
       - button.blitzwolf_bw_shp6_3766eb_uruchom_ponownie
-      - button.blitzwolf_bw_shp6_ecf9ea_uruchom_ponownie
-      - button.blitzwolf_bw_shp6_ed007d_uruchom_ponownie
       - button.wemos_lolin32_8cbf7c_uruchom_ponownie
       - button.nettigo_air_monitor_uruchom_ponownie
       - button.shelly_1l_aacec4_uruchom_ponownie
       - button.shelly_1l_aceb5f_uruchom_ponownie
       - button.shelly_1l_ad365e_uruchom_ponownie
-      - button.shelly_plug_s_7aecf4_uruchom_ponownie
       - button.shelly_duo_5f6fa1_restart
       - button.shelly_gas_c6811c_restart
       - button.shelly_motion_2_08a4e9_restart
@@ -352,6 +331,7 @@ restart_wifi_devices:
       - button.shelly_1pm_gen3_c66e94_uruchom_ponownie
       - button.shelly_1_gen3_cc7610_uruchom_ponownie
       - button.shelly_2pm_gen3_36522c_uruchom_ponownie
+      - button.shelly_outdoor_plug_s_gen3_2d5c70_uruchom_ponownie
     data: {}
     action: button.press
   mode: single

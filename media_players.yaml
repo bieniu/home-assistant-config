@@ -6,7 +6,7 @@
     - media_player.philips_65oled707
     - media_player.philips_65oled707_cast
   active_child_template: >
-    {% if is_state("select.harmony_activities", "smart") and not is_state("media_player.philips_65oled707_cast", "off") %}
+    {% if states("media_player.philips_65oled707_cast") in ("playing", "paused") %}
       media_player.philips_65oled707_cast
     {% else %}
       media_player.philips_65oled707

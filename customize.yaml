@@ -25,3 +25,10 @@ climate.drabinka_lazienka:
   target_temp_step: 0.5
 climate.grzejnik_antresola:
   target_temp_step: 0.5
+
+sensor.active_issues:
+  unit_of_measurement: ""
+sensor.ignored_issues:
+  unit_of_measurement: ""
+sensor.issues:
+  unit_of_measurement: ""
