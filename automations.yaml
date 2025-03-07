@@ -1,21 +1,3 @@
-- id: minecraft_server_players_online_notification
-  alias: Ilość graczy na serwerze Minecraft
-  description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.minecraft_server_players_online
-    above: 0
-  action:
-  - service: python_script.notify
-    data:
-      title: Gracze na serwerze Minecraft
-      message: "{% if trigger.to_state.state == 1 %}\n  Na serwerze Minecraft gra
-        obecnie jeden gracz.\n{% else %}\n  Na serwerze Minecraft gra obecnie {{ trigger.to_state.state
-        }} graczy.\n{% endif %}"
-      tag: minecraft-server
-      services:
-      - service: notify.mobile_app_iphone_11
-        type: ios
 - id: ios_turn_on_tv
   alias: Włącz telewizję w salonie
   description: ''
@@ -453,15 +435,14 @@
 - id: notification_gas_leak_kuchnia
   alias: Wyciek gazu w kuchni
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.gas_leak_kuchnia
+  triggers:
+  - entity_id: binary_sensor.gas_leak_kuchnia
     from: 'off'
     to: 'on'
-  action:
+    trigger: state
+  actions:
   - parallel:
-    - service: python_script.notify
-      data:
+    - data:
         title: Wyciek gazu
         message: Uwaga! Wykryto wyciek gazu w kuchni!
         tag: notification-gas-leak
@@ -472,24 +453,25 @@
           type: ios
         - service: notify.mobile_app_iphone_12
           type: ios
-        - service: notify.mobile_app_iphone_11
+        - service: notify.mobile_app_iphone_15_pro
           type: ios
+      action: python_script.notify
     - if:
       - condition: state
         entity_id: script.devices_away_mode
         state: 'off'
       then:
-      - service: xiaomi_aqara.play_ringtone
-        data:
+      - data:
           gw_mac: f0b429cc6f0b
           ringtone_id: 2
           ringtone_vol: 20
+        action: xiaomi_aqara.play_ringtone
       - delay: 00:00:05
-      - service: xiaomi_aqara.play_ringtone
-        data:
+      - data:
           gw_mac: f0b429cc6f0b
           ringtone_id: 2
           ringtone_vol: 20
+        action: xiaomi_aqara.play_ringtone
 - id: notification_low_battery
   alias: Niski poziom naładowania baterii
   description: ''
@@ -957,7 +939,7 @@
   - condition: not
     conditions:
     - condition: state
-      entity_id: media_player.tv_salon
+      entity_id: media_player.philips_65oled707_cast
       state: playing
   actions:
   - data:
@@ -1081,7 +1063,7 @@
   triggers:
   - trigger: state
     entity_id:
-    - media_player.tv_salon
+    - media_player.philips_65oled707_cast
     to: playing
   conditions:
   - condition: sun
@@ -1108,7 +1090,7 @@
   triggers:
   - trigger: state
     entity_id:
-    - media_player.tv_salon
+    - media_player.philips_65oled707_cast
     from: playing
     to:
     for:
@@ -1601,9 +1583,7 @@
     trigger: sun
   conditions:
   - condition: state
-    entity_id:
-    - input_boolean.away_mode
-    - light.leds_schody
+    entity_id: input_boolean.away_mode
     state: 'off'
   actions:
   - target:
@@ -1953,20 +1933,6 @@
           - service: notify.mobile_app_iphone_12
             type: ios
         action: python_script.notify
-  - choose:
-      conditions:
-        condition: state
-        entity_id: person.antek
-        state: home
-      sequence:
-        data:
-          title: '{{ notification_title }}'
-          message: '{{ notification_message }}'
-          tag: '{{ notification_tag }}'
-          services:
-          - service: notify.mobile_app_iphone_11
-            type: ios
-        action: python_script.notify
   variables:
     notification_title: Uzupełnij wodę w nawilżaczu
     notification_message: Nawilżacz w sypialni został wyłączony ponieważ w zbiorniku
@@ -2166,18 +2132,17 @@
 - id: '1678536051718'
   alias: Dym w mieszkaniu
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.smoke_antresola
+  triggers:
+  - entity_id: binary_sensor.smoke_antresola
     from: 'off'
     to: 'on'
-  - platform: state
-    entity_id: binary_sensor.smoke_kuchnia
+    trigger: state
+  - entity_id: binary_sensor.smoke_kuchnia
     from: 'off'
     to: 'on'
-  action:
-  - service: python_script.notify
-    data:
+    trigger: state
+  actions:
+  - data:
       title: Dym
       message: "{% if \"antresola\" in trigger.entity_id %}\n  Uwaga! Wykryto dym
         na antresoli!\n{% else %}\n  Uwaga! Wykryto dym w kuchni!\n{% endif %}"
@@ -2189,8 +2154,9 @@
         type: ios
       - service: notify.mobile_app_iphone_12
         type: ios
-      - service: notify.mobile_app_iphone_11
+      - service: notify.mobile_app_iphone_15_pro
         type: ios
+    action: python_script.notify
 - id: '1678536227339'
   alias: Uruchomienie automatycznego testu czujnika gazu
   description: ''
@@ -2304,7 +2270,7 @@
   - condition: or
     conditions:
     - condition: state
-      entity_id: media_player.tv_salon
+      entity_id: media_player.philips_65oled707_cast
       state: playing
   actions:
   - target:
@@ -2713,7 +2679,7 @@
   triggers:
   - trigger: state
     entity_id:
-    - sensor.temperature_salon
+    - sensor.temperatura_salon
   conditions:
   - condition: state
     entity_id: input_boolean.heating_season
@@ -2844,29 +2810,6 @@
     target:
       entity_id: light.blat_kuchnia
   mode: single
-- id: '1732278070035'
-  alias: Raportowanie temperatury do termostatu w łazience
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - sensor.temperature_lazienka
-  conditions:
-  - condition: state
-    entity_id: input_boolean.heating_season
-    state: 'on'
-  - condition: template
-    value_template: '{{ now().timestamp() - as_timestamp(this.attributes.last_triggered,
-      0) > 300 }}'
-  - condition: template
-    value_template: '{{ is_number(trigger.to_state.state) }}'
-  actions:
-  - action: number.set_value
-    data:
-      value: '{{ trigger.to_state.state | float }}'
-    target:
-      entity_id: number.temperatura_zewnetrznego_sensora_lazienka
-  mode: single
 - id: '1733758713539'
   alias: Powiadomienie o braku kalibracji dla Shelly BLU TRV
   description: ''
@@ -2937,47 +2880,33 @@
       - climate.grzejnik_gabinet
       - climate.grzejnik_pracownia
   mode: single
-- id: '1738793038969'
-  alias: Wysyłanie komendy announce do urządzeń Shelly Gen2+
+- id: '1738937129652'
+  alias: Restart czujnika dwutlenku węgla
   description: ''
   triggers:
-  - trigger: homeassistant
-    event: start
+  - trigger: state
+    entity_id:
+    - sensor.co2_salon
+    to: unknown
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  conditions: []
   actions:
-  - repeat:
-      for_each: '{{ device_ids }}'
-      sequence:
-      - action: mqtt.publish
-        data:
-          topic: '{{ repeat.item }}/rpc'
-          payload: '{{ get_config_payload }}'
-      - action: mqtt.publish
-        data:
-          topic: '{{ repeat.item }}/rpc'
-          payload: '{{ get_components_payload }}'
-  variables:
-    get_config_payload: '{{ {''id'': 1, ''src'': ''shellies_discovery'', ''method'':
-      ''Shelly.GetConfig''} | to_json }}'
-    get_components_payload: '{{ {''id'': 1, ''src'': ''shellies_discovery'', ''method'':''Shelly.GetComponents'',
-      ''params'': {''include'': [''config'']}} | to_json }}'
-    device_ids:
-    - shellies-gen3/shelly-blu-gateway-gen3-78742c
-- id: '1738793112394'
-  alias: Uruchamianie Shellies Discovery Gen2+
-  description: ''
-  triggers:
-  - trigger: mqtt
-    topic: shellies_discovery/rpc
-  actions:
-  - action: python_script.shellies_discovery_gen2
-    data:
-      id: '{{ trigger.payload_json.src }}'
-      device_config: '{{ trigger.payload_json.result }}'
-  - condition: template
-    value_template: '{{ ''mqtt'' in trigger.payload_json.result }}'
-  - action: mqtt.publish
-    data:
-      topic: '{{ trigger.payload_json.result.mqtt.topic_prefix }}/command'
-      payload: status_update
-  mode: queued
-  max: 999
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.blitzwolf_bw_shp6_173eb6_przekaznik
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.blitzwolf_bw_shp6_173eb6_przekaznik
+  mode: single

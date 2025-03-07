@@ -51,8 +51,6 @@ script: !include scripts.yaml
 
 fan: !include fans.yaml
 
-media_player: !include media_players.yaml
-
 template: !include templates.yaml
 
 ios: !include ios.yaml
