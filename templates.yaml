@@ -1,14 +1,3 @@
-- sensor:
-    - name: Dom Ciśnienie
-      unique_id: home_pressure
-      state: "{{ states('sensor.nettigo_air_monitor_bme280_cisnienie') | float }}"
-      attributes:
-        tendencja: "{{ states('sensor.tendencja_cisnienia') }}"
-      availability: "{{ is_number(states('sensor.nettigo_air_monitor_bme280_cisnienie')) }}"
-      device_class: pressure
-      state_class: measurement
-      unit_of_measurement: hPa
-
 - binary_sensor:
     - name: Pralka pralnia
       unique_id: pralka_pralnia

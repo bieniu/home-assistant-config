@@ -939,8 +939,8 @@
   - condition: not
     conditions:
     - condition: state
-      entity_id: media_player.philips_65oled707_cast
       state: playing
+      entity_id: media_player.playstation_5
   actions:
   - data:
       transition: 5
@@ -1063,7 +1063,7 @@
   triggers:
   - trigger: state
     entity_id:
-    - media_player.philips_65oled707_cast
+    - media_player.playstation_5
     to: playing
   conditions:
   - condition: sun
@@ -1090,7 +1090,7 @@
   triggers:
   - trigger: state
     entity_id:
-    - media_player.philips_65oled707_cast
+    - media_player.playstation_5
     from: playing
     to:
     for:
@@ -1590,7 +1590,6 @@
       entity_id:
       - light.leds_schody
       - light.bonsai_salon
-      - light.oswietlenie_swiateczne_schody
     data: {}
     action: light.turn_on
 - id: light_turn_off_schody_leds_on_midnight
@@ -1604,7 +1603,6 @@
       entity_id:
       - light.leds_schody
       - light.bonsai_salon
-      - light.oswietlenie_swiateczne_schody
     data: {}
     action: light.turn_off
 - id: light_turn_on_goscinny_lamp_when_dark_and_motion
@@ -1830,21 +1828,22 @@
 - id: '1670319144056'
   alias: Odtwarzaj/wstrzymaj media w gabinecie
   description: ''
-  trigger:
-  - platform: device
-    device_id: 5794eabef0db436756c344ac7632d9bd
+  triggers:
+  - device_id: 5794eabef0db436756c344ac7632d9bd
     domain: shelly
     type: triple_push
     subtype: button1
-  - platform: device
-    device_id: 32d4a414f2347f65f26c23af29853f9d
+    trigger: device
+  - device_id: 32d4a414f2347f65f26c23af29853f9d
     domain: bthome
     type: button_4
     subtype: press
-  action:
+    trigger: device
+  actions:
   - data: {}
     target:
-      entity_id: media_player.sonos_one_gabinet
+      entity_id:
+      - media_player.sonos_one
     action: media_player.media_play_pause
 - id: '1671558014151'
   alias: Rozpoczęcie nawilżania w sypialni
@@ -2270,8 +2269,8 @@
   - condition: or
     conditions:
     - condition: state
-      entity_id: media_player.philips_65oled707_cast
       state: playing
+      entity_id: media_player.playstation_5
   actions:
   - target:
       entity_id: scene.light_salon_dusk
@@ -2909,4 +2908,89 @@
     data: {}
     target:
       entity_id: switch.blitzwolf_bw_shp6_173eb6_przekaznik
+  mode: single
+- id: '1741540528526'
+  alias: Restart dekodera TV
+  description: ''
+  triggers:
+  - trigger: time
+    at: 06:00:00
+  conditions:
+  - condition: state
+    entity_id: media_player.philips_65oled707
+    state: 'off'
+  actions:
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.blitzwolf_bw_shp6_ed007d_przeka_nik
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.blitzwolf_bw_shp6_ed007d_przeka_nik
+  mode: single
+- id: '1741967674948'
+  alias: Powiadomienie z sugestią włączenia ogrzewania
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.srednia_temperatura_zewnetrzna
+    for:
+      hours: 2
+      minutes: 0
+      seconds: 0
+    below: 8
+  conditions:
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: 'off'
+  actions:
+  - action: python_script.notify
+    data:
+      title: Propozycja włączenia ogrzewania
+      message: Średnia temperatura zewnętrzna wynosi {{ trigger.to_state.state }}°C,
+        prawdopodobnie należy włączyć ogrzewanie.
+      tag: notification-heating
+      group: other
+      priority: high
+      services:
+      - service: notify.mobile_app_iphone_13
+        type: ios
+  mode: single
+- id: '1741967732368'
+  alias: Powiadomienie z sugestią wyłączenia ogrzewania
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.srednia_temperatura_zewnetrzna
+    for:
+      hours: 2
+      minutes: 0
+      seconds: 0
+    above: 8
+  conditions:
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: 'on'
+  actions:
+  - action: python_script.notify
+    data:
+      title: Propozycja włączenia ogrzewania
+      message: Średnia temperatura zewnętrzna wynosi {{ trigger.to_state.state }}°C,
+        prawdopodobnie należy wyłączyć ogrzewanie.
+      tag: notification-heating
+      group: other
+      priority: high
+      services:
+      - service: notify.mobile_app_iphone_13
+        type: ios
   mode: single
