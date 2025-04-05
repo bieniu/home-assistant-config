@@ -55,23 +55,23 @@
 
 - trigger:
     - platform: state
-      entity_id: weather.accuweather
+      entity_id: weather.lowicz
   action:
     - service: weather.get_forecasts
       target:
-        entity_id: weather.accuweather
+        entity_id: weather.lowicz
       data:
         type: daily
       response_variable: daily_forecast
   sensor:
-    - name: AccuWeather Pomocnik Prognozy Pogody
+    - name: Pomocnik prognozy pogody
       unique_id: accuweather_forecast_daily_helper
       state: "{{ now().isoformat() }}"
       attributes:                                           
-        forecast: "{{ daily_forecast['weather.accuweather'].forecast }}"
+        forecast: "{{ daily_forecast['weather.lowicz'].forecast }}"
     - name: Dom Prawdopodobieństwo opadów
       unique_id: home_precipitation_probablility
       icon: mdi:weather-partly-rainy
       unit_of_measurement: "%"
       state_class: measurement
-      state: "{{ daily_forecast['weather.accuweather'].forecast[0].precipitation_probability }}"
+      state: "{{ daily_forecast['weather.lowicz'].forecast[0].precipitation_probability }}"

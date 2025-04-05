@@ -1,4 +1,4 @@
-sensor.home_uv_index:
+sensor.lowicz_indeks_uv:
   unit_of_measurement: ""
 
 sensor.minecraft_server_players_online:

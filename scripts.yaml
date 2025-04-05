@@ -331,7 +331,6 @@ restart_wifi_devices:
       - button.shelly_1pm_gen3_c66e94_uruchom_ponownie
       - button.shelly_1_gen3_cc7610_uruchom_ponownie
       - button.shelly_2pm_gen3_36522c_uruchom_ponownie
-      - button.shelly_outdoor_plug_s_gen3_2d5c70_uruchom_ponownie
     data: {}
     action: button.press
   mode: single
