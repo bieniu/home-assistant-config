@@ -31,13 +31,13 @@
 
 * Aeotec ZW175 Smart Switch 7
 * Aqara Smart SP-EUC01
-* BlitzWolf BW-SHP6
+* BlitzWolf BW-SHP6 [[ESPHome](https://esphome.io)]
 * BlitzWolf BW-SHP15
 * Shelly 1 Mini Gen3
-* Shelly 1L [with [ESPHome](https://esphome.io)]
+* Shelly 1L [[ESPHome](https://esphome.io)]
 * Shelly 1PM Mini Gen3
 * Shelly 2PM Gen3
-* Shelly Plug S [with [ESPHome](https://esphome.io)]
+* Shelly Plug S [[ESPHome](https://esphome.io)]
 * Shelly Plus 1 Mini
 * Shelly Plus 1PM
 * Shelly Plus 1PM Mini
@@ -47,7 +47,7 @@
 * Shelly Plus PM Mini
 * Shelly Pro 1PM
 * Shelly Pro 3EM
-* Sonoff S26
+* Sonoff S26 [[ESPHome](https://esphome.io)]
 
 ## Switches
 
@@ -70,12 +70,10 @@
 * Shelly Gas
 * Shelly Plus Smoke
 * [Nettigo Air Monitor](https://air.nettigo.pl/?lang=en)
-
 * Wemos Lolin32 + MH-Z19B [[ESPHome](https://esphome.io)]
 
 ## Thermostats
 
-* Aeotec ZWA021
 * Danfoss 014G0013
 * Danfoss 014G2460
 * Shelly BLU TRV
@@ -98,23 +96,23 @@
 * Amazon Echo Plus/Dot/Show [via Home Assistant Cloud]
 * Sonos One
 * Sonos Arc
+* IKEA Symfonisk
 * Tractive tracker for dogs
 * BMW car
-* Asus router
+* Unifi router
 
 ## Home Assistant Custom Components
 
 * [Alexa Media Player](https://github.com/custom-components/alexa_media_player)
 * [HACS](https://github.com/custom-components/hacs)
 * [Blitzortung.org Lightning Detector](https://github.com/mrk-its/homeassistant-blitzortung)
-* WebRTC Camera
 * Adaptive Lightning
+* Spook
 
 ## Lovelace Custom Cards
 
 * [card-mod](https://github.com/thomasloven/lovelace-card-mod)
 * [mini-graph-card](https://github.com/kalkih/mini-graph-card)
-* Sonos Card
 * horizon-card
 * mushroom
 
