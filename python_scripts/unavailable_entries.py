@@ -23,7 +23,7 @@ for entity in entries:
         if area in EMPTY_VALUES:
             message_elements[entry_name] = f" - {entry_name}"
         else:
-            message_elements[entry_name] = f" - {entry_name}, {area}"
+            message_elements[entry_name] = f" - {entry_name}, {area.lower()}"
 
 if message_elements:
     message = "\n".join(message_elements.values())
