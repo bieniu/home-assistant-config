@@ -11,48 +11,6 @@
       state: "{{ states('sensor.power_dishwasher_kuchnia') | int > 1 }}"
       availability: "{{ is_number(states('sensor.power_dishwasher_kuchnia')) }}"
 
-    - name: raspberry_status
-      unique_id: "raspberry_status"
-      icon: mdi:raspberry-pi
-      state: "{{ is_state('device_tracker.raspberry_pi_4b', 'home') }}"
-
-    - name: dell_latitude_5400_status
-      unique_id: "dell_latitude_5400_status"
-      icon: mdi:laptop
-      state: "{{ is_state('device_tracker.dell_latitude_5400_wireless', 'home') or is_state('device_tracker.dell_latitude_5400_ethernet', 'home') }}"
-
-    - name: desktop_antek_status
-      unique_id: "desktop_antek_status"
-      icon: mdi:desktop-tower
-      state: "{{ is_state('device_tracker.desktop_antek', 'home') }}"
-
-    - name: iphone_13_status
-      unique_id: "iphone_13_status"
-      icon: mdi:cellphone
-      state: "{{ is_state('device_tracker.iphone_13', 'home') }}"
-
-    - name: iphone_15_pro_status
-      unique_id: "iphone_15_pro_status"
-      icon: mdi:cellphone
-      state: "{{ is_state('device_tracker.iphone_15_pro', 'home') }}"
-
-    - name: iphone_12_status
-      unique_id: "iphone_12_status"
-      icon: mdi:cellphone
-      state: "{{ is_state('device_tracker.iphone_12', 'home') }}"
-
-    - name: laptop_edyta_status
-      unique_id: "laptop_edyta_status"
-      state: "{{ is_state('device_tracker.hp_elitebook_840_g10', 'home') }}"
-
-    - name: laptop_maciek_status
-      unique_id: "laptop_maciek_status"
-      state: "{{ is_state('device_tracker.lenovo_thinkpad_t14', 'home') }}"
-
-    - name: lenovo_ideapad_s145_status
-      unique_id: "lenovo_ideapad_s145_status"
-      state: "{{ is_state('device_tracker.lenovo_ideapad_s145', 'home') }}"
-
 - trigger:
     - platform: state
       entity_id: weather.lowicz

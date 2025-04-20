@@ -22,8 +22,8 @@ ota:
   password: !secret esphome_password
 
 wifi:
-  ssid: !secret wifi_ssid_wpa3
-  password: !secret wifi_password_wpa3
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
   domain: !secret local_domain
   power_save_mode: high
   ap:

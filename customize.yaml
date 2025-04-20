@@ -1,9 +1,6 @@
 sensor.lowicz_indeks_uv:
   unit_of_measurement: ""
 
-sensor.minecraft_server_players_online:
-  unit_of_measurement: "graczy"
-
 sensor.cloud_gateway_ultra_podlaczonych:
   unit_of_measurement: "klientów"
 

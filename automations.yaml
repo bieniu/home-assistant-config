@@ -674,7 +674,7 @@
       seconds: 0
     trigger: state
   actions:
-  - entity_id: fan.xiaomi_mi_air_purifier_3h
+  - entity_id: fan.oczyszczacz_powietrza_salon
     action: fan.turn_off
   - condition: state
     entity_id: input_boolean.heating_season
@@ -711,7 +711,7 @@
     entity_id: binary_sensor.windows
     state: 'off'
   actions:
-  - entity_id: fan.xiaomi_mi_air_purifier_3h
+  - entity_id: fan.oczyszczacz_powietrza_salon
     data:
       percentage: "{% if states('sensor.xiaomi_mi_air_purifier_3h_pm2_5') | int(0)
         > 100 %}\n  66\n{% else %}\n  33\n{% endif %}"
@@ -726,7 +726,7 @@
       minutes: 2
     trigger: numeric_state
   actions:
-  - entity_id: fan.xiaomi_mi_air_purifier_3h
+  - entity_id: fan.oczyszczacz_powietrza_salon
     action: fan.turn_off
 - id: air_quality_air_purifier_switch_fan_level_to_2
   alias: Zmiana prędkości oczyszczacza na 2
@@ -739,7 +739,7 @@
     trigger: numeric_state
   conditions:
   - condition: state
-    entity_id: fan.xiaomi_mi_air_purifier_3h
+    entity_id: fan.oczyszczacz_powietrza_salon
     state: 'on'
   - condition: numeric_state
     entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
@@ -760,7 +760,7 @@
     trigger: numeric_state
   conditions:
   - condition: state
-    entity_id: fan.xiaomi_mi_air_purifier_3h
+    entity_id: fan.oczyszczacz_powietrza_salon
     state: 'on'
   - condition: numeric_state
     entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
@@ -1321,21 +1321,21 @@
 - id: light_turn_off_antek_lights_when_no_motion
   alias: Wyłącz oświetlenie u Antka gdy nie ma ruchu
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_antek
+  triggers:
+  - entity_id: binary_sensor.motion_antek
     from: 'on'
     to: 'off'
     for:
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
-    entity_id: binary_sensor.desktop_antek_status
+    entity_id: binary_sensor.komputer_antka_status
     state: 'off'
   - condition: or
     conditions:
     - condition: state
-      entity_id: light.desk_lamp_antek
+      entity_id: light.lampa_biurkowa_antek
       state: 'on'
     - condition: state
       entity_id: light.oswietlenie_antek
@@ -1343,14 +1343,14 @@
     - condition: state
       entity_id: light.lightstrip_antek
       state: 'on'
-  action:
-  - service: light.turn_off
-    target:
+  actions:
+  - target:
       entity_id:
-      - light.desk_lamp_antek
+      - light.lampa_biurkowa_antek
       - light.lightstrip_antek
       - light.oswietlenie_antek
     data: {}
+    action: light.turn_off
 - id: light_turn_on_antek_leds_and_cabinet_when_dark_and_motion
   alias: Włącz LEDy u Antka gdy pojawi się ruch i jest ciemno
   description: ''
@@ -1382,8 +1382,8 @@
       to: 'off'
       trigger: state
   - condition: state
-    entity_id: device_tracker.desktop_antek
-    state: not_home
+    entity_id: binary_sensor.komputer_antka_status
+    state: 'off'
   - data:
       transition: 10
     target:
@@ -1459,7 +1459,7 @@
     entity_id:
     - input_boolean.away_mode
     - light.ceiling_gabinet
-    - light.desk_lamp_gabinet
+    - light.lampa_biurkowa_gabinet
     - light.lamp_gabinet
     state: 'off'
   - condition: numeric_state
@@ -1504,7 +1504,7 @@
     entity_id: binary_sensor.dell_latitude_5400_status
     state: 'off'
   - condition: state
-    entity_id: binary_sensor.laptop_maciek_status
+    entity_id: binary_sensor.lenovo_thinkpad_t14_status
     state: 'off'
   - condition: or
     conditions:
@@ -1515,14 +1515,14 @@
       entity_id: light.lamp_gabinet
       state: 'on'
     - condition: state
-      entity_id: light.desk_lamp_gabinet
+      entity_id: light.lampa_biurkowa_gabinet
       state: 'on'
   actions:
   - target:
       entity_id:
       - light.ceiling_gabinet
       - light.lamp_gabinet
-      - light.desk_lamp_gabinet
+      - light.lampa_biurkowa_gabinet
     data: {}
     action: light.turn_off
 - id: light_toggle_schody_leds
@@ -2055,21 +2055,21 @@
     metadata: {}
     data: {}
     target:
-      entity_id: light.desk_lamp_antek
+      entity_id: light.lampa_biurkowa_antek
   mode: single
 - id: '1672565177379'
   alias: Wyłącz oświetlenie o 1:00 u Antka
   description: ''
-  trigger:
-  - platform: time
-    at: 00:10:00
-  condition: []
-  action:
+  triggers:
+  - at: 00:10:00
+    trigger: time
+  conditions: []
+  actions:
   - data: {}
     target:
       entity_id:
       - light.drzewko_antek
-      - light.desk_lamp_antek
+      - light.lampa_biurkowa_antek
       - light.lightstrip_antek
     action: light.turn_off
   mode: single
@@ -2309,28 +2309,28 @@
 - id: '1705870734815'
   alias: Wyłącz oświetlenie w pracowni gdy nie ma ruchu
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_pracownia
+  triggers:
+  - entity_id: binary_sensor.motion_pracownia
     from: 'on'
     to: 'off'
     for:
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
-    entity_id: binary_sensor.laptop_edyta_status
+    entity_id: binary_sensor.status_hp_elitebook_840_g10
     state: 'off'
   - condition: or
     conditions:
     - condition: state
       entity_id: light.ceiling_pracownia
       state: 'on'
-  action:
-  - service: light.turn_off
-    target:
+  actions:
+  - target:
       entity_id:
       - light.ceiling_pracownia
     data: {}
+    action: light.turn_off
 - id: '1709306186649'
   alias: Włącz LEDy na przedpokoju gdy pojawi się ruch i jest ciemno
   description: ''

@@ -16,8 +16,8 @@ devices_away_mode:
       - light.leds_przedpokoj
       - light.ceiling_salon
       - light.oswietlenie_toaleta
-      - light.desk_lamp_antek
-      - light.desk_lamp_gabinet
+      - light.lampa_biurkowa_antek
+      - light.lampa_biurkowa_gabinet
       - light.gateway_antresola
       - light.lamp_goscinny
       - light.lamp_gabinet
@@ -250,11 +250,11 @@ alexa_goodnight:
       - media_player.sony_kd_55xf8596
       - fan.ceiling_salon
       - fan.xiaomi_mi_standing_fan_1x
-      - fan.xiaomi_mi_air_purifier_3h
+      - fan.oczyszczacz_powietrza_salon
       - light.ledy_salon
       - light.ceiling_salon
-      - light.desk_lamp_antek
-      - light.desk_lamp_gabinet
+      - light.lampa_biurkowa_antek
+      - light.lampa_biurkowa_gabinet
       - light.ceiling_gabinet
       - light.ceiling_goscinny
       - light.oswietlenie_kuchnia
