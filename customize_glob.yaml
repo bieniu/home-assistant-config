@@ -1,3 +1,6 @@
 "climate.danfoss_014g0013_thermostat_*":
   max_temp: 28
   min_temp: 4
+
+"sensor.*_kroki":
+  unit_of_measurement: "kroków"

@@ -69,3 +69,13 @@ panel_custom:
 weather: !include weather.yaml
 
 mqtt: !include mqtt.yaml
+
+sensor:
+  - platform: rest
+    name: "Shelly BLU TRV Firmware"
+    resource: https://repo.shelly.cloud/firmware/BLE_DEVICES/SBTR-001AEU.txt
+    value_template: "{{ (value | regex_findall('v(\\d+\\.\\d+\\.\\d+)'))[0] }}"
+    availability: "{{ (value | regex_findall('v(\\d+\\.\\d+\\.\\d+)')) != [] }}"
+    icon: "mdi:package"
+    unique_id: "shelly-blu-trv-firmware"
+    scan_interval: 3600

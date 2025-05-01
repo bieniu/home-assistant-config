@@ -4,9 +4,6 @@ sensor.lowicz_indeks_uv:
 sensor.cloud_gateway_ultra_podlaczonych:
   unit_of_measurement: "klientów"
 
-sensor.maciek_kroki:
-  unit_of_measurement: ""
-
 sun.sun:
   friendly_name: "Słońce"
 
@@ -29,3 +26,6 @@ sensor.ignored_issues:
   unit_of_measurement: ""
 sensor.issues:
   unit_of_measurement: ""
+
+device_tracker.bmw_220:
+  entity_picture: /local/bmw_220.png

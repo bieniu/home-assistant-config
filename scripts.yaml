@@ -19,7 +19,7 @@ devices_away_mode:
       - light.lampa_biurkowa_antek
       - light.lampa_biurkowa_gabinet
       - light.gateway_antresola
-      - light.lamp_goscinny
+      - light.lampka_goscinny
       - light.lamp_gabinet
       - light.lamp_salon
       - light.ledy_salon
@@ -311,18 +311,18 @@ restart_wifi_devices:
       - button.shelly_1l_ad365e_uruchom_ponownie
       - button.shelly_duo_5f6fa1_restart
       - button.shelly_gas_c6811c_restart
-      - button.shelly_motion_2_08a4e9_restart
-      - button.shelly_1_mini_gen3_411724_restart
+      - button.shelly_motion_2_08a4e9_uruchom_ponownie
+      - button.shelly_1_mini_gen4_bc33a0_uruchom_ponownie
       - button.shelly_1pm_mini_gen3_411170_restart
       - button.shelly_plus_1pm_b22864_restart
-      - button.shelly_plus_1pm_948ff8_restart
+      - button.shelly_plus_1pm_948ff8_uruchom_ponownie
       - button.shelly_plus_1pm_9d35dc_restart
       - button.shelly_plus_1pm_b12a90_uruchom_ponownie
       - button.shelly_plus_1pm_21e1dc_uruchom_ponownie
       - button.shelly_plus_2pm_8d28f4_restart
       - button.shelly_plus_2pm_b67728_restart
       - button.shelly_plus_plug_s_2ffb28_restart
-      - button.shelly_plus_plug_s_d00c84_restart
+      - button.shelly_plus_plug_s_d00c84_uruchom_ponownie
       - button.shelly_pro_1pm_80e0c0_restart
       - button.shelly_pro_3em_879c7c_restart
       - button.shelly_plus_1_mini_af5390_restart

@@ -341,7 +341,7 @@
       minutes: 10
   actions:
   - variables:
-      area: '{{ area_name(trigger.entity_id) }}'
+      area: '{{ area_name(trigger.entity_id) | lower }}'
       snapshot_name: '{{ now().strftime(''%Y%m%d_%H%M%S'') }}.jpg'
       snapshot_areas:
       - salon
@@ -1608,16 +1608,16 @@
 - id: light_turn_on_goscinny_lamp_when_dark_and_motion
   alias: Włącz lampkę w gościnnym gdy pojawi się ruch i jest ciemno
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_goscinny
+  triggers:
+  - entity_id: binary_sensor.motion_goscinny
     from: 'off'
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id:
     - input_boolean.away_mode
-    - light.lamp_goscinny
+    - light.lampka_goscinny
     state: 'off'
   - condition: state
     entity_id: light.ceiling_goscinny
@@ -1632,20 +1632,20 @@
     after: sunset
     before: sunrise
     before_offset: +00:10:00
-  action:
-  - service: light.turn_on
-    target:
-      entity_id: light.lamp_goscinny
+  actions:
+  - target:
+      entity_id: light.lampka_goscinny
     data: {}
+    action: light.turn_on
   - wait_for_trigger:
-      platform: state
       entity_id: binary_sensor.motion_goscinny
       from: 'on'
       to: 'off'
-  - service: light.turn_off
-    target:
-      entity_id: light.lamp_goscinny
+      trigger: state
+  - target:
+      entity_id: light.lampka_goscinny
     data: {}
+    action: light.turn_off
 - id: humidification_set_target_humidity
   alias: Ustaw docelową wilgotność
   description: ''
@@ -2022,18 +2022,18 @@
 - id: '1672477395224'
   alias: Włącz/wyłącz lampkę w pokoju gościnnym
   description: ''
-  trigger:
-  - platform: device
-    device_id: 84783955a9dda947e7b647309a6b15f9
+  triggers:
+  - device_id: 84783955a9dda947e7b647309a6b15f9
     domain: shelly
     type: double_push
     subtype: button1
-  condition: []
-  action:
-  - service: light.toggle
-    data: {}
+    trigger: device
+  conditions: []
+  actions:
+  - data: {}
     target:
-      entity_id: light.lamp_goscinny
+      entity_id: light.lampka_goscinny
+    action: light.toggle
   mode: single
 - id: '1672489364549'
   alias: Włącz/wyłącz lapkę biurkową u Antka
@@ -2990,6 +2990,31 @@
       tag: notification-heating
       group: other
       priority: high
+      services:
+      - service: notify.mobile_app_iphone_13
+        type: ios
+  mode: single
+- id: '1746095039819'
+  alias: Nowe firmware dla Shelly BLU TRV
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.shelly_blu_trv_firmware
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.to_state.state not in ("unavailable", "unknown") }}'
+  - condition: template
+    value_template: '{{ trigger.to_state.state != trigger.from_state.state }}'
+  actions:
+  - action: python_script.notify
+    data:
+      title: Aktualizacja firmware dla Shellu BLU TRV
+      message: Dostępna jest wersja {{ trigger.to_state.state }} firmware dla Shelly
+        BLU TRV.
+      tag: notification-blu-trv-firmware
+      group: other
+      priority: medium
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
