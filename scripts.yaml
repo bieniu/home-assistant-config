@@ -473,3 +473,87 @@ alexa_harmony_power_off:
       entity_id: remote.philips_65oled707
   mode: single
   icon: mdi:television-off
+kamera_ptz_w_gore:
+  sequence:
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.reolink_e1_zoom_ptz_w_gore
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.reolink_e1_zoom_ptz_stop
+  alias: Kamera PTZ w górę
+  description: ''
+kamera_ptz_w_dol:
+  sequence:
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.reolink_e1_zoom_ptz_w_dol
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.reolink_e1_zoom_ptz_stop
+  alias: Kamera PTZ w dół
+  description: ''
+kamera_ptz_w_lewo:
+  sequence:
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.reolink_e1_zoom_ptz_w_lewo
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.reolink_e1_zoom_ptz_stop
+  alias: Kamera PTZ w lewo
+  description: ''
+kamera_ptz_w_prawo:
+  sequence:
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.reolink_e1_zoom_ptz_w_prawo
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.reolink_e1_zoom_ptz_stop
+  alias: Kamera PTZ w prawo
+  description: ''
+kamera_ptz_przybliz:
+  sequence:
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.reolink_e1_zoom_ptz_przybliz
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.reolink_e1_zoom_ptz_stop
+  alias: Kamera PTZ przybliż
+  description: ''
+kamera_ptz_oddal:
+  sequence:
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.reolink_e1_zoom_ptz_oddal
+  - action: button.press
+    metadata: {}
+    data: {}
+    target:
+      entity_id: button.reolink_e1_zoom_ptz_stop
+  alias: Kamera PTZ oddal
+  description: ''

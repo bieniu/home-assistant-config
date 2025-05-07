@@ -90,7 +90,6 @@
 * Brother HL-L2340D
 * iPhones
 * CyberPower DL650ELCD
-* Xiaomi DaFang [camera with [custom firmware](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks)]
 * Philips TV
 * Sony Bravia TV
 * Amazon Echo Plus/Dot/Show [via Home Assistant Cloud]
@@ -100,6 +99,7 @@
 * Tractive tracker for dogs
 * BMW car
 * Unifi router
+* Reolink E1 Zoom
 
 ## Home Assistant Custom Components
 

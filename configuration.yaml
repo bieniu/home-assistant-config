@@ -68,8 +68,6 @@ panel_custom:
 
 weather: !include weather.yaml
 
-mqtt: !include mqtt.yaml
-
 sensor:
   - platform: rest
     name: "Shelly BLU TRV Firmware"
