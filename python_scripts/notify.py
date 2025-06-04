@@ -38,6 +38,7 @@ ATTR_FRONTEND = "frontend"
 ATTR_HIDE_THUMBNAIL = "hide-thumbnail"
 ATTR_GROUP = "group"
 ATTR_IMAGE = "image"
+ATTR_INTERRUPTION_LEVEL = "interruption-level"
 ATTR_IOS = "ios"
 ATTR_MESSAGE = "message"
 ATTR_NOTIFICATION_ID = "notification_id"
@@ -127,6 +128,8 @@ for item in services:
             service_data[ATTR_DATA][ATTR_URL] = url
         if entity_id:
             service_data[ATTR_DATA][ATTR_ENTITY_ID] = entity_id
+        if priority == PRIORITY_HIGH:
+            service_data[ATTR_DATA][ATTR_PUSH][ATTR_INTERRUPTION_LEVEL] = "critical"
 
         logger.debug(f"service: {item[ATTR_SERVICE]}, data: {service_data}")
 

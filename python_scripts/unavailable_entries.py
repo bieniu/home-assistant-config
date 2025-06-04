@@ -21,9 +21,9 @@ for entity in entries:
         if entry_name in message_elements:
             continue
         if area in EMPTY_VALUES:
-            message_elements[entry_name] = f" - {entry_name}"
+            message_elements[entry_name] = f" ⸱ {entry_name}"
         else:
-            message_elements[entry_name] = f" - {entry_name}, {area.lower()}"
+            message_elements[entry_name] = f" ⸱ {entry_name} ⸱ {area}"
 
 if message_elements:
     message = "\n".join(message_elements.values())

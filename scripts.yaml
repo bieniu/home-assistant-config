@@ -557,3 +557,17 @@ kamera_ptz_oddal:
       entity_id: button.reolink_e1_zoom_ptz_stop
   alias: Kamera PTZ oddal
   description: ''
+kamera_nagrywaj:
+  sequence:
+  - action: camera.record
+    metadata: {}
+    data:
+      duration: 30
+      lookback: 10
+      filename: /media/salon/{{ now().strftime('%Y%m%d_%H%M%S') }}.mp4
+    target:
+      entity_id: camera.salon
+  alias: Kamera nagrywaj
+  description: ''
+  mode: queued
+  max: 3

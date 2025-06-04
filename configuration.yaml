@@ -8,10 +8,6 @@ recorder:
   exclude:
     domains:
       - geo_location
-    entity_globs:
-      - sensor.airly_*
-    entities:
-      - weather.accuweather
 
 frontend:
   themes: !include_dir_merge_named themes
@@ -38,8 +34,6 @@ logbook:
     entity_globs:
       - binary_sensor.*_status
       - sensor.*_last_restart
-      - sensor.*_last_boot
-      - sensor.*_uptime
 
 logger: !include logger.yaml
 

@@ -37,8 +37,8 @@
       title: Wysokie użycie pamięci RAM
       message: Serwer Home Assistant używa obecnie {{ trigger.to_state.state }}% pamięci
         RAM.
-      tag: notification-high-ram-usage
-      group: other
+      tag: high-ram-usage
+      group: server
       priority: high
       services:
       - service: notify.mobile_app_iphone_13
@@ -60,8 +60,8 @@
     data:
       title: Wygasa certyfikat SSL
       message: Za {{ days }} dni wygaśnie certyfikat SSL serwera WWW.
-      tag: notification-ssl
-      group: other
+      tag: ssl
+      group: server
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
@@ -109,7 +109,7 @@
     notification_title: Burza w pobliżu domu
     notification_message: Wyładowania atmosferyczne występują {{ states('sensor.dom_dystans_do_blyskawicy')
       }} km od domu.
-    notification_tag: notification-storm-comming
+    notification_tag: storm-comming
 - id: notification_dishwasher_end
   alias: Koniec zmywania naczyń
   description: ''
@@ -131,8 +131,8 @@
       - data:
           title: Koniec zmywania
           message: Zmywarka zakończyła zmywanie naczyń.
-          tag: notification-dishwasher
-          group: other
+          tag: dishwasher
+          group: home
           services:
           - service: notify.mobile_app_iphone_13
             type: ios
@@ -145,8 +145,8 @@
       - data:
           title: Koniec zmywania
           message: Zmywarka zakończyła zmywanie naczyń.
-          tag: notification-dishwasher
-          group: other
+          tag: dishwasher
+          group: home
           services:
           - service: notify.mobile_app_iphone_12
             type: ios
@@ -195,7 +195,7 @@
     notification_title: Wysokie stężenie dwutlenku węgla
     notification_message: W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state
       }} ppm. Należy przewietrzyć pomieszczenie.
-    notification_tag: notification-high-co2
+    notification_tag: high-co2-level
 - id: notification_water_leak_kuchnia
   alias: Wyciek wody
   description: ''
@@ -217,7 +217,7 @@
     data:
       title: '{{ notification_title }}'
       message: '{{ notification_message }}'
-      tag: notification-water-leak-{{ area_name(trigger.entity_id) }}
+      tag: water-leak-{{ area_name(trigger.entity_id) }}
       priority: high
       services:
       - service: notify.mobile_app_iphone_13
@@ -259,7 +259,7 @@
   - data:
       title: '{{ notification_title }}'
       message: '{{ notification_message }}'
-      tag: notification-relay-overpower-{{ trigger.entity_id }}
+      tag: relay-overpower-{{ trigger.entity_id }}
       priority: high
       services:
       - service: notify.mobile_app_iphone_13
@@ -300,7 +300,7 @@
   - data:
       title: '{{ notification_title }}'
       message: '{{ notification_message }}'
-      tag: notification-relay-overheating-{{ trigger.entity_id }}
+      tag: relay-overheating-{{ trigger.entity_id }}
       priority: high
       services:
       - service: notify.mobile_app_iphone_13
@@ -348,20 +348,19 @@
       - przedpokój
   - if:
     - condition: template
-      value_template: '{{ area_name(trigger.entity_id) in snapshot_areas }}'
+      value_template: '{{ area in snapshot_areas }}'
     then:
     - data:
-        filename: /media/snapshots/{{ snapshot_name }}
+        filename: /media/salon/{{ snapshot_name }}
       target:
         entity_id: camera.salon
       action: camera.snapshot
   - data:
       title: Wykryto ruch w pustym mieszkaniu
       message: 'Pomieszczenie: {{ area }}, godzina {{ now().strftime(''%H:%M'') }}.'
-      tag: notification-motion-{{ area }}
+      tag: motion-{{ area }}
       group: motion
-      priority: high
-      image: "{% if area in snapshot_areas %}\n  /media/local/snapshots/{{ snapshot_name
+      image: "{% if area in snapshot_areas %}\n  /media/local/salon/{{ snapshot_name
         }}\n{% endif %}"
       services:
       - service: notify.mobile_app_iphone_13
@@ -396,11 +395,10 @@
   - service: python_script.notify
     data:
       title: Wykryto otwarcie okna w pustym mieszkaniu
-      message: 'Pomieszczenie: {{ area_name(trigger.to_state.entity_id) }}, godzina
-        {{ now().strftime(''%H:%M'') }}.'
-      tag: notification-window-opened-{{ area_name(trigger.to_state.entity_id) }}
+      message: 'Pomieszczenie: {{ area_name(trigger.entity_id) }}, godzina {{ now().strftime(''%H:%M'')
+        }}.'
+      tag: window-opened-{{ area_name(trigger.entity_id) }}
       group: windows
-      priority: high
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
@@ -423,9 +421,8 @@
       title: Otwarte drzwi balkonowe
       message: Domownicy opuścili mieszkanie, a drzwi balkonowe w pracowni nie są
         zamknięte.
-      tag: notification-balcony-door-pracownia
+      tag: balcony-door-pracownia
       priority: high
-      group: windows
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
@@ -444,9 +441,8 @@
     - data:
         title: Wyciek gazu
         message: Uwaga! Wykryto wyciek gazu w kuchni!
-        tag: notification-gas-leak
+        tag: gas-leak
         priority: high
-        group: gas
         services:
         - service: notify.mobile_app_iphone_13
           type: ios
@@ -490,12 +486,11 @@
       message: "{% macro battery_level() %}{% for item in states.sensor if item.attributes.device_class
         == 'battery' and item.attributes.unit_of_measurement == '%' and item.state
         | int(0) < threshold %}\n - {{ device_name(item.entity_id) }}{% if area_name(item.entity_id)
-        %}, {% set area = area_name(item.entity_id) %}{{ area[0] | lower + area[1:]
-        }}{% endif %} [{{ item.state | round(0, default='unknown') }}%]{% endfor %}{%
-        endmacro %}W następujących urządzeniach jest niski poziom naładowania baterii:
-        {{ battery_level() }}"
-      tag: notification-low-battery
-      group: other
+        %} ⸱ {{ area_name(item.entity_id) }}{% endif %} ⸱ {{ item.state | round(0,
+        default='unknown') }}%{% endfor %}{% endmacro %}W następujących urządzeniach
+        jest niski poziom naładowania baterii: {{ battery_level() }}"
+      tag: low-battery
+      group: devices
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
@@ -524,7 +519,7 @@
         title: Otwarte okna
         message: Okna w pustym mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów
           wynosi {{ states('sensor.dom_prawdopodobienstwo_opadow') | int }}%.
-        tag: notification-windows-weather
+        tag: windows-weather
         group: windows
         priority: high
         services:
@@ -814,9 +809,8 @@
   - data:
       title: Koniec przewietrzania
       message: Wyłączono tryb przewietrzania. Proszę zamknąć okna!
-      tag: notification-airing-end
-      group: heating
-      priority: high
+      tag: airing-end
+      group: climate
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
@@ -1935,7 +1929,7 @@
     notification_title: Uzupełnij wodę w nawilżaczu
     notification_message: Nawilżacz w sypialni został wyłączony ponieważ w zbiorniku
       pozostało {{ states('sensor.xiaomi_mi_humidifier_cb1_poziom_wody') }}% wody.
-    notification_tag: notification-humidifier-cb1
+    notification_tag: humidifier
 - id: '1671558318632'
   alias: Mało wody w nawilżaczu w sypialni
   triggers:
@@ -1996,7 +1990,7 @@
     notification_title: Uzupełnij wodę w nawilżaczu
     notification_message: W zbiorniku nawilżacza w sypialni pozostało {{ states('sensor.xiaomi_mi_humidifier_cb1_poziom_wody')
       }}% wody.
-    notification_tag: notification-humidifier-cb1
+    notification_tag: humidifier
 - id: '1672476393165'
   alias: Włącz/wyłącz oświetlenie w pokoju gościnnym
   description: ''
@@ -2107,8 +2101,8 @@
       - data:
           title: Koniec prania
           message: Pralka zakończyła pranie.
-          tag: notification-washing-machine
-          group: other
+          tag: washing-machine
+          group: home
           services:
           - service: notify.mobile_app_iphone_13
             type: ios
@@ -2121,8 +2115,8 @@
       - data:
           title: Koniec prania
           message: Pralka zakończyła pranie.
-          tag: notification-washing-machine
-          group: other
+          tag: washing-machine
+          group: home
           services:
           - service: notify.mobile_app_iphone_12
             type: ios
@@ -2144,7 +2138,7 @@
       title: Dym
       message: "{% if \"antresola\" in trigger.entity_id %}\n  Uwaga! Wykryto dym
         na antresoli!\n{% else %}\n  Uwaga! Wykryto dym w kuchni!\n{% endif %}"
-      tag: notification-smoke
+      tag: smoke-{{ area_name(trigger.entity_id) }}
       priority: high
       group: smoke
       services:
@@ -2158,18 +2152,42 @@
 - id: '1678536227339'
   alias: Uruchomienie automatycznego testu czujnika gazu
   description: ''
-  trigger:
-  - platform: time
-    at: 03:00:00
-  condition:
+  triggers:
+  - at: 03:00:00
+    trigger: time
+  conditions:
   - condition: time
     weekday:
     - sun
-  action:
+  actions:
+  - action: python_script.notify
+    data:
+      title: Test czujnika gazu
+      message: Rozpoczynam test czujnika gazu...
+      tag: gas-detector
+      group: devices
+      services:
+      - service: notify.mobile_app_iphone_13
+        type: ios
   - device_id: 07ee2d658bd1fbdce765f6707e48f76d
     domain: button
     entity_id: button.shelly_gas_c6811c_self_test
     type: press
+  - wait_for_trigger:
+    - trigger: state
+      entity_id:
+      - sensor.shelly_gas_c6811c_wynik_autotestu
+      from: running
+  - action: python_script.notify
+    data:
+      title: Test czujnika gazu
+      message: 'Wynik testu: {{ states(''sensor.shelly_gas_c6811c_wynik_autotestu'')
+        }}'
+      tag: gas-detector
+      group: devices
+      services:
+      - service: notify.mobile_app_iphone_13
+        type: ios
   mode: single
 - id: '1682413050614'
   alias: Włącz/wyłącz lampkę w sypialni
@@ -2299,7 +2317,7 @@
       title: Edyta wraca do domu
       message: Edyta wraca do domu i jest w odległości {{ states('sensor.dom_edyta_distance')
         | round }} km.
-      tag: notification-{{ trigger.entity_id }}
+      tag: '{{ trigger.entity_id }}'
       group: family
       services:
       - service: notify.mobile_app_iphone_13
@@ -2438,18 +2456,18 @@
   conditions: []
   actions:
   - data:
-      entries: "{% set checked_domains = [\"binary_sensor\", \"climate\", \"light\",
-        \"media_player\", \"remote\", \"sensor\", \"switch\", \"weather\"] %}\n{%
-        set ignored_entities = [\"switch.philips_65oled707_screen_state\", \"light.philips_65oled707_ambilight\",
-        \"media_player.philips_65oled707_cast\"] %}\n{% set ignored_entries = [\"Asus
-        RT-AX86S\", \"Sony KD-55XF8596\", \"SpeedTest\", \"BMW X1 xDrive20i\", \"Bzura
-        (Żuków)\"] %}\n{% macro unavailable_entries() %}\n  {% for domain in checked_domains
-        %}\n    {% for entity_id in states[domain] | selectattr(\"state\", \"==\",
-        \"unavailable\") | map(attribute=\"entity_id\") if entity_id not in ignored_entities
-        %}\n      {% set entry_name = device_name(entity_id) %}\n      {% if entry_name
-        not in ignored_entries and entry_name != None %}\n        {{ entry_name }}@{{
-        area_name(entity_id) }}|\n      {% endif %}\n    {% endfor %}\n  {% endfor
-        %}\n{% endmacro %}\n{{ unavailable_entries() }}"
+      entries: "{% set checked_domains = [\"binary_sensor\", \"climate\", \"fan\",
+        \"light\", \"media_player\", \"remote\", \"sensor\", \"switch\", \"weather\"]
+        %}\n{% set ignored_entities = [\"switch.philips_65oled707_screen_state\",
+        \"light.philips_65oled707_ambilight\"] %}\n{% set ignored_entries = [\"Sony
+        KD-55XF8596\", \"Bzura (Żuków)\"] %}\n{% macro unavailable_entries() %}\n
+        \ {% for domain in checked_domains %}\n    {% for entity_id in states[domain]
+        | selectattr(\"state\", \"==\", \"unavailable\") | map(attribute=\"entity_id\")
+        if entity_id not in ignored_entities %}\n      {% set entry_name = device_name(entity_id)
+        %}\n      {% if entry_name not in ignored_entries and entry_name != None %}\n
+        \       {{ entry_name }}@{{ area_name(entity_id) }}|\n      {% endif %}\n
+        \   {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{ unavailable_entries()
+        }}"
     action: python_script.unavailable_entries
   mode: queued
   max: 10
@@ -2474,45 +2492,6 @@
       entity_id:
       - light.oswietlenie_pralnia
     data: {}
-  mode: single
-- id: '1716994224655'
-  alias: Pomocnik sprzętu RTV
-  description: ''
-  triggers:
-  - entity_id:
-    - remote.salon
-    attribute: current_activity
-    not_to: PowerOff
-    trigger: state
-  conditions: []
-  actions:
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 3
-      milliseconds: 0
-  - if:
-    - condition: state
-      entity_id: remote.salon
-      attribute: current_activity
-      state: gry
-    then:
-    - data:
-        source: HDMI 1
-      target:
-        entity_id: media_player.philips_65oled707
-      action: media_player.select_source
-  - if:
-    - condition: state
-      entity_id: remote.salon
-      attribute: current_activity
-      state: telewizja
-    then:
-    - data:
-        source: HDMI 3
-      target:
-        entity_id: media_player.philips_65oled707
-      action: media_player.select_source
   mode: single
 - id: '1719055090033'
   alias: Włącz/wyłącz wentylator w gabinecie
@@ -2821,8 +2800,8 @@
   - data:
       title: Brak kalibracji dla Shelly BLU TRV
       message: Shelly BLU TRV w łazience zgłasza brak kalibracji.
-      tag: notification-blu-trv
-      group: other
+      tag: blu-trv-calibration
+      group: devices
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
@@ -2847,8 +2826,8 @@
       title: Poziom baterii trackera
       message: Poziom baterii trackera {{ device_name(trigger.entity_id) }} wynosi
         {{ trigger.to_state.state }}%. Rozważ ładowanie.
-      tag: notification-tracker-battery
-      group: other
+      tag: tracker-battery
+      group: devices
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
@@ -2907,64 +2886,8 @@
     target:
       entity_id: switch.blitzwolf_bw_shp6_173eb6_przekaznik
   mode: single
-- id: '1741540528526'
-  alias: Restart dekodera TV
-  description: ''
-  triggers:
-  - trigger: time
-    at: 06:00:00
-  conditions:
-  - condition: state
-    entity_id: media_player.philips_65oled707
-    state: 'off'
-  actions:
-  - action: switch.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id: switch.blitzwolf_bw_shp6_ed007d_przeka_nik
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 10
-      milliseconds: 0
-  - action: switch.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: switch.blitzwolf_bw_shp6_ed007d_przeka_nik
-  mode: single
-- id: '1741967674948'
-  alias: Powiadomienie z sugestią włączenia ogrzewania
-  description: ''
-  triggers:
-  - trigger: numeric_state
-    entity_id:
-    - sensor.srednia_temperatura_zewnetrzna
-    for:
-      hours: 2
-      minutes: 0
-      seconds: 0
-    below: 8
-  conditions:
-  - condition: state
-    entity_id: input_boolean.heating_season
-    state: 'off'
-  actions:
-  - action: python_script.notify
-    data:
-      title: Propozycja włączenia ogrzewania
-      message: Średnia temperatura zewnętrzna wynosi {{ trigger.to_state.state }}°C,
-        prawdopodobnie należy włączyć ogrzewanie.
-      tag: notification-heating
-      group: other
-      priority: high
-      services:
-      - service: notify.mobile_app_iphone_13
-        type: ios
-  mode: single
 - id: '1741967732368'
-  alias: Powiadomienie z sugestią wyłączenia ogrzewania
+  alias: Sugestia wyłączenia ogrzewania
   description: ''
   triggers:
   - trigger: numeric_state
@@ -2985,9 +2908,11 @@
       title: Propozycja włączenia ogrzewania
       message: Średnia temperatura zewnętrzna wynosi {{ trigger.to_state.state }}°C,
         prawdopodobnie należy wyłączyć ogrzewanie.
-      tag: notification-heating
-      group: other
-      priority: high
+      tag: heating
+      group: climate
+      actions:
+      - action: TURN_OFF_HEATING
+        title: Wyłącz ogrzewanie
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
@@ -3010,10 +2935,136 @@
       title: Aktualizacja firmware dla Shellu BLU TRV
       message: Dostępna jest wersja {{ trigger.to_state.state }} firmware dla Shelly
         BLU TRV.
-      tag: notification-blu-trv-firmware
-      group: other
+      tag: blu-trv-firmware
+      group: devices
       priority: medium
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
+  mode: single
+- id: '1747155904082'
+  alias: Pomocnik dekodera TV
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - media_player.philips_65oled707
+    from: 'off'
+    to: 'on'
+  conditions:
+  - condition: state
+    entity_id: input_boolean.away_mode
+    state: 'off'
+  actions:
+  - action: remote.send_command
+    target:
+      entity_id: remote.salon
+    data:
+      device: Dekoder
+      command: '4'
+- id: '1747156465397'
+  alias: Sugestia włączenia ogrzewania
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.srednia_temperatura_zewnetrzna
+    for:
+      hours: 2
+      minutes: 0
+      seconds: 0
+    below: 7
+  conditions:
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state: 'off'
+  actions:
+  - action: python_script.notify
+    data:
+      title: Propozycja włączenia ogrzewania
+      message: Średnia temperatura zewnętrzna wynosi {{ trigger.to_state.state }}°C,
+        prawdopodobnie należy włączyć ogrzewanie.
+      tag: heating
+      group: climate
+      actions:
+      - action: TURN_ON_HEATING
+        title: Włącz ogrzewanie
+      services:
+      - service: notify.mobile_app_iphone_13
+        type: ios
+  mode: single
+- id: '1749036207006'
+  alias: Uruchomienie automatycznego testu baterii UPSa
+  description: ''
+  triggers:
+  - trigger: time
+    at: '12:00:00'
+  conditions:
+  - condition: time
+    weekday:
+    - sun
+  - condition: state
+    entity_id: input_boolean.away_mode
+    state: 'off'
+  - condition: template
+    value_template: '{{ now().day <= 7 }}'
+  actions:
+  - action: python_script.notify
+    data:
+      title: Test baterii UPSa
+      message: Rozpoczynam test baterii UPSa...
+      tag: ups
+      group: devices
+      services:
+      - service: notify.mobile_app_iphone_13
+        type: ios
+  - type: test_battery_start_quick
+    device_id: 56aac98c75cff43ba6a6b085f7be64f6
+    domain: nut
+  - wait_for_trigger:
+    - trigger: state
+      entity_id:
+      - sensor.cyberpower_dl650elcd_wynik_autotestu
+  - action: python_script.notify
+    data:
+      title: Test baterii UPSa
+      message: 'Wynik testu: {{ states("sensor.cyberpower_dl650elcd_wynik_autotestu").lower()
+        }}'
+      tag: ups
+      group: devices
+      services:
+      - service: notify.mobile_app_iphone_13
+        type: ios
+  mode: single
+- id: '1749060877485'
+  alias: Zakończ sezon grzewczy
+  description: ''
+  triggers:
+  - trigger: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: TURN_OFF_HEATING
+  conditions: []
+  actions:
+  - action: input_boolean.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.heating_season
+  mode: single
+- id: '1749060970009'
+  alias: Rozpocznij sezon grzewczy
+  description: ''
+  triggers:
+  - trigger: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: TURN_ON_HEATING
+  conditions: []
+  actions:
+  - action: input_boolean.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: input_boolean.heating_season
   mode: single
