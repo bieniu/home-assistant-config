@@ -2298,12 +2298,12 @@
 - id: '1699100330008'
   alias: Edyta wraca do domu
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - sensor.dom_edyta_direction_of_travel
     to: towards
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: person.maciek
     state: home
@@ -2311,17 +2311,19 @@
     entity_id: sensor.dom_edyta_distance
     above: 2
     below: 200
-  action:
-  - service: python_script.notify
-    data:
+  actions:
+  - data:
       title: Edyta wraca do domu
       message: Edyta wraca do domu i jest w odległości {{ states('sensor.dom_edyta_distance')
         | round }} km.
       tag: '{{ trigger.entity_id }}'
       group: family
+      latitude: '{{ state_attr("person.edyta", "latitude") }}'
+      longitude: '{{ state_attr("person.edyta", "longitude") }}'
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
+    action: python_script.notify
   mode: single
 - id: '1705870734815'
   alias: Wyłącz oświetlenie w pracowni gdy nie ma ruchu

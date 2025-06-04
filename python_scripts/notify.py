@@ -23,6 +23,7 @@ data:
       type: "sms"
       recipient: "+48123456789"
 """
+ATTR_ACTION_DATA = "action_data"
 ATTR_ACTIONS = "actions"
 ATTR_ANDROID = "android"
 ATTR_BADGE = "badge"
@@ -40,6 +41,8 @@ ATTR_GROUP = "group"
 ATTR_IMAGE = "image"
 ATTR_INTERRUPTION_LEVEL = "interruption-level"
 ATTR_IOS = "ios"
+ATTR_LATITUDE = "latitude"
+ATTR_LONGITUDE = "longitude"
 ATTR_MESSAGE = "message"
 ATTR_NOTIFICATION_ID = "notification_id"
 ATTR_PRIORITY = "priority"
@@ -61,6 +64,8 @@ CONF_DEVELOP = "develop"
 CONF_ENTITY_ID = "entity_id"
 CONF_GROUP = "group"
 CONF_IMAGE = "image"
+CONF_LATITUDE = "latitude"
+CONF_LONGITUDE = "longitude"
 CONF_MESSAGE = "message"
 CONF_PRIORITY = "priority"
 CONF_RECIPIENT = "recipient"
@@ -100,6 +105,8 @@ entity_id = data.get(CONF_ENTITY_ID)
 tag = data.get(CONF_TAG)
 url = data.get(CONF_URL)
 color = data.get(CONF_COLOR)
+latitude = data.get(CONF_LATITUDE)
+longitude = data.get(CONF_LONGITUDE)
 
 develop = False
 if data.get(CONF_DEVELOP) == True:
@@ -126,6 +133,10 @@ for item in services:
             service_data[ATTR_DATA][ATTR_APNS_HEADERS][ATTR_APNS_COLLAPSE_ID] = tag
         if url:
             service_data[ATTR_DATA][ATTR_URL] = url
+        if latitude and longitude:
+            service_data[ATTR_DATA][ATTR_ACTION_DATA] = {}
+            service_data[ATTR_DATA][ATTR_ACTION_DATA][ATTR_LATITUDE] = latitude
+            service_data[ATTR_DATA][ATTR_ACTION_DATA][ATTR_LONGITUDE] = longitude
         if entity_id:
             service_data[ATTR_DATA][ATTR_ENTITY_ID] = entity_id
         if priority == PRIORITY_HIGH:
