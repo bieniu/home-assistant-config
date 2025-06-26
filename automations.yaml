@@ -239,17 +239,17 @@
     - binary_sensor.shelly_plus_1pm_b22864_overpower
     - binary_sensor.shelly_1pm_mini_gen3_411170_overpowering
     - binary_sensor.shelly_plus_1pm_9d35dc_overpowering
-    - binary_sensor.shelly_plus_2pm_8d28f4_relay_1_overpower
-    - binary_sensor.shelly_plus_2pm_8d28f4_relay_2_overpower
-    - binary_sensor.shelly_plus_2pm_b67728_relay_1_overpower
-    - binary_sensor.shelly_plus_2pm_b67728_relay_2_overpower
+    - binary_sensor.oswietlenie_lozka_w_sypialni_przeciazenie
+    - binary_sensor.oswietlenie_sypialni_przeciazenie
+    - binary_sensor.oswietlenie_lazienki_przeciazenie
+    - binary_sensor.oswietlenie_garderoby_przeciazenie
     - binary_sensor.shelly_pro_1pm_80e0c0_overpower
     - binary_sensor.oswietlenie_pralnia_przeciazenie
     - binary_sensor.oswietlenie_gabinet_przeciazenie
     - binary_sensor.oswietlenie_toaleta_przeciazenie
     - binary_sensor.oswietlenie_antek_przeciazenie
-    - binary_sensor.ledy_salon_przeciazenie
-    - binary_sensor.wentylator_i_oswietlenie_salon_przeciazenie
+    - binary_sensor.ledy_w_salonie_przeciazenie
+    - binary_sensor.wentylator_i_oswietlenie_w_salonie_przeciazenie
     from: 'off'
     to: 'on'
     for:
@@ -280,17 +280,17 @@
     - binary_sensor.shelly_plus_1pm_b22864_overtemperature
     - binary_sensor.shelly_1pm_mini_gen3_411170_overheating
     - binary_sensor.shelly_plus_1pm_9d35dc_overheating
-    - binary_sensor.shelly_plus_2pm_8d28f4_relay_1_overtemperature
-    - binary_sensor.shelly_plus_2pm_8d28f4_relay_2_overtemperature
-    - binary_sensor.shelly_plus_2pm_b67728_relay_1_overtemperature
-    - binary_sensor.shelly_plus_2pm_b67728_relay_2_overtemperature
+    - binary_sensor.oswietlenie_lozka_w_sypialni_przegrzewanie
+    - binary_sensor.oswietlenie_sypialni_przegrzewanie
+    - binary_sensor.oswietlenie_garderoby_przegrzewanie
     - binary_sensor.shelly_pro_1pm_80e0c0_overtemperature
     - binary_sensor.oswietlenie_pralnia_przegrzewanie
     - binary_sensor.oswietlenie_gabinet_przegrzewanie
     - binary_sensor.oswietlenie_toaleta_przegrzewanie
     - binary_sensor.oswietlenie_antek_przegrzewanie
-    - binary_sensor.ledy_salon_przegrzewanie
-    - binary_sensor.wentylator_i_oswietlenie_salon_przegrzewanie
+    - binary_sensor.ledy_w_salonie_przegrzewanie
+    - binary_sensor.wentylator_i_oswietlenie_w_salonie_przegrzewanie
+    - binary_sensor.oswietlenie_lazienki_przegrzewanie
     from: 'off'
     to: 'on'
     for:
@@ -486,7 +486,7 @@
       message: "{% macro battery_level() %}{% for item in states.sensor if item.attributes.device_class
         == 'battery' and item.attributes.unit_of_measurement == '%' and item.state
         | int(0) < threshold %}\n - {{ device_name(item.entity_id) }}{% if area_name(item.entity_id)
-        %} ⸱ {{ area_name(item.entity_id) }}{% endif %} ⸱ {{ item.state | round(0,
+        %}, {{ area_name(item.entity_id) }}{% endif %}, {{ item.state | round(0,
         default='unknown') }}%{% endfor %}{% endmacro %}W następujących urządzeniach
         jest niski poziom naładowania baterii: {{ battery_level() }}"
       tag: low-battery
@@ -900,7 +900,7 @@
       entity_id: light.ceiling_salon
       state: 'on'
     - condition: state
-      entity_id: light.ledy_salon
+      entity_id: light.ledy_w_salonie
       state: 'on'
     - condition: state
       entity_id: light.lamp_salon
@@ -916,7 +916,7 @@
       - light.ceiling_salon
       - light.lamp_salon
       - fan.ceiling_salon
-      - light.ledy_salon
+      - light.ledy_w_salonie
     data: {}
     action: homeassistant.turn_off
 - id: light_scene_salon_auto_when_bulbs_turn_on
@@ -959,6 +959,34 @@
     type: button_1
     subtype: press
     trigger: device
+  - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
+    domain: bthome
+    type: button_1
+    subtype: press
+    trigger: device
+    id: shelly_blu_remote
+  - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
+    domain: bthome
+    type: button_2
+    subtype: press
+    trigger: device
+    id: shelly_blu_remote
+  conditions:
+  - condition: or
+    conditions:
+    - condition: and
+      conditions:
+      - condition: trigger
+        id:
+        - shelly_blu_remote
+      - condition: state
+        entity_id: sensor.shelly_blu_remote_ef9f42_kanal
+        state: '0'
+    - condition: not
+      conditions:
+      - condition: trigger
+        id:
+        - shelly_blu_remote
   actions:
   - target:
       entity_id: light.ceiling_salon
@@ -977,11 +1005,39 @@
     type: button_3
     subtype: press
     trigger: device
+  - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
+    domain: bthome
+    type: button_1
+    subtype: press
+    trigger: device
+    id: shelly_blu_remote
+  - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
+    domain: bthome
+    type: button_2
+    subtype: press
+    trigger: device
+    id: shelly_blu_remote
+  conditions:
+  - condition: or
+    conditions:
+    - condition: and
+      conditions:
+      - condition: trigger
+        id:
+        - shelly_blu_remote
+      - condition: state
+        entity_id: sensor.shelly_blu_remote_ef9f42_kanal
+        state: '1'
+    - condition: not
+      conditions:
+      - condition: trigger
+        id:
+        - shelly_blu_remote
   actions:
   - data: {}
     action: light.toggle
     target:
-      entity_id: light.ledy_salon
+      entity_id: light.ledy_w_salonie
 - id: light_turn_on_salon_lamp_when_dark_and_motion
   alias: Włącz lampę w salonie gdy pojawi się ruch i jest ciemno
   description: ''
@@ -991,7 +1047,7 @@
     to: 'on'
     trigger: state
   - entity_id:
-    - light.ledy_salon
+    - light.ledy_w_salonie
     from: 'on'
     to: 'off'
     trigger: state
@@ -1019,7 +1075,7 @@
     entity_id: input_boolean.away_mode
     state: 'off'
   - condition: state
-    entity_id: light.ledy_salon
+    entity_id: light.ledy_w_salonie
     state: 'off'
   - condition: state
     entity_id: light.ceiling_salon
@@ -1094,7 +1150,7 @@
   - condition: or
     conditions:
     - condition: state
-      entity_id: light.ledy_salon
+      entity_id: light.ledy_w_salonie
       state: 'on'
     - condition: state
       entity_id: light.ceiling_salon
@@ -1131,22 +1187,29 @@
 - id: light_turn_off_lazienka_light_when_no_motion
   alias: Wyłącz oświetlenie w łazience gdy nie ma ruchu
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_lazienka
+  triggers:
+  - entity_id: binary_sensor.motion_lazienka
     from: 'on'
     to: 'off'
     for:
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
-  condition:
-  - condition: state
-    entity_id: light.ceiling_lazienka
-    state: 'on'
-  action:
-  - service: light.turn_off
-    target:
-      entity_id: light.ceiling_lazienka
+    trigger: state
+  conditions:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: light.oswietlenie_lazienki
+      state: 'on'
+    - condition: state
+      entity_id: light.lustro_lazienka
+      state: 'on'
+  actions:
+  - target:
+      entity_id:
+      - light.lustro_lazienka
+      - light.oswietlenie_lazienki
     data: {}
+    action: light.turn_off
 - id: light_turn_off_kuchnia_light_when_no_motion
   alias: Wyłącz oświetlenie w kuchni gdy nie ma ruchu
   description: ''
@@ -1746,7 +1809,34 @@
     type: button_2
     subtype: press
     trigger: device
-  conditions: []
+  - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
+    domain: bthome
+    type: button_1
+    subtype: press
+    trigger: device
+    id: shelly_blu_remote
+  - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
+    domain: bthome
+    type: button_2
+    subtype: press
+    trigger: device
+    id: shelly_blu_remote
+  conditions:
+  - condition: or
+    conditions:
+    - condition: and
+      conditions:
+      - condition: trigger
+        id:
+        - shelly_blu_remote
+      - condition: state
+        entity_id: sensor.shelly_blu_remote_ef9f42_kanal
+        state: '2'
+    - condition: not
+      conditions:
+      - condition: trigger
+        id:
+        - shelly_blu_remote
   actions:
   - data: {}
     target:
@@ -2218,33 +2308,33 @@
 - id: '1686430803024'
   alias: Wyłącz oświetlenie w sypialni gdy nie ma ruchu
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_sypialnia
+  triggers:
+  - entity_id: binary_sensor.motion_sypialnia
     from: 'on'
     to: 'off'
     for:
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
-  condition:
+    trigger: state
+  conditions:
   - condition: or
     conditions:
     - condition: state
-      entity_id: light.ceiling_bed_sypialnia
+      entity_id: light.oswietlenie_lozka_w_sypialni
       state: 'on'
     - condition: state
-      entity_id: light.ceiling_sypialnia
+      entity_id: light.oswietlenie_sypialni
       state: 'on'
     - condition: state
-      entity_id: light.ceiling_garderoba
+      entity_id: light.oswietlenie_garderoby
       state: 'on'
-  action:
-  - service: light.turn_off
-    target:
+  actions:
+  - target:
       entity_id:
-      - light.ceiling_bed_sypialnia
-      - light.ceiling_sypialnia
-      - light.ceiling_garderoba
+      - light.oswietlenie_garderoby
+      - light.oswietlenie_sypialni
+      - light.oswietlenie_lozka_w_sypialni
     data: {}
+    action: light.turn_off
 - id: '1687849080259'
   alias: Pomocnik oświetlenia w salonie
   description: ''
@@ -2262,7 +2352,8 @@
   - data: {}
     action: switch.turn_off
     target:
-      entity_id: switch.wentylator_i_oswietlenie_salon
+      entity_id:
+      - switch.wentylator_i_oswietlenie_w_salonie
   - delay:
       hours: 0
       minutes: 0
@@ -2271,7 +2362,7 @@
   - data: {}
     action: switch.turn_on
     target:
-      entity_id: switch.wentylator_i_oswietlenie_salon
+      entity_id: switch.wentylator_i_oswietlenie_w_salonie
   mode: single
 - id: '1693856668458'
   alias: Aktywuj w salonie scenę oświetlenie po zmierzchu
@@ -2364,7 +2455,7 @@
     - light.oswietlenie_przedpokoj
     - light.leds_przedpokoj
     - light.ceiling_salon
-    - light.ledy_salon
+    - light.ledy_w_salonie
     state: 'off'
   - condition: numeric_state
     entity_id: sensor.illumination_przedpokoj
@@ -2461,15 +2552,15 @@
       entries: "{% set checked_domains = [\"binary_sensor\", \"climate\", \"fan\",
         \"light\", \"media_player\", \"remote\", \"sensor\", \"switch\", \"weather\"]
         %}\n{% set ignored_entities = [\"switch.philips_65oled707_screen_state\",
-        \"light.philips_65oled707_ambilight\"] %}\n{% set ignored_entries = [\"Sony
-        KD-55XF8596\", \"Bzura (Żuków)\"] %}\n{% macro unavailable_entries() %}\n
-        \ {% for domain in checked_domains %}\n    {% for entity_id in states[domain]
-        | selectattr(\"state\", \"==\", \"unavailable\") | map(attribute=\"entity_id\")
-        if entity_id not in ignored_entities %}\n      {% set entry_name = device_name(entity_id)
-        %}\n      {% if entry_name not in ignored_entries and entry_name != None %}\n
-        \       {{ entry_name }}@{{ area_name(entity_id) }}|\n      {% endif %}\n
-        \   {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{ unavailable_entries()
-        }}"
+        \"light.philips_65oled707_ambilight\", \"sensor.bzura_temperatura_wody\"]
+        %}\n{% set ignored_entries = [\"Sony KD-55XF8596\", \"Bzura (Żuków)\"] %}\n{%
+        macro unavailable_entries() %}\n  {% for domain in checked_domains %}\n    {%
+        for entity_id in states[domain] | selectattr(\"state\", \"==\", \"unavailable\")
+        | map(attribute=\"entity_id\") if entity_id not in ignored_entities %}\n      {%
+        set entry_name = device_name(entity_id) %}\n      {% if entry_name not in
+        ignored_entries and entry_name != None %}\n        {{ entry_name }}@{{ area_name(entity_id)
+        }}|\n      {% endif %}\n    {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{
+        unavailable_entries() }}"
     action: python_script.unavailable_entries
   mode: queued
   max: 10
@@ -2570,13 +2661,40 @@
 - id: '1723301586705'
   alias: Zwiększ głośność w salonie
   description: ''
-  trigger:
+  triggers:
   - event_type: ios.action_fired
-    platform: event
     event_data:
       actionName: Turn Up TV Volume
-  condition: []
-  action:
+    trigger: event
+  - trigger: state
+    entity_id:
+    - event.shelly_blu_remote_ef9f42_sciemniacz
+    id: shelly_blu_remote
+  conditions:
+  - condition: or
+    conditions:
+    - condition: and
+      conditions:
+      - condition: trigger
+        id:
+        - shelly_blu_remote
+      - condition: state
+        entity_id: sensor.shelly_blu_remote_ef9f42_kanal
+        state: '3'
+      - condition: state
+        entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
+        attribute: event_type
+        state: rotate_left
+      - condition: numeric_state
+        entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
+        attribute: steps
+        above: 0
+    - condition: not
+      conditions:
+      - condition: trigger
+        id:
+        - shelly_blu_remote
+  actions:
   - action: media_player.volume_up
     metadata: {}
     data: {}
@@ -2587,13 +2705,40 @@
 - id: '1723301743769'
   alias: Zmniejsz głośność w salonie
   description: ''
-  trigger:
-  - platform: event
-    event_type: ios.action_fired
+  triggers:
+  - event_type: ios.action_fired
     event_data:
       actionName: Turn Down TV Volume
-  condition: []
-  action:
+    trigger: event
+  - trigger: state
+    entity_id:
+    - event.shelly_blu_remote_ef9f42_sciemniacz
+    id: shelly_blu_remote
+  conditions:
+  - condition: or
+    conditions:
+    - condition: and
+      conditions:
+      - condition: trigger
+        id:
+        - shelly_blu_remote
+      - condition: state
+        entity_id: sensor.shelly_blu_remote_ef9f42_kanal
+        state: '3'
+      - condition: state
+        entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
+        attribute: event_type
+        state: rotate_right
+      - condition: numeric_state
+        entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
+        attribute: steps
+        above: 0
+    - condition: not
+      conditions:
+      - condition: trigger
+        id:
+        - shelly_blu_remote
+  actions:
   - action: media_player.volume_down
     metadata: {}
     data: {}
@@ -2926,11 +3071,13 @@
   - trigger: state
     entity_id:
     - sensor.shelly_blu_trv_firmware
-  conditions:
-  - condition: template
-    value_template: '{{ trigger.to_state.state not in ("unavailable", "unknown") }}'
-  - condition: template
-    value_template: '{{ trigger.to_state.state != trigger.from_state.state }}'
+    not_from:
+    - unavailable
+    - unknown
+    not_to:
+    - unavailable
+    - unknown
+  conditions: []
   actions:
   - action: python_script.notify
     data:
@@ -3069,4 +3216,227 @@
     data: {}
     target:
       entity_id: input_boolean.heating_season
+  mode: single
+- id: '1749295199110'
+  alias: Włącz oświetlenie lustra w łazience gdy pojawi się ruch i jest ciemno
+  description: ''
+  triggers:
+  - entity_id:
+    - binary_sensor.motion_lazienka
+    from: 'off'
+    to: 'on'
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: input_boolean.away_mode
+    state: 'off'
+  - condition: state
+    entity_id: light.oswietlenie_lazienki
+    state: 'off'
+  - condition: numeric_state
+    entity_id: sensor.illumination_lazienka
+    below: 8
+  - condition: state
+    entity_id: input_boolean.oswietlenie_lazienki_zalaczane_ruchem
+    state: 'on'
+  actions:
+  - data:
+      brightness_pct: 20
+      transition: 3
+    action: light.turn_on
+    target:
+      entity_id: light.lustro_lazienka
+  - wait_for_trigger:
+    - entity_id:
+      - binary_sensor.motion_lazienka
+      from: 'on'
+      to: 'off'
+      trigger: state
+  - data:
+      transition: 10
+    action: light.turn_off
+    target:
+      entity_id: light.lustro_lazienka
+  mode: single
+- id: '1749810787760'
+  alias: Zmniejsz jasność oświetlenia w salonie
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - event.shelly_blu_remote_ef9f42_sciemniacz
+  conditions:
+  - condition: state
+    entity_id: sensor.shelly_blu_remote_ef9f42_kanal
+    state: '0'
+  - condition: state
+    entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
+    attribute: event_type
+    state: rotate_right
+  - condition: numeric_state
+    entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
+    attribute: steps
+    above: 0
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    data:
+      brightness_step_pct: '{{ trigger.to_state.attributes.steps * -1 }}'
+    target:
+      entity_id: light.ceiling_salon
+  mode: queued
+  max: 10
+- id: '1749810838747'
+  alias: Zwiększ jasność oświetlenia w salonie
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - event.shelly_blu_remote_ef9f42_sciemniacz
+  conditions:
+  - condition: state
+    entity_id: sensor.shelly_blu_remote_ef9f42_kanal
+    state: '0'
+  - condition: state
+    entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
+    attribute: event_type
+    state: rotate_left
+  - condition: numeric_state
+    entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
+    attribute: steps
+    above: 0
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    data:
+      brightness_step_pct: '{{ trigger.to_state.attributes.steps }}'
+    target:
+      entity_id: light.ceiling_salon
+  mode: queued
+  max: 10
+- id: '1749818185808'
+  alias: Zwiększ prędkość wentylatora w salonie
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - event.shelly_blu_remote_ef9f42_sciemniacz
+  conditions:
+  - condition: state
+    entity_id: sensor.shelly_blu_remote_ef9f42_kanal
+    state: '2'
+  - condition: state
+    entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
+    attribute: event_type
+    state: rotate_left
+  - condition: numeric_state
+    entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
+    attribute: steps
+    above: 0
+  actions:
+  - action: fan.turn_on
+    metadata: {}
+    data:
+      percentage: '{{ 33 if state_attr(''fan.ceiling_salon'', ''percentage'') == 0
+        else (66 if state_attr(''fan.ceiling_salon'', ''percentage'') == 33 else 100)
+        }}'
+    target:
+      entity_id: fan.ceiling_salon
+  mode: queued
+  max: 10
+- id: '1749818285746'
+  alias: Zmniejsz prędkość wentylatora w salonie
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - event.shelly_blu_remote_ef9f42_sciemniacz
+  conditions:
+  - condition: state
+    entity_id: sensor.shelly_blu_remote_ef9f42_kanal
+    state: '2'
+  - condition: state
+    entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
+    attribute: event_type
+    state: rotate_right
+  - condition: numeric_state
+    entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
+    attribute: steps
+    above: 0
+  actions:
+  - action: fan.turn_on
+    metadata: {}
+    data:
+      percentage: '{{ 66 if state_attr(''fan.ceiling_salon'', ''percentage'') == 100
+        else (33 if state_attr(''fan.ceiling_salon'', ''percentage'') == 66 else 0)
+        }}'
+    target:
+      entity_id: fan.ceiling_salon
+  mode: queued
+  max: 10
+- id: '1749821871556'
+  alias: Zmień kanał TV na następny
+  description: ''
+  triggers:
+  - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
+    domain: bthome
+    type: button_2
+    subtype: press
+    trigger: device
+  conditions:
+  - condition: state
+    entity_id: sensor.shelly_blu_remote_ef9f42_kanal
+    state: '3'
+  actions:
+  - action: remote.send_command
+    target:
+      entity_id: remote.salon
+    data:
+      device: Dekoder
+      command: ChannelUp
+  mode: single
+- id: '1749822126826'
+  alias: Zmień kanał TV na poprzedni
+  description: ''
+  triggers:
+  - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
+    domain: bthome
+    type: button_1
+    subtype: press
+    trigger: device
+  conditions:
+  - condition: state
+    entity_id: sensor.shelly_blu_remote_ef9f42_kanal
+    state: '3'
+  actions:
+  - action: remote.send_command
+    target:
+      entity_id: remote.salon
+    data:
+      device: Dekoder
+      command: ChannelDown
+  mode: single
+- id: '1750685194255'
+  alias: Wyślij powiadomienie o nieprawidłowym adresie IP urządzenia z VLAN
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - device_tracker.lenovo_thinkpad_t14
+    - device_tracker.hp_elitebook_840_g10
+    attribute: ip
+  conditions:
+  - condition: template
+    value_template: '{{ "192.168.2" in trigger.to_state.attributes["IP"] }}'
+  actions:
+  - action: python_script.notify
+    data:
+      title: Nieprawidłowy adres IP dla urządzenia z VLAN
+      message: Urządzenie z VLANu Work ma adres ma nieprawidłowy adres IP {{ trigger.to_state.attributes["IP"]
+        }}. Sprawdź poprawność konfiguracji punktów dostępowych Wi-Fi.
+      tag: wifi-vlan-wrong-ip
+      priority: high
+      services:
+      - service: notify.mobile_app_iphone_13
+        type: ios
   mode: single

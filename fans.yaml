@@ -4,13 +4,13 @@
       unique_id: "ceiling_salon"
       friendly_name: "Wentylator"
       value_template: >-
-        {% if states("sensor.wentylator_i_oswietlenie_salon_pobor_mocy") | int(0) >= 20 %}
+        {% if states("sensor.wentylator_i_oswietlenie_w_salonie_pobor_mocy") | int(0) >= 20 %}
           on
         {% else %}
           off
         {% endif %}
       percentage_template: >-
-        {% set fan_power = states("sensor.wentylator_i_oswietlenie_salon_pobor_mocy") | int(0) %}
+        {% set fan_power = states("sensor.wentylator_i_oswietlenie_w_salonie_pobor_mocy") | int(0) %}
         {% if fan_power >= 20 and fan_power <= 40 %}
           33
         {% elif fan_power >= 45 and fan_power <= 65 %}

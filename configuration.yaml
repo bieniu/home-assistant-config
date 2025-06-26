@@ -59,6 +59,15 @@ panel_custom:
     require_admin: true
     config:
       ingress: core_configurator
+  - name: bt_map
+    sidebar_title: Bluetooth
+    sidebar_icon: mdi:bluetooth
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: config/bluetooth/visualization
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
 
 weather: !include weather.yaml
 

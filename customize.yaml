@@ -29,3 +29,9 @@ sensor.issues:
 
 device_tracker.bmw_220:
   entity_picture: /local/bmw_220.png
+
+device_tracker.luna_tracker:
+  entity_picture: /api/image/serve/c3fa5fee4540336c90b5c1e9fea2b4f1/512x512
+
+device_tracker.karmel_tracker:
+  entity_picture: /api/image/serve/16cbe828aed5f8875ae19632d630785f/512x512

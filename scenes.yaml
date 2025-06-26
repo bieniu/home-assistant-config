@@ -69,53 +69,62 @@
       - rgb
       effect:
       color_mode: color_temp
-      brightness: 176
-      color_temp_kelvin: 2985
-      color_temp: 335
+      brightness: 255
+      color_temp_kelvin: 5030
+      color_temp: 198
       hs_color:
-      - 27.85
-      - 57.304
+      - 27.033
+      - 18.837
       rgb_color:
       - 255
-      - 177
-      - 109
+      - 229
+      - 207
       xy_color:
-      - 0.497
-      - 0.384
+      - 0.37
+      - 0.35
       entity_id:
       - light.bulb_salon_1
       - light.bulb_salon_2
       icon: mdi:ceiling-fan-light
-      friendly_name: Oświetlenie
+      friendly_name: Oświetlenie salonu
       supported_features: 44
       state: 'on'
     switch.adaptive_lighting_salon:
       configuration: {}
-      brightness_pct:
-      color_temp_kelvin:
-      color_temp_mired:
+      brightness_pct: 100
+      color_temp_kelvin: 5030
+      color_temp_mired: 198
       rgb_color:
+      - 255
+      - 228.60754139001796
+      - 206.96542655179223
       xy_color:
+      - 0.37
+      - 0.349
       hs_color:
-      sun_position:
-      force_rgb_color:
+      - 26.25
+      - 18.824
+      sun_position: 0.7956214070389268
+      force_rgb_color: false
       icon: mdi:theme-light-dark
       friendly_name: 'Adaptive Lighting: salon'
-      state: 'off'
+      manual_control: []
+      autoreset_time_remaining: {}
+      state: 'on'
     light.lamp_salon:
       supported_color_modes:
       - onoff
       color_mode:
       icon: mdi:floor-lamp
-      friendly_name: Lampa
+      friendly_name: Lampa w salonie
       supported_features: 0
       state: 'off'
-    light.ledy_salon:
+    light.ledy_w_salonie:
       supported_color_modes:
       - onoff
       color_mode:
       icon: mdi:led-strip-variant
-      friendly_name: LEDy salon
+      friendly_name: LEDy w salonie
       supported_features: 0
       state: 'off'
   icon: mdi:lightbulb-night-outline
@@ -126,5 +135,5 @@
       entity_only: true
     light.lamp_salon:
       entity_only: true
-    light.ledy_salon:
+    light.ledy_w_salonie:
       entity_only: true

@@ -21,9 +21,9 @@ for entity in entries:
         if entry_name in message_elements:
             continue
         if area in EMPTY_VALUES:
-            message_elements[entry_name] = f" ⸱ {entry_name}"
+            message_elements[entry_name] = f" - {entry_name}"
         else:
-            message_elements[entry_name] = f" ⸱ {entry_name} ⸱ {area}"
+            message_elements[entry_name] = f" - {entry_name}, {area}"
 
 if message_elements:
     message = "\n".join(message_elements.values())
@@ -31,8 +31,7 @@ if message_elements:
         "title": "Niedostępne urządzenia/usługi",
         "message": f"Następujące urządzenia/usługi są niedostępne:\n{message}",
         "tag": "notification-missing-entries",
-        "group": "other",
-        "priority": "high",
+        "group": "devices",
         "services": [{"service": "notify.mobile_app_iphone_13", "type": "ios"}],
     }
 
