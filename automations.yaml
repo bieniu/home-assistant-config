@@ -35,8 +35,8 @@
   - service: python_script.notify
     data:
       title: Wysokie użycie pamięci RAM
-      message: Serwer Home Assistant używa obecnie {{ trigger.to_state.state }}% pamięci
-        RAM.
+      message: Serwer Home Assistant używa obecnie {{ trigger.to_state.format_state(true,
+        true) }} pamięci RAM.
       tag: high-ram-usage
       group: server
       priority: high
@@ -193,8 +193,8 @@
               type: ios
   variables:
     notification_title: Wysokie stężenie dwutlenku węgla
-    notification_message: W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state
-      }} ppm. Należy przewietrzyć pomieszczenie.
+    notification_message: W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.format_state(true,
+      true) }}. Należy przewietrzyć pomieszczenie.
     notification_tag: high-co2-level
 - id: notification_water_leak_kuchnia
   alias: Wyciek wody
@@ -486,9 +486,9 @@
       message: "{% macro battery_level() %}{% for item in states.sensor if item.attributes.device_class
         == 'battery' and item.attributes.unit_of_measurement == '%' and item.state
         | int(0) < threshold %}\n - {{ device_name(item.entity_id) }}{% if area_name(item.entity_id)
-        %}, {{ area_name(item.entity_id) }}{% endif %}, {{ item.state | round(0,
-        default='unknown') }}%{% endfor %}{% endmacro %}W następujących urządzeniach
-        jest niski poziom naładowania baterii: {{ battery_level() }}"
+        %}, {{ area_name(item.entity_id) }}{% endif %}, {{ item.state | round(0, default='unknown')
+        }}%{% endfor %}{% endmacro %}W następujących urządzeniach jest niski poziom
+        naładowania baterii: {{ battery_level() }}"
       tag: low-battery
       group: devices
       services:
@@ -1645,7 +1645,7 @@
   - target:
       entity_id:
       - light.leds_schody
-      - light.bonsai_salon
+      - light.bonsai_w_salonie
     data: {}
     action: light.turn_on
 - id: light_turn_off_schody_leds_on_midnight
@@ -1658,7 +1658,7 @@
   - target:
       entity_id:
       - light.leds_schody
-      - light.bonsai_salon
+      - light.bonsai_w_salonie
     data: {}
     action: light.turn_off
 - id: light_turn_on_goscinny_lamp_when_dark_and_motion
@@ -2553,14 +2553,14 @@
         \"light\", \"media_player\", \"remote\", \"sensor\", \"switch\", \"weather\"]
         %}\n{% set ignored_entities = [\"switch.philips_65oled707_screen_state\",
         \"light.philips_65oled707_ambilight\", \"sensor.bzura_temperatura_wody\"]
-        %}\n{% set ignored_entries = [\"Sony KD-55XF8596\", \"Bzura (Żuków)\"] %}\n{%
-        macro unavailable_entries() %}\n  {% for domain in checked_domains %}\n    {%
-        for entity_id in states[domain] | selectattr(\"state\", \"==\", \"unavailable\")
-        | map(attribute=\"entity_id\") if entity_id not in ignored_entities %}\n      {%
-        set entry_name = device_name(entity_id) %}\n      {% if entry_name not in
-        ignored_entries and entry_name != None %}\n        {{ entry_name }}@{{ area_name(entity_id)
-        }}|\n      {% endif %}\n    {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{
-        unavailable_entries() }}"
+        %}\n{% set ignored_entries = [\"Sony KD-55XF8596\", \"Echo Dot\", \"Echo Plus\",
+        \"Echo Show\"] %}\n{% macro unavailable_entries() %}\n  {% for domain in checked_domains
+        %}\n    {% for entity_id in states[domain] | selectattr(\"state\", \"==\",
+        \"unavailable\") | map(attribute=\"entity_id\") if entity_id not in ignored_entities
+        %}\n      {% set entry_name = device_name(entity_id) %}\n      {% if entry_name
+        not in ignored_entries and entry_name != None %}\n        {{ entry_name }}@{{
+        area_name(entity_id) }}|\n      {% endif %}\n    {% endfor %}\n  {% endfor
+        %}\n{% endmacro %}\n{{ unavailable_entries() }}"
     action: python_script.unavailable_entries
   mode: queued
   max: 10
@@ -2972,7 +2972,7 @@
   - data:
       title: Poziom baterii trackera
       message: Poziom baterii trackera {{ device_name(trigger.entity_id) }} wynosi
-        {{ trigger.to_state.state }}%. Rozważ ładowanie.
+        {{ trigger.to_state.format_state(true, true) }}. Rozważ ładowanie.
       tag: tracker-battery
       group: devices
       services:
@@ -3021,7 +3021,7 @@
     metadata: {}
     data: {}
     target:
-      entity_id: switch.blitzwolf_bw_shp6_173eb6_przekaznik
+      entity_id: switch.zasilanie_czujnika_dwutlenku_wegla
   - delay:
       hours: 0
       minutes: 1
@@ -3031,7 +3031,7 @@
     metadata: {}
     data: {}
     target:
-      entity_id: switch.blitzwolf_bw_shp6_173eb6_przekaznik
+      entity_id: switch.zasilanie_czujnika_dwutlenku_wegla
   mode: single
 - id: '1741967732368'
   alias: Sugestia wyłączenia ogrzewania
@@ -3053,8 +3053,8 @@
   - action: python_script.notify
     data:
       title: Propozycja włączenia ogrzewania
-      message: Średnia temperatura zewnętrzna wynosi {{ trigger.to_state.state }}°C,
-        prawdopodobnie należy wyłączyć ogrzewanie.
+      message: Średnia temperatura zewnętrzna wynosi {{ trigger.to_state.format_state(true,
+        true) }}, prawdopodobnie należy wyłączyć ogrzewanie.
       tag: heating
       group: climate
       actions:
@@ -3131,8 +3131,8 @@
   - action: python_script.notify
     data:
       title: Propozycja włączenia ogrzewania
-      message: Średnia temperatura zewnętrzna wynosi {{ trigger.to_state.state }}°C,
-        prawdopodobnie należy włączyć ogrzewanie.
+      message: Średnia temperatura zewnętrzna wynosi {{ trigger.to_state.format_state(true,
+        true) }}, prawdopodobnie należy włączyć ogrzewanie.
       tag: heating
       group: climate
       actions:
@@ -3424,17 +3424,18 @@
     entity_id:
     - device_tracker.lenovo_thinkpad_t14
     - device_tracker.hp_elitebook_840_g10
-    attribute: ip
+    from: not_home
+    to: home
   conditions:
   - condition: template
-    value_template: '{{ "192.168.2" in trigger.to_state.attributes["IP"] }}'
+    value_template: '{{ trigger.to_state.attributes.get("vlan") != 8 }}'
   actions:
   - action: python_script.notify
     data:
-      title: Nieprawidłowy adres IP dla urządzenia z VLAN
-      message: Urządzenie z VLANu Work ma adres ma nieprawidłowy adres IP {{ trigger.to_state.attributes["IP"]
-        }}. Sprawdź poprawność konfiguracji punktów dostępowych Wi-Fi.
-      tag: wifi-vlan-wrong-ip
+      title: Urządzenie opuściło swój VLAN
+      message: Urządzenie {{ trigger.to_state.attributes["friendly_name"] }} opóściło
+        VLAN 8. Sprawdź poprawność konfiguracji punktów dostępowych Wi-Fi.
+      tag: wifi-vlan-wrong-vlan
       priority: high
       services:
       - service: notify.mobile_app_iphone_13
