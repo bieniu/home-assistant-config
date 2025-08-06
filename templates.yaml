@@ -35,27 +35,25 @@
       state: "{{ daily_forecast['weather.lowicz'].forecast[0].precipitation_probability }}"
 
 - trigger:
-    - platform: state
+    - trigger: state
       entity_id: weather.lowicz
   action:
     - action: google_generative_ai_conversation.generate_content
       data:
         prompt: >-
           Opisz jednym zdaniem warunki pogodowe na podstawie {{ states.weather.dom }} oraz
-          {{ states.sensor.dom_prawdopodobienstwo_opadow }}, uwzględnij też dane jakości
-          powietrza {{ states.sensor.jakosc_powietrza_zewnetrznego }} jeśli jakość powietrza
-          jest gorsza niż dobra. Nie podawaj wartości liczbowych, podaj informacje o
-          zachmurzeniu, podaj informacje o wietrze, nie używaj określeń "ciepła pogoda" tylko
-          "jest ciepło", informacje o wilgotności podawaj tylko jeśli jest ona wysoka i w tym
-          samym czasie nie pada deszcz. Temperaturę powyżej 25 stopni opisuj jako bardzo
-          ciepło, powyżej 30 stopni jako gorąco. Na podstawie
-          {{ states.sensor.dom_dystans_do_blyskawicy }} możesz określić czy w pobliżu domu jest
-          burza, jeśli tak, podaj informację o tym. Odpowiedź generuj jako markdown. Możesz
-          używać następujacych tagów do oznaczenia ostrzeżeń i alertów:
-          - ostrzeżenie: <ha-alert alert-type="error">
-          - alert: <ha-alert alert-type="warning">
+          {{ states.sensor.dom_prawdopodobienstwo_opadow }} Nie podawaj wartości liczbowych,
+          podaj informacje o zachmurzeniu (pamiętaj, że "partlycloudy" to częściowe zachmurzenie,
+          a "mostlycloudy" to duże zachmurzenie), podaj informacje o wietrze (bezwietrzenie 0–2
+          km/h, słaby wiatr 3–15 km/h, umiarkowany wiatr 16–30 km/h, silny wiatr 31–50 km/h,
+          porywisty wiatr >50 km/h), informacje o wilgotności podawaj tylko jeśli jest ona większa
+          niż 60% i w tym samym czasie nie pada deszcz, nie używaj określeń "ciepła pogoda" tylko
+          "jest ciepło", nie używaj określeń "odczuwalna temperatura jest chłodna" tylko
+          "oczuwalnie jest chłodno", nie używaj określenia "jest umiarkowanie" bo ono nic nie
+          znaczy, temperaturę powyżej 25 stopni opisuj jako "bardzo ciepło", powyżej 30 stopni
+          jako "gorąco".
       response_variable: weather_description
   sensor:
     - name: Opis pogody
       unique_id: weather_description
-      state: "{{ weather_description['text'] }}"
+      state: "{% if weather_description is defined %}{{ weather_description['text'] }}{% endif %}"

@@ -231,7 +231,7 @@ heating_airing_begin:
   icon: mdi:window-open-variant
 light_turn_on_antek_leds:
   sequence:
-  - service: light.turn_on
+  - action: light.turn_on
     target:
       entity_id: light.lightstrip_antek
     data:

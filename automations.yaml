@@ -25,46 +25,46 @@
 - id: notification_high_ram_usage
   alias: Wysokie użycie pamięci RAM
   description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.memory_use_percent
+  triggers:
+  - entity_id: sensor.memory_use_percent
     above: 70
     for:
       minutes: 5
-  action:
-  - service: python_script.notify
-    data:
-      title: Wysokie użycie pamięci RAM
-      message: Serwer Home Assistant używa obecnie {{ trigger.to_state.format_state(true,
-        true) }} pamięci RAM.
+    trigger: numeric_state
+  actions:
+  - data:
+      title:
+      message: Serwer Home Assistant używa obecnie {{ trigger.to_state.state }}% pamięci
+        RAM.
       tag: high-ram-usage
       group: server
       priority: high
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
+    action: python_script.notify
 - id: notification_ssl_cert_expiry
   alias: Wygaśnięcie certyfikatu SSL
   description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.ssl_certificate_expiry
+  triggers:
+  - entity_id: sensor.ssl_certificate_expiry
     variables:
       days: '{{ trigger.to_state.state | as_timestamp(0) - now() | as_timestamp //
         86400 }}'
-  condition:
+    trigger: state
+  conditions:
   - condition: template
     value_template: '{{ 0 <= days < 14 }}'
-  action:
-  - service: python_script.notify
-    data:
+  actions:
+  - data:
       title: Wygasa certyfikat SSL
-      message: Za {{ days }} dni wygaśnie certyfikat SSL serwera WWW.
+      message: Za {{ days }} dni wygaśnie certyfikat SSL serwera Home Assistant.
       tag: ssl
       group: server
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
+    action: python_script.notify
 - id: notification_storm_comming
   alias: Burza w pobliżu
   description: ''
@@ -154,14 +154,14 @@
 - id: notification_salon_co2
   alias: Wysokie stężenie dwutlenku węgla w salonie
   description: ''
-  trigger:
-  - platform: numeric_state
-    entity_id: sensor.co2_salon
+  triggers:
+  - entity_id: sensor.co2_salon
     above: 1000
     for:
       minutes: 5
-  condition: []
-  action:
+    trigger: numeric_state
+  conditions: []
+  actions:
   - parallel:
     - choose:
         conditions:
@@ -169,7 +169,6 @@
           entity_id: person.maciek
           state: home
         sequence:
-          service: python_script.notify
           data:
             title: '{{ notification_title }}'
             message: '{{ notification_message }}'
@@ -177,13 +176,13 @@
             services:
             - service: notify.mobile_app_iphone_13
               type: ios
+          action: python_script.notify
     - choose:
         conditions:
           condition: state
           entity_id: person.edyta
           state: home
         sequence:
-          service: python_script.notify
           data:
             title: '{{ notification_title }}'
             message: '{{ notification_message }}'
@@ -191,30 +190,30 @@
             services:
             - service: notify.mobile_app_iphone_12
               type: ios
+          action: python_script.notify
   variables:
     notification_title: Wysokie stężenie dwutlenku węgla
-    notification_message: W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.format_state(true,
-      true) }}. Należy przewietrzyć pomieszczenie.
+    notification_message: W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state
+      }} ppm. Należy przewietrzyć pomieszczenie.
     notification_tag: high-co2-level
 - id: notification_water_leak_kuchnia
   alias: Wyciek wody
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.water_leak_kuchnia
+  triggers:
+  - entity_id: binary_sensor.water_leak_kuchnia
     from: 'off'
     to: 'on'
-  - platform: state
-    entity_id: binary_sensor.water_leak_pralnia
+    trigger: state
+  - entity_id: binary_sensor.water_leak_pralnia
     from: 'off'
     to: 'on'
-  - platform: state
-    entity_id: binary_sensor.water_leak_lazienka
+    trigger: state
+  - entity_id: binary_sensor.water_leak_lazienka
     from: 'off'
     to: 'on'
-  action:
-  - service: python_script.notify
-    data:
+    trigger: state
+  actions:
+  - data:
       title: '{{ notification_title }}'
       message: '{{ notification_message }}'
       tag: water-leak-{{ area_name(trigger.entity_id) }}
@@ -224,6 +223,7 @@
         type: ios
       - service: notify.mobile_app_iphone_12
         type: ios
+    action: python_script.notify
   variables:
     notification_title: Wykryto wyciek wody
     notification_message: 'Wykryto wyciek wody w pomieszczeniu: {{ area_name(trigger.entity_id)
@@ -371,9 +371,8 @@
 - id: notification_window_opened_when_away_mode
   alias: Otwarcie okna w pustym mieszkaniu
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - binary_sensor.balcony_door_pracownia
     - binary_sensor.balcony_door_sypialnia
     - binary_sensor.window_antek
@@ -385,18 +384,18 @@
     - binary_sensor.windows_salon
     from: 'off'
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: input_boolean.away_mode
     state: 'on'
     for:
       minutes: 10
-  action:
-  - service: python_script.notify
-    data:
+  actions:
+  - data:
       title: Wykryto otwarcie okna w pustym mieszkaniu
-      message: 'Pomieszczenie: {{ area_name(trigger.entity_id) }}, godzina {{ now().strftime(''%H:%M'')
-        }}.'
+      message: 'Pomieszczenie: {{ area_name(trigger.entity_id).lower() }}, godzina
+        {{ now().strftime(''%H:%M'') }}.'
       tag: window-opened-{{ area_name(trigger.entity_id) }}
       group: windows
       services:
@@ -404,20 +403,20 @@
         type: ios
       - service: notify.mobile_app_iphone_12
         type: ios
+    action: python_script.notify
 - id: notification_balcony_door_pracownia_opened
   alias: Drzwi balkonowe w pracowni otwarte
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.people_at_home
+  triggers:
+  - entity_id: binary_sensor.people_at_home
     to: 'off'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: binary_sensor.balcony_door_pracownia
     state: 'on'
-  action:
-  - service: python_script.notify
-    data:
+  actions:
+  - data:
       title: Otwarte drzwi balkonowe
       message: Domownicy opuścili mieszkanie, a drzwi balkonowe w pracowni nie są
         zamknięte.
@@ -428,6 +427,7 @@
         type: ios
       - service: notify.mobile_app_iphone_12
         type: ios
+    action: python_script.notify
 - id: notification_gas_leak_kuchnia
   alias: Wyciek gazu w kuchni
   description: ''
@@ -508,17 +508,28 @@
   - entity_id: input_boolean.away_mode
     action: input_boolean.turn_on
   - if:
-    - condition: state
-      entity_id: binary_sensor.windows
-      state: 'on'
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: binary_sensor.windows_antresola
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.window_gabinet
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.window_antek
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.windows_sypialnia
+        state: 'on'
     - condition: numeric_state
       entity_id: sensor.dom_prawdopodobienstwo_opadow
       above: 20
     then:
     - data:
         title: Otwarte okna
-        message: Okna w pustym mieszkaniu nie są zamknięte, a prawdopodobieństwo opadów
-          wynosi {{ states('sensor.dom_prawdopodobienstwo_opadow') | int }}%.
+        message: Okna na piętrze nie są zamknięte, a prawdopodobieństwo opadów wynosi
+          {{ states('sensor.dom_prawdopodobienstwo_opadow') | int }}%.
         tag: windows-weather
         group: windows
         priority: high
@@ -549,13 +560,13 @@
 - id: heating_day
   alias: Tryb dzienny ogrzewania
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - schedule.heating
     from: 'off'
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
@@ -565,19 +576,19 @@
   - condition: state
     entity_id: binary_sensor.windows
     state: 'off'
-  action:
-  - service: script.heating_day
-    data: {}
+  actions:
+  - data: {}
+    action: script.heating_day
 - id: heating_night
   alias: Tryb nocny ogrzewania
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - schedule.heating
     from: 'on'
     to: 'off'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
@@ -587,9 +598,9 @@
   - condition: state
     entity_id: binary_sensor.windows
     state: 'off'
-  action:
-  - service: script.heating_night
-    data: {}
+  actions:
+  - data: {}
+    action: script.heating_night
 - id: turn_off_ceiling_fan_for_night
   alias: Wyłącz wentylator w salonie na noc
   description: ''
@@ -610,50 +621,50 @@
 - id: heating_away_mode
   alias: Tryb "poza domem" ogrzewania
   description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.away_mode
+  triggers:
+  - entity_id: input_boolean.away_mode
     from: 'off'
     to: 'on'
     for:
       minutes: 10
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
   - condition: state
     entity_id: input_boolean.heating_airing
     state: 'off'
-  action:
-  - service: script.heating_away_mode
-    data: {}
+  actions:
+  - data: {}
+    action: script.heating_away_mode
 - id: heating_peoples_back
   alias: Powrót domowników do domu
   description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.away_mode
+  triggers:
+  - entity_id: input_boolean.away_mode
     from: 'on'
     to: 'off'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
   - condition: state
     entity_id: input_boolean.heating_airing
     state: 'off'
-  action:
+  actions:
   - choose:
     - conditions:
       - condition: state
         entity_id: schedule.heating
         state: 'on'
       sequence:
-        service: script.heating_day
         data: {}
+        action: script.heating_day
     default:
-      service: script.heating_night
       data: {}
+      action: script.heating_night
 - id: windows_opened
   alias: Okna otwarte
   description: ''
@@ -767,18 +778,18 @@
 - id: heating_airing_begin
   alias: Początek przewietrzania
   description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.heating_airing
+  triggers:
+  - entity_id: input_boolean.heating_airing
     from: 'off'
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: input_boolean.heating_season
     state: 'on'
-  action:
-  - service: script.heating_airing_begin
-    data: {}
+  actions:
+  - data: {}
+    action: script.heating_airing_begin
 - id: heating_airing_end
   alias: Koniec przewietrzania
   description: ''
@@ -820,44 +831,44 @@
 - id: heating_season_begin
   alias: Początek sezonu grzewczego
   description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.heating_season
+  triggers:
+  - entity_id: input_boolean.heating_season
     from: 'off'
     to: 'on'
-  action:
+    trigger: state
+  actions:
   - choose:
     - conditions:
       - condition: state
         entity_id: schedule.heating
         state: 'on'
       sequence:
-      - service: script.heating_day
-        data: {}
+      - data: {}
+        action: script.heating_day
     default:
-    - service: script.heating_night
-      data: {}
+    - data: {}
+      action: script.heating_night
 - id: heating_season_end
   alias: Koniec sezonu grzewczego
   description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.heating_season
+  triggers:
+  - entity_id: input_boolean.heating_season
     from: 'on'
     to: 'off'
-  action:
-  - service: script.heating_season_end
-    data: {}
+    trigger: state
+  actions:
+  - data: {}
+    action: script.heating_season_end
 - id: light_turn_on_tree
   alias: Włącz oświetlenie drzewka o zachodzi słońca u Antka
   description: ''
-  trigger:
+  triggers:
   - platform: sun
     event: sunset
   - platform: state
     entity_id: binary_sensor.people_at_home
     to: 'on'
-  condition:
+  conditions:
   - condition: state
     entity_id: binary_sensor.people_at_home
     state: 'on'
@@ -865,7 +876,7 @@
     after: sunset
   - condition: time
     before: '23:00:00'
-  action:
+  actions:
   - target:
       entity_id: light.drzewko_antek
     data: {}
@@ -873,14 +884,14 @@
 - id: light_turn_off_when_away_mode
   alias: Wyłącz oświetlenie w trybie "poza domem"
   description: ''
-  trigger:
-  - platform: state
-    entity_id: input_boolean.away_mode
+  triggers:
+  - entity_id: input_boolean.away_mode
     from: 'off'
     to: 'on'
-  action:
-  - service: script.devices_away_mode
-    data: {}
+    trigger: state
+  actions:
+  - data: {}
+    action: script.devices_away_mode
 - id: devices_turn_off_in_salon_when_no_motion
   alias: Wyłącz urządzenia w salonie gdy nie ma ruchu
   description: ''
@@ -954,11 +965,6 @@
     event_data:
       actionName: Toggle Salon Light
     trigger: event
-  - device_id: e0d1edcfb8aef580d6887c26610ac78e
-    domain: bthome
-    type: button_1
-    subtype: press
-    trigger: device
   - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
     domain: bthome
     type: button_1
@@ -1000,11 +1006,6 @@
     event_data:
       actionName: Toggle Salon LEDs
     trigger: event
-  - device_id: e0d1edcfb8aef580d6887c26610ac78e
-    domain: bthome
-    type: button_3
-    subtype: press
-    trigger: device
   - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
     domain: bthome
     type: button_1
@@ -1168,22 +1169,22 @@
 - id: light_turn_off_toaleta_light_when_no_motion
   alias: Wyłącz oświetlenie w toalecie gdy nie ma ruchu
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.motion_toaleta
+  triggers:
+  - entity_id: binary_sensor.motion_toaleta
     from: 'on'
     to: 'off'
     for:
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: light.oswietlenie_toaleta
     state: 'on'
-  action:
-  - service: light.turn_off
-    target:
+  actions:
+  - target:
       entity_id: light.oswietlenie_toaleta
     data: {}
+    action: light.turn_off
 - id: light_turn_off_lazienka_light_when_no_motion
   alias: Wyłącz oświetlenie w łazience gdy nie ma ruchu
   description: ''
@@ -1213,18 +1214,18 @@
 - id: light_turn_off_kuchnia_light_when_no_motion
   alias: Wyłącz oświetlenie w kuchni gdy nie ma ruchu
   description: ''
-  trigger:
+  triggers:
   - platform: state
     entity_id: binary_sensor.motion_kuchnia
     from: 'on'
     to: 'off'
     for:
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
-  condition:
+  conditions:
   - condition: state
     entity_id: light.oswietlenie_kuchnia
     state: 'on'
-  action:
+  actions:
   - target:
       entity_id: light.oswietlenie_kuchnia
     data: {}
@@ -1313,13 +1314,13 @@
 - id: light_turn_on_korytarz_light_when_dark_and_motion
   alias: Włącz oświetlenie w korytarzu gdy pojawi się ruch i jest ciemno
   description: ''
-  trigger:
-  - platform: state
-    entity_id:
+  triggers:
+  - entity_id:
     - binary_sensor.ruch_korytarz
     from: 'off'
     to: 'on'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: light.ceiling_korytarz
     state: 'off'
@@ -1327,50 +1328,50 @@
     before: sunrise
     after: sunset
     after_offset: 00:10:00
-  action:
-  - service: light.turn_on
-    target:
+  actions:
+  - target:
       entity_id: light.ceiling_korytarz
     data: {}
+    action: light.turn_on
   - wait_for_trigger:
-      platform: state
       entity_id: binary_sensor.ruch_korytarz
       from: 'on'
       to: 'off'
-  - service: light.turn_off
-    target:
+      trigger: state
+  - target:
       entity_id: light.ceiling_korytarz
     data: {}
+    action: light.turn_off
 - id: light_turn_off_korytarz_lights_when_no_motion
   alias: Wyłącz oświetlenie w korytarzu gdy nie ma ruchu
   description: ''
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.ruch_korytarz
+  triggers:
+  - entity_id: binary_sensor.ruch_korytarz
     from: 'on'
     to: 'off'
     for:
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
-  condition:
+    trigger: state
+  conditions:
   - condition: state
     entity_id: light.ceiling_korytarz
     state: 'on'
-  action:
-  - service: light.turn_off
-    target:
+  actions:
+  - target:
       entity_id: light.ceiling_korytarz
     data: {}
+    action: light.turn_off
 - id: light_toggle_ceiling_antek
   alias: Włącz/wyłącz oświetlenie sufitowe u Antka
   description: ''
-  trigger:
+  triggers:
   - device_id: aabc0c68397757ef0cf5caa56a59d0c8
     domain: zha
     platform: device
     type: remote_button_long_press
     subtype: button
-  action:
-  - service: light.toggle
+  actions:
+  - action: light.toggle
     target:
       entity_id: light.oswietlenie_antek
     data: {}
@@ -1448,7 +1449,7 @@
 - id: light_toggle_antek_leds
   alias: Włącz/wyłącz LEDy u Antka
   description: ''
-  trigger:
+  triggers:
   - device_id: aabc0c68397757ef0cf5caa56a59d0c8
     domain: zha
     platform: device
@@ -1459,7 +1460,7 @@
     domain: shelly
     type: triple_push
     subtype: button1
-  action:
+  actions:
   - type: toggle
     device_id: 40c8e12009a311ebbd1ce5aa5e97a8d7
     entity_id: light.lightstrip_antek
@@ -1467,7 +1468,7 @@
 - id: light_toggle_gabinet_ceiling_light_
   alias: Włącz/wyłącz oświetlenie sufitowe w gabinecie
   description: ''
-  trigger:
+  triggers:
   - platform: device
     device_id: 5794eabef0db436756c344ac7632d9bd
     domain: shelly
@@ -1478,7 +1479,7 @@
     domain: bthome
     type: button_1
     subtype: press
-  action:
+  actions:
   - target:
       entity_id: light.ceiling_gabinet
     data: {}
@@ -1486,7 +1487,7 @@
 - id: light_toggle_gabinet_lamp
   alias: Włącz/wyłącz lampę w gabinecie
   description: ''
-  trigger:
+  triggers:
   - platform: device
     device_id: 5794eabef0db436756c344ac7632d9bd
     domain: shelly
@@ -1497,7 +1498,7 @@
     domain: bthome
     type: button_2
     subtype: press
-  action:
+  actions:
   - target:
       entity_id: light.lamp_gabinet
     data: {}
@@ -1584,15 +1585,15 @@
 - id: light_toggle_schody_leds
   alias: Włącz/wyłącz oświetlenie schodów
   description: ''
-  trigger:
+  triggers:
   - platform: state
     entity_id: event.shelly_1l_aacec4_przycisk_2
-  condition:
+  conditions:
   - condition: state
     entity_id: event.shelly_1l_aacec4_przycisk_2
     attribute: event_type
     state: single_push
-  action:
+  actions:
   - target:
       entity_id: light.leds_schody
     data: {}
@@ -1718,11 +1719,11 @@
 - id: log_level
   alias: Ustawianie poziomu logowania
   description: ''
-  trigger:
+  triggers:
   - platform: state
     entity_id: input_select.log_level
-  action:
-  - service: logger.set_level
+  actions:
+  - action: logger.set_level
     data:
       homeassistant.components: '{{ trigger.to_state.state }}'
 - id: shellies_announce
@@ -1741,13 +1742,13 @@
 - id: shellies_discovery
   alias: Uruchamianie Shellies Discovery
   description: ''
-  trigger:
+  triggers:
   - platform: mqtt
     topic: shellies/announce
-  condition:
+  conditions:
   - condition: template
     value_template: '{{ trigger.payload_json.gen is not defined }}'
-  action:
+  actions:
   - data:
       id: '{{ trigger.payload_json.id }}'
       mac: '{{ trigger.payload_json.mac }}'
@@ -1804,11 +1805,6 @@
     event_data:
       actionName: Toggle Salon Fan
     trigger: event
-  - device_id: e0d1edcfb8aef580d6887c26610ac78e
-    domain: bthome
-    type: button_2
-    subtype: press
-    trigger: device
   - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
     domain: bthome
     type: button_1
@@ -1856,11 +1852,6 @@
     event_data:
       actionName: Toggle Salon Lamp
     trigger: event
-  - device_id: e0d1edcfb8aef580d6887c26610ac78e
-    domain: bthome
-    type: button_4
-    subtype: press
-    trigger: device
   conditions: []
   actions:
   - data: {}
@@ -1871,7 +1862,7 @@
 - id: '1658522979417'
   alias: Włącz/wyłącz oświetlenie drzewka u Antka
   description: ''
-  trigger:
+  triggers:
   - device_id: aabc0c68397757ef0cf5caa56a59d0c8
     domain: zha
     platform: device
@@ -1883,7 +1874,7 @@
     type: double_push
     subtype: button1
   condition: []
-  action:
+  actions:
   - data: {}
     target:
       entity_id: light.drzewko_antek
@@ -1892,19 +1883,19 @@
 - id: light_turn_off_goscinny_light_when_no_motion
   alias: Wyłącz oświetlenie w pokoju gościnnym gdy nie ma ruchu
   description: ''
-  trigger:
+  triggers:
   - platform: state
     entity_id: binary_sensor.motion_goscinny
     from: 'on'
     to: 'off'
     for:
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
-  condition:
+  conditions:
   - condition: state
     entity_id: light.ceiling_goscinny
     state: 'on'
-  action:
-  - service: light.turn_off
+  actions:
+  - action: light.turn_off
     target:
       entity_id: light.ceiling_goscinny
     data: {}
@@ -2084,7 +2075,7 @@
 - id: '1672476393165'
   alias: Włącz/wyłącz oświetlenie w pokoju gościnnym
   description: ''
-  trigger:
+  triggers:
   - platform: device
     device_id: 84783955a9dda947e7b647309a6b15f9
     domain: shelly
@@ -2096,7 +2087,7 @@
     type: remote_button_short_press
     subtype: remote_button_short_press
   condition: []
-  action:
+  actions:
   - data: {}
     target:
       entity_id: light.ceiling_goscinny
@@ -2159,12 +2150,12 @@
 - id: '1672565410928'
   alias: Włącz oświetlenie drzewka o zachodzie słońca
   description: ''
-  trigger:
+  triggers:
   - platform: sun
     event: sunset
     offset: 0
   condition: []
-  action:
+  actions:
   - data: {}
     target:
       entity_id: light.drzewko_antek
@@ -2282,7 +2273,7 @@
 - id: '1682413050614'
   alias: Włącz/wyłącz lampkę w sypialni
   description: ''
-  trigger:
+  triggers:
   - platform: device
     device_id: 9c1d6b506fc5c2b66d70325621df177f
     domain: bthome
@@ -2299,7 +2290,7 @@
     type: double_push
     subtype: button2
   condition: []
-  action:
+  actions:
   - type: toggle
     device_id: 0614f4b07155c115d1e506fffeed1acf
     entity_id: light.table_lamp_sypialnia
@@ -2482,14 +2473,14 @@
 - id: '1709306300471'
   alias: Wyłącz oświetlenie w przedpokoju gdy nie ma ruchu
   description: ''
-  trigger:
+  triggers:
   - platform: state
     entity_id: binary_sensor.motion_przedpokoj
     from: 'on'
     to: 'off'
     for:
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
-  condition:
+  conditions:
   - condition: or
     conditions:
     - condition: state
@@ -2501,7 +2492,7 @@
     - condition: state
       entity_id: light.ceiling_korytarz
       state: 'on'
-  action:
+  actions:
   - target:
       entity_id:
       - light.leds_przedpokoj
@@ -2567,7 +2558,7 @@
 - id: '1715426726944'
   alias: Wyłącz oświetlenie w pralni gdy nie ma ruchu
   description: ''
-  trigger:
+  triggers:
   - platform: state
     entity_id:
     - binary_sensor.motion_pralnia
@@ -2575,12 +2566,12 @@
     to: 'off'
     for:
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
-  condition:
+  conditions:
   - condition: state
     entity_id: light.oswietlenie_pralnia
     state: 'on'
-  action:
-  - service: light.turn_off
+  actions:
+  - action: light.turn_off
     target:
       entity_id:
       - light.oswietlenie_pralnia
@@ -2589,7 +2580,7 @@
 - id: '1719055090033'
   alias: Włącz/wyłącz wentylator w gabinecie
   description: ''
-  trigger:
+  triggers:
   - platform: device
     device_id: 5794eabef0db436756c344ac7632d9bd
     domain: shelly
@@ -2601,7 +2592,7 @@
     type: button_3
     subtype: press
   condition: []
-  action:
+  actions:
   - metadata: {}
     data: {}
     target:
@@ -2611,7 +2602,7 @@
 - id: '1719057451463'
   alias: Włącz/wyłącz LEDy w sypialni
   description: ''
-  trigger:
+  triggers:
   - platform: device
     device_id: d126835937feceeaf66137ca3321675d
     domain: shelly
@@ -2623,8 +2614,8 @@
     type: triple_push
     subtype: button2
   condition: []
-  action:
-  - service: light.toggle
+  actions:
+  - action: light.toggle
     metadata: {}
     data: {}
     target:
@@ -2750,12 +2741,12 @@
   alias: Włącz oświetlenie blatu w kuchni gdy pojawi się ruch i jest po zachodzie
     słońca
   description: ''
-  trigger:
+  triggers:
   - platform: state
     entity_id: binary_sensor.motion_kuchnia
     from: 'off'
     to: 'on'
-  condition:
+  conditions:
   - condition: state
     entity_id: input_boolean.away_mode
     state: 'off'
@@ -2765,7 +2756,7 @@
   - condition: sun
     before: sunrise
     after: sunset
-  action:
+  actions:
   - target:
       entity_id: light.blat_kuchnia
     action: light.turn_on
@@ -2782,14 +2773,14 @@
 - id: '1725785049250'
   alias: Włącz/wyłącz oświetlenie w pracowni
   description: ''
-  trigger:
+  triggers:
   - device_id: 12765067d8e37adeadb4188a5b9b0c5c
     domain: zha
     platform: device
     type: remote_button_short_press
     subtype: remote_button_short_press
   condition: []
-  action:
+  actions:
   - action: light.toggle
     metadata: {}
     data: {}
@@ -2972,7 +2963,7 @@
   - data:
       title: Poziom baterii trackera
       message: Poziom baterii trackera {{ device_name(trigger.entity_id) }} wynosi
-        {{ trigger.to_state.format_state(true, true) }}. Rozważ ładowanie.
+        {{ trigger.to_state.state }}%. Rozważ ładowanie.
       tag: tracker-battery
       group: devices
       services:
@@ -3053,8 +3044,8 @@
   - action: python_script.notify
     data:
       title: Propozycja włączenia ogrzewania
-      message: Średnia temperatura zewnętrzna wynosi {{ trigger.to_state.format_state(true,
-        true) }}, prawdopodobnie należy wyłączyć ogrzewanie.
+      message: Średnia temperatura zewnętrzna wynosi {{ trigger.to_state.state }}°C,
+        prawdopodobnie należy wyłączyć ogrzewanie.
       tag: heating
       group: climate
       actions:
@@ -3091,26 +3082,6 @@
       - service: notify.mobile_app_iphone_13
         type: ios
   mode: single
-- id: '1747155904082'
-  alias: Pomocnik dekodera TV
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - media_player.philips_65oled707
-    from: 'off'
-    to: 'on'
-  conditions:
-  - condition: state
-    entity_id: input_boolean.away_mode
-    state: 'off'
-  actions:
-  - action: remote.send_command
-    target:
-      entity_id: remote.salon
-    data:
-      device: Dekoder
-      command: '4'
 - id: '1747156465397'
   alias: Sugestia włączenia ogrzewania
   description: ''
@@ -3131,8 +3102,8 @@
   - action: python_script.notify
     data:
       title: Propozycja włączenia ogrzewania
-      message: Średnia temperatura zewnętrzna wynosi {{ trigger.to_state.format_state(true,
-        true) }}, prawdopodobnie należy włączyć ogrzewanie.
+      message: Średnia temperatura zewnętrzna wynosi {{ trigger.to_state.state }}°C,
+        prawdopodobnie należy włączyć ogrzewanie.
       tag: heating
       group: climate
       actions:
@@ -3440,4 +3411,64 @@
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
+  mode: single
+- id: '1754039875139'
+  alias: Wyłącz zasilanie dekodera TV
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.away_mode
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 20
+      seconds: 0
+  - trigger: time
+    at: 01:00:00
+  conditions:
+  - condition: state
+    entity_id: light.ledy_w_salonie
+    state: 'off'
+  - condition: state
+    entity_id: light.ceiling_salon
+    state: 'off'
+  actions:
+  - action: switch.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.blitzwolf_bw_shp6_ed007d_przeka_nik
+  - if:
+    - condition: not
+      conditions:
+      - condition: state
+        entity_id: media_player.philips_65oled707
+        state: 'off'
+    then:
+    - action: media_player.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: media_player.philips_65oled707
+  mode: single
+- id: '1754039992327'
+  alias: Włącz zasilanie dekodera TV
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.away_mode
+    from: 'on'
+    to: 'off'
+  - trigger: time
+    at: 06:00:00
+  conditions: []
+  actions:
+  - action: switch.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: switch.blitzwolf_bw_shp6_ed007d_przeka_nik
   mode: single
