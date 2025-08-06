@@ -33,7 +33,12 @@
 * Aqara Smart SP-EUC01
 * BlitzWolf BW-SHP6 [[ESPHome](https://esphome.io)]
 * BlitzWolf BW-SHP15
+* Shelly 1 Gen3
+* Shelly 1PM Gen3
+* Shelly 1 Gen4
 * Shelly 1 Mini Gen3
+* Shelly 1 Mini Gen4
+* Shelly 1PM Mini Gen3
 * Shelly 1L [[ESPHome](https://esphome.io)]
 * Shelly 1PM Mini Gen3
 * Shelly 2PM Gen3
@@ -82,7 +87,6 @@
 
 * Xiaomi Mi Smart Home Gateway 2
 * Logitech Harmony Ultimate
-* Xiaomi Mi Humidifier CA1
 * Xiaomi Mi Humidifier CB1
 * Xiaomi Mi Pedestal Fan 1X
 * Xiaomi Mi Air Purifier 3H
@@ -100,6 +104,7 @@
 * BMW car
 * Unifi router
 * Reolink E1 Zoom
+* Home Assistant Voice
 
 ## Home Assistant Custom Components
 
