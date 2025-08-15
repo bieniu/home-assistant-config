@@ -35,3 +35,12 @@ device_tracker.luna_tracker:
 
 device_tracker.karmel_tracker:
   entity_picture: /api/image/serve/16cbe828aed5f8875ae19632d630785f/512x512
+
+update.truenas_aplikacje_cloudflared:
+  entity_picture: /local/cloudflared.png
+
+update.truenas_aplikacje_paperless_ngx:
+  entity_picture: /local/paperless-ngx.png
+
+update.truenas_aplikacje_immich:
+  entity_picture: /local/immich.png

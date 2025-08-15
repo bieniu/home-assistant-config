@@ -1,5 +1,5 @@
 - platform: template
-  name: "Home"
+  name: "Dom"
   unique_id: "home"
   condition_template: "{{ states('weather.lowicz') }}"
   temperature_template: "{{ (states('sensor.nettigo_air_monitor_bme280_temperatura') or states('sensor.lowicz_temperatura')) | float }}"
@@ -13,4 +13,3 @@
   visibility_template: "{{ state_attr('weather.lowicz', 'visibility') }}"
   cloud_coverage_template: "{{ state_attr('weather.lowicz', 'cloud_coverage') }}"
   forecast_daily_template: "{{ state_attr('sensor.pomocnik_prognozy_pogody', 'forecast') }}"
-  availability: "{{ states('weather.lowicz') not in ('unknown', 'unavailable') }}"

@@ -38,22 +38,23 @@
     - trigger: state
       entity_id: weather.lowicz
   action:
-    - action: google_generative_ai_conversation.generate_content
+    - action: ai_task.generate_data
       data:
-        prompt: >-
+        entity_id: ai_task.google_ai_task
+        task_name: Opis pogody
+        instructions: >-
           Opisz jednym zdaniem warunki pogodowe na podstawie {{ states.weather.dom }} oraz
-          {{ states.sensor.dom_prawdopodobienstwo_opadow }} Nie podawaj wartości liczbowych,
+          {{ states.sensor.dom_prawdopodobienstwo_opadow }}. Nie podawaj wartości liczbowych,
           podaj informacje o zachmurzeniu (pamiętaj, że "partlycloudy" to częściowe zachmurzenie,
           a "mostlycloudy" to duże zachmurzenie), podaj informacje o wietrze (bezwietrzenie 0–2
           km/h, słaby wiatr 3–15 km/h, umiarkowany wiatr 16–30 km/h, silny wiatr 31–50 km/h,
-          porywisty wiatr >50 km/h), informacje o wilgotności podawaj tylko jeśli jest ona większa
-          niż 60% i w tym samym czasie nie pada deszcz, nie używaj określeń "ciepła pogoda" tylko
+          porywisty wiatr >50 km/h). Informacje o wilgotności podawaj tylko jeśli jest ona większa
+          niż 70% i w tym samym czasie nie pada deszcz. Nie używaj określeń "ciepła pogoda" tylko
           "jest ciepło", nie używaj określeń "odczuwalna temperatura jest chłodna" tylko
-          "oczuwalnie jest chłodno", nie używaj określenia "jest umiarkowanie" bo ono nic nie
-          znaczy, temperaturę powyżej 25 stopni opisuj jako "bardzo ciepło", powyżej 30 stopni
-          jako "gorąco".
+          "oczuwalnie jest chłodno", nie używaj określeń "jest umiarkowanie" albo "temperatura
+          jest łagodna" albo "wiatr jest bezwietrznie".
       response_variable: weather_description
   sensor:
     - name: Opis pogody
       unique_id: weather_description
-      state: "{% if weather_description is defined %}{{ weather_description['text'] }}{% endif %}"
+      state: "{% if weather_description is defined %}{{ weather_description.data }}{% endif %}"

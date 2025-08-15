@@ -33,34 +33,12 @@
     trigger: numeric_state
   actions:
   - data:
-      title:
+      title: Wysokie użycie pamięci RAM
       message: Serwer Home Assistant używa obecnie {{ trigger.to_state.state }}% pamięci
         RAM.
       tag: high-ram-usage
       group: server
       priority: high
-      services:
-      - service: notify.mobile_app_iphone_13
-        type: ios
-    action: python_script.notify
-- id: notification_ssl_cert_expiry
-  alias: Wygaśnięcie certyfikatu SSL
-  description: ''
-  triggers:
-  - entity_id: sensor.ssl_certificate_expiry
-    variables:
-      days: '{{ trigger.to_state.state | as_timestamp(0) - now() | as_timestamp //
-        86400 }}'
-    trigger: state
-  conditions:
-  - condition: template
-    value_template: '{{ 0 <= days < 14 }}'
-  actions:
-  - data:
-      title: Wygasa certyfikat SSL
-      message: Za {{ days }} dni wygaśnie certyfikat SSL serwera Home Assistant.
-      tag: ssl
-      group: server
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
@@ -3388,7 +3366,7 @@
       command: ChannelDown
   mode: single
 - id: '1750685194255'
-  alias: Wyślij powiadomienie o nieprawidłowym adresie IP urządzenia z VLAN
+  alias: Nieprawidłowy adres IP urządzenia z VLAN
   description: ''
   triggers:
   - trigger: state
@@ -3471,4 +3449,30 @@
     data: {}
     target:
       entity_id: switch.blitzwolf_bw_shp6_ed007d_przeka_nik
+  mode: single
+- id: '1755021357467'
+  alias: Wysokie obciążenie procesora
+  description: ''
+  triggers:
+  - entity_id:
+    - sensor.processor_use
+    above: 70
+    for:
+      hours: 0
+      minutes: 20
+      seconds: 0
+    trigger: numeric_state
+  conditions: []
+  actions:
+  - data:
+      title: Wysokie obciążenie procesora
+      message: Obciążenie procesora serwera Home Assistant wynosi obecnie {{ trigger.to_state.state
+        }}%.
+      tag: high-cpu-usage
+      group: server
+      priority: high
+      services:
+      - service: notify.mobile_app_iphone_13
+        type: ios
+    action: python_script.notify
   mode: single

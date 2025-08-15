@@ -49,26 +49,6 @@ template: !include templates.yaml
 
 ios: !include ios.yaml
 
-panel_custom:
-  - name: zha_map
-    sidebar_title: Zigbee
-    sidebar_icon: mdi:zigbee
-    js_url: /api/hassio/app/entrypoint.js
-    url_path: config/zha/visualization?config_entry=f9ae1510a963b99ee5fba82bf62904ae
-    embed_iframe: true
-    require_admin: true
-    config:
-      ingress: core_configurator
-  - name: bt_map
-    sidebar_title: Bluetooth
-    sidebar_icon: mdi:bluetooth
-    js_url: /api/hassio/app/entrypoint.js
-    url_path: config/bluetooth/visualization
-    embed_iframe: true
-    require_admin: true
-    config:
-      ingress: core_configurator
-
 weather: !include weather.yaml
 
 sensor:
