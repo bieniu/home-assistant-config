@@ -12,11 +12,11 @@
 
 ## Z-Wave Controller
 
-* Aeotec ZW090 Z-Stick Gen5
+* [Home Assistant Connect ZWA-2](https://www.home-assistant.io/connect/zwa-2)
 
 ## Zigbee Controller
 
-* [SkyConnect](https://www.home-assistant.io/skyconnect/)
+* [Home Assistant Connent ZBT-1](https://www.home-assistant.io/connectzbt1)
 
 ## Lights
 
@@ -29,7 +29,6 @@
 
 ## Relays
 
-* Aeotec ZW175 Smart Switch 7
 * Aqara Smart SP-EUC01
 * BlitzWolf BW-SHP6 [[ESPHome](https://esphome.io)]
 * BlitzWolf BW-SHP15
@@ -90,7 +89,6 @@
 * Xiaomi Mi Humidifier CB1
 * Xiaomi Mi Pedestal Fan 1X
 * Xiaomi Mi Air Purifier 3H
-* Synology DS110j
 * Brother HL-L2340D
 * iPhones
 * CyberPower DL650ELCD
@@ -99,12 +97,13 @@
 * Amazon Echo Plus/Dot/Show [via Home Assistant Cloud]
 * Sonos One
 * Sonos Arc
+* Sonos Era 300
 * IKEA Symfonisk
 * Tractive tracker for dogs
 * BMW car
 * Unifi router
 * Reolink E1 Zoom
-* Home Assistant Voice
+* [Home Assistant Voice](https://www.home-assistant.io/voice-pe/)
 
 ## Home Assistant Custom Components
 
@@ -113,6 +112,7 @@
 * [Blitzortung.org Lightning Detector](https://github.com/mrk-its/homeassistant-blitzortung)
 * Adaptive Lightning
 * Spook
+* TrueNAS
 
 ## Lovelace Custom Cards
 
