@@ -44,3 +44,6 @@ update.truenas_aplikacje_paperless_ngx:
 
 update.truenas_aplikacje_immich:
   entity_picture: /local/immich.png
+
+update.truenas_aplikacje_mosquitto:
+  entity_picture: /local/mosquitto.png

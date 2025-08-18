@@ -2519,17 +2519,17 @@
   actions:
   - data:
       entries: "{% set checked_domains = [\"binary_sensor\", \"climate\", \"fan\",
-        \"light\", \"media_player\", \"remote\", \"sensor\", \"switch\", \"weather\"]
-        %}\n{% set ignored_entities = [\"switch.philips_65oled707_screen_state\",
-        \"light.philips_65oled707_ambilight\", \"sensor.bzura_temperatura_wody\"]
-        %}\n{% set ignored_entries = [\"Sony KD-55XF8596\", \"Echo Dot\", \"Echo Plus\",
-        \"Echo Show\"] %}\n{% macro unavailable_entries() %}\n  {% for domain in checked_domains
-        %}\n    {% for entity_id in states[domain] | selectattr(\"state\", \"==\",
-        \"unavailable\") | map(attribute=\"entity_id\") if entity_id not in ignored_entities
-        %}\n      {% set entry_name = device_name(entity_id) %}\n      {% if entry_name
-        not in ignored_entries and entry_name != None %}\n        {{ entry_name }}@{{
-        area_name(entity_id) }}|\n      {% endif %}\n    {% endfor %}\n  {% endfor
-        %}\n{% endmacro %}\n{{ unavailable_entries() }}"
+        \"humidifier\", \"light\", \"media_player\", \"sensor\", \"switch\"] %}\n{%
+        set ignored_entities = [\"switch.philips_65oled707_screen_state\", \"light.philips_65oled707_ambilight\",
+        \"sensor.bzura_temperatura_wody\"] %}\n{% set ignored_entries = [\"Sony KD-55XF8596\",
+        \"Bzura\", \"BMW 220\"] %}\n{% macro unavailable_entries() %}\n  {% for domain
+        in checked_domains %}\n    {% for entity_id in states[domain] | selectattr(\"state\",
+        \"==\", \"unavailable\") | map(attribute=\"entity_id\") if entity_id not in
+        ignored_entities %}\n      {% set entry_name = device_name(entity_id) %}\n
+        \     {% if entry_name not in ignored_entries and entry_name != None %}\n
+        \       {{ entry_name }}@{{ area_name(entity_id) }}|\n      {% endif %}\n
+        \   {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{ unavailable_entries()
+        }}"
     action: python_script.unavailable_entries
   mode: queued
   max: 10

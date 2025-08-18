@@ -36,23 +36,61 @@
 
 - trigger:
     - trigger: state
-      entity_id: weather.lowicz
+      entity_id: weather.dom
   action:
     - action: ai_task.generate_data
       data:
-        entity_id: ai_task.google_ai_task
+        entity_id: ai_task.meta_llama_3_1_405b_instruct_free
         task_name: Opis pogody
         instructions: >-
-          Opisz jednym zdaniem warunki pogodowe na podstawie {{ states.weather.dom }} oraz
-          {{ states.sensor.dom_prawdopodobienstwo_opadow }}. Nie podawaj wartości liczbowych,
-          podaj informacje o zachmurzeniu (pamiętaj, że "partlycloudy" to częściowe zachmurzenie,
-          a "mostlycloudy" to duże zachmurzenie), podaj informacje o wietrze (bezwietrzenie 0–2
-          km/h, słaby wiatr 3–15 km/h, umiarkowany wiatr 16–30 km/h, silny wiatr 31–50 km/h,
-          porywisty wiatr >50 km/h). Informacje o wilgotności podawaj tylko jeśli jest ona większa
-          niż 70% i w tym samym czasie nie pada deszcz. Nie używaj określeń "ciepła pogoda" tylko
-          "jest ciepło", nie używaj określeń "odczuwalna temperatura jest chłodna" tylko
-          "oczuwalnie jest chłodno", nie używaj określeń "jest umiarkowanie" albo "temperatura
-          jest łagodna" albo "wiatr jest bezwietrznie".
+          Na podstawie: {{ states.weather.dom }} i {{ states.sensor.dom_prawdopodobienstwo_opadow }} 
+          opisz warunki pogodowe w jednym zdaniu, bez podawania wartości liczbowych.
+
+          1. Zachmurzenie:
+            - "partlycloudy" → częściowe zachmurzenie
+            - "cloudy", windy-variant → duże zachmurzenie
+            - inne → opisz wprost (np. pochmurno, burzowo, bezchmurnie)
+
+          2. Temperatura:
+            - ≤-3°C → bardzo zimno
+            - -2–8°C → zimno
+            - 9–18°C → chłodno
+            - 19–25°C → ciepło
+            - 26–30°C → bardzo ciepło
+            - >30°C → gorąco
+
+          3. Wiatr:
+            - 0–2 km/h → bezwietrznie
+            - 3–15 km/h → słaby wiatr
+            - 16–30 km/h → umiarkowany wiatr
+            - 31–50 km/h → silny wiatr
+            - >50 km/h → porywisty wiatr
+
+          4. Wilgotność:
+            - Podaj tylko, jeśli >70% i nie pada deszcz i opisz jako "jest wilgotno" albo "wigotność jest wysoka".
+
+          5. Prawdopodobieństwo opadów:
+            - Sensor zwraca wartość procentową, stan 1 oznacza 1% prawdopodobieństwa.
+            - 0–20% → niskie
+            - 21–50% → umiarkowane
+            - 51–80% → wysokie
+            - 81–100% → bardzo wysokie
+
+          6. Zasady językowe:
+            - Zamiast „ciepła pogoda” pisz „jest ciepło”.
+            - Zamiast „odczuwalna temperatura jest chłodna” pisz „odczuwalnie jest chłodno”.
+            - Nie używaj określeń: „jest umiarkowanie”, „temperatura jest łagodna”, „wiatr jest bezwietrznie”.
+
+          7. Format zdania:
+            - Kolejność: zachmurzenie/warunki → temperatura → wilgotność → wiatr → prawdopodobieństwo opadów.
+            - Pomijaj informacje o temeraturze odczuwalnej.
+            - Styl: krótki, rzeczowy, bez ozdobników.
+
+          Przykłady:
+          - "Jest słonecznie i bezchmurnie, jest ciepło, wieje słaby wiatr z umiarkowanymi porywami, a prawdopodobieństwo opadów jest niskie."
+          - "Jest gorąco, wieje słaby wiatr, zachmurzenie jest częściowe, a prawdopodobieństwo opadów jest wysokie."
+          - "Pada deszcz i jest zimno, wieje silny wiatr i zachmurzenie jest duże."
+          - "Jest częściowe zachmurzenie, jest chłodno i wilgotno, wieje słaby wiatr, a prawdopodobieństwo opadów jest niskie."
       response_variable: weather_description
   sensor:
     - name: Opis pogody
