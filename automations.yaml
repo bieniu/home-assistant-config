@@ -26,7 +26,8 @@
   alias: Wysokie użycie pamięci RAM
   description: ''
   triggers:
-  - entity_id: sensor.memory_use_percent
+  - entity_id:
+    - sensor.intel_nuc_uzycie_pamieci
     above: 70
     for:
       minutes: 5
@@ -178,15 +179,16 @@
   alias: Wyciek wody
   description: ''
   triggers:
-  - entity_id: binary_sensor.water_leak_kuchnia
-    from: 'off'
-    to: 'on'
-    trigger: state
   - entity_id: binary_sensor.water_leak_pralnia
     from: 'off'
     to: 'on'
     trigger: state
   - entity_id: binary_sensor.water_leak_lazienka
+    from: 'off'
+    to: 'on'
+    trigger: state
+  - entity_id:
+    - binary_sensor.wyciek_wody_w_kuchni
     from: 'off'
     to: 'on'
     trigger: state
@@ -204,7 +206,7 @@
     action: python_script.notify
   variables:
     notification_title: Wykryto wyciek wody
-    notification_message: 'Wykryto wyciek wody w pomieszczeniu: {{ area_name(trigger.entity_id)
+    notification_message: 'Wykryto wyciek wody w pomieszczeniu: {{ area_name(trigger.entity_id).lower()
       }}.'
 - id: notification_relay_overpower
   alias: Przeciążenie przekaźnika
@@ -2480,20 +2482,20 @@
     action: light.turn_off
   mode: single
 - id: '1710416852993'
-  alias: Nocne oszczędzanie energii
+  alias: Nocne oszczędzanie energii telewizora w pokoju gościnnym
   description: ''
   triggers:
   - entity_id:
     - schedule.energy_consumption_reduction
     trigger: state
-  conditions:
-  - condition: state
-    entity_id: input_boolean.guests
-    state: 'off'
+  conditions: []
   actions:
   - if:
     - condition: template
       value_template: '{{ trigger.to_state.state == "on" }}'
+    - condition: state
+      entity_id: input_boolean.guests
+      state: 'off'
     then:
     - target:
         entity_id: switch.zasilanie_telewizora_goscinny
@@ -2502,6 +2504,9 @@
   - if:
     - condition: template
       value_template: '{{ trigger.to_state.state == "off" }}'
+    - condition: state
+      entity_id: input_boolean.guests
+      state: 'on'
     then:
     - target:
         entity_id:
@@ -2972,36 +2977,6 @@
       - climate.grzejnik_gabinet
       - climate.grzejnik_pracownia
   mode: single
-- id: '1738937129652'
-  alias: Restart czujnika dwutlenku węgla
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - sensor.co2_salon
-    to: unknown
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-  conditions: []
-  actions:
-  - action: switch.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id: switch.zasilanie_czujnika_dwutlenku_wegla
-  - delay:
-      hours: 0
-      minutes: 1
-      seconds: 0
-      milliseconds: 0
-  - action: switch.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: switch.zasilanie_czujnika_dwutlenku_wegla
-  mode: single
 - id: '1741967732368'
   alias: Sugestia wyłączenia ogrzewania
   description: ''
@@ -3050,12 +3025,11 @@
   actions:
   - action: python_script.notify
     data:
-      title: Aktualizacja firmware dla Shellu BLU TRV
+      title: Aktualizacja firmware dla Shelly BLU TRV
       message: Dostępna jest wersja {{ trigger.to_state.state }} firmware dla Shelly
         BLU TRV.
       tag: blu-trv-firmware
       group: devices
-      priority: medium
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
@@ -3375,10 +3349,15 @@
     - device_tracker.hp_elitebook_840_g10
     from: not_home
     to: home
-  conditions:
+  conditions: []
+  actions:
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
   - condition: template
     value_template: '{{ trigger.to_state.attributes.get("vlan") != 8 }}'
-  actions:
   - action: python_script.notify
     data:
       title: Urządzenie opuściło swój VLAN
@@ -3389,7 +3368,8 @@
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
-  mode: single
+  mode: parallel
+  max: 10
 - id: '1754039875139'
   alias: Wyłącz zasilanie dekodera TV
   description: ''
@@ -3455,7 +3435,7 @@
   description: ''
   triggers:
   - entity_id:
-    - sensor.processor_use
+    - sensor.intel_nuc_obciazenie_procesora
     above: 70
     for:
       hours: 0

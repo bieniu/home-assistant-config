@@ -264,7 +264,6 @@ alexa_goodnight:
       - light.kinkiet_schody
       - light.ceiling_pracownia
       - light.oswietlenie_pralnia
-      - light.blat_kuchnia
       - media_player.philips_65oled707
       - light.oswietlenie_lazienki
       - light.oswietlenie_garderoby
@@ -389,7 +388,7 @@ alexa_harmony_activity_tv:
   - action: media_player.select_source
     metadata: {}
     data:
-      source: HDMI3
+      source: HDMI 3
     target:
       entity_id: media_player.philips_65oled707
   mode: single
@@ -431,7 +430,7 @@ alexa_harmony_activity_games:
   - action: media_player.select_source
     metadata: {}
     data:
-      source: HDMI1
+      source: HDMI 1
     target:
       entity_id: media_player.philips_65oled707
   mode: single
@@ -571,3 +570,13 @@ kamera_nagrywaj:
   description: ''
   mode: queued
   max: 3
+wroc_do_telewizji_w_salonie:
+  sequence:
+  - action: media_player.select_source
+    metadata: {}
+    data:
+      source: HDMI 3
+    target:
+      entity_id: media_player.philips_65oled707
+  alias: Wróć do telewizji w salonie
+  description: ''

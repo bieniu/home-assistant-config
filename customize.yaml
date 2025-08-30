@@ -36,14 +36,20 @@ device_tracker.luna_tracker:
 device_tracker.karmel_tracker:
   entity_picture: /api/image/serve/16cbe828aed5f8875ae19632d630785f/512x512
 
-update.truenas_aplikacje_cloudflared:
+update.aplikacje_truenas_cloudflared:
   entity_picture: /local/cloudflared.png
 
-update.truenas_aplikacje_paperless_ngx:
+update.aplikacje_truenas_paperless_ngx:
   entity_picture: /local/paperless-ngx.png
 
-update.truenas_aplikacje_immich:
+update.aplikacje_truenas_immich:
   entity_picture: /local/immich.png
 
-update.truenas_aplikacje_mosquitto:
+update.aplikacje_truenas_mosquitto:
   entity_picture: /local/mosquitto.png
+
+update.aplikacje_truenas_dockge:
+  entity_picture: /local/dockge.png
+
+update.aplikacje_truenas_syncthing:
+  entity_picture: /local/syncthing.png

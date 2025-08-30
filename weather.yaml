@@ -6,7 +6,7 @@
   humidity_template: "{{ (states('sensor.nettigo_air_monitor_bme280_wilgotnosc') or states('sensor.lowicz_wilgotnosc')) | float }}"
   pressure_template: "{{ (states('sensor.nettigo_air_monitor_bme280_cisnienie', rounded=True) or states('sensor.lowicz_cisnienie')) | float }}"
   dew_point_template: "{{ state_attr('weather.lowicz', 'dew_point') }}"
-  apparent_temperature_template: "{{ states('sensor.lowicz_temperatura_realfeel') | float }}"
+  apparent_temperature_template: "{% set apparent_temp = states('sensor.lowicz_temperatura_realfeel') %}{% if apparent_temp not in ('unknown', 'unavailable') %}{{ apparent_temp | float }}{% endif %}"
   wind_speed_template: "{{ state_attr('weather.lowicz', 'wind_speed') }}"
   wind_bearing_template: "{{ state_attr('weather.lowicz', 'wind_bearing') }}"
   wind_gust_speed_template: "{{ state_attr('weather.lowicz', 'wind_gust_speed') }}"

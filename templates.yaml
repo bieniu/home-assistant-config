@@ -36,11 +36,11 @@
 
 - trigger:
     - trigger: state
-      entity_id: weather.dom
+      entity_id: weather.lowicz
   action:
     - action: ai_task.generate_data
       data:
-        entity_id: ai_task.meta_llama_3_1_405b_instruct_free
+        entity_id: ai_task.google_ai_task
         task_name: Opis pogody
         instructions: >-
           Na podstawie: {{ states.weather.dom }} i {{ states.sensor.dom_prawdopodobienstwo_opadow }} 
@@ -67,7 +67,7 @@
             - >50 km/h → porywisty wiatr
 
           4. Wilgotność:
-            - Podaj tylko, jeśli >70% i nie pada deszcz i opisz jako "jest wilgotno" albo "wigotność jest wysoka".
+            - Podaj tylko, jeśli >70% i nie pada deszcz i opisz jako "jest wilgotno", "wigotność jest wysoka".
 
           5. Prawdopodobieństwo opadów:
             - Sensor zwraca wartość procentową, stan 1 oznacza 1% prawdopodobieństwa.
@@ -77,8 +77,7 @@
             - 81–100% → bardzo wysokie
 
           6. Zasady językowe:
-            - Zamiast „ciepła pogoda” pisz „jest ciepło”.
-            - Zamiast „odczuwalna temperatura jest chłodna” pisz „odczuwalnie jest chłodno”.
+            - Zamiast „ciepła pogoda” podaj „jest ciepło”.
             - Nie używaj określeń: „jest umiarkowanie”, „temperatura jest łagodna”, „wiatr jest bezwietrznie”.
 
           7. Format zdania:
