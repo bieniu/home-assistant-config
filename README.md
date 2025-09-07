@@ -49,6 +49,7 @@
 * Shelly Plus Plug S
 * Shelly Plus Plug IT
 * Shelly Plus PM Mini
+* Shelly Power Strip Gen4
 * Shelly Pro 1PM
 * Shelly Pro 3EM
 * Sonoff S26 [[ESPHome](https://esphome.io)]
@@ -69,7 +70,6 @@
 * Shelly BLU Motion
 * Shelly H&T Gen3
 * Shelly Plus H&T
-* Shelly Flood
 * Shelly Motion 2
 * Shelly Gas
 * Shelly Plus Smoke
