@@ -12,8 +12,8 @@
       availability: "{{ is_number(states('sensor.power_dishwasher_kuchnia')) }}"
 
 - trigger:
-    - platform: state
-      entity_id: weather.lowicz
+    - platform: time_pattern
+      hours: /1
   action:
     - service: weather.get_forecasts
       target:
@@ -22,34 +22,48 @@
         type: daily
       response_variable: daily_forecast
   sensor:
-    - name: Pomocnik prognozy pogody
-      unique_id: accuweather_forecast_daily_helper
+    - name: Łowicz Dzienna prognoza pogody
+      unique_id: lowicz_daily_weather_forecast
       state: "{{ now().isoformat() }}"
       attributes:                                           
         forecast: "{{ daily_forecast['weather.lowicz'].forecast }}"
+
+- trigger:
+    - platform: time_pattern
+      minutes: /15
+  action:
+    - service: weather.get_forecasts
+      target:
+        entity_id: weather.lowicz
+      data:
+        type: daily
+      response_variable: hourly_forecast
+  sensor:
     - name: Dom Prawdopodobieństwo opadów
       unique_id: home_precipitation_probablility
       icon: mdi:weather-partly-rainy
       unit_of_measurement: "%"
       state_class: measurement
-      state: "{{ daily_forecast['weather.lowicz'].forecast[0].precipitation_probability }}"
+      state: "{{ hourly_forecast['weather.lowicz'].forecast[0].precipitation_probability }}"
 
 - trigger:
-    - trigger: state
-      entity_id: weather.lowicz
+    - trigger: time_pattern
+      minutes: /15
   action:
     - action: ai_task.generate_data
       data:
         entity_id: ai_task.google_ai_task
-        task_name: Opis pogody
+        task_name: Pogoda opis
         instructions: >-
-          Na podstawie: {{ states.weather.dom }} i {{ states.sensor.dom_prawdopodobienstwo_opadow }} 
+          Na podstawie:
+            - warunki pogodowe: {{ states.weather.dom }}
+            - prawdopodobieństwo opadów: {{ states("sensor.dom_prawdopodobienstwo_opadow") }}%
           opisz warunki pogodowe w jednym zdaniu, bez podawania wartości liczbowych.
 
           1. Zachmurzenie:
-            - "partlycloudy" → częściowe zachmurzenie
-            - "cloudy", windy-variant → duże zachmurzenie
-            - inne → opisz wprost (np. pochmurno, burzowo, bezchmurnie)
+            - partlycloudy → częściowe zachmurzenie
+            - windy-variant → pochmurno
+            - inne → opisz wprost (np. pochmurno, burzowo, słonecznie)
 
           2. Temperatura:
             - ≤-3°C → bardzo zimno
@@ -70,7 +84,7 @@
             - Podaj tylko, jeśli >70% i nie pada deszcz i opisz jako "jest wilgotno", "wigotność jest wysoka".
 
           5. Prawdopodobieństwo opadów:
-            - Sensor zwraca wartość procentową, stan 1 oznacza 1% prawdopodobieństwa.
+            - Nie podawaj prawdopodobieństwa opadów jeśli aktualnie pada deszcz.
             - 0–20% → niskie
             - 21–50% → umiarkowane
             - 51–80% → wysokie
@@ -86,12 +100,12 @@
             - Styl: krótki, rzeczowy, bez ozdobników.
 
           Przykłady:
-          - "Jest słonecznie i bezchmurnie, jest ciepło, wieje słaby wiatr z umiarkowanymi porywami, a prawdopodobieństwo opadów jest niskie."
-          - "Jest gorąco, wieje słaby wiatr, zachmurzenie jest częściowe, a prawdopodobieństwo opadów jest wysokie."
-          - "Pada deszcz i jest zimno, wieje silny wiatr i zachmurzenie jest duże."
-          - "Jest częściowe zachmurzenie, jest chłodno i wilgotno, wieje słaby wiatr, a prawdopodobieństwo opadów jest niskie."
+          - "Jest słonecznie i ciepło, wieje słaby wiatr z umiarkowanymi porywami, a prawdopodobieństwo opadów jest niskie."
+          - "Niebo jest częściowo zachmurzone, jest gorąco, wieje słaby wiatr, a prawdopodobieństwo opadów jest wysokie."
+          - "Pada deszcz i jest zimno, wieje silny wiatr."
+          - "Jest częściowe zachmurzenie, jest chłodno i wilgotno, wieje słaby wiatr, a prawdopodobieństwo opadów jest wysokie."
       response_variable: weather_description
   sensor:
-    - name: Opis pogody
+    - name: Pogoda opis
       unique_id: weather_description
-      state: "{% if weather_description is defined %}{{ weather_description.data }}{% endif %}"
+      state: "{% if weather_description is defined %}{{ weather_description.data }}{% else %}unknown{% endif %}"

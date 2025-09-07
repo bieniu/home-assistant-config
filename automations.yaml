@@ -81,7 +81,7 @@
           message: '{{ notification_message }}'
           tag: '{{ notification_tag }}'
           services:
-          - service: notify.mobile_app_iphone_12
+          - service: notify.mobile_app_iphone_16_plus
             type: ios
         action: python_script.notify
   variables:
@@ -127,7 +127,7 @@
           tag: dishwasher
           group: home
           services:
-          - service: notify.mobile_app_iphone_12
+          - service: notify.mobile_app_iphone_16_plus
             type: ios
         action: python_script.notify
 - id: notification_salon_co2
@@ -167,7 +167,7 @@
             message: '{{ notification_message }}'
             tag: '{{ notification_tag }}'
             services:
-            - service: notify.mobile_app_iphone_12
+            - service: notify.mobile_app_iphone_16_plus
               type: ios
           action: python_script.notify
   variables:
@@ -201,7 +201,7 @@
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
-      - service: notify.mobile_app_iphone_12
+      - service: notify.mobile_app_iphone_16_plus
         type: ios
     action: python_script.notify
   variables:
@@ -345,7 +345,7 @@
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
-      - service: notify.mobile_app_iphone_12
+      - service: notify.mobile_app_iphone_16_plus
         type: ios
     action: python_script.notify
 - id: notification_window_opened_when_away_mode
@@ -381,7 +381,7 @@
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
-      - service: notify.mobile_app_iphone_12
+      - service: notify.mobile_app_iphone_16_plus
         type: ios
     action: python_script.notify
 - id: notification_balcony_door_pracownia_opened
@@ -405,7 +405,7 @@
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
-      - service: notify.mobile_app_iphone_12
+      - service: notify.mobile_app_iphone_16_plus
         type: ios
     action: python_script.notify
 - id: notification_gas_leak_kuchnia
@@ -426,7 +426,7 @@
         services:
         - service: notify.mobile_app_iphone_13
           type: ios
-        - service: notify.mobile_app_iphone_12
+        - service: notify.mobile_app_iphone_16_plus
           type: ios
         - service: notify.mobile_app_iphone_15_pro
           type: ios
@@ -516,7 +516,7 @@
         services:
         - service: notify.mobile_app_iphone_13
           type: ios
-        - service: notify.mobile_app_iphone_12
+        - service: notify.mobile_app_iphone_16_plus
           type: ios
       action: python_script.notify
 - id: presence_peoples_back
@@ -805,7 +805,7 @@
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
-      - service: notify.mobile_app_iphone_12
+      - service: notify.mobile_app_iphone_16_plus
         type: ios
     action: python_script.notify
 - id: heating_season_begin
@@ -1983,7 +1983,7 @@
           message: '{{ notification_message }}'
           tag: '{{ notification_tag }}'
           services:
-          - service: notify.mobile_app_iphone_12
+          - service: notify.mobile_app_iphone_16_plus
             type: ios
         action: python_script.notify
   variables:
@@ -2044,7 +2044,7 @@
             message: '{{ notification_message }}'
             tag: '{{ notification_tag }}'
             services:
-            - service: notify.mobile_app_iphone_12
+            - service: notify.mobile_app_iphone_16_plus
               type: ios
           action: python_script.notify
   variables:
@@ -2179,7 +2179,7 @@
           tag: washing-machine
           group: home
           services:
-          - service: notify.mobile_app_iphone_12
+          - service: notify.mobile_app_iphone_16_plus
             type: ios
         action: python_script.notify
 - id: '1678536051718'
@@ -2205,7 +2205,7 @@
       services:
       - service: notify.mobile_app_iphone_13
         type: ios
-      - service: notify.mobile_app_iphone_12
+      - service: notify.mobile_app_iphone_16_plus
         type: ios
       - service: notify.mobile_app_iphone_15_pro
         type: ios
@@ -2527,11 +2527,11 @@
         \"humidifier\", \"light\", \"media_player\", \"sensor\", \"switch\"] %}\n{%
         set ignored_entities = [\"switch.philips_65oled707_screen_state\", \"light.philips_65oled707_ambilight\",
         \"sensor.bzura_temperatura_wody\"] %}\n{% set ignored_entries = [\"Sony KD-55XF8596\",
-        \"Bzura\", \"BMW 220\"] %}\n{% macro unavailable_entries() %}\n  {% for domain
-        in checked_domains %}\n    {% for entity_id in states[domain] | selectattr(\"state\",
-        \"==\", \"unavailable\") | map(attribute=\"entity_id\") if entity_id not in
-        ignored_entities %}\n      {% set entry_name = device_name(entity_id) %}\n
-        \     {% if entry_name not in ignored_entries and entry_name != None %}\n
+        \"Bzura\", \"BMW 220\", \"Karmel\", \"Luna\"] %}\n{% macro unavailable_entries()
+        %}\n  {% for domain in checked_domains %}\n    {% for entity_id in states[domain]
+        | selectattr(\"state\", \"==\", \"unavailable\") | map(attribute=\"entity_id\")
+        if entity_id not in ignored_entities %}\n      {% set entry_name = device_name(entity_id)
+        %}\n      {% if entry_name not in ignored_entries and entry_name != None %}\n
         \       {{ entry_name }}@{{ area_name(entity_id) }}|\n      {% endif %}\n
         \   {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{ unavailable_entries()
         }}"
@@ -3455,4 +3455,141 @@
       - service: notify.mobile_app_iphone_13
         type: ios
     action: python_script.notify
+  mode: single
+- id: '1756985912414'
+  alias: Zapytaj czy włączyć oświetlenie salonu po zachodzie słońca
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: -00:10:00
+  conditions:
+  - condition: state
+    entity_id: input_boolean.away_mode
+    state: 'off'
+  - condition: state
+    entity_id: media_player.philips_65oled707
+    state: 'on'
+  - condition: state
+    entity_id: light.ceiling_salon
+    state: 'off'
+  - condition: state
+    entity_id: light.ledy_w_salonie
+    state: 'off'
+  actions:
+  - wait_for_trigger:
+    - trigger: state
+      entity_id:
+      - binary_sensor.motion_salon
+      from: 'off'
+      to: 'on'
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.away_mode
+      state: 'off'
+    - condition: state
+      entity_id: media_player.philips_65oled707
+      state: 'on'
+    - condition: state
+      entity_id: light.ceiling_salon
+      state: 'off'
+    - condition: state
+      entity_id: light.ledy_w_salonie
+      state: 'off'
+  - action: assist_satellite.ask_question
+    metadata: {}
+    data:
+      question: Jest już po zachodzie słońca, czy chcesz bym włączyła światło w salonie?
+      preannounce: true
+      entity_id: assist_satellite.home_assistant_voice_0a30ff_urzadzenie_asystenta_glosowego
+      answers:
+      - id: 'yes'
+        sentences:
+        - tak
+        - pewnie
+        - chcę
+        - włącz
+    response_variable: response
+  - condition: template
+    value_template: '{{ response.id == "yes" }}'
+  - action: light.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.ceiling_salon
+  - action: assist_satellite.announce
+    metadata: {}
+    data:
+      message: Włączono światło w salonie
+      preannounce: false
+    target:
+      entity_id: assist_satellite.home_assistant_voice_0a30ff_urzadzenie_asystenta_glosowego
+  mode: single
+- id: '1757242351434'
+  alias: Zapytaj czy włączyć rano radio w kuchni
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.reolink_e1_zoom_osoba
+    from: 'off'
+    to: 'on'
+  conditions:
+  - condition: state
+    entity_id: input_boolean.away_mode
+    state: 'off'
+  - condition: template
+    value_template: '{{ now().timestamp() - as_timestamp(this.attributes.last_triggered,
+      0) > 86400 }}'
+  - condition: time
+    after: 06:30:00
+    before: 07:30:00
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  - condition: state
+    entity_id: binary_sensor.motion_antresola
+    state: 'on'
+  - condition: state
+    entity_id: media_player.echo_show_kuchnia
+    state: idle
+  - condition: state
+    entity_id: media_player.philips_65oled707
+    state: 'off'
+  actions:
+  - action: assist_satellite.ask_question
+    metadata: {}
+    data:
+      question: Dzień dobry, czy chcesz bym włączyła radio RMF FM w kuchni?
+      preannounce: true
+      entity_id: assist_satellite.home_assistant_voice_0a30ff_urzadzenie_asystenta_glosowego
+      answers:
+      - id: 'yes'
+        sentences:
+        - tak
+        - pewnie
+        - chcę
+        - włącz
+    response_variable: response
+  - condition: template
+    value_template: '{{ response.id == "yes" }}'
+  - action: media_player.play_media
+    metadata: {}
+    data:
+      media:
+        media_content_id: RMF FM
+        media_content_type: TUNEIN
+    target:
+      entity_id: media_player.echo_show_kuchnia
+  - action: assist_satellite.announce
+    metadata: {}
+    data:
+      message: Rozpoczato odtwarzanie radia RMF FM w kuchni
+      preannounce: false
+    target:
+      entity_id: assist_satellite.home_assistant_voice_0a30ff_urzadzenie_asystenta_glosowego
   mode: single

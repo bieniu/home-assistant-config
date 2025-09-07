@@ -580,3 +580,30 @@ wroc_do_telewizji_w_salonie:
       entity_id: media_player.philips_65oled707
   alias: Wróć do telewizji w salonie
   description: ''
+odtworz_ulubione_sonos:
+  alias: Odtwórz media na odtwarzaczu Sonos
+  fields:
+    sonos_player_id:
+      name: Odtwarzacz
+      description: entity_id odtwarzacza Sonos
+      example: media_player.sonos_arc
+      required: true
+    media_name:
+      name: Media
+      description: Nazwa mediów (radia, playlisty)
+      example: Eska ROCK
+      required: true
+  sequence:
+  - variables:
+      favs: '{{ state_attr(''sensor.sonos_favorites'', ''items'') | default({}) }}'
+      fav_id: "{% set ns = namespace(fav=\"\") %}\n{% for key, val in favs.items()
+        %}\n  {% if ns.fav == \"\" and val.lower() == media_name.lower() %}\n    {%
+        set ns.fav = key %}\n  {% endif %}\n{% endfor %}\n{{ ns.fav }}\n"
+  - condition: template
+    value_template: '{{ fav_id != "" }}'
+  - target:
+      entity_id: '{{ sonos_player_id }}'
+    data:
+      media_content_type: favorite_item_id
+      media_content_id: '{{ fav_id }}'
+    action: media_player.play_media
