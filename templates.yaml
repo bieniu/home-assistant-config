@@ -48,7 +48,7 @@
 
 - trigger:
     - trigger: time_pattern
-      minutes: /15
+      minutes: /20
   action:
     - action: ai_task.generate_data
       data:

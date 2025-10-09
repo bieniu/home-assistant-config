@@ -111,7 +111,7 @@
       manual_control: []
       autoreset_time_remaining: {}
       state: 'on'
-    light.lamp_salon:
+    light.lampa_w_salonie:
       supported_color_modes:
       - onoff
       color_mode:
@@ -133,7 +133,7 @@
       entity_only: true
     switch.adaptive_lighting_salon:
       entity_only: true
-    light.lamp_salon:
+    light.lampa_w_salonie:
       entity_only: true
     light.ledy_w_salonie:
       entity_only: true

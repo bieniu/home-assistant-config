@@ -7,7 +7,6 @@ devices_away_mode:
       - light.ceiling_gabinet
       - light.ceiling_goscinny
       - light.ceiling_korytarz
-      - light.oswietlenie_kuchnia
       - light.oswietlenie_przedpokoj
       - light.leds_przedpokoj
       - light.ceiling_salon
@@ -17,7 +16,6 @@ devices_away_mode:
       - light.gateway_antresola
       - light.lampka_goscinny
       - light.lamp_gabinet
-      - light.lamp_salon
       - light.leds_schody
       - light.lightstrip_antek
       - light.lightstrip_sypialnia
@@ -37,6 +35,8 @@ devices_away_mode:
       - light.oswietlenie_sypialni
       - light.oswietlenie_lozka_w_sypialni
       - light.ledy_w_salonie
+      - light.oswietlenie_kuchni
+      - light.lampa_w_salonie
     action: homeassistant.turn_off
   mode: single
   alias: Poza domem
@@ -256,7 +256,6 @@ alexa_goodnight:
       - light.lampa_biurkowa_gabinet
       - light.ceiling_gabinet
       - light.ceiling_goscinny
-      - light.oswietlenie_kuchnia
       - light.oswietlenie_toaleta
       - light.oswietlenie_antek
       - light.oswietlenie_przedpokoj
@@ -268,6 +267,7 @@ alexa_goodnight:
       - light.oswietlenie_lazienki
       - light.oswietlenie_garderoby
       - light.ledy_w_salonie
+      - light.oswietlenie_kuchni
     data: {}
     action: homeassistant.turn_off
   mode: single
@@ -307,7 +307,6 @@ restart_wifi_devices:
       - button.nettigo_air_monitor_uruchom_ponownie
       - button.shelly_1l_aacec4_uruchom_ponownie
       - button.shelly_1l_aceb5f_uruchom_ponownie
-      - button.shelly_1l_ad365e_uruchom_ponownie
       - button.shelly_duo_5f6fa1_restart
       - button.shelly_gas_c6811c_restart
       - button.shelly_motion_2_08a4e9_uruchom_ponownie
@@ -324,12 +323,14 @@ restart_wifi_devices:
       - button.shelly_plus_plug_s_d00c84_uruchom_ponownie
       - button.shelly_pro_1pm_80e0c0_restart
       - button.shelly_pro_3em_879c7c_restart
-      - button.shelly_plus_1_mini_af5390_restart
+      - button.shelly_plus_1_mini_af5390_uruchom_ponownie
       - button.shelly_plus_pm_mini_af50f0_restart
       - button.shelly_1pm_gen3_c6b6c4_uruchom_ponownie
       - button.shelly_1pm_gen3_c66e94_uruchom_ponownie
       - button.shelly_1_gen3_cc7610_uruchom_ponownie
       - button.shelly_2pm_gen3_36522c_uruchom_ponownie
+      - button.shelly_1l_gen3_5713f8_uruchom_ponownie
+      - button.shelly_duo_bulb_gen3_667d58_uruchom_ponownie
     data: {}
     action: button.press
   mode: single
@@ -391,6 +392,13 @@ alexa_harmony_activity_tv:
       source: HDMI 3
     target:
       entity_id: media_player.philips_65oled707
+  - action: remote.send_command
+    metadata: {}
+    data:
+      device: Dekoder
+      command: 4
+    target:
+      entity_id: remote.salon
   mode: single
   icon: mdi:television
 alexa_harmony_activity_games:
@@ -578,17 +586,24 @@ wroc_do_telewizji_w_salonie:
       source: HDMI 3
     target:
       entity_id: media_player.philips_65oled707
+  - action: remote.send_command
+    metadata: {}
+    data:
+      device: Dekoder
+      command: 4
+    target:
+      entity_id: remote.salon
   alias: Wróć do telewizji w salonie
   description: ''
 odtworz_ulubione_sonos:
   alias: Odtwórz media na odtwarzaczu Sonos
   fields:
-    sonos_player_id:
+    entity_id:
       name: Odtwarzacz
       description: entity_id odtwarzacza Sonos
       example: media_player.sonos_arc
       required: true
-    media_name:
+    media:
       name: Media
       description: Nazwa mediów (radia, playlisty)
       example: Eska ROCK
@@ -597,13 +612,146 @@ odtworz_ulubione_sonos:
   - variables:
       favs: '{{ state_attr(''sensor.sonos_favorites'', ''items'') | default({}) }}'
       fav_id: "{% set ns = namespace(fav=\"\") %}\n{% for key, val in favs.items()
-        %}\n  {% if ns.fav == \"\" and val.lower() == media_name.lower() %}\n    {%
-        set ns.fav = key %}\n  {% endif %}\n{% endfor %}\n{{ ns.fav }}\n"
-  - condition: template
-    value_template: '{{ fav_id != "" }}'
-  - target:
-      entity_id: '{{ sonos_player_id }}'
-    data:
-      media_content_type: favorite_item_id
-      media_content_id: '{{ fav_id }}'
-    action: media_player.play_media
+        %}\n  {% if ns.fav == \"\" and val.lower().replace(\" \", \"\") == media.lower().replace(\"
+        \", \"\") %}\n    {% set ns.fav = key %}\n  {% endif %}\n{% endfor %}\n{{
+        ns.fav }}\n"
+  - if:
+    - condition: template
+      value_template: '{{ fav_id != "" }}'
+    then:
+    - target:
+        entity_id: '{{ entity_id }}'
+      data:
+        media:
+          media_content_id: '{{ fav_id }}'
+          media_content_type: favorite_item_id
+          metadata: {}
+      action: media_player.play_media
+    - variables:
+        result:
+          success: true
+    else:
+    - variables:
+        result:
+          success: false
+  - set_conversation_response: '{{ result }}'
+  - stop: ''
+    response_variable: result
+  description: ''
+odtworz_media:
+  sequence:
+  - if:
+    - condition: template
+      value_template: '{{ ("sonos" in entity_id) or ("symfonisk" in entity_id) }}'
+    then:
+    - variables:
+        favs: '{{ state_attr(''sensor.sonos_favorites'', ''items'') | default({})
+          }}'
+        fav_id: "{% set ns = namespace(fav=\"\") %}\n{% for key, val in favs.items()
+          %}\n  {% if ns.fav == \"\" and val.lower().replace(\" \", \"\").replace(\"-\",
+          \"\") == media.lower().replace(\" \", \"\").replace(\"-\", \"\") %}\n    {%
+          set ns.fav = key %}\n  {% endif %}\n{% endfor %}\n{{ ns.fav }}\n"
+    - if:
+      - condition: template
+        value_template: '{{ fav_id != "" }}'
+      then:
+      - target:
+          entity_id: '{{ entity_id }}'
+        data:
+          media:
+            media_content_id: '{{ fav_id }}'
+            media_content_type: favorite_item_id
+            metadata: {}
+        action: media_player.play_media
+      - variables:
+          result:
+            success: true
+      else:
+      - variables:
+          result:
+            success: false
+  - stop: ''
+    response_variable: result
+  alias: Odtwórz media
+  description: ''
+  fields:
+    entity_id:
+      selector:
+        entity:
+          filter:
+            domain: media_player
+      description: Identyfikator encji odtwarzacza mediów
+      required: true
+      name: Odtwarzacz mediów
+      example: media_player.sonos_one
+    media:
+      selector:
+        text:
+      name: Media
+      description: Nazwa mediów (playlisty lub radia)
+      required: true
+      example: Eska ROCK
+zmien_kanal_na_tv:
+  sequence:
+  - variables:
+      result: false
+      channel_number: -1
+      channels:
+        tvp1: 1
+        tvp2: 2
+        polsat: 3
+        tvn: 4
+        puls: 5
+        puls2: 6
+        tvn7: 7
+        tele5: 9
+        polsat2: 10
+        tv4: 11
+        tv6: 12
+        tvn24: 40
+        polsatnews: 41
+        hgtv: 47
+        tvp3: 51
+        tvnturbo: 110
+        tvnstyle: 212
+  - if:
+    - condition: template
+      value_template: '{{ channel.lower().replace('' '', '''') in channels }}'
+    then:
+    - variables:
+        channel_number: '{{ channels[channel.lower().replace('' '', '''')] }}'
+    else:
+    - if:
+      - condition: template
+        value_template: '{{ channel | is_number }}'
+      then:
+      - variables:
+          channel_number: '{{ channel }}'
+  - if:
+    - condition: template
+      value_template: '{{ channel_number == -1 }}'
+    then:
+    - stop: no channel found
+      error: true
+  - repeat:
+      for_each: '{{ channel_number | string | list }}'
+      sequence:
+      - action: remote.send_command
+        metadata: {}
+        data:
+          device: Dekoder
+          command: '{{ repeat.item }}'
+          delay_secs: 0
+        target:
+          entity_id: remote.salon
+  fields:
+    channel:
+      selector:
+        text:
+      name: Kanał
+      description: Nazwa lub numer kanału TV
+      example: tvnstyle
+      required: true
+  alias: Zmień kanał na TV
+  description: ''
+  icon: mdi:television-shimmer

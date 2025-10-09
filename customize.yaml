@@ -53,3 +53,9 @@ update.aplikacje_truenas_dockge:
 
 update.aplikacje_truenas_syncthing:
   entity_picture: /local/syncthing.png
+
+update.aplikacje_truenas_firefly_iii:
+  entity_picture: /local/firefly_iii.png
+
+calendar.workday_sensor_calendar:
+  message: dzień roboczy

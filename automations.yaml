@@ -173,7 +173,7 @@
   variables:
     notification_title: Wysokie stężenie dwutlenku węgla
     notification_message: W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state
-      }} ppm. Należy przewietrzyć pomieszczenie.
+      | round }} ppm. Należy przewietrzyć pomieszczenie.
     notification_tag: high-co2-level
 - id: notification_water_leak_kuchnia
   alias: Wyciek wody
@@ -894,7 +894,7 @@
       entity_id: light.ledy_w_salonie
       state: 'on'
     - condition: state
-      entity_id: light.lamp_salon
+      entity_id: light.lampa_w_salonie
       state: 'on'
     - condition: state
       entity_id: fan.ceiling_salon
@@ -905,9 +905,9 @@
   - target:
       entity_id:
       - light.ceiling_salon
-      - light.lamp_salon
       - fan.ceiling_salon
       - light.ledy_w_salonie
+      - light.lampa_w_salonie
     data: {}
     action: homeassistant.turn_off
 - id: light_scene_salon_auto_when_bulbs_turn_on
@@ -945,34 +945,7 @@
     event_data:
       actionName: Toggle Salon Light
     trigger: event
-  - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
-    domain: bthome
-    type: button_1
-    subtype: press
-    trigger: device
-    id: shelly_blu_remote
-  - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
-    domain: bthome
-    type: button_2
-    subtype: press
-    trigger: device
-    id: shelly_blu_remote
-  conditions:
-  - condition: or
-    conditions:
-    - condition: and
-      conditions:
-      - condition: trigger
-        id:
-        - shelly_blu_remote
-      - condition: state
-        entity_id: sensor.shelly_blu_remote_ef9f42_kanal
-        state: '0'
-    - condition: not
-      conditions:
-      - condition: trigger
-        id:
-        - shelly_blu_remote
+  conditions: []
   actions:
   - target:
       entity_id: light.ceiling_salon
@@ -986,34 +959,7 @@
     event_data:
       actionName: Toggle Salon LEDs
     trigger: event
-  - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
-    domain: bthome
-    type: button_1
-    subtype: press
-    trigger: device
-    id: shelly_blu_remote
-  - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
-    domain: bthome
-    type: button_2
-    subtype: press
-    trigger: device
-    id: shelly_blu_remote
-  conditions:
-  - condition: or
-    conditions:
-    - condition: and
-      conditions:
-      - condition: trigger
-        id:
-        - shelly_blu_remote
-      - condition: state
-        entity_id: sensor.shelly_blu_remote_ef9f42_kanal
-        state: '1'
-    - condition: not
-      conditions:
-      - condition: trigger
-        id:
-        - shelly_blu_remote
+  conditions: []
   actions:
   - data: {}
     action: light.toggle
@@ -1065,10 +1011,13 @@
     entity_id: media_player.philips_65oled707
     state: 'off'
   actions:
-  - target:
-      entity_id: light.lamp_salon
-    data: {}
+  - data:
+      brightness_pct: 5
+      color_temp_kelvin: 2700
+      transition: 5
     action: light.turn_on
+    target:
+      entity_id: light.lampa_w_salonie
   - wait_for_trigger:
     - entity_id: binary_sensor.motion_salon
       from: 'on'
@@ -1083,36 +1032,11 @@
       from: 'off'
       to: 'on'
       trigger: state
-  - target:
-      entity_id: light.lamp_salon
-    data: {}
-    action: light.turn_off
-- id: light_scene_film
-  alias: Aktywuj w salonie scenę oświetlenie po zmierzchu po włączeniu filmu lub gry
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - media_player.playstation_5
-    to: playing
-  conditions:
-  - condition: sun
-    after: sunset
-  - condition: template
-    value_template: '{{ is_state(''light.ledy_salon'', ''on'') or is_state(''light.ceiling_salon'',
-      ''on'') or is_state(''light.lamp_salon'', ''on'') }}'
-  - condition: time
-    after: '20:10:00'
-  - condition: state
-    entity_id: input_boolean.guests
-    state: 'off'
-  actions:
   - data:
       transition: 5
+    action: light.turn_off
     target:
-      entity_id:
-      - scene.light_salon_dusk
-    action: scene.turn_on
+      entity_id: light.lampa_w_salonie
 - id: light_scene_auto_after_film
   alias: Aktywuj w salonie scenę oświetlenie automatyczne po wyłączeniu filmu lub
     gry
@@ -1137,7 +1061,7 @@
       entity_id: light.ceiling_salon
       state: 'on'
     - condition: state
-      entity_id: light.lamp_salon
+      entity_id: light.lampa_w_salonie
       state: 'on'
   actions:
   - data:
@@ -1195,21 +1119,21 @@
   alias: Wyłącz oświetlenie w kuchni gdy nie ma ruchu
   description: ''
   triggers:
-  - platform: state
-    entity_id: binary_sensor.motion_kuchnia
+  - entity_id: binary_sensor.motion_kuchnia
     from: 'on'
     to: 'off'
     for:
       minutes: '{{ states(''input_number.no_motion_time'') | int }}'
+    trigger: state
   conditions:
   - condition: state
-    entity_id: light.oswietlenie_kuchnia
+    entity_id: light.oswietlenie_kuchni
     state: 'on'
   actions:
-  - target:
-      entity_id: light.oswietlenie_kuchnia
-    data: {}
+  - data: {}
     action: light.turn_off
+    target:
+      entity_id: light.oswietlenie_kuchni
 - id: light_turn_on_antresola_lampt_when_dark_and_motion
   alias: Włącz lampkę na antresoli gdy pojawi się ruch i jest ciemno
   description: ''
@@ -1785,34 +1709,7 @@
     event_data:
       actionName: Toggle Salon Fan
     trigger: event
-  - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
-    domain: bthome
-    type: button_1
-    subtype: press
-    trigger: device
-    id: shelly_blu_remote
-  - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
-    domain: bthome
-    type: button_2
-    subtype: press
-    trigger: device
-    id: shelly_blu_remote
-  conditions:
-  - condition: or
-    conditions:
-    - condition: and
-      conditions:
-      - condition: trigger
-        id:
-        - shelly_blu_remote
-      - condition: state
-        entity_id: sensor.shelly_blu_remote_ef9f42_kanal
-        state: '2'
-    - condition: not
-      conditions:
-      - condition: trigger
-        id:
-        - shelly_blu_remote
+  conditions: []
   actions:
   - data: {}
     target:
@@ -1828,6 +1725,11 @@
     type: double_push
     subtype: button2
     trigger: device
+  - device_id: 34e5587e2b843466dffee1517ede0da9
+    domain: shelly
+    type: btn_down
+    subtype: button1
+    trigger: device
   - event_type: ios.action_fired
     event_data:
       actionName: Toggle Salon Lamp
@@ -1835,9 +1737,9 @@
   conditions: []
   actions:
   - data: {}
-    target:
-      entity_id: light.lamp_salon
     action: light.toggle
+    target:
+      entity_id: light.lampa_w_salonie
   mode: single
 - id: '1658522979417'
   alias: Włącz/wyłącz oświetlenie drzewka u Antka
@@ -2525,13 +2427,13 @@
   - data:
       entries: "{% set checked_domains = [\"binary_sensor\", \"climate\", \"fan\",
         \"humidifier\", \"light\", \"media_player\", \"sensor\", \"switch\"] %}\n{%
-        set ignored_entities = [\"switch.philips_65oled707_screen_state\", \"light.philips_65oled707_ambilight\",
-        \"sensor.bzura_temperatura_wody\"] %}\n{% set ignored_entries = [\"Sony KD-55XF8596\",
-        \"Bzura\", \"BMW 220\", \"Karmel\", \"Luna\"] %}\n{% macro unavailable_entries()
-        %}\n  {% for domain in checked_domains %}\n    {% for entity_id in states[domain]
-        | selectattr(\"state\", \"==\", \"unavailable\") | map(attribute=\"entity_id\")
-        if entity_id not in ignored_entities %}\n      {% set entry_name = device_name(entity_id)
-        %}\n      {% if entry_name not in ignored_entries and entry_name != None %}\n
+        set ignored_entities = [\"switch.philips_65oled707_screen_state\", \"light.philips_65oled707_ambilight\"]
+        %}\n{% set ignored_entries = [\"Sony KD-55XF8596\", \"Bzura\", \"BMW 220\",
+        \"Karmel\", \"Luna\"] %}\n{% macro unavailable_entries() %}\n  {% for domain
+        in checked_domains %}\n    {% for entity_id in states[domain] | selectattr(\"state\",
+        \"==\", \"unavailable\") | map(attribute=\"entity_id\") if entity_id not in
+        ignored_entities %}\n      {% set entry_name = device_name(entity_id) %}\n
+        \     {% if entry_name not in ignored_entries and entry_name != None %}\n
         \       {{ entry_name }}@{{ area_name(entity_id) }}|\n      {% endif %}\n
         \   {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{ unavailable_entries()
         }}"
@@ -2640,34 +2542,7 @@
     event_data:
       actionName: Turn Up TV Volume
     trigger: event
-  - trigger: state
-    entity_id:
-    - event.shelly_blu_remote_ef9f42_sciemniacz
-    id: shelly_blu_remote
-  conditions:
-  - condition: or
-    conditions:
-    - condition: and
-      conditions:
-      - condition: trigger
-        id:
-        - shelly_blu_remote
-      - condition: state
-        entity_id: sensor.shelly_blu_remote_ef9f42_kanal
-        state: '3'
-      - condition: state
-        entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
-        attribute: event_type
-        state: rotate_left
-      - condition: numeric_state
-        entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
-        attribute: steps
-        above: 0
-    - condition: not
-      conditions:
-      - condition: trigger
-        id:
-        - shelly_blu_remote
+  conditions: []
   actions:
   - action: media_player.volume_up
     metadata: {}
@@ -2684,34 +2559,7 @@
     event_data:
       actionName: Turn Down TV Volume
     trigger: event
-  - trigger: state
-    entity_id:
-    - event.shelly_blu_remote_ef9f42_sciemniacz
-    id: shelly_blu_remote
-  conditions:
-  - condition: or
-    conditions:
-    - condition: and
-      conditions:
-      - condition: trigger
-        id:
-        - shelly_blu_remote
-      - condition: state
-        entity_id: sensor.shelly_blu_remote_ef9f42_kanal
-        state: '3'
-      - condition: state
-        entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
-        attribute: event_type
-        state: rotate_right
-      - condition: numeric_state
-        entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
-        attribute: steps
-        above: 0
-    - condition: not
-      conditions:
-      - condition: trigger
-        id:
-        - shelly_blu_remote
+  conditions: []
   actions:
   - action: media_player.volume_down
     metadata: {}
@@ -3181,164 +3029,6 @@
     target:
       entity_id: light.lustro_lazienka
   mode: single
-- id: '1749810787760'
-  alias: Zmniejsz jasność oświetlenia w salonie
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - event.shelly_blu_remote_ef9f42_sciemniacz
-  conditions:
-  - condition: state
-    entity_id: sensor.shelly_blu_remote_ef9f42_kanal
-    state: '0'
-  - condition: state
-    entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
-    attribute: event_type
-    state: rotate_right
-  - condition: numeric_state
-    entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
-    attribute: steps
-    above: 0
-  actions:
-  - action: light.turn_on
-    metadata: {}
-    data:
-      brightness_step_pct: '{{ trigger.to_state.attributes.steps * -1 }}'
-    target:
-      entity_id: light.ceiling_salon
-  mode: queued
-  max: 10
-- id: '1749810838747'
-  alias: Zwiększ jasność oświetlenia w salonie
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - event.shelly_blu_remote_ef9f42_sciemniacz
-  conditions:
-  - condition: state
-    entity_id: sensor.shelly_blu_remote_ef9f42_kanal
-    state: '0'
-  - condition: state
-    entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
-    attribute: event_type
-    state: rotate_left
-  - condition: numeric_state
-    entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
-    attribute: steps
-    above: 0
-  actions:
-  - action: light.turn_on
-    metadata: {}
-    data:
-      brightness_step_pct: '{{ trigger.to_state.attributes.steps }}'
-    target:
-      entity_id: light.ceiling_salon
-  mode: queued
-  max: 10
-- id: '1749818185808'
-  alias: Zwiększ prędkość wentylatora w salonie
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - event.shelly_blu_remote_ef9f42_sciemniacz
-  conditions:
-  - condition: state
-    entity_id: sensor.shelly_blu_remote_ef9f42_kanal
-    state: '2'
-  - condition: state
-    entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
-    attribute: event_type
-    state: rotate_left
-  - condition: numeric_state
-    entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
-    attribute: steps
-    above: 0
-  actions:
-  - action: fan.turn_on
-    metadata: {}
-    data:
-      percentage: '{{ 33 if state_attr(''fan.ceiling_salon'', ''percentage'') == 0
-        else (66 if state_attr(''fan.ceiling_salon'', ''percentage'') == 33 else 100)
-        }}'
-    target:
-      entity_id: fan.ceiling_salon
-  mode: queued
-  max: 10
-- id: '1749818285746'
-  alias: Zmniejsz prędkość wentylatora w salonie
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - event.shelly_blu_remote_ef9f42_sciemniacz
-  conditions:
-  - condition: state
-    entity_id: sensor.shelly_blu_remote_ef9f42_kanal
-    state: '2'
-  - condition: state
-    entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
-    attribute: event_type
-    state: rotate_right
-  - condition: numeric_state
-    entity_id: event.shelly_blu_remote_ef9f42_sciemniacz
-    attribute: steps
-    above: 0
-  actions:
-  - action: fan.turn_on
-    metadata: {}
-    data:
-      percentage: '{{ 66 if state_attr(''fan.ceiling_salon'', ''percentage'') == 100
-        else (33 if state_attr(''fan.ceiling_salon'', ''percentage'') == 66 else 0)
-        }}'
-    target:
-      entity_id: fan.ceiling_salon
-  mode: queued
-  max: 10
-- id: '1749821871556'
-  alias: Zmień kanał TV na następny
-  description: ''
-  triggers:
-  - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
-    domain: bthome
-    type: button_2
-    subtype: press
-    trigger: device
-  conditions:
-  - condition: state
-    entity_id: sensor.shelly_blu_remote_ef9f42_kanal
-    state: '3'
-  actions:
-  - action: remote.send_command
-    target:
-      entity_id: remote.salon
-    data:
-      device: Dekoder
-      command: ChannelUp
-  mode: single
-- id: '1749822126826'
-  alias: Zmień kanał TV na poprzedni
-  description: ''
-  triggers:
-  - device_id: 9d5b0393cd51580b06910ad9ff1cbc8d
-    domain: bthome
-    type: button_1
-    subtype: press
-    trigger: device
-  conditions:
-  - condition: state
-    entity_id: sensor.shelly_blu_remote_ef9f42_kanal
-    state: '3'
-  actions:
-  - action: remote.send_command
-    target:
-      entity_id: remote.salon
-    data:
-      device: Dekoder
-      command: ChannelDown
-  mode: single
 - id: '1750685194255'
   alias: Nieprawidłowy adres IP urządzenia z VLAN
   description: ''
@@ -3457,7 +3147,7 @@
     action: python_script.notify
   mode: single
 - id: '1756985912414'
-  alias: Zapytaj czy włączyć oświetlenie salonu po zachodzie słońca
+  alias: Zapytaj czy włączyć oświetlenie salonu przed zachodem słońca
   description: ''
   triggers:
   - trigger: sun
@@ -3467,9 +3157,9 @@
   - condition: state
     entity_id: input_boolean.away_mode
     state: 'off'
-  - condition: state
-    entity_id: media_player.philips_65oled707
-    state: 'on'
+  - condition: template
+    value_template: '{{ now().timestamp() - as_timestamp(this.attributes.last_triggered,
+      0) > 43200 }}'
   - condition: state
     entity_id: light.ceiling_salon
     state: 'off'
@@ -3489,9 +3179,6 @@
       entity_id: input_boolean.away_mode
       state: 'off'
     - condition: state
-      entity_id: media_player.philips_65oled707
-      state: 'on'
-    - condition: state
       entity_id: light.ceiling_salon
       state: 'off'
     - condition: state
@@ -3500,7 +3187,7 @@
   - action: assist_satellite.ask_question
     metadata: {}
     data:
-      question: Jest już po zachodzie słońca, czy chcesz bym włączyła światło w salonie?
+      question: Niedługo zajdzie słońce, czy chcesz abym włączyła światło w salonie?
       preannounce: true
       entity_id: assist_satellite.home_assistant_voice_0a30ff_urzadzenie_asystenta_glosowego
       answers:
@@ -3510,6 +3197,8 @@
         - pewnie
         - chcę
         - włącz
+        - tak włącz
+        - tak chcę
     response_variable: response
   - condition: template
     value_template: '{{ response.id == "yes" }}'
@@ -3541,10 +3230,10 @@
     state: 'off'
   - condition: template
     value_template: '{{ now().timestamp() - as_timestamp(this.attributes.last_triggered,
-      0) > 86400 }}'
+      0) > 43200 }}'
   - condition: time
     after: 06:30:00
-    before: 07:30:00
+    before: 08:30:00
     weekday:
     - mon
     - tue
@@ -3555,16 +3244,18 @@
     entity_id: binary_sensor.motion_antresola
     state: 'on'
   - condition: state
-    entity_id: media_player.echo_show_kuchnia
-    state: idle
-  - condition: state
     entity_id: media_player.philips_65oled707
     state: 'off'
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: media_player.echo_show_kuchnia
+      state: playing
   actions:
   - action: assist_satellite.ask_question
     metadata: {}
     data:
-      question: Dzień dobry, czy chcesz bym włączyła radio RMF FM w kuchni?
+      question: Dzień dobry, czy chcesz abym włączyła radio RMF FM w kuchni?
       preannounce: true
       entity_id: assist_satellite.home_assistant_voice_0a30ff_urzadzenie_asystenta_glosowego
       answers:
@@ -3574,6 +3265,8 @@
         - pewnie
         - chcę
         - włącz
+        - tak proszę
+        - tak włącz
     response_variable: response
   - condition: template
     value_template: '{{ response.id == "yes" }}'
@@ -3588,8 +3281,101 @@
   - action: assist_satellite.announce
     metadata: {}
     data:
-      message: Rozpoczato odtwarzanie radia RMF FM w kuchni
+      message: Włączono radio w kuchni
       preannounce: false
     target:
       entity_id: assist_satellite.home_assistant_voice_0a30ff_urzadzenie_asystenta_glosowego
+  mode: single
+- id: '1757246803144'
+  alias: Zapytaj czy włączyć rano telewizor
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.reolink_e1_zoom_osoba
+    from: 'off'
+    to: 'on'
+  conditions:
+  - condition: state
+    entity_id: input_boolean.away_mode
+    state: 'off'
+  - condition: template
+    value_template: '{{ now().timestamp() - as_timestamp(this.attributes.last_triggered,
+      0) > 43200 }}'
+  - condition: time
+    after: 07:30:00
+    before: 09:30:00
+    weekday:
+    - sat
+    - sun
+  - condition: state
+    entity_id: binary_sensor.motion_antresola
+    state: 'on'
+  - condition: state
+    entity_id: media_player.philips_65oled707
+    state: 'off'
+  - condition: not
+    conditions:
+    - condition: state
+      entity_id: media_player.echo_show_kuchnia
+      state: playing
+  actions:
+  - action: assist_satellite.ask_question
+    metadata: {}
+    data:
+      question: Dzień dobry, czy chcesz abym włączyła telewizor?
+      preannounce: true
+      entity_id: assist_satellite.home_assistant_voice_0a30ff_urzadzenie_asystenta_glosowego
+      answers:
+      - id: 'yes'
+        sentences:
+        - tak
+        - pewnie
+        - chcę
+        - włącz
+        - tak włącz
+        - tak proszę
+    response_variable: response
+  - condition: template
+    value_template: '{{ response.id == "yes" }}'
+  - action: script.alexa_harmony_activity_tv
+    metadata: {}
+    data: {}
+  - action: assist_satellite.announce
+    metadata: {}
+    data:
+      message: Włączono telewizor w salonie
+      preannounce: false
+    target:
+      entity_id: assist_satellite.home_assistant_voice_0a30ff_urzadzenie_asystenta_glosowego
+  mode: single
+- id: '1758390029824'
+  alias: 'Wycisz Sonos Arc gdy Assist słucha '
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - assist_satellite.home_assistant_voice_0a30ff_urzadzenie_asystenta_glosowego
+    to: listening
+  conditions:
+  - condition: state
+    entity_id: media_player.sonos_arc
+    state: playing
+  actions:
+  - action: media_player.volume_mute
+    metadata: {}
+    data:
+      is_volume_muted: true
+    target:
+      entity_id: media_player.sonos_arc
+  - wait_for_trigger:
+    - trigger: state
+      entity_id:
+      - assist_satellite.home_assistant_voice_0a30ff_urzadzenie_asystenta_glosowego
+  - action: media_player.volume_mute
+    metadata: {}
+    data:
+      is_volume_muted: false
+    target:
+      entity_id: media_player.sonos_arc
   mode: single

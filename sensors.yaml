@@ -1,0 +1,114 @@
+- platform: rest
+  name: "Shelly BLU TRV Firmware"
+  resource: https://repo.shelly.cloud/firmware/BLE_DEVICES/SBTR-001AEU.txt
+  value_template: "{{ (value | regex_findall('v(\\d+\\.\\d+\\.\\d+)'))[0] }}"
+  availability: "{{ (value | regex_findall('v(\\d+\\.\\d+\\.\\d+)')) != [] }}"
+  icon: "mdi:package"
+  unique_id: "shelly-blu-trv-firmware"
+  scan_interval: 3600
+
+- platform: snmp
+  name: Asus RT-AX86S [EBDDC8] Ostatni restart
+  unique_id: asus_rt_ax86s_ebddc8_last_restart
+  host: !secret asus_ap_1
+  community: !secret snmp_community
+  version: 2c
+  baseoid: 1.3.6.1.2.1.25.1.1.0
+  accept_errors: true
+  icon: mdi:clock-outline
+  device_class: timestamp
+  value_template: '{{ (now().timestamp() - (value | int / 100)) | timestamp_custom("%Y-%m-%dT%H:%M:%S+00:00", true) }}'
+  scan_interval: 600
+
+- platform: snmp
+  name: Asus RT-AX86S [EBDDC8] Temperatura procesora
+  unique_id: asus_rt_ax86s_ebddc8_cpu_temperature
+  host: !secret asus_ap_1
+  community: !secret snmp_community
+  version: 2c
+  baseoid: 1.3.6.1.2.1.25.1.8.3.1.1.4.116.101.109.112 
+  accept_errors: true
+  device_class: temperature
+  state_class: measurement
+  unit_of_measurement: "°C"
+  scan_interval: 60
+
+- platform: snmp
+  name: Asus RT-AX86S [EBDDC8] Użycie pamięci
+  unique_id: asus_rt_ax86s_ebddc8_memory_usage
+  host: !secret asus_ap_1
+  community: !secret snmp_community
+  version: 2c
+  baseoid: 1.3.6.1.2.1.25.1.13.3.1.1.3.109.101.109 
+  accept_errors: true
+  icon: mdi:memory
+  state_class: measurement
+  unit_of_measurement: "%"
+  scan_interval: 60
+
+- platform: snmp
+  name: Asus RT-AX86S [EBDDC8] Obciążenie procesora
+  unique_id: asus_rt_ax86s_ebddc8_cpu_usage
+  host: !secret asus_ap_1
+  community: !secret snmp_community
+  version: 2c
+  baseoid: 1.3.6.1.2.1.25.1.14.3.1.1.4.105.100.108.101
+  accept_errors: true
+  value_template: "{{ 100 - (value | float) | round }}"
+  icon: mdi:chip
+  state_class: measurement
+  unit_of_measurement: "%"
+  scan_interval: 60
+
+- platform: snmp
+  name: Asus RT-AX86S [EBCBA8] Ostatni restart
+  host: !secret asus_ap_2
+  unique_id: asus_rt_ax86s_ebcba8_last_restart
+  community: !secret snmp_community
+  version: 2c
+  baseoid: 1.3.6.1.2.1.25.1.1.0
+  accept_errors: true
+  icon: mdi:clock-outline
+  device_class: timestamp
+  value_template: '{{ (now().timestamp() - (value | int / 100)) | timestamp_custom("%Y-%m-%dT%H:%M:%S+00:00", true) }}'
+  scan_interval: 600
+
+- platform: snmp
+  name: Asus RT-AX86S [EBCBA8] Temperatura procesora
+  unique_id: asus_rt_ax86s_ebcba8_cpu_temperature
+  host: !secret asus_ap_2
+  community: !secret snmp_community
+  version: 2c
+  baseoid: 1.3.6.1.2.1.25.1.8.3.1.1.4.116.101.109.112 
+  accept_errors: true
+  device_class: temperature
+  state_class: measurement
+  unit_of_measurement: "°C"
+  scan_interval: 60
+
+- platform: snmp
+  name: Asus RT-AX86S [EBCBA8] Użycie pamięci
+  unique_id: asus_rt_ax86s_ebcba8_memory_usage
+  host: !secret asus_ap_2
+  community: !secret snmp_community
+  version: 2c
+  baseoid: 1.3.6.1.2.1.25.1.13.3.1.1.3.109.101.109 
+  accept_errors: true
+  icon: mdi:memory
+  state_class: measurement
+  unit_of_measurement: "%"
+  scan_interval: 60
+
+- platform: snmp
+  name: Asus RT-AX86S [EBCBA8] Obciążenie procesora
+  unique_id: asus_rt_ax86s_ebcba8_cpu_usage
+  host: !secret asus_ap_2
+  community: !secret snmp_community
+  version: 2c
+  baseoid: 1.3.6.1.2.1.25.1.14.3.1.1.4.105.100.108.101
+  accept_errors: true
+  value_template: "{{ 100 - (value | float) | round }}"
+  icon: mdi:chip
+  state_class: measurement
+  unit_of_measurement: "%"
+  scan_interval: 60
