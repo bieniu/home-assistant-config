@@ -4,7 +4,7 @@ devices_away_mode:
     target:
       entity_id:
       - light.oswietlenie_antek
-      - light.ceiling_gabinet
+      - light.oswietlenie_gabinetu
       - light.ceiling_goscinny
       - light.ceiling_korytarz
       - light.oswietlenie_przedpokoj
@@ -60,6 +60,7 @@ heating_day:
       - climate.grzejnik_gabinet
       - climate.grzejnik_pracownia
       - climate.grzejnik_antresola
+      - climate.grzejnik_antek
     data:
       temperature: '{{ states(''input_number.temperature_day'') }}'
   - action: climate.set_temperature
@@ -71,15 +72,13 @@ heating_day:
   - action: climate.set_temperature
     target:
       entity_id:
-      - climate.grzejnik_antek
       - climate.grzejnik_sypialnia
     data:
       temperature: '{{ states(''input_number.bedroom_temperature_day'') }}'
-  - delay:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
+  - action: humidifier.set_mode
+    metadata: {}
+    data:
+      mode: Auto
   mode: single
   icon: mdi:radiator
   alias: Tryb dzienny ogrzewania
@@ -95,6 +94,7 @@ heating_night:
       - climate.grzejnik_antresola
       - climate.grzejnik_kuchnia
       - climate.grzejnik_salon
+      - climate.grzejnik_antek
     data:
       temperature: '{{ states(''input_number.temperature_night'') }}'
   - action: climate.set_temperature
@@ -106,8 +106,8 @@ heating_night:
   - action: climate.set_temperature
     target:
       entity_id:
-      - climate.grzejnik_antek
       - climate.grzejnik_sypialnia
+      - climate.grzejnik_antek
     data:
       temperature: '{{ states(''input_number.bedroom_temperature_night'') }}'
   - action: climate.set_temperature
@@ -117,11 +117,12 @@ heating_night:
       - climate.drabinka_lazienka
     data:
       temperature: '{{ states(''input_number.bathroom_temperature_night'') }}'
-  - delay:
-      hours: 0
-      minutes: 5
-      seconds: 0
-      milliseconds: 0
+  - action: humidifier.set_mode
+    metadata: {}
+    data:
+      mode: Silent
+    target:
+      entity_id: humidifier.xiaomi_mi_humidifier_cb1
   mode: single
   alias: Tryb nocny ogrzewania
   icon: mdi:radiator
@@ -189,6 +190,14 @@ heating_season_end:
   icon: mdi:radiator-off
 heating_airing_begin:
   sequence:
+  - if:
+    - condition: state
+      entity_id: input_boolean.heating_airing
+      state:
+      - 'off'
+    then:
+    - entity_id: input_boolean.heating_airing
+      action: input_boolean.turn_on
   - action: climate.set_temperature
     metadata: {}
     data:
@@ -221,11 +230,6 @@ heating_airing_begin:
       - humidifier.xiaomi_mi_humidifier_cb1
     data: {}
     action: humidifier.turn_off
-  - condition: state
-    entity_id: input_boolean.heating_airing
-    state: 'off'
-  - entity_id: input_boolean.heating_airing
-    action: input_boolean.turn_on
   mode: single
   alias: Przewietrzanie
   icon: mdi:window-open-variant
@@ -254,7 +258,7 @@ alexa_goodnight:
       - light.ceiling_salon
       - light.lampa_biurkowa_antek
       - light.lampa_biurkowa_gabinet
-      - light.ceiling_gabinet
+      - light.oswietlenie_gabinetu
       - light.ceiling_goscinny
       - light.oswietlenie_toaleta
       - light.oswietlenie_antek
@@ -307,7 +311,6 @@ restart_wifi_devices:
       - button.nettigo_air_monitor_uruchom_ponownie
       - button.shelly_1l_aacec4_uruchom_ponownie
       - button.shelly_1l_aceb5f_uruchom_ponownie
-      - button.shelly_duo_5f6fa1_restart
       - button.shelly_gas_c6811c_restart
       - button.shelly_motion_2_08a4e9_uruchom_ponownie
       - button.shelly_1_mini_gen4_bc33a0_uruchom_ponownie
@@ -352,55 +355,6 @@ humidification_start:
       target:
         entity_id: humidifier.xiaomi_mi_humidifier_cb1
       action: humidifier.turn_on
-alexa_harmony_activity_tv:
-  alias: Włącz telewizję w salonie
-  sequence:
-  - if:
-    - condition: state
-      entity_id: media_player.philips_65oled707
-      state: unavailable
-    then:
-    - action: remote.send_command
-      metadata: {}
-      data:
-        device: Telewizor
-        command: PowerOn
-      target:
-        entity_id: remote.salon
-    - delay:
-        hours: 0
-        minutes: 0
-        seconds: 2
-    else:
-    - if:
-      - condition: state
-        entity_id: media_player.philips_65oled707
-        state: 'off'
-      then:
-      - action: remote.turn_on
-        metadata: {}
-        data: {}
-        target:
-          entity_id: remote.philips_65oled707
-      - delay:
-          hours: 0
-          minutes: 0
-          seconds: 2
-  - action: media_player.select_source
-    metadata: {}
-    data:
-      source: HDMI 3
-    target:
-      entity_id: media_player.philips_65oled707
-  - action: remote.send_command
-    metadata: {}
-    data:
-      device: Dekoder
-      command: 4
-    target:
-      entity_id: remote.salon
-  mode: single
-  icon: mdi:television
 alexa_harmony_activity_games:
   alias: Włącz gry w salonie
   sequence:
@@ -580,12 +534,6 @@ kamera_nagrywaj:
   max: 3
 wroc_do_telewizji_w_salonie:
   sequence:
-  - action: media_player.select_source
-    metadata: {}
-    data:
-      source: HDMI 3
-    target:
-      entity_id: media_player.philips_65oled707
   - action: remote.send_command
     metadata: {}
     data:
@@ -593,6 +541,12 @@ wroc_do_telewizji_w_salonie:
       command: 4
     target:
       entity_id: remote.salon
+  - action: media_player.select_source
+    metadata: {}
+    data:
+      source: HDMI 3
+    target:
+      entity_id: media_player.philips_65oled707
   alias: Wróć do telewizji w salonie
   description: ''
 odtworz_ulubione_sonos:
@@ -714,6 +668,7 @@ zmien_kanal_na_tv:
         tvp3: 51
         tvnturbo: 110
         tvnstyle: 212
+        tefałen: 4
   - if:
     - condition: template
       value_template: '{{ channel.lower().replace('' '', '''') in channels }}'
@@ -755,3 +710,82 @@ zmien_kanal_na_tv:
   alias: Zmień kanał na TV
   description: ''
   icon: mdi:television-shimmer
+alert_dla_antka:
+  sequence:
+  - action: light.toggle
+    metadata: {}
+    data: {}
+    target:
+      area_id: pokoj_antka
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - action: light.toggle
+    metadata: {}
+    data: {}
+    target:
+      area_id: pokoj_antka
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - action: light.toggle
+    metadata: {}
+    data: {}
+    target:
+      area_id: pokoj_antka
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - action: light.toggle
+    metadata: {}
+    data: {}
+    target:
+      area_id: pokoj_antka
+  alias: Alert dla Antka
+  description: ''
+  icon: mdi:lightbulb-alert-outline
+wlacz_telewizje_w_salonie:
+  alias: Włącz telewizję w salonie
+  sequence:
+  - if:
+    - condition: state
+      entity_id: media_player.philips_65oled707
+      state:
+      - 'off'
+    then:
+    - action: media_player.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: media_player.philips_65oled707
+  - if:
+    - condition: state
+      entity_id: media_player.philips_65oled707
+      state:
+      - unavailable
+    then:
+    - action: remote.send_command
+      metadata: {}
+      data:
+        device: Telewizor
+        command: PowerOn
+        num_repeats: 2
+        delay_secs: 0.4
+      target:
+        entity_id: remote.salon
+  - action: remote.send_command
+    metadata: {}
+    data:
+      device: Dekoder
+      command: 4
+    target:
+      entity_id: remote.salon
+  mode: single
+  icon: mdi:television
+  description: ''

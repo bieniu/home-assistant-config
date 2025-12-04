@@ -1,0 +1,34 @@
+language: "pl"
+intents:
+  TurnOnLivingRoomLight:
+    data:
+      - sentences:
+        - "(włącz|zapal) (światło|oświetlenie)"
+
+  TurnOnMainLight:
+    data:
+      - sentences:
+        - "(włącz|zapal) (światło|oświetlenie) (w|na|u) {main_light}"
+        lists:
+          main_light:
+            values:
+              - in: "salonie"
+                out: "light.ceiling_salon"
+              - in: "kuchni"
+                out: "light.oswietlenie_kuchni"
+              - in: "przedpokoju"
+                out: "light.oswietlenie_przedpokoj"
+              - in: "pokoju gościnnym"
+                out: "light.ceiling_goscinny"
+              - in: "gościnnym"
+                out: "light.ceiling_goscinny"
+              - in: "gabinecie"
+                out: "light.oswietlenie_gabinetu"
+              - in: "pokoju Antka"
+                out: "light.oswietlenie_antek"
+              - in: "Antka"
+                out: "light.oswietlenie_antek"
+              - in: "sypialni"
+                out: "light.oswietlenie_sypialni"
+              - in: "łazience"
+                out: "light.oswietlenie_lazienki"

@@ -70,61 +70,72 @@
       effect:
       color_mode: color_temp
       brightness: 255
-      color_temp_kelvin: 5030
-      color_temp: 198
+      color_temp_kelvin: 5495
+      color_temp: 181
       hs_color:
-      - 27.033
-      - 18.837
+      - 27.916
+      - 12.905
       rgb_color:
       - 255
-      - 229
-      - 207
+      - 237
+      - 222
       xy_color:
-      - 0.37
-      - 0.35
+      - 0.354
+      - 0.343
       entity_id:
       - light.bulb_salon_1
       - light.bulb_salon_2
       icon: mdi:ceiling-fan-light
-      friendly_name: Oświetlenie salonu
+      friendly_name: Oświetlenie
       supported_features: 44
       state: 'on'
     switch.adaptive_lighting_salon:
       configuration: {}
+      manual_control: []
       brightness_pct: 100
-      color_temp_kelvin: 5030
-      color_temp_mired: 198
+      color_temp_kelvin: 5495
+      color_temp_mired: 181
       rgb_color:
       - 255
-      - 228.60754139001796
-      - 206.96542655179223
+      - 237.40261086796977
+      - 222.09146472595182
       xy_color:
-      - 0.37
-      - 0.349
+      - 0.354
+      - 0.343
       hs_color:
-      - 26.25
-      - 18.824
-      sun_position: 0.7956214070389268
+      - 27.273
+      - 12.941
+      sun_position: 0.9977862274149403
       force_rgb_color: false
+      autoreset_time_remaining: {}
       icon: mdi:theme-light-dark
       friendly_name: 'Adaptive Lighting: salon'
-      manual_control: []
-      autoreset_time_remaining: {}
       state: 'on'
     light.lampa_w_salonie:
+      min_color_temp_kelvin: 2700
+      max_color_temp_kelvin: 6500
+      min_mireds: 153
+      max_mireds: 370
       supported_color_modes:
-      - onoff
+      - color_temp
+      - rgb
       color_mode:
-      icon: mdi:floor-lamp
+      brightness:
+      color_temp_kelvin:
+      color_temp:
+      hs_color:
+      rgb_color:
+      xy_color:
       friendly_name: Lampa w salonie
-      supported_features: 0
+      supported_features: 32
+      icon: mdi:floor-lamp
       state: 'off'
     light.ledy_w_salonie:
       supported_color_modes:
       - onoff
       color_mode:
       icon: mdi:led-strip-variant
-      friendly_name: LEDy w salonie
+      friendly_name: LEDy
       supported_features: 0
       state: 'off'
   icon: mdi:lightbulb-night-outline
@@ -132,8 +143,6 @@
     light.ceiling_salon:
       entity_only: true
     switch.adaptive_lighting_salon:
-      entity_only: true
-    light.lampa_w_salonie:
       entity_only: true
     light.ledy_w_salonie:
       entity_only: true

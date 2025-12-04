@@ -1,0 +1,21 @@
+TurnOnTV:
+  action:
+    - action: script.wlacz_telewizje_w_salonie
+
+ChangeTVChannel:
+  action:
+    - action: script.zmien_kanal_na_tv
+      data:
+        channel: "{{ channel }}"
+
+TurnOnLivingRoomLight:
+  action:
+    - action: light.turn_on
+      target:
+        entity_id: "light.ceiling_salon"
+
+TurnOnMainLight:
+  action:
+    - action: light.turn_on
+      target:
+        entity_id: "{{ main_light }}"

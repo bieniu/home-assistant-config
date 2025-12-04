@@ -7,7 +7,7 @@
       actionName: Turn On TV
     trigger: event
   actions:
-  - action: script.alexa_harmony_activity_tv
+  - action: script.wlacz_telewizje_w_salonie
     metadata: {}
     data: {}
 - id: ios_turn_off_tv
@@ -655,7 +655,7 @@
     to: 'on'
     for:
       hours: 0
-      minutes: 30
+      minutes: 20
       seconds: 0
     trigger: state
   actions:
@@ -686,8 +686,9 @@
   alias: Rozpoczęcie oczyszczania powietrza w salonie
   description: ''
   triggers:
-  - entity_id: sensor.xiaomi_mi_air_purifier_3h_pm2_5
-    above: 50
+  - entity_id:
+    - sensor.xiaomi_mi_air_purifier_3h_pm2_5
+    above: 30
     for:
       minutes: 2
     trigger: numeric_state
@@ -705,8 +706,9 @@
   alias: Zakończenie oczyszczania powietrza w salonie
   description: ''
   triggers:
-  - entity_id: sensor.xiaomi_mi_air_purifier_3h_pm2_5
-    below: 50
+  - entity_id:
+    - sensor.xiaomi_mi_air_purifier_3h_pm2_5
+    below: 30
     for:
       minutes: 2
     trigger: numeric_state
@@ -723,17 +725,17 @@
       minutes: 2
     trigger: numeric_state
   conditions:
-  - condition: state
-    entity_id: fan.oczyszczacz_powietrza_salon
-    state: 'on'
   - condition: numeric_state
-    entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
-    below: 2
+    entity_id: fan.oczyszczacz_powietrza_salon
+    below: 66
+    attribute: percentage
   actions:
-  - entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
+  - action: fan.set_percentage
+    metadata: {}
     data:
-      value: 2
-    action: number.set_value
+      percentage: 66
+    target:
+      entity_id: fan.oczyszczacz_powietrza_salon
 - id: air_quality_air_purifier_switch_fan_level_to_1
   alias: Zmiana prędkości oczyszczacza na 1
   description: ''
@@ -744,17 +746,17 @@
       minutes: 2
     trigger: numeric_state
   conditions:
-  - condition: state
-    entity_id: fan.oczyszczacz_powietrza_salon
-    state: 'on'
   - condition: numeric_state
-    entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
-    above: 1
+    entity_id: fan.oczyszczacz_powietrza_salon
+    above: 33
+    attribute: percentage
   actions:
-  - entity_id: number.xiaomi_mi_air_purifier_3h_fan_level
+  - action: fan.set_percentage
+    metadata: {}
     data:
-      value: 1
-    action: number.set_value
+      percentage: 33
+    target:
+      entity_id: fan.oczyszczacz_powietrza_salon
 - id: heating_airing_begin
   alias: Początek przewietrzania
   description: ''
@@ -1369,25 +1371,6 @@
     device_id: 40c8e12009a311ebbd1ce5aa5e97a8d7
     entity_id: light.lightstrip_antek
     domain: light
-- id: light_toggle_gabinet_ceiling_light_
-  alias: Włącz/wyłącz oświetlenie sufitowe w gabinecie
-  description: ''
-  triggers:
-  - platform: device
-    device_id: 5794eabef0db436756c344ac7632d9bd
-    domain: shelly
-    type: single_push
-    subtype: button1
-  - platform: device
-    device_id: 32d4a414f2347f65f26c23af29853f9d
-    domain: bthome
-    type: button_1
-    subtype: press
-  actions:
-  - target:
-      entity_id: light.ceiling_gabinet
-    data: {}
-    action: light.toggle
 - id: light_toggle_gabinet_lamp
   alias: Włącz/wyłącz lampę w gabinecie
   description: ''
@@ -1419,7 +1402,7 @@
   - condition: state
     entity_id:
     - input_boolean.away_mode
-    - light.ceiling_gabinet
+    - light.oswietlenie_gabinetu
     - light.lampa_biurkowa_gabinet
     - light.lamp_gabinet
     state: 'off'
@@ -1470,7 +1453,7 @@
   - condition: or
     conditions:
     - condition: state
-      entity_id: light.ceiling_gabinet
+      entity_id: light.oswietlenie_gabinetu
       state: 'on'
     - condition: state
       entity_id: light.lamp_gabinet
@@ -1481,7 +1464,7 @@
   actions:
   - target:
       entity_id:
-      - light.ceiling_gabinet
+      - light.oswietlenie_gabinetu
       - light.lamp_gabinet
       - light.lampa_biurkowa_gabinet
     data: {}
@@ -1720,16 +1703,6 @@
   alias: Włącz/wyłącz lampę w salonie
   description: ''
   triggers:
-  - device_id: 142c0c74f511cb5af11fa1d33e6437f7
-    domain: shelly
-    type: double_push
-    subtype: button2
-    trigger: device
-  - device_id: 34e5587e2b843466dffee1517ede0da9
-    domain: shelly
-    type: btn_down
-    subtype: button1
-    trigger: device
   - event_type: ios.action_fired
     event_data:
       actionName: Toggle Salon Lamp
@@ -2088,11 +2061,11 @@
   alias: Dym w mieszkaniu
   description: ''
   triggers:
-  - entity_id: binary_sensor.smoke_antresola
+  - entity_id: binary_sensor.dym_antresola
     from: 'off'
     to: 'on'
     trigger: state
-  - entity_id: binary_sensor.smoke_kuchnia
+  - entity_id: binary_sensor.dym_kuchnia
     from: 'off'
     to: 'on'
     trigger: state
@@ -2428,15 +2401,14 @@
       entries: "{% set checked_domains = [\"binary_sensor\", \"climate\", \"fan\",
         \"humidifier\", \"light\", \"media_player\", \"sensor\", \"switch\"] %}\n{%
         set ignored_entities = [\"switch.philips_65oled707_screen_state\", \"light.philips_65oled707_ambilight\"]
-        %}\n{% set ignored_entries = [\"Sony KD-55XF8596\", \"Bzura\", \"BMW 220\",
-        \"Karmel\", \"Luna\"] %}\n{% macro unavailable_entries() %}\n  {% for domain
-        in checked_domains %}\n    {% for entity_id in states[domain] | selectattr(\"state\",
-        \"==\", \"unavailable\") | map(attribute=\"entity_id\") if entity_id not in
-        ignored_entities %}\n      {% set entry_name = device_name(entity_id) %}\n
-        \     {% if entry_name not in ignored_entries and entry_name != None %}\n
-        \       {{ entry_name }}@{{ area_name(entity_id) }}|\n      {% endif %}\n
-        \   {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{ unavailable_entries()
-        }}"
+        %}\n{% set ignored_entries = [\"Sony KD-55XF8596\", \"Karmel\", \"Luna\"]
+        %}\n{% macro unavailable_entries() %}\n  {% for domain in checked_domains
+        %}\n    {% for entity_id in states[domain] | selectattr(\"state\", \"==\",
+        \"unavailable\") | map(attribute=\"entity_id\") if entity_id not in ignored_entities
+        %}\n      {% set entry_name = device_name(entity_id) %}\n      {% if entry_name
+        not in ignored_entries and entry_name != None %}\n        {{ entry_name }}@{{
+        area_name(entity_id) }}|\n      {% endif %}\n    {% endfor %}\n  {% endfor
+        %}\n{% endmacro %}\n{{ unavailable_entries() }}"
     action: python_script.unavailable_entries
   mode: queued
   max: 10
@@ -2625,6 +2597,8 @@
   - trigger: state
     entity_id:
     - sensor.temperatura_salon
+  - trigger: time_pattern
+    minutes: /10
   conditions:
   - condition: state
     entity_id: input_boolean.heating_season
@@ -2633,11 +2607,11 @@
     value_template: '{{ now().timestamp() - as_timestamp(this.attributes.last_triggered,
       0) > 300 }}'
   - condition: template
-    value_template: '{{ is_number(trigger.to_state.state) }}'
+    value_template: '{{ states("sensor.temperatura_salon") | is_number }}'
   actions:
   - action: number.set_value
     data:
-      value: '{{ trigger.to_state.state | float }}'
+      value: '{{ states("sensor.temperatura_salon") | float }}'
     target:
       entity_id: number.temperatura_zewnetrznego_sensora_salon
   mode: single
@@ -2648,6 +2622,8 @@
   - trigger: state
     entity_id:
     - sensor.temperature_sypialnia
+  - trigger: time_pattern
+    minutes: /10
   conditions:
   - condition: state
     entity_id: input_boolean.heating_season
@@ -2656,11 +2632,11 @@
     value_template: '{{ now().timestamp() - as_timestamp(this.attributes.last_triggered,
       0) > 300 }}'
   - condition: template
-    value_template: '{{ is_number(trigger.to_state.state) }}'
+    value_template: '{{ states("sensor.temperature_sypialnia") | is_number }}'
   actions:
   - action: number.set_value
     data:
-      value: '{{ trigger.to_state.state | float }}'
+      value: '{{ states("sensor.temperature_sypialnia") | float }}'
     target:
       entity_id: number.temperatura_zewnetrznego_sensora_sypialnia
   mode: single
@@ -2671,6 +2647,8 @@
   - trigger: state
     entity_id:
     - sensor.temperature_antek
+  - trigger: time_pattern
+    minutes: /10
   conditions:
   - condition: state
     entity_id: input_boolean.heating_season
@@ -2679,11 +2657,11 @@
     value_template: '{{ now().timestamp() - as_timestamp(this.attributes.last_triggered,
       0) > 300 }}'
   - condition: template
-    value_template: '{{ is_number(trigger.to_state.state) }}'
+    value_template: '{{ states("sensor.temperature_antek") | is_number }}'
   actions:
   - action: number.set_value
     data:
-      value: '{{ trigger.to_state.state | float }}'
+      value: '{{ states("sensor.temperature_antek") | float }}'
     target:
       entity_id: number.temperatura_zewnetrznego_sensora_antek
   mode: single
@@ -2694,6 +2672,8 @@
   - trigger: state
     entity_id:
     - sensor.temperature_pracownia
+  - trigger: time_pattern
+    minutes: /10
   conditions:
   - condition: state
     entity_id: input_boolean.heating_season
@@ -2702,11 +2682,11 @@
     value_template: '{{ now().timestamp() - as_timestamp(this.attributes.last_triggered,
       0) > 300 }}'
   - condition: template
-    value_template: '{{ is_number(trigger.to_state.state) }}'
+    value_template: '{{ states("sensor.temperature_pracownia") | is_number }}'
   actions:
   - action: number.set_value
     data:
-      value: '{{ trigger.to_state.state | float }}'
+      value: '{{ states("sensor.temperature_pracownia") | float }}'
     target:
       entity_id: number.temperatura_zewnetrznego_sensora_pracownia
   mode: single
@@ -2717,6 +2697,8 @@
   - trigger: state
     entity_id:
     - sensor.temperature_kuchnia
+  - trigger: time_pattern
+    minutes: /10
   conditions:
   - condition: state
     entity_id: input_boolean.heating_season
@@ -2725,11 +2707,11 @@
     value_template: '{{ now().timestamp() - as_timestamp(this.attributes.last_triggered,
       0) > 300 }}'
   - condition: template
-    value_template: '{{ is_number(trigger.to_state.state) }}'
+    value_template: '{{ states("sensor.temperature_kuchnia") | is_number }}'
   actions:
   - action: number.set_value
     data:
-      value: '{{ trigger.to_state.state | float }}'
+      value: '{{ states("sensor.temperature_kuchnia") | float }}'
     target:
       entity_id: number.temperatura_zewnetrznego_sensora_kuchnia
   mode: single
@@ -2819,11 +2801,18 @@
   - action: climate.set_temperature
     metadata: {}
     data:
-      temperature: 20
+      temperature: '{{ states(''input_number.pomieszczenia_pomocnicze_temperatura_dzien'')
+        }}'
     target:
       entity_id:
       - climate.grzejnik_gabinet
       - climate.grzejnik_pracownia
+  - action: climate.set_temperature
+    metadata: {}
+    data:
+      temperature: 20.5
+    target:
+      entity_id: climate.grzejnik_antek
   mode: single
 - id: '1741967732368'
   alias: Sugestia wyłączenia ogrzewania
@@ -3338,7 +3327,7 @@
     response_variable: response
   - condition: template
     value_template: '{{ response.id == "yes" }}'
-  - action: script.alexa_harmony_activity_tv
+  - action: script.wlacz_telewizje_w_salonie
     metadata: {}
     data: {}
   - action: assist_satellite.announce
@@ -3378,4 +3367,170 @@
       is_volume_muted: false
     target:
       entity_id: media_player.sonos_arc
+  mode: single
+- id: '1763735704111'
+  alias: Raportowanie stanu okna do termostatu w pokoju Antka
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.window_antek
+    from:
+    - 'off'
+    to:
+    - 'on'
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+    id: opened
+  - trigger: state
+    entity_id:
+    - binary_sensor.window_antek
+    for:
+      hours: 0
+      minutes: 3
+      seconds: 0
+    id: closed
+    from:
+    - 'on'
+    to:
+    - 'off'
+  conditions:
+  - condition: state
+    entity_id: input_boolean.heating_season
+    state:
+    - 'on'
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - opened
+    then:
+    - action: switch.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.danfoss_014g2460_thermostat_1773cc_zewnetrzny_sensor_okna_u_antka
+  - if:
+    - condition: trigger
+      id:
+      - closed
+    then:
+    - action: switch.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.danfoss_014g2460_thermostat_1773cc_zewnetrzny_sensor_okna_u_antka
+  mode: single
+- id: '1764512588169'
+  alias: Zapach z lewego slotu
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - schedule.zapach_z_lewego_slotu
+    id: 'on'
+    from:
+    - 'off'
+    to:
+    - 'on'
+  - trigger: state
+    entity_id:
+    - schedule.zapach_z_lewego_slotu
+    from:
+    - 'on'
+    to:
+    - 'off'
+    id: 'off'
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - 'on'
+    then:
+    - condition: state
+      state:
+      - 'off'
+      entity_id: input_boolean.away_mode
+    - action: switch.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.shelly_cury_63ff88_lewy_slot
+  - if:
+    - condition: trigger
+      id:
+      - 'off'
+    then:
+    - action: switch.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.shelly_cury_63ff88_lewy_slot
+  mode: single
+- id: '1764512658101'
+  alias: Zapach z prawego slotu
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - schedule.zapach_z_prawego_slotu
+    id: 'on'
+    from:
+    - 'off'
+    to:
+    - 'on'
+  - trigger: state
+    entity_id:
+    - schedule.zapach_z_prawego_slotu
+    from:
+    - 'on'
+    to:
+    - 'off'
+    id: 'off'
+  conditions: []
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - 'on'
+    then:
+    - condition: state
+      state:
+      - 'off'
+      entity_id: input_boolean.away_mode
+    - action: switch.turn_on
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.shelly_cury_63ff88_prawy_slot
+  - if:
+    - condition: trigger
+      id:
+      - 'off'
+    then:
+    - action: switch.turn_off
+      metadata: {}
+      data: {}
+      target:
+        entity_id: switch.shelly_cury_63ff88_prawy_slot
+  mode: single
+- id: '1764581406636'
+  alias: Włącz/wyłącz oświetlenie w gabinecie
+  description: ''
+  triggers:
+  - device_id: 5794eabef0db436756c344ac7632d9bd
+    domain: shelly
+    type: single_push
+    subtype: button1
+    trigger: device
+  conditions: []
+  actions:
+  - action: light.toggle
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.oswietlenie_gabinetu
   mode: single

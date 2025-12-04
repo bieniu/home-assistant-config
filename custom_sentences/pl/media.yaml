@@ -1,0 +1,14 @@
+language: "pl"
+intents:
+  TurnOnTV:
+    data:
+      - sentences:
+        - "włącz (telewizor|telewizję) [w salonie]"
+
+  ChangeTVChannel:
+    data:
+      - sentences:
+          - "zmień (kanał|program) [w telewizorze|w telewizji|telewizji] na {channel}"
+        lists:
+          channel:
+            wildcard: true

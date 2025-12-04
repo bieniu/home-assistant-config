@@ -1,3 +1,69 @@
+- fan:
+  - name: Wentylator
+    unique_id: ceiling_salon
+    turn_on:
+      - action: remote.send_command
+        entity_id: remote.salon
+        data:
+          device: Wentylator
+          command: Speed 1
+    turn_off:
+      - action: remote.send_command
+        entity_id: remote.salon
+        data:
+          device: Wentylator
+          command: Stop
+    set_percentage:
+      - action: remote.send_command
+        entity_id: remote.salon
+        data:
+          device: Wentylator
+          command: >-
+            {% if percentage == 0 %}
+              Stop
+            {% elif percentage == 33 %}
+              Speed 1
+            {% elif percentage == 66 %}
+              Speed 2
+            {% elif percentage == 100 %}
+              Speed 3
+            {% endif %}
+    speed_count: 3
+    default_entity_id: fan.ceiling_salon
+    percentage: >-
+      {% set fan_power = states("sensor.wentylator_i_oswietlenie_w_salonie_pobor_mocy") | int(0) %}
+      {% if fan_power >= 20 and fan_power <= 40 %}
+        33
+      {% elif fan_power >= 45 and fan_power <= 65 %}
+        66
+      {% elif fan_power >= 75 %}
+        100
+      {% else %}
+        0
+      {% endif %}
+    state: >-
+      {% if states('sensor.wentylator_i_oswietlenie_w_salonie_pobor_mocy') | int(0) >= 20 %}
+        on
+      {% else %}
+        off
+      {% endif %}
+
+- weather:
+  - name: Dom
+    unique_id: home
+    condition_template: "{{ states('weather.lowicz') }}"
+    temperature_template: "{{ (states('sensor.nettigo_air_monitor_bme280_temperatura') or states('sensor.lowicz_temperatura')) | float or state_attr('weather.lowicz', 'temperature') }}"
+    humidity_template: "{{ (states('sensor.nettigo_air_monitor_bme280_wilgotnosc') or states('sensor.lowicz_wilgotnosc', rounded=True)) | float or state_attr('weather.lowicz', 'humidity') }}"
+    pressure_template: "{{ (states('sensor.nettigo_air_monitor_bme280_cisnienie', rounded=True) or states('sensor.lowicz_cisnienie', rounded=True)) | float or state_attr('weather.lowicz', 'pressure') }}"
+    dew_point_template: "{{ state_attr('weather.lowicz', 'dew_point') }}"
+    apparent_temperature_template: "{{ state_attr('weather.lowicz', 'apparent_temperature') }}"
+    wind_speed_template: "{{ state_attr('weather.lowicz', 'wind_speed') | round }}"
+    wind_bearing_template: "{{ state_attr('weather.lowicz', 'wind_bearing') }}"
+    wind_gust_speed_template: "{{ state_attr('weather.lowicz', 'wind_gust_speed') | round }}"
+    visibility_template: "{{ states('sensor.lowicz_widocznosc') }}"
+    cloud_coverage_template: "{{ state_attr('weather.lowicz', 'cloud_coverage') }}"
+    forecast_daily_template: "{{ state_attr('sensor.lowicz_dzienna_prognoza_pogody', 'forecast') }}"
+
 - binary_sensor:
     - name: Pralka pralnia
       unique_id: pralka_pralnia
