@@ -16,13 +16,14 @@
 
 ## Zigbee Controller
 
-* [Home Assistant Connent ZBT-1](https://www.home-assistant.io/connectzbt1)
+* [Home Assistant Connent ZBT-2](https://www.home-assistant.io/connect/zbt-2)
 
 ## Lights
 
 * Philips Hue White Bulb LWA001
 * Philips Hue Iris Table Lamp
-* Shelly DUO
+* Shelly Duo Bulb Gen3
+* Shelly Multicolor Bulb Gen3
 * Xiaomi Mi Led Desk Lamp 1S [MJTD01SYL]
 * Xiaomi Yeelight Color Bulbs [YLDP02YL and YLDP06YL]
 * Xiaomi Yeelight Lightstrips [YLDD01YL]
@@ -95,12 +96,8 @@
 * Philips TV
 * Sony Bravia TV
 * Amazon Echo Plus/Dot/Show [via Home Assistant Cloud]
-* Sonos One
-* Sonos Arc
-* Sonos Era 300
-* IKEA Symfonisk
+* Sonos speakers
 * Tractive tracker for dogs
-* BMW car
 * Unifi router
 * Reolink E1 Zoom
 * [Home Assistant Voice](https://www.home-assistant.io/voice-pe/)
