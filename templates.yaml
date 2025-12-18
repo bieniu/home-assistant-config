@@ -91,7 +91,7 @@
     - name: Łowicz Dzienna prognoza pogody
       unique_id: lowicz_daily_weather_forecast
       state: "{{ now().isoformat() }}"
-      attributes:                                           
+      attributes:
         forecast: "{{ daily_forecast['weather.lowicz'].forecast }}"
 
 - trigger:
@@ -111,67 +111,3 @@
       unit_of_measurement: "%"
       state_class: measurement
       state: "{{ hourly_forecast['weather.lowicz'].forecast[0].precipitation_probability }}"
-
-- trigger:
-    - trigger: time_pattern
-      minutes: /20
-  action:
-    - action: ai_task.generate_data
-      data:
-        entity_id: ai_task.google_ai_task
-        task_name: Pogoda opis
-        instructions: >-
-          Na podstawie:
-            - warunki pogodowe: {{ states.weather.dom }}
-            - prawdopodobieństwo opadów: {{ states("sensor.dom_prawdopodobienstwo_opadow") }}%
-          opisz warunki pogodowe w jednym zdaniu, bez podawania wartości liczbowych.
-
-          1. Zachmurzenie:
-            - partlycloudy → częściowe zachmurzenie
-            - windy-variant → pochmurno
-            - inne → opisz wprost (np. pochmurno, burzowo, słonecznie)
-
-          2. Temperatura:
-            - ≤-3°C → bardzo zimno
-            - -2–8°C → zimno
-            - 9–18°C → chłodno
-            - 19–25°C → ciepło
-            - 26–30°C → bardzo ciepło
-            - >30°C → gorąco
-
-          3. Wiatr:
-            - 0–2 km/h → bezwietrznie
-            - 3–15 km/h → słaby wiatr
-            - 16–30 km/h → umiarkowany wiatr
-            - 31–50 km/h → silny wiatr
-            - >50 km/h → porywisty wiatr
-
-          4. Wilgotność:
-            - Podaj tylko, jeśli >70% i nie pada deszcz i opisz jako "jest wilgotno", "wigotność jest wysoka".
-
-          5. Prawdopodobieństwo opadów:
-            - Nie podawaj prawdopodobieństwa opadów jeśli aktualnie pada deszcz.
-            - 0–20% → niskie
-            - 21–50% → umiarkowane
-            - 51–80% → wysokie
-            - 81–100% → bardzo wysokie
-
-          6. Zasady językowe:
-            - Zamiast „ciepła pogoda” podaj „jest ciepło”.
-            - Nie używaj określeń: „jest umiarkowanie”, „temperatura jest łagodna”, „wiatr jest bezwietrznie”.
-
-          7. Format zdania:
-            - Kolejność: zachmurzenie/warunki → temperatura → wilgotność → wiatr → prawdopodobieństwo opadów.
-            - Pomijaj informacje o temeraturze odczuwalnej.
-            - Styl: krótki, rzeczowy, bez ozdobników.
-
-          Przykłady:
-          - "Jest słonecznie i ciepło, wieje słaby wiatr z umiarkowanymi porywami, a prawdopodobieństwo opadów jest niskie."
-          - "Niebo jest częściowo zachmurzone, jest gorąco, wieje słaby wiatr, a prawdopodobieństwo opadów jest wysokie."
-          - "Pada deszcz i jest zimno, wieje silny wiatr."
-          - "Jest częściowe zachmurzenie, jest chłodno i wilgotno, wieje słaby wiatr, a prawdopodobieństwo opadów jest wysokie."
-      response_variable: weather_description
-  sensor:
-    - name: Pogoda opis
-      unique_id: weather_description
-      state: "{% if weather_description is defined %}{{ weather_description.data }}{% else %}unknown{% endif %}"

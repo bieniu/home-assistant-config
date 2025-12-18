@@ -1707,6 +1707,16 @@
     event_data:
       actionName: Toggle Salon Lamp
     trigger: event
+  - device_id: 142c0c74f511cb5af11fa1d33e6437f7
+    domain: shelly
+    type: double_push
+    subtype: button2
+    trigger: device
+  - device_id: 34e5587e2b843466dffee1517ede0da9
+    domain: shelly
+    type: single_push
+    subtype: button1
+    trigger: device
   conditions: []
   actions:
   - data: {}
@@ -2276,11 +2286,9 @@
   - condition: state
     entity_id: binary_sensor.status_hp_elitebook_840_g10
     state: 'off'
-  - condition: or
-    conditions:
-    - condition: state
-      entity_id: light.ceiling_pracownia
-      state: 'on'
+  - condition: state
+    entity_id: light.ceiling_pracownia
+    state: 'on'
   actions:
   - target:
       entity_id:
@@ -2930,6 +2938,11 @@
   - type: test_battery_start_quick
     device_id: 56aac98c75cff43ba6a6b085f7be64f6
     domain: nut
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
   - wait_for_trigger:
     - trigger: state
       entity_id:
@@ -3533,4 +3546,98 @@
     data: {}
     target:
       entity_id: light.oswietlenie_gabinetu
+  mode: single
+- id: '1765385239462'
+  alias: Włącz oświetlenie świąteczne o zachodzie słońca
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunset
+    offset: 0
+  conditions: []
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - light.lampki_swiateczne_antek
+      - light.lampki_swiateczne_antresola
+      - light.lampki_swiateczne_gorny_balkon
+      - light.lampki_swiateczne_dolny_balkon
+  - parallel:
+    - if:
+      - condition: state
+        entity_id: person.maciek
+        state: home
+      then:
+        data:
+          title: '{{ notification_title }}'
+          message: '{{ notification_message }}'
+          tag: '{{ notification_tag }}'
+          services:
+          - service: notify.mobile_app_iphone_13
+            type: ios
+        action: python_script.notify
+    - if:
+      - condition: state
+        entity_id: person.edyta
+        state: home
+      then:
+        data:
+          title: '{{ notification_title }}'
+          message: '{{ notification_message }}'
+          tag: '{{ notification_tag }}'
+          services:
+          - service: notify.mobile_app_iphone_16_plus
+            type: ios
+        action: python_script.notify
+  variables:
+    notification_title: Tryb lampek świątecznych
+    notification_message: Włączono lampki świąteczne na balkonach, pamiętaj by zmienić
+      ich tryb pracy.
+    notification_tag: christmas-light
+  mode: single
+- id: '1765385308012'
+  alias: Wyłącz oświetlenie świąteczne o północy
+  description: ''
+  triggers:
+  - trigger: time
+    at: 00:00:00
+  conditions: []
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      entity_id:
+      - light.lampki_swiateczne_antek
+      - light.oswietlenie_swiateczne_kuchnia
+      - light.lampki_swiateczne_antresola
+      - light.lampki_swiateczne_gorny_balkon
+      - light.lampki_swiateczne_dolny_balkon
+      - light.choinka_salon
+  mode: single
+- id: '1765551383091'
+  alias: Włącz oświetlenie świąteczne w salonie, na antresoli i w kuchni przed wschodem
+    słońca
+  description: ''
+  triggers:
+  - trigger: sun
+    event: sunrise
+    offset: '-30:00'
+  conditions:
+  - condition: state
+    entity_id: input_boolean.away_mode
+    state:
+    - 'off'
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    target:
+      entity_id:
+      - light.oswietlenie_swiateczne_kuchnia
+      - light.lampki_swiateczne_antresola
+      - light.choinka_salon
+    data: {}
   mode: single
