@@ -122,7 +122,6 @@
 
 ![Home](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/home.png)
 ![Living room](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/living_room.png)
-![Office](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/office.png)
 ![Network](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/network.png)
 ![Energy](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/energy.png)
 ![Climate](https://github.com/bieniu/home-assistant-config/blob/master/screenshots/climate.png)
