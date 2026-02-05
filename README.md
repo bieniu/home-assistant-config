@@ -2,8 +2,10 @@
 
 # Home Assistant Configuration
 
+[![CI](https://img.shields.io/github/actions/workflow/status/bieniu/home-assistant-config/ci.yml?branch=master&label=CI&logo=github&style=popout)](https://github.com/bieniu/home-assistant-config/actions/workflows/ci.yml?query=branch%3Amaster)
 [![Buy me a coffee][buy-me-a-coffee-shield]][buy-me-a-coffee]
 [![PayPal_Me][paypal-me-shield]][paypal-me]
+[![Revolut.Me][revolut-me-shield]][revolut-me]
 
 ## Server
 
@@ -68,9 +70,8 @@
 * Aqara Water Leak Sensors
 * Aqara Window/Door Sensors
 * Shelly BLU H&T
+* Shelly BLU H&T Display ZB
 * Shelly BLU Motion
-* Shelly H&T Gen3
-* Shelly Plus H&T
 * Shelly Motion 2
 * Shelly Gas
 * Shelly Plus Smoke
@@ -83,40 +84,42 @@
 * Danfoss 014G2460
 * Shelly BLU TRV
 
-## Other Integrated Devices
+## Other Integrated Devices and Services
 
-* Xiaomi Mi Smart Home Gateway 2
+* Amazon Echo Plus/Dot/Show [via Home Assistant Cloud and Alexa Media Player]
+* Brother HL-L2340D
+* CyberPower DL650ELCD
+* [Home Assistant Voice](https://www.home-assistant.io/voice-pe/)
+* iPhones
 * Logitech Harmony Ultimate
+* [NextDNS](https://nextdns.io/?from=u4xqh6ud)
+* Philips TV
+* Reolink E1 Zoom
+* Sonos speakers
+* Sony Bravia TV
+* Tractive tracker for dogs
+* Unifi network
+* Xiaomi Mi Air Purifier 3H
 * Xiaomi Mi Humidifier CB1
 * Xiaomi Mi Pedestal Fan 1X
-* Xiaomi Mi Air Purifier 3H
-* Brother HL-L2340D
-* iPhones
-* CyberPower DL650ELCD
-* Philips TV
-* Sony Bravia TV
-* Amazon Echo Plus/Dot/Show [via Home Assistant Cloud]
-* Sonos speakers
-* Tractive tracker for dogs
-* Unifi router
-* Reolink E1 Zoom
-* [Home Assistant Voice](https://www.home-assistant.io/voice-pe/)
+* Xiaomi Mi Smart Home Gateway 2
 
-## Home Assistant Custom Components
+## Custom Integrations
 
 * [Alexa Media Player](https://github.com/custom-components/alexa_media_player)
 * [HACS](https://github.com/custom-components/hacs)
 * [Blitzortung.org Lightning Detector](https://github.com/mrk-its/homeassistant-blitzortung)
 * Adaptive Lightning
+* [Perplexity](https://github.com/bieniu/ha-perplexity)
 * Spook
 * TrueNAS
 
-## Lovelace Custom Cards
+## Custom Cards
 
-* [card-mod](https://github.com/thomasloven/lovelace-card-mod)
-* [mini-graph-card](https://github.com/kalkih/mini-graph-card)
+* card-mod
 * horizon-card
 * mushroom
+* uniwersal-remote-card
 
 ## Screenshots
 
@@ -131,3 +134,5 @@
 [buy-me-a-coffee]: https://www.buymeacoffee.com/QnLdxeaqO
 [paypal-me-shield]: https://img.shields.io/static/v1.svg?label=%20&message=PayPal.Me&logo=paypal
 [paypal-me]: https://www.paypal.me/bieniu79
+[revolut-me-shield]: https://img.shields.io/static/v1.svg?label=%20&message=Revolut&logo=revolut
+[revolut-me]: https://revolut.me/maciejbieniek

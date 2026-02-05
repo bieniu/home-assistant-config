@@ -1,4 +1,4 @@
-name: Home Assistant CI
+name: CI
 
 on: [push, pull_request]
 
