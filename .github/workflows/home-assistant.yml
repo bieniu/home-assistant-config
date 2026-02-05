@@ -5,14 +5,13 @@ on: [push, pull_request]
 jobs:
   yamllint:
     
-    name: "Yamllint"
+    name: YAML Lint
     runs-on: ubuntu-latest
     
     steps:
-      - name: Getting your configuration from GitHub
-        uses: actions/checkout@v1
-      - name: Running YAMLlint
-        uses: "docker://pipelinecomponents/yamllint:latest"
-        with:
-          args: yamllint .
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Run yamllint
+        run: yamllint .
   

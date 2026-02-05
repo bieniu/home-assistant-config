@@ -1,8 +1,0 @@
----
-ignore: |
-  custom_components/
-  ip_bans.yaml
-  .github/workflows/*
-rules:
-  line-length: disable
-
