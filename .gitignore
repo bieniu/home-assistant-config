@@ -41,3 +41,4 @@ watchman_report.txt
 zigbee*
 go2rtc-1.8.5
 go2rtc.yaml
+!.yamllint
