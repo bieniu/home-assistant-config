@@ -48,14 +48,20 @@ update.aplikacje_truenas_immich:
 update.aplikacje_truenas_mosquitto:
   entity_picture: /local/mosquitto.png
 
-update.aplikacje_truenas_dockge:
-  entity_picture: /local/dockge.png
+update.aplikacje_truenas_dockhand:
+  entity_picture: /local/dockhand.png
 
 update.aplikacje_truenas_syncthing:
   entity_picture: /local/syncthing.png
 
 update.aplikacje_truenas_firefly_iii:
   entity_picture: /local/firefly_iii.png
+
+update.aplikacje_truenas_it_tools:
+  entity_picture: /local/it_tools.png
+
+update.aplikacje_truenas_beszel:
+  entity_picture: /local/beszel.png
 
 calendar.workday_sensor_calendar:
   message: dzień roboczy

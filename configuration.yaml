@@ -11,8 +11,6 @@ recorder:
 
 frontend:
   themes: !include_dir_merge_named themes
-  extra_module_url:
-      - /hacsfiles/lovelace-card-mod/card-mod.js?hacstag=190927524400
 
 group: !include groups.yaml
 
@@ -56,7 +54,3 @@ zha:
         - type: z2m
 
 intent_script: !include intent_scripts.yaml
-
-analytics:
-  snapshots_url: # use default
-

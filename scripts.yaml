@@ -37,21 +37,15 @@ devices_away_mode:
       - light.ledy_w_salonie
       - light.oswietlenie_kuchni
       - light.lampa_w_salonie
+      - light.lampki_swiateczne_antek
+      - light.lampki_swiateczne_antresola
+      - light.lampki_swiateczne_kuchnia
     action: homeassistant.turn_off
   mode: single
   alias: Poza domem
   icon: mdi:home-export-outline
 heating_day:
   sequence:
-  - action: script.humidification_start
-    data: {}
-  - action: climate.set_temperature
-    target:
-      entity_id:
-      - climate.grzejnik_lazienka
-      - climate.drabinka_lazienka
-    data:
-      temperature: '{{ states(''input_number.bathroom_temperature_day'') }}'
   - action: climate.set_temperature
     target:
       entity_id:
@@ -75,17 +69,31 @@ heating_day:
       - climate.grzejnik_sypialnia
     data:
       temperature: '{{ states(''input_number.bedroom_temperature_day'') }}'
+  - action: climate.set_temperature
+    target:
+      entity_id:
+      - climate.grzejnik_lazienka
+    data:
+      temperature: '{{ states(''input_number.bathroom_temperature_day'') }}'
   - action: humidifier.set_mode
     metadata: {}
     data:
       mode: Auto
+    target:
+      entity_id: humidifier.xiaomi_mi_humidifier_cb1
+  - action: script.humidification_start
+    data: {}
+  - action: climate.set_temperature
+    target:
+      entity_id:
+      - climate.drabinka_lazienka
+    data:
+      temperature: '{{ states(''input_number.bathroom_temperature_day'') }}'
   mode: single
   icon: mdi:radiator
   alias: Tryb dzienny ogrzewania
 heating_night:
   sequence:
-  - action: script.humidification_start
-    data: {}
   - action: climate.set_temperature
     target:
       entity_id:
@@ -114,7 +122,6 @@ heating_night:
     target:
       entity_id:
       - climate.grzejnik_lazienka
-      - climate.drabinka_lazienka
     data:
       temperature: '{{ states(''input_number.bathroom_temperature_night'') }}'
   - action: humidifier.set_mode
@@ -123,6 +130,14 @@ heating_night:
       mode: Silent
     target:
       entity_id: humidifier.xiaomi_mi_humidifier_cb1
+  - action: script.humidification_start
+    data: {}
+  - action: climate.set_temperature
+    target:
+      entity_id:
+      - climate.drabinka_lazienka
+    data:
+      temperature: '{{ states(''input_number.bathroom_temperature_night'') }}'
   mode: single
   alias: Tryb nocny ogrzewania
   icon: mdi:radiator
@@ -136,7 +151,6 @@ heating_away_mode:
       - climate.grzejnik_antek
       - climate.grzejnik_sypialnia
       - climate.grzejnik_lazienka
-      - climate.drabinka_lazienka
       - climate.grzejnik_pracownia
       - climate.grzejnik_goscinny
       - climate.grzejnik_antresola
@@ -148,6 +162,12 @@ heating_away_mode:
       - humidifier.xiaomi_mi_humidifier_cb1
     data: {}
     action: humidifier.turn_off
+  - target:
+      entity_id:
+      - climate.drabinka_lazienka
+    data:
+      temperature: '{{ states(''input_number.temperature_away'') }}'
+    action: climate.set_temperature
   mode: single
   alias: Tryb "poza domem" ogrzewania
   icon: mdi:radiator-disabled
