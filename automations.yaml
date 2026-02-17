@@ -438,18 +438,7 @@
       - condition: state
         entity_id: script.devices_away_mode
         state: 'off'
-      then:
-      - data:
-          gw_mac: f0b429cc6f0b
-          ringtone_id: 2
-          ringtone_vol: 20
-        action: xiaomi_aqara.play_ringtone
-      - delay: 00:00:05
-      - data:
-          gw_mac: f0b429cc6f0b
-          ringtone_id: 2
-          ringtone_vol: 20
-        action: xiaomi_aqara.play_ringtone
+      then: []
 - id: notification_low_battery
   alias: Niski poziom naładowania baterii
   description: ''
@@ -522,6 +511,11 @@
         - service: notify.mobile_app_iphone_16_plus
           type: ios
       action: python_script.notify
+  - action: switch.turn_on
+    metadata: {}
+    target:
+      entity_id: switch.shelly_cury_63ff88_poza_domem
+    data: {}
 - id: presence_peoples_back
   alias: Domownicy w domu
   description: ''
@@ -659,6 +653,11 @@
     default:
       data: {}
       action: script.heating_night
+  - action: switch.turn_off
+    metadata: {}
+    target:
+      entity_id: switch.shelly_cury_63ff88_poza_domem
+    data: {}
 - id: windows_opened
   alias: Okna otwarte
   description: ''
@@ -3289,6 +3288,7 @@
         - włącz
         - tak proszę
         - tak włącz
+        - ok
       - id: 'no'
         sentences:
         - nie
@@ -3363,6 +3363,7 @@
         - włącz
         - tak włącz
         - tak proszę
+        - ok
       - id: 'no'
         sentences:
         - nie
@@ -3545,3 +3546,75 @@
       - light.lampki_swiateczne_kuchnia
     data: {}
   mode: single
+- id: '1771167928957'
+  alias: Zapach w przedpokoju
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - schedule.zapach_z_prawego_slotu
+    id: right_slot
+    to:
+    from:
+    - 'on'
+    - 'off'
+  - trigger: state
+    entity_id:
+    - schedule.zapach_z_lewego_slotu
+    id: left_slot
+    from:
+    - 'on'
+    - 'off'
+    to:
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.to_state.state not in ["unavailable", "unknown"] }}
+
+      '
+  actions:
+  - if:
+    - condition: trigger
+      id:
+      - right_slot
+    then:
+    - if:
+      - condition: template
+        value_template: '{{ trigger.to_state.state == "on" }}
+
+          '
+      then:
+      - action: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.shelly_cury_63ff88_prawy_slot
+      else:
+      - action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.shelly_cury_63ff88_prawy_slot
+  - if:
+    - condition: trigger
+      id:
+      - left_slot
+    then:
+    - if:
+      - condition: template
+        value_template: '{{ trigger.to_state.state == "on" }}
+
+          '
+      then:
+      - action: switch.turn_on
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.shelly_cury_63ff88_lewy_slot
+      else:
+      - action: switch.turn_off
+        metadata: {}
+        data: {}
+        target:
+          entity_id: switch.shelly_cury_63ff88_lewy_slot
+  mode: queued
+  max: 10

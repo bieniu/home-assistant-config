@@ -63,5 +63,11 @@ update.aplikacje_truenas_it_tools:
 update.aplikacje_truenas_beszel:
   entity_picture: /local/beszel.png
 
+update.aplikacje_truenas_termix:
+  entity_picture: /local/termix.png
+
+update.aplikacje_truenas_warracker:
+  entity_picture: /local/warracker.png
+
 calendar.workday_sensor_calendar:
   message: dzień roboczy
