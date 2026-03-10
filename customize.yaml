@@ -20,12 +20,12 @@ climate.drabinka_lazienka:
 climate.grzejnik_antresola:
   target_temp_step: 0.5
 
-sensor.active_issues:
-  unit_of_measurement: ""
-sensor.ignored_issues:
-  unit_of_measurement: ""
-sensor.issues:
-  unit_of_measurement: ""
+sensor.aktywne_problemy:
+  unit_of_measurement: "problemów"
+sensor.ignorowane_problemy:
+  unit_of_measurement: "problemów"
+sensor.wszystkie_problemy:
+  unit_of_measurement: "problemów"
 
 device_tracker.bmw_220:
   entity_picture: /local/bmw_220.png

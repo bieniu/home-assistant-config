@@ -511,11 +511,6 @@
         - service: notify.mobile_app_iphone_16_plus
           type: ios
       action: python_script.notify
-  - action: switch.turn_on
-    metadata: {}
-    target:
-      entity_id: switch.shelly_cury_63ff88_poza_domem
-    data: {}
 - id: presence_peoples_back
   alias: Domownicy w domu
   description: ''
@@ -531,20 +526,11 @@
       after: sunset
     then:
     - target:
-        entity_id: light.leds_schody
+        entity_id:
+        - light.leds_schody
+        - light.lampki_dekoracyjne_w_pokoju_antka
       data: {}
       action: light.turn_on
-  - condition: time
-    after: 06:00:00
-    before: '23:59:59'
-  - action: light.turn_on
-    metadata: {}
-    target:
-      entity_id:
-      - light.lampki_swiateczne_antek
-      - light.lampki_swiateczne_antresola
-      - light.lampki_swiateczne_kuchnia
-    data: {}
 - id: heating_day
   alias: Tryb dzienny ogrzewania
   description: ''
@@ -653,11 +639,6 @@
     default:
       data: {}
       action: script.heating_night
-  - action: switch.turn_off
-    metadata: {}
-    target:
-      entity_id: switch.shelly_cury_63ff88_poza_domem
-    data: {}
 - id: windows_opened
   alias: Okna otwarte
   description: ''
@@ -855,14 +836,14 @@
   - data: {}
     action: script.heating_season_end
 - id: light_turn_on_tree
-  alias: Włącz oświetlenie drzewka o zachodzi słońca u Antka
+  alias: Włącz oświetlenie dekoracyjne o zachodzie słońca u Antka
   description: ''
   triggers:
-  - platform: sun
-    event: sunset
-  - platform: state
-    entity_id: binary_sensor.people_at_home
+  - event: sunset
+    trigger: sun
+  - entity_id: binary_sensor.people_at_home
     to: 'on'
+    trigger: state
   conditions:
   - condition: state
     entity_id: binary_sensor.people_at_home
@@ -870,10 +851,12 @@
   - condition: sun
     after: sunset
   - condition: time
-    before: '23:00:00'
+    before: 00:00:00
   actions:
   - target:
-      entity_id: light.drzewko_antek
+      entity_id:
+      - light.drzewko_antek
+      - light.lampki_dekoracyjne_w_pokoju_antka
     data: {}
     action: light.turn_on
 - id: light_turn_off_when_away_mode
@@ -1533,7 +1516,7 @@
     data: {}
     action: light.turn_off
 - id: light_turn_on_schody_leds_on_sunset
-  alias: Włącz LEDy na schodach o zachodzie słońca
+  alias: Włącz LEDy na schodach, Bonsai i ambilight o zachodzie słońca
   description: ''
   triggers:
   - event: sunset
@@ -1549,8 +1532,23 @@
       - light.bonsai_w_salonie
     data: {}
     action: light.turn_on
+  - if:
+    - condition: state
+      entity_id: media_player.philips_65oled707
+      state:
+      - playing
+      - 'on'
+      - paused
+      - standby
+      - buffering
+    then:
+    - action: light.turn_on
+      metadata: {}
+      target:
+        entity_id: light.philips_65oled707_ambilight
+      data: {}
 - id: light_turn_off_schody_leds_on_midnight
-  alias: Wyącz LEDy na schodach o północy
+  alias: Wyłącz LEDy na schodach i bonsai o północy
   description: ''
   triggers:
   - at: 00:00:00
@@ -2010,10 +2008,10 @@
       entity_id: light.lampa_biurkowa_antek
   mode: single
 - id: '1672565177379'
-  alias: Wyłącz oświetlenie o 1:00 u Antka
+  alias: Wyłącz oświetlenie u Antka o północy
   description: ''
   triggers:
-  - at: 00:10:00
+  - at: 00:00:00
     trigger: time
   conditions: []
   actions:
@@ -2023,21 +2021,8 @@
       - light.drzewko_antek
       - light.lampa_biurkowa_antek
       - light.lightstrip_antek
+      - light.lampki_dekoracyjne_w_pokoju_antka
     action: light.turn_off
-  mode: single
-- id: '1672565410928'
-  alias: Włącz oświetlenie drzewka o zachodzie słońca
-  description: ''
-  triggers:
-  - platform: sun
-    event: sunset
-    offset: 0
-  condition: []
-  actions:
-  - data: {}
-    target:
-      entity_id: light.drzewko_antek
-    action: light.turn_on
   mode: single
 - id: '1673781976268'
   alias: Koniec prania
@@ -2419,17 +2404,22 @@
   conditions: []
   actions:
   - data:
-      entries: "{% set checked_domains = [\"binary_sensor\", \"climate\", \"fan\",
-        \"humidifier\", \"light\", \"media_player\", \"sensor\", \"switch\"] %}\n{%
-        set ignored_entities = [\"switch.philips_65oled707_screen_state\", \"light.philips_65oled707_ambilight\"]
-        %}\n{% set ignored_entries = [\"Sony KD-55XF8596\", \"Karmel\", \"Luna\"]
-        %}\n{% macro unavailable_entries() %}\n  {% for domain in checked_domains
-        %}\n    {% for entity_id in states[domain] | selectattr(\"state\", \"==\",
-        \"unavailable\") | map(attribute=\"entity_id\") if entity_id not in ignored_entities
-        %}\n      {% set entry_name = device_name(entity_id) %}\n      {% if entry_name
-        not in ignored_entries and entry_name != None %}\n        {{ entry_name }}@{{
-        area_name(entity_id) }}|\n      {% endif %}\n    {% endfor %}\n  {% endfor
-        %}\n{% endmacro %}\n{{ unavailable_entries() }}"
+      entries: "{% set checked_domains = [\n  \"binary_sensor\",\n  \"climate\",\n
+        \ \"fan\",\n  \"humidifier\",\n  \"light\",\n  \"media_player\",\n  \"sensor\",\n
+        \ \"switch\"\n] %}\n{% set ignored_entities = [\n  \"light.philips_65oled707_ambilight\",\n
+        \ \"sensor.karmel_codzienny_cel\",\n  \"sensor.karmel_czas_aktywnosci\",\n
+        \ \"switch.karmel_brzeczyk_trackera\",\n  \"switch.karmel_led_trackera\",\n
+        \ \"switch.karmel_sledzenie_na_zywo\",\n  \"sensor.luna_codzienny_cel\",\n
+        \ \"sensor.luna_czas_aktywnosci\",\n  \"switch.luna_brzeczyk_trackera\",\n
+        \ \"switch.luna_led_trackera\",\n  \"switch.luna_sledzenie_na_zywo\"\n] %}\n{%
+        set ignored_entries = [\"Sony KD-55XF8596\"] %}\n{% macro unavailable_entries()
+        %}\n  {% for domain in checked_domains %}\n    {% for entity_id in states[domain]
+        | selectattr(\"state\", \"==\", \"unavailable\") | map(attribute=\"entity_id\")
+        if entity_id not in ignored_entities %}\n      {% set entry_name = device_name(entity_id)
+        %}\n      {% if entry_name not in ignored_entries and entry_name != None %}\n
+        \       {{ entry_name }}@{{ area_name(entity_id) }}|\n      {% endif %}\n
+        \   {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{ unavailable_entries()
+        }}"
     action: python_script.unavailable_entries
   mode: queued
   max: 10
@@ -3414,61 +3404,6 @@
     target:
       entity_id: media_player.sonos_arc
   mode: single
-- id: '1763735704111'
-  alias: Raportowanie stanu okna do termostatu w pokoju Antka
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - binary_sensor.window_antek
-    from:
-    - 'off'
-    to:
-    - 'on'
-    for:
-      hours: 0
-      minutes: 3
-      seconds: 0
-    id: opened
-  - trigger: state
-    entity_id:
-    - binary_sensor.window_antek
-    for:
-      hours: 0
-      minutes: 3
-      seconds: 0
-    id: closed
-    from:
-    - 'on'
-    to:
-    - 'off'
-  conditions:
-  - condition: state
-    entity_id: input_boolean.heating_season
-    state:
-    - 'on'
-  actions:
-  - if:
-    - condition: trigger
-      id:
-      - opened
-    then:
-    - action: switch.turn_on
-      metadata: {}
-      data: {}
-      target:
-        entity_id: switch.danfoss_014g2460_thermostat_1773cc_zewnetrzny_sensor_okna_u_antka
-  - if:
-    - condition: trigger
-      id:
-      - closed
-    then:
-    - action: switch.turn_off
-      metadata: {}
-      data: {}
-      target:
-        entity_id: switch.danfoss_014g2460_thermostat_1773cc_zewnetrzny_sensor_okna_u_antka
-  mode: single
 - id: '1764581406636'
   alias: Włącz/wyłącz oświetlenie w gabinecie
   description: ''
@@ -3486,135 +3421,51 @@
     target:
       entity_id: light.oswietlenie_gabinetu
   mode: single
-- id: '1765385239462'
-  alias: Włącz oświetlenie świąteczne o zachodzie słońca
+- id: '1772988532197'
+  alias: Wyłącz ambilight w dzień
   description: ''
   triggers:
-  - trigger: sun
-    event: sunset
-    offset: 0
-  conditions: []
-  actions:
-  - action: light.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id:
-      - light.lampki_swiateczne_antek
-      - light.lampki_swiateczne_antresola
-  variables:
-    notification_title: Tryb lampek świątecznych
-    notification_message: Włączono lampki świąteczne na balkonach, pamiętaj by zmienić
-      ich tryb pracy.
-    notification_tag: christmas-light
-  mode: single
-- id: '1765385308012'
-  alias: Wyłącz oświetlenie świąteczne o północy
-  description: ''
-  triggers:
-  - trigger: time
-    at: 00:00:00
-  conditions: []
+  - trigger: state
+    entity_id:
+    - media_player.philips_65oled707
+    from:
+    - 'off'
+    to:
+    - 'on'
+    - playing
+    - idle
+  conditions:
+  - condition: sun
+    before: sunset
+    after: sunrise
   actions:
   - action: light.turn_off
     metadata: {}
-    data: {}
     target:
-      entity_id:
-      - light.lampki_swiateczne_antek
-      - light.lampki_swiateczne_antresola
-      - light.lampki_swiateczne_kuchnia
+      entity_id: light.philips_65oled707_ambilight
+    data: {}
   mode: single
-- id: '1765551383091'
-  alias: Włącz oświetlenie świąteczne w salonie, na antresoli i w kuchni przed wschodem
-    słońca
+- id: '1772988607190'
+  alias: Włącz ambilight wieczorem
   description: ''
   triggers:
-  - trigger: sun
-    event: sunrise
-  conditions:
-  - condition: state
-    entity_id: input_boolean.away_mode
-    state:
+  - trigger: state
+    entity_id:
+    - media_player.philips_65oled707
+    from:
     - 'off'
+    to:
+    - 'on'
+    - playing
+    - idle
+  conditions:
+  - condition: sun
+    before: sunrise
+    after: sunset
   actions:
   - action: light.turn_on
     metadata: {}
     target:
-      entity_id:
-      - light.lampki_swiateczne_antresola
-      - light.lampki_swiateczne_kuchnia
+      entity_id: light.philips_65oled707_ambilight
     data: {}
   mode: single
-- id: '1771167928957'
-  alias: Zapach w przedpokoju
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - schedule.zapach_z_prawego_slotu
-    id: right_slot
-    to:
-    from:
-    - 'on'
-    - 'off'
-  - trigger: state
-    entity_id:
-    - schedule.zapach_z_lewego_slotu
-    id: left_slot
-    from:
-    - 'on'
-    - 'off'
-    to:
-  conditions:
-  - condition: template
-    value_template: '{{ trigger.to_state.state not in ["unavailable", "unknown"] }}
-
-      '
-  actions:
-  - if:
-    - condition: trigger
-      id:
-      - right_slot
-    then:
-    - if:
-      - condition: template
-        value_template: '{{ trigger.to_state.state == "on" }}
-
-          '
-      then:
-      - action: switch.turn_on
-        metadata: {}
-        data: {}
-        target:
-          entity_id: switch.shelly_cury_63ff88_prawy_slot
-      else:
-      - action: switch.turn_off
-        metadata: {}
-        data: {}
-        target:
-          entity_id: switch.shelly_cury_63ff88_prawy_slot
-  - if:
-    - condition: trigger
-      id:
-      - left_slot
-    then:
-    - if:
-      - condition: template
-        value_template: '{{ trigger.to_state.state == "on" }}
-
-          '
-      then:
-      - action: switch.turn_on
-        metadata: {}
-        data: {}
-        target:
-          entity_id: switch.shelly_cury_63ff88_lewy_slot
-      else:
-      - action: switch.turn_off
-        metadata: {}
-        data: {}
-        target:
-          entity_id: switch.shelly_cury_63ff88_lewy_slot
-  mode: queued
-  max: 10

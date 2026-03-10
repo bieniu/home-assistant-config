@@ -60,22 +60,9 @@
     wind_speed_template: "{{ state_attr('weather.lowicz', 'wind_speed') | round }}"
     wind_bearing_template: "{{ state_attr('weather.lowicz', 'wind_bearing') }}"
     wind_gust_speed_template: "{{ state_attr('weather.lowicz', 'wind_gust_speed') | round }}"
-    visibility_template: "{{ states('sensor.lowicz_widocznosc') }}"
+    visibility_template: "{{ state_attr('weather.lowicz', 'visibility') }}"
     cloud_coverage_template: "{{ state_attr('weather.lowicz', 'cloud_coverage') }}"
     forecast_daily_template: "{{ state_attr('sensor.lowicz_dzienna_prognoza_pogody', 'forecast') }}"
-
-- binary_sensor:
-    - name: Pralka pralnia
-      unique_id: pralka_pralnia
-      icon: mdi:washing-machine
-      state: "{{ states('sensor.power_washing_machine_pralnia') | int > 1 }}"
-      availability: "{{ is_number(states('sensor.power_washing_machine_pralnia')) }}"
-
-    - name: Zmywarka kuchnia
-      unique_id: zmywarka_kuchnia
-      icon: mdi:dishwasher
-      state: "{{ states('sensor.power_dishwasher_kuchnia') | int > 1 }}"
-      availability: "{{ is_number(states('sensor.power_dishwasher_kuchnia')) }}"
 
 - trigger:
     - platform: time_pattern
