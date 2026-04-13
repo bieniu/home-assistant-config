@@ -377,7 +377,7 @@ restart_wifi_devices:
       - button.nettigo_air_monitor_uruchom_ponownie
       - button.shelly_1l_aacec4_uruchom_ponownie
       - button.shelly_1l_aceb5f_uruchom_ponownie
-      - button.shelly_gas_c6811c_restart
+      - button.shelly_gas_c6811c_uruchom_ponownie
       - button.shelly_motion_2_08a4e9_uruchom_ponownie
       - button.shelly_1_mini_gen4_bc33a0_uruchom_ponownie
       - button.shelly_1pm_mini_gen3_411170_restart
@@ -424,17 +424,25 @@ humidification_start:
 alexa_harmony_activity_games:
   alias: Włącz gry w salonie
   sequence:
-  - action: remote.send_command
-    metadata: {}
-    data:
-      device: Telewizor
-      command: PowerOn
-    target:
-      entity_id: remote.salon
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 2
+  - if:
+    - condition: not
+      conditions:
+      - condition: state
+        entity_id: remote.philips_65oled707
+        state:
+        - 'on'
+    then:
+    - action: remote.send_command
+      metadata: {}
+      data:
+        device: Telewizor
+        command: PowerOn
+      target:
+        entity_id: remote.salon
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 2
   - action: media_player.select_source
     metadata: {}
     data:
@@ -446,17 +454,25 @@ alexa_harmony_activity_games:
 alexa_harmony_activity_smart_tv:
   alias: Włącz smart TV w salonie
   sequence:
-  - action: remote.send_command
-    metadata: {}
-    data:
-      device: Telewizor
-      command: PowerOn
-    target:
-      entity_id: remote.salon
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 2
+  - if:
+    - condition: not
+      conditions:
+      - condition: state
+        entity_id: remote.philips_65oled707
+        state:
+        - 'on'
+    then:
+    - action: remote.send_command
+      metadata: {}
+      data:
+        device: Telewizor
+        command: PowerOn
+      target:
+        entity_id: remote.salon
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 2
   - action: remote.send_command
     metadata: {}
     data:
@@ -575,23 +591,16 @@ kamera_nagrywaj:
   max: 3
 wroc_do_telewizji_w_salonie:
   sequence:
-  - action: remote.send_command
-    metadata: {}
-    data:
-      device: Dekoder
-      command: 4
-    target:
-      entity_id: remote.salon
   - action: media_player.select_source
     metadata: {}
-    data:
-      source: HDMI 3
     target:
       entity_id: media_player.philips_65oled707
+    data:
+      source: HDMI 3
   alias: Wróć do telewizji w salonie
   description: ''
-odtworz_ulubione_sonos:
-  alias: Odtwórz media na odtwarzaczu Sonos
+odtworz_media_na_sonos:
+  alias: Odtwórz media na Sonos
   fields:
     entity_id:
       name: Odtwarzacz
@@ -633,59 +642,6 @@ odtworz_ulubione_sonos:
   - stop: ''
     response_variable: result
   description: ''
-odtworz_media:
-  sequence:
-  - if:
-    - condition: template
-      value_template: '{{ ("sonos" in entity_id) or ("symfonisk" in entity_id) }}'
-    then:
-    - variables:
-        favs: '{{ state_attr(''sensor.sonos_favorites'', ''items'') | default({})
-          }}'
-        fav_id: "{% set ns = namespace(fav=\"\") %}\n{% for key, val in favs.items()
-          %}\n  {% if ns.fav == \"\" and val.lower().replace(\" \", \"\").replace(\"-\",
-          \"\") == media.lower().replace(\" \", \"\").replace(\"-\", \"\") %}\n    {%
-          set ns.fav = key %}\n  {% endif %}\n{% endfor %}\n{{ ns.fav }}\n"
-    - if:
-      - condition: template
-        value_template: '{{ fav_id != "" }}'
-      then:
-      - target:
-          entity_id: '{{ entity_id }}'
-        data:
-          media:
-            media_content_id: '{{ fav_id }}'
-            media_content_type: favorite_item_id
-            metadata: {}
-        action: media_player.play_media
-      - variables:
-          result:
-            success: true
-      else:
-      - variables:
-          result:
-            success: false
-  - stop: ''
-    response_variable: result
-  alias: Odtwórz media
-  description: ''
-  fields:
-    entity_id:
-      selector:
-        entity:
-          filter:
-            domain: media_player
-      description: Identyfikator encji odtwarzacza mediów
-      required: true
-      name: Odtwarzacz mediów
-      example: media_player.sonos_one
-    media:
-      selector:
-        text:
-      name: Media
-      description: Nazwa mediów (playlisty lub radia)
-      required: true
-      example: Eska ROCK
 zmien_kanal_na_tv:
   sequence:
   - variables:
@@ -803,13 +759,136 @@ wlacz_telewizje_w_salonie:
       delay_secs: 0.4
     target:
       entity_id: remote.salon
-  - action: remote.send_command
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - action: media_player.select_source
     metadata: {}
-    data:
-      device: Dekoder
-      command: 4
     target:
-      entity_id: remote.salon
+      entity_id: media_player.philips_65oled707
+    data:
+      source: Watch TV
   mode: single
   icon: mdi:television
   description: ''
+get_weather_forecast:
+  sequence:
+  - action: weather.get_forecasts
+    metadata: {}
+    target:
+      entity_id: weather.dom
+    data:
+      type: daily
+    response_variable: forecast
+  - stop: ''
+    response_variable: forecast
+  alias: Pobierz prognozę pogody
+  description: ''
+odtworz_media_na_echo:
+  alias: Odtwórz media na Echo
+  description: ''
+  fields:
+    entity_id:
+      name: Odtwarzacz
+      description: entity_id odtwarzacza Echo
+      example: media_player.echo_plus
+      required: true
+    media:
+      name: Media
+      description: Tytuł lub identyfikator mediów
+      example: RMF FM
+      required: true
+    content_type:
+      name: Typ mediów
+      description: media_content_type
+      example: TUNEIN
+      required: true
+  sequence:
+  - action: media_player.play_media
+    target:
+      entity_id: '{{ entity_id }}'
+    data:
+      media_content_id: '{{ media }}'
+      media_content_type: '{{ content_type }}'
+  - variables:
+      result:
+        success: true
+  - set_conversation_response: '{{ result }}'
+  - stop: ''
+    response_variable: result
+restart_dekodera_tv:
+  sequence:
+  - action: switch.turn_off
+    metadata: {}
+    target:
+      entity_id: switch.blitzwolf_bw_shp6_ed007d_przeka_nik
+    data: {}
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - action: switch.turn_on
+    metadata: {}
+    target:
+      entity_id: switch.blitzwolf_bw_shp6_ed007d_przeka_nik
+    data: {}
+  alias: Restart dekodera TV
+  description: ''
+  icon: mdi:set-top-box
+wlacz_wylacz_wentylator:
+  sequence:
+  - action: fan.toggle
+    metadata: {}
+    data: {}
+    target:
+      entity_id: fan.ceiling_salon
+  alias: Włącz/wyłącz wentylator w salonie
+  description: ''
+zwieksz_glosnosc_w_salonie:
+  sequence:
+  - action: media_player.volume_up
+    metadata: {}
+    data: {}
+    target:
+      entity_id: media_player.sonos_arc
+  alias: Zwiększ głośność w salonie
+  description: ''
+  icon: mdi:volume-plus
+zmniejsz_glosnosc_w_salonie:
+  sequence:
+  - action: media_player.volume_down
+    metadata: {}
+    data: {}
+    target:
+      entity_id: media_player.sonos_arc
+  alias: Zmniejsz głośność w salonie
+  description: ''
+  icon: mdi:volume-minus
+radio:
+  sequence:
+  - action: media_player.play_media
+    metadata: {}
+    target:
+      entity_id: media_player.sonos_arc
+    data:
+      media:
+        media_content_id: FV:2/7
+        media_content_type: favorite_item_id
+        metadata:
+          title: Anty Radio
+          thumbnail: https://cdn-radiotime-logos.tunein.com/s9608q.png
+          media_class: genre
+          children_media_class:
+          navigateIds:
+          - {}
+          - media_content_type: favorites
+            media_content_id: ''
+          - media_content_type: favorites_folder
+            media_content_id: object.item.audioItem.audioBroadcast
+          browse_entity_id: media_player.sonos_arc
+  alias: Odtwarzaj radio w salonie
+  description: ''
+  icon: mdi:radio

@@ -1,27 +1,3 @@
-- id: ios_turn_on_tv
-  alias: Włącz telewizję w salonie
-  description: ''
-  triggers:
-  - event_type: ios.action_fired
-    event_data:
-      actionName: Turn On TV
-    trigger: event
-  actions:
-  - action: script.wlacz_telewizje_w_salonie
-    metadata: {}
-    data: {}
-- id: ios_turn_off_tv
-  alias: Wyłącz sprzęt RTV w salonie
-  description: ''
-  triggers:
-  - event_type: ios.action_fired
-    event_data:
-      actionName: Turn Off TV
-    trigger: event
-  actions:
-  - action: script.alexa_harmony_power_off
-    metadata: {}
-    data: {}
 - id: notification_high_ram_usage
   alias: Wysokie użycie pamięci RAM
   description: ''
@@ -134,42 +110,30 @@
   alias: Wysokie stężenie dwutlenku węgla w salonie
   description: ''
   triggers:
-  - entity_id: sensor.co2_salon
+  - entity_id:
+    - sensor.co2_salon
     above: 1000
     for:
-      minutes: 5
+      hours: 0
+      minutes: 10
+      seconds: 0
     trigger: numeric_state
-  conditions: []
+  conditions:
+  - condition: state
+    entity_id: input_boolean.away_mode
+    state:
+    - 'off'
   actions:
-  - parallel:
-    - choose:
-        conditions:
-          condition: state
-          entity_id: person.maciek
-          state: home
-        sequence:
-          data:
-            title: '{{ notification_title }}'
-            message: '{{ notification_message }}'
-            tag: '{{ notification_tag }}'
-            services:
-            - service: notify.mobile_app_iphone_13
-              type: ios
-          action: python_script.notify
-    - choose:
-        conditions:
-          condition: state
-          entity_id: person.edyta
-          state: home
-        sequence:
-          data:
-            title: '{{ notification_title }}'
-            message: '{{ notification_message }}'
-            tag: '{{ notification_tag }}'
-            services:
-            - service: notify.mobile_app_iphone_16_plus
-              type: ios
-          action: python_script.notify
+  - action: tts.speak
+    metadata: {}
+    target:
+      entity_id: tts.home_assistant_cloud
+    data:
+      cache: true
+      media_player_entity_id: media_player.home_assistant_voice_0a30ff_odtwarzacz_mediow
+      message: W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state
+        | round }} ppm. Należy przewietrzyć pomieszczenie.
+      language: pl-PL
   variables:
     notification_title: Wysokie stężenie dwutlenku węgla
     notification_message: W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state
@@ -302,7 +266,7 @@
     - binary_sensor.motion_gabinet
     - binary_sensor.motion_goscinny
     - binary_sensor.ruch_korytarz
-    - binary_sensor.motion_kuchnia
+    - binary_sensor.shelly_motion_2_08a4e9_ruch
     - binary_sensor.motion_lazienka
     - binary_sensor.motion_pracownia
     - binary_sensor.motion_przedpokoj
@@ -939,30 +903,12 @@
     type: single_push
     subtype: button1
     trigger: device
-  - event_type: ios.action_fired
-    event_data:
-      actionName: Toggle Salon Light
-    trigger: event
   conditions: []
   actions:
   - target:
       entity_id: light.ceiling_salon
     data: {}
     action: light.toggle
-- id: light_toggle_salon_light
-  alias: Włącz/wyłącz LEDy w salonie
-  description: ''
-  triggers:
-  - event_type: ios.action_fired
-    event_data:
-      actionName: Toggle Salon LEDs
-    trigger: event
-  conditions: []
-  actions:
-  - data: {}
-    action: light.toggle
-    target:
-      entity_id: light.ledy_w_salonie
 - id: light_turn_on_salon_lamp_when_dark_and_motion
   alias: Włącz lampę w salonie gdy pojawi się ruch i jest ciemno
   description: ''
@@ -1117,7 +1063,7 @@
   alias: Wyłącz oświetlenie w kuchni gdy nie ma ruchu
   description: ''
   triggers:
-  - entity_id: binary_sensor.motion_kuchnia
+  - entity_id: binary_sensor.shelly_motion_2_08a4e9_ruch
     from: 'on'
     to: 'off'
     for:
@@ -1699,25 +1645,16 @@
     type: double_push
     subtype: button1
     trigger: device
-  - event_type: ios.action_fired
-    event_data:
-      actionName: Toggle Salon Fan
-    trigger: event
   conditions: []
   actions:
-  - data: {}
-    target:
-      entity_id: fan.ceiling_salon
-    action: fan.toggle
+  - action: script.wlacz_wylacz_wentylator
+    metadata: {}
+    data: {}
   mode: single
 - id: '1658514193572'
   alias: Włącz/wyłącz lampę w salonie
   description: ''
   triggers:
-  - event_type: ios.action_fired
-    event_data:
-      actionName: Toggle Salon Lamp
-    trigger: event
   - device_id: 142c0c74f511cb5af11fa1d33e6437f7
     domain: shelly
     type: double_push
@@ -2115,7 +2052,7 @@
         type: ios
   - device_id: 07ee2d658bd1fbdce765f6707e48f76d
     domain: button
-    entity_id: button.shelly_gas_c6811c_self_test
+    entity_id: 1e0d54181a1474650ff72158c1cbbfdc
     type: press
   - wait_for_trigger:
     - trigger: state
@@ -2412,14 +2349,14 @@
         \ \"switch.karmel_sledzenie_na_zywo\",\n  \"sensor.luna_codzienny_cel\",\n
         \ \"sensor.luna_czas_aktywnosci\",\n  \"switch.luna_brzeczyk_trackera\",\n
         \ \"switch.luna_led_trackera\",\n  \"switch.luna_sledzenie_na_zywo\"\n] %}\n{%
-        set ignored_entries = [\"Sony KD-55XF8596\"] %}\n{% macro unavailable_entries()
-        %}\n  {% for domain in checked_domains %}\n    {% for entity_id in states[domain]
-        | selectattr(\"state\", \"==\", \"unavailable\") | map(attribute=\"entity_id\")
-        if entity_id not in ignored_entities %}\n      {% set entry_name = device_name(entity_id)
-        %}\n      {% if entry_name not in ignored_entries and entry_name != None %}\n
-        \       {{ entry_name }}@{{ area_name(entity_id) }}|\n      {% endif %}\n
-        \   {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{ unavailable_entries()
-        }}"
+        set ignored_entries = [\"Sony KD-55XF8596\", \"Home Assistant Analytics Insights\"]
+        %}\n{% macro unavailable_entries() %}\n  {% for domain in checked_domains
+        %}\n    {% for entity_id in states[domain] | selectattr(\"state\", \"==\",
+        \"unavailable\") | map(attribute=\"entity_id\") if entity_id not in ignored_entities
+        %}\n      {% set entry_name = device_name(entity_id) %}\n      {% if entry_name
+        not in ignored_entries and entry_name != None %}\n        {{ entry_name }}@{{
+        area_name(entity_id) }}|\n      {% endif %}\n    {% endfor %}\n  {% endfor
+        %}\n{% endmacro %}\n{{ unavailable_entries() }}"
     action: python_script.unavailable_entries
   mode: queued
   max: 10
@@ -2489,77 +2426,15 @@
     target:
       entity_id: light.lightstrip_sypialnia
   mode: single
-- id: '1723288584908'
-  alias: Włącz smart TV w salonie
-  description: ''
-  triggers:
-  - event_type: ios.action_fired
-    event_data:
-      actionName: Turn On Smart TV
-    trigger: event
-  conditions: []
-  actions:
-  - action: script.alexa_harmony_activity_smart_tv
-    metadata: {}
-    data: {}
-  mode: single
-- id: '1723288816878'
-  alias: Włącz gry w salonie
-  description: ''
-  triggers:
-  - event_type: ios.action_fired
-    event_data:
-      actionName: Turn On Games
-    trigger: event
-  conditions: []
-  actions:
-  - action: script.alexa_harmony_activity_games
-    metadata: {}
-    data: {}
-  mode: single
-- id: '1723301586705'
-  alias: Zwiększ głośność w salonie
-  description: ''
-  triggers:
-  - event_type: ios.action_fired
-    event_data:
-      actionName: Turn Up TV Volume
-    trigger: event
-  conditions: []
-  actions:
-  - action: media_player.volume_up
-    metadata: {}
-    data: {}
-    target:
-      entity_id: media_player.sonos_arc
-  mode: queued
-  max: 10
-- id: '1723301743769'
-  alias: Zmniejsz głośność w salonie
-  description: ''
-  triggers:
-  - event_type: ios.action_fired
-    event_data:
-      actionName: Turn Down TV Volume
-    trigger: event
-  conditions: []
-  actions:
-  - action: media_player.volume_down
-    metadata: {}
-    data: {}
-    target:
-      entity_id: media_player.sonos_arc
-  mode: queued
-  max: 10
 - id: '1725635170993'
   alias: Włącz oświetlenie blatu w kuchni gdy pojawi się ruch i jest po zachodzie
     słońca
   description: ''
   triggers:
-  - platform: state
-    entity_id: binary_sensor.motion_kuchnia
+  - entity_id: binary_sensor.shelly_motion_2_08a4e9_ruch
     from: 'off'
     to: 'on'
+    trigger: state
   conditions:
   - condition: state
     entity_id: input_boolean.away_mode
@@ -2576,10 +2451,10 @@
     action: light.turn_on
     data: {}
   - wait_for_trigger:
-      platform: state
-      entity_id: binary_sensor.motion_kuchnia
+      entity_id: binary_sensor.shelly_motion_2_08a4e9_ruch
       from: 'on'
       to: 'off'
+      trigger: state
   - target:
       entity_id: light.blat_kuchnia
     action: light.turn_off
@@ -2732,7 +2607,7 @@
   triggers:
   - trigger: state
     entity_id:
-    - binary_sensor.motion_kuchnia
+    - binary_sensor.shelly_motion_2_08a4e9_ruch
     from: 'on'
     to: 'off'
     for:
@@ -2826,7 +2701,7 @@
       entity_id: climate.grzejnik_antek
   mode: single
 - id: '1741967732368'
-  alias: Sugestia wyłączenia ogrzewania
+  alias: Sugestia zakonczenia sezonu grzewczego
   description: ''
   triggers:
   - trigger: numeric_state
@@ -2849,6 +2724,7 @@
         prawdopodobnie należy wyłączyć ogrzewanie.
       tag: heating
       group: climate
+      priority: high
       actions:
       - action: TURN_OFF_HEATING
         title: Wyłącz ogrzewanie
@@ -2883,7 +2759,7 @@
         type: ios
   mode: single
 - id: '1747156465397'
-  alias: Sugestia włączenia ogrzewania
+  alias: Sugestia rozpoczęcia sezonu grzewczego
   description: ''
   triggers:
   - trigger: numeric_state
@@ -2906,6 +2782,7 @@
         prawdopodobnie należy włączyć ogrzewanie.
       tag: heating
       group: climate
+      priority: high
       actions:
       - action: TURN_ON_HEATING
         title: Włącz ogrzewanie
@@ -2943,13 +2820,9 @@
     domain: nut
   - delay:
       hours: 0
-      minutes: 0
-      seconds: 10
+      minutes: 2
+      seconds: 0
       milliseconds: 0
-  - wait_for_trigger:
-    - trigger: state
-      entity_id:
-      - sensor.cyberpower_dl650elcd_wynik_autotestu
   - action: python_script.notify
     data:
       title: Test baterii UPSa
@@ -3046,13 +2919,9 @@
     to: home
   conditions: []
   actions:
-  - delay:
-      hours: 0
-      minutes: 1
-      seconds: 0
-      milliseconds: 0
   - condition: template
-    value_template: '{{ trigger.to_state.attributes.get("vlan") != 20 }}'
+    value_template: '{{ "10.10.20" not in trigger.to_state.attributes.get("ip", "")
+      }}'
   - action: python_script.notify
     data:
       title: Urządzenie opuściło swój VLAN
@@ -3065,66 +2934,6 @@
         type: ios
   mode: parallel
   max: 10
-- id: '1754039875139'
-  alias: Wyłącz zasilanie dekodera TV
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - input_boolean.away_mode
-    from: 'off'
-    to: 'on'
-    for:
-      hours: 0
-      minutes: 20
-      seconds: 0
-  - trigger: time
-    at: 01:00:00
-  conditions:
-  - condition: state
-    entity_id: light.ledy_w_salonie
-    state: 'off'
-  - condition: state
-    entity_id: light.ceiling_salon
-    state: 'off'
-  actions:
-  - action: switch.turn_off
-    metadata: {}
-    data: {}
-    target:
-      entity_id: switch.blitzwolf_bw_shp6_ed007d_przeka_nik
-  - if:
-    - condition: not
-      conditions:
-      - condition: state
-        entity_id: media_player.philips_65oled707
-        state: 'off'
-    then:
-    - action: media_player.turn_off
-      metadata: {}
-      data: {}
-      target:
-        entity_id: media_player.philips_65oled707
-  mode: single
-- id: '1754039992327'
-  alias: Włącz zasilanie dekodera TV
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - input_boolean.away_mode
-    from: 'on'
-    to: 'off'
-  - trigger: time
-    at: 06:00:00
-  conditions: []
-  actions:
-  - action: switch.turn_on
-    metadata: {}
-    data: {}
-    target:
-      entity_id: switch.blitzwolf_bw_shp6_ed007d_przeka_nik
-  mode: single
 - id: '1755021357467'
   alias: Wysokie obciążenie procesora
   description: ''
@@ -3260,7 +3069,7 @@
   - condition: not
     conditions:
     - condition: state
-      entity_id: media_player.echo_show_kuchnia
+      entity_id: media_player.echo_show
       state: playing
   actions:
   - action: assist_satellite.ask_question
@@ -3295,7 +3104,7 @@
         media_content_id: RMF FM
         media_content_type: TUNEIN
     target:
-      entity_id: media_player.echo_show_kuchnia
+      entity_id: media_player.echo_show
   - action: assist_satellite.announce
     metadata: {}
     data:
@@ -3335,7 +3144,7 @@
   - condition: not
     conditions:
     - condition: state
-      entity_id: media_player.echo_show_kuchnia
+      entity_id: media_player.echo_show
       state: playing
   actions:
   - action: assist_satellite.ask_question
@@ -3468,4 +3277,61 @@
     target:
       entity_id: light.philips_65oled707_ambilight
     data: {}
+  mode: single
+- id: '1775077627914'
+  alias: Wysyłaj dane pogodowe do MQTT
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.nettigo_air_monitor_temperatura
+    - sensor.nettigo_air_monitor_wilgotnosc
+    - sensor.nettigo_air_monitor_cisnienie
+    - sensor.nettigo_air_monitor_pm10
+    - sensor.nettigo_air_monitor_pm25
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.to_state.state != "unknown" }}'
+  - condition: template
+    value_template: '{{ trigger.to_state.state != "unavailable" }}'
+  actions:
+  - action: mqtt.publish
+    metadata: {}
+    data:
+      evaluate_payload: false
+      qos: '0'
+      topic: weather-dashboard/{{ trigger.to_state.attributes.device_class }}
+      payload: '{{ {"value": trigger.to_state.state | float, "unit": trigger.to_state.attributes.unit_of_measurement}
+        | to_json }}'
+      retain: false
+  mode: queued
+  max: 10
+- id: '1776109999560'
+  alias: Przypomnienie o karmieniu kotów
+  description: ''
+  triggers:
+  - trigger: time
+    at: 08:00:00
+  - trigger: time
+    at: '21:00:00'
+  conditions:
+  - condition: state
+    entity_id: calendar.dom
+    state:
+    - Karmienie kotów
+    attribute: message
+  - condition: state
+    entity_id: input_boolean.away_mode
+    state:
+    - 'off'
+  actions:
+  - action: tts.speak
+    metadata: {}
+    target:
+      entity_id: tts.home_assistant_cloud
+    data:
+      cache: true
+      media_player_entity_id: media_player.home_assistant_voice_0a30ff_odtwarzacz_mediow
+      message: Przypominam o nakarmieniu kotów
+      language: pl-PL
   mode: single

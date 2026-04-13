@@ -69,5 +69,14 @@ update.aplikacje_truenas_termix:
 update.aplikacje_truenas_warracker:
   entity_picture: /local/warracker.png
 
+update.aplikacje_truenas_pairdrop:
+  entity_picture: /local/pairdrop.png
+
+update.aplikacje_truenas_dispatcharr:
+  entity_picture: /local/dispatcharr.png
+
+update.ui_extension:
+  entity_picture: /local/ui_extension.png
+
 calendar.workday_sensor_calendar:
   message: dzień roboczy

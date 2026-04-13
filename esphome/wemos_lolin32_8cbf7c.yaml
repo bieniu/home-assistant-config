@@ -33,6 +33,7 @@ wifi:
   ap:
     ssid: ${device_name}
     password: !secret esphome_password
+  output_power: 13dB  # default is 20dB
 
 captive_portal:
 
