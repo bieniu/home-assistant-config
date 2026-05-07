@@ -124,6 +124,25 @@
     state:
     - 'off'
   actions:
+  - if:
+    - condition: state
+      entity_id: binary_sensor.motion_salon
+      state:
+      - 'off'
+    then:
+    - wait_for_trigger:
+      - trigger: state
+        entity_id:
+        - binary_sensor.motion_salon
+        from:
+        - 'off'
+        to:
+        - 'on'
+      timeout:
+        hours: 1
+        minutes: 0
+        seconds: 0
+        milliseconds: 0
   - action: tts.speak
     metadata: {}
     target:
@@ -132,7 +151,7 @@
       cache: true
       media_player_entity_id: media_player.home_assistant_voice_0a30ff_odtwarzacz_mediow
       message: W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state
-        | round }} ppm. Należy przewietrzyć pomieszczenie.
+        | round }} ppm. Jeśli to możliwe przewietrz pomieszczenie.
       language: pl-PL
   variables:
     notification_title: Wysokie stężenie dwutlenku węgla
@@ -267,7 +286,7 @@
     - binary_sensor.motion_goscinny
     - binary_sensor.ruch_korytarz
     - binary_sensor.shelly_motion_2_08a4e9_ruch
-    - binary_sensor.motion_lazienka
+    - binary_sensor.ruch_w_lazience
     - binary_sensor.motion_pracownia
     - binary_sensor.motion_przedpokoj
     - binary_sensor.motion_salon
@@ -1037,7 +1056,7 @@
   alias: Wyłącz oświetlenie w łazience gdy nie ma ruchu
   description: ''
   triggers:
-  - entity_id: binary_sensor.motion_lazienka
+  - entity_id: binary_sensor.ruch_w_lazience
     from: 'on'
     to: 'off'
     for:
@@ -2349,14 +2368,14 @@
         \ \"switch.karmel_sledzenie_na_zywo\",\n  \"sensor.luna_codzienny_cel\",\n
         \ \"sensor.luna_czas_aktywnosci\",\n  \"switch.luna_brzeczyk_trackera\",\n
         \ \"switch.luna_led_trackera\",\n  \"switch.luna_sledzenie_na_zywo\"\n] %}\n{%
-        set ignored_entries = [\"Sony KD-55XF8596\", \"Home Assistant Analytics Insights\"]
-        %}\n{% macro unavailable_entries() %}\n  {% for domain in checked_domains
-        %}\n    {% for entity_id in states[domain] | selectattr(\"state\", \"==\",
-        \"unavailable\") | map(attribute=\"entity_id\") if entity_id not in ignored_entities
-        %}\n      {% set entry_name = device_name(entity_id) %}\n      {% if entry_name
-        not in ignored_entries and entry_name != None %}\n        {{ entry_name }}@{{
-        area_name(entity_id) }}|\n      {% endif %}\n    {% endfor %}\n  {% endfor
-        %}\n{% endmacro %}\n{{ unavailable_entries() }}"
+        set ignored_entries = [\"Sony KD-55XF8596\"] %}\n{% macro unavailable_entries()
+        %}\n  {% for domain in checked_domains %}\n    {% for entity_id in states[domain]
+        | selectattr(\"state\", \"==\", \"unavailable\") | map(attribute=\"entity_id\")
+        if entity_id not in ignored_entities %}\n      {% set entry_name = device_name(entity_id)
+        %}\n      {% if entry_name not in ignored_entries and entry_name != None %}\n
+        \       {{ entry_name }}@{{ area_name(entity_id) }}|\n      {% endif %}\n
+        \   {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{ unavailable_entries()
+        }}"
     action: python_script.unavailable_entries
   mode: queued
   max: 10
@@ -2871,7 +2890,7 @@
   description: ''
   triggers:
   - entity_id:
-    - binary_sensor.motion_lazienka
+    - binary_sensor.ruch_w_lazience
     from: 'off'
     to: 'on'
     trigger: state
@@ -2897,7 +2916,7 @@
       entity_id: light.lustro_lazienka
   - wait_for_trigger:
     - entity_id:
-      - binary_sensor.motion_lazienka
+      - binary_sensor.ruch_w_lazience
       from: 'on'
       to: 'off'
       trigger: state
@@ -2981,12 +3000,23 @@
     entity_id: light.ledy_w_salonie
     state: 'off'
   actions:
-  - wait_for_trigger:
-    - trigger: state
-      entity_id:
-      - binary_sensor.motion_salon
-      from: 'off'
-      to: 'on'
+  - if:
+    - condition: state
+      entity_id: binary_sensor.motion_salon
+      state:
+      - 'off'
+    then:
+    - wait_for_trigger:
+      - trigger: state
+        entity_id:
+        - binary_sensor.motion_salon
+        from: 'off'
+        to: 'on'
+      timeout:
+        hours: 1
+        minutes: 0
+        seconds: 0
+        milliseconds: 0
   - condition: and
     conditions:
     - condition: state
@@ -3287,6 +3317,7 @@
     - sensor.nettigo_air_monitor_temperatura
     - sensor.nettigo_air_monitor_wilgotnosc
     - sensor.nettigo_air_monitor_cisnienie
+    - sensor.lowicz_pyl_zawieszony_pm1
     - sensor.nettigo_air_monitor_pm10
     - sensor.nettigo_air_monitor_pm25
   conditions:
@@ -3311,20 +3342,53 @@
   description: ''
   triggers:
   - trigger: time
-    at: 08:00:00
+    at: 07:45:00
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
   - trigger: time
-    at: '21:00:00'
+    at: 08:45:00
+    weekday:
+    - sat
+    - sun
+  - trigger: time
+    at: '20:45:00'
   conditions:
   - condition: state
-    entity_id: calendar.dom
+    entity_id: calendar.rodzina
     state:
     - Karmienie kotów
+    - Petelekoty
+    - Koty
+    - Petelokoty
     attribute: message
   - condition: state
     entity_id: input_boolean.away_mode
     state:
     - 'off'
   actions:
+  - if:
+    - condition: state
+      entity_id: binary_sensor.motion_salon
+      state:
+      - 'off'
+    then:
+    - wait_for_trigger:
+      - trigger: state
+        entity_id:
+        - binary_sensor.motion_salon
+        from:
+        - 'off'
+        to:
+        - 'on'
+      timeout:
+        hours: 1
+        minutes: 0
+        seconds: 0
+        milliseconds: 0
   - action: tts.speak
     metadata: {}
     target:
