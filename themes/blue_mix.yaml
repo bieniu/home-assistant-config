@@ -8,7 +8,31 @@ blue-mix:
   modes:
     light:
       primary-background-color: "#e5e5e5"
+      ha-switch-checked-background-color: rgba(30,136,229,0.38)
+      ha-switch-checked-thumb-background-color: "var(--primary-color)"
+      ha-switch-checked-border-color: transparent
+      ha-switch-checked-thumb-border-color: transparent
+      ha-switch-checked-background-color-hover: rgba(30,136,229,0.5)
+      ha-switch-checked-thumb-background-color-hover: "var(--primary-color)"
+      ha-switch-background-color: rgba(0,0,0,0.12)
+      ha-switch-thumb-background-color: "#FFFFFF"
+      ha-switch-border-color: transparent
+      ha-switch-thumb-border-color: transparent
+      ha-switch-background-color-hover: rgba(0,0,0,0.22)
+      ha-switch-thumb-background-color-hover: "#FFFFFF"
     dark:
       primary-background-color: "#383c45"
       sidebar-background-color: "#2e333a"
       state-icon-color: "#ffffff"
+      ha-switch-checked-background-color: rgba(30,136,229,0.38)
+      ha-switch-checked-thumb-background-color: "var(--primary-color)"
+      ha-switch-checked-border-color: transparent
+      ha-switch-checked-thumb-border-color: transparent
+      ha-switch-checked-background-color-hover: rgba(30,136,229,0.5)
+      ha-switch-checked-thumb-background-color-hover: "var(--primary-color)"
+      ha-switch-background-color: rgba(255,255,255,0.12)
+      ha-switch-thumb-background-color: "#FFFFFF"
+      ha-switch-border-color: transparent
+      ha-switch-thumb-border-color: transparent
+      ha-switch-background-color-hover: rgba(255,255,255,0.22)
+      ha-switch-thumb-background-color-hover: "#FFFFFF"
