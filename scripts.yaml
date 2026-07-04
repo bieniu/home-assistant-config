@@ -750,26 +750,22 @@ alert_dla_antka:
 wlacz_telewizje_w_salonie:
   alias: Włącz telewizję w salonie
   sequence:
-  - action: remote.send_command
-    metadata: {}
-    data:
-      device: Telewizor
-      command: PowerOn
-      num_repeats: 2
-      delay_secs: 0.4
-    target:
-      entity_id: remote.salon
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - action: media_player.select_source
-    metadata: {}
-    target:
-      entity_id: media_player.philips_65oled707
-    data:
-      source: Watch TV
+  - parallel:
+    - action: remote.send_command
+      metadata: {}
+      data:
+        device: Telewizor
+        command: PowerOn
+        num_repeats: 2
+        delay_secs: 0.4
+      target:
+        entity_id: remote.salon
+    - action: media_player.turn_on
+      metadata: {}
+      target:
+        entity_id: media_player.philips_65oled707
+      data: {}
+      continue_on_error: true
   mode: single
   icon: mdi:television
   description: ''
@@ -818,26 +814,6 @@ odtworz_media_na_echo:
   - set_conversation_response: '{{ result }}'
   - stop: ''
     response_variable: result
-restart_dekodera_tv:
-  sequence:
-  - action: switch.turn_off
-    metadata: {}
-    target:
-      entity_id: switch.blitzwolf_bw_shp6_ed007d_przeka_nik
-    data: {}
-  - delay:
-      hours: 0
-      minutes: 0
-      seconds: 1
-      milliseconds: 0
-  - action: switch.turn_on
-    metadata: {}
-    target:
-      entity_id: switch.blitzwolf_bw_shp6_ed007d_przeka_nik
-    data: {}
-  alias: Restart dekodera TV
-  description: ''
-  icon: mdi:set-top-box
 wlacz_wylacz_wentylator:
   sequence:
   - action: fan.toggle

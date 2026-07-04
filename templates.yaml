@@ -52,9 +52,9 @@
   - name: Dom
     unique_id: home
     condition_template: "{{ states('weather.lowicz') }}"
-    temperature_template: "{{ (states('sensor.nettigo_air_monitor_bme280_temperatura') or states('sensor.lowicz_temperatura')) | float or state_attr('weather.lowicz', 'temperature') }}"
-    humidity_template: "{{ (states('sensor.nettigo_air_monitor_bme280_wilgotnosc') or states('sensor.lowicz_wilgotnosc', rounded=True)) | float or state_attr('weather.lowicz', 'humidity') }}"
-    pressure_template: "{{ (states('sensor.nettigo_air_monitor_bme280_cisnienie', rounded=True) or states('sensor.lowicz_cisnienie', rounded=True)) | float or state_attr('weather.lowicz', 'pressure') }}"
+    temperature_template: "{{ states('sensor.nettigo_air_monitor_temperatura') or states('sensor.lowicz_temperatura') or state_attr('weather.lowicz', 'temperature') }}"
+    humidity_template: "{{ (states('sensor.nettigo_air_monitor_wilgotnosc') or states('sensor.lowicz_wilgotnosc') or state_attr('weather.lowicz', 'humidity')) | round }}"
+    pressure_template: "{{ (states('sensor.nettigo_air_monitor_cisnienie') or states('sensor.lowicz_cisnienie') or state_attr('weather.lowicz', 'pressure')) | round }}"
     dew_point_template: "{{ state_attr('weather.lowicz', 'dew_point') }}"
     apparent_temperature_template: "{{ state_attr('weather.lowicz', 'apparent_temperature') }}"
     wind_speed_template: "{{ state_attr('weather.lowicz', 'wind_speed') | round }}"

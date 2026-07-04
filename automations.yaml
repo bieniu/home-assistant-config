@@ -17,7 +17,7 @@
       group: server
       priority: high
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
     action: python_script.notify
 - id: notification_storm_comming
@@ -44,7 +44,7 @@
           message: '{{ notification_message }}'
           tag: '{{ notification_tag }}'
           services:
-          - service: notify.mobile_app_iphone_13
+          - service: notify.mobile_app_iphone_17
             type: ios
         action: python_script.notify
     - if:
@@ -89,7 +89,7 @@
           tag: dishwasher
           group: home
           services:
-          - service: notify.mobile_app_iphone_13
+          - service: notify.mobile_app_iphone_17
             type: ios
         action: python_script.notify
     - if:
@@ -185,9 +185,11 @@
       tag: water-leak-{{ area_name(trigger.entity_id) }}
       priority: high
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
       - service: notify.mobile_app_iphone_16_plus
+        type: ios
+      - notify: notify.mobile_app_iphone_15_pro
         type: ios
     action: python_script.notify
   variables:
@@ -228,7 +230,7 @@
       tag: relay-overpower-{{ trigger.entity_id }}
       priority: high
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
     action: python_script.notify
   variables:
@@ -269,7 +271,7 @@
       tag: relay-overheating-{{ trigger.entity_id }}
       priority: high
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
     action: python_script.notify
   variables:
@@ -329,7 +331,7 @@
       image: "{% if area in snapshot_areas %}\n  /media/local/salon/{{ snapshot_name
         }}\n{% endif %}"
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
       - service: notify.mobile_app_iphone_16_plus
         type: ios
@@ -365,7 +367,7 @@
       tag: window-opened-{{ area_name(trigger.entity_id) }}
       group: windows
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
       - service: notify.mobile_app_iphone_16_plus
         type: ios
@@ -389,9 +391,11 @@
       tag: balcony-door-pracownia
       priority: high
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
       - service: notify.mobile_app_iphone_16_plus
+        type: ios
+      - service: notify.mobile_app_iphone_15_pro
         type: ios
     action: python_script.notify
 - id: notification_gas_leak_kuchnia
@@ -410,7 +414,7 @@
         tag: gas-leak
         priority: high
         services:
-        - service: notify.mobile_app_iphone_13
+        - service: notify.mobile_app_iphone_17
           type: ios
         - service: notify.mobile_app_iphone_16_plus
           type: ios
@@ -447,7 +451,7 @@
       tag: low-battery
       group: devices
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
     action: python_script.notify
   variables:
@@ -489,9 +493,11 @@
         group: windows
         priority: high
         services:
-        - service: notify.mobile_app_iphone_13
+        - service: notify.mobile_app_iphone_17
           type: ios
         - service: notify.mobile_app_iphone_16_plus
+          type: ios
+        - service: notify.mobile_app_iphone_15_pro
           type: ios
       action: python_script.notify
 - id: presence_peoples_back
@@ -782,7 +788,7 @@
       tag: airing-end
       group: climate
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
       - service: notify.mobile_app_iphone_16_plus
         type: ios
@@ -1821,7 +1827,7 @@
           message: '{{ notification_message }}'
           tag: '{{ notification_tag }}'
           services:
-          - service: notify.mobile_app_iphone_13
+          - service: notify.mobile_app_iphone_17
             type: ios
         action: python_script.notify
   - choose:
@@ -1882,7 +1888,7 @@
             message: '{{ notification_message }}'
             tag: '{{ notification_tag }}'
             services:
-            - service: notify.mobile_app_iphone_13
+            - service: notify.mobile_app_iphone_17
               type: ios
           action: python_script.notify
     - choose:
@@ -2004,7 +2010,7 @@
           tag: washing-machine
           group: home
           services:
-          - service: notify.mobile_app_iphone_13
+          - service: notify.mobile_app_iphone_17
             type: ios
         action: python_script.notify
     - if:
@@ -2042,7 +2048,7 @@
       priority: high
       group: smoke
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
       - service: notify.mobile_app_iphone_16_plus
         type: ios
@@ -2067,7 +2073,7 @@
       tag: gas-detector
       group: devices
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
   - device_id: 07ee2d658bd1fbdce765f6707e48f76d
     domain: button
@@ -2086,7 +2092,7 @@
       tag: gas-detector
       group: devices
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
   mode: single
 - id: '1682413050614'
@@ -2222,7 +2228,7 @@
       latitude: '{{ state_attr("person.edyta", "latitude") }}'
       longitude: '{{ state_attr("person.edyta", "longitude") }}'
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
     action: python_script.notify
   mode: single
@@ -2364,11 +2370,11 @@
         \ \"fan\",\n  \"humidifier\",\n  \"light\",\n  \"media_player\",\n  \"sensor\",\n
         \ \"switch\"\n] %}\n{% set ignored_entities = [\n  \"light.philips_65oled707_ambilight\",\n
         \ \"sensor.karmel_codzienny_cel\",\n  \"sensor.karmel_czas_aktywnosci\",\n
-        \ \"switch.karmel_brzeczyk_trackera\",\n  \"switch.karmel_led_trackera\",\n
-        \ \"switch.karmel_sledzenie_na_zywo\",\n  \"sensor.luna_codzienny_cel\",\n
-        \ \"sensor.luna_czas_aktywnosci\",\n  \"switch.luna_brzeczyk_trackera\",\n
-        \ \"switch.luna_led_trackera\",\n  \"switch.luna_sledzenie_na_zywo\"\n] %}\n{%
-        set ignored_entries = [\"Sony KD-55XF8596\"] %}\n{% macro unavailable_entries()
+        \ \"switch.lokalizator_zfaaggru_brzeczyk\",\n  \"switch.lokalizator_zfaaggru_led\",\n
+        \ \"switch.lokalizator_zfaaggru_sledzenie_na_zywo\",\n  \"sensor.luna_codzienny_cel\",\n
+        \ \"sensor.luna_czas_aktywnosci\",\n  \"switch.lokalizator_yhgljcej_brzeczyk\",\n
+        \ \"switch.lokalizator_yhgljcej_led\",\n  \"switch.lokalizator_yhgljcej_sledzenie_na_zywo\"\n]
+        %}\n{% set ignored_entries = [\"Sony KD-55XF8596\"] %}\n{% macro unavailable_entries()
         %}\n  {% for domain in checked_domains %}\n    {% for entity_id in states[domain]
         | selectattr(\"state\", \"==\", \"unavailable\") | map(attribute=\"entity_id\")
         if entity_id not in ignored_entities %}\n      {% set entry_name = device_name(entity_id)
@@ -2659,7 +2665,7 @@
       tag: blu-trv-calibration
       group: devices
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
     action: python_script.notify
   mode: single
@@ -2669,8 +2675,8 @@
   triggers:
   - trigger: numeric_state
     entity_id:
-    - sensor.luna_bateria_trackera
-    - sensor.karmel_bateria_trackera
+    - sensor.lokalizator_yhgljcej_bateria
+    - sensor.lokalizator_zfaaggru_bateria
     for:
       hours: 0
       minutes: 15
@@ -2679,13 +2685,13 @@
   conditions: []
   actions:
   - data:
-      title: Poziom baterii trackera
-      message: Poziom baterii trackera {{ device_name(trigger.entity_id) }} wynosi
+      title: Poziom baterii lokalizatora
+      message: Poziom baterii urządzenia {{ device_name(trigger.entity_id) }} wynosi
         {{ trigger.to_state.state }}%. Rozważ ładowanie.
       tag: tracker-battery
       group: devices
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
     action: python_script.notify
   mode: single
@@ -2748,7 +2754,7 @@
       - action: TURN_OFF_HEATING
         title: Wyłącz ogrzewanie
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
   mode: single
 - id: '1746095039819'
@@ -2774,7 +2780,7 @@
       tag: blu-trv-firmware
       group: devices
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
   mode: single
 - id: '1747156465397'
@@ -2806,7 +2812,7 @@
       - action: TURN_ON_HEATING
         title: Włącz ogrzewanie
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
   mode: single
 - id: '1749036207006'
@@ -2832,7 +2838,7 @@
       tag: ups
       group: devices
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
   - type: test_battery_start_quick
     device_id: 56aac98c75cff43ba6a6b085f7be64f6
@@ -2850,7 +2856,7 @@
       tag: ups
       group: devices
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
   mode: single
 - id: '1749060877485'
@@ -2949,7 +2955,7 @@
       tag: wifi-vlan-wrong-vlan
       priority: high
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
   mode: parallel
   max: 10
@@ -2975,7 +2981,7 @@
       group: server
       priority: high
       services:
-      - service: notify.mobile_app_iphone_13
+      - service: notify.mobile_app_iphone_17
         type: ios
     action: python_script.notify
   mode: single
@@ -3320,21 +3326,97 @@
     - sensor.lowicz_pyl_zawieszony_pm1
     - sensor.nettigo_air_monitor_pm10
     - sensor.nettigo_air_monitor_pm25
+    - sensor.lowicz_temperatura_odczuwalna
+    - sensor.bzura_lowicz_poziom_wody
+    id: numerical
+  - trigger: state
+    entity_id:
+    - weather.dom
+    id: condition
+  - trigger: state
+    entity_id:
+    - sensor.jakosc_powietrza_zewnetrznego
+    id: text
+  - trigger: state
+    entity_id:
+    - sun.sun
+    id: sun
+    attribute: next_rising
   conditions:
   - condition: template
     value_template: '{{ trigger.to_state.state != "unknown" }}'
   - condition: template
     value_template: '{{ trigger.to_state.state != "unavailable" }}'
   actions:
-  - action: mqtt.publish
-    metadata: {}
-    data:
-      evaluate_payload: false
-      qos: '0'
-      topic: weather-dashboard/{{ trigger.to_state.attributes.device_class }}
-      payload: '{{ {"value": trigger.to_state.state | float, "unit": trigger.to_state.attributes.unit_of_measurement}
-        | to_json }}'
-      retain: false
+  - variables:
+      topics:
+        weather.dom: condition
+        sensor.nettigo_air_monitor_temperatura: temperature
+        sensor.nettigo_air_monitor_wilgotnosc: humidity
+        sensor.nettigo_air_monitor_cisnienie: pressure
+        sensor.lowicz_pyl_zawieszony_pm1: pm1
+        sensor.nettigo_air_monitor_pm10: pm10
+        sensor.nettigo_air_monitor_pm25: pm25
+        sensor.lowicz_temperatura_odczuwalna: apparent_temperature
+        sensor.jakosc_powietrza_zewnetrznego: air_quality
+        sensor.bzura_lowicz_poziom_wody: water_level
+        sun.sun: sun
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - numerical
+      sequence:
+      - action: mqtt.publish
+        metadata: {}
+        data:
+          evaluate_payload: false
+          qos: '0'
+          topic: weather-dashboard/{{ topics[trigger.entity_id] }}
+          payload: '{{ {"value": trigger.to_state.state | float, "unit": trigger.to_state.attributes.unit_of_measurement}
+            | to_json }}'
+          retain: false
+    - conditions:
+      - condition: trigger
+        id:
+        - condition
+      sequence:
+      - action: mqtt.publish
+        metadata: {}
+        data:
+          evaluate_payload: false
+          qos: '0'
+          topic: weather-dashboard/{{ topics[trigger.entity_id] }}
+          payload: '{{ {"value": state_translated(trigger.entity_id), "icon": trigger.to_state.state}
+            | to_json }}'
+          retain: false
+    - conditions:
+      - condition: trigger
+        id:
+        - text
+      sequence:
+      - action: mqtt.publish
+        metadata: {}
+        data:
+          evaluate_payload: false
+          qos: '0'
+          topic: weather-dashboard/{{ topics[trigger.entity_id] }}
+          payload: '{{ {"value": trigger.to_state.state} | to_json }}'
+          retain: false
+    - conditions:
+      - condition: trigger
+        id:
+        - sun
+      sequence:
+      - action: mqtt.publish
+        metadata: {}
+        data:
+          evaluate_payload: false
+          qos: '0'
+          topic: weather-dashboard/{{ topics[trigger.entity_id] }}
+          payload: '{{ {"rise": trigger.to_state.attributes.next_rising, "set": trigger.to_state.attributes.next_setting}
+            | to_json }}'
+          retain: false
   mode: queued
   max: 10
 - id: '1776109999560'
