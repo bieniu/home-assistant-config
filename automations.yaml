@@ -428,34 +428,37 @@
       then: []
 - id: notification_low_battery
   alias: Niski poziom naładowania baterii
-  description: ''
   triggers:
-  - at: '18:00:00'
-    trigger: time
+  - trigger: time
+    at: '18:00:00'
   conditions:
   - condition: template
-    value_template: "{% macro battery_level() %}\n  {% for item in states.sensor if
-      item.attributes.device_class == 'battery' and item.attributes.unit_of_measurement
-      == '%' and item.state != \"unavailable\" and item.state | int(-1) < threshold
-      %}\n    {{ item.entity_id }}\n  {% endfor %}\n{% endmacro %} {{ battery_level()
-      | trim != '' }}\n"
+    value_template: '{{ low_batteries != '''' }}'
   actions:
-  - data:
+  - action: python_script.notify
+    data:
       title: Niski poziom naładowania baterii
-      message: "{% macro battery_level() %}{% for item in states.sensor if item.attributes.device_class
-        == 'battery' and item.attributes.unit_of_measurement == '%' and item.state
-        | int(0) < threshold %}\n - {{ device_name(item.entity_id) }}{% if area_name(item.entity_id)
-        %}, {{ area_name(item.entity_id) }}{% endif %}, {{ item.state | round(0, default='unknown')
-        }}%{% endfor %}{% endmacro %}W następujących urządzeniach jest niski poziom
-        naładowania baterii: {{ battery_level() }}"
+      message: 'W następujących urządzeniach jest niski poziom naładowania baterii:
+
+        {{ low_batteries }}
+
+        '
       tag: low-battery
       group: devices
       services:
       - service: notify.mobile_app_iphone_17
         type: ios
-    action: python_script.notify
   variables:
     threshold: 20
+    low_batteries: "{% set ns = namespace(lines=[]) %}\n{% for entity in states.sensor\n
+      \   | selectattr(\"attributes.device_class\", \"eq\", \"battery\")\n    | selectattr(\"attributes.unit_of_measurement\",
+      \"eq\", \"%\")\n    | rejectattr(\"state\", \"in\", [\"unknown\", \"unavailable\"])
+      %}\n\n  {% if entity.state | int(-1) < threshold %}\n    {% set area = area_name(entity.entity_id)
+      %}\n    {% set ns.lines = ns.lines + [\n      \"- \"\n      ~ device_name(entity.entity_id)\n
+      \     ~ (\", \" ~ area if area else \"\")\n      ~ \", \"\n      ~ (entity.state
+      | int)\n      ~ \"%\"\n    ] %}\n  {% endif %}\n\n{% endfor %}\n{{ ns.lines
+      | join(\"\\n\") }}\n"
+  mode: single
 - id: presence_peoples_away
   alias: Domownicy poza domem
   description: ''
@@ -1361,10 +1364,11 @@
   alias: Włącz lampę w gabinecie gdy pojawi się ruch i jest ciemno
   description: ''
   triggers:
-  - entity_id: binary_sensor.motion_gabinet
-    from: 'off'
-    to: 'on'
-    trigger: state
+  - trigger: motion.detected
+    target:
+      area_id: gabinet
+    options:
+      behavior: first
   conditions:
   - condition: state
     entity_id:
@@ -1391,10 +1395,11 @@
       transition: 3
     action: light.turn_on
   - wait_for_trigger:
-      entity_id: binary_sensor.motion_gabinet
-      from: 'on'
-      to: 'off'
-      trigger: state
+    - trigger: motion.cleared
+      target:
+        floor_id: pietro
+      options:
+        behavior: all
   - target:
       entity_id: light.lamp_gabinet
     data:
@@ -2359,30 +2364,42 @@
   mode: single
 - id: '1715247759498'
   alias: Niedostępne urządzenia lub usługi
-  description: ''
   triggers:
-  - minutes: /15
-    trigger: time_pattern
-  conditions: []
+  - trigger: time_pattern
+    minutes: /15
+  conditions:
+  - condition: template
+    value_template: '{{ unavailable_devices != '''' }}'
   actions:
-  - data:
-      entries: "{% set checked_domains = [\n  \"binary_sensor\",\n  \"climate\",\n
-        \ \"fan\",\n  \"humidifier\",\n  \"light\",\n  \"media_player\",\n  \"sensor\",\n
-        \ \"switch\"\n] %}\n{% set ignored_entities = [\n  \"light.philips_65oled707_ambilight\",\n
-        \ \"sensor.karmel_codzienny_cel\",\n  \"sensor.karmel_czas_aktywnosci\",\n
-        \ \"switch.lokalizator_zfaaggru_brzeczyk\",\n  \"switch.lokalizator_zfaaggru_led\",\n
-        \ \"switch.lokalizator_zfaaggru_sledzenie_na_zywo\",\n  \"sensor.luna_codzienny_cel\",\n
-        \ \"sensor.luna_czas_aktywnosci\",\n  \"switch.lokalizator_yhgljcej_brzeczyk\",\n
-        \ \"switch.lokalizator_yhgljcej_led\",\n  \"switch.lokalizator_yhgljcej_sledzenie_na_zywo\"\n]
-        %}\n{% set ignored_entries = [\"Sony KD-55XF8596\"] %}\n{% macro unavailable_entries()
-        %}\n  {% for domain in checked_domains %}\n    {% for entity_id in states[domain]
-        | selectattr(\"state\", \"==\", \"unavailable\") | map(attribute=\"entity_id\")
-        if entity_id not in ignored_entities %}\n      {% set entry_name = device_name(entity_id)
-        %}\n      {% if entry_name not in ignored_entries and entry_name != None %}\n
-        \       {{ entry_name }}@{{ area_name(entity_id) }}|\n      {% endif %}\n
-        \   {% endfor %}\n  {% endfor %}\n{% endmacro %}\n{{ unavailable_entries()
-        }}"
-    action: python_script.unavailable_entries
+  - action: python_script.notify
+    data:
+      title: Niedostępne urządzenia/usługi
+      message: 'Następujące urządzenia/usługi są niedostępne:
+
+        {{ unavailable_devices }}
+
+        '
+      tag: notification-missing-entries
+      group: devices
+      services:
+      - service: notify.mobile_app_iphone_17
+        type: ios
+  variables:
+    unavailable_devices: "{% set ignored_entities = [\n  \"light.philips_65oled707_ambilight\",\n
+      \ \"sensor.karmel_codzienny_cel\",\n  \"sensor.karmel_czas_aktywnosci\",\n  \"switch.lokalizator_zfaaggru_brzeczyk\",\n
+      \ \"switch.lokalizator_zfaaggru_led\",\n  \"switch.lokalizator_zfaaggru_sledzenie_na_zywo\",\n
+      \ \"sensor.luna_codzienny_cel\",\n  \"sensor.luna_czas_aktywnosci\",\n  \"switch.lokalizator_yhgljcej_brzeczyk\",\n
+      \ \"switch.lokalizator_yhgljcej_led\",\n  \"switch.lokalizator_yhgljcej_sledzenie_na_zywo\",\n
+      \ \"button.shelly_plus_smoke_d12914_wycisz_alarm\",\n  \"button.shelly_plus_smoke_d08428_wycisz_alarm\",\n]
+      %}\n{% set ignored_devices = [\n  \"Sony KD-55XF8596\"\n] %}\n{% set ns = namespace(seen=[],
+      lines=[]) %}\n{% for entity in states\n    | selectattr(\"state\", \"eq\", \"unavailable\")\n
+      \   | rejectattr(\"entity_id\", \"in\", ignored_entities) %}\n\n  {% set device
+      = device_name(entity.entity_id) %}\n\n  {% if device\n      and device not in
+      ignored_devices\n      and device not in ns.seen %}\n\n    {% set ns.seen =
+      ns.seen + [device] %}\n\n    {% set area = area_name(entity.entity_id) %}\n\n
+      \   {% set ns.lines = ns.lines + [\n      \"- \" ~ device ~ (\", \" ~ area if
+      area else \"\")\n    ] %}\n\n  {% endif %}\n{% endfor %}\n{{ ns.lines | join('\\n')
+      }}\n"
   mode: queued
   max: 10
 - id: '1715426726944'
