@@ -9,17 +9,18 @@
       minutes: 5
     trigger: numeric_state
   actions:
-  - data:
+  - action: notify.mobile_app_iphone_17
+    metadata: {}
+    data:
       title: Wysokie użycie pamięci RAM
       message: Serwer Home Assistant używa obecnie {{ trigger.to_state.state }}% pamięci
         RAM.
-      tag: high-ram-usage
-      group: server
-      priority: high
-      services:
-      - service: notify.mobile_app_iphone_17
-        type: ios
-    action: python_script.notify
+      data:
+        group: server
+        tag: high-ram-usage
+        push:
+          badge: 1
+          interruption-level: critical
 - id: notification_storm_comming
   alias: Burza w pobliżu
   description: ''
@@ -39,27 +40,29 @@
         entity_id: person.maciek
         state: home
       then:
+      - action: notify.mobile_app_iphone_17
         data:
           title: '{{ notification_title }}'
           message: '{{ notification_message }}'
-          tag: '{{ notification_tag }}'
-          services:
-          - service: notify.mobile_app_iphone_17
-            type: ios
-        action: python_script.notify
+          data:
+            tag: '{{ notification_tag }}'
+            push:
+              badge: 1
+              sound: Warsaw_Haptic.caf
     - if:
       - condition: state
         entity_id: person.edyta
         state: home
       then:
+      - action: notify.mobile_app_iphone_16_plus
         data:
           title: '{{ notification_title }}'
           message: '{{ notification_message }}'
-          tag: '{{ notification_tag }}'
-          services:
-          - service: notify.mobile_app_iphone_16_plus
-            type: ios
-        action: python_script.notify
+          data:
+            tag: '{{ notification_tag }}'
+            push:
+              badge: 1
+              sound: Warsaw_Haptic.caf
   variables:
     notification_title: Burza w pobliżu domu
     notification_message: Wyładowania atmosferyczne występują {{ states('sensor.dom_dystans_do_blyskawicy')
@@ -83,29 +86,36 @@
         entity_id: person.maciek
         state: home
       then:
-      - data:
-          title: Koniec zmywania
-          message: Zmywarka zakończyła zmywanie naczyń.
-          tag: dishwasher
-          group: home
-          services:
-          - service: notify.mobile_app_iphone_17
-            type: ios
-        action: python_script.notify
+      - action: notify.mobile_app_iphone_17
+        data:
+          title: '{{ notification_title }}'
+          message: '{{ notification_message }}'
+          data:
+            group: '{{ notification_group }}'
+            tag: '{{ notification_tag }}'
+            push:
+              badge: 1
+              sound: Warsaw_Haptic.caf
     - if:
       - condition: state
         entity_id: person.edyta
         state: home
       then:
-      - data:
-          title: Koniec zmywania
-          message: Zmywarka zakończyła zmywanie naczyń.
-          tag: dishwasher
-          group: home
-          services:
-          - service: notify.mobile_app_iphone_16_plus
-            type: ios
-        action: python_script.notify
+      - action: notify.mobile_app_iphone_16_plus
+        data:
+          title: '{{ notification_title }}'
+          message: '{{ notification_message }}'
+          data:
+            group: '{{ notification_group }}'
+            tag: '{{ notification_tag }}'
+            push:
+              badge: 1
+              sound: Warsaw_Haptic.caf
+  variables:
+    notification_title: Koniec zmywania
+    notification_message: Zmywarka zakończyła zmywanie naczyń.
+    notification_tag: dishwasher
+    notification_group: home
 - id: notification_salon_co2
   alias: Wysokie stężenie dwutlenku węgla w salonie
   description: ''
@@ -153,11 +163,6 @@
       message: W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state
         | round }} ppm. Jeśli to możliwe przewietrz pomieszczenie.
       language: pl-PL
-  variables:
-    notification_title: Wysokie stężenie dwutlenku węgla
-    notification_message: W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state
-      | round }} ppm. Należy przewietrzyć pomieszczenie.
-    notification_tag: high-co2-level
 - id: notification_water_leak_kuchnia
   alias: Wyciek wody
   description: ''
@@ -179,19 +184,37 @@
     to: 'on'
     trigger: state
   actions:
-  - data:
-      title: '{{ notification_title }}'
-      message: '{{ notification_message }}'
-      tag: water-leak-{{ area_name(trigger.entity_id) }}
-      priority: high
-      services:
-      - service: notify.mobile_app_iphone_17
-        type: ios
-      - service: notify.mobile_app_iphone_16_plus
-        type: ios
-      - notify: notify.mobile_app_iphone_15_pro
-        type: ios
-    action: python_script.notify
+  - parallel:
+    - action: notify.mobile_app_iphone_17
+      metadata: {}
+      data:
+        title: '{{ notification_title }}'
+        message: '{{ notification_message }}'
+        data:
+          tag: water-leak-{{ area_name(trigger.entity_id) }}
+          push:
+            badge: 1
+            interruption-level: critical
+    - action: notify.mobile_app_iphone_16_plus
+      metadata: {}
+      data:
+        title: '{{ notification_title }}'
+        message: '{{ notification_message }}'
+        data:
+          tag: water-leak-{{ area_name(trigger.entity_id) }}
+          push:
+            badge: 1
+            interruption-level: critical
+    - action: notify.mobile_app_iphone_15_pro
+      metadata: {}
+      data:
+        title: '{{ notification_title }}'
+        message: '{{ notification_message }}'
+        data:
+          tag: water-leak-{{ area_name(trigger.entity_id) }}
+          push:
+            badge: 1
+            interruption-level: critical
   variables:
     notification_title: Wykryto wyciek wody
     notification_message: 'Wykryto wyciek wody w pomieszczeniu: {{ area_name(trigger.entity_id).lower()
@@ -224,19 +247,17 @@
       minutes: 1
     trigger: state
   actions:
-  - data:
-      title: '{{ notification_title }}'
-      message: '{{ notification_message }}'
-      tag: relay-overpower-{{ trigger.entity_id }}
-      priority: high
-      services:
-      - service: notify.mobile_app_iphone_17
-        type: ios
-    action: python_script.notify
-  variables:
-    notification_title: Zbyt duże obciążenie przekaźnika
-    notification_message: Przekaźnik urządzenia {{ device_name(trigger.entity_id)
-      }} ma zbyt duże obciążenie i został wyłączony.
+  - action: notify.mobile_app_iphone_17
+    metadata: {}
+    data:
+      title: Zbyt duże obciążenie przekaźnika
+      message: Przekaźnik urządzenia {{ device_name(trigger.entity_id) }} ma zbyt
+        duże obciążenie i został wyłączony.
+      data:
+        tag: relay-overpower-{{ trigger.entity_id }}
+        push:
+          badge: 1
+          interruption-level: critical
 - id: notification_relay_overheating
   alias: Przegrzanie przekaźnika
   description: ''
@@ -265,18 +286,16 @@
       minutes: 1
     trigger: state
   actions:
-  - data:
-      title: '{{ notification_title }}'
-      message: '{{ notification_message }}'
-      tag: relay-overheating-{{ trigger.entity_id }}
-      priority: high
-      services:
-      - service: notify.mobile_app_iphone_17
-        type: ios
-    action: python_script.notify
-  variables:
-    notification_title: Urządzenie się przegrzewa
-    notification_message: Urządzenie {{ device_name(trigger.entity_id) }} się przegrzewa.
+  - action: notify.mobile_app_iphone_17
+    metadata: {}
+    data:
+      title: Urządzenie się przegrzewa
+      message: Urządzenie {{ device_name(trigger.entity_id) }} się przegrzewa.
+      data:
+        tag: relay-overheating-{{ trigger.entity_id }}
+        push:
+          badge: 1
+          interruption-level: critical
 - id: notification_motion_when_away_mode
   alias: Ruch w pustym mieszkaniu
   description: ''
@@ -435,19 +454,18 @@
   - condition: template
     value_template: '{{ low_batteries != '''' }}'
   actions:
-  - action: python_script.notify
+  - action: notify.mobile_app_iphone_17
+    metadata: {}
     data:
       title: Niski poziom naładowania baterii
       message: 'W następujących urządzeniach jest niski poziom naładowania baterii:
-
-        {{ low_batteries }}
-
-        '
-      tag: low-battery
-      group: devices
-      services:
-      - service: notify.mobile_app_iphone_17
-        type: ios
+        {{ low_batteries }}'
+      data:
+        group: devices
+        tag: low-battery
+        push:
+          badge: 1
+          sound: Warsaw_Haptic.caf
   variables:
     threshold: 20
     low_batteries: "{% set ns = namespace(lines=[]) %}\n{% for entity in states.sensor\n
@@ -2701,16 +2719,18 @@
     below: 50
   conditions: []
   actions:
-  - data:
+  - action: notify.mobile_app_iphone_17
+    metadata: {}
+    data:
       title: Poziom baterii lokalizatora
       message: Poziom baterii urządzenia {{ device_name(trigger.entity_id) }} wynosi
         {{ trigger.to_state.state }}%. Rozważ ładowanie.
-      tag: tracker-battery
-      group: devices
-      services:
-      - service: notify.mobile_app_iphone_17
-        type: ios
-    action: python_script.notify
+      data:
+        group: devices
+        tag: tracker-battery
+        push:
+          badge: 1
+          sound: Warsaw_Haptic.caf
   mode: single
 - id: '1738692240675'
   alias: Zmniejsz temperaturę w pomieszczeniach biurowych po pracy
@@ -2848,15 +2868,17 @@
   - condition: template
     value_template: '{{ now().day <= 7 }}'
   actions:
-  - action: python_script.notify
+  - action: notify.mobile_app_iphone_17
+    metadata: {}
     data:
       title: Test baterii UPSa
       message: Rozpoczynam test baterii UPSa...
-      tag: ups
-      group: devices
-      services:
-      - service: notify.mobile_app_iphone_17
-        type: ios
+      data:
+        group: devices
+        tag: ups
+        push:
+          badge: 1
+          sound: Warsaw_Haptic.caf
   - type: test_battery_start_quick
     device_id: 56aac98c75cff43ba6a6b085f7be64f6
     domain: nut
@@ -2865,16 +2887,18 @@
       minutes: 2
       seconds: 0
       milliseconds: 0
-  - action: python_script.notify
+  - action: notify.mobile_app_iphone_17
+    metadata: {}
     data:
       title: Test baterii UPSa
       message: 'Wynik testu: {{ states("sensor.cyberpower_dl650elcd_wynik_autotestu").lower()
         }}'
-      tag: ups
-      group: devices
-      services:
-      - service: notify.mobile_app_iphone_17
-        type: ios
+      data:
+        group: devices
+        tag: ups
+        push:
+          badge: 1
+          sound: Warsaw_Haptic.caf
   mode: single
 - id: '1749060877485'
   alias: Zakończ sezon grzewczy
