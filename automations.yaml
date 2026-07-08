@@ -427,24 +427,40 @@
     trigger: state
   actions:
   - parallel:
-    - data:
-        title: Wyciek gazu
-        message: Uwaga! Wykryto wyciek gazu w kuchni!
-        tag: gas-leak
-        priority: high
-        services:
-        - service: notify.mobile_app_iphone_17
-          type: ios
-        - service: notify.mobile_app_iphone_16_plus
-          type: ios
-        - service: notify.mobile_app_iphone_15_pro
-          type: ios
-      action: python_script.notify
-    - if:
-      - condition: state
-        entity_id: script.devices_away_mode
-        state: 'off'
-      then: []
+    - action: notify.mobile_app_iphone_17
+      metadata: {}
+      data:
+        title: '{{ notification_title }}'
+        message: '{{ notification_message }}'
+        data:
+          tag: '{{ notification_tag }}'
+          push:
+            badge: 1
+            interruption-level: critical
+    - action: notify.mobile_app_iphone_16_plus
+      metadata: {}
+      data:
+        title: '{{ notification_title }}'
+        message: '{{ notification_message }}'
+        data:
+          tag: '{{ notification_tag }}'
+          push:
+            badge: 1
+            interruption-level: critical
+    - action: notify.mobile_app_iphone_15_pro
+      metadata: {}
+      data:
+        title: '{{ notification_title }}'
+        message: '{{ notification_message }}'
+        data:
+          tag: '{{ notification_tag }}'
+          push:
+            badge: 1
+            interruption-level: critical
+  variables:
+    notification_title: Wyciek gazu
+    notification_message: Uwaga! Wykryto wyciek gazu w kuchni!
+    notification_tag: gas-leak
 - id: notification_low_battery
   alias: Niski poziom naładowania baterii
   triggers:
@@ -458,8 +474,8 @@
     metadata: {}
     data:
       title: Niski poziom naładowania baterii
-      message: 'W następujących urządzeniach jest niski poziom naładowania baterii:
-        {{ low_batteries }}'
+      message: "W następujących urządzeniach jest niski poziom naładowania baterii:\n
+        \ {{ low_batteries }}\n"
       data:
         group: devices
         tag: low-battery
@@ -472,7 +488,7 @@
       \   | selectattr(\"attributes.device_class\", \"eq\", \"battery\")\n    | selectattr(\"attributes.unit_of_measurement\",
       \"eq\", \"%\")\n    | rejectattr(\"state\", \"in\", [\"unknown\", \"unavailable\"])
       %}\n\n  {% if entity.state | int(-1) < threshold %}\n    {% set area = area_name(entity.entity_id)
-      %}\n    {% set ns.lines = ns.lines + [\n      \"- \"\n      ~ device_name(entity.entity_id)\n
+      %}\n    {% set ns.lines = ns.lines + [\n      \"• \"\n      ~ device_name(entity.entity_id)\n
       \     ~ (\", \" ~ area if area else \"\")\n      ~ \", \"\n      ~ (entity.state
       | int)\n      ~ \"%\"\n    ] %}\n  {% endif %}\n\n{% endfor %}\n{{ ns.lines
       | join(\"\\n\") }}\n"
@@ -2389,19 +2405,18 @@
   - condition: template
     value_template: '{{ unavailable_devices != '''' }}'
   actions:
-  - action: python_script.notify
+  - action: notify.mobile_app_iphone_17
+    metadata: {}
     data:
       title: Niedostępne urządzenia/usługi
-      message: 'Następujące urządzenia/usługi są niedostępne:
-
-        {{ unavailable_devices }}
-
-        '
-      tag: notification-missing-entries
-      group: devices
-      services:
-      - service: notify.mobile_app_iphone_17
-        type: ios
+      message: "Następujące urządzenia/usługi są niedostępne:\n  {{ unavailable_devices
+        }}\n"
+      data:
+        tag: device-service-unavailable
+        group: devices
+        push:
+          badge: 1
+          sound: Warsaw_Haptic.caf
   variables:
     unavailable_devices: "{% set ignored_entities = [\n  \"light.philips_65oled707_ambilight\",\n
       \ \"sensor.karmel_codzienny_cel\",\n  \"sensor.karmel_czas_aktywnosci\",\n  \"switch.lokalizator_zfaaggru_brzeczyk\",\n
@@ -2415,7 +2430,7 @@
       = device_name(entity.entity_id) %}\n\n  {% if device\n      and device not in
       ignored_devices\n      and device not in ns.seen %}\n\n    {% set ns.seen =
       ns.seen + [device] %}\n\n    {% set area = area_name(entity.entity_id) %}\n\n
-      \   {% set ns.lines = ns.lines + [\n      \"- \" ~ device ~ (\", \" ~ area if
+      \   {% set ns.lines = ns.lines + [\n      \"• \" ~ device ~ (\", \" ~ area if
       area else \"\")\n    ] %}\n\n  {% endif %}\n{% endfor %}\n{{ ns.lines | join('\\n')
       }}\n"
   mode: queued
