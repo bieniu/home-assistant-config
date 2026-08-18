@@ -5,7 +5,7 @@ substitutions:
 esphome:
   name: ${host_name}
   friendly_name: ${device_name}
-  area: "Salon"
+  area: "Gabinet"
 
 esp32:
   board: lolin32
