@@ -34,7 +34,7 @@ wifi:
   ap:
     ssid: maciek
     password: !secret esphome_password
-  # output_power: 13dB  # default is 20dB
+  output_power: 13dB  # default is 20dB
 
 captive_portal:
 
