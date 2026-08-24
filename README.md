@@ -20,6 +20,10 @@
 
 * [Home Assistant Connent ZBT-2](https://www.home-assistant.io/connect/zbt-2)
 
+## Thread Controler
+
+* [Home Assistant Connent ZBT-1](https://www.home-assistant.io/connectzbt1/)
+
 ## Lights
 
 * Philips Hue White Bulb LWA001
@@ -56,6 +60,7 @@
 * Shelly Pro 1PM
 * Shelly Pro 3EM
 * Sonoff S26 [[ESPHome](https://esphome.io)]
+* IKEA GRILLPLATS Plug
 
 ## Switches
 
@@ -77,6 +82,7 @@
 * Shelly Plus Smoke
 * [Nettigo Air Monitor](https://air.nettigo.pl/?lang=en)
 * Wemos Lolin32 + MH-Z19B [[ESPHome](https://esphome.io)]
+* IKEA ALPSTUGA Air Quality Monitor
 
 ## Thermostats
 
@@ -103,6 +109,7 @@
 * Xiaomi Mi Humidifier CB1
 * Xiaomi Mi Pedestal Fan 1X
 * Xiaomi Mi Smart Home Gateway 2
+* Nuki Smart Lock Ultra
 
 ## Custom Integrations
 

@@ -2,3 +2,8 @@ default: warning
 filters:
   homeassistant.loader:
     - "We found a custom integration"
+# logs:
+#   homeassistant.components.go2rtc: debug
+#   homeassistant.components.webrtc: debug
+#   custom_components.shelly.camera: debug
+#   aioshelly: debug

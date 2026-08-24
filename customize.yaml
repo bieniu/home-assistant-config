@@ -45,9 +45,6 @@ update.aplikacje_truenas_paperless_ngx:
 update.aplikacje_truenas_immich:
   entity_picture: /local/immich.png
 
-update.aplikacje_truenas_mosquitto:
-  entity_picture: /local/mosquitto.png
-
 update.aplikacje_truenas_dockhand:
   entity_picture: /local/dockhand.png
 
@@ -75,8 +72,8 @@ update.aplikacje_truenas_pairdrop:
 update.aplikacje_truenas_dispatcharr:
   entity_picture: /local/dispatcharr.png
 
-update.ui_extension:
-  entity_picture: /local/ui_extension.png
+update.aplikacje_truenas_umami:
+  entity_picture: /local/umami.png
 
 calendar.workday_sensor_calendar:
   message: dzień roboczy

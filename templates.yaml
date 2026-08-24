@@ -34,7 +34,7 @@
       {% set fan_power = states("sensor.wentylator_i_oswietlenie_w_salonie_pobor_mocy") | int(0) %}
       {% if fan_power >= 20 and fan_power <= 40 %}
         33
-      {% elif fan_power >= 45 and fan_power <= 65 %}
+      {% elif fan_power >= 44 and fan_power <= 65 %}
         66
       {% elif fan_power >= 75 %}
         100
@@ -55,14 +55,14 @@
     temperature_template: "{{ states('sensor.nettigo_air_monitor_temperatura') or states('sensor.lowicz_temperatura') or state_attr('weather.lowicz', 'temperature') }}"
     humidity_template: "{{ (states('sensor.nettigo_air_monitor_wilgotnosc') or states('sensor.lowicz_wilgotnosc') or state_attr('weather.lowicz', 'humidity')) | round }}"
     pressure_template: "{{ (states('sensor.nettigo_air_monitor_cisnienie') or states('sensor.lowicz_cisnienie') or state_attr('weather.lowicz', 'pressure')) | round }}"
-    dew_point_template: "{{ state_attr('weather.lowicz', 'dew_point') }}"
+    # dew_point_template: "{{ state_attr('weather.lowicz', 'dew_point') }}"
     apparent_temperature_template: "{{ state_attr('weather.lowicz', 'apparent_temperature') }}"
     wind_speed_template: "{{ state_attr('weather.lowicz', 'wind_speed') | round }}"
     wind_bearing_template: "{{ state_attr('weather.lowicz', 'wind_bearing') }}"
     wind_gust_speed_template: "{{ state_attr('weather.lowicz', 'wind_gust_speed') | round }}"
-    visibility_template: "{{ state_attr('weather.lowicz', 'visibility') }}"
+    # visibility_template: "{{ state_attr('weather.lowicz', 'visibility') }}"
     cloud_coverage_template: "{{ state_attr('weather.lowicz', 'cloud_coverage') }}"
-    forecast_daily_template: "{{ state_attr('sensor.lowicz_dzienna_prognoza_pogody', 'forecast') }}"
+    forecast_twice_daily_template: "{{ state_attr('sensor.lowicz_prognoza_pogody', 'twice_daily_forecast') }}"
 
 - trigger:
     - platform: time_pattern
@@ -72,14 +72,14 @@
       target:
         entity_id: weather.lowicz
       data:
-        type: daily
-      response_variable: daily_forecast
+        type: twice_daily
+      response_variable: twice_daily_forecast
   sensor:
-    - name: Łowicz Dzienna prognoza pogody
-      unique_id: lowicz_daily_weather_forecast
+    - name: Łowicz Prognoza pogody
+      unique_id: lowicz_weather_forecast
       state: "{{ now().isoformat() }}"
       attributes:
-        forecast: "{{ daily_forecast['weather.lowicz'].forecast }}"
+        twice_daily_forecast: "{{ twice_daily_forecast['weather.lowicz'].forecast }}"
 
 - trigger:
     - platform: time_pattern
@@ -87,14 +87,14 @@
   action:
     - service: weather.get_forecasts
       target:
-        entity_id: weather.lowicz
+        entity_id: weather.lowicz_2
       data:
         type: daily
-      response_variable: hourly_forecast
+      response_variable: daily_forecast
   sensor:
     - name: Dom Prawdopodobieństwo opadów
       unique_id: home_precipitation_probablility
       icon: mdi:weather-partly-rainy
       unit_of_measurement: "%"
       state_class: measurement
-      state: "{{ hourly_forecast['weather.lowicz'].forecast[0].precipitation_probability }}"
+      state: "{{ daily_forecast['weather.lowicz_2'].forecast[0].precipitation_probability }}"

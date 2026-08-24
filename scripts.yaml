@@ -340,6 +340,11 @@ alexa_goodnight:
       - light.oswietlenie_kuchni
     data: {}
     action: homeassistant.turn_off
+  - action: lock.lock
+    metadata: {}
+    target:
+      entity_id: lock.przedpokoj_zamek_drzwi_wejsciowych
+    data: {}
   mode: single
   alias: Dobranoc
   icon: mdi:weather-night
@@ -388,7 +393,7 @@ restart_wifi_devices:
       - button.shelly_plus_1pm_21e1dc_uruchom_ponownie
       - button.shelly_plus_2pm_8d28f4_restart
       - button.shelly_plus_2pm_b67728_restart
-      - button.shelly_plus_plug_s_2ffb28_restart
+      - button.pralnia_shelly_plus_plug_s_2ffb28_uruchom_ponownie
       - button.shelly_plus_plug_s_d00c84_uruchom_ponownie
       - button.shelly_pro_1pm_80e0c0_uruchom_ponownie
       - button.shelly_pro_3em_879c7c_restart
@@ -776,7 +781,7 @@ get_weather_forecast:
     target:
       entity_id: weather.dom
     data:
-      type: daily
+      type: twice_daily
     response_variable: forecast
   - stop: ''
     response_variable: forecast
@@ -868,3 +873,21 @@ radio:
   alias: Odtwarzaj radio w salonie
   description: ''
   icon: mdi:radio
+zablokuj_zamek_drzwi_wejsciowych:
+  sequence:
+  - action: lock.lock
+    metadata: {}
+    target:
+      entity_id: lock.przedpokoj_zamek_drzwi_wejsciowych
+    data: {}
+  alias: Zamknij zamek drzwi wejściowych
+  description: ''
+zablokuj_zamek_drzwi_wejsciowych_duplikuj:
+  sequence:
+  - action: lock.unlock
+    metadata: {}
+    target:
+      entity_id: lock.przedpokoj_zamek_drzwi_wejsciowych
+    data: {}
+  alias: Otwórz zamek drzwi wejściowych
+  description: ''

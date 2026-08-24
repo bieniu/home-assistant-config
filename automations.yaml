@@ -120,14 +120,20 @@
   alias: Wysokie stężenie dwutlenku węgla w salonie
   description: ''
   triggers:
-  - entity_id:
-    - sensor.co2_salon
-    above: 1000
-    for:
-      hours: 0
-      minutes: 10
-      seconds: 0
-    trigger: numeric_state
+  - trigger: air_quality.co2_crossed_threshold
+    target:
+      area_id: salon
+    options:
+      behavior: each
+      for:
+        hours: 0
+        minutes: 10
+        seconds: 0
+      threshold:
+        type: above
+        value:
+          active_choice: number
+          number: 1000
   conditions:
   - condition: state
     entity_id: input_boolean.away_mode
@@ -474,8 +480,9 @@
     metadata: {}
     data:
       title: Niski poziom naładowania baterii
-      message: "W następujących urządzeniach jest niski poziom naładowania baterii:\n
-        \ {{ low_batteries }}\n"
+      message: 'Urządzenia z niskim poziomem naładowania baterii:
+
+        {{ low_batteries }}'
       data:
         group: devices
         tag: low-battery
@@ -483,15 +490,15 @@
           badge: 1
           sound: Warsaw_Haptic.caf
   variables:
-    threshold: 20
-    low_batteries: "{% set ns = namespace(lines=[]) %}\n{% for entity in states.sensor\n
+    threshold: 30
+    low_batteries: "{% set ns = namespace(lines=[]) %} {% for entity in states.sensor\n
       \   | selectattr(\"attributes.device_class\", \"eq\", \"battery\")\n    | selectattr(\"attributes.unit_of_measurement\",
       \"eq\", \"%\")\n    | rejectattr(\"state\", \"in\", [\"unknown\", \"unavailable\"])
       %}\n\n  {% if entity.state | int(-1) < threshold %}\n    {% set area = area_name(entity.entity_id)
       %}\n    {% set ns.lines = ns.lines + [\n      \"• \"\n      ~ device_name(entity.entity_id)\n
       \     ~ (\", \" ~ area if area else \"\")\n      ~ \", \"\n      ~ (entity.state
-      | int)\n      ~ \"%\"\n    ] %}\n  {% endif %}\n\n{% endfor %}\n{{ ns.lines
-      | join(\"\\n\") }}\n"
+      | int)\n      ~ \"%\"\n    ] %}\n  {% endif %}\n\n{% endfor %} {{ ns.lines |
+      join(\"\\n\") }}\n"
   mode: single
 - id: presence_peoples_away
   alias: Domownicy poza domem
@@ -1536,12 +1543,6 @@
     entity_id: input_boolean.away_mode
     state: 'off'
   actions:
-  - target:
-      entity_id:
-      - light.leds_schody
-      - light.bonsai_w_salonie
-    data: {}
-    action: light.turn_on
   - if:
     - condition: state
       entity_id: media_player.philips_65oled707
@@ -1557,6 +1558,12 @@
       target:
         entity_id: light.philips_65oled707_ambilight
       data: {}
+  - target:
+      entity_id:
+      - light.leds_schody
+      - light.bonsai_w_salonie
+    data: {}
+    action: light.turn_on
 - id: light_turn_off_schody_leds_on_midnight
   alias: Wyłącz LEDy na schodach i bonsai o północy
   description: ''
@@ -2114,7 +2121,7 @@
       services:
       - service: notify.mobile_app_iphone_17
         type: ios
-  - device_id: 07ee2d658bd1fbdce765f6707e48f76d
+  - device_id: ae95d1f61bff2543d4b1da7b3715f556
     domain: button
     entity_id: 1e0d54181a1474650ff72158c1cbbfdc
     type: press
@@ -2409,8 +2416,9 @@
     metadata: {}
     data:
       title: Niedostępne urządzenia/usługi
-      message: "Następujące urządzenia/usługi są niedostępne:\n  {{ unavailable_devices
-        }}\n"
+      message: 'Następujące urządzenia/usługi są niedostępne:
+
+        {{ unavailable_devices }}'
       data:
         tag: device-service-unavailable
         group: devices
@@ -2737,9 +2745,9 @@
   - action: notify.mobile_app_iphone_17
     metadata: {}
     data:
-      title: Poziom baterii lokalizatora
-      message: Poziom baterii urządzenia {{ device_name(trigger.entity_id) }} wynosi
-        {{ trigger.to_state.state }}%. Rozważ ładowanie.
+      title: Poziom naładowania baterii lokalizatora
+      message: Poziom naładowania baterii urządzenia {{ device_name(trigger.entity_id)
+        }} wynosi {{ trigger.to_state.state }}%. Rozważ ładowanie.
       data:
         group: devices
         tag: tracker-battery
@@ -3167,7 +3175,7 @@
   - action: assist_satellite.ask_question
     metadata: {}
     data:
-      question: Dzień dobry, czy chcesz abym włączyła radio RMF FM w kuchni?
+      question: Dzień dobry, czy chcesz abym włączyła radio w kuchni?
       preannounce: true
       entity_id: assist_satellite.home_assistant_voice_0a30ff_urzadzenie_asystenta_glosowego
       answers:
@@ -3314,6 +3322,11 @@
     type: single_push
     subtype: button1
     trigger: device
+  - device_id: 32d4a414f2347f65f26c23af29853f9d
+    domain: bthome
+    type: button_1
+    subtype: press
+    trigger: device
   conditions: []
   actions:
   - action: light.toggle
@@ -3340,6 +3353,15 @@
     before: sunset
     after: sunrise
   actions:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - condition: state
+    state:
+    - 'on'
+    entity_id: light.philips_65oled707_ambilight
   - action: light.turn_off
     metadata: {}
     target:
@@ -3364,6 +3386,15 @@
     before: sunrise
     after: sunset
   actions:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - condition: state
+    state:
+    - 'off'
+    entity_id: light.philips_65oled707_ambilight
   - action: light.turn_on
     metadata: {}
     target:
@@ -3376,14 +3407,15 @@
   triggers:
   - trigger: state
     entity_id:
-    - sensor.nettigo_air_monitor_temperatura
-    - sensor.nettigo_air_monitor_wilgotnosc
-    - sensor.nettigo_air_monitor_cisnienie
+    - sensor.bzura_lowicz_poziom_wody
+    - sensor.dom_prawdopodobienstwo_opadow
     - sensor.lowicz_pyl_zawieszony_pm1
+    - sensor.lowicz_temperatura_odczuwalna
+    - sensor.nettigo_air_monitor_cisnienie
     - sensor.nettigo_air_monitor_pm10
     - sensor.nettigo_air_monitor_pm25
-    - sensor.lowicz_temperatura_odczuwalna
-    - sensor.bzura_lowicz_poziom_wody
+    - sensor.nettigo_air_monitor_temperatura
+    - sensor.nettigo_air_monitor_wilgotnosc
     id: numerical
   - trigger: state
     entity_id:
@@ -3397,38 +3429,50 @@
     entity_id:
     - sun.sun
     id: sun
-    attribute: next_rising
-  conditions:
-  - condition: template
-    value_template: '{{ trigger.to_state.state != "unknown" }}'
-  - condition: template
-    value_template: '{{ trigger.to_state.state != "unavailable" }}'
+  - trigger: state
+    entity_id: sensor.lowicz_alert_pogodowy
+    id: alert
+  - trigger: time_pattern
+    id: schedule
+    hours: /1
+  - trigger: time_pattern
+    id: forecast
+    hours: /1
+  conditions: []
   actions:
   - variables:
-      topics:
-        weather.dom: condition
-        sensor.nettigo_air_monitor_temperatura: temperature
-        sensor.nettigo_air_monitor_wilgotnosc: humidity
-        sensor.nettigo_air_monitor_cisnienie: pressure
+      entities_numerical:
+        sensor.bzura_lowicz_poziom_wody: water_level
+        sensor.dom_prawdopodobienstwo_opadow: precipitation_probability
         sensor.lowicz_pyl_zawieszony_pm1: pm1
+        sensor.lowicz_temperatura_odczuwalna: apparent_temperature
+        sensor.nettigo_air_monitor_cisnienie: pressure
         sensor.nettigo_air_monitor_pm10: pm10
         sensor.nettigo_air_monitor_pm25: pm25
-        sensor.lowicz_temperatura_odczuwalna: apparent_temperature
+        sensor.nettigo_air_monitor_temperatura: temperature
+        sensor.nettigo_air_monitor_wilgotnosc: humidity
+      entities_text:
         sensor.jakosc_powietrza_zewnetrznego: air_quality
-        sensor.bzura_lowicz_poziom_wody: water_level
         sun.sun: sun
+      entities_alert:
+        sensor.lowicz_alert_pogodowy: alerts
+      entities_condition:
+        weather.dom: condition
   - choose:
     - conditions:
       - condition: trigger
         id:
         - numerical
+      - condition: template
+        value_template: '{{ trigger.to_state.state not in ("unavailable", "unknown")
+          }}'
       sequence:
       - action: mqtt.publish
         metadata: {}
         data:
           evaluate_payload: false
           qos: '0'
-          topic: weather-dashboard/{{ topics[trigger.entity_id] }}
+          topic: weather-dashboard/{{ entities_numerical[trigger.entity_id] }}
           payload: '{{ {"value": trigger.to_state.state | float, "unit": trigger.to_state.attributes.unit_of_measurement}
             | to_json }}'
           retain: false
@@ -3436,13 +3480,16 @@
       - condition: trigger
         id:
         - condition
+      - condition: template
+        value_template: '{{ trigger.to_state.state not in ("unavailable", "unknown")
+          }}'
       sequence:
       - action: mqtt.publish
         metadata: {}
         data:
           evaluate_payload: false
           qos: '0'
-          topic: weather-dashboard/{{ topics[trigger.entity_id] }}
+          topic: weather-dashboard/{{ entities_condition[trigger.entity_id] }}
           payload: '{{ {"value": state_translated(trigger.entity_id), "icon": trigger.to_state.state}
             | to_json }}'
           retain: false
@@ -3450,28 +3497,144 @@
       - condition: trigger
         id:
         - text
+      - condition: template
+        value_template: '{{ trigger.to_state.state not in ("unavailable", "unknown")
+          }}'
       sequence:
       - action: mqtt.publish
         metadata: {}
         data:
           evaluate_payload: false
           qos: '0'
-          topic: weather-dashboard/{{ topics[trigger.entity_id] }}
+          topic: weather-dashboard/{{ entities_text[trigger.entity_id] }}
           payload: '{{ {"value": trigger.to_state.state} | to_json }}'
           retain: false
     - conditions:
       - condition: trigger
         id:
         - sun
+      - condition: template
+        value_template: '{{ trigger.to_state.state not in ("unavailable", "unknown")
+          }}'
       sequence:
       - action: mqtt.publish
         metadata: {}
         data:
           evaluate_payload: false
           qos: '0'
-          topic: weather-dashboard/{{ topics[trigger.entity_id] }}
-          payload: '{{ {"rise": trigger.to_state.attributes.next_rising, "set": trigger.to_state.attributes.next_setting}
+          topic: weather-dashboard/{{ entities_text[trigger.entity_id] }}
+          payload: '{{ {"value": trigger.to_state.state} | to_json }}'
+          retain: false
+    - conditions:
+      - condition: trigger
+        id:
+        - schedule
+      sequence:
+      - repeat:
+          for_each: '{{ entities_numerical.keys() | list }}'
+          sequence:
+          - if:
+            - condition: template
+              value_template: '{{ states(repeat.item) not in [''unknown'', ''unavailable'']
+                }}'
+            then:
+            - action: mqtt.publish
+              metadata: {}
+              data:
+                evaluate_payload: false
+                qos: '0'
+                topic: weather-dashboard/{{ entities_numerical[repeat.item] }}
+                payload: '{{ {''value'': states(repeat.item) | float(0), ''unit'':
+                  state_attr(repeat.item, ''unit_of_measurement'')} | to_json }}'
+                retain: false
+      - repeat:
+          for_each: '{{ entities_text.keys() | list }}'
+          sequence:
+          - if:
+            - condition: template
+              value_template: '{{ states(repeat.item) not in [''unknown'', ''unavailable'']
+                }}'
+            then:
+            - action: mqtt.publish
+              metadata: {}
+              data:
+                evaluate_payload: false
+                qos: '0'
+                topic: weather-dashboard/{{ entities_text[repeat.item] }}
+                payload: '{{ {''value'': states(repeat.item)} | to_json }}'
+                retain: false
+      - repeat:
+          for_each: '{{ entities_condition.keys() | list }}'
+          sequence:
+          - if:
+            - condition: template
+              value_template: '{{ states(repeat.item) not in [''unknown'', ''unavailable'']
+                }}'
+            then:
+            - action: mqtt.publish
+              metadata: {}
+              data:
+                evaluate_payload: false
+                qos: '0'
+                topic: weather-dashboard/{{ entities_condition[repeat.item] }}
+                payload: '{{ {''value'': state_translated(repeat.item), ''icon'':
+                  states(repeat.item)} | to_json }}'
+                retain: false
+      - repeat:
+          for_each: '{{ entities_alert.keys() | list }}'
+          sequence:
+          - if:
+            - condition: template
+              value_template: '{{ states(repeat.item) not in [''unknown'', ''unavailable'',
+                ''no_alert''] }}'
+            then:
+            - action: mqtt.publish
+              metadata: {}
+              data:
+                evaluate_payload: false
+                qos: '0'
+                topic: weather-dashboard/{{ entities_alert[repeat.item] }}
+                payload: '{{ {''value'': state_translated(repeat.item), ''valid_to'':
+                  state_attr(repeat.item, ''valid_to'') | string, ''level'': state_attr(repeat.item,
+                  ''level'')} | to_json }}'
+                retain: false
+    - conditions:
+      - condition: trigger
+        id:
+        - alert
+      - condition: template
+        value_template: '{{ trigger.to_state.state not in ("unavailable", "unknown",
+          "no_alert") }}'
+      sequence:
+      - action: mqtt.publish
+        metadata: {}
+        data:
+          evaluate_payload: false
+          qos: '0'
+          topic: weather-dashboard/{{ entities_alert[trigger.entity_id] }}
+          payload: '{{ {"value": state_translated(trigger.entity_id), "valid_to":
+            trigger.to_state.attributes.valid_to | string, "level": trigger.to_state.attributes.level}
             | to_json }}'
+          retain: false
+    - conditions:
+      - condition: trigger
+        id:
+        - forecast
+      sequence:
+      - action: weather.get_forecasts
+        metadata: {}
+        target:
+          entity_id: weather.lowicz
+        data:
+          type: twice_daily
+        response_variable: forecast
+      - action: mqtt.publish
+        metadata: {}
+        data:
+          evaluate_payload: false
+          qos: '0'
+          topic: weather-dashboard/forecast
+          payload: '{{ forecast["weather.lowicz"]["forecast"] | to_json }}'
           retain: false
   mode: queued
   max: 10
@@ -3536,4 +3699,33 @@
       media_player_entity_id: media_player.home_assistant_voice_0a30ff_odtwarzacz_mediow
       message: Przypominam o nakarmieniu kotów
       language: pl-PL
+  mode: single
+- id: '1786285971087'
+  alias: Zamknij zamek w drzwiach jeśli domownicy opuścili mieszkanie
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_boolean.away_mode
+    from:
+    - 'off'
+    to:
+    - 'on'
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  conditions:
+  - condition: lock.is_unlocked
+    target:
+      entity_id: lock.przedpokoj_zamek_drzwi_wejsciowych
+    options:
+      behavior: any
+      for: 00:00:00
+  actions:
+  - action: lock.lock
+    metadata: {}
+    target:
+      entity_id: lock.przedpokoj_zamek_drzwi_wejsciowych
+    data: {}
   mode: single
