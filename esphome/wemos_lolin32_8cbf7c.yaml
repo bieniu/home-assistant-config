@@ -43,7 +43,8 @@ web_server:
   auth:
     username: !secret web_server_username
     password: !secret web_server_password
-
+    type: digest
+    
 esp32_ble_tracker:
 
 bluetooth_proxy:
