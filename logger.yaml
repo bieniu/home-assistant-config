@@ -2,6 +2,8 @@ default: warning
 filters:
   homeassistant.loader:
     - "We found a custom integration"
+  homeassistant.components.alexa_devices:
+    - "Failed to refresh communications settings"
 # logs:
 #   homeassistant.components.go2rtc: debug
 #   homeassistant.components.webrtc: debug

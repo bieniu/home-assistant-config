@@ -13,8 +13,6 @@ climate.grzejnik_lazienka:
   target_temp_step: 0.5
 climate.grzejnik_goscinny:
   target_temp_step: 0.5
-climate.grzejnik_pralnia:
-  target_temp_step: 0.5
 climate.drabinka_lazienka:
   target_temp_step: 0.5
 climate.grzejnik_antresola:
@@ -66,8 +64,8 @@ update.aplikacje_truenas_termix:
 update.aplikacje_truenas_warracker:
   entity_picture: /local/warracker.png
 
-update.aplikacje_truenas_pairdrop:
-  entity_picture: /local/pairdrop.png
+update.aplikacje_truenas_esphome:
+  entity_picture: /local/esphome.png
 
 update.aplikacje_truenas_dispatcharr:
   entity_picture: /local/dispatcharr.png

@@ -606,11 +606,16 @@ wroc_do_telewizji_w_salonie:
   description: ''
 odtworz_media_na_sonos:
   alias: Odtwórz media na Sonos
+  variables:
+    players:
+      sonos_arc: media_player.sonos_arc
+      sonos_one: media_player.sonos_one
+      symfonisk_bookshelf: media_player.symfonisk_bookshelf
   fields:
-    entity_id:
+    player:
       name: Odtwarzacz
-      description: entity_id odtwarzacza Sonos
-      example: media_player.sonos_arc
+      description: Nazwa odtwarzacza Sonos
+      example: Sonos Arc
       required: true
     media:
       name: Media
@@ -629,7 +634,7 @@ odtworz_media_na_sonos:
       value_template: '{{ fav_id != "" }}'
     then:
     - target:
-        entity_id: '{{ entity_id }}'
+        entity_id: '{{players[player.lower().replace(" ", "_")] }}'
       data:
         media:
           media_content_id: '{{ fav_id }}'
@@ -655,22 +660,21 @@ zmien_kanal_na_tv:
       channels:
         tvp1: 1
         tvp2: 2
-        polsat: 3
-        tvn: 4
-        puls: 5
-        puls2: 6
-        tvn7: 7
-        tele5: 9
-        polsat2: 10
-        tv4: 11
-        tv6: 12
-        tvn24: 40
-        polsatnews: 41
-        hgtv: 47
-        tvp3: 51
-        tvnturbo: 110
-        tvnstyle: 212
-        tefałen: 4
+        polsat: 5
+        polsat2: 254
+        tvn: 3
+        puls: 7
+        puls2: 8
+        tvn7: 4
+        tv4: 6
+        tv6: 13
+        tvn24: 22
+        polsatnews: 29
+        hgtv: 335
+        tvp3: 25
+        tvnturbo: 334
+        tvnstyle: 40
+        tefałen: 3
   - if:
     - condition: template
       value_template: '{{ channel.lower().replace('' '', '''') in channels }}'
@@ -696,7 +700,7 @@ zmien_kanal_na_tv:
       - action: remote.send_command
         metadata: {}
         data:
-          device: Dekoder
+          device: Telewizor
           command: '{{ repeat.item }}'
           delay_secs: 0
         target:
@@ -790,29 +794,33 @@ get_weather_forecast:
 odtworz_media_na_echo:
   alias: Odtwórz media na Echo
   description: ''
+  variables:
+    devices:
+      echo_show: 9727e389823d861a56e1dbc56d9fc27e
+      echo_dot: 8fdf0b4dd3e50cd5718f30ed128a87d1
+      echo_plus: d5ac3e5566507932133583a2411e2499
   fields:
-    entity_id:
+    player:
       name: Odtwarzacz
-      description: entity_id odtwarzacza Echo
-      example: media_player.echo_plus
+      description: Nazwa odtwarzacza Echo
+      example: Echo Show
       required: true
     media:
       name: Media
       description: Tytuł lub identyfikator mediów
       example: RMF FM
       required: true
-    content_type:
-      name: Typ mediów
-      description: media_content_type
+    source:
+      name: Żródło
+      description: Źródło pochodzenia mediów
       example: TUNEIN
       required: true
   sequence:
-  - action: media_player.play_media
-    target:
-      entity_id: '{{ entity_id }}'
+  - action: alexa_devices.send_text_command
+    metadata: {}
     data:
-      media_content_id: '{{ media }}'
-      media_content_type: '{{ content_type }}'
+      device_id: '{{ devices[player.lower().replace(" ", "_")] }}'
+      text_command: Play {{ media }} from {{ source }}
   - variables:
       result:
         success: true

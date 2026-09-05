@@ -2431,7 +2431,8 @@
       \ \"switch.lokalizator_zfaaggru_led\",\n  \"switch.lokalizator_zfaaggru_sledzenie_na_zywo\",\n
       \ \"sensor.luna_codzienny_cel\",\n  \"sensor.luna_czas_aktywnosci\",\n  \"switch.lokalizator_yhgljcej_brzeczyk\",\n
       \ \"switch.lokalizator_yhgljcej_led\",\n  \"switch.lokalizator_yhgljcej_sledzenie_na_zywo\",\n
-      \ \"button.shelly_plus_smoke_d12914_wycisz_alarm\",\n  \"button.shelly_plus_smoke_d08428_wycisz_alarm\",\n]
+      \ \"button.shelly_plus_smoke_d12914_wycisz_alarm\",\n  \"button.shelly_plus_smoke_d08428_wycisz_alarm\",\n
+      \ \"update.home_assistant_skyconnect_c0b68845_firmware\",\n  \"update.home_assistant_connect_zbt_2_10b41de59ae0_firmware\",\n]
       %}\n{% set ignored_devices = [\n  \"Sony KD-55XF8596\"\n] %}\n{% set ns = namespace(seen=[],
       lines=[]) %}\n{% for entity in states\n    | selectattr(\"state\", \"eq\", \"unavailable\")\n
       \   | rejectattr(\"entity_id\", \"in\", ignored_entities) %}\n\n  {% set device
@@ -3169,8 +3170,9 @@
   - condition: not
     conditions:
     - condition: state
-      entity_id: media_player.echo_show
-      state: playing
+      entity_id: media_player.kuchnia_echo_show
+      state:
+      - playing
   actions:
   - action: assist_satellite.ask_question
     metadata: {}
@@ -3197,14 +3199,11 @@
     response_variable: response
   - condition: template
     value_template: '{{ response.id == "yes" }}'
-  - action: media_player.play_media
+  - action: alexa_devices.send_text_command
     metadata: {}
     data:
-      media:
-        media_content_id: RMF FM
-        media_content_type: TUNEIN
-    target:
-      entity_id: media_player.echo_show
+      device_id: 9727e389823d861a56e1dbc56d9fc27e
+      text_command: Play RMF FM from TuneIn
   - action: assist_satellite.announce
     metadata: {}
     data:
@@ -3244,8 +3243,9 @@
   - condition: not
     conditions:
     - condition: state
-      entity_id: media_player.echo_show
-      state: playing
+      entity_id: media_player.kuchnia_echo_show
+      state:
+      - playing
   actions:
   - action: assist_satellite.ask_question
     metadata: {}
