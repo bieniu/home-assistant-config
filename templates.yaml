@@ -51,15 +51,15 @@
 - weather:
   - name: Dom
     unique_id: home
-    condition_template: "{{ states('weather.lowicz') }}"
-    temperature_template: "{{ states('sensor.nettigo_air_monitor_temperatura') or states('sensor.lowicz_temperatura') or state_attr('weather.lowicz', 'temperature') }}"
-    humidity_template: "{{ (states('sensor.nettigo_air_monitor_wilgotnosc') or states('sensor.lowicz_wilgotnosc') or state_attr('weather.lowicz', 'humidity')) | round }}"
-    pressure_template: "{{ (states('sensor.nettigo_air_monitor_cisnienie') or states('sensor.lowicz_cisnienie') or state_attr('weather.lowicz', 'pressure')) | round }}"
+    condition_template: "{{ states('weather.lowicz') if has_value('weather.lowicz') }}"
+    temperature_template: "{{ states('sensor.nettigo_air_monitor_temperatura') if has_value('sensor.nettigo_air_monitor_temperatura') else states('sensor.lowicz_temperatura') if has_value('sensor.lowicz_temperatura') else state_attr('weather.lowicz', 'temperature') }}"
+    humidity_template: "{{ (states('sensor.nettigo_air_monitor_wilgotnosc') if has_value('sensor.nettigo_air_monitor_wilgotnosc') else states('sensor.lowicz_wilgotnosc') if has_value('sensor.lowicz_wilgotnosc') else state_attr('weather.lowicz', 'humidity')) | round(0, default=none) }}"
+    pressure_template: "{{ (states('sensor.nettigo_air_monitor_cisnienie') if has_value('sensor.nettigo_air_monitor_cisnienie') else states('sensor.lowicz_cisnienie') if has_value('sensor.lowicz_cisnienie') else state_attr('weather.lowicz', 'pressure')) | round(0, default=none) }}"
     # dew_point_template: "{{ state_attr('weather.lowicz', 'dew_point') }}"
     apparent_temperature_template: "{{ state_attr('weather.lowicz', 'apparent_temperature') }}"
-    wind_speed_template: "{{ state_attr('weather.lowicz', 'wind_speed') | round }}"
+    wind_speed_template: "{{ state_attr('weather.lowicz', 'wind_speed') | round(0, default=none) }}"
     wind_bearing_template: "{{ state_attr('weather.lowicz', 'wind_bearing') }}"
-    wind_gust_speed_template: "{{ state_attr('weather.lowicz', 'wind_gust_speed') | round }}"
+    wind_gust_speed_template: "{{ state_attr('weather.lowicz', 'wind_gust_speed') | round(0, default=none) }}"
     # visibility_template: "{{ state_attr('weather.lowicz', 'visibility') }}"
     cloud_coverage_template: "{{ state_attr('weather.lowicz', 'cloud_coverage') }}"
     forecast_twice_daily_template: "{{ state_attr('sensor.lowicz_prognoza_pogody', 'twice_daily_forecast') }}"

@@ -714,7 +714,7 @@
   description: ''
   triggers:
   - entity_id:
-    - sensor.xiaomi_mi_air_purifier_3h_pm2_5
+    - sensor.salon_monitor_jakosci_powietrza_pm2_5
     above: 30
     for:
       minutes: 2
@@ -734,7 +734,7 @@
   description: ''
   triggers:
   - entity_id:
-    - sensor.xiaomi_mi_air_purifier_3h_pm2_5
+    - sensor.salon_monitor_jakosci_powietrza_pm2_5
     below: 30
     for:
       minutes: 2
@@ -746,7 +746,8 @@
   alias: Zmiana prędkości oczyszczacza na 2
   description: ''
   triggers:
-  - entity_id: sensor.xiaomi_mi_air_purifier_3h_pm2_5
+  - entity_id:
+    - sensor.salon_monitor_jakosci_powietrza_pm2_5
     above: 100
     for:
       minutes: 2
@@ -767,7 +768,8 @@
   alias: Zmiana prędkości oczyszczacza na 1
   description: ''
   triggers:
-  - entity_id: sensor.xiaomi_mi_air_purifier_3h_pm2_5
+  - entity_id:
+    - sensor.salon_monitor_jakosci_powietrza_pm2_5
     below: 100
     for:
       minutes: 2
@@ -3056,7 +3058,7 @@
   triggers:
   - trigger: sun
     event: sunset
-    offset: -00:10:00
+    offset: 00:00:00
   conditions:
   - condition: state
     entity_id: input_boolean.away_mode
@@ -3102,7 +3104,7 @@
   - action: assist_satellite.ask_question
     metadata: {}
     data:
-      question: Niedługo zajdzie słońce, czy chcesz abym włączyła światło w salonie?
+      question: Słońce zaszło, czy chcesz abym włączyła światło w salonie?
       preannounce: true
       entity_id: assist_satellite.home_assistant_voice_0a30ff_urzadzenie_asystenta_glosowego
       answers:
@@ -3399,7 +3401,8 @@
     metadata: {}
     target:
       entity_id: light.philips_65oled707_ambilight
-    data: {}
+    data:
+      effect: 'FOLLOW_VIDEO: NATURAL'
   mode: single
 - id: '1775077627914'
   alias: Wysyłaj dane pogodowe do MQTT
@@ -3728,4 +3731,24 @@
     target:
       entity_id: lock.przedpokoj_zamek_drzwi_wejsciowych
     data: {}
+  - variables:
+      notification_title: Zamykanie pustego mieszkania
+      notification_message: Zamek drzwi wejściowych został zamknięty bo domownicy
+        opóścili mieszkanie.
+      notification_tag: lock-lock
+  - repeat:
+      for_each:
+      - notify.mobile_app_iphone_17
+      - notify.mobile_app_iphone_16_plus
+      - notify.mobile_app_iphone_15_pro
+      sequence:
+      - action: '{{ repeat.item }}'
+        data:
+          title: '{{ notification_title }}'
+          message: '{{ notification_message }}'
+          data:
+            tag: '{{ notification_tag }}'
+            push:
+              badge: 1
+              sound: Warsaw_Haptic.caf
   mode: single

@@ -46,3 +46,11 @@ zha:
         - type: z2m
 
 intent_script: !include intent_scripts.yaml
+
+rest_command:
+  dell_shutdown:
+    url: !secret dell_shutdown_url
+
+  komputer_antka_shutdown:
+    url: !secret komputer_antka_shutdown_url
+
