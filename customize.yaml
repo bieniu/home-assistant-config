@@ -55,8 +55,8 @@ update.aplikacje_truenas_firefly_iii:
 update.aplikacje_truenas_it_tools:
   entity_picture: /local/it_tools.png
 
-update.aplikacje_truenas_beszel:
-  entity_picture: /local/beszel.png
+update.aplikacje_truenas_beszel_hub:
+  entity_picture: /local/beszel_hub.png
 
 update.aplikacje_truenas_termix:
   entity_picture: /local/termix.png
@@ -67,11 +67,8 @@ update.aplikacje_truenas_warracker:
 update.aplikacje_truenas_esphome:
   entity_picture: /local/esphome.png
 
-update.aplikacje_truenas_dispatcharr:
-  entity_picture: /local/dispatcharr.png
-
-update.aplikacje_truenas_umami:
-  entity_picture: /local/umami.png
+update.aplikacje_truenas_scrutiny:
+  entity_picture: /local/scrutiny.png
 
 calendar.workday_sensor_calendar:
   message: dzień roboczy

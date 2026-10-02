@@ -166,8 +166,8 @@
     data:
       cache: true
       media_player_entity_id: media_player.home_assistant_voice_0a30ff_odtwarzacz_mediow
-      message: W salonie stężenie dwutlenku węgla wynosi {{ trigger.to_state.state
-        | round }} ppm. Jeśli to możliwe przewietrz pomieszczenie.
+      message: Stężenie dwutlenku węgla wynosi {{ trigger.to_state.state | round }}
+        ppm. Jeśli to możliwe przewietrz pomieszczenie.
       language: pl-PL
 - id: notification_water_leak_kuchnia
   alias: Wyciek wody
@@ -1694,21 +1694,6 @@
     action: python_script.shellies_discovery
   mode: queued
   max: 999
-- id: hassio_backup
-  alias: Wykonanie kopii zapasowej
-  description: ''
-  triggers:
-  - at: 02:00:00
-    trigger: time
-  conditions:
-  - condition: time
-    weekday:
-    - sun
-  actions:
-  - data:
-      name: '{{ now().strftime(''%Y-%m-%d'') }}'
-      location: Synology
-    action: hassio.backup_full
 - id: '1658514116580'
   alias: Włącz/wyłącz wentylator w salonie
   description: ''
@@ -2434,9 +2419,14 @@
       \ \"sensor.luna_codzienny_cel\",\n  \"sensor.luna_czas_aktywnosci\",\n  \"switch.lokalizator_yhgljcej_brzeczyk\",\n
       \ \"switch.lokalizator_yhgljcej_led\",\n  \"switch.lokalizator_yhgljcej_sledzenie_na_zywo\",\n
       \ \"button.shelly_plus_smoke_d12914_wycisz_alarm\",\n  \"button.shelly_plus_smoke_d08428_wycisz_alarm\",\n
-      \ \"update.home_assistant_skyconnect_c0b68845_firmware\",\n  \"update.home_assistant_connect_zbt_2_10b41de59ae0_firmware\",\n]
-      %}\n{% set ignored_devices = [\n  \"Sony KD-55XF8596\"\n] %}\n{% set ns = namespace(seen=[],
-      lines=[]) %}\n{% for entity in states\n    | selectattr(\"state\", \"eq\", \"unavailable\")\n
+      \ \"update.home_assistant_skyconnect_c0b68845_firmware\",\n  \"update.home_assistant_connect_zbt_2_10b41de59ae0_firmware\",\n
+      \ \"select.pokoj_antka_echo_plus_drop_in\",\n  \"switch.pokoj_antka_echo_plus_communications\",\n
+      \ \"switch.pokoj_antka_echo_plus_announcements\",\n  \"select.kuchnia_echo_show_drop_in\",\n
+      \ \"switch.kuchnia_echo_show_communications\",\n  \"switch.kuchnia_echo_show_announcements\",\n
+      \ \"select.pracownia_echo_dot_drop_in\",\n  \"switch.pracownia_echo_dot_communications\",\n
+      \ \"switch.pracownia_echo_dot_announcements\",\n] %}\n{% set ignored_devices
+      = [\n  \"Sony KD-55XF8596\"\n] %}\n{% set ns = namespace(seen=[], lines=[])
+      %}\n{% for entity in states\n    | selectattr(\"state\", \"eq\", \"unavailable\")\n
       \   | rejectattr(\"entity_id\", \"in\", ignored_entities) %}\n\n  {% set device
       = device_name(entity.entity_id) %}\n\n  {% if device\n      and device not in
       ignored_devices\n      and device not in ns.seen %}\n\n    {% set ns.seen =
@@ -3104,7 +3094,7 @@
   - action: assist_satellite.ask_question
     metadata: {}
     data:
-      question: Słońce zaszło, czy chcesz abym włączyła światło w salonie?
+      question: Robi się ciemno, czy chcesz abym włączyła światło w salonie?
       preannounce: true
       entity_id: assist_satellite.home_assistant_voice_0a30ff_urzadzenie_asystenta_glosowego
       answers:
@@ -3459,6 +3449,7 @@
         sun.sun: sun
       entities_alert:
         sensor.lowicz_alert_pogodowy: alerts
+        sensor.bzura_lowicz_alert_hydrologiczny: test_alerts
       entities_condition:
         weather.dom: condition
   - choose:
@@ -3751,4 +3742,85 @@
             push:
               badge: 1
               sound: Warsaw_Haptic.caf
+  mode: single
+- id: '1790757511193'
+  alias: Wczytaj ponownie integrację Unifi
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.switch_flex_mini_5ca7d6_obciazenie_cpu
+    to:
+    - unknown
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  conditions:
+  - condition: template
+    value_template: '{{ not has_value(trigger.to_state.entity_id) }}'
+  actions:
+  - action: homeassistant.reload_config_entry
+    metadata: {}
+    data:
+      entry_id: 01KJTWKEDZ63EKG8R8F0DR158B
+  - delay:
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+  mode: single
+- id: '1790946014901'
+  alias: Wysokie stężenie dwutlenku węgla w gabinecie
+  description: ''
+  triggers:
+  - trigger: air_quality.co2_crossed_threshold
+    target:
+      entity_id: sensor.wemos_lolin32_8cbf7c_dwutlenek_wegla
+    options:
+      behavior: each
+      for:
+        hours: 0
+        minutes: 10
+        seconds: 0
+      threshold:
+        type: above
+        value:
+          active_choice: number
+          number: 1000
+  conditions:
+  - condition: state
+    entity_id: input_boolean.away_mode
+    state:
+    - 'off'
+  actions:
+  - if:
+    - condition: state
+      entity_id: binary_sensor.motion_gabinet
+      state:
+      - 'off'
+    then:
+    - wait_for_trigger:
+      - trigger: state
+        entity_id:
+        - binary_sensor.motion_gabinet
+        from:
+        - 'off'
+        to:
+        - 'on'
+      timeout:
+        hours: 1
+        minutes: 0
+        seconds: 0
+        milliseconds: 0
+  - action: tts.speak
+    metadata: {}
+    target:
+      entity_id: tts.home_assistant_cloud
+    data:
+      cache: true
+      media_player_entity_id: media_player.sonos_one
+      message: Stężenie dwutlenku węgla wynosi {{ trigger.to_state.state | round }}
+        ppm. Jeśli to możliwe przewietrz pomieszczenie.
+      language: pl-PL
   mode: single
