@@ -2,10 +2,7 @@ default: warning
 filters:
   homeassistant.loader:
     - "We found a custom integration"
-  homeassistant.components.alexa_devices:
+  aioamazondevices:
     - "Failed to refresh communications settings"
-# logs:
-#   homeassistant.components.go2rtc: debug
-#   homeassistant.components.webrtc: debug
-#   custom_components.shelly.camera: debug
-#   aioshelly: debug
+  homeassistant.components.xiaomi_miio:
+    - "Unexpected error fetching"

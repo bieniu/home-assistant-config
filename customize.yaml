@@ -25,20 +25,11 @@ sensor.ignorowane_problemy:
 sensor.wszystkie_problemy:
   unit_of_measurement: "problemów"
 
-device_tracker.bmw_220:
-  entity_picture: /local/bmw_220.png
-
-device_tracker.lokalizator_yhgljcej:
-  entity_picture: /api/image/serve/c3fa5fee4540336c90b5c1e9fea2b4f1/512x512
-
-device_tracker.lokalizator_zfaaggru:
-  entity_picture: /api/image/serve/16cbe828aed5f8875ae19632d630785f/512x512
-
 update.aplikacje_truenas_cloudflared:
   entity_picture: /local/cloudflared.png
 
-update.aplikacje_truenas_paperless_ngx:
-  entity_picture: /local/paperless-ngx.png
+update.aplikacje_truenas_paperless:
+  entity_picture: /local/paperless.png
 
 update.aplikacje_truenas_immich:
   entity_picture: /local/immich.png
@@ -49,26 +40,14 @@ update.aplikacje_truenas_dockhand:
 update.aplikacje_truenas_syncthing:
   entity_picture: /local/syncthing.png
 
-update.aplikacje_truenas_firefly_iii:
-  entity_picture: /local/firefly_iii.png
+update.aplikacje_truenas_firefly:
+  entity_picture: /local/firefly.png
 
 update.aplikacje_truenas_it_tools:
   entity_picture: /local/it_tools.png
 
-update.aplikacje_truenas_beszel_hub:
-  entity_picture: /local/beszel_hub.png
-
 update.aplikacje_truenas_termix:
   entity_picture: /local/termix.png
-
-update.aplikacje_truenas_warracker:
-  entity_picture: /local/warracker.png
-
-update.aplikacje_truenas_esphome:
-  entity_picture: /local/esphome.png
-
-update.aplikacje_truenas_scrutiny:
-  entity_picture: /local/scrutiny.png
 
 calendar.workday_sensor_calendar:
   message: dzień roboczy

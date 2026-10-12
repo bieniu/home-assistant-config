@@ -116,59 +116,6 @@
     notification_message: Zmywarka zakończyła zmywanie naczyń.
     notification_tag: dishwasher
     notification_group: home
-- id: notification_salon_co2
-  alias: Wysokie stężenie dwutlenku węgla w salonie
-  description: ''
-  triggers:
-  - trigger: air_quality.co2_crossed_threshold
-    target:
-      area_id: salon
-    options:
-      behavior: each
-      for:
-        hours: 0
-        minutes: 10
-        seconds: 0
-      threshold:
-        type: above
-        value:
-          active_choice: number
-          number: 1000
-  conditions:
-  - condition: state
-    entity_id: input_boolean.away_mode
-    state:
-    - 'off'
-  actions:
-  - if:
-    - condition: state
-      entity_id: binary_sensor.motion_salon
-      state:
-      - 'off'
-    then:
-    - wait_for_trigger:
-      - trigger: state
-        entity_id:
-        - binary_sensor.motion_salon
-        from:
-        - 'off'
-        to:
-        - 'on'
-      timeout:
-        hours: 1
-        minutes: 0
-        seconds: 0
-        milliseconds: 0
-  - action: tts.speak
-    metadata: {}
-    target:
-      entity_id: tts.home_assistant_cloud
-    data:
-      cache: true
-      media_player_entity_id: media_player.home_assistant_voice_0a30ff_odtwarzacz_mediow
-      message: Stężenie dwutlenku węgla wynosi {{ trigger.to_state.state | round }}
-        ppm. Jeśli to możliwe przewietrz pomieszczenie.
-      language: pl-PL
 - id: notification_water_leak_kuchnia
   alias: Wyciek wody
   description: ''
@@ -185,7 +132,7 @@
     from: 'off'
     to: 'on'
     trigger: state
-  - entity_id: binary_sensor.wyciek_wody_pod_umywalka_w_lazience
+  - entity_id: binary_sensor.lazienka_czujnik_zalania_wyciek_wody_pod_umywalka
     from: 'off'
     to: 'on'
     trigger: state
@@ -2064,11 +2011,11 @@
   alias: Dym w mieszkaniu
   description: ''
   triggers:
-  - entity_id: binary_sensor.dym_antresola
+  - entity_id: binary_sensor.antresola_czujnik_dymu_dym
     from: 'off'
     to: 'on'
     trigger: state
-  - entity_id: binary_sensor.dym_kuchnia
+  - entity_id: binary_sensor.kuchnia_czujnik_dymu_dym
     from: 'off'
     to: 'on'
     trigger: state
@@ -2392,6 +2339,7 @@
   mode: single
 - id: '1715247759498'
   alias: Niedostępne urządzenia lub usługi
+  description: ''
   triggers:
   - trigger: time_pattern
     minutes: /15
@@ -2414,12 +2362,11 @@
           sound: Warsaw_Haptic.caf
   variables:
     unavailable_devices: "{% set ignored_entities = [\n  \"light.philips_65oled707_ambilight\",\n
-      \ \"sensor.karmel_codzienny_cel\",\n  \"sensor.karmel_czas_aktywnosci\",\n  \"switch.lokalizator_zfaaggru_brzeczyk\",\n
-      \ \"switch.lokalizator_zfaaggru_led\",\n  \"switch.lokalizator_zfaaggru_sledzenie_na_zywo\",\n
-      \ \"sensor.luna_codzienny_cel\",\n  \"sensor.luna_czas_aktywnosci\",\n  \"switch.lokalizator_yhgljcej_brzeczyk\",\n
-      \ \"switch.lokalizator_yhgljcej_led\",\n  \"switch.lokalizator_yhgljcej_sledzenie_na_zywo\",\n
-      \ \"button.shelly_plus_smoke_d12914_wycisz_alarm\",\n  \"button.shelly_plus_smoke_d08428_wycisz_alarm\",\n
-      \ \"update.home_assistant_skyconnect_c0b68845_firmware\",\n  \"update.home_assistant_connect_zbt_2_10b41de59ae0_firmware\",\n
+      \ \"sensor.karmel_codzienny_cel\",\n  \"sensor.karmel_czas_aktywnosci\",\n  \"switch.lokalizator_karmel_brzeczyk\",\n
+      \ \"switch.lokalizator_karmel_led\",\n  \"switch.lokalizator_karmel_sledzenie_na_zywo\",\n
+      \ \"sensor.luna_codzienny_cel\",\n  \"sensor.luna_czas_aktywnosci\",\n  \"switch.lokalizator_luny_brzeczyk\",\n
+      \ \"switch.lokalizator_luny_led\",\n  \"switch.lokalizator_luny_sledzenie_na_zywo\",\n
+      \ \"button.kuchnia_czujnik_dymu_wycisz_alarm\",\n  \"button.antresola_czujnik_dymu_wycisz_alarm\",\n
       \ \"select.pokoj_antka_echo_plus_drop_in\",\n  \"switch.pokoj_antka_echo_plus_communications\",\n
       \ \"switch.pokoj_antka_echo_plus_announcements\",\n  \"select.kuchnia_echo_show_drop_in\",\n
       \ \"switch.kuchnia_echo_show_communications\",\n  \"switch.kuchnia_echo_show_announcements\",\n
@@ -2726,8 +2673,8 @@
   triggers:
   - trigger: numeric_state
     entity_id:
-    - sensor.lokalizator_yhgljcej_bateria
-    - sensor.lokalizator_zfaaggru_bateria
+    - sensor.lokalizator_karmel_bateria
+    - sensor.lokalizator_luny_bateria
     for:
       hours: 0
       minutes: 15
@@ -2806,32 +2753,6 @@
       actions:
       - action: TURN_OFF_HEATING
         title: Wyłącz ogrzewanie
-      services:
-      - service: notify.mobile_app_iphone_17
-        type: ios
-  mode: single
-- id: '1746095039819'
-  alias: Nowe firmware dla Shelly BLU TRV
-  description: ''
-  triggers:
-  - trigger: state
-    entity_id:
-    - sensor.shelly_blu_trv_firmware
-    not_from:
-    - unavailable
-    - unknown
-    not_to:
-    - unavailable
-    - unknown
-  conditions: []
-  actions:
-  - action: python_script.notify
-    data:
-      title: Aktualizacja firmware dla Shelly BLU TRV
-      message: Dostępna jest wersja {{ trigger.to_state.state }} firmware dla Shelly
-        BLU TRV.
-      tag: blu-trv-firmware
-      group: devices
       services:
       - service: notify.mobile_app_iphone_17
         type: ios
@@ -3113,8 +3034,9 @@
         - nie włączaj
         - spadaj
     response_variable: response
+    continue_on_error: true
   - condition: template
-    value_template: '{{ response.id == "yes" }}'
+    value_template: '{{ response is defined and response.id == "yes" }}'
   - action: light.turn_on
     metadata: {}
     data: {}
@@ -3189,8 +3111,9 @@
         - spadaj
         - nie włączaj
     response_variable: response
+    continue_on_error: true
   - condition: template
-    value_template: '{{ response.id == "yes" }}'
+    value_template: '{{ response is defined and response.id == "yes" }}'
   - action: alexa_devices.send_text_command
     metadata: {}
     data:
@@ -3262,8 +3185,9 @@
         - spadaj
         - nie włączaj
     response_variable: response
+    continue_on_error: true
   - condition: template
-    value_template: '{{ response.id == "yes" }}'
+    value_template: '{{ response is defined and response.id == "yes" }}'
   - action: script.wlacz_telewizje_w_salonie
     metadata: {}
     data: {}
@@ -3771,12 +3695,28 @@
       milliseconds: 0
   mode: single
 - id: '1790946014901'
-  alias: Wysokie stężenie dwutlenku węgla w gabinecie
-  description: ''
+  alias: Komunikat o wysokim stężeniu dwutlenku węgla
+  description: Komunikat o wysokim CO₂ w gabinecie lub salonie po wykryciu ruchu
   triggers:
-  - trigger: air_quality.co2_crossed_threshold
+  - id: gabinet
+    trigger: air_quality.co2_crossed_threshold
     target:
       entity_id: sensor.wemos_lolin32_8cbf7c_dwutlenek_wegla
+    options:
+      behavior: each
+      for:
+        hours: 0
+        minutes: 10
+        seconds: 0
+      threshold:
+        type: above
+        value:
+          active_choice: number
+          number: 1000
+  - id: salon
+    trigger: air_quality.co2_crossed_threshold
+    target:
+      area_id: salon
     options:
       behavior: each
       for:
@@ -3791,36 +3731,80 @@
   conditions:
   - condition: state
     entity_id: input_boolean.away_mode
-    state:
-    - 'off'
+    state: 'off'
   actions:
-  - if:
-    - condition: state
-      entity_id: binary_sensor.motion_gabinet
-      state:
-      - 'off'
-    then:
-    - wait_for_trigger:
-      - trigger: state
-        entity_id:
-        - binary_sensor.motion_gabinet
-        from:
-        - 'off'
-        to:
-        - 'on'
-      timeout:
-        hours: 1
-        minutes: 0
-        seconds: 0
-        milliseconds: 0
+  - wait_template: '{{ is_state(room.motion, ''on'') }}'
+    timeout: 01:00:00
   - action: tts.speak
-    metadata: {}
     target:
       entity_id: tts.home_assistant_cloud
     data:
       cache: true
-      media_player_entity_id: media_player.sonos_one
-      message: Stężenie dwutlenku węgla wynosi {{ trigger.to_state.state | round }}
-        ppm. Jeśli to możliwe przewietrz pomieszczenie.
+      media_player_entity_id: '{{ room.player }}'
+      message: Stężenie dwutlenku węgla jest wysokie. Jeśli to możliwe przewietrz
+        pomieszczenie.
       language: pl-PL
+  variables:
+    rooms:
+      gabinet:
+        motion: binary_sensor.motion_gabinet
+        player: media_player.sonos_one
+      salon:
+        motion: binary_sensor.motion_salon
+        player: media_player.home_assistant_voice_0a30ff_odtwarzacz_mediow
+    room: '{{ rooms[trigger.id] }}'
+  mode: parallel
+  max: 2
+- id: '1791046776432'
+  alias: Wyślij Confirm do telewizora po wlączeniu i uruchomieniu aplikacji Orange
+    TV
+  description: Po włączeniu telewizora czeka, aż zgłosi uruchomioną aplikację Orange
+    TV i wysyła z pilota Confirm.
+  triggers:
+  - trigger: state
+    entity_id: media_player.philips_65oled707
+    to: 'on'
+    not_from:
+    - unknown
+    - unavailable
+  conditions: []
+  actions:
+  - wait_template: '{{ state_attr(trigger.entity_id, ''app_name'') == ''Orange TV''
+      }}'
+    timeout: 00:02:00
+    continue_on_timeout: false
+  - delay:
+      seconds: 3
+  - action: remote.send_command
+    target:
+      entity_id: remote.philips_65oled707
+    data:
+      command: Confirm
   mode: single
+- id: '1791124370051'
+  alias: Powiadom o problemie ze zdrowiem dysku
+  description: Wysyła powiadomienie na iPhone 17, gdy któryś dysk zgłosi problem ze
+    zdrowiem
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.pralnia_plextor_px_128m6s_zdrowie
+    - binary_sensor.pralnia_samsung_mzalq256hajd_000l2_zdrowie
+    - binary_sensor.pralnia_wd_red_sn700_252015800104_zdrowie
+    - binary_sensor.pralnia_wd_red_sn700_252015800112_zdrowie
+    from: 'off'
+    to: 'on'
+  conditions: []
+  actions:
+  - action: notify.mobile_app_iphone_17
+    data:
+      title: Problem ze zdrowiem dysku
+      message: Test SMART zgłasza problem ze zdrowiem dysku {{ device_name(trigger.entity_id)
+        }}!
+      data:
+        tag: disk-health-{{ trigger.entity_id }}
+        push:
+          badge: 1
+          interruption-level: critical
+        url: /config/devices/dashboard
+  mode: queued
