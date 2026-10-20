@@ -119,6 +119,8 @@ heating_day:
     target:
       entity_id:
       - climate.grzejnik_lazienka
+      - climate.drabinka_lazienka
+      - climate.toaleta_grzejnik_drabinkowy
     data:
       temperature: '{{ states(''input_number.bathroom_temperature_day'') }}'
   - action: humidifier.set_mode
@@ -129,12 +131,6 @@ heating_day:
       entity_id: humidifier.xiaomi_mi_humidifier_cb1
   - action: script.humidification_start
     data: {}
-  - action: climate.set_temperature
-    target:
-      entity_id:
-      - climate.drabinka_lazienka
-    data:
-      temperature: '{{ states(''input_number.bathroom_temperature_day'') }}'
   mode: single
   icon: mdi:radiator
   alias: Tryb dzienny ogrzewania
@@ -168,6 +164,8 @@ heating_night:
     target:
       entity_id:
       - climate.grzejnik_lazienka
+      - climate.drabinka_lazienka
+      - climate.toaleta_grzejnik_drabinkowy
     data:
       temperature: '{{ states(''input_number.bathroom_temperature_night'') }}'
   - action: humidifier.set_mode
@@ -178,12 +176,6 @@ heating_night:
       entity_id: humidifier.xiaomi_mi_humidifier_cb1
   - action: script.humidification_start
     data: {}
-  - action: climate.set_temperature
-    target:
-      entity_id:
-      - climate.drabinka_lazienka
-    data:
-      temperature: '{{ states(''input_number.bathroom_temperature_night'') }}'
   mode: single
   alias: Tryb nocny ogrzewania
   icon: mdi:radiator
@@ -200,6 +192,8 @@ heating_away_mode:
       - climate.grzejnik_pracownia
       - climate.grzejnik_goscinny
       - climate.grzejnik_antresola
+      - climate.toaleta_grzejnik_drabinkowy
+      - climate.drabinka_lazienka
     data:
       temperature: '{{ states(''input_number.temperature_away'') }}'
     action: climate.set_temperature
@@ -208,12 +202,6 @@ heating_away_mode:
       - humidifier.xiaomi_mi_humidifier_cb1
     data: {}
     action: humidifier.turn_off
-  - target:
-      entity_id:
-      - climate.drabinka_lazienka
-    data:
-      temperature: '{{ states(''input_number.temperature_away'') }}'
-    action: climate.set_temperature
   mode: single
   alias: Tryb "poza domem" ogrzewania
   icon: mdi:radiator-disabled
@@ -224,7 +212,9 @@ heating_season_end:
     data:
       temperature: 4
     target:
-      entity_id: climate.drabinka_lazienka
+      entity_id:
+      - climate.drabinka_lazienka
+      - climate.toaleta_grzejnik_drabinkowy
   - action: climate.set_temperature
     metadata: {}
     data:
@@ -248,8 +238,7 @@ heating_season_end:
       - climate.grzejnik_goscinny
   - action: humidifier.turn_off
     target:
-      entity_id:
-      - humidifier.xiaomi_mi_humidifier_cb1
+      entity_id: humidifier.xiaomi_mi_humidifier_cb1
     data: {}
   mode: single
   alias: Koniec sezony grzewczego
@@ -269,7 +258,9 @@ heating_airing_begin:
     data:
       temperature: 4
     target:
-      entity_id: climate.drabinka_lazienka
+      entity_id:
+      - climate.drabinka_lazienka
+      - climate.toaleta_grzejnik_drabinkowy
   - action: climate.set_temperature
     metadata: {}
     data:

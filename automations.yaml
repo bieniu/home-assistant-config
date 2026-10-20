@@ -2482,23 +2482,6 @@
       entity_id: light.blat_kuchnia
     action: light.turn_off
     data: {}
-- id: '1725785049250'
-  alias: Włącz/wyłącz oświetlenie w pracowni
-  description: ''
-  triggers:
-  - device_id: 12765067d8e37adeadb4188a5b9b0c5c
-    domain: zha
-    platform: device
-    type: remote_button_short_press
-    subtype: remote_button_short_press
-  condition: []
-  actions:
-  - action: light.toggle
-    metadata: {}
-    data: {}
-    target:
-      entity_id: light.ceiling_pracownia
-  mode: single
 - id: '1728586481244'
   alias: Raportowanie temperatury do termostatu w salonie
   description: ''
