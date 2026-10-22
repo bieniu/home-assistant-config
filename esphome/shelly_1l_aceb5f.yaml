@@ -11,7 +11,7 @@ esp8266:
 
 ota:
   platform: esphome
-  password: !secret esphome_password
+  encryption:
 
 wifi:
   ssid: !secret wifi_ssid
@@ -32,6 +32,7 @@ api:
 
 web_server:
   port: 80
+  ota: false
   auth:
     username: !secret web_server_username
     password: !secret web_server_password

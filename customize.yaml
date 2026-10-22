@@ -49,5 +49,8 @@ update.aplikacje_truenas_it_tools:
 update.aplikacje_truenas_termix:
   entity_picture: /local/termix.png
 
+update.aplikacje_truenas_hermes_agent:
+  entity_picture: /local/hermes_agent.png
+
 calendar.workday_sensor_calendar:
   message: dzień roboczy

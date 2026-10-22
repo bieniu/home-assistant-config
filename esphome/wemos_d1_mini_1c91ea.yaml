@@ -29,10 +29,11 @@ api:
 
 ota:
   platform: esphome
-  password: !secret esphome_password
+  encryption:
 
 web_server:
   port: 80
+  ota: false
   auth:
     username: !secret web_server_username
     password: !secret web_server_password
